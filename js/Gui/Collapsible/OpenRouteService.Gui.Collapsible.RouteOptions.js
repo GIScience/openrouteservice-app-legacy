@@ -88,6 +88,7 @@ OpenRouteService.Gui.Collapsible.RouteOptions = Class.create(OpenRouteService.Gu
 					if (idName == self.preferenceButtonContainer.childNodes[j].id) {
 						//change clicked button to green/ active:
 						self.preferenceButtonContainer.childNodes[j].innerHTML = "<img src='" + preferenceImages.get(idName)[1] + "'/>";
+						this.addClassName('active');
 						if (mainPrefs[j] == 'car') {
 							//display avoid motorways/ tollways if option "car" is selected
 							self.avoidablePanel.show();
@@ -98,6 +99,7 @@ OpenRouteService.Gui.Collapsible.RouteOptions = Class.create(OpenRouteService.Gu
 						self.extendedOptions[j].show();
 					} else {
 						//change all other buttons to grey/ inactive:
+						self.preferenceButtonContainer.childNodes[j].removeClassName('active');
 						self.preferenceButtonContainer.childNodes[j].innerHTML = "<img src='" + preferenceImages.get(mainPrefs[j])[0] + "'/>";
 						self.extendedOptions[j].hide();
 					}
@@ -145,6 +147,67 @@ OpenRouteService.Gui.Collapsible.RouteOptions = Class.create(OpenRouteService.Gu
 	 * inserts buttons to draw avoid areas in a panel
 	 */
 	insertRouteAvoidAreas : function() {
+		var layerAvoid = this.map.getLayersByName(OpenRouteService.Map.AVOID)[0];
+		
+		var avoidTools = {
+			'avoidCreate': new OpenLayers.Control.DrawFeature(layerAvoid, OpenLayers.Handler.Polygon, {
+				title : OpenRouteService.Preferences.translate('avoidAreaDraw'),
+				featureAdded : function() {
+					document.fire('routePreference:changed');
+				}
+			}), 
+			'avoidEdit': new OpenLayers.Control.ModifyFeature(layerAvoid, {
+				title : OpenRouteService.Preferences.translate('avoidAreaModify'),
+				unselectFeature : function() {
+					this.deactivate();
+					this.activate();
+					document.fire('routePreference:changed');
+				}
+			}),
+			'avoidRemove': new OpenLayers.Control.SelectFeature(layerAvoid, {
+				onSelect : function(feature) {
+					layerAvoid.removeFeatures([feature]);
+					document.fire('routePreference:changed');
+				},
+				title : OpenRouteService.Preferences.translate('avoidAreaRemove'),
+			})
+		};
+
+		for (var key in avoidTools) {
+			this.map.addControl(avoidTools[key]);
+		}
+
+		
+		
+		function handleButtonClick(ev) {
+			var actives = 0;
+			var target = (ev.target.tagName === 'BUTTON' ? ev.target : $(ev.target).up(0));
+			for (var key in avoidTools) {
+				if (key === target.value && !avoidTools[key].active) {
+					avoidTools[key].activate();
+					
+					$(target).addClassName('active');
+					actives++;
+				} else {
+					avoidTools[key].deactivate();
+					$$('button[value="' + key + '"]')[0].removeClassName('active');
+				}
+			}
+			
+			
+			//if there is one control active...
+			if (actives > 0) {
+				//we must disable the selectFeature handler; otherwise the route points layer remains on top of the avoid area layer
+				var layerRoutePoints = self.map.getLayersByName(OpenRouteService.Map.ROUTE_POINTS)[0];
+				layerRoutePoints.selectWaypoint.deactivate();
+			} else {
+				//re-enable the selectFeature handler for waypoints
+				var layerRoutePoints = self.map.getLayersByName(OpenRouteService.Map.ROUTE_POINTS)[0];
+				layerRoutePoints.selectWaypoint.activate();
+			}
+		}
+		
+		
 		var avoidAreasPanel = new Element('div', {
 			'class' : 'panel panelMedium',
 			'id' : 'avoidAreas'
@@ -162,79 +225,32 @@ OpenRouteService.Gui.Collapsible.RouteOptions = Class.create(OpenRouteService.Gu
 		avoidAreasPanel.insert(title);
 
 		var container = new Element('div', {
-			'id' : 'avoidAreasToolbar',
-			'class' : 'olControlEditingToolbar'
+			'id' : 'avoidAreasToolbar'
 		});
 		avoidAreasPanel.insert(container);
-
-		var layerAvoid = this.map.getLayersByName(OpenRouteService.Map.AVOID)[0];
-
-		var panelPolygon = new OpenLayers.Control.Panel({
-			'displayClass' : 'olControlEditingToolbar',
-			'div' : container,
-			'allowDepress' : 'true',
-			onButtonClick : function(evt) {
-				//why is there an activateControl() but no deactivateControl() in the OpenLayers-API...??
-
-				//activate and deactivate the controls
-				for (key in controlsPolygon) {
-					var control = controlsPolygon[key];
-					if (control.panel_div == evt.buttonElement) {
-						//we got the element we clicked on
-						control.active ? control.deactivate() : control.activate();
-					} else {
-						//all other elements should be deactivated anyway
-						control.deactivate();
-					}
-				}
-
-				//if there is one control active...
-				var actives = panelPolygon.getControlsBy('active', true);
-				if (actives && actives.length > 0) {
-					//we must disable the selectFeature handler; otherwise the route points layer remains on top of the avoid area layer
-					var layerRoutePoints = self.map.getLayersByName(OpenRouteService.Map.ROUTE_POINTS)[0];
-					layerRoutePoints.selectWaypoint.deactivate();
-				} else {
-					//re-enable the selectFeature handler for waypoints
-					var layerRoutePoints = self.map.getLayersByName(OpenRouteService.Map.ROUTE_POINTS)[0];
-					layerRoutePoints.selectWaypoint.activate();
-				}
-			}
+		
+		var avoidButtons = new Element('div', {
+			'class': 'btn-group'
 		});
-
-		var self = this;
-		var controlsPolygon = {
-			polygon : new OpenLayers.Control.DrawFeature(layerAvoid, OpenLayers.Handler.Polygon, {
-				title : OpenRouteService.Preferences.translate('avoidAreaDraw'),
-				'displayClass' : 'olControlDrawFeature',
-				featureAdded : function() {
-					document.fire('routePreference:changed');
-				}
-			}),
-			modify : new OpenLayers.Control.ModifyFeature(layerAvoid, {
-				title : OpenRouteService.Preferences.translate('avoidAreaModify'),
-				'displayClass' : 'olControlModifyFeature',
-				unselectFeature : function() {
-					this.deactivate();
-					this.activate();
-					document.fire('routePreference:changed');
-				}
-			}),
-			remove : new OpenLayers.Control.SelectFeature(layerAvoid, {
-				onSelect : function(feature) {
-					layerAvoid.removeFeatures([feature]);
-					document.fire('routePreference:changed');
-				},
-				title : OpenRouteService.Preferences.translate('avoidAreaRemove'),
-				'displayClass' : 'olControlRemoveFeature'
-			})
-		};
-
-		for (var key in controlsPolygon) {
-			panelPolygon.addControls([controlsPolygon[key]]);
-		}
-
-		this.map.addControl(panelPolygon);
+		container.insert(avoidButtons);
+		
+		var avoidCreate = new Element('button', {
+			'class': 'btn',
+			'value': 'avoidCreate'
+		}).update('<img src="img/avoid-plus.png">').observe('click', handleButtonClick);
+		avoidButtons.insert(avoidCreate);
+		
+		var avoidEdit = new Element('button', {
+			'class': 'btn',
+			'value': 'avoidEdit'
+		}).update('<img src="img/avoid-edit.png">').observe('click', handleButtonClick);
+		avoidButtons.insert(avoidEdit);
+		
+		var avoidRemove = new Element('button', {
+			'class': 'btn',
+			'value': 'avoidRemove'
+		}).update('<img src="img/avoid-minus.png">').observe('click', handleButtonClick);
+		avoidButtons.insert(avoidRemove);
 	},
 	/**
 	 * @return the currently selected route option (checked radiobutton), e.g. 'fastest'

@@ -701,3 +701,7 @@ img {
 	width: 220px;
 	line-height: 1.1;
 }
+
+#avoidAreasToolbar > div.btn-group {
+	margin-left: 15px;
+}
