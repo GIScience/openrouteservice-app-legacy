@@ -1,6 +1,9 @@
 var lang_de = {
 	'left' : 'links',
 	'right' : 'rechts',
+	'half-left' : 'halb links',
+	'half-right' : 'halb rechts',
+	'straight' : 'geradeaus',
 	
 	'serverError': 'Sorry, wä&auml;rend der Berechnung ist ein Fehler auf dem Server passiert. Bitte versuchen Sie es sp&auml;ter noch einmal ',
 	'contact': 'Info&nbsp;&amp;&nbsp;Kontakt',

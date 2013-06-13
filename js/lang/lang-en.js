@@ -1,6 +1,9 @@
 var lang_en = {
 	'left' : 'left',
 	'right' : 'right',
+	'half-left' : 'half left',
+	'half-right' : 'half right',
+	'straight' : 'straight',
 	
 	'serverError': 'We are sorry. An error occured during the calculations on the server. Please try again later.',
 		

@@ -25,15 +25,34 @@ OpenRouteService.Gui.Instruction = Class.create(OpenRouteService.Gui, {
 		//arrow direction
 		var arrowCell = new Element('td');
 		var left = content.indexOf(OpenRouteService.Preferences.translate('left'));
+		var halfLeft = content.indexOf(OpenRouteService.Preferences.translate('half-left'));
 		var right = content.indexOf(OpenRouteService.Preferences.translate('right'));
-		if (left > 0 && left > right) {
+		var halfRight = content.indexOf(OpenRouteService.Preferences.translate('half-right'));
+		var straight = content.indexOf(OpenRouteService.Preferences.translate('straight'));
+		
+		if (left > 0 && (left < halfLeft || halfLeft < 0)) {
 			var direction = new Element('img', {
 				'src' : './img/left.png'
 			});
 			arrowCell.insert(direction);
-		} else if (right > 0 && right > left) {
+		} else if (right > 0 && (right < halfRight || halfRight < 0)) {
 			var direction = new Element('img', {
 				'src' : './img/right.png'
+			});
+			arrowCell.insert(direction);
+		} else if (halfRight > 0) {
+			var direction = new Element('img', {
+				'src' : './img/half-right.png'
+			});
+			arrowCell.insert(direction);
+		} else if (halfLeft > 0) {
+			var direction = new Element('img', {
+				'src' : './img/half-left.png'
+			});
+			arrowCell.insert(direction);
+		} else if (straight > 0) {
+			var direction = new Element('img', {
+				'src' : './img/straight.png'
 			});
 			arrowCell.insert(direction);
 		}
