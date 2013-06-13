@@ -59,7 +59,6 @@ OpenRouteService.Gui.Instruction = Class.create(OpenRouteService.Gui, {
 		this.htmlRepresentation.insert(arrowCell);
 
 		//instruction number
-		this.htmlRepresentation.insert(new Element('td').update(description));
 		if (description % 2 === 0) {
 			this.htmlRepresentation.addClassName('even');
 		} else {
