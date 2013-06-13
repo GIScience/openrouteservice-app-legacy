@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="de">
+	<head>
+		<title>OpenRouteService</title>
+		<meta name="robots" content="index, follow">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link id="OlStylesheet" rel="stylesheet" type="text/css" href="OpenLayersTheme/dark/style.css">
+		<link rel="stylesheet" type="text/css" href="css/bootstrap-ext.min.css">
+		<!-- for file upload -->
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min_2.2.1.css">
+		<link rel="stylesheet" type="text/css" href="css/default.css">
+	</head>
+	<body id="main">
+		<!-- navigation bar on top -->
+		<div class="navbar navbar-fixed-top" id="navbar">
+			<a class="brand" href="http://www.openrouteservice.org"> <img src="img/logo.png" class="logo" alt="ORS"/></a>
+			<a class="brand" id="title"  href="http://www.openrouteservice.org">OpenRouteService.org</a>
+			<ul id="topMenu">
+				<li>
+					<a href="http://www.geog.uni-heidelberg.de/giscience.html" target="_blank"><img src="img/logo_giscience.png" alt="GIScrience" class="links"/></a>
+				</li>
+				<li>
+					<a href="http://www.geog.uni-heidelberg.de/giscience.html" target="_blank"><img src="img/siegel_uni_hd_mittel.gif" alt="Uni HD" class="links"/></a>
+				</li>
+			</ul>
+		</div>
+		<div id="sidebar">
+			<ul id="functionMenu" class="nav nav-tabs"></ul>
+			<!-- sidebar content -->
+		</div>
+		<div id="openlayers" class="panel panelLight">
+			<!-- Map goes here -->
+		</div>
+		<div class="disclaimer">
+			<a href="http://openrouteservice.org/contact.php" class="inlineLink">(c) 2008-2010 -</a>
+			<a href="http://openrouteservice.org/contact.php#disclaimer" class="inlineLink">Disclaimer -</a>
+			<a href="http://openrouteservice.org/contact.php#license" class="inlineLink">License</a>
+		</div>
+
+		<script type="text/javascript">
+			if (window.console) {//IEHack
+				//do nothing
+			} else {
+				window.console = {};
+				window.console.log = function() {
+				};
+			}
+		</script>
+		<!-- Libraries -->
+		<!-- 	important: jQuery must be included before prototype	 -->
+		<script type="text/javascript" src="lib/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="lib/bootstrap/bootstrap.min.js"></script>
+		<script type="text/javascript" src="lib/bootstrap/bootstrap-typeahead.js"></script>
+		<script type="text/javascript" src="lib/bootstrap/bootstrap-ext.min.js"></script><!-- for file upload -->
+		<script type="text/javascript" src="lib/prototype.1.7.minified.js"></script>
+		<script type="text/javascript" src="lib/OpenLayers2.12.js"></script>
+		<script type="text/javascript" src="lib/XMLWriter-1.0.0-min.js"></script>
+		<script type="text/javascript" src="lib/jsts/javascript.util.js"></script>
+  		<script type="text/javascript" src="lib/jsts/jsts-0.13.1.js"></script>
+		<!-- ORS language files -->
+		<script type="text/javascript" src="js/lang/lang-de.js"></script>
+		<script type="text/javascript" src="js/lang/lang-en.js"></script>
+		
+		<!-- ORS single file -->
+		<!-- <script type="text/javascript" src="build/ORS.js"></script> -->
+
+		<!-- ORS dev multiple file-->
+		<script type="text/javascript" src="js/OpenRouteService.js"></script>
+		<script type="text/javascript" src="js/OpenRouteService.Util.js"></script>
+		<script type="text/javascript" src="js/OpenRouteService.namespaces.js"></script>
+		<script type="text/javascript" src="js/OpenRouteService.convert.js"></script>
+		<script type="text/javascript" src="js/OpenRouteService.CookieManager.js"></script>
+		<script type="text/javascript" src="js/OpenLS/OpenRouteService.OpenLS.js"></script>
+		<script type="text/javascript" src="js/OpenLS/OpenRouteService.OpenLS.Geocode.js"></script>
+		<script type="text/javascript" src="js/OpenLS/OpenRouteService.OpenLS.Geolocation.js"></script>
+		<script type="text/javascript" src="js/OpenLS/OpenRouteService.OpenLS.Poi.js"></script>
+		<script type="text/javascript" src="js/OpenLS/OpenRouteService.OpenLS.Route.js"></script>
+		<script type="text/javascript" src="js/OpenLS/OpenRouteService.OpenLS.ReverseGeocode.js"></script>
+		<script type="text/javascript" src="js/OpenRouteService.OpenLayers.js"></script>
+		<script type="text/javascript" src="js/OpenRouteService.List.js"></script>
+		<script type="text/javascript" src="js/OpenRouteService.Map.js"></script>
+		<script type="text/javascript" src="js/OpenRouteService.Preferences.js"></script>
+		<script type="text/javascript" src="js/Gui/OpenRouteService.Gui.js"></script>
+		<script type="text/javascript" src="js/Gui/OpenRouteService.Gui.Instruction.js"></script>
+		<script type="text/javascript" src="js/Gui/Collapsible/OpenRouteService.Gui.Collapsible.js"></script>
+		<script type="text/javascript" src="js/Gui/Collapsible/OpenRouteService.Gui.Collapsible.AvoidAreas.js"></script>
+		<script type="text/javascript" src="js/Gui/Collapsible/OpenRouteService.Gui.Collapsible.RouteExtras.js"></script>
+		<script type="text/javascript" src="js/Gui/Collapsible/OpenRouteService.Gui.Collapsible.RouteInstructions.js"></script>
+		<script type="text/javascript" src="js/Gui/Collapsible/OpenRouteService.Gui.Collapsible.RouteOptions.js"></script>
+		<script type="text/javascript" src="js/Gui/Collapsible/OpenRouteService.Gui.Collapsible.RouteSummary.js"></script>
+		<script type="text/javascript" src="js/Gui/OpenRouteService.Gui.ContextMenu.js"></script>
+		<script type="text/javascript" src="js/Gui/OpenRouteService.Gui.Geolocation.js"></script>
+		<script type="text/javascript" src="js/Gui/OpenRouteService.Gui.Panel.js"></script>
+		<script type="text/javascript" src="js/Gui/OpenRouteService.Gui.PreferencePopup.js"></script>
+		<script type="text/javascript" src="js/Gui/OpenRouteService.Gui.Route.js"></script>
+		<script type="text/javascript" src="js/Gui/Search/OpenRouteService.Gui.Search.js"></script>
+		<script type="text/javascript" src="js/Gui/Search/OpenRouteService.Gui.Search.SearchPlace.js"></script>
+		<script type="text/javascript" src="js/Gui/Search/OpenRouteService.Gui.SearchPoi.js"></script>
+		<script type="text/javascript" src="js/Gui/SearchResult/OpenRouteService.Gui.SearchResult.js"></script>
+		<script type="text/javascript" src="js/Gui/SearchResult/OpenRouteService.Gui.SearchResult.Place.js"></script>
+		<script type="text/javascript" src="js/Gui/SearchResult/OpenRouteService.Gui.SearchResult.Poi.js"></script>
+		<script type="text/javascript" src="js/Gui/Tool/OpenRouteService.Gui.Tool.js"></script>
+		<script type="text/javascript" src="js/Gui/Tool/OpenRouteService.Gui.Tool.CurrentLocation.js"></script>
+		<script type="text/javascript" src="js/Gui/Tool/OpenRouteService.Gui.Tool.Routing.js"></script>
+		<script type="text/javascript" src="js/Gui/Tool/OpenRouteService.Gui.Tool.SearchPlace.js"></script>
+		<script type="text/javascript" src="js/Gui/Tool/OpenRouteService.Gui.Tool.SearchPoi.js"></script>
+		<script type="text/javascript" src="js/Gui/OpenRouteService.Gui.Waypoint.js"></script>
+		<script type="text/javascript" src="js/OpenRouteService.Ui.js"></script>
+		<script type="text/javascript" src="js/OpenRouteService.Ui.Elements.js"></script>
+	</body>
+</html>
