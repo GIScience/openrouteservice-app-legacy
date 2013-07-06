@@ -383,6 +383,10 @@ a.options.active {
 	list-style-type: none;
 }
 
+.poi {
+	list-style-type: none;
+}
+
 button.routeOptionsButton {
 	height: 30px;
 	width: 44px;
@@ -407,6 +411,9 @@ button.routeOptionsButton > img {
 	height: 30px;
 	float: left;
 	padding-top: 5px;
+}
+#avoidAreasToolbar > div.btn-group {
+	margin-left: 15px;
 }
 .olControlEditingToolbar {
 	float: right;
@@ -445,7 +452,7 @@ button.routeOptionsButton > img {
 	vertical-align: text-top;
 }
 /* textfield to define the distance for "next to route" */
-#maxDistToPoi {
+#fnct_searchPoi_distance {
 	width: 30px;
 	/*overwrite settings from bootstrap for input fields*/
 	padding: 2px 2px 0px 2px;
@@ -453,7 +460,7 @@ button.routeOptionsButton > img {
 	text-align: center;
 }
 /* dropdown to define the distance measure for the maxDist (meters, miles,...) */
-#distMeasurePoi {
+.distMeasurePoi {
 	width: 50px;
 	height: 100%;
 	vertical-align: baseline;
@@ -517,8 +524,8 @@ button.routeOptionsButton > img {
 }
 
 /*#topMenu > li:first-child {
-	margin-right: 0px;
-}*/
+ margin-right: 0px;
+ }*/
 
 #topMenu > li > a, #title {
 	color: #000000;
@@ -544,7 +551,7 @@ button.routeOptionsButton > img {
 	width: 400px;
 	overflow: auto;
 }
-#openlayers {
+#map {
 	position: absolute;
 	top: 50px;
 	left: 400px;
@@ -681,7 +688,7 @@ img {
 .fileUploadForm {
 	margin: 0px;
 }
-.fileUploadForm > div{
+.fileUploadForm > div {
 	margin: 0px;
 }
 
@@ -697,11 +704,12 @@ img {
 .routePreferenceBtns {
 	margin-bottom: 3px;
 }
-#infoVersions {
+
+/*popup with information about customizing ORS*/
+#newToOrs {
+	display: none;
+}
+#newToOrs > label {
 	width: 220px;
 	line-height: 1.1;
-}
-
-#avoidAreasToolbar > div.btn-group {
-	margin-left: 15px;
 }

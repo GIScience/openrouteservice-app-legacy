@@ -44,6 +44,7 @@ var lang_de = {
 		'zoomToSearchResults':  'Ergebnisse in der Karte anzeigen',
 		'selectResult':  'W&auml;hlen Sie ein Suchergebnis aus:',
 		'searchAgain':  'erneut Suchen',
+		'searchError' : 'W&auml;hrend der Suche ist leider ein Fehler aufgetreten!',
 	
 	//Address search
 		'searchForPoints':  'Nach Adresse suchen',

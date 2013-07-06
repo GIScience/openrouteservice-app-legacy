@@ -1,0 +1,100 @@
+var Geolocator = ( function(w) {"use strict";
+
+		/**
+		 * Constructor
+		 */
+		function Geolocator() {
+
+		}
+		
+		/**
+		 * used to determine the user's current location using HTML5 geolocation feature
+		 * @param {Object} locationSuccess used to view the user's current position on the map
+		 * @param {Object} locationError used to view an error message on the UI
+		 * @param {Object} locationError used to view an error message on the UI
+		 */
+		function locate(locationSuccess, locationError, locationNotSupported) {
+			console.log("in geolocation.locate()")
+			if (w.navigator.geolocation) {
+				console.log("locating...")
+				w.navigator.geolocation.getCurrentPosition(locationSuccess, locationError);
+			} else {
+				console.log("geoloc. not supported")
+				locationNotSupported();
+			}
+		}
+
+		/**
+		 * used to determine the address of the user's current location by sending the position to the server and executing the callback function
+		 * @param {Object} position the user's current position
+		 * @param {Object} successCallback used to view the address of the current location on the UI
+		 * @param {Object} failureCallback used to view an error message on the UI
+		 */
+		function reverseGeolocate(position, successCallback, failureCallback) {
+			console.log("reverse geolocation")
+			console.log(position);
+
+			//TODO static now
+			var language = 'en'
+
+			var writer = new XMLWriter('UTF-8', '1.0');
+			writer.writeStartDocument();
+			//<xls:XLS>
+			writer.writeElementString('xls:XLS');
+			writer.writeAttributeString('xmlns:xls', namespaces.xls);
+			writer.writeAttributeString('xsi:schemaLocation', namespaces.schemata.locationUtilityService);
+			writer.writeAttributeString('xmlns:sch', namespaces.ascc);
+			writer.writeAttributeString('xmlns:gml', namespaces.gml);
+			writer.writeAttributeString('xmlns:xlink', namespaces.xlink);
+			writer.writeAttributeString('xmlns:xsi', namespaces.xsi);
+			writer.writeAttributeString('version', '1.1');
+			writer.writeAttributeString('xls:lang', language);
+			//<xls:RequestHeader />
+			writer.writeElementString('xls:RequestHeader');
+			//<xls:Request>
+			writer.writeStartElement('xls:Request');
+			writer.writeAttributeString('methodName', 'ReverseGeocodeRequest');
+			writer.writeAttributeString('version', '1.1');
+			writer.writeAttributeString('requestID', '00');
+			writer.writeAttributeString('maximumResponses', '15');
+			//<xls:ReverseGeocodeRequest>
+			writer.writeStartElement('xls:ReverseGeocodeRequest');
+			//<xls.Position>
+			writer.writeStartElement('xls:Position');
+			//<gml:Point>
+			writer.writeStartElement('gml:Point');
+			writer.writeAttributeString('xmlns:gml', namespaces.gml);
+			//<gml:pos>
+			writer.writeStartElement('gml:pos');
+			writer.writeAttributeString('srsName', 'EPSG:4326');
+			writer.writeString(position.lon + ' ' + position.lat);
+			//</gml:pos>
+			writer.writeEndElement();
+			//</gml:Point>
+			writer.writeEndElement();
+			//</xls:Position>
+			writer.writeEndElement();
+			//</xls:ReverseGeocodeRequest>
+			writer.writeEndElement();
+			//</xls:Request>
+			writer.writeEndElement();
+			//</xls:XLS>
+			writer.writeEndDocument();
+
+			var xmlRequest = writer.flush();
+			writer.close();
+
+			var xmlResponse;
+			var request = OpenLayers.Request.POST({
+				url : namespaces.services.directory,
+				data : xmlRequest,
+				success : successCallback,
+				failure : failureCallback
+			});
+		}
+
+		Geolocator.prototype.locate = locate;
+		Geolocator.prototype.reverseGeolocate = reverseGeolocate;
+
+		return new Geolocator();
+	}(window));

@@ -46,7 +46,8 @@ var lang_en = {
 		'zoomToSearchResults': 'Zoom to search results',
 		'selectResult': 'Select a result:',
 		'searchAgain': 'search Again',
-	
+		'searchError' : 'An error occured while searching, we\'re sorry!',
+			
 	//Address search
 		'searchForPoints': 'Search for an address',
 		'enterAddress': 'enter an address',
