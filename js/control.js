@@ -42,7 +42,11 @@ var Controller = ( function(w) {'use strict';
 		 */
 		function handleGeolocateSuccess(position) {
 			console.log("geolocation success")
-			map.moveTo([position.coords.latitude, position.coords.longitude]);
+			//TODO
+			console.log(positoin.coords);
+			var pos = map.convertPointForMap(position.coords);
+			map.moveTo(pos);
+			// map.moveTo([position.coords.latitude, position.coords.longitude]);
 			geolocator.reverseGeolocate(position, handleReverseGeolocationSuccess, handleReverseGeolocationFailure);
 		}
 
@@ -146,6 +150,10 @@ var Controller = ( function(w) {'use strict';
 		 */
 		function handleClearSearchAddressMarkers() {
 			map.clearSearchAddressMarkers();
+		}
+		
+		function handleZoomToAddressResults() {
+			map.zoomToAddressResults();
 		}
 
 		/* *********************************************************************
@@ -256,6 +264,14 @@ var Controller = ( function(w) {'use strict';
 		function handleClearSearchPoiMarkers() {
 			map.clearSearchPoiMarkers();
 		}
+		
+		function handleZoomToPoiResults() {
+			map.zoomToPoiResults();
+		}
+		
+		function handleZoomToMarker(objectId) {
+			map.zoomToMarker(objectId);
+		}
 
 		/* *********************************************************************
 		 * PERMALINK
@@ -362,12 +378,16 @@ var Controller = ( function(w) {'use strict';
 			ui.register('ui:emphasizeSearchAddressMarker', handleEmphasizeSearchAddressMarker);
 			ui.register('ui:deEmphasizeSearchAddressMarker', handleDeEmphasizeSearchAddressMarker);
 			ui.register('ui:clearSearchAddressMarkers', handleClearSearchAddressMarkers);
+			ui.register('ui:zoomToAddressResults', handleZoomToAddressResults);
 
 			ui.register('ui:checkDistanceToRoute', handleCheckDistanceToRoute);
 			ui.register('ui:searchPoiRequest', handleSearchPoiRequest);
 			ui.register('ui:emphasizeSearchPoiMarker', handleEmphasizeSearchPoiMarker);
 			ui.register('ui:deEmphasizeSearchPoiMarker', handleDeEmphasizeSearchPoiMarker);
 			ui.register('ui:clearSearchPoiMarkers', handleClearSearchPoiMarkers);
+			ui.register('ui:zoomToPoiResults', handleZoomToPoiResults);
+			
+			ui.register('ui:zoomToMarker', handleZoomToMarker);
 
 			ui.register('ui:openPermalinkRequest', handlePermalinkRequest);
 

@@ -236,11 +236,8 @@
 					<div class="guiComponent Search">
 						<input type="text" class="searchField" id="fnct_searchAddress" placeholder="enter an address">
 						<div id="searchAddressError" class="alert alert-error" style="display:none"></div>
+						<div class="clickable zoomToSearchResults" id="zoomToAddressResults" title="zoom to search results"></div>
 						<div class="responseContainer">
-							<div class="prompt selectSearchResult" style="display: none;"></div>
-							<div class="clickable zoomToSearchResults" title="Zoom to search results" style="display: none;">
-								Zoom to search results
-							</div>
 							<ul class="guiComponent resultList SearchAddress" id="fnct_searchAddressResults"></ul>
 						</div>
 					</div><div id="searchPlaceError"></div>
@@ -258,23 +255,24 @@
 					<div class="guiComponent Search">
 						<div id="inputWarn" class="alert alert-error" style="display: none;"></div><div id="checkboxWarn" class="alert alert-error" style="display: none;"></div>
 						<input type="text" class="searchField" id="fnct_searchPoi" placeholder="enter a POI" data-provide="typeahead" data-items="6">
+						<div class="clickable zoomToSearchResults" id="zoomToPoiResults" title="zoom to search results"></div>
 						<ul class="guiComponent resultList SearchPoi" id="fnct_searchPoiResults"></ul>
 						<div id="searchPoiError" class="alert alert-error" style="display:none"></div>
-					</div><div id="poiNumberOfResults" style="display: none;"></div><div class="responseContainer panel panelMedium" id="poiResponseContainer" style="display: none;"></div>
+					</div><div class="responseContainer panel panelMedium" id="poiResponseContainer" style="display: none;"></div>
 				</div>
 			</div>
 		</div>
-		
+
 		<div id="map" class="panel panelLight olMap">
 			<!-- Map goes here -->
 		</div>
-		
+
 		<div class="disclaimer">
 			<a href="http://openrouteservice.org/contact.php" class="inlineLink">(c) 2008-2010 -</a>
 			<a href="http://openrouteservice.org/contact.php#disclaimer" class="inlineLink">Disclaimer -</a>
 			<a href="http://openrouteservice.org/contact.php#license" class="inlineLink">License</a>
 		</div>
-		
+
 		<a class="sidebarVisible" id="toggleSidebar"><img src="img/arrowLeft.png" alt="/"></a>
 		<div id="sitePrefsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sitePrefs">
 			<div class="modal-header">
@@ -345,9 +343,6 @@
 		<script type="text/javascript" src="js/ui.js"></script>
 		<script type="text/javascript" src="js/control.js"></script>
 		<script type="text/javascript" src="js/ORS.OpenLayers.js"></script>
-		
-		
-		
-		
+
 	</body>
 </html>

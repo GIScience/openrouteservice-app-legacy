@@ -317,7 +317,7 @@ var Map = ( function() {"use strict";
 			this.theMap.addLayers([layerRouteLines, layerTrack, layerRouteInstructions, layerSearch, layerGeolocation, layerPoi, layerRoutePoints, layerAvoid]);
 
 			/* *********************************************************************
-			 * MAP LOCATION //TODO dummy location atm
+			 * MAP LOCATION
 			 * *********************************************************************/
 			var hd = this.convertPointForMap(new OpenLayers.LonLat(8.692953, 49.409445));
 			this.theMap.setCenter(hd, 13);
@@ -332,21 +332,6 @@ var Map = ( function() {"use strict";
 			//when zooming or moving the map -> close the context menu
 			this.theMap.events.register("zoomend", this.map, closeContextMenu);
 			this.theMap.events.register("movestart", this.map, closeContextMenu);
-		}
-
-		/**
-		 * [moveTo description]
-		 * @param  {[type]} lonlat [description]
-		 * @param  {[type]} zoom   [description]
-		 */
-		function moveTo(lonlat, zoom) {
-			console.log("map moving to...")
-			if (lonlat) {
-				this.theMap.panTo(lonlat);
-			}
-			if (zoom) {
-				this.theMap.setZoom(zoom);
-			}
 		}
 
 		/* *********************************************************************
@@ -482,6 +467,15 @@ var Map = ( function() {"use strict";
 			layerSearchResults.clearMarkers();
 		}
 
+		function zoomToAddressResults() {
+			var layerSearchResults = this.theMap.getLayersByName(this.SEARCH)[0];
+			var resultBounds = layerSearchResults.getDataExtent();
+			this.theMap.zoomToExtent(resultBounds);
+			if (this.theMap.getZoom() > 14) {
+				this.theMap.zoomTo(14);
+			}
+		}
+
 		/*
 		* SEARCH POI
 		*/
@@ -534,11 +528,48 @@ var Map = ( function() {"use strict";
 			layerPoiResults.clearMarkers();
 		}
 
+		function zoomToPoiResults() {
+			var layerPoiResults = this.theMap.getLayersByName(this.POI)[0];
+			var resultBounds = layerPoiResults.getDataExtent();
+			this.theMap.zoomToExtent(resultBounds);
+			if (this.theMap.getZoom() > 14) {
+				this.theMap.zoomTo(14);
+			}
+		}
+		
+		/*
+		 * SEARCH MODULES 
+		 */
+		
+		/**
+		 * Move and zoom the map to a given marker
+ 		 * @param {Object} objectId String containing the CSS-id of the marker representation, e.g. 'searchAddressResult_2' or 'searchPoiResult_47'
+		 */
+		function zoomToMarker(objectId) {
+			var index = objectId.lastIndexOf('_');
+			index = objectId.substring(index+1, objectId.length);
+			
+			var layer, pos, zoom;
+			
+			 if (objectId.indexOf('Address') != -1) {
+			 	//want to zoom to a searchAddress marker
+			 	layer = this.theMap.getLayersByName(this.SEARCH)[0];
+			 	zoom = 14;
+			 }
+			 else if (objectId.indexOf('Poi') != -1) {
+			 	//want to zoom to a searchPoi marker
+			 	layer = this.theMap.getLayersByName(this.POI)[0];
+			 	zoom = 17;
+			 }
+			
+			pos = layer.markers[index].lonlat;
+			this.theMap.moveTo(pos, zoom);
+		}
+
 
 		map.prototype = new EventEmitter();
 		map.prototype.constructor = map;
 
-		map.prototype.moveTo = moveTo;
 		map.prototype.serializeLayers = serializeLayers;
 		map.prototype.restoreLayerPrefs = restoreLayerPrefs;
 
@@ -549,11 +580,15 @@ var Map = ( function() {"use strict";
 		map.prototype.emphasizeSearchAddressMarker = emphasizeSearchAddressMarker;
 		map.prototype.deEmphasizeSearchAddressMarker = deEmphasizeSearchAddressMarker;
 		map.prototype.clearSearchAddressMarkers = clearSearchAddressMarkers;
+		map.prototype.zoomToAddressResults = zoomToAddressResults;
 
 		map.prototype.addSearchPoiResultMarkers = addSearchPoiResultMarkers;
 		map.prototype.emphasizeSearchPoiMarker = emphasizeSearchPoiMarker;
 		map.prototype.deEmphasizeSearchPoiMarker = deEmphasizeSearchPoiMarker;
 		map.prototype.clearSearchPoiMarkers = clearSearchPoiMarkers;
+		map.prototype.zoomToPoiResults = zoomToPoiResults;
+		
+		map.prototype.zoomToMarker = zoomToMarker;
 
 		return map;
 	}());

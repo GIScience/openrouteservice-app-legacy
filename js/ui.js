@@ -132,13 +132,12 @@ var Ui = ( function(w) {'use strict';
 			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
 			var results = request.responseXML ? request.responseXML : util.parseStringToDOM(request.responseText);
 
-			//TODO show sth like "n results found"
-
 			//insert address information to page
+			var allAddress;
 			var resultContainer = $('#fnct_searchAddressResults');
 			var geocodeResponseList = util.getElementsByTagNameNS(results, namespaces.xls, 'GeocodeResponseList');
 			$A(geocodeResponseList).each(function(geocodeResponse) {
-				var allAddress = $A(util.getElementsByTagNameNS(geocodeResponse, namespaces.xls, 'Address'));
+				allAddress = $A(util.getElementsByTagNameNS(geocodeResponse, namespaces.xls, 'Address'));
 				for (var i = 0; i < allAddress.length; i++) {
 					var address = allAddress[i];
 					address = util.parseAddress(address);
@@ -153,11 +152,14 @@ var Ui = ( function(w) {'use strict';
 					resultContainer.append(address);
 				}
 			});
+			
+			//show number of results and link to zoom
+			var numResults = $('#zoomToAddressResults');
+			numResults.html(preferences.translate('numPoiResults1') + allAddress.length + preferences.translate('numPoiResults2'));
 
 			//event handling
 			$('.address').mouseover(handleSearchAddressResultEm);
 			$('.address').mouseout(handleSearchAddressResultDeEm);
-			//TODO is a click really useful?
 			$('.address').click(handleSearchResultClick);
 			$('.useAsWaypoint').click(handleUseAsWaypoint);
 		}
@@ -186,13 +188,13 @@ var Ui = ( function(w) {'use strict';
 			e.currentTarget.removeClassName('highlight');
 			theInterface.emit('ui:deEmphasizeSearchAddressMarker', e.currentTarget.id);
 		}
+		
+		function handleZoomToAddressResults(e) {
+			theInterface.emit('ui:zoomToAddressResults');
+		}
 
 		function handleSearchResultClick(e) {
-			//TODO zoom to this location
-			//TODO can this also be used for POI?
-			console.log(e);
-			// if(self.resultClickOperation && typeof self.resultClickOperation === 'function' && !self.htmlRepresentation.hasClassName('resultMode')) {
-			// self.resultClickOperation(self);
+			theInterface.emit('ui:zoomToMarker', e.currentTarget.id);
 		}
 
 		function handleUseAsWaypoint(e) {
@@ -299,14 +301,13 @@ var Ui = ( function(w) {'use strict';
 		function updateSearchPoiResultList(request) {
 			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
 			var results = request.responseXML ? request.responseXML : util.parseStringToDOM(request.responseText);
-
-			//TODO show sth like "n results found"
+			var resultContainer = $('#fnct_searchPoiResults');
 
 			//insert POI information to page
-			var resultContainer = $('#fnct_searchPoiResults');
+			var allPoi;
 			var geocodeResponseList = util.getElementsByTagNameNS(results, namespaces.xls, 'DirectoryResponse');
 			$A(geocodeResponseList).each(function(poiResponse) {
-				var allPoi = $A(util.getElementsByTagNameNS(poiResponse, namespaces.xls, 'POIContext'));
+				allPoi = $A(util.getElementsByTagNameNS(poiResponse, namespaces.xls, 'POIContext'));
 				for (var i = 0; i < allPoi.length; i++) {
 					var poi = allPoi[i];
 					var element = new Element('li', {
@@ -345,11 +346,14 @@ var Ui = ( function(w) {'use strict';
 					resultContainer.append(element);
 				}
 			});
+			
+			//show number of results and link to zoom
+			var numResults = $('#zoomToPoiResults');
+			numResults.html(preferences.translate('numPoiResults1') + allPoi.length + preferences.translate('numPoiResults2'));
 
 			//event handling
 			$('.poi').mouseover(handleSearchPoiResultEm);
 			$('.poi').mouseout(handleSearchPoiResultDeEm);
-			//TODO is a click really useful?
 			$('.poi').click(handleSearchResultClick);
 			$('.useAsWaypoint').click(handleUseAsWaypoint);
 		}
@@ -383,6 +387,10 @@ var Ui = ( function(w) {'use strict';
 		function handleSearchPoiResultDeEm(e) {
 			e.currentTarget.removeClassName('highlight');
 			theInterface.emit('ui:deEmphasizeSearchPoiMarker', e.currentTarget.id);
+		}
+		
+		function handleZoomToPoiResults(e) {
+			theInterface.emit('ui:zoomToPoiResults');
 		}
 
 		/* *********************************************************************
@@ -444,11 +452,13 @@ var Ui = ( function(w) {'use strict';
 			$('#fnct_geolocation').click(handleGeolocationClick);
 			//search address
 			$('#fnct_searchAddress').keyup(handleSearchAddressInput);
+			$('#zoomToAddressResults').click(handleZoomToAddressResults);
 			//search POI
 			$('#fnct_searchPoi').keyup(handleSearchPoiInput);
 			$('#fnct_searchPoi_nearRoute').change(handleSearchPoiNearRoute);
 			$('#fnct_searchPoi_distance').keyup(handleSearchPoiDistance);
 			$('#fnct_searchPoi_distanceUnit').change(handleSearchPoiDistanceUnit);
+			$('#zoomToPoiResults').click(handleZoomToPoiResults);
 
 			//permalink
 			$('#fnct_permalink').click(handleOpenPerma);
