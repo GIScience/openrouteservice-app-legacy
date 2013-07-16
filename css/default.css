@@ -63,6 +63,12 @@ div.olControlScaleLine {
 	padding-bottom: 10px;
 }
 /* for removing waypoints */
+.guiComponent > input {
+	margin-bottom: 0px;
+}
+.waypointResult {
+	margin-bottom: 10px;
+}
 .closeButton {
 	display: block;
 	float: right;
@@ -233,30 +239,6 @@ div.olControlScaleLine {
 }
 .prompt.selectSearchResult {
 	margin-top: 3px;
-}
-.searchField {
-	background-color: rgb(255,255,255);	/* fallback for unsupported rgba*/
-	background-color: rgba(254,254,255,0.8);
-}
-.button {
-	position: absolute;
-	left: 15px;
-	height: 30px;
-	width: 30px;
-	background: no-repeat 50% 50%;
-	left: 15px;
-	background-color: rgb(255,255,245);	/* fallback for unsupported rgba*/
-	background-color: rgba(255,255,245,0.85);	/* sunlit yellow*/
-	background-color: rgba(255,255,255,0.85);	/* white*/
-	border: 2px solid;
-	border-color: rgb(100,100,100);
-	border-color: rgb(153,0,0);	/* red*/
-	border-radius: 5px;
-	box-shadow: 2px 2px 6px rgb(180,180,215);
-	box-shadow: 3px 6px 6px rgba(180,180,215,0.7);	/* shadow blue*/
-}
-.button {
-
 }
 #routingButton {
 	top: 215px;

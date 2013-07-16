@@ -1,6 +1,6 @@
 var Controller = ( function(w) {'use strict';
 
-		var $ = w.jQuery, ui = w.Ui, geolocator = w.Geolocator, searchAddress = w.SearchAddress, searchPoi = w.SearchPoi, perma = w.Permalink, preferences = w.Preferences, openRouteService = w.OpenRouteService, Map = w.Map,
+		var $ = w.jQuery, ui = w.Ui, waypoint = w.Waypoint, geolocator = w.Geolocator, searchAddress = w.SearchAddress, searchPoi = w.SearchPoi, perma = w.Permalink, preferences = w.Preferences, openRouteService = w.OpenRouteService, Map = w.Map,
 		//the map
 		map;
 
@@ -28,6 +28,77 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		/* *********************************************************************
+		* WAYPOINTS
+		* *********************************************************************/
+
+		/**
+		 * parses the user input for the waypoint search and calls the Waypoint module to build a search request
+		 */
+		function handleWaypointRequest(atts) {
+			ui.searchWaypointChangeToSearchingState(true, atts.wpIndex);
+
+			map.clearMarkers(map.ROUTE_POINTS, atts.wpIndex);
+
+			waypoint.requestCounterWaypoints[atts.wpIndex]++;
+			waypoint.find(atts.query, handleSearchWaypointResults, handleSearchWaypointFailure, atts.wpIndex);
+		}
+
+		/**
+		 * forwards the waypoint search results to the Ui to display the addresses and to the map in order to add markers.
+		 */
+		function handleSearchWaypointResults(results, wpIndex) {
+			waypoint.requestCounterWaypoints[wpIndex]--;
+			if (waypoint.requestCounterWaypoints[wpIndex] == 0) {
+				var listOfMarkers = waypoint.parseResultsToMarkers(results, wpIndex);
+
+				ui.searchWaypointChangeToSearchingState(false, wpIndex);
+
+				map.addSearchAddressResultMarkers(listOfMarkers, wpIndex);
+				ui.updateSearchWaypointResultList(results, wpIndex);
+			}
+		}
+
+		/**
+		 * calls the UI to show a search error
+		 */
+		function handleSearchWaypointFailure(wpIndex) {
+			waypoint.requestCounterWaypoints[wpIndex]--;
+			if (waypoint.requestCounterWaypoints[wpIndex] == 0) {
+				ui.searchWaypointChangeToSearchingState(false, wpIndex);
+				ui.showSearchWaypointError();
+			}
+		}
+
+		/**
+		 * remove old waypoint markers from the map when starting a new waypoint search
+		 */
+		function handleClearSearchWaypointMarkers(wpIndex) {
+			map.clearMarkers(map.SEARCH, wpIndex);
+		}
+
+		function handleWaypointResultClick(atts) {
+			var wpIndex = parseInt(atts.wpIndex);
+			var resultIndex = parseInt(atts.resultIndex);
+
+			var type = waypoint.determineWaypointType(wpIndex);
+			ui.setWaypointType(wpIndex, type);
+			map.addWaypointMarker(wpIndex, resultIndex, type);
+		}
+
+		function handleAddWaypoint() {
+			waypoint.numWaypoints++;
+			waypoint.requestCounterWaypoints.push(0);
+		}
+
+		/**
+		 * mark the given waypoint either as start, via or end according to the waypoint's position in the route
+		 */
+		function selectWaypointType(wpIndex) {
+			var type = waypoint.determineWaypointType(wpIndex);
+			ui.setWaypointType(wpIndex, type);
+		}
+
+		/* *********************************************************************
 		 * GEOLOCATION
 		 * *********************************************************************/
 
@@ -43,9 +114,10 @@ var Controller = ( function(w) {'use strict';
 		function handleGeolocateSuccess(position) {
 			console.log("geolocation success")
 			//TODO
-			console.log(positoin.coords);
-			var pos = map.convertPointForMap(position.coords);
-			map.moveTo(pos);
+			console.log(position.coords);
+			var pos = new OpenLayers.LonLat(position.coords.latitude, position.coords.longitude);
+			var pos = map.convertPointForMap(pos);
+			map.theMap.moveTo(pos);
 			// map.moveTo([position.coords.latitude, position.coords.longitude]);
 			geolocator.reverseGeolocate(position, handleReverseGeolocationSuccess, handleReverseGeolocationFailure);
 		}
@@ -81,7 +153,7 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		function handleReverseGeolocationSuccess(result) {
-			ui.showCurrentLocation(response);
+			ui.showCurrentLocation(result);
 		}
 
 		function handleReverseGeolocationFailure() {
@@ -98,8 +170,7 @@ var Controller = ( function(w) {'use strict';
 		function handleSearchAddressRequest(address) {
 			ui.searchAddressChangeToSearchingState(true);
 
-			var layerSearch = map.theMap.getLayersByName(map.SEARCH)[0];
-			layerSearch.clearMarkers();
+			map.clearMarkers(map.SEARCH);
 
 			searchAddress.requestCounter++;
 			searchAddress.find(address, handleSearchAddressResults, handleSearchAddressFailure);
@@ -111,11 +182,11 @@ var Controller = ( function(w) {'use strict';
 		function handleSearchAddressResults(results) {
 			searchAddress.requestCounter--;
 			if (searchAddress.requestCounter == 0) {
-				var listOfMarkers = searchAddress.parseResultsToMarkers(results);
+				var listOfPoints = searchAddress.parseResultsToMarkers(results);
 
 				ui.searchAddressChangeToSearchingState(false);
 
-				map.addSearchAddressResultMarkers(listOfMarkers);
+				map.addSearchAddressResultMarkers(listOfPoints);
 				ui.updateSearchAddressResultList(results);
 			}
 		}
@@ -149,9 +220,9 @@ var Controller = ( function(w) {'use strict';
 		 * remove old address markers from the map when starting a new address search
 		 */
 		function handleClearSearchAddressMarkers() {
-			map.clearSearchAddressMarkers();
+			map.clearMarkers(map.SEARCH);
 		}
-		
+
 		function handleZoomToAddressResults() {
 			map.zoomToAddressResults();
 		}
@@ -190,8 +261,7 @@ var Controller = ( function(w) {'use strict';
 
 			ui.searchPoiChangeToSearchingState(true);
 
-			var layerPoi = map.theMap.getLayersByName(map.POI)[0];
-			layerPoi.clearMarkers();
+			map.clearMarkers(map.POI);
 
 			var refPoint = null;
 			if (searchNearRoute == true) {
@@ -262,13 +332,13 @@ var Controller = ( function(w) {'use strict';
 		 * remove old POI markers from the map when starting a new POI search
 		 */
 		function handleClearSearchPoiMarkers() {
-			map.clearSearchPoiMarkers();
+			map.clearMarkers(map.POI);
 		}
-		
+
 		function handleZoomToPoiResults() {
 			map.zoomToPoiResults();
 		}
-		
+
 		function handleZoomToMarker(objectId) {
 			map.zoomToMarker(objectId);
 		}
@@ -299,6 +369,24 @@ var Controller = ( function(w) {'use strict';
 
 			//update cookies
 			preferences.writeMapCookies(mapState.lon, mapState.lat, mapState.zoom, mapState.layer);
+		}
+
+		function handleMarkerEmph(markerId) {
+			ui.emphElement(markerId);
+		}
+
+		function handleMarkerDeEmph(markerId) {
+			ui.deEmphElement(markerId);
+		}
+		
+		function handleElementEmph(elementId) {
+			//tell map to emph the element
+			map.emphMarker(elementId, true);
+		}
+		
+		function handleElementDeEmph(elementId) {
+			//tell map to de-emph the element
+			map.emphMarker(elementId, false);
 		}
 
 		/* *********************************************************************
@@ -368,10 +456,23 @@ var Controller = ( function(w) {'use strict';
 			//after zooming, switching layers,...
 			map.register('map:changed', handleMapChanged);
 
+			//when moving mouse over a marker
+			map.register('map:markerEmph', handleMarkerEmph);
+			map.register('map:markerDeEmph', handleMarkerDeEmph);
+
 			//after change of user preferences
 			ui.register('ui:prefsChanged', handlePrefsChanged);
 
 			//modules
+			ui.register('ui:emphElement', handleElementEmph);
+			ui.register('ui:deEmphElement', handleElementDeEmph);
+			
+			
+			ui.register('ui:searchWaypointRequest', handleWaypointRequest);
+			ui.register('ui:clearSearchWaypointMarkers', handleClearSearchWaypointMarkers);
+			ui.register('ui:addWaypoint', handleAddWaypoint);
+			ui.register('ui:waypointResultClick', handleWaypointResultClick);
+
 			ui.register('ui:geolocationRequest', handleGeolocationRequest);
 
 			ui.register('ui:searchAddressRequest', handleSearchAddressRequest);
@@ -386,7 +487,7 @@ var Controller = ( function(w) {'use strict';
 			ui.register('ui:deEmphasizeSearchPoiMarker', handleDeEmphasizeSearchPoiMarker);
 			ui.register('ui:clearSearchPoiMarkers', handleClearSearchPoiMarkers);
 			ui.register('ui:zoomToPoiResults', handleZoomToPoiResults);
-			
+
 			ui.register('ui:zoomToMarker', handleZoomToMarker);
 
 			ui.register('ui:openPermalinkRequest', handlePermalinkRequest);

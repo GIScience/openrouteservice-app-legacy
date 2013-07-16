@@ -11,9 +11,11 @@ var SearchAddress = ( function(window) {"use strict";
 		/**
 		 * Sends the address search request to the service and calls the callback function.
 		 * @param  {String}   address  Address to be geocoded
-		 * @param  {Function} callback Callback which is called after the results are returned from Nominatim
+		 * @param  {Function} successCallback Callback which is called after the results are returned from Nominatim
+		 * @param  {Function} failureCallback Callback which is called after an error occured
+		 * @param  {Inteter} index of the waypoint in the route
 		 */
-		function find(address, successCallback, failureCallback) {
+		function find(address, successCallback, failureCallback) {			
 			//TODO static now
 			var language = 'en';
 
@@ -61,7 +63,7 @@ var SearchAddress = ( function(window) {"use strict";
 				url : namespaces.services.geocoding,
 				data : xmlRequest,
 				success : successCallback,
-				failure : failureCallback
+				failure : failureCallback,
 			});
 		}
 
@@ -75,7 +77,7 @@ var SearchAddress = ( function(window) {"use strict";
 
 			var europeBbox = new OpenLayers.Bounds(-31.303, 34.09, 50.455, 71.869);
 
-			var listOfMarkers = [];
+			var listOfPoints = [];
 
 			var geocodeResponseList = util.getElementsByTagNameNS(results, namespaces.xls, 'GeocodeResponseList');
 			$A(geocodeResponseList).each(function(geocodeResponse) {
@@ -86,13 +88,12 @@ var SearchAddress = ( function(window) {"use strict";
 					point = new OpenLayers.LonLat(point[0], point[1]);
 
 					if (europeBbox.containsLonLat(point)) {
-						var marker = new OpenLayers.MarkerEm(point, Ui.markerIcons.result, Ui.markerIcons.resultEm, 'searchAddressResult_' + i);
-						listOfMarkers.push(marker);
+						listOfPoints.push(point);
 					}
 				}
 			});
 
-			return listOfMarkers;
+			return listOfPoints;
 		}
 
 

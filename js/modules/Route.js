@@ -10,8 +10,8 @@ var Route = (function(w) {'use strict';
 
 
 
-	Route.prototype.update = update;
-	Route.prototype.openPerma = openPerma;
+	// Route.prototype.update = update;
+	// Route.prototype.openPerma = openPerma;
 
 	return new Route();
 })(window); 

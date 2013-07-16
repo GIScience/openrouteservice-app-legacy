@@ -13,8 +13,10 @@ var Ui = ( function(w) {'use strict';
 		routeIsPresent = false,
 		//timeout to wait before sending a request after the user finished typing
 		DONE_TYPING_INTERVAL = 1200,
-		//timers for user input
-		typingTimerSearchAddress, typingTimerSearchPoi;
+		//timers for user input (search)
+		typingTimerSearchAddress, typingTimerSearchPoi,
+		//timers for user input (waypoints)
+		timer0, timer1, typingTimerWaypoints = [timer0, timer1];
 
 		/* *********************************************************************
 		* GENERAL
@@ -74,11 +76,209 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+		/* *********************************************************************
+		* LANGUAGE-SPECIFIC
+		* *********************************************************************/
+
+		//TODO load text for all elements on the page with specific language
+
 		function showNewToOrsPopup() {
 			var label = new Element('label');
 			label.insert(preferences.translate('infoTextVersions'));
 			$('#newToOrs').append(label);
 			$('#newToOrs').show();
+		}
+
+		/* *********************************************************************
+		 * ALL MARKER ELEMENTS
+		 * *********************************************************************/
+
+		/**
+		 * highlight the element
+		 */
+		function emphElement(elementId) {
+			$('#' + elementId).get(0).addClassName('highlight');
+		}
+
+		/**
+		 * de-highlight the element
+		 */
+		function deEmphElement(elementId) {
+			$('#' + elementId).get(0).removeClassName('highlight');
+		}
+		
+		/**
+		 * highlight the mouseover element and emphasize the corresponding marker
+		 */
+		function handleMouseOverElement(e) {
+			e.currentTarget.addClassName('highlight');
+			theInterface.emit('ui:emphElement', e.currentTarget.id);
+		}
+		
+		/**
+		 * de-highlight the mouseover element and emphasize the corresponding marker
+		 */
+		function handleMouseOutElement(e) {
+			e.currentTarget.removeClassName('highlight');
+			theInterface.emit('ui:deEmphElement', e.currentTarget.id);
+		}
+		
+		/* *********************************************************************
+		 * WAYPOINTS
+		 * *********************************************************************/
+
+		function handleSearchWaypointInput(e) {
+			var waypointElement = $(e.currentTarget).parent().parent();
+
+			//index of the waypoint (0st, 1st 2nd,...)
+			var index = waypointElement.attr('id');
+			index = index.substring(index.lastIndexOf('_') + 3, index.length);
+
+			clearTimeout(typingTimerWaypoints[index]);
+			if (e.keyIdentifier != 'Shift' && e.currentTarget.value.length != 0) {
+				typingTimerWaypoints[index] = setTimeout(function() {
+					//empty search results
+					var resultContainer = $('#searchWaypointResults_' + index).get(0);
+					while (resultContainer.hasChildNodes()) {
+						resultContainer.removeChild(resultContainer.lastChild);
+					}
+					theInterface.emit('ui:clearSearchWaypointMarkers', index);
+
+					//request new results
+					theInterface.emit('ui:searchWaypointRequest', {
+						query : e.currentTarget.value,
+						wpIndex : index
+					});
+				}, DONE_TYPING_INTERVAL);
+			}
+		}
+
+		function searchWaypointChangeToSearchingState(changeToSearching, wpIndex) {
+			var rootElement = $('#waypoint_No' + wpIndex);
+			var children = rootElement.children();
+			var inputElement = (children[children.length-1]).childNodes[1];
+
+			if (changeToSearching) {
+				$(inputElement).addClass('searching');
+				$('#searchWaypointError_' + wpIndex).hide();
+			} else {
+				inputElement.removeClassName('searching');
+			}
+		}
+
+		function updateSearchWaypointResultList(request, wpIndex) {
+			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
+			var results = request.responseXML ? request.responseXML : util.parseStringToDOM(request.responseText);
+
+			//insert address information to page
+			var allAddress;
+			var resultContainer = $('#searchWaypointResults_' + wpIndex);
+			var geocodeResponseList = util.getElementsByTagNameNS(results, namespaces.xls, 'GeocodeResponseList');
+			$A(geocodeResponseList).each(function(geocodeResponse) {
+				allAddress = $A(util.getElementsByTagNameNS(geocodeResponse, namespaces.xls, 'Address'));
+				for (var i = 0; i < allAddress.length; i++) {
+					var address = allAddress[i];
+					address = util.parseAddress(address);
+					address.setAttribute('id', 'address_' + wpIndex + '_' + i);
+					resultContainer.append(address);
+				}
+			});
+
+			//show number of results and link to zoom
+			var numResults = $('#zoomToWaypointResults_' + wpIndex);
+			numResults.html(preferences.translate('numPoiResults1') + allAddress.length + preferences.translate('numPoiResults2') + '<br/>' + preferences.translate('selectResult'));
+
+			//event handling
+			$('.address').mouseover(handleMouseOverElement);
+			$('.address').mouseout(handleMouseOutElement);
+			$('.address').click(handleSearchWaypointResultClick);
+		}
+
+		/**
+		 * view an error message when problems occured during geocoding
+		 */
+		function showSearchWaypointError(wpIndex) {
+			var errorContainer = $('#searchWaypointError_' + wpIndex);
+			errorContainer.update(preferences.translate("searchError"));
+			errorContainer.show();
+		}
+
+		/**
+		 * when the user clicks on a waypoint search result, use it as waypoint
+		 */
+		function handleSearchWaypointResultClick(e) {
+			//index of waypoint
+			var index = e.currentTarget.id;
+			var resultIndex = index;
+			index = index.substring(index.indexOf('_') + 1, index.indexOf('_') + 2);
+			resultIndex = resultIndex.substring(resultIndex.lastIndexOf('_') + 1);
+
+			var rootElement = $('#waypoint_No' + index);
+			var children = rootElement.children();
+			
+			e.currentTarget.id = 'waypoint_' + index;
+
+			//show waypoint result and searchAgain button
+			children[3].show();
+			var waypointResultElement = children[4];
+			waypointResultElement.insert(e.currentTarget);
+			waypointResultElement.show();
+
+			//hide input field with search result list
+			children[5].hide();
+
+			//remove search markers and add a new waypoint marker
+			theInterface.emit('ui:waypointResultClick', {
+				wpIndex : index,
+				resultIndex : resultIndex
+			});
+		}
+
+		function handleMoveUpWaypointClick(e) {
+			//TODO implement
+		}
+
+		function handleMoveDownWaypointClick(e) {
+			//TODO implement
+		}
+
+		function handleAddWaypointClick(e) {
+			//increment waypoint id
+			var waypointId = $(e.currentTarget).prev().attr('id');
+			var oldIndex = waypointId.substring(waypointId.indexOf('_') + 3);
+			var newIndex = parseInt(oldIndex) + 1;
+			waypointId = waypointId.replace(oldIndex, newIndex);
+			//generate DOM elements
+			var newWp = $('#waypoint_Draft').clone();
+			newWp.attr('id', waypointId)
+			newWp.insertBefore($(e.currentTarget));
+			newWp.show();
+			//we need to adapt some more IDs...
+			$('.searchWaypointError_Draft').get(1).setAttribute('id', 'searchWaypointError_' + newIndex);
+			$('.zoomToWaypointResults_Draft').get(1).setAttribute('id', 'zoomToWaypointResults_' + newIndex);
+			$('.searchWaypointResults_Draft').get(1).setAttribute('id', 'searchWaypointResults_' + newIndex);
+
+			//add event handling
+			$('.searchWaypoint').keyup(handleSearchWaypointInput);
+
+			theInterface.emit('ui:addWaypoint');
+		}
+
+		function handleRemoveWaypointClick(e) {
+			//TODO implement
+		}
+
+		function handleSearchAgainWaypointClick(e) {
+			//TODO implement
+		}
+
+		function setWaypointType(wpIndex, type) {
+			var el = $('#waypoint_No' + wpIndex);
+			el.removeClass('unset');
+			el.removeClass('start');
+			el.removeClass('via');
+			el.removeClass('end');
+			el.addClass(type);
 		}
 
 		/* *********************************************************************
@@ -112,6 +312,10 @@ var Ui = ( function(w) {'use strict';
 					while (resultContainer.hasChildNodes()) {
 						resultContainer.removeChild(resultContainer.lastChild);
 					}
+					var numResults = $('#zoomToAddressResults').get(0);
+					while (numResults.hasChildNodes()) {
+						numResults.removeChild(numResults.lastChild);
+					}
 					theInterface.emit('ui:clearSearchAddressMarkers');
 
 					theInterface.emit('ui:searchAddressRequest', e.currentTarget.value);
@@ -121,10 +325,10 @@ var Ui = ( function(w) {'use strict';
 
 		function searchAddressChangeToSearchingState(changeToSearching) {
 			if (changeToSearching) {
-				document.getElementById('fnct_searchAddress').addClassName('searching');
-				document.getElementById('searchAddressError').hide();
+				$('#fnct_searchAddress').addClass('searching');
+				$('#searchAddressError').hide();
 			} else {
-				document.getElementById('fnct_searchAddress').removeClassName('searching');
+				$('#fnct_searchAddress').removeClass('searching');
 			}
 		}
 
@@ -141,25 +345,25 @@ var Ui = ( function(w) {'use strict';
 				for (var i = 0; i < allAddress.length; i++) {
 					var address = allAddress[i];
 					address = util.parseAddress(address);
-					address.setAttribute('id', 'searchAddressResult_' + i);
+					address.setAttribute('id', 'address_' + i);
 
 					var useAsWaypointButton = new Element('span', {
 						'class' : 'clickable useAsWaypoint',
 						'title' : 'use as waypoint',
-						'id' : 'searchAddressResult_' + i
+						'id' : 'address_' + i
 					});
 					address.insert(useAsWaypointButton);
 					resultContainer.append(address);
 				}
 			});
-			
+
 			//show number of results and link to zoom
 			var numResults = $('#zoomToAddressResults');
 			numResults.html(preferences.translate('numPoiResults1') + allAddress.length + preferences.translate('numPoiResults2'));
 
 			//event handling
-			$('.address').mouseover(handleSearchAddressResultEm);
-			$('.address').mouseout(handleSearchAddressResultDeEm);
+			$('.address').mouseover(handleMouseOverElement);
+			$('.address').mouseout(handleMouseOutElement);
 			$('.address').click(handleSearchResultClick);
 			$('.useAsWaypoint').click(handleUseAsWaypoint);
 		}
@@ -168,27 +372,11 @@ var Ui = ( function(w) {'use strict';
 		 * view an error message when problems occured during geolocation
 		 */
 		function showSearchAddressError() {
-			var errorContainer = document.getElementById('searchAddressError');
-			errorContainer.update(preferences.translate("searchError"));
+			var errorContainer = $('#searchAddressError');
+			errorContainer.html(preferences.translate("searchError"));
 			errorContainer.show();
 		}
 
-		/**
-		 * highlight the mouseover search result and emphasize the corresponding marker
-		 */
-		function handleSearchAddressResultEm(e) {
-			e.currentTarget.addClassName('highlight');
-			theInterface.emit('ui:emphasizeSearchAddressMarker', e.currentTarget.id);
-		}
-
-		/**
-		 * un-highlight the mouseout search result and deemphasize the corresponding marker
-		 */
-		function handleSearchAddressResultDeEm(e) {
-			e.currentTarget.removeClassName('highlight');
-			theInterface.emit('ui:deEmphasizeSearchAddressMarker', e.currentTarget.id);
-		}
-		
 		function handleZoomToAddressResults(e) {
 			theInterface.emit('ui:zoomToAddressResults');
 		}
@@ -221,6 +409,10 @@ var Ui = ( function(w) {'use strict';
 					while (resultContainer.hasChildNodes()) {
 						resultContainer.removeChild(resultContainer.lastChild);
 					}
+					var numResults = $('#zoomToPoiesults').get(0);
+					while (numResults.hasChildNodes()) {
+						numResults.removeChild(numResults.lastChild);
+					}
 					theInterface.emit('ui:clearSearchPoiMarkers');
 
 					theInterface.emit('ui:searchPoiRequest', {
@@ -236,10 +428,10 @@ var Ui = ( function(w) {'use strict';
 
 		function searchPoiChangeToSearchingState(changeToSearching) {
 			if (changeToSearching) {
-				document.getElementById('fnct_searchPoi').addClassName('searching');
-				document.getElementById('searchPoiError').hide();
+				$('#fnct_searchPoi').addClass('searching');
+				$('#searchPoiError').hide();
 			} else {
-				document.getElementById('fnct_searchPoi').removeClassName('searching');
+				$('#fnct_searchPoi').removeClass('searching');
 			}
 		}
 
@@ -346,7 +538,7 @@ var Ui = ( function(w) {'use strict';
 					resultContainer.append(element);
 				}
 			});
-			
+
 			//show number of results and link to zoom
 			var numResults = $('#zoomToPoiResults');
 			numResults.html(preferences.translate('numPoiResults1') + allPoi.length + preferences.translate('numPoiResults2'));
@@ -359,8 +551,8 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		function showSearchPoiError() {
-			var errorContainer = document.getElementById('searchPoiError');
-			errorContainer.update(preferences.translate("searchError"));
+			var errorContainer = $('#searchPoiError');
+			errorContainer.html(preferences.translate("searchError"));
 			errorContainer.show();
 		}
 
@@ -373,22 +565,22 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
-		/**
-		 * highlight the mouseover search result and emphasize the corresponding marker
-		 */
-		function handleSearchPoiResultEm(e) {
-			e.currentTarget.addClassName('highlight');
-			theInterface.emit('ui:emphasizeSearchPoiMarker', e.currentTarget.id);
-		}
+		// /**
+		 // * highlight the mouseover search result and emphasize the corresponding marker
+		 // */
+		// function handleSearchPoiResultEm(e) {
+			// e.currentTarget.addClassName('highlight');
+			// theInterface.emit('ui:emphasizeSearchPoiMarker', e.currentTarget.id);
+		// }
 
-		/**
-		 * un-highlight the mouseout search result and deemphasize the corresponding marker
-		 */
-		function handleSearchPoiResultDeEm(e) {
-			e.currentTarget.removeClassName('highlight');
-			theInterface.emit('ui:deEmphasizeSearchPoiMarker', e.currentTarget.id);
-		}
-		
+		// /**
+		 // * un-highlight the mouseout search result and deemphasize the corresponding marker
+		 // */
+		// function handleSearchPoiResultDeEm(e) {
+			// e.currentTarget.removeClassName('highlight');
+			// theInterface.emit('ui:deEmphasizeSearchPoiMarker', e.currentTarget.id);
+		// }
+
 		function handleZoomToPoiResults(e) {
 			theInterface.emit('ui:zoomToPoiResults');
 		}
@@ -448,6 +640,10 @@ var Ui = ( function(w) {'use strict';
 			//hide & view sidebar
 			$('#toggleSidebar').click(handleToggleSidebar);
 
+			//waypoints
+			$('.searchWaypoint').keyup(handleSearchWaypointInput);
+			$('#addWaypoint').click(handleAddWaypointClick);
+
 			//geolocation
 			$('#fnct_geolocation').click(handleGeolocationClick);
 			//search address
@@ -469,6 +665,16 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.constructor = Ui;
 
 		Ui.prototype.showNewToOrsPopup = showNewToOrsPopup;
+		
+		Ui.prototype.emphElement = emphElement;
+		Ui.prototype.deEmphElement = deEmphElement;
+
+		Ui.prototype.searchWaypointChangeToSearchingState = searchWaypointChangeToSearchingState;
+		Ui.prototype.updateSearchWaypointResultList = updateSearchWaypointResultList;
+		Ui.prototype.showSearchWaypointError = showSearchWaypointError;
+		Ui.prototype.setWaypointType = setWaypointType;
+		// Ui.prototype.handleWaypointResultEm = handleWaypointResultEm;
+		// Ui.prototype.handleWaypointResultDeEm = handleWaypointResultDeEm;
 
 		Ui.prototype.searchAddressChangeToSearchingState = searchAddressChangeToSearchingState;
 		Ui.prototype.updateSearchAddressResultList = updateSearchAddressResultList;
@@ -492,18 +698,15 @@ var Ui = ( function(w) {'use strict';
 * ICONS
 * *********************************************************************/
 //icons for markers on map
-var markerSize = new OpenLayers.Size(21, 30);
-var markerOffset = new OpenLayers.Pixel(-markerSize.w / 2, -markerSize.h);
 Ui.markerIcons = {
-	start : new OpenLayers.Icon('img/marker-start.png', markerSize, markerOffset),
-	via : new OpenLayers.Icon('img/marker-via.png', markerSize, markerOffset),
-	end : new OpenLayers.Icon('img/marker-end.png', markerSize, markerOffset),
-	unset : new OpenLayers.Icon('img/marker.png', markerSize, markerOffset),
-	result : new OpenLayers.Icon('img/marker-poi.png', markerSize, markerOffset),
-	resultEm : new OpenLayers.Icon('img/marker-poi-high.png', markerSize, markerOffset)
+	start : ['img/marker-start.png', 'img/marker-start-high.png'],
+	via : ['img/marker-via.png', 'img/marker-via-high.png'],
+	end : ['img/marker-end.png', 'img/marker-end-high.png'],
+	result : ['img/marker-poi.png', 'img/marker-poi-high.png']
 };
 //icons for POI markers on map
-markerSize = new OpenLayers.Size(24, 24);
+var markerSize = new OpenLayers.Size(24, 24);
+var markerOffset = new OpenLayers.Pixel(-markerSize.w / 2, -markerSize.h);
 Ui.poiIcons = {
 	poi_9pin : new OpenLayers.Icon('img/poi/9pin.png', markerSize, markerOffset),
 	poi_10pin : new OpenLayers.Icon('img/poi/10pin.png', markerSize, markerOffset),

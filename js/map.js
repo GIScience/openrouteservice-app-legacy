@@ -16,19 +16,6 @@ var Map = ( function() {"use strict";
 
 			var self = this;
 
-			/**
-			 * [emitMapChangedEvent description]
-			 */
-			function emitMapChangedEvent(e) {
-				var centerTransformed = self.convertPointForDisplay(self.theMap.getCenter());
-				self.emit('map:changed', {
-					layer : self.serializeLayers(),
-					zoom : self.theMap.getZoom(),
-					lat : centerTransformed.lat,
-					lon : centerTransformed.lon
-				});
-			}
-
 			/* *********************************************************************
 			 * MAP INIT
 			 * *********************************************************************/
@@ -41,75 +28,6 @@ var Map = ( function() {"use strict";
 				displayProjection : new OpenLayers.Projection('EPSG:4326'),
 				theme : "lib/OpenLayersTheme.css"
 			});
-
-			/* *********************************************************************
-			 * MAP CONTROLS
-			 * *********************************************************************/
-			this.theMap.addControl(new OpenLayers.Control.PanZoom());
-			this.theMap.addControl(new OpenLayers.Control.ArgParser());
-
-			this.theMap.addControl(new OpenLayers.Control.Navigation({
-				handleRightClicks : true,
-				dragPanOptions : {
-					documentDrag : true
-				}
-			}));
-
-			this.theMap.addControl(new OpenLayers.Control.LayerSwitcher({
-				roundedCorner : 'true',
-				roundedCornerColor : 'black',
-				id : 'layerSwitcherPanel'
-			}));
-
-			this.theMap.addControl(new OpenLayers.Control.ScaleLine());
-			this.theMap.addControl(new OpenLayers.Control.MousePosition());
-			this.theMap.addControl(new OpenLayers.Control.Permalink());
-			this.theMap.addControl(new OpenLayers.Control.Attribution());
-
-			// Add an instance of the Click control that listens to various click events (see ORS.OpenLayers file for implementation of Click)
-			var clickControl = new OpenLayers.Control.Click({
-				eventMethods : {
-					'rightclick' : function(e) {
-						var menu = new OpenRouteService.Gui.ContextMenu(e.xy.x, e.xy.y).insertIt().setRoute(OpenRouteService.route);
-					},
-					'click' : function(e) {
-						$$('.contextMenu').each(function(cm) {
-							cm.remove();
-						});
-					},
-					'dblclick' : function(e) {
-						$$('.contextMenu').each(function(cm) {
-							cm.remove();
-						});
-					},
-					'dblrightclick' : function(e) {
-						$$('.contextMenu').each(function(cm) {
-							cm.remove();
-						});
-					}
-				}
-			});
-			this.theMap.addControl(clickControl);
-			clickControl.activate();
-
-			// external code source: http://spatialnotes.blogspot.com/2010/11/capturing-right-click-events-in.html
-			// Get control of the right-click event:
-			document.getElementById(container).oncontextmenu = function(e) {
-				e = e ? e : window.event;
-				if (e.preventDefault)
-					e.preventDefault();
-				// For non-IE browsers.
-				else
-					return false;
-				// For IE browsers.
-			};
-
-			//close the context menu when zooming or panning,... //TODO placed in ui?
-			function closeContextMenu() {
-				$$('.contextMenu').each(function(cm) {
-					cm.remove();
-				});
-			};
 
 			/* *********************************************************************
 			* MAP LAYERS
@@ -208,19 +126,21 @@ var Map = ( function() {"use strict";
 			 * based on: http://openlayers.org/dev/examples/styles-context.html
 			 */
 			var context = {
+
 				getImageUrl : function(feature) {
+					console.log(feature)
+
 					var pointType = feature.pointType;
-					if (OpenRouteService.Gui.icons[pointType]) {
-						return OpenRouteService.Gui.icons[pointType].url;
+					if (Ui.markerIcons[pointType]) {
+						return Ui.markerIcons[pointType].url;
 					}
 				},
 				getHighlightImageUrl : function(feature) {
 					var pointType = feature.pointType;
-					if (OpenRouteService.Gui.icons[pointType]) {
-						var split = OpenRouteService.Gui.icons[pointType].url.split(".");
+					if (Ui.markerIcons[pointType]) {
+						var split = Ui.markerIcons[pointType].url.split(".");
 						return split[0] + "-high." + split[1];
 					}
-
 				}
 			};
 			//for default style
@@ -229,7 +149,7 @@ var Map = ( function() {"use strict";
 				stroke : true,
 				strokeColor : '#ff0000', //{String} Hex stroke color.  Default is “#ee9900”.
 				graphicZIndex : 6,
-				externalGraphic : "${getImageUrl}", // using context.getImageUrl(feature)
+				externalGraphic : "${icon}", //"${getImageUrl}", // using context.getImageUrl(feature)
 				graphicXOffset : -10,
 				graphicYOffset : -30,
 				graphicWidth : 21,
@@ -238,7 +158,7 @@ var Map = ( function() {"use strict";
 			//for select style
 			var selTemplate = {
 				graphicZIndex : 10,
-				externalGraphic : "${getHighlightImageUrl}", // using context.getHighlightImageUrl(feature)
+				externalGraphic : "${iconEm}", // using context.getHighlightImageUrl(feature)
 				graphicXOffset : -10,
 				graphicYOffset : -30,
 				graphicWidth : 21,
@@ -292,8 +212,12 @@ var Map = ( function() {"use strict";
 			});
 
 			//Search place
-			var layerSearch = new OpenLayers.Layer.Markers(this.SEARCH, {
-				displayInLayerSwitcher : false
+			var layerSearch = new OpenLayers.Layer.Vector(this.SEARCH, {
+				displayInLayerSwitcher : false,
+				styleMap : myStyleMap,
+				rendererOptions : {
+					yOrdering : true
+				}
 			});
 
 			//avoid areas
@@ -314,7 +238,108 @@ var Map = ( function() {"use strict";
 			});
 
 			//define order
-			this.theMap.addLayers([layerRouteLines, layerTrack, layerRouteInstructions, layerSearch, layerGeolocation, layerPoi, layerRoutePoints, layerAvoid]);
+			this.theMap.addLayers([layerRouteLines, layerTrack, layerRouteInstructions, layerSearch, layerGeolocation, layerPoi, layerAvoid, layerRoutePoints]);
+
+			/* *********************************************************************
+			 * MAP CONTROLS
+			 * *********************************************************************/
+			this.theMap.addControl(new OpenLayers.Control.PanZoom());
+			this.theMap.addControl(new OpenLayers.Control.ArgParser());
+
+			this.theMap.addControl(new OpenLayers.Control.Navigation({
+				handleRightClicks : true,
+				dragPanOptions : {
+					documentDrag : true
+				}
+			}));
+
+			this.theMap.addControl(new OpenLayers.Control.LayerSwitcher({
+				roundedCorner : 'true',
+				roundedCornerColor : 'black',
+				id : 'layerSwitcherPanel'
+			}));
+
+			this.theMap.addControl(new OpenLayers.Control.ScaleLine());
+			this.theMap.addControl(new OpenLayers.Control.MousePosition());
+			this.theMap.addControl(new OpenLayers.Control.Permalink());
+			this.theMap.addControl(new OpenLayers.Control.Attribution());
+
+			//TODO must all be vector layers: layerSearch, layerPoi, layerGeolocation, layerRoutePoints
+			this.selectMarker = new OpenLayers.Control.SelectFeature([layerSearch, layerRoutePoints], {
+				hover : true
+			});
+			//highlighting of the markers's DOM representation (address text) on mouseover
+			this.selectMarker.onSelect = function(feature) {
+				self.emit('map:markerEmph', feature.data.id);
+			};
+			this.selectMarker.onUnselect = function(feature) {
+				self.emit('map:markerDeEmph', feature.data.id);
+			};
+			this.theMap.addControl(this.selectMarker);
+			this.selectMarker.activate();
+
+			//copied from http://openlayers.org/dev/examples/select-feature-multilayer.html
+			// vectors1.events.on({
+			// "featureselected": function(e) {
+			// showStatus("selected feature "+e.feature.id+" on Vector Layer 1");
+			// },
+			// "featureunselected": function(e) {
+			// showStatus("unselected feature "+e.feature.id+" on Vector Layer 1");
+			// }
+			// });
+			// vectors2.events.on({
+			// "featureselected": function(e) {
+			// showStatus("selected feature "+e.feature.id+" on Vector Layer 2");
+			// },
+			// "featureunselected": function(e) {
+			// showStatus("unselected feature "+e.feature.id+" on Vector Layer 2");
+			// }
+			// });
+
+			// Add an instance of the Click control that listens to various click events (see ORS.OpenLayers file for implementation of Click)
+			var clickControl = new OpenLayers.Control.Click({
+				eventMethods : {
+					'rightclick' : function(e) {
+						var menu = new OpenRouteService.Gui.ContextMenu(e.xy.x, e.xy.y).insertIt().setRoute(OpenRouteService.route);
+					},
+					'click' : function(e) {
+						$$('.contextMenu').each(function(cm) {
+							cm.remove();
+						});
+					},
+					'dblclick' : function(e) {
+						$$('.contextMenu').each(function(cm) {
+							cm.remove();
+						});
+					},
+					'dblrightclick' : function(e) {
+						$$('.contextMenu').each(function(cm) {
+							cm.remove();
+						});
+					}
+				}
+			});
+			this.theMap.addControl(clickControl);
+			clickControl.activate();
+
+			// external code source: http://spatialnotes.blogspot.com/2010/11/capturing-right-click-events-in.html
+			// Get control of the right-click event:
+			document.getElementById(container).oncontextmenu = function(e) {
+				e = e ? e : window.event;
+				if (e.preventDefault)
+					e.preventDefault();
+				// For non-IE browsers.
+				else
+					return false;
+				// For IE browsers.
+			};
+
+			//close the context menu when zooming or panning,... //TODO placed in ui?
+			function closeContextMenu() {
+				$$('.contextMenu').each(function(cm) {
+					cm.remove();
+				});
+			};
 
 			/* *********************************************************************
 			 * MAP LOCATION
@@ -325,6 +350,17 @@ var Map = ( function() {"use strict";
 			/* *********************************************************************
 			 * MAP EVENTS
 			 * *********************************************************************/
+			function emitMapChangedEvent(e) {
+				var centerTransformed = self.convertPointForDisplay(self.theMap.getCenter());
+				self.emit('map:changed', {
+					layer : self.serializeLayers(),
+					zoom : self.theMap.getZoom(),
+					lat : centerTransformed.lat,
+					lon : centerTransformed.lon
+				});
+			}
+
+
 			this.theMap.events.register('zoomend', this.theMap, emitMapChangedEvent);
 			this.theMap.events.register('moveend', this.theMap, emitMapChangedEvent);
 			this.theMap.events.register('changelayer', this.theMap, emitMapChangedEvent);
@@ -408,8 +444,127 @@ var Map = ( function() {"use strict";
 		}
 
 		/* *********************************************************************
-		* FOR MODULES (e.g. search, routing,...)
-		* *********************************************************************/
+		 * GENERAL
+		 * *********************************************************************/
+
+		function clearMarkers(layer, waypointIndex) {
+			var layer = this.theMap.getLayersByName(layer);
+			if (layer && layer.length > 0) {
+				layer = layer[0];
+			}
+
+			//TODO will get easier if we have only Vector-Layers
+
+			if (waypointIndex) {
+				//only clear markers corresponding to the given waypoint
+				if (layer.markers) {
+					var markers = layer.markers;
+				} else if (layer.features) {
+					var markers = layer.features;
+				}
+
+				var markersToRemove = [];
+				for (var i = 0; i < markers.length; i++) {
+					var currentMarkerId = markers[i].id;
+					if (currentMarkerId.indexOf('Waypoint') != -1) {
+						//we are looking at a searchWaypoint marker, not e.g. a searchAddress marker
+						var indexOf_ = currentMarkerId.indexOf('_');
+						var currentWpId = currentMarkerId.substring(indexOf_ + 1, indexOf_ + 2);
+						if (currentWpId == waypointIndex) {
+							markersToRemove.push(markers[i]);
+						}
+					}
+				}
+				//remove the markers
+				for (var i = 0; i < markersToRemove.length; i++) {
+					layer.removeMarker(markersToRemove[i]);
+				}
+			} else {
+				//clear all markers in the given layer
+				if (layer.clearMarkers) {
+					layer.clearMarkers();
+				} else if (layer.removeAllFeatures) {
+					layer.removeAllFeatures();
+				}
+			}
+
+		}
+
+		/**
+		 * Move and zoom the map to a given marker
+		 * @param {Object} objectId String containing the CSS-id of the marker representation, e.g. 'address_2' or 'poi_47'
+		 */
+		function zoomToMarker(objectId) {
+			var index = objectId.lastIndexOf('_');
+			index = objectId.substring(index + 1, objectId.length);
+
+			var layer, pos, zoom;
+
+			if (objectId.indexOf('address') != -1) {
+				//want to zoom to a searchAddress marker
+				layer = this.theMap.getLayersByName(this.SEARCH)[0];
+				zoom = 14;
+			} else if (objectId.indexOf('poi') != -1) {
+				//want to zoom to a searchPoi marker
+				layer = this.theMap.getLayersByName(this.POI)[0];
+				zoom = 17;
+			}
+
+			var pt = layer.features[index].geometry;
+			pos = new OpenLayers.LonLat(pt.x, pt.y);
+			this.theMap.moveTo(pos, zoom);
+		}
+
+		function emphMarker(markerId, emph) {
+			if (markerId.indexOf('address') != -1) {
+				var layer = this.theMap.getLayersByName(this.SEARCH)[0];
+			} else if (markerId.indexOf('waypoint') != -1) {
+				var layer = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
+			} else if (markerId.indexOf('poi') != -1) {
+				var layer = this.theMap.getLayersByName(this.POI)[0];
+			}
+
+			var self = this;
+			if (layer) {
+				$A(layer.features).each(function(feature) {
+					if (feature.data.id == markerId) {
+						if (emph) {
+							//emphasize feature
+							self.selectMarker.select(feature);	
+						} else {
+							//de-emphasize feature
+							self.selectMarker.unselect(feature);
+						}
+						
+					}
+				});
+			}
+		}
+
+		/* *********************************************************************
+		 * FOR MODULES (e.g. search, routing,...)
+		 * *********************************************************************/
+
+		/*
+		 * WAYPOINTS
+		 */
+		function addWaypointMarker(wpIndex, markerIndex, type) {
+			var layerSearchResults = this.theMap.getLayersByName(this.SEARCH)[0];
+			var layerWaypoints = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
+
+			var oldMarker = layerSearchResults.features[markerIndex];
+
+			this.clearMarkers(this.SEARCH, wpIndex);
+
+			var newMarker = new OpenLayers.Geometry.Point(oldMarker.geometry.x, oldMarker.geometry.y);
+			var newFeature = new OpenLayers.Feature.Vector(newMarker, {
+				icon : Ui.markerIcons[type][0],
+				iconEm : Ui.markerIcons[type][1],
+				id : 'waypoint_' + wpIndex //TODO do we need that? + '_' + markerIndex
+			});
+
+			layerWaypoints.addFeatures([newFeature]);
+		}
 
 		/*
 		* SEARCH ADDRESS
@@ -417,56 +572,41 @@ var Map = ( function() {"use strict";
 
 		/**
 		 * transform given search results to markers and add them on the map.
-		 * @param {Object} listOfMarkers array of OpenLayers.MarkerEm
+		 * (this is also used for waypoint search results)
+		 * @param {Object} listOfPoints array of OpenLayers.LonLat
 		 */
-		function addSearchAddressResultMarkers(listOfMarkers) {
+		function addSearchAddressResultMarkers(listOfPoints, wpIndex) {
 			var layerSearchResults = this.theMap.getLayersByName(this.SEARCH)[0];
-			for (var i = 0; i < listOfMarkers.length; i++) {
+			for (var i = 0; i < listOfPoints.length; i++) {
 				//convert corrdinates of marker
-				var marker = listOfMarkers[i];
-				marker.lonlat = this.convertPointForMap(marker.lonlat);
-				layerSearchResults.addMarker(marker);
+				var point = listOfPoints[i];
+				point = this.convertPointForMap(point);
+				point = new OpenLayers.Geometry.Point(point.lon, point.lat);
+
+				if (wpIndex) {
+					//a waypoint search
+					var ftId = 'address_' + wpIndex + '_' + i;
+				} else {
+					//an address search
+					var ftId = 'address_' + i;
+				}
+
+				var feature = new OpenLayers.Feature.Vector(point, {
+					icon : Ui.markerIcons.result[0],
+					iconEm : Ui.markerIcons.result[1],
+					id : ftId
+				});
+				layerSearchResults.addFeatures([feature]);
 			}
 
 			//show all results
-			var resultBounds = layerSearchResults.getDataExtent();
-			this.theMap.zoomToExtent(resultBounds);
-			if (this.theMap.getZoom() > 14) {
-				this.theMap.zoomTo(14);
-			}
+			this.zoomToAddressResults();
 		}
 
 		/**
-		 * Emphasize the given search result marker
-		 * @param {Object} markerId id of the marker to emphasize
+		 * view all address results on the map
+		 * (this is also used for waypoint search results)
 		 */
-		function emphasizeSearchAddressMarker(markerId) {
-			var layerSearchResults = this.theMap.getLayersByName(this.SEARCH)[0];
-			$A(layerSearchResults.markers).each(function(marker) {
-				if (marker.id == markerId) {
-					marker.emphasize();
-				}
-			});
-		}
-
-		/**
-		 * Deemphasize the given search result marker
-		 * @param {Object} markerId id of the marker to deemphasize
-		 */
-		function deEmphasizeSearchAddressMarker(markerId) {
-			var layerSearchResults = this.theMap.getLayersByName(this.SEARCH)[0];
-			$A(layerSearchResults.markers).each(function(marker) {
-				if (marker.id == markerId) {
-					marker.deemphasize();
-				}
-			});
-		}
-
-		function clearSearchAddressMarkers() {
-			var layerSearchResults = this.theMap.getLayersByName(this.SEARCH)[0];
-			layerSearchResults.clearMarkers();
-		}
-
 		function zoomToAddressResults() {
 			var layerSearchResults = this.theMap.getLayersByName(this.SEARCH)[0];
 			var resultBounds = layerSearchResults.getDataExtent();
@@ -523,11 +663,6 @@ var Map = ( function() {"use strict";
 			});
 		}
 
-		function clearSearchPoiMarkers() {
-			var layerPoiResults = this.theMap.getLayersByName(this.POI)[0];
-			layerPoiResults.clearMarkers();
-		}
-
 		function zoomToPoiResults() {
 			var layerPoiResults = this.theMap.getLayersByName(this.POI)[0];
 			var resultBounds = layerPoiResults.getDataExtent();
@@ -535,35 +670,6 @@ var Map = ( function() {"use strict";
 			if (this.theMap.getZoom() > 14) {
 				this.theMap.zoomTo(14);
 			}
-		}
-		
-		/*
-		 * SEARCH MODULES 
-		 */
-		
-		/**
-		 * Move and zoom the map to a given marker
- 		 * @param {Object} objectId String containing the CSS-id of the marker representation, e.g. 'searchAddressResult_2' or 'searchPoiResult_47'
-		 */
-		function zoomToMarker(objectId) {
-			var index = objectId.lastIndexOf('_');
-			index = objectId.substring(index+1, objectId.length);
-			
-			var layer, pos, zoom;
-			
-			 if (objectId.indexOf('Address') != -1) {
-			 	//want to zoom to a searchAddress marker
-			 	layer = this.theMap.getLayersByName(this.SEARCH)[0];
-			 	zoom = 14;
-			 }
-			 else if (objectId.indexOf('Poi') != -1) {
-			 	//want to zoom to a searchPoi marker
-			 	layer = this.theMap.getLayersByName(this.POI)[0];
-			 	zoom = 17;
-			 }
-			
-			pos = layer.markers[index].lonlat;
-			this.theMap.moveTo(pos, zoom);
 		}
 
 
@@ -576,18 +682,19 @@ var Map = ( function() {"use strict";
 		map.prototype.convertPointForDisplay = convertPointForDisplay;
 		map.prototype.convertPointForMap = convertPointForMap;
 
+		map.prototype.clearMarkers = clearMarkers;
+		map.prototype.emphMarker = emphMarker;
+
+		map.prototype.addWaypointMarker = addWaypointMarker;
+
 		map.prototype.addSearchAddressResultMarkers = addSearchAddressResultMarkers;
-		map.prototype.emphasizeSearchAddressMarker = emphasizeSearchAddressMarker;
-		map.prototype.deEmphasizeSearchAddressMarker = deEmphasizeSearchAddressMarker;
-		map.prototype.clearSearchAddressMarkers = clearSearchAddressMarkers;
 		map.prototype.zoomToAddressResults = zoomToAddressResults;
 
 		map.prototype.addSearchPoiResultMarkers = addSearchPoiResultMarkers;
 		map.prototype.emphasizeSearchPoiMarker = emphasizeSearchPoiMarker;
 		map.prototype.deEmphasizeSearchPoiMarker = deEmphasizeSearchPoiMarker;
-		map.prototype.clearSearchPoiMarkers = clearSearchPoiMarkers;
 		map.prototype.zoomToPoiResults = zoomToPoiResults;
-		
+
 		map.prototype.zoomToMarker = zoomToMarker;
 
 		return map;
