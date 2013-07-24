@@ -1,4 +1,7 @@
 var Map = ( function() {"use strict";
+
+		var $ = window.jQuery;
+
 		/**
 		 * Constructor
 		 * @param  {[type]} container [description]
@@ -172,13 +175,13 @@ var Map = ( function() {"use strict";
 				context : context
 			});
 
-			var myStyleMap = new OpenLayers.StyleMap({
+			var searchStyleMap = new OpenLayers.StyleMap({
 				"default" : defaultStyle,
 				"select" : selectStyle
 			});
 
 			var layerRoutePoints = new OpenLayers.Layer.Vector(this.ROUTE_POINTS, {
-				styleMap : myStyleMap,
+				styleMap : searchStyleMap,
 				displayInLayerSwitcher : false,
 				rendererOptions : {
 					yOrdering : true
@@ -202,19 +205,57 @@ var Map = ( function() {"use strict";
 			});
 
 			//Geolocation
-			var layerGeolocation = new OpenLayers.Layer.Markers(this.GEOLOCATION, {
-				displayInLayerSwitcher : false
+			//TODO why an extra layer? can we use this.SEARCH?
+			// var layerGeolocation = new OpenLayers.Layer.Markers(this.GEOLOCATION, {
+			// displayInLayerSwitcher : false
+			// });
+
+			//for default style
+			var poiTemplate = {
+				pointRadius : 16,
+				stroke : true,
+				strokeColor : '#ff0000', //{String} Hex stroke color.  Default is “#ee9900”.
+				graphicZIndex : 6,
+				externalGraphic : "${icon}", //"${getImageUrl}", // using context.getImageUrl(feature)
+				graphicXOffset : -10,
+				graphicYOffset : -30,
+				graphicWidth : 21,
+				graphicHeight : 30,
+				graphicOpacity : 1
+			};
+			//for select style
+			var poiSelTemplate = {
+				graphicZIndex : 10,
+				externalGraphic : "${iconEm}", // using context.getHighlightImageUrl(feature)
+				graphicXOffset : -20, //graphicXOffset : -10,
+				graphicYOffset : -40, //graphicYOffset : -30,
+				graphicWidth : 41, //graphicWidth : 21,
+				graphicHeight : 50, //graphicHeight : 30
+				graphicOpacity : 0.7
+			};
+
+			var poiDefaultStyle = new OpenLayers.Style(poiTemplate, {
+				context : context
+			});
+			var poiSelectStyle = new OpenLayers.Style(poiSelTemplate, {
+				context : context
+			});
+
+			var poiStyleMap = new OpenLayers.StyleMap({
+				"default" : poiDefaultStyle,
+				"select" : poiSelectStyle
 			});
 
 			//Search POI
-			var layerPoi = new OpenLayers.Layer.Markers(this.POI, {
-				displayInLayerSwitcher : false
+			var layerPoi = new OpenLayers.Layer.Vector(this.POI, {
+				displayInLayerSwitcher : false,
+				styleMap : poiStyleMap
 			});
 
 			//Search place
 			var layerSearch = new OpenLayers.Layer.Vector(this.SEARCH, {
 				displayInLayerSwitcher : false,
-				styleMap : myStyleMap,
+				styleMap : searchStyleMap,
 				rendererOptions : {
 					yOrdering : true
 				}
@@ -238,7 +279,7 @@ var Map = ( function() {"use strict";
 			});
 
 			//define order
-			this.theMap.addLayers([layerRouteLines, layerTrack, layerRouteInstructions, layerSearch, layerGeolocation, layerPoi, layerAvoid, layerRoutePoints]);
+			this.theMap.addLayers([layerRouteLines, layerTrack, layerRouteInstructions, layerSearch, layerPoi, layerAvoid, layerRoutePoints]);
 
 			/* *********************************************************************
 			 * MAP CONTROLS
@@ -264,8 +305,7 @@ var Map = ( function() {"use strict";
 			this.theMap.addControl(new OpenLayers.Control.Permalink());
 			this.theMap.addControl(new OpenLayers.Control.Attribution());
 
-			//TODO must all be vector layers: layerSearch, layerPoi, layerGeolocation, layerRoutePoints
-			this.selectMarker = new OpenLayers.Control.SelectFeature([layerSearch, layerRoutePoints], {
+			this.selectMarker = new OpenLayers.Control.SelectFeature([layerSearch, layerRoutePoints, layerPoi], {
 				hover : true
 			});
 			//highlighting of the markers's DOM representation (address text) on mouseover
@@ -300,22 +340,32 @@ var Map = ( function() {"use strict";
 			var clickControl = new OpenLayers.Control.Click({
 				eventMethods : {
 					'rightclick' : function(e) {
-						var menu = new OpenRouteService.Gui.ContextMenu(e.xy.x, e.xy.y).insertIt().setRoute(OpenRouteService.route);
+						//if we have any other popup menus, remove them
+						closeContextMenu();
+
+						//build new popup menu
+						var pos = self.theMap.getLonLatFromViewPortPx(e.xy);
+						
+						var menuObject = $('#mapContextMenu').clone();
+						menuObject.attr('id', 'menu')
+
+						self.popup = new OpenLayers.Popup('menu', pos, null, menuObject.html(), false, null);
+						self.popup.autoSize= true;
+						self.popup.div = menuObject.get(0);
+						self.popup.opacity = 0.9;
+						//TODO all this will not work properly with any stable version of OL; it is only included in DEV version so far... :/
+						self.popup.border = '1px';
+						
+						self.theMap.addPopup(self.popup);
 					},
 					'click' : function(e) {
-						$$('.contextMenu').each(function(cm) {
-							cm.remove();
-						});
+						closeContextMenu();
 					},
 					'dblclick' : function(e) {
-						$$('.contextMenu').each(function(cm) {
-							cm.remove();
-						});
+						closeContextMenu();
 					},
 					'dblrightclick' : function(e) {
-						$$('.contextMenu').each(function(cm) {
-							cm.remove();
-						});
+						closeContextMenu();
 					}
 				}
 			});
@@ -324,21 +374,19 @@ var Map = ( function() {"use strict";
 
 			// external code source: http://spatialnotes.blogspot.com/2010/11/capturing-right-click-events-in.html
 			// Get control of the right-click event:
-			document.getElementById(container).oncontextmenu = function(e) {
-				e = e ? e : window.event;
-				if (e.preventDefault)
-					e.preventDefault();
-				// For non-IE browsers.
-				else
-					return false;
-				// For IE browsers.
-			};
-
+			// document.getElementById(container).oncontextmenu = function(e) {
+			// e = e ? e : window.event;
+			// if (e.preventDefault)
+			// e.preventDefault();
+			// // For non-IE browsers.
+			// else
+			// return false;
+			// // For IE browsers.
+			// };
+			//
 			//close the context menu when zooming or panning,... //TODO placed in ui?
 			function closeContextMenu() {
-				$$('.contextMenu').each(function(cm) {
-					cm.remove();
-				});
+				$('#menu').remove();
 			};
 
 			/* *********************************************************************
@@ -444,50 +492,63 @@ var Map = ( function() {"use strict";
 		}
 
 		/* *********************************************************************
-		 * GENERAL
-		 * *********************************************************************/
+		* GENERAL
+		* *********************************************************************/
 
-		function clearMarkers(layer, waypointIndex) {
-			var layer = this.theMap.getLayersByName(layer);
+		/**
+		 * removes all (appropriate) markers/ features from the given layer
+		 *  @param layerName: name of the layer to remove the objects from
+		 *  @param waypointIndex: index of the waypoint where to remove objects from
+		 */
+		function clearMarkers(layerName, waypointIndex) {
+			var layer = this.theMap.getLayersByName(layerName);
 			if (layer && layer.length > 0) {
 				layer = layer[0];
 			}
-
-			//TODO will get easier if we have only Vector-Layers
-
-			if (waypointIndex) {
-				//only clear markers corresponding to the given waypoint
-				if (layer.markers) {
-					var markers = layer.markers;
-				} else if (layer.features) {
-					var markers = layer.features;
-				}
-
+			if (waypointIndex != undefined) {
+				//we assume that we want to remove the features of the given waypoint.
+				//otherwise no waypoint index is set.
+				var markers = layer.features;
 				var markersToRemove = [];
 				for (var i = 0; i < markers.length; i++) {
-					var currentMarkerId = markers[i].id;
-					if (currentMarkerId.indexOf('Waypoint') != -1) {
+					var currentMarkerId = markers[i].data.id;
+
+					var firstIndex = currentMarkerId.indexOf('_');
+					var lastIndex = currentMarkerId.lastIndexOf('_');
+
+					if (firstIndex != lastIndex) {
 						//we are looking at a searchWaypoint marker, not e.g. a searchAddress marker
-						var indexOf_ = currentMarkerId.indexOf('_');
-						var currentWpId = currentMarkerId.substring(indexOf_ + 1, indexOf_ + 2);
+						//i.e. marker of type 'address_47_11', not 'address_11'
+						var currentWpId = currentMarkerId.substring(firstIndex + 1, firstIndex + 2);
+
 						if (currentWpId == waypointIndex) {
+							//remove only features of appropriate waypoint
 							markersToRemove.push(markers[i]);
 						}
 					}
 				}
-				//remove the markers
-				for (var i = 0; i < markersToRemove.length; i++) {
-					layer.removeMarker(markersToRemove[i]);
-				}
-			} else {
-				//clear all markers in the given layer
-				if (layer.clearMarkers) {
-					layer.clearMarkers();
-				} else if (layer.removeAllFeatures) {
-					layer.removeAllFeatures();
-				}
-			}
+				//remove the markers (actually features)
+				layer.removeFeatures(markersToRemove);
+			} else if (layerName == this.SEARCH) {
+				//we're dealing with e.g. a regular address search
+				var markers = layer.features;
+				var markersToRemove = [];
+				for (var i = 0; i < markers.length; i++) {
+					var currentMarkerId = markers[i].data.id;
+					var firstIndex = currentMarkerId.indexOf('_');
+					var lastIndex = currentMarkerId.lastIndexOf('_');
 
+					if (firstIndex == lastIndex) {
+						//we are looking at a searchAddress marker
+						markersToRemove.push(markers[i]);
+					}
+				}
+				//remove the markers (actually features)
+				layer.removeFeatures(markersToRemove);
+			} else {
+				//a POI search/ waypoint results, delete all markers
+				layer.removeAllFeatures();
+			}
 		}
 
 		/**
@@ -530,12 +591,12 @@ var Map = ( function() {"use strict";
 					if (feature.data.id == markerId) {
 						if (emph) {
 							//emphasize feature
-							self.selectMarker.select(feature);	
+							self.selectMarker.select(feature);
 						} else {
 							//de-emphasize feature
 							self.selectMarker.unselect(feature);
 						}
-						
+
 					}
 				});
 			}
@@ -560,7 +621,7 @@ var Map = ( function() {"use strict";
 			var newFeature = new OpenLayers.Feature.Vector(newMarker, {
 				icon : Ui.markerIcons[type][0],
 				iconEm : Ui.markerIcons[type][1],
-				id : 'waypoint_' + wpIndex //TODO do we need that? + '_' + markerIndex
+				id : 'waypoint_' + wpIndex
 			});
 
 			layerWaypoints.addFeatures([newFeature]);
@@ -622,17 +683,36 @@ var Map = ( function() {"use strict";
 
 		/**
 		 * transform given search results to markers and add them on the map.
-		 * @param {Object} listOfMarkers array of OpenLayers.Marker
+		 * @param {Object} listOfPoints array of OpenLayers.LonLat
 		 */
-		function addSearchPoiResultMarkers(listOfMarkers) {
+		function addSearchPoiResultMarkers(listOfPoints) {
+			//TODO must be tested when DB is available again
 			var layerPoiResults = this.theMap.getLayersByName(this.POI)[0];
-			for (var i = 0; i < listOfMarkers.length; i++) {
-				//convert corrdinates of marker
-				var marker = listOfMarkers[i];
-				marker.setOpacity(0.7);
-				marker.lonlat = this.convertPointForMap(marker.lonlat);
-				layerPoiResults.addMarker(marker);
+
+			for (var i = 0; i < listOfPoints.length; i++) {
+				var point = listOfPoints[i];
+
+				var icon = Ui.poiIcons['poi_' + point.iconType];
+				icon = icon ? icon : Ui.poiIcons['poi_default'];
+
+				point = this.convertPointForMap(point);
+				point = new OpenLayers.Geometry.Point(point.lon, point.lat);
+				var feature = new OpenLayers.Feature.Vector(point, {
+					icon : icon,
+					iconEm : icon,
+					id : 'poi_' + i
+				});
+				layerPoiResults.addFeatures([feature]);
 			}
+
+			// var layerPoiResults = this.theMap.getLayersByName(this.POI)[0];
+			// for (var i = 0; i < listOfMarkers.length; i++) {
+			// //convert corrdinates of marker
+			// var marker = listOfMarkers[i];
+			// marker.setOpacity(0.7);
+			// marker.lonlat = this.convertPointForMap(marker.lonlat);
+			// layerPoiResults.addMarker(marker);
+			// }
 		}
 
 		/**

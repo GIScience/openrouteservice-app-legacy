@@ -1,3 +1,7 @@
+/**
+ * note: naming conventions for result elements:
+ * map markers as well as DOM elements have an id like "poi_ID", e.g. poi_4 
+ */
 var SearchPoi = ( function(window) {"use strict";
 
 		/**
@@ -201,17 +205,16 @@ var SearchPoi = ( function(window) {"use strict";
 		 *extract points to use for markers on map
 		 * @param {Object} results the (xml) results from the service
 		 */
-		function parseResultsToMarkers(results) {
+		function parseResultsToPoints(results) {
 			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
 			results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
 
-			var listOfMarkers = [];
+			var listOfPoints = [];
 
 			var geocodeResponseList = util.getElementsByTagNameNS(results, namespaces.xls, 'DirectoryResponse');
 			$A(geocodeResponseList).each(function(poiResponse) {
 				var allPoi = $A(util.getElementsByTagNameNS(poiResponse, namespaces.xls, 'POIContext'));
 				for (var i = 0; i < allPoi.length; i++) {
-				// $A(util.getElementsByTagNameNS(poiResponse, namespaces.xls, 'POIContext')).each(function(poiResult) {
 					var poiResult = allPoi[i];
 					
 					var point = util.getElementsByTagNameNS(poiResult, namespaces.gml, 'pos')[0];
@@ -221,20 +224,19 @@ var SearchPoi = ( function(window) {"use strict";
 					var iconType = util.getElementsByTagNameNS(poiResult, namespaces.xls, 'POI')[0];
 					iconType = iconType.getAttribute('description');
 					iconType = iconType.substring(0, iconType.indexOf(';'));
-					var icon = Ui.poiIcons['poi_' + iconType];
-					icon = icon ? icon.clone() : Ui.poiIcons['poi_default'].clone();
 					
-					var marker = new OpenLayers.MarkerEm(point, icon, icon, 'searchPoiResult_' + i);
-					listOfMarkers.push(marker);
+					point.iconType = iconType;
+
+					listOfPoints.push(point);
 				}
 			});
 
-			return listOfMarkers;
+			return listOfPoints;
 		}
 
 
 		SearchPoi.prototype.find = find;
-		SearchPoi.prototype.parseResultsToMarkers = parseResultsToMarkers;
+		SearchPoi.prototype.parseResultsToPoints = parseResultsToPoints;
 
 		return new SearchPoi();
 	}(window));

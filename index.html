@@ -177,7 +177,7 @@
 									<ul class="guiComponent resultList SearchAddress" id="searchWaypointResults_1"></ul>
 								</div>
 							</div>
-						</div>						
+						</div>
 						<div class="addWaypoint clickable" id="addWaypoint">
 							Add waypoint
 						</div><div id="routeCalculateZoom"></div><div class="routeSummaryContainer panel panelLight" style="display: none;"></div><div class="routeInstructionsContainer panel panelLight" style="display: none;"></div>
@@ -275,7 +275,10 @@
 						<div class="clickable zoomToSearchResults" id="zoomToPoiResults" title="zoom to search results"></div>
 						<ul class="guiComponent resultList SearchPoi" id="fnct_searchPoiResults"></ul>
 						<div id="searchPoiError" class="alert alert-error" style="display:none"></div>
-					</div><div class="responseContainer panel panelMedium" id="poiResponseContainer" style="display: none;"></div>
+					</div>
+					<div class="responseContainer panel panelMedium" id="poiResponseContainer" style="display: none;">
+						<div class="clickable zoomToSearchResults" id="zoomToPoiResults" title="Zoom to search results"></div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -326,6 +329,19 @@
 			</div>
 		</div>
 
+		<!-- this will be shown when the user performs a right click on the map -->
+		<div id="mapContextMenu" class="contextMenu" style="display:none">
+			<div class="useAsStartPoint">
+				<span>use as start point</span>
+			</div>
+			<div class="useAsViaPoint">
+				<span>use as via point</span>
+			</div>
+			<div class="useAsEndPoint">
+				<span>use as end point</span>
+			</div>
+		</div>
+
 		<!-- Libraries -->
 		<!-- 	important: jQuery must be included before prototype	 -->
 		<script type="text/javascript" src="lib/jquery-1.7.2.min.js"></script>
@@ -333,7 +349,7 @@
 		<script type="text/javascript" src="lib/bootstrap/bootstrap-typeahead.js"></script>
 		<script type="text/javascript" src="lib/bootstrap/bootstrap-ext.min.js"></script><!-- for file upload -->
 		<script type="text/javascript" src="lib/prototype.1.7.minified.js"></script>
-		<script type="text/javascript" src="lib/OpenLayers2.12.js"></script>
+		<script type="text/javascript" src="lib/OpenLayers2.13.1.js"></script>
 		<script type="text/javascript" src="lib/XMLWriter-1.0.0-min.js"></script>
 		<script type="text/javascript" src="lib/jsts/javascript.util.js"></script>
 		<script type="text/javascript" src="lib/jsts/jsts-0.13.1.js"></script>

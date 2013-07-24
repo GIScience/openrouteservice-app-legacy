@@ -1,3 +1,7 @@
+/**
+ * note: naming conventions for result elements:
+ * map markers as well as DOM elements have an id like "address_ID", e.g. address_4 
+ */
 var SearchAddress = ( function(window) {"use strict";
 
 		/**
@@ -71,7 +75,7 @@ var SearchAddress = ( function(window) {"use strict";
 		 *extract points to use for markers on map
 		 * @param {Object} results the (xml) results from the service
 		 */
-		function parseResultsToMarkers(results) {
+		function parseResultsToPoints(results) {
 			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
 			results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
 
@@ -98,7 +102,7 @@ var SearchAddress = ( function(window) {"use strict";
 
 
 		SearchAddress.prototype.find = find;
-		SearchAddress.prototype.parseResultsToMarkers = parseResultsToMarkers;
+		SearchAddress.prototype.parseResultsToPoints = parseResultsToPoints;
 
 		return new SearchAddress();
 	}(window));

@@ -1,3 +1,10 @@
+/**
+ * note: naming conventions
+ * for search result elements:
+ * map markers as well as DOM elements have an id like "address_WP-ID_SEARCH-ID", e.g. address_1_4 when searching for the 2nd waypoint, 5th result
+ * for waypoint elements (after selecting a search result):
+ * map markers as well as DOM elements have an id like "waypoint_WP-ID", e.g. waypoint_1 for the 2nd waypoint 
+ */
 var Waypoint = (function(w) {'use strict';
 
 	/**
@@ -84,7 +91,7 @@ var Waypoint = (function(w) {'use strict';
 	 *extract points to use for markers on map
 	 * @param {Object} results the (xml) results from the service
 	 */
-	function parseResultsToMarkers(results, wpIndex) {
+	function parseResultsToPoints(results, wpIndex) {
 		//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
 		results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
 
@@ -123,7 +130,7 @@ var Waypoint = (function(w) {'use strict';
 	}
 
 	Waypoint.prototype.find = find;
-	Waypoint.prototype.parseResultsToMarkers = parseResultsToMarkers;
+	Waypoint.prototype.parseResultsToPoints = parseResultsToPoints;
 	Waypoint.prototype.determineWaypointType = determineWaypointType;
 
 	return new Waypoint();

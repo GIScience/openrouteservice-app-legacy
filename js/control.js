@@ -37,7 +37,7 @@ var Controller = ( function(w) {'use strict';
 		function handleWaypointRequest(atts) {
 			ui.searchWaypointChangeToSearchingState(true, atts.wpIndex);
 
-			map.clearMarkers(map.ROUTE_POINTS, atts.wpIndex);
+			map.clearMarkers(map.SEARCH, atts.wpIndex);
 
 			waypoint.requestCounterWaypoints[atts.wpIndex]++;
 			waypoint.find(atts.query, handleSearchWaypointResults, handleSearchWaypointFailure, atts.wpIndex);
@@ -49,7 +49,7 @@ var Controller = ( function(w) {'use strict';
 		function handleSearchWaypointResults(results, wpIndex) {
 			waypoint.requestCounterWaypoints[wpIndex]--;
 			if (waypoint.requestCounterWaypoints[wpIndex] == 0) {
-				var listOfMarkers = waypoint.parseResultsToMarkers(results, wpIndex);
+				var listOfMarkers = waypoint.parseResultsToPoints(results, wpIndex);
 
 				ui.searchWaypointChangeToSearchingState(false, wpIndex);
 
@@ -182,7 +182,7 @@ var Controller = ( function(w) {'use strict';
 		function handleSearchAddressResults(results) {
 			searchAddress.requestCounter--;
 			if (searchAddress.requestCounter == 0) {
-				var listOfPoints = searchAddress.parseResultsToMarkers(results);
+				var listOfPoints = searchAddress.parseResultsToPoints(results);
 
 				ui.searchAddressChangeToSearchingState(false);
 
@@ -294,7 +294,7 @@ var Controller = ( function(w) {'use strict';
 		function handleSearchPoiResults(results) {
 			searchPoi.requestCounter--;
 			if (searchPoi.requestCounter == 0) {
-				var listOfMarkers = searchPoi.parseResultsToMarkers(results);
+				var listOfMarkers = searchPoi.parseResultsToPoints(results);
 
 				ui.searchPoiChangeToSearchingState(false);
 
