@@ -40,7 +40,7 @@ var Controller = ( function(w) {'use strict';
 			map.clearMarkers(map.SEARCH, atts.wpIndex);
 
 			waypoint.requestCounterWaypoints[atts.wpIndex]++;
-			waypoint.find(atts.query, handleSearchWaypointResults, handleSearchWaypointFailure, atts.wpIndex);
+			waypoint.find(atts.query, handleSearchWaypointResults, handleSearchWaypointFailure, atts.wpIndex, preferences.language);
 		}
 
 		/**
@@ -54,7 +54,7 @@ var Controller = ( function(w) {'use strict';
 				ui.searchWaypointChangeToSearchingState(false, wpIndex);
 
 				map.addSearchAddressResultMarkers(listOfMarkers, wpIndex);
-				ui.updateSearchWaypointResultList(results, wpIndex);
+				ui.updateSearchWaypointResultList(results, listOfMarkers, wpIndex);
 			}
 		}
 
@@ -80,8 +80,7 @@ var Controller = ( function(w) {'use strict';
 			var wpIndex = parseInt(atts.wpIndex);
 			var resultIndex = parseInt(atts.resultIndex);
 
-			var type = waypoint.determineWaypointType(wpIndex);
-			ui.setWaypointType(wpIndex, type);
+			var type = selectWaypointType(wpIndex);
 			map.addWaypointMarker(wpIndex, resultIndex, type);
 		}
 
@@ -96,6 +95,47 @@ var Controller = ( function(w) {'use strict';
 		function selectWaypointType(wpIndex) {
 			var type = waypoint.determineWaypointType(wpIndex);
 			ui.setWaypointType(wpIndex, type);
+			map.setWaypointMarker(wpIndex, type);
+			return type;
+		}
+		
+		/**
+		 * what happens after the user sets a waypoint by clicking on the map saying "add waypoint..."
+		 */
+		function handleAddWaypointByRightclick(atts) {
+			var pos = atts.pos;
+			var wpType = atts.type;
+
+			//index of the waypoint to set (start at the beginning, end at the end, via in the middle)
+			var wpIndex = 0;
+			//if END: use index of last waypoint
+			wpIndex = wpType == Waypoint.type.END ? waypoint.numWaypoints - 1 : wpIndex;
+			//if VIA: use index of prior to last waypoint, insert the new via point after this element
+			wpIndex = wpType == Waypoint.type.VIA ? waypoint.numWaypoints - 2 : wpIndex;
+
+			//remove old waypoint marker (if exists)
+			if (wpType != Waypoint.type.VIA) {
+				//if we have a new VIA point, we create a new waypoint, i.e. there can't be any markers yet
+				map.clearMarkers(map.ROUTE_POINTS, wpIndex);		
+			}
+			
+			if (wpType == Waypoint.type.VIA) {
+				//add the marker with the NEW index (does not exist yet, will be generated in the successCallback function) on the map
+				map.addWaypointAtPos(map.convertPointForMap(pos), wpIndex+1, wpType);
+			} else {
+				//add waypoint marker at given pos
+				map.addWaypointAtPos(map.convertPointForMap(pos), wpIndex, wpType);
+			}
+			//determine address for given pos
+			geolocator.reverseGeolocate(pos, reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, wpType, wpIndex);
+		}
+
+		function reverseGeocodeSuccess(addressResult, wpType, wpIndex) {
+			ui.addWaypointResultByRightclick(addressResult, wpType, wpIndex, waypoint.numWaypoints);
+		}
+
+		function reverseGeocodeFailure() {
+			//TODO implement
 		}
 
 		/* *********************************************************************
@@ -103,7 +143,7 @@ var Controller = ( function(w) {'use strict';
 		 * *********************************************************************/
 
 		function handleGeolocationRequest() {
-			geolocator.locate(handleGeolocateSuccess, handleGeolocateError, handleGeolocateNoSupport);
+			geolocator.locate(handleGeolocateSuccess, handleGeolocateError, handleGeolocateNoSupport, preferences.language);
 		}
 
 		/**
@@ -118,8 +158,7 @@ var Controller = ( function(w) {'use strict';
 			var pos = new OpenLayers.LonLat(position.coords.latitude, position.coords.longitude);
 			var pos = map.convertPointForMap(pos);
 			map.theMap.moveTo(pos);
-			// map.moveTo([position.coords.latitude, position.coords.longitude]);
-			geolocator.reverseGeolocate(position, handleReverseGeolocationSuccess, handleReverseGeolocationFailure);
+			geolocator.reverseGeolocate(position, handleReverseGeolocationSuccess, handleReverseGeolocationFailure, preferences.language);
 		}
 
 		/**
@@ -173,7 +212,7 @@ var Controller = ( function(w) {'use strict';
 			map.clearMarkers(map.SEARCH);
 
 			searchAddress.requestCounter++;
-			searchAddress.find(address, handleSearchAddressResults, handleSearchAddressFailure);
+			searchAddress.find(address, handleSearchAddressResults, handleSearchAddressFailure, preferences.language);
 		}
 
 		/**
@@ -187,7 +226,7 @@ var Controller = ( function(w) {'use strict';
 				ui.searchAddressChangeToSearchingState(false);
 
 				map.addSearchAddressResultMarkers(listOfPoints);
-				ui.updateSearchAddressResultList(results);
+				ui.updateSearchAddressResultList(results, listOfPoints);
 			}
 		}
 
@@ -202,19 +241,19 @@ var Controller = ( function(w) {'use strict';
 			}
 		}
 
-		/**
-		 * calls the map to highlight the address marker
-		 */
-		function handleEmphasizeSearchAddressMarker(markerId) {
-			map.emphasizeSearchAddressMarker(markerId);
-		}
-
-		/**
-		 * calls the map to stop highlighting the address marker
-		 */
-		function handleDeEmphasizeSearchAddressMarker(markerId) {
-			map.deEmphasizeSearchAddressMarker(markerId);
-		}
+		// /**
+		// * calls the map to highlight the address marker
+		// */
+		// function handleEmphasizeSearchAddressMarker(markerId) {
+		// map.emphasizeSearchAddressMarker(markerId);
+		// }
+		//
+		// /**
+		// * calls the map to stop highlighting the address marker
+		// */
+		// function handleDeEmphasizeSearchAddressMarker(markerId) {
+		// map.deEmphasizeSearchAddressMarker(markerId);
+		// }
 
 		/**
 		 * remove old address markers from the map when starting a new address search
@@ -285,7 +324,7 @@ var Controller = ( function(w) {'use strict';
 			}
 
 			searchPoi.requestCounter++;
-			searchPoi.find(poi, refPoint, maxDist, handleSearchPoiResults, handleSearchPoiFailure);
+			searchPoi.find(poi, refPoint, maxDist, handleSearchPoiResults, handleSearchPoiFailure, preferences.language);
 		}
 
 		/**
@@ -314,19 +353,19 @@ var Controller = ( function(w) {'use strict';
 			}
 		}
 
-		/**
-		 * calls the map to highlight the POI marker
-		 */
-		function handleEmphasizeSearchPoiMarker(markerId) {
-			map.emphasizeSearchPoiMarker(markerId);
-		}
-
-		/**
-		 *calls the map to stop highlighting the POI marker
-		 */
-		function handleDeEmphasizeSearchPoiMarker(markerId) {
-			map.deEmphasizeSearchPoiMarker(markerId);
-		}
+		// /**
+		// * calls the map to highlight the POI marker
+		// */
+		// function handleEmphasizeSearchPoiMarker(markerId) {
+		// map.emphasizeSearchPoiMarker(markerId);
+		// }
+		//
+		// /**
+		// *calls the map to stop highlighting the POI marker
+		// */
+		// function handleDeEmphasizeSearchPoiMarker(markerId) {
+		// map.deEmphasizeSearchPoiMarker(markerId);
+		// }
 
 		/**
 		 * remove old POI markers from the map when starting a new POI search
@@ -378,12 +417,12 @@ var Controller = ( function(w) {'use strict';
 		function handleMarkerDeEmph(markerId) {
 			ui.deEmphElement(markerId);
 		}
-		
+
 		function handleElementEmph(elementId) {
 			//tell map to emph the element
 			map.emphMarker(elementId, true);
 		}
-		
+
 		function handleElementDeEmph(elementId) {
 			//tell map to de-emph the element
 			map.emphMarker(elementId, false);
@@ -466,25 +505,26 @@ var Controller = ( function(w) {'use strict';
 			//modules
 			ui.register('ui:emphElement', handleElementEmph);
 			ui.register('ui:deEmphElement', handleElementDeEmph);
-			
-			
+
 			ui.register('ui:searchWaypointRequest', handleWaypointRequest);
 			ui.register('ui:clearSearchWaypointMarkers', handleClearSearchWaypointMarkers);
 			ui.register('ui:addWaypoint', handleAddWaypoint);
 			ui.register('ui:waypointResultClick', handleWaypointResultClick);
+			map.register('map:addWaypoint', handleAddWaypointByRightclick);
+			ui.register('ui:selectWaypointType', selectWaypointType);
 
 			ui.register('ui:geolocationRequest', handleGeolocationRequest);
 
 			ui.register('ui:searchAddressRequest', handleSearchAddressRequest);
-			ui.register('ui:emphasizeSearchAddressMarker', handleEmphasizeSearchAddressMarker);
-			ui.register('ui:deEmphasizeSearchAddressMarker', handleDeEmphasizeSearchAddressMarker);
+			// ui.register('ui:emphasizeSearchAddressMarker', handleEmphasizeSearchAddressMarker);
+			// ui.register('ui:deEmphasizeSearchAddressMarker', handleDeEmphasizeSearchAddressMarker);
 			ui.register('ui:clearSearchAddressMarkers', handleClearSearchAddressMarkers);
 			ui.register('ui:zoomToAddressResults', handleZoomToAddressResults);
 
 			ui.register('ui:checkDistanceToRoute', handleCheckDistanceToRoute);
 			ui.register('ui:searchPoiRequest', handleSearchPoiRequest);
-			ui.register('ui:emphasizeSearchPoiMarker', handleEmphasizeSearchPoiMarker);
-			ui.register('ui:deEmphasizeSearchPoiMarker', handleDeEmphasizeSearchPoiMarker);
+			// ui.register('ui:emphasizeSearchPoiMarker', handleEmphasizeSearchPoiMarker);
+			// ui.register('ui:deEmphasizeSearchPoiMarker', handleDeEmphasizeSearchPoiMarker);
 			ui.register('ui:clearSearchPoiMarkers', handleClearSearchPoiMarkers);
 			ui.register('ui:zoomToPoiResults', handleZoomToPoiResults);
 

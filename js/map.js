@@ -129,10 +129,7 @@ var Map = ( function() {"use strict";
 			 * based on: http://openlayers.org/dev/examples/styles-context.html
 			 */
 			var context = {
-
 				getImageUrl : function(feature) {
-					console.log(feature)
-
 					var pointType = feature.pointType;
 					if (Ui.markerIcons[pointType]) {
 						return Ui.markerIcons[pointType].url;
@@ -345,17 +342,42 @@ var Map = ( function() {"use strict";
 
 						//build new popup menu
 						var pos = self.theMap.getLonLatFromViewPortPx(e.xy);
-						
-						var menuObject = $('#mapContextMenu').clone();
-						menuObject.attr('id', 'menu')
+						var displayPos = self.convertPointForDisplay(pos);
 
+						var menuObject = $('#mapContextMenu').clone();
+						menuObject.attr('id', 'menu');
+
+						//event handling for context menu
+						var options = menuObject.children();
+						options[0].onclick = function(e) {
+							//click on start point
+							self.emit('map:addWaypoint', {
+								pos : displayPos,
+								type : Waypoint.type.START
+							});
+						};
+						options[1].onclick = function(e) {
+							//click on via point
+							self.emit('map:addWaypoint', {
+								pos : displayPos,
+								type : Waypoint.type.VIA
+							});
+						};
+						options[2].onclick = function(e) {
+							//click on end point
+							self.emit('map:addWaypoint', {
+								pos : displayPos,
+								type : Waypoint.type.END
+							});
+						}
+						//place context menu in a popup on the map
 						self.popup = new OpenLayers.Popup('menu', pos, null, menuObject.html(), false, null);
-						self.popup.autoSize= true;
+						self.popup.autoSize = true;
 						self.popup.div = menuObject.get(0);
 						self.popup.opacity = 0.9;
 						//TODO all this will not work properly with any stable version of OL; it is only included in DEV version so far... :/
 						self.popup.border = '1px';
-						
+
 						self.theMap.addPopup(self.popup);
 					},
 					'click' : function(e) {
@@ -515,14 +537,19 @@ var Map = ( function() {"use strict";
 
 					var firstIndex = currentMarkerId.indexOf('_');
 					var lastIndex = currentMarkerId.lastIndexOf('_');
+					var currentWpId = currentMarkerId.substring(firstIndex + 1, firstIndex + 2);
 
 					if (firstIndex != lastIndex) {
-						//we are looking at a searchWaypoint marker, not e.g. a searchAddress marker
+						//we are looking at a searchWaypoint marker, not e.g. a searchAddress or waypoint marker
 						//i.e. marker of type 'address_47_11', not 'address_11'
-						var currentWpId = currentMarkerId.substring(firstIndex + 1, firstIndex + 2);
 
 						if (currentWpId == waypointIndex) {
 							//remove only features of appropriate waypoint
+							markersToRemove.push(markers[i]);
+						}
+					} else {
+						//this removes all other markers
+						if (currentWpId == waypointIndex) {
 							markersToRemove.push(markers[i]);
 						}
 					}
@@ -603,28 +630,69 @@ var Map = ( function() {"use strict";
 		}
 
 		/* *********************************************************************
-		 * FOR MODULES (e.g. search, routing,...)
-		 * *********************************************************************/
+		* FOR MODULES (e.g. search, routing,...)
+		* *********************************************************************/
 
 		/*
-		 * WAYPOINTS
+		* WAYPOINTS
+		*/
+		/**
+		 * for the given waypoint index, select the given search result element (by index) and convert it to a waypoint marker with the given type
 		 */
 		function addWaypointMarker(wpIndex, markerIndex, type) {
 			var layerSearchResults = this.theMap.getLayersByName(this.SEARCH)[0];
 			var layerWaypoints = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
 
 			var oldMarker = layerSearchResults.features[markerIndex];
+			if (oldMarker) {
+				this.clearMarkers(this.SEARCH, wpIndex);
 
-			this.clearMarkers(this.SEARCH, wpIndex);
+				var newMarker = new OpenLayers.Geometry.Point(oldMarker.geometry.x, oldMarker.geometry.y);
+				var newFeature = new OpenLayers.Feature.Vector(newMarker, {
+					icon : Ui.markerIcons[type][0],
+					iconEm : Ui.markerIcons[type][1],
+					id : 'waypoint_' + wpIndex
+				});
 
-			var newMarker = new OpenLayers.Geometry.Point(oldMarker.geometry.x, oldMarker.geometry.y);
+				layerWaypoints.addFeatures([newFeature]);
+			}
+		}
+
+		/**
+		 * add a waypoint marker with the given type at the given position (e.g. by clicking on the map saying 'add a waypoint here')
+		 */
+		function addWaypointAtPos(position, wpIndex, type) {
+			var layerWaypoints = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
+
+			//set new marker
+			var newMarker = new OpenLayers.Geometry.Point(position.lon, position.lat);
 			var newFeature = new OpenLayers.Feature.Vector(newMarker, {
 				icon : Ui.markerIcons[type][0],
 				iconEm : Ui.markerIcons[type][1],
 				id : 'waypoint_' + wpIndex
 			});
-
 			layerWaypoints.addFeatures([newFeature]);
+		}
+
+		/**
+		 * refresh the eventually existing marker for the given waypoint index with the given type
+		 */
+		function setWaypointMarker(wpIndex, type) {
+			var layerWaypoints = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
+			for (var i = 0; i < layerWaypoints.features.length; i++) {
+				var marker = layerWaypoints.features[i];
+				if (marker.data.id == 'waypoint_' + wpIndex) {
+					//marker for this waypoint exists, check the markerIcon
+					var newMarker = new OpenLayers.Geometry.Point(marker.geometry.x, marker.geometry.y);
+					var newFeature = new OpenLayers.Feature.Vector(newMarker, {
+						icon : Ui.markerIcons[type][0],
+						iconEm : Ui.markerIcons[type][1],
+						id : 'waypoint_' + wpIndex
+					});
+					layerWaypoints.addFeatures([newFeature]);
+					layerWaypoints.removeFeatures([marker]);
+				}
+			}
 		}
 
 		/*
@@ -641,23 +709,26 @@ var Map = ( function() {"use strict";
 			for (var i = 0; i < listOfPoints.length; i++) {
 				//convert corrdinates of marker
 				var point = listOfPoints[i];
-				point = this.convertPointForMap(point);
-				point = new OpenLayers.Geometry.Point(point.lon, point.lat);
+				if (point) {
 
-				if (wpIndex) {
-					//a waypoint search
-					var ftId = 'address_' + wpIndex + '_' + i;
-				} else {
-					//an address search
-					var ftId = 'address_' + i;
+					point = this.convertPointForMap(point);
+					point = new OpenLayers.Geometry.Point(point.lon, point.lat);
+
+					if (wpIndex) {
+						//a waypoint search
+						var ftId = 'address_' + wpIndex + '_' + i;
+					} else {
+						//an address search
+						var ftId = 'address_' + i;
+					}
+
+					var feature = new OpenLayers.Feature.Vector(point, {
+						icon : Ui.markerIcons.result[0],
+						iconEm : Ui.markerIcons.result[1],
+						id : ftId
+					});
+					layerSearchResults.addFeatures([feature]);
 				}
-
-				var feature = new OpenLayers.Feature.Vector(point, {
-					icon : Ui.markerIcons.result[0],
-					iconEm : Ui.markerIcons.result[1],
-					id : ftId
-				});
-				layerSearchResults.addFeatures([feature]);
 			}
 
 			//show all results
@@ -766,6 +837,8 @@ var Map = ( function() {"use strict";
 		map.prototype.emphMarker = emphMarker;
 
 		map.prototype.addWaypointMarker = addWaypointMarker;
+		map.prototype.addWaypointAtPos = addWaypointAtPos;
+		map.prototype.setWaypointMarker = setWaypointMarker;
 
 		map.prototype.addSearchAddressResultMarkers = addSearchAddressResultMarkers;
 		map.prototype.zoomToAddressResults = zoomToAddressResults;

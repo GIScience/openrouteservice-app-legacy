@@ -19,10 +19,7 @@ var SearchAddress = ( function(window) {"use strict";
 		 * @param  {Function} failureCallback Callback which is called after an error occured
 		 * @param  {Inteter} index of the waypoint in the route
 		 */
-		function find(address, successCallback, failureCallback) {			
-			//TODO static now
-			var language = 'en';
-
+		function find(address, successCallback, failureCallback, language) {			
 			//build request
 			var writer = new XMLWriter('UTF-8', '1.0');
 			writer.writeStartDocument();
@@ -93,6 +90,8 @@ var SearchAddress = ( function(window) {"use strict";
 
 					if (europeBbox.containsLonLat(point)) {
 						listOfPoints.push(point);
+					} else {
+						listOfPoints.push(null);
 					}
 				}
 			});

@@ -17,11 +17,10 @@ var SearchPoi = ( function(window) {"use strict";
 		 * @param  {String}   poi  POI to be searched
 		 * @param  {Function} callback Callback which is called after the results are returned from Nominatim
 		 */
-		function find(searchQuery, refPoint, maxDist, successCallback, failureCallback) {
+		function find(searchQuery, refPoint, maxDist, successCallback, failureCallback, language) {
 			//TODO static now
-			var language = 'en';
 			var distanceUnit = 'M';
-
+			
 			// if (OpenRouteService.Preferences.distanceUnit.indexOf('yd') != -1 || OpenRouteService.Preferences.distanceUnit.indexOf('YD') != -1) {
 			// distanceUnit = 'YD';
 			// } else {

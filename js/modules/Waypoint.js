@@ -3,7 +3,7 @@
  * for search result elements:
  * map markers as well as DOM elements have an id like "address_WP-ID_SEARCH-ID", e.g. address_1_4 when searching for the 2nd waypoint, 5th result
  * for waypoint elements (after selecting a search result):
- * map markers as well as DOM elements have an id like "waypoint_WP-ID", e.g. waypoint_1 for the 2nd waypoint 
+ * map markers as well as DOM elements have an id like "waypoint_WP-ID", e.g. waypoint_1 for the 2nd waypoint
  */
 var Waypoint = (function(w) {'use strict';
 
@@ -13,13 +13,6 @@ var Waypoint = (function(w) {'use strict';
 	function Waypoint() {
 		this.numWaypoints = 2;
 		this.requestCounterWaypoints = [0, 0];
-
-		this.type = {
-			START : 'start',
-			VIA : 'via',
-			END : 'end',
-			UNSET : 'unset'
-		};
 	}
 
 	/**
@@ -29,10 +22,7 @@ var Waypoint = (function(w) {'use strict';
 	 * @param  {Function} failureCallback Callback which is called after an error occured
 	 * @param  {Inteter} index of the waypoint in the route
 	 */
-	function find(address, successCallback, failureCallback, wpIndex) {
-		//TODO static now
-		var language = 'en';
-
+	function find(address, successCallback, failureCallback, wpIndex, language) {
 		//build request
 		var writer = new XMLWriter('UTF-8', '1.0');
 		writer.writeStartDocument();
@@ -97,7 +87,7 @@ var Waypoint = (function(w) {'use strict';
 
 		var europeBbox = new OpenLayers.Bounds(-31.303, 34.09, 50.455, 71.869);
 
-		var listOfMarkers = [];
+		var listOfPoints = [];
 
 		var geocodeResponseList = util.getElementsByTagNameNS(results, namespaces.xls, 'GeocodeResponseList');
 		$A(geocodeResponseList).each(function(geocodeResponse) {
@@ -108,12 +98,14 @@ var Waypoint = (function(w) {'use strict';
 				point = new OpenLayers.LonLat(point[0], point[1]);
 
 				if (europeBbox.containsLonLat(point)) {
-					listOfMarkers.push(point);
+					listOfPoints.push(point);
+				} else {
+					listOfPoints.push(null);
 				}
 			}
 		});
 
-		return listOfMarkers;
+		return listOfPoints;
 	}
 
 	/**
@@ -129,9 +121,17 @@ var Waypoint = (function(w) {'use strict';
 		}
 	}
 
+
 	Waypoint.prototype.find = find;
 	Waypoint.prototype.parseResultsToPoints = parseResultsToPoints;
 	Waypoint.prototype.determineWaypointType = determineWaypointType;
 
 	return new Waypoint();
 })(window);
+
+Waypoint.type = {
+	START : 'start',
+	VIA : 'via',
+	END : 'end',
+	UNSET : 'unset'
+}; 

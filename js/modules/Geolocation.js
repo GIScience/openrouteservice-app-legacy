@@ -6,7 +6,7 @@ var Geolocator = ( function(w) {"use strict";
 		function Geolocator() {
 
 		}
-		
+
 		/**
 		 * used to determine the user's current location using HTML5 geolocation feature
 		 * @param {Object} locationSuccess used to view the user's current position on the map
@@ -30,13 +30,7 @@ var Geolocator = ( function(w) {"use strict";
 		 * @param {Object} successCallback used to view the address of the current location on the UI
 		 * @param {Object} failureCallback used to view an error message on the UI
 		 */
-		function reverseGeolocate(position, successCallback, failureCallback) {
-			console.log("reverse geolocation")
-			console.log(position);
-
-			//TODO static now
-			var language = 'en'
-
+		function reverseGeolocate(position, successCallback, failureCallback, language, waypointType, waypointIndex) {
 			var writer = new XMLWriter('UTF-8', '1.0');
 			writer.writeStartDocument();
 			//<xls:XLS>
@@ -85,11 +79,14 @@ var Geolocator = ( function(w) {"use strict";
 			writer.close();
 
 			var xmlResponse;
+			var success = function(result) {
+				successCallback(result, waypointType, waypointIndex);
+			}
 			var request = OpenLayers.Request.POST({
-				url : namespaces.services.directory,
+				url : namespaces.services.geocoding,
 				data : xmlRequest,
-				success : successCallback,
-				failure : failureCallback
+				success : success,
+				failure : failureCallback,
 			});
 		}
 
