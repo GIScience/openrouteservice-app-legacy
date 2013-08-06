@@ -598,9 +598,11 @@ var Map = ( function() {"use strict";
 				zoom = 17;
 			}
 
-			var pt = layer.features[index].geometry;
-			pos = new OpenLayers.LonLat(pt.x, pt.y);
-			this.theMap.moveTo(pos, zoom);
+			if (layer.features[index]) {
+				var pt = layer.features[index].geometry;
+				pos = new OpenLayers.LonLat(pt.x, pt.y);
+				this.theMap.moveTo(pos, zoom);
+			}
 		}
 
 		function emphMarker(markerId, emph) {
@@ -627,6 +629,26 @@ var Map = ( function() {"use strict";
 					}
 				});
 			}
+		}
+
+		function getMarkerById(markerId) {
+			var poi = markerId.match(/poi/i);
+			var address = markerId.match(/address/i);
+
+			var layer;
+			if (poi) {
+				layer = this.theMap.getLayersByName(this.POI)[0];
+			} else if (address) {
+				layer = this.theMap.getLayersByName(this.SEARCH)[0];
+			}
+
+			var pos;
+			$A(layer.features).each(function(marker) {
+				if (marker.data.id == markerId) {
+					pos = new OpenLayers.LonLat(marker.geometry.x, marker.geometry.y);
+				}
+			});
+			return pos;
 		}
 
 		/* *********************************************************************
@@ -695,6 +717,25 @@ var Map = ( function() {"use strict";
 			}
 		}
 
+		function switchMarkers(index1, index2) {
+			var layerWaypoints = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
+			var marker1, marker2;
+
+			for (var i = 0; i < layerWaypoints.features.length; i++) {
+				var marker = layerWaypoints.features[i];
+				if (marker.data.id == 'waypoint_' + index1) {
+					marker1 = marker;
+				} else if (marker.data.id == 'waypoint_' + index2) {
+					marker2 = marker;
+				}
+			}
+
+			if (marker1 && marker1.data && marker2 && marker2.data) {
+				marker1.data.id = 'waypoint_' + index2;
+				marker2.data.id = 'waypoint_' + index1;
+			}
+		}
+
 		/*
 		* SEARCH ADDRESS
 		*/
@@ -723,8 +764,8 @@ var Map = ( function() {"use strict";
 					}
 
 					var feature = new OpenLayers.Feature.Vector(point, {
-						icon : Ui.markerIcons.result[0],
-						iconEm : Ui.markerIcons.result[1],
+						icon : Ui.markerIcons.unset[0],
+						iconEm : Ui.markerIcons.unset[1],
 						id : ftId
 					});
 					layerSearchResults.addFeatures([feature]);
@@ -835,10 +876,12 @@ var Map = ( function() {"use strict";
 
 		map.prototype.clearMarkers = clearMarkers;
 		map.prototype.emphMarker = emphMarker;
+		map.prototype.getMarkerById = getMarkerById;
 
 		map.prototype.addWaypointMarker = addWaypointMarker;
 		map.prototype.addWaypointAtPos = addWaypointAtPos;
 		map.prototype.setWaypointMarker = setWaypointMarker;
+		map.prototype.switchMarkers = switchMarkers;
 
 		map.prototype.addSearchAddressResultMarkers = addSearchAddressResultMarkers;
 		map.prototype.zoomToAddressResults = zoomToAddressResults;

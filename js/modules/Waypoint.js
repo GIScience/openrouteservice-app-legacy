@@ -13,6 +13,7 @@ var Waypoint = (function(w) {'use strict';
 	function Waypoint() {
 		this.numWaypoints = 2;
 		this.requestCounterWaypoints = [0, 0];
+		this.nextUnsetWaypoint = 0;
 	}
 
 	/**
@@ -112,13 +113,26 @@ var Waypoint = (function(w) {'use strict';
 	 * set the type of the waypoint either as start, via or end according to the waypoint's position in the route
 	 */
 	function determineWaypointType(wpIndex) {
+		var type;
 		if (wpIndex == 0) {
-			return this.type.START;
+			type = this.type.START;
 		} else if (wpIndex == this.numWaypoints - 1) {
-			return this.type.END;
+			type = this.type.END;
 		} else {
-			return this.type.VIA;
+			type = this.type.VIA;
 		}
+
+		var el = document.getElementById('waypoint_No' + wpIndex);
+		var typeUnset = true;
+		if (el && el.className) {
+			var c = el.getAttribute("class");
+			c = " " + c + " ";
+			typeUnset = c.indexOf(' ' + this.type.UNSET + ' ') > -1;
+		}
+		if (typeUnset) {
+			type = this.type.UNSET;
+		}
+		return type;
 	}
 
 
@@ -134,4 +148,4 @@ Waypoint.type = {
 	VIA : 'via',
 	END : 'end',
 	UNSET : 'unset'
-}; 
+};

@@ -82,6 +82,12 @@ var Controller = ( function(w) {'use strict';
 
 			var type = selectWaypointType(wpIndex);
 			map.addWaypointMarker(wpIndex, resultIndex, type);
+
+			//adapt the next unset waypoint
+			if (waypoint.nextUnsetWaypoint == wpIndex) {
+				waypoint.nextUnsetWaypoint++;
+			}
+			//else: user sets e.g. waypoint 2 while waypoint 1 is still empty
 		}
 
 		function handleAddWaypoint() {
@@ -98,7 +104,7 @@ var Controller = ( function(w) {'use strict';
 			map.setWaypointMarker(wpIndex, type);
 			return type;
 		}
-		
+
 		/**
 		 * what happens after the user sets a waypoint by clicking on the map saying "add waypoint..."
 		 */
@@ -116,12 +122,12 @@ var Controller = ( function(w) {'use strict';
 			//remove old waypoint marker (if exists)
 			if (wpType != Waypoint.type.VIA) {
 				//if we have a new VIA point, we create a new waypoint, i.e. there can't be any markers yet
-				map.clearMarkers(map.ROUTE_POINTS, wpIndex);		
+				map.clearMarkers(map.ROUTE_POINTS, wpIndex);
 			}
-			
+
 			if (wpType == Waypoint.type.VIA) {
 				//add the marker with the NEW index (does not exist yet, will be generated in the successCallback function) on the map
-				map.addWaypointAtPos(map.convertPointForMap(pos), wpIndex+1, wpType);
+				map.addWaypointAtPos(map.convertPointForMap(pos), wpIndex + 1, wpType);
 			} else {
 				//add waypoint marker at given pos
 				map.addWaypointAtPos(map.convertPointForMap(pos), wpIndex, wpType);
@@ -132,10 +138,24 @@ var Controller = ( function(w) {'use strict';
 
 		function reverseGeocodeSuccess(addressResult, wpType, wpIndex) {
 			ui.addWaypointResultByRightclick(addressResult, wpType, wpIndex, waypoint.numWaypoints);
+
+			//adapt the next unset waypoint
+			if (waypoint.nextUnsetWaypoint == wpIndex) {
+				waypoint.nextUnsetWaypoint++;
+			}
+			//else: user sets e.g. waypoint 2 while waypoint 1 is still empty
 		}
 
 		function reverseGeocodeFailure() {
 			//TODO implement
+		}
+		
+		function handleMovedWaypoints(atts) {
+			var index1 = atts.id1;
+			var index2 = atts.id2;
+			map.switchMarkers(index1, index2);
+			selectWaypointType(index1);
+			selectWaypointType(index2);
 		}
 
 		/* *********************************************************************
@@ -241,20 +261,6 @@ var Controller = ( function(w) {'use strict';
 			}
 		}
 
-		// /**
-		// * calls the map to highlight the address marker
-		// */
-		// function handleEmphasizeSearchAddressMarker(markerId) {
-		// map.emphasizeSearchAddressMarker(markerId);
-		// }
-		//
-		// /**
-		// * calls the map to stop highlighting the address marker
-		// */
-		// function handleDeEmphasizeSearchAddressMarker(markerId) {
-		// map.deEmphasizeSearchAddressMarker(markerId);
-		// }
-
 		/**
 		 * remove old address markers from the map when starting a new address search
 		 */
@@ -353,20 +359,6 @@ var Controller = ( function(w) {'use strict';
 			}
 		}
 
-		// /**
-		// * calls the map to highlight the POI marker
-		// */
-		// function handleEmphasizeSearchPoiMarker(markerId) {
-		// map.emphasizeSearchPoiMarker(markerId);
-		// }
-		//
-		// /**
-		// *calls the map to stop highlighting the POI marker
-		// */
-		// function handleDeEmphasizeSearchPoiMarker(markerId) {
-		// map.deEmphasizeSearchPoiMarker(markerId);
-		// }
-
 		/**
 		 * remove old POI markers from the map when starting a new POI search
 		 */
@@ -380,6 +372,33 @@ var Controller = ( function(w) {'use strict';
 
 		function handleZoomToMarker(objectId) {
 			map.zoomToMarker(objectId);
+		}
+
+		/**
+		 * add a search result (address, POI) as a waypoint to the current route
+		 * @param markerId: id of the marker to use as waypoint
+		 */
+		function handleUseAsWaypoint(markerId) {
+			//get position of the marker
+			var position = map.getMarkerById(markerId);
+
+			//use the next unset waypoint for the new waypoint (append one if no unset wp exists)
+			var index = waypoint.nextUnsetWaypoint;
+
+			var type;
+			if (index == 0) {
+				type = waypoint.type.START;
+			} else if (index >= waypoint.numWaypoints - 1) {
+				type = waypoint.type.END;
+			} else {
+				type = waypoint.type.VIA;
+			}
+
+			//use position to add the waypoint
+			map.addWaypointAtPos(position, index, type);
+			geolocator.reverseGeolocate(map.convertPointForDisplay(position), reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, type, index);
+
+			//markers of the search results will not be removed cause the search is still visible.
 		}
 
 		/* *********************************************************************
@@ -512,6 +531,7 @@ var Controller = ( function(w) {'use strict';
 			ui.register('ui:waypointResultClick', handleWaypointResultClick);
 			map.register('map:addWaypoint', handleAddWaypointByRightclick);
 			ui.register('ui:selectWaypointType', selectWaypointType);
+			ui.register('ui:movedWaypoints', handleMovedWaypoints);
 
 			ui.register('ui:geolocationRequest', handleGeolocationRequest);
 
@@ -528,6 +548,7 @@ var Controller = ( function(w) {'use strict';
 			ui.register('ui:clearSearchPoiMarkers', handleClearSearchPoiMarkers);
 			ui.register('ui:zoomToPoiResults', handleZoomToPoiResults);
 
+			ui.register('ui:useAsWaypoint', handleUseAsWaypoint);
 			ui.register('ui:zoomToMarker', handleZoomToMarker);
 
 			ui.register('ui:openPermalinkRequest', handlePermalinkRequest);

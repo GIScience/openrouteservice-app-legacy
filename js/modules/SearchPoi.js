@@ -18,6 +18,8 @@ var SearchPoi = ( function(window) {"use strict";
 		 * @param  {Function} callback Callback which is called after the results are returned from Nominatim
 		 */
 		function find(searchQuery, refPoint, maxDist, successCallback, failureCallback, language) {
+			maxDist = maxDist > 5000 ? 5000 : maxDist;
+			
 			//TODO static now
 			var distanceUnit = 'M';
 			
@@ -65,7 +67,7 @@ var SearchPoi = ( function(window) {"use strict";
 					findPoisOnScreen(writer, refPoint, maxDist, distanceUnit);
 				} else {
 					// searching near given route...
-					findPoisNearRoute(writer, refPoint);
+					findPoisNearRoute(writer, refPoint, maxDist);
 				}
 				//</xls:POILocation>
 				writer.writeEndElement();
@@ -141,7 +143,7 @@ var SearchPoi = ( function(window) {"use strict";
 			writer.writeEndElement();
 		}
 
-		function findPoisNearRoute(writer, refPoint) {
+		function findPoisNearRoute(writer, refPoint, maxDist) {
 			//calculate buffer polygon around route
 			var routePoints = [];
 			var reader = new jsts.io.WKTReader();
@@ -157,7 +159,7 @@ var SearchPoi = ( function(window) {"use strict";
 			readerInput = readerInput.substring(0, readerInput.length - 2);
 			readerInput += ")";
 
-			var bufferMaxDist = ((self.maxDist * 360) / 40000000) + "";
+			var bufferMaxDist = ((maxDist * 360) / 40000000) + "";
 
 			var input = reader.read(readerInput);
 			var buffer = input.buffer(bufferMaxDist);
