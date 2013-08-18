@@ -307,10 +307,10 @@ var Map = ( function() {"use strict";
 			});
 			//highlighting of the markers's DOM representation (address text) on mouseover
 			this.selectMarker.onSelect = function(feature) {
-				self.emit('map:markerEmph', feature.data.id);
+				self.emit('map:markerEmph', feature.id);
 			};
 			this.selectMarker.onUnselect = function(feature) {
-				self.emit('map:markerDeEmph', feature.data.id);
+				self.emit('map:markerDeEmph', feature.id);
 			};
 			this.theMap.addControl(this.selectMarker);
 			this.selectMarker.activate();
@@ -522,58 +522,19 @@ var Map = ( function() {"use strict";
 		 *  @param layerName: name of the layer to remove the objects from
 		 *  @param waypointIndex: index of the waypoint where to remove objects from
 		 */
-		function clearMarkers(layerName, waypointIndex) {
+		function clearMarkers(layerName, featureIds) {
 			var layer = this.theMap.getLayersByName(layerName);
 			if (layer && layer.length > 0) {
 				layer = layer[0];
 			}
-			if (waypointIndex != undefined) {
-				//we assume that we want to remove the features of the given waypoint.
-				//otherwise no waypoint index is set.
-				var markers = layer.features;
-				var markersToRemove = [];
-				for (var i = 0; i < markers.length; i++) {
-					var currentMarkerId = markers[i].data.id;
-
-					var firstIndex = currentMarkerId.indexOf('_');
-					var lastIndex = currentMarkerId.lastIndexOf('_');
-					var currentWpId = currentMarkerId.substring(firstIndex + 1, firstIndex + 2);
-
-					if (firstIndex != lastIndex) {
-						//we are looking at a searchWaypoint marker, not e.g. a searchAddress or waypoint marker
-						//i.e. marker of type 'address_47_11', not 'address_11'
-
-						if (currentWpId == waypointIndex) {
-							//remove only features of appropriate waypoint
-							markersToRemove.push(markers[i]);
-						}
-					} else {
-						//this removes all other markers
-						if (currentWpId == waypointIndex) {
-							markersToRemove.push(markers[i]);
-						}
-					}
+			if (featureIds && featureIds.length > 0) {
+				var toRemove = [];
+				for (var i = 0; i < featureIds.length; i++) {
+					var ft = layer.getFeatureById(featureIds[i]);
+					toRemove.push(ft);
 				}
-				//remove the markers (actually features)
-				layer.removeFeatures(markersToRemove);
-			} else if (layerName == this.SEARCH) {
-				//we're dealing with e.g. a regular address search
-				var markers = layer.features;
-				var markersToRemove = [];
-				for (var i = 0; i < markers.length; i++) {
-					var currentMarkerId = markers[i].data.id;
-					var firstIndex = currentMarkerId.indexOf('_');
-					var lastIndex = currentMarkerId.lastIndexOf('_');
-
-					if (firstIndex == lastIndex) {
-						//we are looking at a searchAddress marker
-						markersToRemove.push(markers[i]);
-					}
-				}
-				//remove the markers (actually features)
-				layer.removeFeatures(markersToRemove);
+				layer.removeFeatures(toRemove);
 			} else {
-				//a POI search/ waypoint results, delete all markers
 				layer.removeAllFeatures();
 			}
 		}
@@ -582,73 +543,24 @@ var Map = ( function() {"use strict";
 		 * Move and zoom the map to a given marker
 		 * @param {Object} objectId String containing the CSS-id of the marker representation, e.g. 'address_2' or 'poi_47'
 		 */
-		function zoomToMarker(objectId) {
-			var index = objectId.lastIndexOf('_');
-			index = objectId.substring(index + 1, objectId.length);
-
-			var layer, pos, zoom;
-
-			if (objectId.indexOf('address') != -1) {
-				//want to zoom to a searchAddress marker
-				layer = this.theMap.getLayersByName(this.SEARCH)[0];
-				zoom = 14;
-			} else if (objectId.indexOf('poi') != -1) {
-				//want to zoom to a searchPoi marker
-				layer = this.theMap.getLayersByName(this.POI)[0];
-				zoom = 17;
-			}
-
-			if (layer.features[index]) {
-				var pt = layer.features[index].geometry;
-				pos = new OpenLayers.LonLat(pt.x, pt.y);
-				this.theMap.moveTo(pos, zoom);
-			}
+		function zoomToMarker(position, zoom) {
+			this.theMap.moveTo(position, zoom);
 		}
 
-		function emphMarker(markerId, emph) {
-			if (markerId.indexOf('address') != -1) {
-				var layer = this.theMap.getLayersByName(this.SEARCH)[0];
-			} else if (markerId.indexOf('waypoint') != -1) {
-				var layer = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
-			} else if (markerId.indexOf('poi') != -1) {
-				var layer = this.theMap.getLayersByName(this.POI)[0];
-			}
+		function emphMarker(layer, featureId, emph) {
+			var layer = this.theMap.getLayersByName(layer);
+			layer = layer ? layer[0] : null;
 
-			var self = this;
 			if (layer) {
-				$A(layer.features).each(function(feature) {
-					if (feature.data.id == markerId) {
-						if (emph) {
-							//emphasize feature
-							self.selectMarker.select(feature);
-						} else {
-							//de-emphasize feature
-							self.selectMarker.unselect(feature);
-						}
-
-					}
-				});
-			}
-		}
-
-		function getMarkerById(markerId) {
-			var poi = markerId.match(/poi/i);
-			var address = markerId.match(/address/i);
-
-			var layer;
-			if (poi) {
-				layer = this.theMap.getLayersByName(this.POI)[0];
-			} else if (address) {
-				layer = this.theMap.getLayersByName(this.SEARCH)[0];
-			}
-
-			var pos;
-			$A(layer.features).each(function(marker) {
-				if (marker.data.id == markerId) {
-					pos = new OpenLayers.LonLat(marker.geometry.x, marker.geometry.y);
+				var marker = layer.getFeatureById(featureId);
+				if (emph) {
+					//emphasize feature
+					this.selectMarker.select(marker);
+				} else {
+					//de-emphasize feature
+					this.selectMarker.unselect(marker);
 				}
-			});
-			return pos;
+			}
 		}
 
 		/* *********************************************************************
@@ -661,22 +573,19 @@ var Map = ( function() {"use strict";
 		/**
 		 * for the given waypoint index, select the given search result element (by index) and convert it to a waypoint marker with the given type
 		 */
-		function addWaypointMarker(wpIndex, markerIndex, type) {
+		function addWaypointMarker(wpIndex, featureId, type) {
 			var layerSearchResults = this.theMap.getLayersByName(this.SEARCH)[0];
 			var layerWaypoints = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
 
-			var oldMarker = layerSearchResults.features[markerIndex];
+			var oldMarker = layerSearchResults.getFeatureById(featureId);
 			if (oldMarker) {
-				this.clearMarkers(this.SEARCH, wpIndex);
-
 				var newMarker = new OpenLayers.Geometry.Point(oldMarker.geometry.x, oldMarker.geometry.y);
 				var newFeature = new OpenLayers.Feature.Vector(newMarker, {
 					icon : Ui.markerIcons[type][0],
 					iconEm : Ui.markerIcons[type][1],
-					id : 'waypoint_' + wpIndex
 				});
-
 				layerWaypoints.addFeatures([newFeature]);
+				return newFeature.id;
 			}
 		}
 
@@ -691,9 +600,9 @@ var Map = ( function() {"use strict";
 			var newFeature = new OpenLayers.Feature.Vector(newMarker, {
 				icon : Ui.markerIcons[type][0],
 				iconEm : Ui.markerIcons[type][1],
-				id : 'waypoint_' + wpIndex
 			});
 			layerWaypoints.addFeatures([newFeature]);
+			return newFeature.id;
 		}
 
 		/**
@@ -709,7 +618,6 @@ var Map = ( function() {"use strict";
 					var newFeature = new OpenLayers.Feature.Vector(newMarker, {
 						icon : Ui.markerIcons[type][0],
 						iconEm : Ui.markerIcons[type][1],
-						id : 'waypoint_' + wpIndex
 					});
 					layerWaypoints.addFeatures([newFeature]);
 					layerWaypoints.removeFeatures([marker]);
@@ -717,24 +625,42 @@ var Map = ( function() {"use strict";
 			}
 		}
 
-		function switchMarkers(index1, index2) {
+		function setWaypointType(featureId, type) {
 			var layerWaypoints = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
-			var marker1, marker2;
+			var feature = layerWaypoints.getFeatureById(featureId);
 
-			for (var i = 0; i < layerWaypoints.features.length; i++) {
-				var marker = layerWaypoints.features[i];
-				if (marker.data.id == 'waypoint_' + index1) {
-					marker1 = marker;
-				} else if (marker.data.id == 'waypoint_' + index2) {
-					marker2 = marker;
-				}
+			//create new feature
+			if (feature) {
+				var pt = new OpenLayers.Geometry.Point(feature.geometry.x, feature.geometry.y);
+				var newFeature = new OpenLayers.Feature.Vector(pt, {
+					icon : Ui.markerIcons[type][0],
+					iconEm : Ui.markerIcons[type][1],
+				});
+				layerWaypoints.addFeatures([newFeature]);
+				layerWaypoints.removeFeatures([feature]);
+				var id = newFeature.id;
 			}
-
-			if (marker1 && marker1.data && marker2 && marker2.data) {
-				marker1.data.id = 'waypoint_' + index2;
-				marker2.data.id = 'waypoint_' + index1;
-			}
+			return id;
 		}
+
+		// function switchMarkers(index1, index2) {
+			// var layerWaypoints = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
+			// var marker1, marker2;
+// 
+			// for (var i = 0; i < layerWaypoints.features.length; i++) {
+				// var marker = layerWaypoints.features[i];
+				// if (marker.data.id == 'waypoint_' + index1) {
+					// marker1 = marker;
+				// } else if (marker.data.id == 'waypoint_' + index2) {
+					// marker2 = marker;
+				// }
+			// }
+// 
+			// if (marker1 && marker1.data && marker2 && marker2.data) {
+				// marker1.data.id = 'waypoint_' + index2;
+				// marker2.data.id = 'waypoint_' + index1;
+			// }
+		// }
 
 		/*
 		* SEARCH ADDRESS
@@ -747,6 +673,7 @@ var Map = ( function() {"use strict";
 		 */
 		function addSearchAddressResultMarkers(listOfPoints, wpIndex) {
 			var layerSearchResults = this.theMap.getLayersByName(this.SEARCH)[0];
+			var listOfFeatures = [];
 			for (var i = 0; i < listOfPoints.length; i++) {
 				//convert corrdinates of marker
 				var point = listOfPoints[i];
@@ -766,14 +693,16 @@ var Map = ( function() {"use strict";
 					var feature = new OpenLayers.Feature.Vector(point, {
 						icon : Ui.markerIcons.unset[0],
 						iconEm : Ui.markerIcons.unset[1],
-						id : ftId
 					});
+					listOfFeatures.push(feature);
 					layerSearchResults.addFeatures([feature]);
 				}
 			}
 
 			//show all results
 			this.zoomToAddressResults();
+
+			return listOfFeatures;
 		}
 
 		/**
@@ -800,7 +729,7 @@ var Map = ( function() {"use strict";
 		function addSearchPoiResultMarkers(listOfPoints) {
 			//TODO must be tested when DB is available again
 			var layerPoiResults = this.theMap.getLayersByName(this.POI)[0];
-
+			var listOfFeatures = [];
 			for (var i = 0; i < listOfPoints.length; i++) {
 				var point = listOfPoints[i];
 
@@ -811,20 +740,14 @@ var Map = ( function() {"use strict";
 				point = new OpenLayers.Geometry.Point(point.lon, point.lat);
 				var feature = new OpenLayers.Feature.Vector(point, {
 					icon : icon,
-					iconEm : icon,
-					id : 'poi_' + i
+					iconEm : icon
+					// id : 'poi_' + i
 				});
 				layerPoiResults.addFeatures([feature]);
+				listOfFeatures.push(feature);
 			}
 
-			// var layerPoiResults = this.theMap.getLayersByName(this.POI)[0];
-			// for (var i = 0; i < listOfMarkers.length; i++) {
-			// //convert corrdinates of marker
-			// var marker = listOfMarkers[i];
-			// marker.setOpacity(0.7);
-			// marker.lonlat = this.convertPointForMap(marker.lonlat);
-			// layerPoiResults.addMarker(marker);
-			// }
+			return listOfFeatures;
 		}
 
 		/**
@@ -876,12 +799,13 @@ var Map = ( function() {"use strict";
 
 		map.prototype.clearMarkers = clearMarkers;
 		map.prototype.emphMarker = emphMarker;
-		map.prototype.getMarkerById = getMarkerById;
+		// map.prototype.getMarkerById = getMarkerById;
 
 		map.prototype.addWaypointMarker = addWaypointMarker;
 		map.prototype.addWaypointAtPos = addWaypointAtPos;
 		map.prototype.setWaypointMarker = setWaypointMarker;
-		map.prototype.switchMarkers = switchMarkers;
+		map.prototype.setWaypointType = setWaypointType;
+		// map.prototype.switchMarkers = switchMarkers;
 
 		map.prototype.addSearchAddressResultMarkers = addSearchAddressResultMarkers;
 		map.prototype.zoomToAddressResults = zoomToAddressResults;

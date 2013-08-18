@@ -69,7 +69,7 @@ div.olControlScaleLine {
 .waypointResult {
 	margin-bottom: 10px;
 }
-.closeButton {
+.removeWaypoint {
 	display: block;
 	float: right;
 	width: 16px;

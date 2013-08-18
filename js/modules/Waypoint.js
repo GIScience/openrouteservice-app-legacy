@@ -122,7 +122,7 @@ var Waypoint = (function(w) {'use strict';
 			type = this.type.VIA;
 		}
 
-		var el = document.getElementById('waypoint_No' + wpIndex);
+		var el = document.getElementById(wpIndex);
 		var typeUnset = true;
 		if (el && el.className) {
 			var c = el.getAttribute("class");

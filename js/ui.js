@@ -112,7 +112,10 @@ var Ui = ( function(w) {'use strict';
 		 */
 		function handleMouseOverElement(e) {
 			e.currentTarget.addClassName('highlight');
-			theInterface.emit('ui:emphElement', e.currentTarget.id);
+			theInterface.emit('ui:emphElement', {
+				id : e.currentTarget.getAttribute('id'),
+				layer : e.currentTarget.getAttribute('data-layer')
+			});
 		}
 
 		/**
@@ -120,7 +123,10 @@ var Ui = ( function(w) {'use strict';
 		 */
 		function handleMouseOutElement(e) {
 			e.currentTarget.removeClassName('highlight');
-			theInterface.emit('ui:deEmphElement', e.currentTarget.id);
+			theInterface.emit('ui:deEmphElement', {
+				id : e.currentTarget.getAttribute('id'),
+				layer : e.currentTarget.getAttribute('data-layer')
+			});
 		}
 
 		/* *********************************************************************
@@ -132,7 +138,6 @@ var Ui = ( function(w) {'use strict';
 
 			//index of the waypoint (0st, 1st 2nd,...)
 			var index = waypointElement.attr('id');
-			index = index.substring(index.lastIndexOf('_') + 3, index.length);
 
 			clearTimeout(typingTimerWaypoints[index]);
 			if (e.keyIdentifier != 'Shift' && e.currentTarget.value.length != 0) {
@@ -146,45 +151,54 @@ var Ui = ( function(w) {'use strict';
 					//request new results
 					theInterface.emit('ui:searchWaypointRequest', {
 						query : e.currentTarget.value,
-						wpIndex : index
+						wpIndex : index,
+						searchIds : waypointElement.get(0).getAttribute('data-search')
 					});
 				}, DONE_TYPING_INTERVAL);
 			}
 		}
 
 		function searchWaypointChangeToSearchingState(changeToSearching, wpIndex) {
-			var rootElement = $('#waypoint_No' + wpIndex);
-			var children = rootElement.children();
-			var inputElement = (children[children.length-1]).childNodes[1];
+			var rootElement = $('#' + wpIndex).get(0);
+			var inputElement = rootElement.querySelector('input');
 
 			if (changeToSearching) {
 				$(inputElement).addClass('searching');
-				$('#searchWaypointError_' + wpIndex).hide();
+				rootElement.querySelector('.searchWaypointError').hide();
 			} else {
 				inputElement.removeClassName('searching');
 			}
 		}
 
-		function updateSearchWaypointResultList(request, listOfPoints, wpIndex) {
+		function updateSearchWaypointResultList(request, listOfFeatures, layername, wpIndex) {
 			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
 			var results = request.responseXML ? request.responseXML : util.parseStringToDOM(request.responseText);
 
 			//insert address information to page
 			var allAddress;
-			var resultContainer = $('#searchWaypointResults_' + wpIndex);
+			var allIds = '';
+			var rootElement = $('#' + wpIndex).get(0);
+			var resultContainer = rootElement.querySelector('.searchWaypointResults');
 			var geocodeResponseList = util.getElementsByTagNameNS(results, namespaces.xls, 'GeocodeResponseList');
 			$A(geocodeResponseList).each(function(geocodeResponse) {
 				allAddress = $A(util.getElementsByTagNameNS(geocodeResponse, namespaces.xls, 'Address'));
 				for (var i = 0; i < allAddress.length; i++) {
 					//listOfPoitnts[i] == null if result is not in Europe
-					if (listOfPoints[i]) {
+					if (listOfFeatures[i]) {
+						var lonLat = listOfFeatures[i].geometry;
+						allIds += listOfFeatures[i].id + ' ';
 						var address = allAddress[i];
 						address = util.parseAddress(address);
-						address.setAttribute('id', 'address_' + wpIndex + '_' + i);
-						resultContainer.append(address);
+						address.setAttribute('id', listOfFeatures[i].id);
+						address.setAttribute('data-position', lonLat.x + ' ' + lonLat.y);
+						address.setAttribute('data-layer', layername);
+						resultContainer.appendChild(address);
 					}
 				}
 			});
+			//slice away last space
+			allIds = allIds.substring(0, allIds.length - 1);
+			rootElement.setAttribute('data-search', allIds);
 
 			//show number of results and link to zoom
 			var numResults = $('#zoomToWaypointResults_' + wpIndex);
@@ -200,7 +214,8 @@ var Ui = ( function(w) {'use strict';
 		 * view an error message when problems occured during geocoding
 		 */
 		function showSearchWaypointError(wpIndex) {
-			var errorContainer = $('#searchWaypointError_' + wpIndex);
+			var rootElement = $('#' + wpIndex).get(0);
+			var errorContainer = rootElement.querySelector('.searchWaypointError')
 			errorContainer.update(preferences.translate("searchError"));
 			errorContainer.show();
 		}
@@ -209,162 +224,147 @@ var Ui = ( function(w) {'use strict';
 		 * when the user clicks on a waypoint search result, use it as waypoint
 		 */
 		function handleSearchWaypointResultClick(e) {
-			//index of waypoint
-			var index = e.currentTarget.id;
-			var resultIndex = index;
-			index = index.substring(index.indexOf('_') + 1, index.indexOf('_') + 2);
-			resultIndex = resultIndex.substring(resultIndex.lastIndexOf('_') + 1);
-
-			var rootElement = $('#waypoint_No' + index);
+			var rootElement = $(e.currentTarget).parent().parent().parent().parent();
+			var index = rootElement.attr('id');
 			rootElement.removeClass('unset');
-			var children = rootElement.children();
+			rootElement = rootElement.get(0);
 
-			e.currentTarget.id = 'waypoint_' + index;
+			rootElement.querySelector('.searchAgainButton').show();
+			rootElement.querySelector('.guiComponent').hide();
 
-			//show waypoint result and searchAgain button
-			children[3].show();
-			var waypointResultElement = children[4];
+			var waypointResultElement = rootElement.querySelector('div');
 			waypointResultElement.insert(e.currentTarget);
 			waypointResultElement.show();
-
-			//hide input field with search result list
-			children[5].hide();
 
 			//remove search markers and add a new waypoint marker
 			theInterface.emit('ui:waypointResultClick', {
 				wpIndex : index,
-				resultIndex : resultIndex
+				featureId : e.currentTarget.id,
+				searchIds : rootElement.getAttribute('data-search')
 			});
+		}
+
+		function setWaypointFeatureId(wpIndex, featureId, layer) {
+			var rootElement = $('#' + wpIndex).get(0);
+			var address = rootElement.querySelector('.address');
+			if (address) {
+				address.id = featureId;
+				address.setAttribute('data-layer', layer);
+			}
+		}
+
+		function getFeatureIdOfWaypoint(wpIndex) {
+			var rootElement = $('#' + wpIndex).get(0);
+			var address = rootElement.querySelector('.address');
+			var id = address ? address.id : null;
+			return id;
 		}
 
 		function handleMoveUpWaypointClick(e) {
 			//index of waypoint
 			var waypointElement = $(e.currentTarget).parent();
-			var id = waypointElement.attr('id');
-			var index = parseInt(id.substring(id.indexOf('_') + 3));
+			var index = parseInt(waypointElement.attr('id'));
 
-			var previousElement = $('#waypoint_No' + (index - 1));
-			var prevId = previousElement.attr('id');
 			var prevIndex = index - 1;
+			var previousElement = $('#' + prevIndex);
 
 			waypointElement.insertBefore(previousElement);
 
-			//adapt IDs... of previousElement
-			previousElement.attr('id', id);
-			var el = $('#searchWaypointError_' + prevIndex).get(0);
-			el.setAttribute('id', 'searchWaypointError_' + index);
-			el = $('#zoomToWaypointResults_' + prevIndex).get(0);
-			el.setAttribute('id', 'zoomToWaypointResults_' + index);
-			el = $('#searchWaypointResults_' + prevIndex).get(0);
-			el.setAttribute('id', 'searchWaypointResults_' + index);
-			el = $('#waypoint_' + prevIndex).get(0);
-			if (el) {
-				el.setAttribute('id', 'waypoint_' + index);
-			}
+			//adapt IDs...
+			previousElement.attr('id', index);
+			waypointElement.attr('id', prevIndex);
 
-			//adapt IDs... of waypointElement
-			waypointElement.attr('id', prevId);
-			var el = $('#searchWaypointError_' + index).get(0);
-			el.setAttribute('id', 'searchWaypointError_' + prevIndex);
-			el = $('#zoomToWaypointResults_' + index).get(0);
-			el.setAttribute('id', 'zoomToWaypointResults_' + prevIndex);
-			el = $('#searchWaypointResults_' + index).get(0);
-			el.setAttribute('id', 'searchWaypointResults_' + prevIndex);
-			el = $('#waypoint_' + index).get(0);
-			if (el) {
-				//waypoint is already set
-				el.setAttribute('id', 'waypoint_' + prevIndex);
-			}
+			//define the new correct order
+			var currentIndex = prevIndex;
+			var succIndex = index;
 
-			//decide which buttons to show
+			//-1 because we have an invisible draft waypoint
 			var numWaypoints = $('.waypoint').length - 1;
-			if (prevIndex == 0) {
+
+			//decide which button to show
+			if (currentIndex == 0) {
 				//the waypoint which has been moved up is the first waypoint: hide move up button
-				var buttons = waypointElement.children();
-				buttons[2].show();
-				buttons[1].hide();
+				$(waypointElement.get(0).querySelector('.moveUpWaypoint')).hide();
+				$(waypointElement.get(0).querySelector('.moveDownWaypoint')).show();
+			} else {
+				//show both
+				$(waypointElement.get(0).querySelector('.moveUpWaypoint')).show();
+				$(waypointElement.get(0).querySelector('.moveDownWaypoint')).show();
 			}
-			if (index == numWaypoints - 1) {
+
+			if (succIndex == (numWaypoints - 1)) {
 				//the waypoint which has been moved down is the last waypoint: hide the move down button
-				var buttons = previousElement.children();
-				buttons[1].show();
-				buttons[2].hide();
+				$(previousElement.get(0).querySelector('.moveUpWaypoint')).show()
+				$(previousElement.get(0).querySelector('.moveDownWaypoint')).hide();
+			} else {
+				//show both
+				$(previousElement.get(0).querySelector('.moveUpWaypoint')).show()
+				$(previousElement.get(0).querySelector('.moveDownWaypoint')).show();
 			}
 
 			//adapt marker-IDs, decide about wpType
 			theInterface.emit('ui:movedWaypoints', {
-				id1 : index,
-				id2 : prevIndex
+				id1 : currentIndex,
+				id2 : succIndex
 			});
 		}
 
 		function handleMoveDownWaypointClick(e) {
 			//index of waypoint
 			var waypointElement = $(e.currentTarget).parent();
-			var id = waypointElement.attr('id');
-			var index = parseInt(id.substring(id.indexOf('_') + 3));
+			var index = parseInt(waypointElement.attr('id'));
 
-			var succElement = $('#waypoint_No' + (index + 1));
-			var succId = succElement.attr('id');
+			var succElement = $('#' + (index + 1));
 			var succIndex = index + 1;
 
 			waypointElement.insertAfter(succElement);
 
 			//adapt IDs... of waypointElement
-			waypointElement.attr('id', succId);
-			var el = $('#searchWaypointError_' + index).get(0);
-			el.setAttribute('id', 'searchWaypointError_' + succIndex);
-			el = $('#zoomToWaypointResults_' + index).get(0);
-			el.setAttribute('id', 'zoomToWaypointResults_' + succIndex);
-			el = $('#searchWaypointResults_' + index).get(0);
-			el.setAttribute('id', 'searchWaypointResults_' + succIndex);
-			el = $('#waypoint_' + index).get(0);
-			if (el) {
-				el.setAttribute('id', 'waypoint_' + succIndex);
-			}
+			waypointElement.attr('id', succIndex);
+			succElement.attr('id', index);
 
-			//adapt IDs... of succElement
-			succElement.attr('id', id);
-			var el = $('#searchWaypointError_' + succIndex).get(0);
-			el.setAttribute('id', 'searchWaypointError_' + index);
-			el = $('#zoomToWaypointResults_' + succIndex).get(0);
-			el.setAttribute('id', 'zoomToWaypointResults_' + index);
-			el = $('#searchWaypointResults_' + succIndex).get(0);
-			el.setAttribute('id', 'searchWaypointResults_' + index);
-			el = $('#waypoint_' + succIndex).get(0);
-			if (el) {
-				el.setAttribute('id', 'waypoint_' + index);
-			}
+			//define the new correct order
+			var currentIndex = succIndex;
+			var prevIndex = index;
+
+			//-1 because we have an invisible draft waypoint
+			var numWaypoints = $('.waypoint').length - 1;
 
 			//decide which buttons to show
-			var numWaypoints = $('.waypoint').length - 1;
-			if (succIndex == numWaypoints - 1) {
+			if (currentIndex == numWaypoints - 1) {
 				//the waypoint which has been moved down is the last waypoint: hide move down button
-				var buttons = waypointElement.children();
-				buttons[2].hide();
-				buttons[1].show();
+				$(waypointElement.get(0).querySelector('.moveUpWaypoint')).show();
+				$(waypointElement.get(0).querySelector('.moveDownWaypoint')).hide();
+			} else {
+				//show both
+				$(waypointElement.get(0).querySelector('.moveUpWaypoint')).show();
+				$(waypointElement.get(0).querySelector('.moveDownWaypoint')).show();
 			}
-			if (index == 0) {
+			if (prevIndex == 0) {
 				//the waypoint which has been moved up is the first waypoint: hide the move up button
-				var buttons = succElement.children();
-				buttons[1].hide();
-				buttons[2].show();
+				$(succElement.get(0).querySelector('.moveUpWaypoint')).hide();
+				$(succElement.get(0).querySelector('.moveDownWaypoint')).show();
+			} else {
+				//show both
+				$(succElement.get(0).querySelector('.moveUpWaypoint')).show();
+				$(succElement.get(0).querySelector('.moveDownWaypoint')).show();
 			}
 
 			//adapt marker-IDs, decide about wpType
 			theInterface.emit('ui:movedWaypoints', {
-				id1 : index,
-				id2 : succIndex
+				id1 : currentIndex,
+				id2 : prevIndex
 			});
 		}
 
 		function handleAddWaypointClick(e) {
 			//id of prior to last waypoint:
 			var waypointId = $(e.currentTarget).prev().attr('id');
-			var oldIndex = parseInt(waypointId.substring(waypointId.indexOf('_') + 3));
+			var oldIndex = parseInt(waypointId);
 			addWaypointAfter(oldIndex, oldIndex + 1);
 
 			theInterface.emit('ui:selectWaypointType', oldIndex);
+			var numwp = $('.waypoint').length - 1;
 		}
 
 		/**
@@ -373,37 +373,33 @@ var Ui = ( function(w) {'use strict';
 		 */
 		function addWaypointAfter(idx, numWaypoints) {
 			//for the current element, show the move down button (will later be at least the next to last one)
-			var previous = $('#waypoint_No' + idx);
+			var previous = $('#' + idx);
 			previous.children()[2].show();
 
 			//'move' all successor waypoints down from idx+1 to numWaypoints
 			for (var i = idx + 1; i < numWaypoints; i++) {
-				var wpElement = $('#waypoint_No' + i);
+				var wpElement = $('#' + i);
 				if (i < numWaypoints - 1) {
 					//this is not the last waypoint, show move down button
 					wpElement.children()[2].show();
 				}
 				var wpId = wpElement.attr('id');
-				var newIndex = wpId.substring(0, wpId.indexOf('_') + 3) + (i + 1);
-				wpElement.attr('id', newIndex)
+				wpElement.attr('id', i + 1);
 
-				$('#searchWaypointError_' + i).get(0).setAttribute('id', 'searchWaypointError_' + (i + 1));
-				$('#zoomToWaypointResults_' + i).get(0).setAttribute('id', 'zoomToWaypointResults_' + (i + 1));
-				$('#searchWaypointResults_' + i).get(0).setAttribute('id', 'searchWaypointResults_' + (i + 1));
-				var el = $('#waypoint_' + i).get(0);
-				if (el) {
-					el.setAttribute('id', 'waypoint_' + (i + 1));
-				}
+				// var el = $('#' + i).get(0);
+				// if (el) {
+				// el.setAttribute('id', (i + 1));
+				// }
 			}
 
 			//generate new id
 			var newIndex = parseInt(idx) + 1;
-			var predecessorElement = $('#waypoint_No' + idx);
+			var predecessorElement = $('#' + idx);
 			var waypointId = predecessorElement.attr('id');
 			waypointId = waypointId.replace(idx, newIndex);
 
 			//generate DOM elements
-			var newWp = $('#waypoint_Draft').clone();
+			var newWp = $('#Draft').clone();
 			newWp.attr('id', waypointId)
 			newWp.insertAfter(predecessorElement);
 			newWp.show();
@@ -421,19 +417,12 @@ var Ui = ( function(w) {'use strict';
 				buttons[2].hide();
 			}
 
-			//we need to adapt some more IDs...
-			var el = $('.searchWaypointError_Draft').get(1);
-			el.setAttribute('id', 'searchWaypointError_' + newIndex);
-			el.removeClassName('searchWaypointError_Draft');
-			el = $('.zoomToWaypointResults_Draft').get(1);
-			el.setAttribute('id', 'zoomToWaypointResults_' + newIndex);
-			el.removeClassName('zoomToWaypointResults_Draft');
-			el = $('.searchWaypointResults_Draft').get(1);
-			el.setAttribute('id', 'searchWaypointResults_' + newIndex);
-			el.removeClassName('searchWaypointResults_Draft');
-
 			//add event handling
-			$('.searchWaypoint').keyup(handleSearchWaypointInput);
+			newWp = newWp.get(0);
+			newWp.querySelector('.searchWaypoint').addEventListener('keyup', handleSearchWaypointInput);
+			newWp.querySelector('.moveUpWaypoint').addEventListener('click', handleMoveUpWaypointClick);
+			newWp.querySelector('.moveDownWaypoint').addEventListener('click', handleMoveDownWaypointClick);
+			newWp.querySelector('.removeWaypoint').addEventListener('click', handleRemoveWaypointClick);
 
 			theInterface.emit('ui:addWaypoint');
 		}
@@ -454,10 +443,9 @@ var Ui = ( function(w) {'use strict';
 			var addressResult = util.getElementsByTagNameNS(results, namespaces.xls, 'Address');
 			addressResult = addressResult ? addressResult[0] : null;
 			addressResult = util.parseAddress(addressResult);
-			$(addressResult).attr('id', 'waypoint_' + index);
 
 			//insert information as waypoint
-			var rootElement = $('#waypoint_No' + index);
+			var rootElement = $('#' + index);
 			rootElement.removeClass('unset');
 			var children = rootElement.children();
 
@@ -482,10 +470,62 @@ var Ui = ( function(w) {'use strict';
 				//this is necessary if we called this function after clicking on "use as waypoint" on a POI search result etc.
 				theInterface.emit('ui:selectWaypointType', index - 1);
 			}
+
+			var numwp = $('.waypoint').length - 1;
+			return index;
 		}
 
 		function handleRemoveWaypointClick(e) {
-			//TODO implement
+			var numWaypoints = $('.waypoint').length - 1;
+			if (numWaypoints > 2) {
+				//we want to show at least 2 waypoints
+				var currentId = parseInt($(e.currentTarget).parent().attr('id'));
+				var featureId = $(e.currentTarget).parent().get(0);
+				featureId = featureId.querySelector('.address').id;
+
+				//'move' all successor waypoints up from currentId to currentId-1
+				for (var i = currentId + 1; i < numWaypoints; i++) {
+					var wpElement = $('#' + i);
+					wpElement.attr('id', (i - 1));
+					// var el = $('#' + i).get(0);
+					// if (el) {
+					// el.setAttribute('id', (i - 1));
+					// }
+				}
+				$(e.currentTarget).parent().remove();
+
+				theInterface.emit('ui:removeWaypoint', {
+					wpIndex : currentId,
+					featureId : featureId
+				});
+			}
+			var numwp = $('.waypoint').length - 1;
+		}
+
+		/**
+		 *show or hide the "move waypoint down" button
+		 */
+		function setMoveDownButton(wpIndex, show) {
+			var rootElement = $('#' + wpIndex).get(0);
+			var moveDown = rootElement.querySelector('.moveDownWaypoint');
+			if (show) {
+				$(moveDown).show();
+			} else {
+				$(moveDown).hide();
+			}
+		}
+
+		/**
+		 *show or hide the "move waypoint up" button
+		 */
+		function setMoveUpButton(wpIndex, show) {
+			var rootElement = $('#' + wpIndex).get(0);
+			var moveUp = rootElement.querySelector('.moveUpWaypoint');
+			if (show) {
+				$(moveUp).show();
+			} else {
+				$(moveUp).hide();
+			}
 		}
 
 		function handleSearchAgainWaypointClick(e) {
@@ -493,7 +533,7 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		function setWaypointType(wpIndex, type) {
-			var el = $('#waypoint_No' + wpIndex);
+			var el = $('#' + wpIndex);
 			el.removeClass('unset');
 			el.removeClass('start');
 			el.removeClass('via');
@@ -503,20 +543,20 @@ var Ui = ( function(w) {'use strict';
 
 		function handleResetRoute() {
 			//remove all existing waypoints
-			var el = $('#waypoint_No0');
+			var el = $('#0');
 			var i = 0;
 			while (el.length > 0) {
 				el.remove();
 				i++;
-				el = $('#waypoint_No' + i);
+				el = $('#' + i);
 			}
 
 			//generate two empty waypoints
 			for (var j = 1; j >= 0; j--) {
 				//generate DOM elements
-				var draftWp = $('#waypoint_Draft');
+				var draftWp = $('#Draft');
 				var newWp = draftWp.clone();
-				newWp.attr('id', 'waypoint_No' + j)
+				newWp.attr('id', j)
 				newWp.insertAfter(draftWp);
 				newWp.show();
 
@@ -534,17 +574,6 @@ var Ui = ( function(w) {'use strict';
 					buttons[1].hide();
 					buttons[2].show();
 				}
-
-				//we need to adapt some more IDs...
-				var el = $('.searchWaypointError_Draft').get(1);
-				el.setAttribute('id', 'searchWaypointError_' + j);
-				el.removeClassName('searchWaypointError_Draft');
-				el = $('.zoomToWaypointResults_Draft').get(1);
-				el.setAttribute('id', 'zoomToWaypointResults_' + j);
-				el.removeClassName('zoomToWaypointResults_Draft');
-				el = $('.searchWaypointResults_Draft').get(1);
-				el.setAttribute('id', 'searchWaypointResults_' + j);
-				el.removeClassName('searchWaypointResults_Draft');
 
 				//add event handling
 				$('.searchWaypoint').keyup(handleSearchWaypointInput);
@@ -601,7 +630,7 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
-		function updateSearchAddressResultList(request, listOfPoints) {
+		function updateSearchAddressResultList(request, listOfFeatures, layername) {
 			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
 			var results = request.responseXML ? request.responseXML : util.parseStringToDOM(request.responseText);
 
@@ -613,15 +642,20 @@ var Ui = ( function(w) {'use strict';
 				allAddress = $A(util.getElementsByTagNameNS(geocodeResponse, namespaces.xls, 'Address'));
 				for (var i = 0; i < allAddress.length; i++) {
 					//listOfPoitnts[i] == null if result is not in Europe
-					if (listOfPoints[i]) {
+					if (listOfFeatures[i]) {
 						var address = allAddress[i];
 						address = util.parseAddress(address);
-						address.setAttribute('id', 'address_' + i);
+						var lonLat = listOfFeatures[i].geometry;
+						address.setAttribute('id', listOfFeatures[i].id);
+						address.setAttribute('data-position', lonLat.x + ' ' + lonLat.y);
+						address.setAttribute('data-layer', layername);
 
 						var useAsWaypointButton = new Element('span', {
 							'class' : 'clickable useAsWaypoint',
 							'title' : 'use as waypoint',
-							'id' : 'address_' + i
+							'id' : listOfFeatures[i].id,
+							'data-position' : lonLat.x + ' ' + lonLat.y,
+							'data-layer' : layername
 						});
 						address.insert(useAsWaypointButton);
 						resultContainer.append(address);
@@ -654,11 +688,19 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		function handleSearchResultClick(e) {
-			theInterface.emit('ui:zoomToMarker', e.currentTarget.id);
+			theInterface.emit('ui:zoomToMarker', {
+				position : e.currentTarget.getAttribute('data-position'),
+				layer : e.currentTarget.getAttribute('data-layer')
+			});
 		}
 
 		function handleUseAsWaypoint(e) {
-			theInterface.emit('ui:useAsWaypoint', e.currentTarget.id)
+			theInterface.emit('ui:useAsWaypoint', {
+				id : e.currentTarget.id,
+				position : e.currentTarget.getAttribute('data-position'),
+				layer : e.currentTarget.getAttribute('data-layer')
+			});
+
 		}
 
 		/* *********************************************************************
@@ -760,7 +802,7 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
-		function updateSearchPoiResultList(request) {
+		function updateSearchPoiResultList(request, listOfFeatures, layername) {
 			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
 			var results = request.responseXML ? request.responseXML : util.parseStringToDOM(request.responseText);
 			var resultContainer = $('#fnct_searchPoiResults');
@@ -771,41 +813,51 @@ var Ui = ( function(w) {'use strict';
 			$A(geocodeResponseList).each(function(poiResponse) {
 				allPoi = $A(util.getElementsByTagNameNS(poiResponse, namespaces.xls, 'POIContext'));
 				for (var i = 0; i < allPoi.length; i++) {
-					var poi = allPoi[i];
-					var element = new Element('li', {
-						'class' : 'poi',
-						'id' : 'poi_' + i
-					});
+					if (listOfFeatures[i]) {
 
-					var poiElement = util.getElementsByTagNameNS(poi, namespaces.xls, 'POI')[0];
-					var poiName = poiElement.getAttribute('POIName');
+						var poi = allPoi[i];
+						var element = new Element('li', {
+							'class' : 'poi',
+							// 'id' : 'poi_' + i
+						});
 
-					var poiDesc = poiElement.getAttribute('description');
-					poiDesc = poiDesc.substring(0, poiDesc.indexOf(';'));
-					poiDesc = preferences.translate(poiDesc);
-					poiDesc = poiDesc.length > 1 ? ' (' + poiDesc + ')' : '';
+						var lonLat = listOfFeatures[i].geometry;
+						element.setAttribute('id', listOfFeatures[i].id);
+						element.setAttribute('data-position', lonLat.x + ' ' + lonLat.y);
+						element.setAttribute('data-layer', layername);
 
-					//if neither poiName nor poiDesc is given -> display "untitled"
-					poiName = poiName.length + poiDesc.length == 0 ? preferences.translate('untitled') : poiName;
+						var poiElement = util.getElementsByTagNameNS(poi, namespaces.xls, 'POI')[0];
+						var poiName = poiElement.getAttribute('POIName');
 
-					element.appendChild(new Element('span').update(poiName + poiDesc));
+						var poiDesc = poiElement.getAttribute('description');
+						poiDesc = poiDesc.substring(0, poiDesc.indexOf(';'));
+						poiDesc = preferences.translate(poiDesc);
+						poiDesc = poiDesc.length > 1 ? ' (' + poiDesc + ')' : '';
 
-					if (searchPoiAtts[0] == 'true') {
-						//we're searching near a route...
-						var distElement = util.getElementsByTagNameNS(poi, namespaces.xls, 'Distance')[0];
-						var poiDist = distElement.getAttribute('value');
-						var distanceUnitSrc = distElement.getAttribute('uom');
-						var dist = util.convertDistToDist(poiDist, distanceUnitSrc, preferences.distanceUnit);
-						element.appendChild(new Element('span').update(', ' + dist + ' ' + preferences.distanceUnit));
+						//if neither poiName nor poiDesc is given -> display "untitled"
+						poiName = poiName.length + poiDesc.length == 0 ? preferences.translate('untitled') : poiName;
+
+						element.appendChild(new Element('span').update(poiName + poiDesc));
+
+						if (searchPoiAtts[0] == 'true') {
+							//we're searching near a route...
+							var distElement = util.getElementsByTagNameNS(poi, namespaces.xls, 'Distance')[0];
+							var poiDist = distElement.getAttribute('value');
+							var distanceUnitSrc = distElement.getAttribute('uom');
+							var dist = util.convertDistToDist(poiDist, distanceUnitSrc, preferences.distanceUnit);
+							element.appendChild(new Element('span').update(', ' + dist + ' ' + preferences.distanceUnit));
+						}
+
+						var useAsWaypointButton = new Element('span', {
+							'class' : 'clickable useAsWaypoint',
+							'title' : 'use as waypoint',
+							'id' : listOfFeatures[i].id,
+							'data-position' : lonLat.x + ' ' + lonLat.y,
+							'data-layer' : layername
+						});
+						element.insert(useAsWaypointButton);
+						resultContainer.append(element);
 					}
-
-					var useAsWaypointButton = new Element('span', {
-						'class' : 'clickable useAsWaypoint',
-						'title' : 'use as waypoint',
-						'id' : 'poi_' + i
-					});
-					element.insert(useAsWaypointButton);
-					resultContainer.append(element);
 				}
 			});
 
@@ -897,9 +949,10 @@ var Ui = ( function(w) {'use strict';
 			//waypoints
 			$('.searchWaypoint').keyup(handleSearchWaypointInput);
 			$('#addWaypoint').click(handleAddWaypointClick);
+			$('#resetRoute').click(handleResetRoute);
 			$('.moveUpWaypoint').click(handleMoveUpWaypointClick);
 			$('.moveDownWaypoint').click(handleMoveDownWaypointClick);
-			$('#resetRoute').click(handleResetRoute);
+			$('.removeWaypoint').click(handleRemoveWaypointClick);
 
 			//geolocation
 			$('#fnct_geolocation').click(handleGeolocationClick);
@@ -929,8 +982,12 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.searchWaypointChangeToSearchingState = searchWaypointChangeToSearchingState;
 		Ui.prototype.updateSearchWaypointResultList = updateSearchWaypointResultList;
 		Ui.prototype.showSearchWaypointError = showSearchWaypointError;
+		Ui.prototype.setWaypointFeatureId = setWaypointFeatureId;
+		Ui.prototype.getFeatureIdOfWaypoint = getFeatureIdOfWaypoint;
 		Ui.prototype.setWaypointType = setWaypointType;
 		Ui.prototype.addWaypointResultByRightclick = addWaypointResultByRightclick;
+		Ui.prototype.setMoveDownButton = setMoveDownButton;
+		Ui.prototype.setMoveUpButton = setMoveUpButton;
 
 		Ui.prototype.searchAddressChangeToSearchingState = searchAddressChangeToSearchingState;
 		Ui.prototype.updateSearchAddressResultList = updateSearchAddressResultList;

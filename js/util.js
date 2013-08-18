@@ -3,6 +3,12 @@
  */
 util = ( function() {'use strict';
 		var util = {
+			convertPositionStringToLonLat : function(positionString) {
+				var pos = positionString.split(' ');
+				pos = new OpenLayers.LonLat(pos[0], pos[1]);
+				return pos;
+			},
+
 			/**
 			 * takes a given string and parses it to DOM objects
 			 * @param s: the String to parse
@@ -42,7 +48,6 @@ util = ( function() {'use strict';
 					return element.getElementsByTagName(nsTag + ':' + tagName);
 				}
 			},
-
 			parseAddress : function(xmlAddress) {
 				if (!xmlAddress) {
 					return;
