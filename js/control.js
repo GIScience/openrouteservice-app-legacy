@@ -98,6 +98,15 @@ var Controller = ( function(w) {'use strict';
 		function handleAddWaypoint() {
 			waypoint.numWaypoints++;
 			waypoint.requestCounterWaypoints.push(0);
+
+			//re-calculate type of last (now next-to-last) waypoint
+			var index = waypoint.numWaypoints - 2;
+			var type = waypoint.determineWaypointType(index);
+			ui.setWaypointType(index, type);
+
+			var featureId = ui.getFeatureIdOfWaypoint(index);
+			var newId = map.setWaypointType(featureId, type);
+			ui.setWaypointFeatureId(index, newId, map.ROUTE_POINTS);
 		}
 
 		/**
@@ -164,18 +173,17 @@ var Controller = ( function(w) {'use strict';
 			var index1 = atts.id1;
 			var index2 = atts.id2;
 			// map.switchMarkers(index1, index2);
-			
+
 			var type = selectWaypointType(index1);
 			var ftId = ui.getFeatureIdOfWaypoint(index1);
 			var newFtId = map.setWaypointType(ftId, type);
 			ui.setWaypointFeatureId(index1, newFtId, map.ROUTE_POINTS);
-						
+
 			var type = selectWaypointType(index2);
 			var ftId = ui.getFeatureIdOfWaypoint(index2);
 			newFtId = map.setWaypointType(ftId, type);
 			ui.setWaypointFeatureId(index2, newFtId, map.ROUTE_POINTS);
-			
-			
+
 		}
 
 		function handleRemoveWaypoint(atts) {
@@ -196,23 +204,26 @@ var Controller = ( function(w) {'use strict';
 				var type = waypoint.determineWaypointType(i);
 				ui.setWaypointType(i, type);
 
-				var featureId = ui.getFeatureIdOfWaypoint(i);
+				featureId = ui.getFeatureIdOfWaypoint(i);
 				var newId = map.setWaypointType(featureId, type);
 				ui.setWaypointFeatureId(i, newId, map.ROUTE_POINTS);
 			}
 
+			//decide about which buttons to show
 			if (idx > 0) {
 				//look at previous waypoint. If this is the last waypoint, do not show the move down button
-				console.log("setting buttons of " + (idx - 1) + " to down:true; up:false")
-				ui.setMoveDownButton(idx - 1, false);
-				ui.setMoveUpButton(idx - 1, true);
+				if ((idx - 1) == (waypoint.numWaypoints - 1)) {
+					ui.setMoveDownButton(idx - 1, false);
+					ui.setMoveUpButton(idx - 1, true);
+				}
 			}
 			if (idx < (waypoint.numWaypoints - 1)) {
 				//look at the next waypoint. If this is the first waypoint, do not show the move up button
 				//because we removed one waypoint, the successor will have now an ID of idx
-				console.log("setting buttons of " + (idx + 1) + " to down:false; up:true")
-				ui.setMoveDownButton(idx, true);
-				ui.setMoveUpButton(idx, false);
+				if (idx == 0) {
+					ui.setMoveDownButton(idx, true);
+					ui.setMoveUpButton(idx, false);
+				}
 			}
 		}
 

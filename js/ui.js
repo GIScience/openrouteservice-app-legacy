@@ -481,7 +481,12 @@ var Ui = ( function(w) {'use strict';
 				//we want to show at least 2 waypoints
 				var currentId = parseInt($(e.currentTarget).parent().attr('id'));
 				var featureId = $(e.currentTarget).parent().get(0);
-				featureId = featureId.querySelector('.address').id;
+				featureId = featureId.querySelector('.address');
+				if (featureId) {
+					featureId = featureId.id;
+				} else {
+					featureId = null;
+				}
 
 				//'move' all successor waypoints up from currentId to currentId-1
 				for (var i = currentId + 1; i < numWaypoints; i++) {
