@@ -91,7 +91,7 @@ var Controller = ( function(w) {'use strict';
 				waypoint.nextUnsetWaypoint++;
 			}
 			//else: user sets e.g. waypoint 2 while waypoint 1 is still empty
-
+			
 			ui.setWaypointFeatureId(wpIndex, waypointResultId, map.ROUTE_POINTS);
 		}
 
@@ -473,8 +473,8 @@ var Controller = ( function(w) {'use strict';
 			}
 
 			//use position to add the waypoint
-			map.addWaypointAtPos(position, index, type);
-			geolocator.reverseGeolocate(map.convertPointForDisplay(position), reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, type, index);
+			var featureId = map.addWaypointAtPos(position, index, type);
+			geolocator.reverseGeolocate(map.convertPointForDisplay(position), reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, type, index, featureId);
 
 			//markers of the search results will not be removed cause the search is still visible.
 		}
