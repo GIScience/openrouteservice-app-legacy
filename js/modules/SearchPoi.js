@@ -17,18 +17,10 @@ var SearchPoi = ( function(window) {"use strict";
 		 * @param  {String}   poi  POI to be searched
 		 * @param  {Function} callback Callback which is called after the results are returned from Nominatim
 		 */
-		function find(searchQuery, refPoint, maxDist, successCallback, failureCallback, language) {
+		function find(searchQuery, refPoint, maxDist, distanceUnit, successCallback, failureCallback, language) {
 			maxDist = maxDist > 5000 ? 5000 : maxDist;
+			distanceUnit = distanceUnit.toUpperCase();
 			
-			//TODO static now
-			var distanceUnit = 'M';
-			
-			// if (OpenRouteService.Preferences.distanceUnit.indexOf('yd') != -1 || OpenRouteService.Preferences.distanceUnit.indexOf('YD') != -1) {
-			// distanceUnit = 'YD';
-			// } else {
-			// distanceUnit = 'M';
-			// }
-
 			//build request
 			var writer = new XMLWriter('UTF-8', '1.0');
 			writer.writeStartDocument();
@@ -52,7 +44,7 @@ var SearchPoi = ( function(window) {"use strict";
 			writer.writeAttributeString('maximumResponses', '100');
 			//<xls:DirectoryRequest>
 			writer.writeStartElement('xls:DirectoryRequest');
-			writer.writeAttributeString('distanceUnit', 'M');
+			writer.writeAttributeString('distanceUnit', distanceUnit);
 			writer.writeAttributeString('sortCriteria', 'Distance');
 
 			//we are only allowed to include the position + distance if we are NOT searching for a POI by name (free text)

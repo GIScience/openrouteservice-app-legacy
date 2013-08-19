@@ -143,7 +143,7 @@ var Ui = ( function(w) {'use strict';
 			if (e.keyIdentifier != 'Shift' && e.currentTarget.value.length != 0) {
 				typingTimerWaypoints[index] = setTimeout(function() {
 					//empty search results
-					var resultContainer = $('#searchWaypointResults_' + index).get(0);
+					var resultContainer = waypointElement.get(0).querySelector('.searchWaypointResults');
 					while (resultContainer && resultContainer.hasChildNodes()) {
 						resultContainer.removeChild(resultContainer.lastChild);
 					}
@@ -385,11 +385,6 @@ var Ui = ( function(w) {'use strict';
 				}
 				var wpId = wpElement.attr('id');
 				wpElement.attr('id', i + 1);
-
-				// var el = $('#' + i).get(0);
-				// if (el) {
-				// el.setAttribute('id', (i + 1));
-				// }
 			}
 
 			//generate new id
@@ -492,10 +487,6 @@ var Ui = ( function(w) {'use strict';
 				for (var i = currentId + 1; i < numWaypoints; i++) {
 					var wpElement = $('#' + i);
 					wpElement.attr('id', (i - 1));
-					// var el = $('#' + i).get(0);
-					// if (el) {
-					// el.setAttribute('id', (i - 1));
-					// }
 				}
 				$(e.currentTarget).parent().remove();
 
@@ -549,7 +540,7 @@ var Ui = ( function(w) {'use strict';
 		function handleResetRoute() {
 			//remove markers on map
 			theInterface.emit('ui:resetRoute');
-			
+
 			//remove all existing waypoints
 			var el = $('#0');
 			var i = 0;
@@ -624,7 +615,11 @@ var Ui = ( function(w) {'use strict';
 						numResults.removeChild(numResults.lastChild);
 					}
 
-					theInterface.emit('ui:searchAddressRequest', e.currentTarget.value);
+					var lastSearchResults = $('#searchAddress').attr('data-search');
+					theInterface.emit('ui:searchAddressRequest', {
+						address : e.currentTarget.value,
+						lastSearchResults : lastSearchResults
+					});
 				}, DONE_TYPING_INTERVAL);
 			}
 		}
@@ -644,6 +639,7 @@ var Ui = ( function(w) {'use strict';
 
 			//insert address information to page
 			var allAddress;
+			var allIds = "";
 			var resultContainer = $('#fnct_searchAddressResults');
 			var geocodeResponseList = util.getElementsByTagNameNS(results, namespaces.xls, 'GeocodeResponseList');
 			$A(geocodeResponseList).each(function(geocodeResponse) {
@@ -654,6 +650,7 @@ var Ui = ( function(w) {'use strict';
 						var address = allAddress[i];
 						address = util.parseAddress(address);
 						var lonLat = listOfFeatures[i].geometry;
+						allIds += listOfFeatures[i].id + ' ';
 						address.setAttribute('id', listOfFeatures[i].id);
 						address.setAttribute('data-position', lonLat.x + ' ' + lonLat.y);
 						address.setAttribute('data-layer', layername);
@@ -670,6 +667,11 @@ var Ui = ( function(w) {'use strict';
 					}
 				}
 			});
+
+			//slice away last space
+			allIds = allIds.substring(0, allIds.length - 1);
+			var searchElement = $('#searchPlace').get(0);
+			searchElement.setAttribute('data-search', allIds);
 
 			//show number of results and link to zoom
 			var numResults = $('#zoomToAddressResults');
@@ -735,11 +737,13 @@ var Ui = ( function(w) {'use strict';
 						numResults.removeChild(numResults.lastChild);
 					}
 
+					var lastSearchResults = $('#searchPoi').attr('data-search');
 					theInterface.emit('ui:searchPoiRequest', {
 						query : e.currentTarget.value,
 						nearRoute : searchPoiAtts[0] && routeIsPresent,
 						maxDist : searchPoiAtts[1],
-						distUnit : searchPoiAtts[2]
+						distUnit : searchPoiAtts[2],
+						lastSearchResults : lastSearchResults
 					});
 				}, DONE_TYPING_INTERVAL);
 			}
@@ -817,6 +821,7 @@ var Ui = ( function(w) {'use strict';
 
 			//insert POI information to page
 			var allPoi;
+			var allIds = "";
 			var geocodeResponseList = util.getElementsByTagNameNS(results, namespaces.xls, 'DirectoryResponse');
 			$A(geocodeResponseList).each(function(poiResponse) {
 				allPoi = $A(util.getElementsByTagNameNS(poiResponse, namespaces.xls, 'POIContext'));
@@ -826,9 +831,9 @@ var Ui = ( function(w) {'use strict';
 						var poi = allPoi[i];
 						var element = new Element('li', {
 							'class' : 'poi',
-							// 'id' : 'poi_' + i
 						});
 
+						allIds += listOfFeatures[i].id + ' ';
 						var lonLat = listOfFeatures[i].geometry;
 						element.setAttribute('id', listOfFeatures[i].id);
 						element.setAttribute('data-position', lonLat.x + ' ' + lonLat.y);
@@ -868,6 +873,11 @@ var Ui = ( function(w) {'use strict';
 					}
 				}
 			});
+
+			//slice away last space
+			allIds = allIds.substring(0, allIds.length - 1);
+			var searchElement = $('#searchPoi').get(0);
+			searchElement.setAttribute('data-search', allIds);
 
 			//show number of results and link to zoom
 			var numResults = $('#zoomToPoiResults');

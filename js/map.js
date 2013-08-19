@@ -645,25 +645,6 @@ var Map = ( function() {"use strict";
 			return id;
 		}
 
-		// function switchMarkers(index1, index2) {
-		// var layerWaypoints = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
-		// var marker1, marker2;
-		//
-		// for (var i = 0; i < layerWaypoints.features.length; i++) {
-		// var marker = layerWaypoints.features[i];
-		// if (marker.data.id == 'waypoint_' + index1) {
-		// marker1 = marker;
-		// } else if (marker.data.id == 'waypoint_' + index2) {
-		// marker2 = marker;
-		// }
-		// }
-		//
-		// if (marker1 && marker1.data && marker2 && marker2.data) {
-		// marker1.data.id = 'waypoint_' + index2;
-		// marker2.data.id = 'waypoint_' + index1;
-		// }
-		// }
-
 		/*
 		* SEARCH ADDRESS
 		*/
@@ -801,13 +782,11 @@ var Map = ( function() {"use strict";
 
 		map.prototype.clearMarkers = clearMarkers;
 		map.prototype.emphMarker = emphMarker;
-		// map.prototype.getMarkerById = getMarkerById;
 
 		map.prototype.addWaypointMarker = addWaypointMarker;
 		map.prototype.addWaypointAtPos = addWaypointAtPos;
 		map.prototype.setWaypointMarker = setWaypointMarker;
 		map.prototype.setWaypointType = setWaypointType;
-		// map.prototype.switchMarkers = switchMarkers;
 
 		map.prototype.addSearchAddressResultMarkers = addSearchAddressResultMarkers;
 		map.prototype.zoomToAddressResults = zoomToAddressResults;

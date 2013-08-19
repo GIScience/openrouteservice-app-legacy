@@ -36,8 +36,12 @@ var Controller = ( function(w) {'use strict';
 		 */
 		function handleWaypointRequest(atts) {
 			ui.searchWaypointChangeToSearchingState(true, atts.wpIndex);
+			var lastSearchResults = atts.searchIds;
+			lastSearchResults = lastSearchResults ? lastSearchResults.split(' ') : null;
 
-			map.clearMarkers(map.SEARCH, atts.searchIds);
+			if (lastSearchResults) {
+				map.clearMarkers(map.SEARCH, lastSearchResults);
+			}
 
 			waypoint.requestCounterWaypoints[atts.wpIndex]++;
 			waypoint.find(atts.query, handleSearchWaypointResults, handleSearchWaypointFailure, atts.wpIndex, preferences.language);
@@ -69,13 +73,6 @@ var Controller = ( function(w) {'use strict';
 			}
 		}
 
-		// /**
-		// * remove old waypoint markers from the map when starting a new waypoint search
-		// */
-		// function handleClearSearchWaypointMarkers(searchIds) {
-		// map.clearMarkers(map.SEARCH, searchIds);
-		// }
-
 		function handleWaypointResultClick(atts) {
 			var wpIndex = atts.wpIndex;
 			var featureId = atts.featureId;
@@ -91,7 +88,7 @@ var Controller = ( function(w) {'use strict';
 				waypoint.nextUnsetWaypoint++;
 			}
 			//else: user sets e.g. waypoint 2 while waypoint 1 is still empty
-			
+
 			ui.setWaypointFeatureId(wpIndex, waypointResultId, map.ROUTE_POINTS);
 		}
 
@@ -226,7 +223,7 @@ var Controller = ( function(w) {'use strict';
 				}
 			}
 		}
-		
+
 		function handleResetRoute() {
 			//remove all waypoint markers
 			map.clearMarkers(map.ROUTE_POINTS);
@@ -302,10 +299,16 @@ var Controller = ( function(w) {'use strict';
 		/**
 		 * parses the user input for the address search and calls the SearchAddress module to build a search request
 		 */
-		function handleSearchAddressRequest(address) {
+		function handleSearchAddressRequest(atts) {
+			var address = atts.address;
+			var lastSearchResults = atts.lastSearchResults;
+			lastSearchResults = lastSearchResults ? lastSearchResults.split(' ') : null;
+
 			ui.searchAddressChangeToSearchingState(true);
 
-			map.clearMarkers(map.SEARCH);
+			if (lastSearchResults) {
+				map.clearMarkers(map.SEARCH, lastSearchResults);
+			}
 
 			searchAddress.requestCounter++;
 			searchAddress.find(address, handleSearchAddressResults, handleSearchAddressFailure, preferences.language);
@@ -379,10 +382,14 @@ var Controller = ( function(w) {'use strict';
 			var searchNearRoute = atts.nearRoute;
 			var maxDist = atts.maxDist;
 			var distanceUnit = atts.distUnit;
+			var lastSearchResults = atts.lastSearchResults;
+			lastSearchResults = lastSearchResults ? lastSearchResults.split(' ') : null;
 
 			ui.searchPoiChangeToSearchingState(true);
 
-			map.clearMarkers(map.POI);
+			if (lastSearchResults) {
+				map.clearMarkers(map.POI, lastSearchResults);
+			}
 
 			var refPoint = null;
 			if (searchNearRoute == true) {
@@ -406,7 +413,7 @@ var Controller = ( function(w) {'use strict';
 			}
 
 			searchPoi.requestCounter++;
-			searchPoi.find(poi, refPoint, maxDist, handleSearchPoiResults, handleSearchPoiFailure, preferences.language);
+			searchPoi.find(poi, refPoint, maxDist, distanceUnit, handleSearchPoiResults, handleSearchPoiFailure, preferences.language);
 		}
 
 		/**
@@ -617,7 +624,6 @@ var Controller = ( function(w) {'use strict';
 			ui.register('ui:deEmphElement', handleElementDeEmph);
 
 			ui.register('ui:searchWaypointRequest', handleWaypointRequest);
-			// ui.register('ui:clearSearchWaypointMarkers', handleClearSearchWaypointMarkers);
 			ui.register('ui:addWaypoint', handleAddWaypoint);
 			ui.register('ui:waypointResultClick', handleWaypointResultClick);
 			map.register('map:addWaypoint', handleAddWaypointByRightclick);
@@ -629,15 +635,11 @@ var Controller = ( function(w) {'use strict';
 			ui.register('ui:geolocationRequest', handleGeolocationRequest);
 
 			ui.register('ui:searchAddressRequest', handleSearchAddressRequest);
-			// ui.register('ui:emphasizeSearchAddressMarker', handleEmphasizeSearchAddressMarker);
-			// ui.register('ui:deEmphasizeSearchAddressMarker', handleDeEmphasizeSearchAddressMarker);
 			ui.register('ui:clearSearchAddressMarkers', handleClearSearchAddressMarkers);
 			ui.register('ui:zoomToAddressResults', handleZoomToAddressResults);
 
 			ui.register('ui:checkDistanceToRoute', handleCheckDistanceToRoute);
 			ui.register('ui:searchPoiRequest', handleSearchPoiRequest);
-			// ui.register('ui:emphasizeSearchPoiMarker', handleEmphasizeSearchPoiMarker);
-			// ui.register('ui:deEmphasizeSearchPoiMarker', handleDeEmphasizeSearchPoiMarker);
 			ui.register('ui:clearSearchPoiMarkers', handleClearSearchPoiMarkers);
 			ui.register('ui:zoomToPoiResults', handleZoomToPoiResults);
 
