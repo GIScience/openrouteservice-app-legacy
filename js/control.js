@@ -226,6 +226,13 @@ var Controller = ( function(w) {'use strict';
 				}
 			}
 		}
+		
+		function handleResetRoute() {
+			//remove all waypoint markers
+			map.clearMarkers(map.ROUTE_POINTS);
+			waypoint.numWaypoints = 2;
+			waypoint.nextUnsetWaypoint = 0;
+		}
 
 		/* *********************************************************************
 		 * GEOLOCATION
@@ -617,6 +624,7 @@ var Controller = ( function(w) {'use strict';
 			ui.register('ui:selectWaypointType', selectWaypointType);
 			ui.register('ui:movedWaypoints', handleMovedWaypoints);
 			ui.register('ui:removeWaypoint', handleRemoveWaypoint);
+			ui.register('ui:resetRoute', handleResetRoute);
 
 			ui.register('ui:geolocationRequest', handleGeolocationRequest);
 

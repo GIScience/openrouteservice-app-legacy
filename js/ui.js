@@ -547,6 +547,9 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		function handleResetRoute() {
+			//remove markers on map
+			theInterface.emit('ui:resetRoute');
+			
 			//remove all existing waypoints
 			var el = $('#0');
 			var i = 0;
