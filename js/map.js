@@ -565,6 +565,17 @@ var Map = ( function() {"use strict";
 			}
 		}
 
+		function convertFeatureIdToPositionString(featureId, layer) {
+			var mapLayer = this.theMap.getLayersByName(layer);
+			if (mapLayer && mapLayer.length > 0) {
+				mapLayer = mapLayer[0];
+			}
+			var ft = mapLayer.getFeatureById(featureId);
+			if (ft && ft.geometry) {
+				return ft.geometry.x + ' ' + ft.geometry.y;
+			}
+		}
+
 		/* *********************************************************************
 		* FOR MODULES (e.g. search, routing,...)
 		* *********************************************************************/
@@ -782,6 +793,7 @@ var Map = ( function() {"use strict";
 
 		map.prototype.clearMarkers = clearMarkers;
 		map.prototype.emphMarker = emphMarker;
+		map.prototype.convertFeatureIdToPositionString = convertFeatureIdToPositionString;
 
 		map.prototype.addWaypointMarker = addWaypointMarker;
 		map.prototype.addWaypointAtPos = addWaypointAtPos;

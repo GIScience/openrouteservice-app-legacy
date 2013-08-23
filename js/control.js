@@ -89,7 +89,11 @@ var Controller = ( function(w) {'use strict';
 			}
 			//else: user sets e.g. waypoint 2 while waypoint 1 is still empty
 
-			ui.setWaypointFeatureId(wpIndex, waypointResultId, map.ROUTE_POINTS);
+			var routePresent = waypoint.setNumWaypointsSet(waypoint.getNumWaypointsSet() + 1);
+			handleRoutePresent(routePresent);
+
+			var position = map.convertFeatureIdToPositionString(waypointResultId, map.ROUTE_POINTS);
+			ui.setWaypointFeatureId(wpIndex, waypointResultId, position, map.ROUTE_POINTS);
 		}
 
 		function handleAddWaypoint() {
@@ -103,7 +107,8 @@ var Controller = ( function(w) {'use strict';
 
 			var featureId = ui.getFeatureIdOfWaypoint(index);
 			var newId = map.setWaypointType(featureId, type);
-			ui.setWaypointFeatureId(index, newId, map.ROUTE_POINTS);
+			var position = map.convertFeatureIdToPositionString(newId, map.ROUTE_POINTS);
+			ui.setWaypointFeatureId(index, newId, position, map.ROUTE_POINTS);
 		}
 
 		/**
@@ -143,17 +148,24 @@ var Controller = ( function(w) {'use strict';
 			if (wpType == Waypoint.type.VIA) {
 				//add the marker with the NEW index (does not exist yet, will be generated in the successCallback function) on the map
 				var featureId = map.addWaypointAtPos(map.convertPointForMap(pos), wpIndex + 1, wpType);
+				var routePresent = waypoint.setNumWaypointsSet(waypoint.getNumWaypointsSet() + 1);
+				handleRoutePresent(routePresent);
 			} else {
 				//add waypoint marker at given pos
 				var featureId = map.addWaypointAtPos(map.convertPointForMap(pos), wpIndex, wpType);
+				var routePresent = waypoint.setNumWaypointsSet(waypoint.getNumWaypointsSet());
 			}
+			//do we need to re-calculate the route?
+			handleRoutePresent(routePresent);
+
 			//determine address for given pos
 			geolocator.reverseGeolocate(pos, reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, wpType, wpIndex, featureId);
 		}
 
 		function reverseGeocodeSuccess(addressResult, wpType, wpIndex, featureId) {
 			var newIndex = ui.addWaypointResultByRightclick(addressResult, wpType, wpIndex, waypoint.numWaypoints);
-			ui.setWaypointFeatureId(newIndex, featureId, map.ROUTE_POINTS);
+			var position = map.convertFeatureIdToPositionString(featureId, map.ROUTE_POINTS);
+			ui.setWaypointFeatureId(newIndex, featureId, position, map.ROUTE_POINTS);
 
 			//adapt the next unset waypoint
 			if (waypoint.nextUnsetWaypoint == wpIndex) {
@@ -174,18 +186,27 @@ var Controller = ( function(w) {'use strict';
 			var type = selectWaypointType(index1);
 			var ftId = ui.getFeatureIdOfWaypoint(index1);
 			var newFtId = map.setWaypointType(ftId, type);
-			ui.setWaypointFeatureId(index1, newFtId, map.ROUTE_POINTS);
+			var position = map.convertFeatureIdToPositionString(newFtId, map.ROUTE_POINTS);
+			ui.setWaypointFeatureId(index1, newFtId, position, map.ROUTE_POINTS);
 
 			var type = selectWaypointType(index2);
 			var ftId = ui.getFeatureIdOfWaypoint(index2);
 			newFtId = map.setWaypointType(ftId, type);
-			ui.setWaypointFeatureId(index2, newFtId, map.ROUTE_POINTS);
+			var position = map.convertFeatureIdToPositionString(newFtId, map.ROUTE_POINTS);
+			ui.setWaypointFeatureId(index2, newFtId, position, map.ROUTE_POINTS);
 
 		}
 
 		function handleRemoveWaypoint(atts) {
 			var idx = atts.wpIndex;
 			var featureId = atts.featureId;
+
+			//waypoint internal
+			if (featureId) {
+				//removed waypoint has been set
+				var routePresent = waypoint.setNumWaypointsSet(waypint.getNumWaypointsSet() - 1);
+				handleRoutePresent(routePresent);
+			}
 
 			//remove map feature of deleted wayoint
 			map.clearMarkers(map.ROUTE_POINTS, [featureId]);
@@ -203,7 +224,8 @@ var Controller = ( function(w) {'use strict';
 
 				featureId = ui.getFeatureIdOfWaypoint(i);
 				var newId = map.setWaypointType(featureId, type);
-				ui.setWaypointFeatureId(i, newId, map.ROUTE_POINTS);
+				var position = map.convertFeatureIdToPositionString(newId, map.ROUTE_POINTS);
+				ui.setWaypointFeatureId(i, newId, position, map.ROUTE_POINTS);
 			}
 
 			//decide about which buttons to show
@@ -229,6 +251,8 @@ var Controller = ( function(w) {'use strict';
 			map.clearMarkers(map.ROUTE_POINTS);
 			waypoint.numWaypoints = 2;
 			waypoint.nextUnsetWaypoint = 0;
+			var routePresent = waypoint.setNumWaypointsSet(0);
+			handleRoutePresent(routePresent);
 		}
 
 		/* *********************************************************************
@@ -369,9 +393,7 @@ var Controller = ( function(w) {'use strict';
 		 * This checks if there is a route available
 		 */
 		function handleCheckRouteIsPresent() {
-			//TODO required for POI search
-			var routeIsPresent = false;
-			ui.setRouteIsPresent(routeIsPresent);
+			ui.setRouteIsPresent(route.routePresent);
 		}
 
 		/**
@@ -491,6 +513,28 @@ var Controller = ( function(w) {'use strict';
 			geolocator.reverseGeolocate(map.convertPointForDisplay(position), reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, type, index, featureId);
 
 			//markers of the search results will not be removed cause the search is still visible.
+		}
+
+		/* *********************************************************************
+		* ROUTE
+		* *********************************************************************/
+
+		/**
+		 *if there are at least two waypoint set, a route can be calculated and displayed
+		 */
+		function handleRoutePresent(isRoutePresent) {
+			console.log("checking route presence")
+			if (isRoutePresent) {
+				route.routePresent = true;
+
+				ui.getRoutePoints();
+
+				//TODO implement: calculate route, display it in UI
+			} else {
+				route.routePresent = false;
+
+				//TODO implement: remove route features on map + DOM elements
+			}
 		}
 
 		/* *********************************************************************

@@ -134,6 +134,8 @@ var Ui = ( function(w) {'use strict';
 		 * *********************************************************************/
 
 		function handleSearchWaypointInput(e) {
+			console.log(e.currentTarget)
+			console.log(e.currentTarget.value)
 			var waypointElement = $(e.currentTarget).parent().parent();
 
 			//index of the waypoint (0st, 1st 2nd,...)
@@ -141,16 +143,16 @@ var Ui = ( function(w) {'use strict';
 
 			clearTimeout(typingTimerWaypoints[index]);
 			if (e.keyIdentifier != 'Shift' && e.currentTarget.value.length != 0) {
+				var input = e.currentTarget.value;
 				typingTimerWaypoints[index] = setTimeout(function() {
 					//empty search results
 					var resultContainer = waypointElement.get(0).querySelector('.searchWaypointResults');
 					while (resultContainer && resultContainer.hasChildNodes()) {
 						resultContainer.removeChild(resultContainer.lastChild);
 					}
-
 					//request new results
 					theInterface.emit('ui:searchWaypointRequest', {
-						query : e.currentTarget.value,
+						query : input,
 						wpIndex : index,
 						searchIds : waypointElement.get(0).getAttribute('data-search')
 					});
@@ -244,12 +246,13 @@ var Ui = ( function(w) {'use strict';
 			});
 		}
 
-		function setWaypointFeatureId(wpIndex, featureId, layer) {
+		function setWaypointFeatureId(wpIndex, featureId, position, layer) {
 			var rootElement = $('#' + wpIndex).get(0);
 			var address = rootElement.querySelector('.address');
 			if (address) {
 				address.id = featureId;
 				address.setAttribute('data-layer', layer);
+				address.setAttribute('data-position', position);
 			}
 		}
 
@@ -577,6 +580,16 @@ var Ui = ( function(w) {'use strict';
 				//add event handling
 				$('.searchWaypoint').keyup(handleSearchWaypointInput);
 			}
+		}
+		
+		function getRoutePoints() {
+			var numWaypoints = $('.waypoint').length - 1;
+			for (var i = 0; i < numWaypoints; i++) {
+				var element = $('#' + i);
+				element = element.querySelector('.address');
+				//TODO position is not saved in address element	
+			}
+			
 		}
 
 		/* *********************************************************************

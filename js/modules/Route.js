@@ -4,14 +4,16 @@ var Route = (function(w) {'use strict';
 	 * Constructor
 	 */
 	function Route() {
+		this.routePresent = false;
+	}
+
+	function calculate() {
 
 	}
 
 
-
-
-	// Route.prototype.update = update;
+	Route.prototype.calculate = calculate;
 	// Route.prototype.openPerma = openPerma;
 
 	return new Route();
-})(window); 
+})(window);

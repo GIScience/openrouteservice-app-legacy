@@ -7,6 +7,8 @@
  */
 var Waypoint = (function(w) {'use strict';
 
+	var numWaypointsSet = 0;
+
 	/**
 	 * Constructor
 	 */
@@ -14,6 +16,24 @@ var Waypoint = (function(w) {'use strict';
 		this.numWaypoints = 2;
 		this.requestCounterWaypoints = [0, 0];
 		this.nextUnsetWaypoint = 0;
+		
+	}
+	
+	function setNumWaypointsSet(number) {
+		numWaypointsSet = number;
+		
+		if (numWaypointsSet >= 2) {
+			//route can be calculated
+			return true;
+			// this.emit('waypoint:routePresent');
+		} else {
+			return false;
+			// this.emit('waypoint:noRoutePresent');
+		}
+	}
+	
+	function getNumWaypointsSet() {
+		return numWaypointsSet;
 	}
 
 	/**
@@ -136,6 +156,8 @@ var Waypoint = (function(w) {'use strict';
 	}
 
 
+	Waypoint.prototype.setNumWaypointsSet = setNumWaypointsSet;
+	Waypoint.prototype.getNumWaypointsSet = getNumWaypointsSet;
 	Waypoint.prototype.find = find;
 	Waypoint.prototype.parseResultsToPoints = parseResultsToPoints;
 	Waypoint.prototype.determineWaypointType = determineWaypointType;
