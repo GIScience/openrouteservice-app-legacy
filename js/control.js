@@ -1,6 +1,6 @@
 var Controller = ( function(w) {'use strict';
 
-		var $ = w.jQuery, ui = w.Ui, waypoint = w.Waypoint, geolocator = w.Geolocator, searchAddress = w.SearchAddress, searchPoi = w.SearchPoi, perma = w.Permalink, preferences = w.Preferences, openRouteService = w.OpenRouteService, Map = w.Map,
+		var $ = w.jQuery, ui = w.Ui, waypoint = w.Waypoint, geolocator = w.Geolocator, searchAddress = w.SearchAddress, searchPoi = w.SearchPoi, route = w.Route, perma = w.Permalink, preferences = w.Preferences, openRouteService = w.OpenRouteService, Map = w.Map,
 		//the map
 		map;
 
@@ -127,6 +127,7 @@ var Controller = ( function(w) {'use strict';
 		function handleAddWaypointByRightclick(atts) {
 			var pos = atts.pos;
 			var wpType = atts.type;
+			var featureId;
 
 			//index of the waypoint to set (start at the beginning, end at the end, via in the middle)
 			var wpIndex = 0;
@@ -135,35 +136,35 @@ var Controller = ( function(w) {'use strict';
 			//if VIA: use index of prior to last waypoint, insert the new via point after this element
 			wpIndex = wpType == Waypoint.type.VIA ? waypoint.numWaypoints - 2 : wpIndex;
 
+			if (wpType == Waypoint.type.VIA) {
+				ui.addWaypointAfter(wpIndex, Waypoint.numWaypoints);
+				wpIndex++;
+			}
+			ui.showSearchingAtWaypoint(wpIndex, true);
+
 			//remove old waypoint marker (if exists)
-			if (wpType != Waypoint.type.VIA) {
-				//if we have a new VIA point, we create a new waypoint, i.e. there can't be any markers yet
-				var featureId = ui.getFeatureIdOfWaypoint(wpIndex);
-				if (featureId) {
-					//address has been set yet
-					map.clearMarkers(map.ROUTE_POINTS, [featureId]);
-				}
+			featureId = ui.getFeatureIdOfWaypoint(wpIndex);
+			var routePresent;
+			if (featureId) {
+				//address has been set yet
+				map.clearMarkers(map.ROUTE_POINTS, [featureId]);
+				//this waypoint has been set before...
+				routePresent = waypoint.setNumWaypointsSet(waypoint.getNumWaypointsSet());
+			} else {
+				//this waypoint wasn't set yet
+				routePresent = waypoint.setNumWaypointsSet(waypoint.getNumWaypointsSet() + 1);
 			}
 
-			if (wpType == Waypoint.type.VIA) {
-				//add the marker with the NEW index (does not exist yet, will be generated in the successCallback function) on the map
-				var featureId = map.addWaypointAtPos(map.convertPointForMap(pos), wpIndex + 1, wpType);
-				var routePresent = waypoint.setNumWaypointsSet(waypoint.getNumWaypointsSet() + 1);
-				handleRoutePresent(routePresent);
-			} else {
-				//add waypoint marker at given pos
-				var featureId = map.addWaypointAtPos(map.convertPointForMap(pos), wpIndex, wpType);
-				var routePresent = waypoint.setNumWaypointsSet(waypoint.getNumWaypointsSet());
-			}
-			//do we need to re-calculate the route?
-			handleRoutePresent(routePresent);
+			//add the new marker
+			var newFeatureId = map.addWaypointAtPos(map.convertPointForMap(pos), wpIndex, wpType);
 
 			//determine address for given pos
-			geolocator.reverseGeolocate(pos, reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, wpType, wpIndex, featureId);
+			geolocator.reverseGeolocate(pos, reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, wpType, wpIndex, newFeatureId, routePresent);
 		}
 
-		function reverseGeocodeSuccess(addressResult, wpType, wpIndex, featureId) {
-			var newIndex = ui.addWaypointResultByRightclick(addressResult, wpType, wpIndex, waypoint.numWaypoints);
+		function reverseGeocodeSuccess(addressResult, wpType, wpIndex, featureId, routePresent) {
+			ui.showSearchingAtWaypoint(wpIndex, false);
+			var newIndex = ui.addWaypointResultByRightclick(addressResult, wpType, wpIndex);
 			var position = map.convertFeatureIdToPositionString(featureId, map.ROUTE_POINTS);
 			ui.setWaypointFeatureId(newIndex, featureId, position, map.ROUTE_POINTS);
 
@@ -172,6 +173,9 @@ var Controller = ( function(w) {'use strict';
 				waypoint.nextUnsetWaypoint++;
 			}
 			//else: user sets e.g. waypoint 2 while waypoint 1 is still empty
+
+			//do we need to re-calculate the route?
+			handleRoutePresent(routePresent);
 		}
 
 		function reverseGeocodeFailure() {
@@ -525,15 +529,53 @@ var Controller = ( function(w) {'use strict';
 		function handleRoutePresent(isRoutePresent) {
 			console.log("checking route presence")
 			if (isRoutePresent) {
+				console.log("control: route is present.")
 				route.routePresent = true;
+				ui.setRouteIsPresent(true);
 
-				ui.getRoutePoints();
-
+				var routePoints = ui.getRoutePoints();
+				for (var i = 0; i < routePoints.length; i++) {
+					routePoints[i] = routePoints[i].split(' ');
+					if (routePoints[i].length == 2) {
+						routePoints[i] = new OpenLayers.LonLat(routePoints[i][0], routePoints[i][1]);
+						routePoints[i] = map.convertPointForDisplay(routePoints[i]); 
+					}
+				}
+				
+				console.log(routePoints);
+				
+				//TODO define variables for route options
+				var routePref; //car, bike,...
+				var routePrefDetail; //fastest, safest,...
+				var avoidMotorways; //avoid toll way/ motorway
+				var avoidTollways;
+				var avoidAreas;
+				
+				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.language, routePref, routePrefDetail, avoidMotorways, avoidTollways, avoidAreas);
+				
 				//TODO implement: calculate route, display it in UI
 			} else {
+				console.log("control: route is NOT present.")
 				route.routePresent = false;
+				ui.setRouteIsPresent(false);
 
 				//TODO implement: remove route features on map + DOM elements
+			}
+			
+			function routeCalculationSuccess(results) {
+				results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
+				// console.log(results)
+				
+				var routeLines = route.parseResultsToPoints(results);
+				map.updateRoute(routeLines);
+				
+				//TODO implement
+				//summary + instructions
+			}
+			
+			function routeCalculationError() {
+				console.log(failure)
+				//TODO implement
 			}
 		}
 

@@ -781,6 +781,33 @@ var Map = ( function() {"use strict";
 			}
 		}
 
+		/*
+		* ROUTE
+		*/
+
+		/**
+		 *draw given points as route line on the map
+		 * @param {Object} routeLinePoints array of OL.Geometry.Point
+		 */
+		function updateRoute(routeLinePoints) {
+			var layer = this.theMap.getLayersByName(this.ROUTE_LINES)[0];
+			layer.removeAllFeatures();
+
+			if (routeLinePoints && routeLinePoints.length > 0) {
+				var self = this;
+				for (var i = 0; i < routeLinePoints.length; i++) {
+					var pt = routeLinePoints[i];
+					pt = self.convertPointForMap(pt);
+					pt = new OpenLayers.Geometry.Point(pt.lon, pt.lat);
+					routeLinePoints[i] = pt;
+				}
+
+				var routeLine = new OpenLayers.Geometry.LineString(routeLinePoints);
+				var ft = new OpenLayers.Feature.Vector(routeLine, null);
+				layer.addFeatures([ft]);
+			}
+		}
+
 
 		map.prototype = new EventEmitter();
 		map.prototype.constructor = map;
@@ -809,6 +836,8 @@ var Map = ( function() {"use strict";
 		map.prototype.zoomToPoiResults = zoomToPoiResults;
 
 		map.prototype.zoomToMarker = zoomToMarker;
+
+		map.prototype.updateRoute = updateRoute;
 
 		return map;
 	}());

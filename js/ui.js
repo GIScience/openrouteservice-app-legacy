@@ -425,12 +425,8 @@ var Ui = ( function(w) {'use strict';
 			theInterface.emit('ui:addWaypoint');
 		}
 
-		function addWaypointResultByRightclick(request, typeOfWaypoint, index, numWaypoints) {
-			if (typeOfWaypoint == Waypoint.type.VIA) {
-				addWaypointAfter(index, numWaypoints);
-				//the waypoint index where we want to place th new via point is acutally one larger.
-				index++;
-			}
+		function addWaypointResultByRightclick(request, typeOfWaypoint, index) {
+			var numWaypoints = $('.waypoint').length - 1;
 			while (index >= numWaypoints) {
 				addWaypointAfter(numWaypoints - 1);
 				numWaypoints++;
@@ -469,7 +465,6 @@ var Ui = ( function(w) {'use strict';
 				theInterface.emit('ui:selectWaypointType', index - 1);
 			}
 
-			var numwp = $('.waypoint').length - 1;
 			return index;
 		}
 
@@ -582,14 +577,16 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 		
-		function getRoutePoints() {
-			var numWaypoints = $('.waypoint').length - 1;
-			for (var i = 0; i < numWaypoints; i++) {
-				var element = $('#' + i);
-				element = element.querySelector('.address');
-				//TODO position is not saved in address element	
+		function showSearchingAtWaypoint(wpIndex, showSearching) {
+			var wp = $('#' + wpIndex).get(0);
+			var inputElement = wp.querySelector('input');
+
+			if (showSearching) {
+				$(inputElement).addClass('searching');
+				wp.querySelector('.searchWaypointError').hide();
+			} else {
+				inputElement.removeClassName('searching');
 			}
-			
 		}
 
 		/* *********************************************************************
@@ -923,6 +920,24 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/* *********************************************************************
+		 * ROUTE
+		 * *********************************************************************/
+
+		function getRoutePoints() {
+			console.log("getting route points..")
+			var allRoutePoints = [];
+			var numWaypoints = $('.waypoint').length - 1;
+			for (var i = 0; i < numWaypoints; i++) {
+				var element = $('#' + i).get(0);
+				element = element.querySelector('.address');
+				if (element) {
+					allRoutePoints.push(element.getAttribute('data-position'))
+				}
+			}
+			return allRoutePoints;
+		}
+
+		/* *********************************************************************
 		 * PERMALINK
 		 * *********************************************************************/
 
@@ -1016,9 +1031,11 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.setWaypointFeatureId = setWaypointFeatureId;
 		Ui.prototype.getFeatureIdOfWaypoint = getFeatureIdOfWaypoint;
 		Ui.prototype.setWaypointType = setWaypointType;
+		Ui.prototype.addWaypointAfter = addWaypointAfter;
 		Ui.prototype.addWaypointResultByRightclick = addWaypointResultByRightclick;
 		Ui.prototype.setMoveDownButton = setMoveDownButton;
 		Ui.prototype.setMoveUpButton = setMoveUpButton;
+		Ui.prototype.showSearchingAtWaypoint = showSearchingAtWaypoint;
 
 		Ui.prototype.searchAddressChangeToSearchingState = searchAddressChangeToSearchingState;
 		Ui.prototype.updateSearchAddressResultList = updateSearchAddressResultList;
@@ -1029,6 +1046,8 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.updateSearchPoiResultList = updateSearchPoiResultList;
 		Ui.prototype.showSearchPoiError = showSearchPoiError;
 		Ui.prototype.showSearchPoiDistUnitError = showSearchPoiDistUnitError;
+
+		Ui.prototype.getRoutePoints = getRoutePoints;
 
 		Ui.prototype.showCurrentLocation = showCurrentLocation;
 		Ui.prototype.stopGeolocation = stopGeolocation;

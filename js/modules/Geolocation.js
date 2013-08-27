@@ -30,7 +30,7 @@ var Geolocator = ( function(w) {"use strict";
 		 * @param {Object} successCallback used to view the address of the current location on the UI
 		 * @param {Object} failureCallback used to view an error message on the UI
 		 */
-		function reverseGeolocate(position, successCallback, failureCallback, language, waypointType, waypointIndex, featureId) {
+		function reverseGeolocate(position, successCallback, failureCallback, language, waypointType, waypointIndex, featureId, routePresent) {
 			var writer = new XMLWriter('UTF-8', '1.0');
 			writer.writeStartDocument();
 			//<xls:XLS>
@@ -77,16 +77,15 @@ var Geolocator = ( function(w) {"use strict";
 
 			var xmlRequest = writer.flush();
 			writer.close();
-
-			var xmlResponse;
+			
 			var success = function(result) {
-				successCallback(result, waypointType, waypointIndex, featureId);
+				successCallback(result, waypointType, waypointIndex, featureId, routePresent);
 			}
 			var request = OpenLayers.Request.POST({
 				url : namespaces.services.geocoding,
 				data : xmlRequest,
 				success : success,
-				failure : failureCallback,
+				failure : failureCallback
 			});
 		}
 
