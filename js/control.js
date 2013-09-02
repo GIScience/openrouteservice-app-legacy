@@ -531,6 +531,7 @@ var Controller = ( function(w) {'use strict';
 				//TODO show spinner in UI for route calculation
 
 				var routePoints = ui.getRoutePoints();
+
 				for (var i = 0; i < routePoints.length; i++) {
 					routePoints[i] = routePoints[i].split(' ');
 					if (routePoints[i].length == 2) {
@@ -566,7 +567,7 @@ var Controller = ( function(w) {'use strict';
 				ui.setRouteIsPresent(true);
 
 				results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
-
+				
 				// each route instruction has a part of this lineString as geometry for this instruction
 				var routeLines = route.parseResultsToLineStrings(results, map.convertPointForMap);
 				var routePoints = route.parseResultsToCornerPoints(results, map.convertPointForMap);

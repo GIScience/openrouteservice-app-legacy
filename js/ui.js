@@ -199,11 +199,13 @@ var Ui = ( function(w) {'use strict';
 					if (listOfFeatures[i]) {
 						var lonLat = listOfFeatures[i].geometry;
 						allIds += listOfFeatures[i].id + ' ';
-						var address = allAddress[i];
-						address = util.parseAddress(address);
+						var xmlAddress = allAddress[i];
+						var address = util.parseAddress(xmlAddress);
+						var shortText = util.parseAddressShort(xmlAddress);
 						address.setAttribute('id', listOfFeatures[i].id);
 						address.setAttribute('data-position', lonLat.x + ' ' + lonLat.y);
 						address.setAttribute('data-layer', layername);
+						address.setAttribute('data-shortAddress', shortText);
 						resultContainer.appendChild(address);
 					}
 				}
@@ -446,11 +448,15 @@ var Ui = ( function(w) {'use strict';
 			var results = request.responseXML ? request.responseXML : util.parseStringToDOM(request.responseText);
 			var addressResult = util.getElementsByTagNameNS(results, namespaces.xls, 'Address');
 			addressResult = addressResult ? addressResult[0] : null;
-			addressResult = util.parseAddress(addressResult);
+			var address = util.parseAddress(addressResult);
+			var shortAddress = util.parseAddressShort(addressResult);
 
 			//insert information as waypoint
 			var rootElement = $('#' + index);
 			rootElement.removeClass('unset');
+
+			address.setAttribute('data-shortAddress', shortAddress);
+
 			var children = rootElement.children();
 
 			//show waypoint result and searchAgain button
@@ -459,7 +465,7 @@ var Ui = ( function(w) {'use strict';
 			while (waypointResultElement.hasChildNodes()) {
 				waypointResultElement.removeChild(waypointResultElement.lastChild);
 			}
-			waypointResultElement.appendChild(addressResult);
+			waypointResultElement.appendChild(address);
 			waypointResultElement.show();
 
 			//hide input field with search result list
@@ -946,6 +952,14 @@ var Ui = ( function(w) {'use strict';
 			return allRoutePoints;
 		}
 
+		function getRouteDestination() {
+			var numWaypoints = $('.waypoint').length - 1;
+			var address = $('#' + (numWaypoints - 1)).get(0);
+			address = address.querySelector('.address');
+			address = address.getAttribute('data-shortAddress');
+			return address;
+		}
+
 		function updateRouteSummary(results) {
 			if (!results) {
 				//hide container
@@ -1001,6 +1015,9 @@ var Ui = ( function(w) {'use strict';
 				container.hide();
 			} else {
 				//parse results and show them in the container
+
+				var destination = getRouteDestination();
+				$('#routeFromTo').html(preferences.translate('routeFromTo') + destination);
 
 				var container = $('#routeInstructionsContainer').get(0);
 				container.show();
@@ -1086,7 +1103,7 @@ var Ui = ( function(w) {'use strict';
 					trElement.appendChild(tdElementText);
 					trElement.appendChild(tdElementDist);
 
-					//TODO mouseover events for points and lines
+					//mouseover for points and lines
 					$(tdElementDist).mouseover(handleMouseOverDist);
 					$(tdElementDist).mouseout(handleMouseOutDist);
 					$(tdElementText).mouseover(handleMouseOverText);

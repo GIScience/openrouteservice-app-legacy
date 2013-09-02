@@ -121,6 +121,43 @@ util = ( function() {'use strict';
 				return element;
 			},
 
+			parseAddressShort : function(address) {
+				var element = "";
+				if (address) {
+					var streetAddress = util.getElementsByTagNameNS(address, namespaces.xls, 'StreetAddress')[0];
+					var streets = util.getElementsByTagNameNS(streetAddress, namespaces.xls, 'Street');
+					var building = util.getElementsByTagNameNS(streetAddress, namespaces.xls, 'Building')[0];
+					var places = util.getElementsByTagNameNS(address, namespaces.xls, 'Place');
+
+					//Building line
+					if (building) {
+						var buildingName = building.getAttribute('buildingName');
+						var buildingSubdivision = building.getAttribute('subdivision');
+						if (buildingName != null) {
+							element += buildingName + ' ';
+						}
+						if (buildingSubdivision != null) {
+							element += buildingSubdivision + ' ';
+						}
+					}
+					//Street line
+					$A(streets).each(function(street) {
+						var officialName = street.getAttribute('officialName');
+						if (officialName != null) {
+							element += officialName + ' ';
+						}
+					});
+					//add city name
+					$A(places).each(function(place) {
+						if (place.getAttribute('type') === 'Municipality') {
+							//Chrome, Firefox: place.textContent; IE: place.text
+							element += place.textContent || place.text;
+						}
+					});
+				}
+				return element;
+			},
+
 			/**
 			 * converts a given distance measure into meters
 			 * @param dist: distance in specified unit
@@ -239,35 +276,35 @@ util = ( function() {'use strict';
 				//term is neither category nor type ('poi by name')
 				return null;
 			},
-			
+
 			/**
 			 * convert a distance to an easy to read format.
 			 * @param distance: a number
 			 * @param uom: distance unit; one of m/yd
 			 */
 			convertDistanceFormat : function(distance, uom) {
-					uom = uom.toLowerCase();
-					distance = parseFloat(distance);
-					if (uom == list.distanceUnitsPreferences[0]) {
-						if (distance >= 1000) {
-							uom = 'km';
-							distance = distance / 1000;
-							distance = util.round(distance);
-						} else {
-							uom = 'm';
-						}
+				uom = uom.toLowerCase();
+				distance = parseFloat(distance);
+				if (uom == list.distanceUnitsPreferences[0]) {
+					if (distance >= 1000) {
+						uom = 'km';
+						distance = distance / 1000;
 						distance = util.round(distance);
-						return [distance, uom];
-					} else if (uom == list.distanceUnitsPreferences[1]) {
-						if (distance >= 1760) {
-							uom = 'mi';
-							distance = distance / 1760;
-							distance = util.round(distance);
-						} else {
-							uom = 'yd';
-						}
-						return [distance, uom];
+					} else {
+						uom = 'm';
 					}
+					distance = util.round(distance);
+					return [distance, uom];
+				} else if (uom == list.distanceUnitsPreferences[1]) {
+					if (distance >= 1760) {
+						uom = 'mi';
+						distance = distance / 1760;
+						distance = util.round(distance);
+					} else {
+						uom = 'yd';
+					}
+					return [distance, uom];
+				}
 			}
 		}
 		return util;
