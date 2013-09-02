@@ -959,6 +959,16 @@ var Ui = ( function(w) {'use strict';
 			address = address.getAttribute('data-shortAddress');
 			return address;
 		}
+		
+		function startRouteCalculation() {
+			var el = $('#routeCalculateZoom');
+			el.show();
+			// el.html(preferences.translate('calculatingRoute')); XXX
+		}
+		
+		function endRouteCalculation() {
+			$('#routeCalculateZoom').hide();
+		}
 
 		function updateRouteSummary(results) {
 			if (!results) {
@@ -1266,6 +1276,8 @@ var Ui = ( function(w) {'use strict';
 
 		Ui.prototype.getRoutePoints = getRoutePoints;
 		Ui.prototype.updateRouteSummary = updateRouteSummary;
+		Ui.prototype.startRouteCalculation = startRouteCalculation;
+		Ui.prototype.endRouteCalculation = endRouteCalculation;
 		Ui.prototype.updateRouteInstructions = updateRouteInstructions;
 
 		Ui.prototype.showCurrentLocation = showCurrentLocation;

@@ -528,10 +528,9 @@ var Controller = ( function(w) {'use strict';
 		 */
 		function handleRoutePresent(isRoutePresent) {
 			if (isRoutePresent) {
-				//TODO show spinner in UI for route calculation
+				ui.startRouteCalculation();
 
 				var routePoints = ui.getRoutePoints();
-
 				for (var i = 0; i < routePoints.length; i++) {
 					routePoints[i] = routePoints[i].split(' ');
 					if (routePoints[i].length == 2) {
@@ -576,6 +575,7 @@ var Controller = ( function(w) {'use strict';
 				ui.updateRouteSummary(results);
 
 				ui.updateRouteInstructions(results, featureIds, map.ROUTE_LINES);
+				ui.endRouteCalculation();
 			}
 
 			function routeCalculationError() {
