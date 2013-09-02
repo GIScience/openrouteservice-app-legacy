@@ -84,7 +84,6 @@ var Route = ( function(w) {"use strict";
 					for (var j = 0; j < corners.length; j++) {
 						var pt = new OpenLayers.LonLat(corners[j].x, corners[j].y);
 						pt = pt.transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:4326'));
-						//TODO
 						writer.writeStartElement('gml:pos');
 						writer.writeString(pt.lon + ' ' + pt.lat);
 						writer.writeEndElement();
@@ -125,43 +124,71 @@ var Route = ( function(w) {"use strict";
 			var xmlRequest = writer.flush();
 			writer.close();
 
-			console.log(xmlRequest);
-
 			var request = OpenLayers.Request.POST({
-			url : namespaces.services.routing,
-			data : xmlRequest,
-			success : successCallback,
-			failure : failureCallback
+				url : namespaces.services.routing,
+				data : xmlRequest,
+				success : successCallback,
+				failure : failureCallback
 			});
-
 		}
-		
-		function parseResultsToPoints(results) {
-			var listOfPoints = [];
-			
-			var routeGeometry = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteGeometry')[0];
-			if (routeGeometry) {
-				var routeElements = util.getElementsByTagNameNS(routeGeometry, namespaces.gml, 'pos');
-				$A(routeElements).each(function (routeElement) {
-					var pt = routeElement.textContent;
-					pt = pt.split(' ');
-					pt = new OpenLayers.LonLat(pt[0], pt[1]);
-					listOfPoints.push(pt);
+
+		/**
+		 * the line strings represent a part of the route when driving on one street (e.g. 7km on autoroute A7)
+		 * we examine the lineStrings from the instruction list to get one lineString-ID per route segment so that we can support mouseover/mouseout events on the route and the instructions
+		 * @param {Object} results: XML response
+		 * @param {Object} converterFunction
+		 */
+		function parseResultsToLineStrings(results, converterFunction) {
+			var listOfLineStrings = [];
+
+			var routeInstructions = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstructionsList')[0];
+			if (routeInstructions) {
+				routeInstructions = util.getElementsByTagNameNS(routeInstructions, namespaces.xls, 'RouteInstruction');
+				$A(routeInstructions).each(function(instructionElement) {
+					var segment = [];
+					$A(util.getElementsByTagNameNS(instructionElement, namespaces.gml, 'pos')).each(function(point) {
+						point = point.text || point.textContent;
+						point = point.split(' ');
+						point = new OpenLayers.LonLat(point[0], point[1]);
+						point = converterFunction(point);
+						point = new OpenLayers.Geometry.Point(point.lon, point.lat);
+						segment.push(point);
+					});
+					segment = new OpenLayers.Geometry.LineString(segment);
+					listOfLineStrings.push(segment);
 				});
 			}
-			return listOfPoints;
-		}
-		
-		function parseResultsToSummary(results) {
-			//TODO
-		}
-		
-		function parseResultsToInstructions(results) {
-			//TODO
+			return listOfLineStrings;
 		}
 
+		/**
+		 * corner points are points in the route where the direction changes (turn right at street xy...)
+		 * @param {Object} results: XML response
+		 * @param {Object} converterFunction
+		 */
+		function parseResultsToCornerPoints(results, converterFunction) {
+			var listOfCornerPoints = [];
+
+			var routeInstructions = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstructionsList')[0];
+			if (routeInstructions) {
+				routeInstructions = util.getElementsByTagNameNS(routeInstructions, namespaces.xls, 'RouteInstruction');
+				$A(routeInstructions).each(function(instructionElement) {
+					var point = util.getElementsByTagNameNS(instructionElement, namespaces.gml, 'pos')[0];
+					point = point.text || point.textContent;
+					point = point.split(' ');
+					point = new OpenLayers.LonLat(point[0], point[1]);
+					point = converterFunction(point);
+					point = new OpenLayers.Geometry.Point(point.lon, point.lat);
+					listOfCornerPoints.push(point);
+				});
+			}
+			return listOfCornerPoints;
+		}
+
+
 		Route.prototype.calculate = calculate;
-		Route.prototype.parseResultsToPoints = parseResultsToPoints;
+		Route.prototype.parseResultsToLineStrings = parseResultsToLineStrings;
+		Route.prototype.parseResultsToCornerPoints = parseResultsToCornerPoints;
 
 		return new Route();
 	}(window));

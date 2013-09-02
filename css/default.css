@@ -149,7 +149,7 @@ div.olControlScaleLine {
 	padding-top: 0;
 	margin-bottom: 0 !important;
 }
-.routeInstructionsContainer table td {
+#routeInstructionsContainer table td {
 	vertical-align: top;
 	padding: 5px;
 }

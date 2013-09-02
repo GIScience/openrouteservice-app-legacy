@@ -47,10 +47,20 @@ var Ui = ( function(w) {'use strict';
 		function handleToggleCollapsibles(e) {
 			if (e.currentTarget.hasClassName('collapsed')) {
 				e.currentTarget.removeClassName('collapsed');
-				e.currentTarget.nextSibling.nextSibling.show();
+				$(e.currentTarget).parent().get(0).querySelector('.collapsibleBody').show();
+				//applies for route instructions container only
+				var routeInstructions = $(e.currentTarget).parent().get(0).querySelector('#zoomToRouteButton');
+				if (routeInstructions) {
+					routeInstructions.show();
+				}
 			} else {
 				e.currentTarget.addClassName('collapsed');
-				e.currentTarget.nextSibling.nextSibling.hide();
+				$(e.currentTarget).parent().get(0).querySelector('.collapsibleBody').hide();
+				//applies for route instructions container only
+				var routeInstructions = $(e.currentTarget).parent().get(0).querySelector('#zoomToRouteButton');
+				if (routeInstructions) {
+					routeInstructions.hide();
+				}
 			}
 		}
 
@@ -98,6 +108,7 @@ var Ui = ( function(w) {'use strict';
 		 */
 		function emphElement(elementId) {
 			$('#' + elementId).get(0).addClassName('highlight');
+			$('#' + elementId).get(0).addClassName('active');
 		}
 
 		/**
@@ -105,6 +116,7 @@ var Ui = ( function(w) {'use strict';
 		 */
 		function deEmphElement(elementId) {
 			$('#' + elementId).get(0).removeClassName('highlight');
+			$('#' + elementId).get(0).removeClassName('active');
 		}
 
 		/**
@@ -134,8 +146,6 @@ var Ui = ( function(w) {'use strict';
 		 * *********************************************************************/
 
 		function handleSearchWaypointInput(e) {
-			console.log(e.currentTarget)
-			console.log(e.currentTarget.value)
 			var waypointElement = $(e.currentTarget).parent().parent();
 
 			//index of the waypoint (0st, 1st 2nd,...)
@@ -576,7 +586,7 @@ var Ui = ( function(w) {'use strict';
 				$('.searchWaypoint').keyup(handleSearchWaypointInput);
 			}
 		}
-		
+
 		function showSearchingAtWaypoint(wpIndex, showSearching) {
 			var wp = $('#' + wpIndex).get(0);
 			var inputElement = wp.querySelector('input');
@@ -924,7 +934,6 @@ var Ui = ( function(w) {'use strict';
 		 * *********************************************************************/
 
 		function getRoutePoints() {
-			console.log("getting route points..")
 			var allRoutePoints = [];
 			var numWaypoints = $('.waypoint').length - 1;
 			for (var i = 0; i < numWaypoints; i++) {
@@ -935,6 +944,197 @@ var Ui = ( function(w) {'use strict';
 				}
 			}
 			return allRoutePoints;
+		}
+
+		function updateRouteSummary(results) {
+			if (!results) {
+				//hide container
+				$('#routeSummaryContainer').get(0).hide();
+			} else {
+				//parse results and show them in the container
+				var summaryElement = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteSummary')[0];
+
+				var totalTime = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'TotalTime')[0];
+				totalTime = totalTime.textContent || totalTime.text;
+				//<period>PT5Y2M10D15H18M43S</period>
+				//The example above indicates a period of five years, two months, 10 days, 15 hours, a8 minutes and 43 seconds
+				totalTime = totalTime.substring(0, totalTime.indexOf('M') + 1);
+				totalTime = totalTime.replace('P', '');
+				totalTime = totalTime.replace('T', '');
+				totalTime = totalTime.replace('D', ' ' + preferences.translate('days') + ' ');
+				totalTime = totalTime.replace('H', ' ' + preferences.translate('hours') + ' ');
+				totalTime = totalTime.replace('M', ' ' + preferences.translate('minutes') + ' ');
+				//cut the seconds off!: duration = duration.replace('S', ' second(s)');
+
+				var distance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'TotalDistance')[0];
+				var distanceValue = distance.getAttribute('value');
+				var distanceUnit = distance.getAttribute('uom');
+				var distArr = [];
+
+				if (preferences.distanceUnit == list.distanceUnitsPreferences[0]) {
+					//use mixture of km and m
+					distArr = util.convertDistanceFormat(distanceValue, preferences.distanceUnit);
+				} else {
+					//use mixture of miles and yards
+					var yardsUnit = 'yd';
+					var distMeasure = util.convertDistToDist(distanceValue, distanceUnit, yardsUnit);
+					distArr = util.convertDistanceFormat(distMeasure, preferences.distanceUnit);
+				}
+
+				var container = $('#routeSummaryContainer').get(0);
+				container.show();
+				var timeDiv = container.querySelector('#route_totalTime');
+				var distanceDiv = container.querySelector('#route_totalDistance');
+
+				$(timeDiv)[0].update(preferences.translate('TotalTime') + ': ' + totalTime);
+				$(distanceDiv)[0].update(preferences.translate('TotalDistance') + ': ' + distArr[0] + ' ' + distArr[1]);
+			}
+		}
+
+		/**
+		 * @param mapFeatureIds: list of IDs of OpenLayers elements containing BOTH - ids for route line segments AND corner points:
+		 * [routeLineSegment_0, cornerPoint_0, routeLineSegment_1, cornerPoint_1,...]
+		 */
+		function updateRouteInstructions(results, mapFeatureIds, mapLayer) {
+			if (!results) {
+				var container = $('#routeInstructionsContainer').get(0);
+				container.hide();
+			} else {
+				//parse results and show them in the container
+
+				var container = $('#routeInstructionsContainer').get(0);
+				container.show();
+				var table = container.querySelector('table');
+				var numInstructions = 0;
+
+				var instructionsList = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstructionsList')[0];
+				instructionsList = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstruction');
+				$A(instructionsList).each(function(instruction) {
+					//process each routing instruction
+					var text = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Instruction')[0];
+					text = text.text || text.textContent;
+
+					var distance = util.getElementsByTagNameNS(instruction, namespaces.xls, 'distance')[0];
+					var distanceValue = distance.getAttribute('value');
+					var distanceUnit = distance.getAttribute('uom');
+					var distArr = [];
+
+					if (preferences.distanceUnit == list.distanceUnitsPreferences[0]) {
+						//use mixture of km and m
+						distArr = util.convertDistanceFormat(distanceValue, preferences.distanceUnit);
+					} else {
+						//use mixture of miles and yards
+						var yardsUnit = 'yd';
+						var distMeasure = util.convertDistToDist(distanceValue, distanceUnit, yardsUnit);
+						distArr = util.convertDistanceFormat(distMeasure, preferences.distanceUnit);
+					}
+
+					//arrow direction
+					var left = text.indexOf(preferences.translate('left'));
+					var halfLeft = text.indexOf(preferences.translate('half-left'));
+					var right = text.indexOf(preferences.translate('right'));
+					var halfRight = text.indexOf(preferences.translate('half-right'));
+					var straight = text.indexOf(preferences.translate('straight'));
+					var direction;
+					if (left > 0 && (left < halfLeft || halfLeft < 0)) {
+						direction = new Element('img', {
+							'src' : './img/left.png'
+						});
+					} else if (right > 0 && (right < halfRight || halfRight < 0)) {
+						direction = new Element('img', {
+							'src' : './img/right.png'
+						});
+					} else if (halfRight > 0) {
+						direction = new Element('img', {
+							'src' : './img/half-right.png'
+						});
+					} else if (halfLeft > 0) {
+						direction = new Element('img', {
+							'src' : './img/half-left.png'
+						});
+					} else if (straight > 0) {
+						direction = new Element('img', {
+							'src' : './img/straight.png'
+						});
+					}
+
+					numInstructions++;
+
+					//add DOM elements
+					var trElement = new Element('tr', {
+						'class' : (numInstructions % 2 == 0) ? 'even' : 'odd',
+						'data-layer' : mapLayer
+					});
+					table.appendChild(trElement);
+
+					var tdElementImg = new Element('td');
+					if (direction) {
+						tdElementImg.appendChild(direction);
+					}
+
+					var tdElementText = new Element('td', {
+						'class' : 'clickable routeInstructions',
+						'id' : mapFeatureIds[2 * (numInstructions - 1) + 1]
+					}).update(text);
+
+					var tdElementDist = new Element('td', {
+						'class' : 'clickable',
+						'id' : mapFeatureIds[2 * (numInstructions - 1)]
+					}).update(distArr[0] + ' ' + distArr[1]);
+
+					trElement.appendChild(tdElementImg);
+					trElement.appendChild(tdElementText);
+					trElement.appendChild(tdElementDist);
+
+					//TODO mouseover events for points and lines
+					$(tdElementDist).mouseover(handleMouseOverDist);
+					$(tdElementDist).mouseout(handleMouseOutDist);
+					$(tdElementText).mouseover(handleMouseOverText);
+					$(tdElementText).mouseout(handleMouseOutText);
+				});
+			}
+
+			function handleMouseOverDist(e) {
+				e.currentTarget.addClassName('active');
+				var parent = $(e.currentTarget).parent().get(0);
+
+				theInterface.emit('ui:emphElement', {
+					id : e.currentTarget.getAttribute('id'),
+					layer : parent.getAttribute('data-layer')
+				});
+
+			}
+
+			function handleMouseOutDist(e) {
+				e.currentTarget.removeClassName('active');
+				var parent = $(e.currentTarget).parent().get(0);
+
+				theInterface.emit('ui:deEmphElement', {
+					id : e.currentTarget.getAttribute('id'),
+					layer : parent.getAttribute('data-layer')
+				});
+			}
+
+			function handleMouseOverText(e) {
+				e.currentTarget.addClassName('active');
+				var parent = $(e.currentTarget).parent().get(0);
+
+				theInterface.emit('ui:emphElement', {
+					id : e.currentTarget.getAttribute('id'),
+					layer : parent.getAttribute('data-layer')
+				});
+			}
+
+			function handleMouseOutText(e) {
+				e.currentTarget.removeClassName('active');
+				var parent = $(e.currentTarget).parent().get(0);
+
+				theInterface.emit('ui:deEmphElement', {
+					id : e.currentTarget.getAttribute('id'),
+					layer : parent.getAttribute('data-layer')
+				});
+			}
+
 		}
 
 		/* *********************************************************************
@@ -1048,6 +1248,8 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.showSearchPoiDistUnitError = showSearchPoiDistUnitError;
 
 		Ui.prototype.getRoutePoints = getRoutePoints;
+		Ui.prototype.updateRouteSummary = updateRouteSummary;
+		Ui.prototype.updateRouteInstructions = updateRouteInstructions;
 
 		Ui.prototype.showCurrentLocation = showCurrentLocation;
 		Ui.prototype.stopGeolocation = stopGeolocation;

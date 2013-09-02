@@ -8,7 +8,7 @@ list = {
 	//if this is changed, please adapt the distance calculation in ORS.Gui.SearchPoi.observeInputfield
 	distanceUnits: ['m', 'km', 'yd', 'mi'],
 	distanceUnitsPreferences : ['m', 'yd'],
-	distanceUnitsRoute: ['m / km', 'yd / mi'],
+	// distanceUnitsRoute: ['m / km', 'yd / mi'],
 	
 	version : ['standardVersion', 'extendedVersion'],
 	

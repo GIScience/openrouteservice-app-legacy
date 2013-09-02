@@ -132,15 +132,12 @@ util = ( function() {'use strict';
 
 				switch (unit) {
 					case "km":
-					case "KM":
 						distanceInMeters = dist * 1000;
 						break;
 					case "mi":
-					case "MI":
 						distanceInMeters = dist * 1609.344;
 						break;
 					case "yd":
-					case "YD":
 						distanceInMeters = dist * 0.9144;
 						break;
 					default:
@@ -161,15 +158,12 @@ util = ( function() {'use strict';
 
 				switch (distanceUnitDest) {
 					case "km":
-					case "KM":
 						specificDistance = distanceInMeters / 1000;
 						break;
 					case "mi":
-					case "MI":
 						specificDistance = distanceInMeters / 1609.344;
 						break;
 					case "yd":
-					case "YD":
 						specificDistance = distanceInMeters / 0.9144;
 						break;
 					default:
@@ -244,6 +238,36 @@ util = ( function() {'use strict';
 				}
 				//term is neither category nor type ('poi by name')
 				return null;
+			},
+			
+			/**
+			 * convert a distance to an easy to read format.
+			 * @param distance: a number
+			 * @param uom: distance unit; one of m/yd
+			 */
+			convertDistanceFormat : function(distance, uom) {
+					uom = uom.toLowerCase();
+					distance = parseFloat(distance);
+					if (uom == list.distanceUnitsPreferences[0]) {
+						if (distance >= 1000) {
+							uom = 'km';
+							distance = distance / 1000;
+							distance = util.round(distance);
+						} else {
+							uom = 'm';
+						}
+						distance = util.round(distance);
+						return [distance, uom];
+					} else if (uom == list.distanceUnitsPreferences[1]) {
+						if (distance >= 1760) {
+							uom = 'mi';
+							distance = distance / 1760;
+							distance = util.round(distance);
+						} else {
+							uom = 'yd';
+						}
+						return [distance, uom];
+					}
 			}
 		}
 		return util;

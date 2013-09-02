@@ -108,13 +108,9 @@ var lang_en = {
 	
 	// List distance units
 		'km': 'kilometers', 
-		'KM': 'kilometers',
 		'm': 'meters',
-		'M': 'meters',
         'mi': 'miles',
-        'MI': 'miles',
         'yd': 'yards',
-        'YD': 'yards',
         
 	// List time units
 		'days': 'day(s)',

@@ -181,6 +181,34 @@
 						<div class="addWaypoint clickable" id="addWaypoint">
 							Add waypoint
 						</div><div id="routeCalculateZoom"></div><div class="routeSummaryContainer panel panelLight" style="display: none;"></div><div class="routeInstructionsContainer panel panelLight" style="display: none;"></div>
+						<div class="panel panelLight" id="routeSummaryContainer" style="display:none">
+							<div class="collapsible guiComponent">
+								<div class="collapsibleHead clickable">
+									Summary:
+								</div>
+								<div class="collapsibleBody">
+									<div id="route_totalTime"></div>
+									<div id="route_totalDistance"></div>
+								</div>
+							</div>
+						</div>
+						<div class="panel panelLight" id="routeInstructionsContainer" style="display:none">
+							<div class="collapsible guiComponent">
+								<div class="collapsibleHead clickable collapsed" id="routeInstructionHead">
+									Route instructions:
+								</div>
+								<div id="zoomToRouteButton" class="zoomToRoute clickable" style="display:none">
+									Whole Route
+								</div>
+								<div class="collapsibleBody" style="display: none;">
+									<div id="routeFromTo">
+										Route to TODO
+									</div>
+									<table></table>
+								</div>
+							</div>
+							&nbsp;
+						</div>
 						<div class="routeExtrasContainer panel panelLight">
 							<div class="collapsible guiComponent">
 								<div class="collapsibleHead clickable collapsed">

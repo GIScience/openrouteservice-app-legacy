@@ -1,4 +1,21 @@
 var Map = ( function() {"use strict";
+		var pointAndLineStyle = {
+			line : {
+				stroke : '#009ad5',
+				fill : '#009ad5',
+				strokeWidthEm : 5,
+				strokeEm : '#fba400',
+				fillEm : '#009ad5'
+			},
+			point : {
+				stroke : '#009ad5',
+				fill : '#009ad5',
+				strokeWidthEm : 2,
+				strokeEm : '#009ad5',
+				fillEm : '#fba400'
+			}			
+		};
+		//FIXME line:strokeWidthEm is displayed too small. why? looks ugly
 
 		var $ = window.jQuery;
 
@@ -128,28 +145,14 @@ var Map = ( function() {"use strict";
 			 * create the layer styleMap by giving the default style a context;
 			 * based on: http://openlayers.org/dev/examples/styles-context.html
 			 */
-			var context = {
-				getImageUrl : function(feature) {
-					var pointType = feature.pointType;
-					if (Ui.markerIcons[pointType]) {
-						return Ui.markerIcons[pointType].url;
-					}
-				},
-				getHighlightImageUrl : function(feature) {
-					var pointType = feature.pointType;
-					if (Ui.markerIcons[pointType]) {
-						var split = Ui.markerIcons[pointType].url.split(".");
-						return split[0] + "-high." + split[1];
-					}
-				}
-			};
+
 			//for default style
 			var template = {
 				pointRadius : 16,
 				stroke : true,
-				strokeColor : '#ff0000', //{String} Hex stroke color.  Default is “#ee9900”.
+				strokeColor : '#ff0000',
 				graphicZIndex : 6,
-				externalGraphic : "${icon}", //"${getImageUrl}", // using context.getImageUrl(feature)
+				externalGraphic : "${icon}",
 				graphicXOffset : -10,
 				graphicYOffset : -30,
 				graphicWidth : 21,
@@ -158,23 +161,16 @@ var Map = ( function() {"use strict";
 			//for select style
 			var selTemplate = {
 				graphicZIndex : 10,
-				externalGraphic : "${iconEm}", // using context.getHighlightImageUrl(feature)
+				externalGraphic : "${iconEm}",
 				graphicXOffset : -10,
 				graphicYOffset : -30,
 				graphicWidth : 21,
 				graphicHeight : 30
 			};
 
-			var defaultStyle = new OpenLayers.Style(template, {
-				context : context
-			});
-			var selectStyle = new OpenLayers.Style(selTemplate, {
-				context : context
-			});
-
 			var searchStyleMap = new OpenLayers.StyleMap({
-				"default" : defaultStyle,
-				"select" : selectStyle
+				"default" : new OpenLayers.Style(template),
+				"select" : new OpenLayers.Style(selTemplate)
 			});
 
 			var layerRoutePoints = new OpenLayers.Layer.Vector(this.ROUTE_POINTS, {
@@ -186,19 +182,31 @@ var Map = ( function() {"use strict";
 			});
 
 			//route lines
-			var layerRouteLines = new OpenLayers.Layer.Vector(this.ROUTE_LINES, {
-				displayInLayerSwitcher : false,
-				'style' : {
-					strokeColor : "#009ad5",
-					strokeOpacity : 1,
-					strokeWidth : 5,
-					cursor : "pointer"
-				}
+			var routeLineTemplate = {
+				pointRadius : 0,
+				fillOpacity : 1,
+				strokeWidth : 5,
+				strokeColor : '${stroke}',
+				fillColor : '${fill}',
+				graphicZIndex : 2,
+				cursor : 'pointer'
+			};
+			var routeLineSelTemplate = {
+				pointRadius : 6,
+				strokeWidth : '${strokeWidthEm}',
+				strokeColor : '${strokeEm}',
+				fillColor : '${fillEm}',
+				graphicZIndex : 3
+			};
+		
+			var routeLineStyleMap = new OpenLayers.StyleMap({
+				'default' : new OpenLayers.Style(routeLineTemplate),
+				'select' : new OpenLayers.Style(routeLineSelTemplate)
 			});
 
-			//route instructions
-			var layerRouteInstructions = new OpenLayers.Layer.Vector(this.ROUTE_INSTRUCTIONS, {
-				displayInLayerSwitcher : false
+			var layerRouteLines = new OpenLayers.Layer.Vector(this.ROUTE_LINES, {
+				displayInLayerSwitcher : false,
+				styleMap : routeLineStyleMap
 			});
 
 			//Geolocation
@@ -211,9 +219,9 @@ var Map = ( function() {"use strict";
 			var poiTemplate = {
 				pointRadius : 16,
 				stroke : true,
-				strokeColor : '#ff0000', //{String} Hex stroke color.  Default is “#ee9900”.
+				strokeColor : '#ff0000',
 				graphicZIndex : 6,
-				externalGraphic : "${icon}", //"${getImageUrl}", // using context.getImageUrl(feature)
+				externalGraphic : "${icon}",
 				graphicXOffset : -10,
 				graphicYOffset : -30,
 				graphicWidth : 21,
@@ -223,24 +231,17 @@ var Map = ( function() {"use strict";
 			//for select style
 			var poiSelTemplate = {
 				graphicZIndex : 10,
-				externalGraphic : "${iconEm}", // using context.getHighlightImageUrl(feature)
-				graphicXOffset : -20, //graphicXOffset : -10,
-				graphicYOffset : -40, //graphicYOffset : -30,
-				graphicWidth : 41, //graphicWidth : 21,
-				graphicHeight : 50, //graphicHeight : 30
+				externalGraphic : "${iconEm}",
+				graphicXOffset : -20,
+				graphicYOffset : -40,
+				graphicWidth : 41,
+				graphicHeight : 50,
 				graphicOpacity : 0.7
 			};
 
-			var poiDefaultStyle = new OpenLayers.Style(poiTemplate, {
-				context : context
-			});
-			var poiSelectStyle = new OpenLayers.Style(poiSelTemplate, {
-				context : context
-			});
-
 			var poiStyleMap = new OpenLayers.StyleMap({
-				"default" : poiDefaultStyle,
-				"select" : poiSelectStyle
+				"default" : new OpenLayers.Style(poiTemplate),
+				"select" : new OpenLayers.Style(poiSelTemplate)
 			});
 
 			//Search POI
@@ -276,7 +277,7 @@ var Map = ( function() {"use strict";
 			});
 
 			//define order
-			this.theMap.addLayers([layerRouteLines, layerTrack, layerRouteInstructions, layerSearch, layerPoi, layerAvoid, layerRoutePoints]);
+			this.theMap.addLayers([layerRouteLines, layerTrack, layerSearch, layerPoi, layerAvoid, layerRoutePoints]);
 
 			/* *********************************************************************
 			 * MAP CONTROLS
@@ -302,7 +303,7 @@ var Map = ( function() {"use strict";
 			this.theMap.addControl(new OpenLayers.Control.Permalink());
 			this.theMap.addControl(new OpenLayers.Control.Attribution());
 
-			this.selectMarker = new OpenLayers.Control.SelectFeature([layerSearch, layerRoutePoints, layerPoi], {
+			this.selectMarker = new OpenLayers.Control.SelectFeature([layerSearch, layerRoutePoints, layerPoi, layerRouteLines], {
 				hover : true
 			});
 			//highlighting of the markers's DOM representation (address text) on mouseover
@@ -576,6 +577,19 @@ var Map = ( function() {"use strict";
 			}
 		}
 
+		function getFirstPointIdOfLine(featureId, layer) {
+			var mapLayer = this.theMap.getLayersByName(layer);
+			if (mapLayer && mapLayer.length > 0) {
+				mapLayer = mapLayer[0];
+			}
+			var ft = mapLayer.getFeatureById(featureId);
+			if (ft && ft.geometry && ft.geometry.components && ft.geometry.components.length > 0) {
+				return ft.geometry.components[0].id;
+			} else {
+				return null;
+			}
+		}
+
 		/* *********************************************************************
 		* FOR MODULES (e.g. search, routing,...)
 		* *********************************************************************/
@@ -735,7 +749,6 @@ var Map = ( function() {"use strict";
 				var feature = new OpenLayers.Feature.Vector(point, {
 					icon : icon,
 					iconEm : icon
-					// id : 'poi_' + i
 				});
 				layerPoiResults.addFeatures([feature]);
 				listOfFeatures.push(feature);
@@ -787,25 +800,30 @@ var Map = ( function() {"use strict";
 
 		/**
 		 *draw given points as route line on the map
-		 * @param {Object} routeLinePoints array of OL.Geometry.Point
+		 * @param {Object} routeLineSegments array of OL.Geometry.LineString
 		 */
-		function updateRoute(routeLinePoints) {
+		function updateRoute(routeLineSegments, routeLinePoints) {
 			var layer = this.theMap.getLayersByName(this.ROUTE_LINES)[0];
 			layer.removeAllFeatures();
 
-			if (routeLinePoints && routeLinePoints.length > 0) {
+			var ftIds = [];
+			if (routeLineSegments && routeLineSegments.length > 0) {
 				var self = this;
-				for (var i = 0; i < routeLinePoints.length; i++) {
-					var pt = routeLinePoints[i];
-					pt = self.convertPointForMap(pt);
-					pt = new OpenLayers.Geometry.Point(pt.lon, pt.lat);
-					routeLinePoints[i] = pt;
-				}
+				for (var i = 0; i < routeLineSegments.length; i++) {
+					//"lines" of the route
+					var segment = routeLineSegments[i];
+					var segmentFt = new OpenLayers.Feature.Vector(segment, pointAndLineStyle.line);
 
-				var routeLine = new OpenLayers.Geometry.LineString(routeLinePoints);
-				var ft = new OpenLayers.Feature.Vector(routeLine, null);
-				layer.addFeatures([ft]);
+					//"corner points" of the route where direction changes
+					var cornerPoint = routeLinePoints[i];
+					var cornerFt = new OpenLayers.Feature.Vector(cornerPoint, pointAndLineStyle.point);
+
+					layer.addFeatures([segmentFt, cornerFt]);
+
+					ftIds.push(segmentFt.id, cornerFt.id);
+				}
 			}
+			return ftIds;
 		}
 
 
@@ -821,6 +839,7 @@ var Map = ( function() {"use strict";
 		map.prototype.clearMarkers = clearMarkers;
 		map.prototype.emphMarker = emphMarker;
 		map.prototype.convertFeatureIdToPositionString = convertFeatureIdToPositionString;
+		map.prototype.getFirstPointIdOfLine = getFirstPointIdOfLine;
 
 		map.prototype.addWaypointMarker = addWaypointMarker;
 		map.prototype.addWaypointAtPos = addWaypointAtPos;

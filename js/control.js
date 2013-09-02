@@ -527,56 +527,61 @@ var Controller = ( function(w) {'use strict';
 		 *if there are at least two waypoint set, a route can be calculated and displayed
 		 */
 		function handleRoutePresent(isRoutePresent) {
-			console.log("checking route presence")
 			if (isRoutePresent) {
-				console.log("control: route is present.")
-				route.routePresent = true;
-				ui.setRouteIsPresent(true);
+				//TODO show spinner in UI for route calculation
 
 				var routePoints = ui.getRoutePoints();
 				for (var i = 0; i < routePoints.length; i++) {
 					routePoints[i] = routePoints[i].split(' ');
 					if (routePoints[i].length == 2) {
 						routePoints[i] = new OpenLayers.LonLat(routePoints[i][0], routePoints[i][1]);
-						routePoints[i] = map.convertPointForDisplay(routePoints[i]); 
+						routePoints[i] = map.convertPointForDisplay(routePoints[i]);
 					}
 				}
-				
-				console.log(routePoints);
-				
+
 				//TODO define variables for route options
-				var routePref; //car, bike,...
-				var routePrefDetail; //fastest, safest,...
-				var avoidMotorways; //avoid toll way/ motorway
+				var routePref;
+				//car, bike,...
+				var routePrefDetail;
+				//fastest, safest,...
+				var avoidMotorways;
+				//avoid toll way/ motorway
 				var avoidTollways;
 				var avoidAreas;
-				
+
 				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.language, routePref, routePrefDetail, avoidMotorways, avoidTollways, avoidAreas);
-				
-				//TODO implement: calculate route, display it in UI
 			} else {
-				console.log("control: route is NOT present.")
+				//internal
 				route.routePresent = false;
 				ui.setRouteIsPresent(false);
+				//add features to map
+				map.updateRoute();
+				//add DOM elements
+				ui.updateRouteSummary();
+				ui.updateRouteInstructions();
+			}
 
-				//TODO implement: remove route features on map + DOM elements
-			}
-			
 			function routeCalculationSuccess(results) {
+				route.routePresent = true;
+				ui.setRouteIsPresent(true);
+
 				results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
-				// console.log(results)
-				
-				var routeLines = route.parseResultsToPoints(results);
-				map.updateRoute(routeLines);
-				
-				//TODO implement
-				//summary + instructions
+
+				// each route instruction has a part of this lineString as geometry for this instruction
+				var routeLines = route.parseResultsToLineStrings(results, map.convertPointForMap);
+				var routePoints = route.parseResultsToCornerPoints(results, map.convertPointForMap);
+				var featureIds = map.updateRoute(routeLines, routePoints);
+
+				ui.updateRouteSummary(results);
+
+				ui.updateRouteInstructions(results, featureIds, map.ROUTE_LINES);
 			}
-			
+
 			function routeCalculationError() {
 				console.log(failure)
 				//TODO implement
 			}
+
 		}
 
 		/* *********************************************************************
@@ -626,7 +631,7 @@ var Controller = ( function(w) {'use strict';
 		function handleElementDeEmph(atts) {
 			var id = atts.id;
 			var layer = atts.layer;
-
+			
 			//tell map to de-emph the element
 			map.emphMarker(layer, id, false);
 		}

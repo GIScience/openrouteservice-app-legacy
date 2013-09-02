@@ -87,29 +87,29 @@ convert = ( function() {'use strict';
 				//params:
 				//distance - a number
 				//uom - one of m/km, yd/mi
-				distance2hr : function(distance, uom) {
-					distance = parseFloat(distance)
-					if (uom == OpenRouteService.List.distanceUnitsRoute[0]) {
-						if (distance >= 1000) {
-							uom = 'KM';
-							distance = distance / 1000;
-							distance = util.round(distance);
-						} else {
-							uom = 'M';
-						}
-						distance = util.round(distance);
-						return [distance, uom];
-					} else if (uom == OpenRouteService.List.distanceUnitsRoute[1]) {
-						if (distance >= 1760) {
-							uom = 'MI';
-							distance = distance / 1760;
-							distance = util.round(distance);
-						} else {
-							uom = 'YD';
-						}
-						return [distance, uom];
-					}
-				}
+				// distance2hr : function(distance, uom) {
+					// distance = parseFloat(distance)
+					// if (uom == OpenRouteService.List.distanceUnitsRoute[0]) {
+						// if (distance >= 1000) {
+							// uom = 'k';
+							// distance = distance / 1000;
+							// distance = util.round(distance);
+						// } else {
+							// uom = 'M';
+						// }
+						// distance = util.round(distance);
+						// return [distance, uom];
+					// } else if (uom == OpenRouteService.List.distanceUnitsRoute[1]) {
+						// if (distance >= 1760) {
+							// uom = 'MI';
+							// distance = distance / 1760;
+							// distance = util.round(distance);
+						// } else {
+							// uom = 'YD';
+						// }
+						// return [distance, uom];
+					// }
+				// }
 			},
 
 			//xls to html
