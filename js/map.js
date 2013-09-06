@@ -825,6 +825,14 @@ var Map = ( function() {"use strict";
 			}
 			return ftIds;
 		}
+		
+		function zoomToRoute() {
+			var layer = this.theMap.getLayersByName(this.ROUTE_LINES)[0];
+			var dataExtent = layer.getDataExtent();
+			if (dataExtent) {
+				this.theMap.zoomToExtent(dataExtent);
+			}
+		}
 
 
 		map.prototype = new EventEmitter();
@@ -855,6 +863,8 @@ var Map = ( function() {"use strict";
 		map.prototype.zoomToPoiResults = zoomToPoiResults;
 
 		map.prototype.zoomToMarker = zoomToMarker;
+		
+		map.prototype.zoomToRoute = zoomToRoute;
 
 		map.prototype.updateRoute = updateRoute;
 

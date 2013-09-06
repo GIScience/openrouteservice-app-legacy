@@ -78,7 +78,7 @@ var lang_de = {
 		'Pedestrian':  'Fußg&auml;nger',
 		'Bicycle':  'K&uuml;rzester Weg',
 		'BicycleSafety':  'Sicherster Weg',
-		'BicycleRoute':  'Bevorzugter Fahrradweg',
+		'BicycleRoute':  'Bevorzuge Fahrradweg',
 		'BicycleMTB':  'Mountainbike',
 		'BicycleRacer':  'Rennrad',
 		
@@ -121,7 +121,7 @@ var lang_de = {
 		'extendedVersion' :  'Erweiterte Version',
 	
 	//Site Preferences
-		'sitePreferences' : 'Seiteneinstellungen', 
+		'sitePreferences' : 'Optionen', 
 		'language':  'Sprachen',
 		'distance' :  'Entfernungseinheiten',
 		'version' : 'Version',

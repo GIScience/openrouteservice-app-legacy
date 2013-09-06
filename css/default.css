@@ -171,15 +171,10 @@ div.olControlScaleLine {
 	margin-left: 10px;
 }
 /* container for "zoom to route" or "calculate route" when appropriate*/
-#routeCalculateZoom {
+#routeCalculate {
 	display: none;
 	margin-top: 10px;
 	margin-bottom: 10px;
-}
-.zoomToRoute {
-	margin-top: 8px;
-	margin-bottom: 8px;
-	padding-left: 4px;
 }
 .zoomToSearchResults {
 	margin-top: 7px;
@@ -295,7 +290,6 @@ div.olControlScaleLine {
 }
 .links {
 	height: 36px;
-	width: 36px;
 	padding-top: 2px;
 	padding-bottom: 2px;
 }

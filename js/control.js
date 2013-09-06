@@ -560,29 +560,34 @@ var Controller = ( function(w) {'use strict';
 				ui.updateRouteSummary();
 				ui.updateRouteInstructions();
 			}
+		}
 
-			function routeCalculationSuccess(results) {
-				route.routePresent = true;
-				ui.setRouteIsPresent(true);
+		function routeCalculationSuccess(results) {
+			route.routePresent = true;
+			ui.setRouteIsPresent(true);
 
-				results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
-				
-				// each route instruction has a part of this lineString as geometry for this instruction
-				var routeLines = route.parseResultsToLineStrings(results, map.convertPointForMap);
-				var routePoints = route.parseResultsToCornerPoints(results, map.convertPointForMap);
-				var featureIds = map.updateRoute(routeLines, routePoints);
+			results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
 
-				ui.updateRouteSummary(results);
+			// each route instruction has a part of this lineString as geometry for this instruction
+			var routeLines = route.parseResultsToLineStrings(results, map.convertPointForMap);
+			var routePoints = route.parseResultsToCornerPoints(results, map.convertPointForMap);
+			var featureIds = map.updateRoute(routeLines, routePoints);
 
-				ui.updateRouteInstructions(results, featureIds, map.ROUTE_LINES);
-				ui.endRouteCalculation();
-			}
+			ui.updateRouteSummary(results);
 
-			function routeCalculationError() {
-				console.log(failure)
-				//TODO implement
-			}
+			ui.updateRouteInstructions(results, featureIds, map.ROUTE_LINES);
+			ui.endRouteCalculation();
 
+			map.zoomToRoute();
+		}
+
+		function routeCalculationError() {
+			console.log(failure)
+			//TODO implement
+		}
+
+		function handleZoomToRoute() {
+			map.zoomToRoute();
 		}
 
 		/* *********************************************************************
@@ -632,7 +637,7 @@ var Controller = ( function(w) {'use strict';
 		function handleElementDeEmph(atts) {
 			var id = atts.id;
 			var layer = atts.layer;
-			
+
 			//tell map to de-emph the element
 			map.emphMarker(layer, id, false);
 		}
@@ -737,6 +742,8 @@ var Controller = ( function(w) {'use strict';
 
 			ui.register('ui:useAsWaypoint', handleUseAsWaypoint);
 			ui.register('ui:zoomToMarker', handleZoomToMarker);
+
+			ui.register('ui:zoomToRoute', handleZoomToRoute);
 
 			ui.register('ui:openPermalinkRequest', handlePermalinkRequest);
 

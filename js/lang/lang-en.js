@@ -80,7 +80,7 @@ var lang_en = {
 		'Pedestrian': 'pedestrian',
 		'Bicycle': 'shortest route',
 		'BicycleSafety': 'safest route',
-		'BicycleRoute': 'preferred bicycle lane',
+		'BicycleRoute': 'prefer bicycle lane',
 		'BicycleMTB': 'mountain bike',
 		'BicycleRacer': 'racing bike',
 		
@@ -123,7 +123,7 @@ var lang_en = {
 		'extendedVersion' : 'extended version',
 	
 	//Site Preferences
-		'sitePreferences' : 'Site Preferences',
+		'sitePreferences' : 'Preferences',
 		'language': 'Languages',
 		'distance' : 'Distance Units',
 		'version' : 'Version',

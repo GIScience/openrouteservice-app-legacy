@@ -959,15 +959,15 @@ var Ui = ( function(w) {'use strict';
 			address = address.getAttribute('data-shortAddress');
 			return address;
 		}
-		
+
 		function startRouteCalculation() {
-			var el = $('#routeCalculateZoom');
+			var el = $('#routeCalculate');
 			el.show();
 			// el.html(preferences.translate('calculatingRoute')); XXX
 		}
-		
+
 		function endRouteCalculation() {
-			$('#routeCalculateZoom').hide();
+			$('#routeCalculate').hide();
 		}
 
 		function updateRouteSummary(results) {
@@ -1164,6 +1164,10 @@ var Ui = ( function(w) {'use strict';
 
 		}
 
+		function handleZoomToRouteClick() {
+			theInterface.emit('ui:zoomToRoute');
+		}
+
 		/* *********************************************************************
 		 * PERMALINK
 		 * *********************************************************************/
@@ -1226,6 +1230,9 @@ var Ui = ( function(w) {'use strict';
 			$('.moveUpWaypoint').click(handleMoveUpWaypointClick);
 			$('.moveDownWaypoint').click(handleMoveDownWaypointClick);
 			$('.removeWaypoint').click(handleRemoveWaypointClick);
+
+			//route
+			$('#zoomToRouteButton').click(handleZoomToRouteClick);
 
 			//geolocation
 			$('#fnct_geolocation').click(handleGeolocationClick);
