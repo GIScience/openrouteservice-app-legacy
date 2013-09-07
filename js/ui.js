@@ -1060,6 +1060,10 @@ var Ui = ( function(w) {'use strict';
 				var container = $('#routeInstructionsContainer').get(0);
 				container.show();
 				var table = container.querySelector('table');
+				//remove old route instructions if the user has searched before
+				while (table.firstChild) {
+					table.removeChild(table.firstChild);
+				}
 				var numInstructions = 0;
 
 				var instructionsList = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstructionsList')[0];
