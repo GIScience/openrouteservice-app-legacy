@@ -411,7 +411,16 @@ var Map = ( function() {"use strict";
 			function closeContextMenu() {
 				$('#menu').remove();
 			};
-
+			
+			//make route waypoints draggable
+			var dragWaypoints = new OpenLayers.Control.DragFeature(layerRoutePoints);
+			dragWaypoints.onComplete = function(feature) {
+				self.emit('map:waypointMoved', feature);
+			};
+			this.theMap.addControl(dragWaypoints);
+			dragWaypoints.activate();
+			
+			
 			/* *********************************************************************
 			 * MAP LOCATION
 			 * *********************************************************************/
@@ -685,6 +694,7 @@ var Map = ( function() {"use strict";
 			for (var i = 0; i < listOfPoints.length; i++) {
 				//convert corrdinates of marker
 				var point = listOfPoints[i];
+				var feature = null;
 				if (point) {
 
 					point = this.convertPointForMap(point);
@@ -698,13 +708,14 @@ var Map = ( function() {"use strict";
 						var ftId = 'address_' + i;
 					}
 
-					var feature = new OpenLayers.Feature.Vector(point, {
+					feature = new OpenLayers.Feature.Vector(point, {
 						icon : Ui.markerIcons.unset[0],
 						iconEm : Ui.markerIcons.unset[1],
 					});
-					listOfFeatures.push(feature);
+					
 					layerSearchResults.addFeatures([feature]);
 				}
+				listOfFeatures.push(feature);
 			}
 
 			//show all results

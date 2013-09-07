@@ -21,16 +21,20 @@ var Waypoint = (function(w) {'use strict';
 
 	function setNumWaypointsSet(number) {
 		numWaypointsSet = number;
-		if (numWaypointsSet >= 2) {
-			//route can be calculated
-			return true;
-		} else {
-			return false;
+		if (numWaypointsSet < 0) {
+			numWaypointsSet = 0;
 		}
 	}
 
 	function getNumWaypointsSet() {
 		return numWaypointsSet;
+	}
+
+	function changeNumberOfWaypointsSet(delta) {
+		numWaypointsSet = numWaypointsSet + delta;
+		if (numWaypointsSet < 0) {
+			numWaypointsSet = 0;
+		}
 	}
 
 	/**
@@ -155,6 +159,7 @@ var Waypoint = (function(w) {'use strict';
 
 	Waypoint.prototype.setNumWaypointsSet = setNumWaypointsSet;
 	Waypoint.prototype.getNumWaypointsSet = getNumWaypointsSet;
+	Waypoint.prototype.changeNumberOfWaypointsSet = changeNumberOfWaypointsSet;
 	Waypoint.prototype.find = find;
 	Waypoint.prototype.parseResultsToPoints = parseResultsToPoints;
 	Waypoint.prototype.determineWaypointType = determineWaypointType;

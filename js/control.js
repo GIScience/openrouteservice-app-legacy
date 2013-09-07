@@ -89,8 +89,9 @@ var Controller = ( function(w) {'use strict';
 			}
 			//else: user sets e.g. waypoint 2 while waypoint 1 is still empty
 
-			var routePresent = waypoint.setNumWaypointsSet(waypoint.getNumWaypointsSet() + 1);
-			handleRoutePresent(routePresent);
+			var deltaWaypointsSet = 1;
+			waypoint.changeNumberOfWaypointsSet(deltaWaypointsSet);
+			handleRoutePresent();
 
 			var position = map.convertFeatureIdToPositionString(waypointResultId, map.ROUTE_POINTS);
 			ui.setWaypointFeatureId(wpIndex, waypointResultId, position, map.ROUTE_POINTS);
@@ -136,46 +137,55 @@ var Controller = ( function(w) {'use strict';
 			//if VIA: use index of prior to last waypoint, insert the new via point after this element
 			wpIndex = wpType == Waypoint.type.VIA ? waypoint.numWaypoints - 2 : wpIndex;
 
+			var numWaypoints = 0;
+			var nextUnsetWaypoint = 0;
 			if (wpType == Waypoint.type.VIA) {
 				ui.addWaypointAfter(wpIndex, Waypoint.numWaypoints);
 				wpIndex++;
+				numWaypoints = 1;
+				if (waypoint.nextUnsetWaypoint <= wpIndex) {
+					nextUnsetWaypoint = 1;	
+				}
 			}
 			ui.showSearchingAtWaypoint(wpIndex, true);
 
 			//remove old waypoint marker (if exists)
 			featureId = ui.getFeatureIdOfWaypoint(wpIndex);
-			var routePresent;
+			var deltaWaypointsSet;
 			if (featureId) {
 				//address has been set yet
 				map.clearMarkers(map.ROUTE_POINTS, [featureId]);
 				//this waypoint has been set before...
-				routePresent = waypoint.setNumWaypointsSet(waypoint.getNumWaypointsSet());
+				deltaWaypointsSet = 0;
 			} else {
 				//this waypoint wasn't set yet
-				routePresent = waypoint.setNumWaypointsSet(waypoint.getNumWaypointsSet() + 1);
+				deltaWaypointsSet = 1;
 			}
 
 			//add the new marker
 			var newFeatureId = map.addWaypointAtPos(map.convertPointForMap(pos), wpIndex, wpType);
 
 			//determine address for given pos
-			geolocator.reverseGeolocate(pos, reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, wpType, wpIndex, newFeatureId, routePresent);
+			var waypointShiftArray = [numWaypoints, nextUnsetWaypoint, deltaWaypointsSet];
+			geolocator.reverseGeolocate(pos, reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, wpType, wpIndex, newFeatureId, waypointShiftArray);
 		}
 
-		function reverseGeocodeSuccess(addressResult, wpType, wpIndex, featureId, routePresent) {
+		function reverseGeocodeSuccess(addressResult, wpType, wpIndex, featureId, waypointShiftArray) {
 			ui.showSearchingAtWaypoint(wpIndex, false);
 			var newIndex = ui.addWaypointResultByRightclick(addressResult, wpType, wpIndex);
 			var position = map.convertFeatureIdToPositionString(featureId, map.ROUTE_POINTS);
 			ui.setWaypointFeatureId(newIndex, featureId, position, map.ROUTE_POINTS);
 
-			//adapt the next unset waypoint
-			if (waypoint.nextUnsetWaypoint == wpIndex) {
-				waypoint.nextUnsetWaypoint++;
-			}
-			//else: user sets e.g. waypoint 2 while waypoint 1 is still empty
-
+			//adapt the waypoint internals:
+			var numWaypoints = waypointShiftArray[0];
+			var nextUnsetWp = waypointShiftArray[1];
+			var deltaWaypoint = waypointShiftArray[2];
+			waypoint.numWaypoints += numWaypoints;
+			waypoint.nextUnsetWaypoint += nextUnsetWp;
+			waypoint.changeNumberOfWaypointsSet(deltaWaypoint);
+			
 			//do we need to re-calculate the route?
-			handleRoutePresent(routePresent);
+			handleRoutePresent();
 		}
 
 		function reverseGeocodeFailure() {
@@ -205,13 +215,6 @@ var Controller = ( function(w) {'use strict';
 			var idx = atts.wpIndex;
 			var featureId = atts.featureId;
 
-			//waypoint internal
-			if (featureId) {
-				//removed waypoint has been set
-				var routePresent = waypoint.setNumWaypointsSet(waypint.getNumWaypointsSet() - 1);
-				handleRoutePresent(routePresent);
-			}
-
 			//remove map feature of deleted wayoint
 			map.clearMarkers(map.ROUTE_POINTS, [featureId]);
 
@@ -220,6 +223,13 @@ var Controller = ( function(w) {'use strict';
 				waypoint.nextUnsetWaypoint--;
 			}
 			waypoint.numWaypoints--;
+			
+			//waypoint internal
+			if (featureId) {
+				//removed waypoint has been set
+				waypoint.changeNumberOfWaypointsSet(-1);
+				handleRoutePresent();
+			}
 
 			//re-calculate the waypoint types
 			for (var i = 0; i < waypoint.numWaypoints; i++) {
@@ -255,8 +265,8 @@ var Controller = ( function(w) {'use strict';
 			map.clearMarkers(map.ROUTE_POINTS);
 			waypoint.numWaypoints = 2;
 			waypoint.nextUnsetWaypoint = 0;
-			var routePresent = waypoint.setNumWaypointsSet(0);
-			handleRoutePresent(routePresent);
+			waypoint.setNumWaypointsSet(0);
+			handleRoutePresent();
 		}
 
 		/* *********************************************************************
@@ -502,7 +512,7 @@ var Controller = ( function(w) {'use strict';
 
 			//use the next unset waypoint for the new waypoint (append one if no unset wp exists)
 			var index = waypoint.nextUnsetWaypoint;
-
+			
 			var type;
 			if (index == 0) {
 				type = waypoint.type.START;
@@ -511,12 +521,30 @@ var Controller = ( function(w) {'use strict';
 			} else {
 				type = waypoint.type.VIA;
 			}
+			
+			var deltaWaypoint = 1;
+			if (waypoint.numWaypoints == waypoint.nextUnsetWaypoint) {
+				ui.addWaypointAfter(waypoint.numWaypoints-1, waypoint.numWaypoints);
+			}
+			//the additional waypoint is set in the function called by ui.addWaypointAfter(...)
+			var numWaypointsChange = 0;
+			
+			var waypointShiftArray = [numWaypointsChange, +1, deltaWaypoint];
+
+			
 
 			//use position to add the waypoint
 			var featureId = map.addWaypointAtPos(position, index, type);
-			geolocator.reverseGeolocate(map.convertPointForDisplay(position), reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, type, index, featureId);
+			geolocator.reverseGeolocate(map.convertPointForDisplay(position), reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, type, index, featureId, waypointShiftArray);
 
 			//markers of the search results will not be removed cause the search is still visible.
+		}
+		
+		function handleWaypointMoved(featureMoved) {
+			var position = new OpenLayers.LonLat(featureMoved.geometry.x, featureMoved.geometry.y);			
+			var index = ui.getWaypiontIndexByFeatureId(featureMoved.id);
+			var type = waypoint.determineWaypointType(index);
+			geolocator.reverseGeolocate(map.convertPointForDisplay(position), reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, type, index, featureMoved.id, [0, 0, 0]);
 		}
 
 		/* *********************************************************************
@@ -526,7 +554,9 @@ var Controller = ( function(w) {'use strict';
 		/**
 		 *if there are at least two waypoint set, a route can be calculated and displayed
 		 */
-		function handleRoutePresent(isRoutePresent) {
+		function handleRoutePresent() {
+			var isRoutePresent = waypoint.getNumWaypointsSet() >= 2;
+			
 			if (isRoutePresent) {
 				ui.startRouteCalculation();
 
@@ -575,7 +605,7 @@ var Controller = ( function(w) {'use strict';
 
 			ui.updateRouteSummary(results);
 
-			ui.updateRouteInstructions(results, featureIds, map.ROUTE_LINES);
+			ui.updateRouteInstructions(results, featureIds, map.ROUTE_LINES, waypoint.nextUnsetWaypoint-1);
 			ui.endRouteCalculation();
 
 			map.zoomToRoute();
@@ -693,6 +723,12 @@ var Controller = ( function(w) {'use strict';
 				ui.showNewToOrsPopup();
 			}
 		}
+		
+		function showDebugInfo() {
+			console.log(waypoint.numWaypoints);
+			console.log(waypoint.nextUnsetWaypoint);
+			console.log(waypoint.getNumWaypointsSet());
+		}
 
 		/* *********************************************************************
 		* class-specific
@@ -702,6 +738,8 @@ var Controller = ( function(w) {'use strict';
 		 */
 		function initialize() {
 			map = new Map('map');
+			
+			ui.register('ui:startDebug', showDebugInfo);
 
 			//e.g. when viewing/hiding the sidebar
 			ui.register('ui:mapPositionChanged', handleMapUpdate);
@@ -742,6 +780,7 @@ var Controller = ( function(w) {'use strict';
 
 			ui.register('ui:useAsWaypoint', handleUseAsWaypoint);
 			ui.register('ui:zoomToMarker', handleZoomToMarker);
+			map.register('map:waypointMoved', handleWaypointMoved);
 
 			ui.register('ui:zoomToRoute', handleZoomToRoute);
 

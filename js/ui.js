@@ -195,7 +195,7 @@ var Ui = ( function(w) {'use strict';
 			$A(geocodeResponseList).each(function(geocodeResponse) {
 				allAddress = $A(util.getElementsByTagNameNS(geocodeResponse, namespaces.xls, 'Address'));
 				for (var i = 0; i < allAddress.length; i++) {
-					//listOfPoitnts[i] == null if result is not in Europe
+					//listOfFeatures[i] == null if result is not in Europe
 					if (listOfFeatures[i]) {
 						var lonLat = listOfFeatures[i].geometry;
 						allIds += listOfFeatures[i].id + ' ';
@@ -273,6 +273,22 @@ var Ui = ( function(w) {'use strict';
 			var address = rootElement.querySelector('.address');
 			var id = address ? address.id : null;
 			return id;
+		}
+		
+		function getWaypiontIndexByFeatureId(featureId) {
+			var wpResult = $('#' + featureId);
+			var wpElement;
+			if (wpResult) {
+				wpElement = wpResult.parent().parent();
+			}
+			if (wpElement) {
+				var wpIndex = wpElement.attr('id');
+				if (!isNaN(wpIndex)) {
+					return wpIndex;
+				} else {
+					return null;
+				}
+			}
 		}
 
 		function handleMoveUpWaypointClick(e) {
@@ -952,9 +968,8 @@ var Ui = ( function(w) {'use strict';
 			return allRoutePoints;
 		}
 
-		function getRouteDestination() {
-			var numWaypoints = $('.waypoint').length - 1;
-			var address = $('#' + (numWaypoints - 1)).get(0);
+		function getRouteDestination(lastSetWaypoint) {
+			var address = $('#' + lastSetWaypoint).get(0);
 			address = address.querySelector('.address');
 			address = address.getAttribute('data-shortAddress');
 			return address;
@@ -976,6 +991,8 @@ var Ui = ( function(w) {'use strict';
 				$('#routeSummaryContainer').get(0).hide();
 			} else {
 				//parse results and show them in the container
+				console.log(results);
+				
 				var summaryElement = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteSummary')[0];
 
 				var totalTime = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'TotalTime')[0];
@@ -1019,14 +1036,14 @@ var Ui = ( function(w) {'use strict';
 		 * @param mapFeatureIds: list of IDs of OpenLayers elements containing BOTH - ids for route line segments AND corner points:
 		 * [routeLineSegment_0, cornerPoint_0, routeLineSegment_1, cornerPoint_1,...]
 		 */
-		function updateRouteInstructions(results, mapFeatureIds, mapLayer) {
+		function updateRouteInstructions(results, mapFeatureIds, mapLayer, lastSetWaypoint) {
 			if (!results) {
 				var container = $('#routeInstructionsContainer').get(0);
 				container.hide();
 			} else {
 				//parse results and show them in the container
 
-				var destination = getRouteDestination();
+				var destination = getRouteDestination(lastSetWaypoint);
 				$('#routeFromTo').html(preferences.translate('routeFromTo') + destination);
 
 				var container = $('#routeInstructionsContainer').get(0);
@@ -1208,6 +1225,10 @@ var Ui = ( function(w) {'use strict';
 
 			$('#fnct_searchPoi').attr('data-source', dataSource);
 		}
+		
+		function debug() {
+			theInterface.emit('ui:startDebug');
+		}
 
 		/* *********************************************************************
 		 * CONSTRUCTOR
@@ -1215,6 +1236,8 @@ var Ui = ( function(w) {'use strict';
 
 		function Ui() {
 			loadDynamicData();
+			
+			$('#debug').click(debug);
 
 			//switch views
 			$('.fnct_switchTab').click(handleSwitchTabs);
@@ -1264,6 +1287,7 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.showSearchWaypointError = showSearchWaypointError;
 		Ui.prototype.setWaypointFeatureId = setWaypointFeatureId;
 		Ui.prototype.getFeatureIdOfWaypoint = getFeatureIdOfWaypoint;
+		Ui.prototype.getWaypiontIndexByFeatureId = getWaypiontIndexByFeatureId;
 		Ui.prototype.setWaypointType = setWaypointType;
 		Ui.prototype.addWaypointAfter = addWaypointAfter;
 		Ui.prototype.addWaypointResultByRightclick = addWaypointResultByRightclick;
