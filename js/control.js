@@ -137,15 +137,15 @@ var Controller = ( function(w) {'use strict';
 			//if VIA: use index of prior to last waypoint, insert the new via point after this element
 			wpIndex = wpType == Waypoint.type.VIA ? waypoint.numWaypoints - 2 : wpIndex;
 
+			//in case of a newly added VIA, the additional waypoint is added in ui.addWaypintAfter(...)
 			var numWaypoints = 0;
 			var nextUnsetWaypoint = 0;
 			if (wpType == Waypoint.type.VIA) {
 				ui.addWaypointAfter(wpIndex, Waypoint.numWaypoints);
 				wpIndex++;
-				numWaypoints = 1;
-				if (waypoint.nextUnsetWaypoint <= wpIndex) {
-					nextUnsetWaypoint = 1;	
-				}
+			}
+			if (waypoint.nextUnsetWaypoint <= wpIndex) {
+				nextUnsetWaypoint = 1;
 			}
 			ui.showSearchingAtWaypoint(wpIndex, true);
 
@@ -183,7 +183,7 @@ var Controller = ( function(w) {'use strict';
 			waypoint.numWaypoints += numWaypoints;
 			waypoint.nextUnsetWaypoint += nextUnsetWp;
 			waypoint.changeNumberOfWaypointsSet(deltaWaypoint);
-			
+
 			//do we need to re-calculate the route?
 			handleRoutePresent();
 		}
@@ -214,7 +214,7 @@ var Controller = ( function(w) {'use strict';
 		function handleRemoveWaypoint(atts) {
 			var idx = atts.wpIndex;
 			var featureId = atts.featureId;
-
+			
 			//remove map feature of deleted wayoint
 			map.clearMarkers(map.ROUTE_POINTS, [featureId]);
 
@@ -222,8 +222,10 @@ var Controller = ( function(w) {'use strict';
 				//we remove one waypoint in the line -> the index of the next unset waypoint gets smaller
 				waypoint.nextUnsetWaypoint--;
 			}
-			waypoint.numWaypoints--;
-			
+			if (idx >= 2) {
+				waypoint.numWaypoints--;
+			}
+
 			//waypoint internal
 			if (featureId) {
 				//removed waypoint has been set
@@ -235,7 +237,7 @@ var Controller = ( function(w) {'use strict';
 			for (var i = 0; i < waypoint.numWaypoints; i++) {
 				var type = waypoint.determineWaypointType(i);
 				ui.setWaypointType(i, type);
-
+				
 				featureId = ui.getFeatureIdOfWaypoint(i);
 				var newId = map.setWaypointType(featureId, type);
 				var position = map.convertFeatureIdToPositionString(newId, map.ROUTE_POINTS);
@@ -512,7 +514,7 @@ var Controller = ( function(w) {'use strict';
 
 			//use the next unset waypoint for the new waypoint (append one if no unset wp exists)
 			var index = waypoint.nextUnsetWaypoint;
-			
+
 			var type;
 			if (index == 0) {
 				type = waypoint.type.START;
@@ -521,17 +523,15 @@ var Controller = ( function(w) {'use strict';
 			} else {
 				type = waypoint.type.VIA;
 			}
-			
+
 			var deltaWaypoint = 1;
 			if (waypoint.numWaypoints == waypoint.nextUnsetWaypoint) {
-				ui.addWaypointAfter(waypoint.numWaypoints-1, waypoint.numWaypoints);
+				ui.addWaypointAfter(waypoint.numWaypoints - 1, waypoint.numWaypoints);
 			}
 			//the additional waypoint is set in the function called by ui.addWaypointAfter(...)
 			var numWaypointsChange = 0;
-			
-			var waypointShiftArray = [numWaypointsChange, +1, deltaWaypoint];
 
-			
+			var waypointShiftArray = [numWaypointsChange, +1, deltaWaypoint];
 
 			//use position to add the waypoint
 			var featureId = map.addWaypointAtPos(position, index, type);
@@ -539,9 +539,9 @@ var Controller = ( function(w) {'use strict';
 
 			//markers of the search results will not be removed cause the search is still visible.
 		}
-		
+
 		function handleWaypointMoved(featureMoved) {
-			var position = new OpenLayers.LonLat(featureMoved.geometry.x, featureMoved.geometry.y);			
+			var position = new OpenLayers.LonLat(featureMoved.geometry.x, featureMoved.geometry.y);
 			var index = ui.getWaypiontIndexByFeatureId(featureMoved.id);
 			var type = waypoint.determineWaypointType(index);
 			geolocator.reverseGeolocate(map.convertPointForDisplay(position), reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, type, index, featureMoved.id, [0, 0, 0]);
@@ -556,7 +556,7 @@ var Controller = ( function(w) {'use strict';
 		 */
 		function handleRoutePresent() {
 			var isRoutePresent = waypoint.getNumWaypointsSet() >= 2;
-			
+
 			if (isRoutePresent) {
 				ui.startRouteCalculation();
 
@@ -605,7 +605,7 @@ var Controller = ( function(w) {'use strict';
 
 			ui.updateRouteSummary(results);
 
-			ui.updateRouteInstructions(results, featureIds, map.ROUTE_LINES, waypoint.nextUnsetWaypoint-1);
+			ui.updateRouteInstructions(results, featureIds, map.ROUTE_LINES, waypoint.nextUnsetWaypoint - 1);
 			ui.endRouteCalculation();
 
 			map.zoomToRoute();
@@ -723,7 +723,7 @@ var Controller = ( function(w) {'use strict';
 				ui.showNewToOrsPopup();
 			}
 		}
-		
+
 		function showDebugInfo() {
 			console.log(waypoint.numWaypoints);
 			console.log(waypoint.nextUnsetWaypoint);
@@ -738,7 +738,7 @@ var Controller = ( function(w) {'use strict';
 		 */
 		function initialize() {
 			map = new Map('map');
-			
+
 			ui.register('ui:startDebug', showDebugInfo);
 
 			//e.g. when viewing/hiding the sidebar

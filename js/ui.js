@@ -274,7 +274,7 @@ var Ui = ( function(w) {'use strict';
 			var id = address ? address.id : null;
 			return id;
 		}
-		
+
 		function getWaypiontIndexByFeatureId(featureId) {
 			var wpResult = $('#' + featureId);
 			var wpElement;
@@ -502,29 +502,40 @@ var Ui = ( function(w) {'use strict';
 
 		function handleRemoveWaypointClick(e) {
 			var numWaypoints = $('.waypoint').length - 1;
-			if (numWaypoints > 2) {
-				//we want to show at least 2 waypoints
-				var currentId = parseInt($(e.currentTarget).parent().attr('id'));
-				var featureId = $(e.currentTarget).parent().get(0);
-				featureId = featureId.querySelector('.address');
-				if (featureId) {
-					featureId = featureId.id;
-				} else {
-					featureId = null;
-				}
 
+			var currentId = parseInt($(e.currentTarget).parent().attr('id'));
+			var featureId = $(e.currentTarget).parent().get(0);
+			featureId = featureId.querySelector('.address');
+			if (featureId) {
+				featureId = featureId.id;
+			} else {
+				featureId = null;
+			}
+
+			//we want to show at least 2 waypoints
+			if (numWaypoints > 2) {
 				//'move' all successor waypoints up from currentId to currentId-1
 				for (var i = currentId + 1; i < numWaypoints; i++) {
 					var wpElement = $('#' + i);
 					wpElement.attr('id', (i - 1));
 				}
-				$(e.currentTarget).parent().remove();
 
-				theInterface.emit('ui:removeWaypoint', {
-					wpIndex : currentId,
-					featureId : featureId
-				});
+				$(e.currentTarget).parent().remove();
+			} else {
+				var wpElement = $(e.currentTarget).parent().get(0);
+				wpElement.setAttribute('class', 'guiComponent waypoint unset');
+				wpElement.querySelector('.searchAgainButton').hide();
+				wpElement.querySelector('.guiComponent').show()
+
+				var result = wpElement.querySelector('.waypointResult');
+				result.innerHTML = '';
 			}
+
+			theInterface.emit('ui:removeWaypoint', {
+				wpIndex : currentId,
+				featureId : featureId
+			});
+
 			var numwp = $('.waypoint').length - 1;
 		}
 
@@ -992,7 +1003,7 @@ var Ui = ( function(w) {'use strict';
 			} else {
 				//parse results and show them in the container
 				console.log(results);
-				
+
 				var summaryElement = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteSummary')[0];
 
 				var totalTime = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'TotalTime')[0];
@@ -1225,7 +1236,7 @@ var Ui = ( function(w) {'use strict';
 
 			$('#fnct_searchPoi').attr('data-source', dataSource);
 		}
-		
+
 		function debug() {
 			theInterface.emit('ui:startDebug');
 		}
@@ -1236,7 +1247,7 @@ var Ui = ( function(w) {'use strict';
 
 		function Ui() {
 			loadDynamicData();
-			
+
 			$('#debug').click(debug);
 
 			//switch views
