@@ -603,17 +603,23 @@ var Controller = ( function(w) {'use strict';
 			var routePoints = route.parseResultsToCornerPoints(results, map.convertPointForMap);
 			var featureIds = map.updateRoute(routeLines, routePoints);
 
+			var errors = route.hasRoutingErrors(results);
+
+			if (!errors) {
 			ui.updateRouteSummary(results);
 
 			ui.updateRouteInstructions(results, featureIds, map.ROUTE_LINES, waypoint.nextUnsetWaypoint - 1);
 			ui.endRouteCalculation();
 
 			map.zoomToRoute();
+			} else {
+				routeCalculationError();
+			}
 		}
 
 		function routeCalculationError() {
-			console.log(failure)
-			//TODO implement
+			ui.endRouteCalculation();
+			ui.showRoutingError();
 		}
 
 		function handleZoomToRoute() {

@@ -989,7 +989,9 @@ var Ui = ( function(w) {'use strict';
 		function startRouteCalculation() {
 			var el = $('#routeCalculate');
 			el.show();
-			// el.html(preferences.translate('calculatingRoute')); XXX
+			el.html(preferences.translate('calculatingRoute'));
+			
+			$('#routeError').hide();
 		}
 
 		function endRouteCalculation() {
@@ -1002,8 +1004,6 @@ var Ui = ( function(w) {'use strict';
 				$('#routeSummaryContainer').get(0).hide();
 			} else {
 				//parse results and show them in the container
-				console.log(results);
-
 				var summaryElement = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteSummary')[0];
 
 				var totalTime = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'TotalTime')[0];
@@ -1199,6 +1199,13 @@ var Ui = ( function(w) {'use strict';
 		function handleZoomToRouteClick() {
 			theInterface.emit('ui:zoomToRoute');
 		}
+		
+		function showRoutingError() {
+			var el = $('#routeError');
+			el.html(preferences.translate('noRouteAvailable'));
+			// el.html(preferences.translate('calculatingRoute'));
+			el.show();
+		}
 
 		/* *********************************************************************
 		 * PERMALINK
@@ -1325,6 +1332,7 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.startRouteCalculation = startRouteCalculation;
 		Ui.prototype.endRouteCalculation = endRouteCalculation;
 		Ui.prototype.updateRouteInstructions = updateRouteInstructions;
+		Ui.prototype.showRoutingError = showRoutingError;
 
 		Ui.prototype.showCurrentLocation = showCurrentLocation;
 		Ui.prototype.stopGeolocation = stopGeolocation;

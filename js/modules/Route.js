@@ -185,10 +185,32 @@ var Route = ( function(w) {"use strict";
 			return listOfCornerPoints;
 		}
 
+		/**
+		 * checks if the routing request was successful but the response doesn't contain a route but an error message
+		 * @param {Object} results XML result of routing request
+		 * @return: true, if it contains errors, false otherwise
+		 */
+		function hasRoutingErrors(results) {
+			//check if the route calculation returned an error (e.g. waypoints too far from road)
+			var errorTag = util.getElementsByTagNameNS(results, namespaces.xls, 'ResponseHeader');
+			errorTag = errorTag.length > 0 ? errorTag[0] : null;
+			if (errorTag) {
+				var errorText = errorTag.getAttribute('sessionID');
+				if (errorText === 'Error') {
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
+
 
 		Route.prototype.calculate = calculate;
 		Route.prototype.parseResultsToLineStrings = parseResultsToLineStrings;
 		Route.prototype.parseResultsToCornerPoints = parseResultsToCornerPoints;
+		Route.prototype.hasRoutingErrors = hasRoutingErrors;
 
 		return new Route();
 	}(window));
