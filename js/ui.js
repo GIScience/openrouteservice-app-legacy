@@ -449,6 +449,7 @@ var Ui = ( function(w) {'use strict';
 			newWp.querySelector('.moveUpWaypoint').addEventListener('click', handleMoveUpWaypointClick);
 			newWp.querySelector('.moveDownWaypoint').addEventListener('click', handleMoveDownWaypointClick);
 			newWp.querySelector('.removeWaypoint').addEventListener('click', handleRemoveWaypointClick);
+			newWp.querySelector('.searchAgainButton').addEventListener('click', handleSearchAgainWaypointClick);
 
 			theInterface.emit('ui:addWaypoint');
 		}
@@ -630,6 +631,11 @@ var Ui = ( function(w) {'use strict';
 			} else {
 				inputElement.removeClassName('searching');
 			}
+		}
+
+		function handleSearchAgainWaypointClick(e) {
+			console.log(e);
+			//TODO implement
 		}
 
 		/* *********************************************************************
@@ -979,18 +985,31 @@ var Ui = ( function(w) {'use strict';
 			return allRoutePoints;
 		}
 
-		function getRouteDestination(lastSetWaypoint) {
-			var address = $('#' + lastSetWaypoint).get(0);
-			address = address.querySelector('.address');
-			address = address.getAttribute('data-shortAddress');
-			return address;
+		function getRouteDestination() {
+			//find the last waypoint set
+			var lastSetWaypoint = -1;
+			for (var i = $('.waypoint').length - 2; i >= 0; i--) {
+				var address = $('#' + i).get(0);
+				if (address.querySelector('.address')) {
+					lastSetWaypoint = i;
+					i = -1;
+				}
+			}
+			if (lastSetWaypoint >= 0) {
+				var address = $('#' + lastSetWaypoint).get(0);
+				address = address.querySelector('.address');
+				address = address.getAttribute('data-shortAddress');
+				return address;
+			} else {
+				return null;
+			}
 		}
 
 		function startRouteCalculation() {
 			var el = $('#routeCalculate');
 			el.show();
 			el.html(preferences.translate('calculatingRoute'));
-			
+
 			$('#routeError').hide();
 		}
 
@@ -1047,14 +1066,14 @@ var Ui = ( function(w) {'use strict';
 		 * @param mapFeatureIds: list of IDs of OpenLayers elements containing BOTH - ids for route line segments AND corner points:
 		 * [routeLineSegment_0, cornerPoint_0, routeLineSegment_1, cornerPoint_1,...]
 		 */
-		function updateRouteInstructions(results, mapFeatureIds, mapLayer, lastSetWaypoint) {
+		function updateRouteInstructions(results, mapFeatureIds, mapLayer) {
 			if (!results) {
 				var container = $('#routeInstructionsContainer').get(0);
 				container.hide();
 			} else {
 				//parse results and show them in the container
 
-				var destination = getRouteDestination(lastSetWaypoint);
+				var destination = getRouteDestination();
 				$('#routeFromTo').html(preferences.translate('routeFromTo') + destination);
 
 				var container = $('#routeInstructionsContainer').get(0);
@@ -1199,7 +1218,7 @@ var Ui = ( function(w) {'use strict';
 		function handleZoomToRouteClick() {
 			theInterface.emit('ui:zoomToRoute');
 		}
-		
+
 		function showRoutingError() {
 			var el = $('#routeError');
 			el.html(preferences.translate('noRouteAvailable'));
@@ -1275,6 +1294,7 @@ var Ui = ( function(w) {'use strict';
 			$('.moveUpWaypoint').click(handleMoveUpWaypointClick);
 			$('.moveDownWaypoint').click(handleMoveDownWaypointClick);
 			$('.removeWaypoint').click(handleRemoveWaypointClick);
+			$('.searchAgainButton').click(handleSearchAgainWaypointClick);
 
 			//route
 			$('#zoomToRouteButton').click(handleZoomToRouteClick);

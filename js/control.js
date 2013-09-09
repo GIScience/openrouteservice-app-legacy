@@ -608,7 +608,7 @@ var Controller = ( function(w) {'use strict';
 			if (!errors) {
 			ui.updateRouteSummary(results);
 
-			ui.updateRouteInstructions(results, featureIds, map.ROUTE_LINES, waypoint.nextUnsetWaypoint - 1);
+			ui.updateRouteInstructions(results, featureIds, map.ROUTE_LINES);
 			ui.endRouteCalculation();
 
 			map.zoomToRoute();
