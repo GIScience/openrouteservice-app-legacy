@@ -60,7 +60,7 @@
 	left: 0px;
 	width: 390px;
 	padding-top: 10px;
-/*	overflow: auto;*/
+	/*	overflow: auto;*/
 }
 #pageContent {
 	position: absolute;
@@ -72,8 +72,7 @@
 	overflow: auto;
 }
 
-#pageContent p,
-#pageContent li {
+#pageContent p, #pageContent li {
 	font-size: 1.1em;
 	line-height: 1.5;
 }
@@ -88,14 +87,12 @@
 	margin-bottom: 0.3em;
 }
 
-#pageContent h1,
-#pageContent h2,
-#pageContent h3 {
+#pageContent h1, #pageContent h2, #pageContent h3 {
 	margin-bottom: 0.2em;
 }
 
 .topOfPage {
-	float:right;
+	float: right;
 	padding-right: 40px;
 }
 .space {
@@ -114,4 +111,14 @@
 }
 #dl-horizontal_mod dd {
 	line-height: 1.5em;
+}
+/*overwrite bootstrap*/
+a {
+	color: #990000;
+}
+.nav-list>.active>a, .nav-list>.active>a:hover {
+	background-color: #990000;
+}
+a:hover {
+	color: #909090;
 }
