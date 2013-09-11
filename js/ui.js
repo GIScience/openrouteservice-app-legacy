@@ -154,6 +154,7 @@ var Ui = ( function(w) {'use strict';
 			clearTimeout(typingTimerWaypoints[index]);
 			if (e.keyIdentifier != 'Shift' && e.currentTarget.value.length != 0) {
 				var input = e.currentTarget.value;
+				waypointElement.attr('data-searchInput', input);
 				typingTimerWaypoints[index] = setTimeout(function() {
 					//empty search results
 					var resultContainer = waypointElement.get(0).querySelector('.searchWaypointResults');
@@ -246,7 +247,11 @@ var Ui = ( function(w) {'use strict';
 			rootElement.querySelector('.searchAgainButton').show();
 			rootElement.querySelector('.guiComponent').hide();
 
-			var waypointResultElement = rootElement.querySelector('div');
+			var waypointResultElement = rootElement.querySelector('.waypointResult');
+			//remove older entries:
+			while (waypointResultElement.firstChild) {
+				waypointResultElement.removeChild(waypointResultElement.firstChild);
+			}
 			waypointResultElement.insert(e.currentTarget);
 			waypointResultElement.show();
 
@@ -488,6 +493,9 @@ var Ui = ( function(w) {'use strict';
 			//hide input field with search result list
 			children[5].hide();
 
+			//remove the search result markers
+			invalidateWaypointSearch(index);
+
 			//event handling
 			$('.address').mouseover(handleMouseOverElement);
 			$('.address').mouseout(handleMouseOutElement);
@@ -499,6 +507,13 @@ var Ui = ( function(w) {'use strict';
 			}
 
 			return index;
+		}
+
+		function invalidateWaypointSearch(wpIndex) {
+			var wpElement = $('#' + wpIndex);
+			if (wpElement) {
+				wpElement.removeAttr('data-search');
+			}
 		}
 
 		function handleRemoveWaypointClick(e) {
@@ -567,7 +582,54 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		function handleSearchAgainWaypointClick(e) {
-			//TODO implement
+			var wpElement = $(e.currentTarget).parent();
+			var index = wpElement.attr('id');
+
+			var addrElement = wpElement.get(0).querySelector('.address');
+			var featureId = addrElement.getAttribute('id');
+			var layer = addrElement.getAttribute('data-layer');
+
+			var resultComponent = wpElement.get(0).querySelector('.waypointResult');
+			$(resultComponent).hide();
+
+			var searchComponent = wpElement.get(0).querySelector('.guiComponent');
+			$(searchComponent).show();
+
+			var searchResults = wpElement.attr('data-search');
+			if (searchResults) {
+				//this waypoint was created by a search input. Only then it is useful to view previous search results
+				//therefore we have to re-calculate the search
+
+				//index of the waypoint (0st, 1st 2nd,...)
+
+				var input = wpElement.attr('data-searchInput');
+				//empty search results
+				invalidateWaypointSearch(index);
+				var resultContainer = wpElement.get(0).querySelector('.searchWaypointResults');
+				while (resultContainer && resultContainer.hasChildNodes()) {
+					resultContainer.removeChild(resultContainer.lastChild);
+				}
+				//request new results
+				theInterface.emit('ui:searchWaypointRequest', {
+					query : input,
+					wpIndex : index,
+					searchIds : null
+				});
+
+			} else {
+				resultComponent.removeChild(addrElement);
+				var responses = searchComponent.querySelector('.responseContainer');
+				if (responses) {
+					$(responses).hide();
+				}
+			}
+
+			//remove old waypoint marker
+			theInterface.emit('ui:searchAgainWaypoint', {
+				waypointFeature : featureId,
+				waypointLayer : layer,
+				wpIndex : index
+			});
 		}
 
 		function setWaypointType(wpIndex, type) {
@@ -631,11 +693,6 @@ var Ui = ( function(w) {'use strict';
 			} else {
 				inputElement.removeClassName('searching');
 			}
-		}
-
-		function handleSearchAgainWaypointClick(e) {
-			console.log(e);
-			//TODO implement
 		}
 
 		/* *********************************************************************

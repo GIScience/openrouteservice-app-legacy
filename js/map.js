@@ -13,7 +13,7 @@ var Map = ( function() {"use strict";
 				strokeWidthEm : 2,
 				strokeEm : '#009ad5',
 				fillEm : '#fba400'
-			}			
+			}
 		};
 		//FIXME line:strokeWidthEm is displayed too small. why? looks ugly
 
@@ -52,22 +52,22 @@ var Map = ( function() {"use strict";
 			/* *********************************************************************
 			* MAP LAYERS
 			* *********************************************************************/
-			//layer 1 - mapnik
+
+			//layer 1 - open map surfer
+			var mapSurfer_name = "OpenMapSurfer Roads";
+			var mapSurfer_options = {
+				type : 'png',
+				displayOutsideMaxExtent : true,
+				isBaseLayer : true,
+				numZoomLevels : 19,
+				attribution : 'Maps and data: &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> and contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+			};
+			var layerMapSurfer = new OpenLayers.Layer.XYZ(mapSurfer_name, namespaces.layerMapSurfer, mapSurfer_options);
+			this.theMap.addLayer(layerMapSurfer);
+
+			//layer 2 - mapnik
 			var osmLayer = new OpenLayers.Layer.OSM();
 			this.theMap.addLayer(osmLayer);
-
-			//TODO layer is not available at the moment
-			//layer 2 - open map surfer
-			// var mapSurfer_name = "OpenMapSurfer Roads";
-			// var mapSurfer_options = {
-			// type : 'png',
-			// displayOutsideMaxExtent : true,
-			// isBaseLayer : true,
-			// numZoomLevels : 19,
-			// attribution : 'Maps and data: &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> and contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-			// };
-			// var layerMapSurfer = new OpenLayers.Layer.XYZ(mapSurfer_name, OpenRouteService.namespaces.layerMapSurfer, mapSurfer_options);
-			// this.theMap.addLayer(layerMapSurfer);
 
 			//layer 3 - osm-wms worldwide
 			var wms_name = "OSM-WMS worldwide";
@@ -142,9 +142,9 @@ var Map = ( function() {"use strict";
 			});
 
 			/*
-			 * create the layer styleMap by giving the default style a context;
-			 * based on: http://openlayers.org/dev/examples/styles-context.html
-			 */
+			* create the layer styleMap by giving the default style a context;
+			* based on: http://openlayers.org/dev/examples/styles-context.html
+			*/
 
 			//for default style
 			var template = {
@@ -198,7 +198,7 @@ var Map = ( function() {"use strict";
 				fillColor : '${fillEm}',
 				graphicZIndex : 3
 			};
-		
+
 			var routeLineStyleMap = new OpenLayers.StyleMap({
 				'default' : new OpenLayers.Style(routeLineTemplate),
 				'select' : new OpenLayers.Style(routeLineSelTemplate)
@@ -411,7 +411,7 @@ var Map = ( function() {"use strict";
 			function closeContextMenu() {
 				$('#menu').remove();
 			};
-			
+
 			//make route waypoints draggable
 			var dragWaypoints = new OpenLayers.Control.DragFeature(layerRoutePoints);
 			dragWaypoints.onComplete = function(feature) {
@@ -419,8 +419,7 @@ var Map = ( function() {"use strict";
 			};
 			this.theMap.addControl(dragWaypoints);
 			dragWaypoints.activate();
-			
-			
+
 			/* *********************************************************************
 			 * MAP LOCATION
 			 * *********************************************************************/
@@ -712,7 +711,7 @@ var Map = ( function() {"use strict";
 						icon : Ui.markerIcons.unset[0],
 						iconEm : Ui.markerIcons.unset[1],
 					});
-					
+
 					layerSearchResults.addFeatures([feature]);
 				}
 				listOfFeatures.push(feature);
@@ -836,7 +835,7 @@ var Map = ( function() {"use strict";
 			}
 			return ftIds;
 		}
-		
+
 		function zoomToRoute() {
 			var layer = this.theMap.getLayersByName(this.ROUTE_LINES)[0];
 			var dataExtent = layer.getDataExtent();
@@ -874,7 +873,7 @@ var Map = ( function() {"use strict";
 		map.prototype.zoomToPoiResults = zoomToPoiResults;
 
 		map.prototype.zoomToMarker = zoomToMarker;
-		
+
 		map.prototype.zoomToRoute = zoomToRoute;
 
 		map.prototype.updateRoute = updateRoute;

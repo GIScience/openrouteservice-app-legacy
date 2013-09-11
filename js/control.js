@@ -43,7 +43,7 @@ var Controller = ( function(w) {'use strict';
 				map.clearMarkers(map.SEARCH, lastSearchResults);
 			}
 
-			waypoint.requestCounterWaypoints[atts.wpIndex]++;
+			waypoint.incrRequestCounterWaypoint(atts.wpIndex);
 			waypoint.find(atts.query, handleSearchWaypointResults, handleSearchWaypointFailure, atts.wpIndex, preferences.language);
 		}
 
@@ -51,8 +51,8 @@ var Controller = ( function(w) {'use strict';
 		 * forwards the waypoint search results to the Ui to display the addresses and to the map in order to add markers.
 		 */
 		function handleSearchWaypointResults(results, wpIndex) {
-			waypoint.requestCounterWaypoints[wpIndex]--;
-			if (waypoint.requestCounterWaypoints[wpIndex] == 0) {
+			waypoint.decrRequestCounterWaypoint(wpIndex);
+			if (waypoint.getRequestCounterWaypoint(wpIndex) == 0) {
 				var listOfPoints = waypoint.parseResultsToPoints(results, wpIndex);
 
 				ui.searchWaypointChangeToSearchingState(false, wpIndex);
@@ -66,8 +66,8 @@ var Controller = ( function(w) {'use strict';
 		 * calls the UI to show a search error
 		 */
 		function handleSearchWaypointFailure(wpIndex) {
-			waypoint.requestCounterWaypoints[wpIndex]--;
-			if (waypoint.requestCounterWaypoints[wpIndex] == 0) {
+			waypoint.decrRequestCounterWaypoint(wpIndex);
+			if (waypoint.getRequestCounterWaypoint(wpIndex) == 0) {
 				ui.searchWaypointChangeToSearchingState(false, wpIndex);
 				ui.showSearchWaypointError();
 			}
@@ -77,20 +77,16 @@ var Controller = ( function(w) {'use strict';
 			var wpIndex = atts.wpIndex;
 			var featureId = atts.featureId;
 			var searchIds = atts.searchIds;
-			searchIds = searchIds.split(' ');
+			if (searchIds) {
+				searchIds = searchIds.split(' ');
+			}
 
 			var type = selectWaypointType(wpIndex);
 			var waypointResultId = map.addWaypointMarker(wpIndex, featureId, type);
 			map.clearMarkers(map.SEARCH, searchIds);
 
-			//adapt the next unset waypoint
-			if (waypoint.nextUnsetWaypoint == wpIndex) {
-				waypoint.nextUnsetWaypoint++;
-			}
-			//else: user sets e.g. waypoint 2 while waypoint 1 is still empty
+			waypoint.setWaypoint(wpIndex);
 
-			var deltaWaypointsSet = 1;
-			waypoint.changeNumberOfWaypointsSet(deltaWaypointsSet);
 			handleRoutePresent();
 
 			var position = map.convertFeatureIdToPositionString(waypointResultId, map.ROUTE_POINTS);
@@ -98,11 +94,10 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		function handleAddWaypoint() {
-			waypoint.numWaypoints++;
-			waypoint.requestCounterWaypoints.push(0);
+			waypoint.addWaypoint();
 
 			//re-calculate type of last (now next-to-last) waypoint
-			var index = waypoint.numWaypoints - 2;
+			var index = waypoint.getNumWaypoints() - 2;
 			var type = waypoint.determineWaypointType(index);
 			ui.setWaypointType(index, type);
 
@@ -133,20 +128,17 @@ var Controller = ( function(w) {'use strict';
 			//index of the waypoint to set (start at the beginning, end at the end, via in the middle)
 			var wpIndex = 0;
 			//if END: use index of last waypoint
-			wpIndex = wpType == Waypoint.type.END ? waypoint.numWaypoints - 1 : wpIndex;
+			wpIndex = wpType == Waypoint.type.END ? waypoint.getNumWaypoints() - 1 : wpIndex;
 			//if VIA: use index of prior to last waypoint, insert the new via point after this element
-			wpIndex = wpType == Waypoint.type.VIA ? waypoint.numWaypoints - 2 : wpIndex;
+			wpIndex = wpType == Waypoint.type.VIA ? waypoint.getNumWaypoints() - 2 : wpIndex;
 
 			//in case of a newly added VIA, the additional waypoint is added in ui.addWaypintAfter(...)
-			var numWaypoints = 0;
-			var nextUnsetWaypoint = 0;
 			if (wpType == Waypoint.type.VIA) {
-				ui.addWaypointAfter(wpIndex, Waypoint.numWaypoints);
+				ui.addWaypointAfter(wpIndex, waypoint.getNumWaypoints());
 				wpIndex++;
+				//adding a waypoint internally is not necessary. this is done via the call in ui.addWaypointAfter(...).
 			}
-			if (waypoint.nextUnsetWaypoint <= wpIndex) {
-				nextUnsetWaypoint = 1;
-			}
+
 			ui.showSearchingAtWaypoint(wpIndex, true);
 
 			//remove old waypoint marker (if exists)
@@ -155,34 +147,25 @@ var Controller = ( function(w) {'use strict';
 			if (featureId) {
 				//address has been set yet
 				map.clearMarkers(map.ROUTE_POINTS, [featureId]);
-				//this waypoint has been set before...
-				deltaWaypointsSet = 0;
-			} else {
-				//this waypoint wasn't set yet
-				deltaWaypointsSet = 1;
 			}
 
 			//add the new marker
 			var newFeatureId = map.addWaypointAtPos(map.convertPointForMap(pos), wpIndex, wpType);
 
-			//determine address for given pos
-			var waypointShiftArray = [numWaypoints, nextUnsetWaypoint, deltaWaypointsSet];
-			geolocator.reverseGeolocate(pos, reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, wpType, wpIndex, newFeatureId, waypointShiftArray);
+			geolocator.reverseGeolocate(pos, reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, wpType, wpIndex, newFeatureId);
 		}
 
-		function reverseGeocodeSuccess(addressResult, wpType, wpIndex, featureId, waypointShiftArray) {
+		function reverseGeocodeSuccess(addressResult, wpType, wpIndex, featureId, addWaypointAt) {
 			ui.showSearchingAtWaypoint(wpIndex, false);
 			var newIndex = ui.addWaypointResultByRightclick(addressResult, wpType, wpIndex);
 			var position = map.convertFeatureIdToPositionString(featureId, map.ROUTE_POINTS);
 			ui.setWaypointFeatureId(newIndex, featureId, position, map.ROUTE_POINTS);
 
 			//adapt the waypoint internals:
-			var numWaypoints = waypointShiftArray[0];
-			var nextUnsetWp = waypointShiftArray[1];
-			var deltaWaypoint = waypointShiftArray[2];
-			waypoint.numWaypoints += numWaypoints;
-			waypoint.nextUnsetWaypoint += nextUnsetWp;
-			waypoint.changeNumberOfWaypointsSet(deltaWaypoint);
+			if (addWaypointAt && addWaypointAt >= 0) {
+			waypoint.addWaypoint(addWaypointAt);
+			}
+			waypoint.setWaypoint(wpIndex);
 
 			//do we need to re-calculate the route?
 			handleRoutePresent();
@@ -214,30 +197,22 @@ var Controller = ( function(w) {'use strict';
 		function handleRemoveWaypoint(atts) {
 			var idx = atts.wpIndex;
 			var featureId = atts.featureId;
-			
+
 			//remove map feature of deleted wayoint
 			map.clearMarkers(map.ROUTE_POINTS, [featureId]);
 
-			if (waypoint.nextUnsetWaypoint > idx) {
-				//we remove one waypoint in the line -> the index of the next unset waypoint gets smaller
-				waypoint.nextUnsetWaypoint--;
-			}
 			if (idx >= 2) {
-				waypoint.numWaypoints--;
+				waypoint.removeWaypoint(idx);
+			} else {
+				waypoint.unsetWaypoint(idx);
 			}
-
-			//waypoint internal
-			if (featureId) {
-				//removed waypoint has been set
-				waypoint.changeNumberOfWaypointsSet(-1);
-				handleRoutePresent();
-			}
+			handleRoutePresent();
 
 			//re-calculate the waypoint types
-			for (var i = 0; i < waypoint.numWaypoints; i++) {
+			for (var i = 0; i < waypoint.getNumWaypoints(); i++) {
 				var type = waypoint.determineWaypointType(i);
 				ui.setWaypointType(i, type);
-				
+
 				featureId = ui.getFeatureIdOfWaypoint(i);
 				var newId = map.setWaypointType(featureId, type);
 				var position = map.convertFeatureIdToPositionString(newId, map.ROUTE_POINTS);
@@ -247,12 +222,12 @@ var Controller = ( function(w) {'use strict';
 			//decide about which buttons to show
 			if (idx > 0) {
 				//look at previous waypoint. If this is the last waypoint, do not show the move down button
-				if ((idx - 1) == (waypoint.numWaypoints - 1)) {
+				if ((idx - 1) == (waypoint.getNumWaypoints() - 1)) {
 					ui.setMoveDownButton(idx - 1, false);
 					ui.setMoveUpButton(idx - 1, true);
 				}
 			}
-			if (idx < (waypoint.numWaypoints - 1)) {
+			if (idx < (waypoint.getNumWaypoints() - 1)) {
 				//look at the next waypoint. If this is the first waypoint, do not show the move up button
 				//because we removed one waypoint, the successor will have now an ID of idx
 				if (idx == 0) {
@@ -262,12 +237,28 @@ var Controller = ( function(w) {'use strict';
 			}
 		}
 
+		function handleSearchAgainWaypoint(atts) {
+			var waypointFeature = atts.waypointFeature;
+			var waypointLayer = atts.waypointLayer;
+			var wpIndex = atts.wpIndex;
+
+			//remove the waypoint marker
+			map.clearMarkers(waypointLayer, [waypointFeature]);
+
+			//to re-view the search results of the waypoint search, the whole thing is re-calculated using existant functions
+
+			//waypoint-internal
+			waypoint.unsetWaypoint(wpIndex);
+		}
+
 		function handleResetRoute() {
 			//remove all waypoint markers
 			map.clearMarkers(map.ROUTE_POINTS);
-			waypoint.numWaypoints = 2;
-			waypoint.nextUnsetWaypoint = 0;
-			waypoint.setNumWaypointsSet(0);
+
+			for (var i = 0; i < waypoint.getNumWaypoints(); i++) {
+				waypoint.removeWaypoint(i);
+			}
+
 			handleRoutePresent();
 		}
 
@@ -513,29 +504,26 @@ var Controller = ( function(w) {'use strict';
 			var position = util.convertPositionStringToLonLat(atts.position);
 
 			//use the next unset waypoint for the new waypoint (append one if no unset wp exists)
-			var index = waypoint.nextUnsetWaypoint;
+			var addWp = -1;
+			var index = waypoint.getNextUnsetWaypoint();
+			if (index < 0) {
+				//no unset wayoint left -> add a new one
+				// waypoint.addWaypoint(); <- this is called by ui.AddWaypointAfter(...), not necessary here.
+				addWp = waypoint.getNumWaypoints();
+			}
 
 			var type;
 			if (index == 0) {
 				type = waypoint.type.START;
-			} else if (index >= waypoint.numWaypoints - 1) {
+			} else if (index >= waypoint.getNumWaypoints() - 1) {
 				type = waypoint.type.END;
 			} else {
 				type = waypoint.type.VIA;
 			}
 
-			var deltaWaypoint = 1;
-			if (waypoint.numWaypoints == waypoint.nextUnsetWaypoint) {
-				ui.addWaypointAfter(waypoint.numWaypoints - 1, waypoint.numWaypoints);
-			}
-			//the additional waypoint is set in the function called by ui.addWaypointAfter(...)
-			var numWaypointsChange = 0;
-
-			var waypointShiftArray = [numWaypointsChange, +1, deltaWaypoint];
-
 			//use position to add the waypoint
 			var featureId = map.addWaypointAtPos(position, index, type);
-			geolocator.reverseGeolocate(map.convertPointForDisplay(position), reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, type, index, featureId, waypointShiftArray);
+			geolocator.reverseGeolocate(map.convertPointForDisplay(position), reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, type, index, featureId, addWp);
 
 			//markers of the search results will not be removed cause the search is still visible.
 		}
@@ -544,7 +532,8 @@ var Controller = ( function(w) {'use strict';
 			var position = new OpenLayers.LonLat(featureMoved.geometry.x, featureMoved.geometry.y);
 			var index = ui.getWaypiontIndexByFeatureId(featureMoved.id);
 			var type = waypoint.determineWaypointType(index);
-			geolocator.reverseGeolocate(map.convertPointForDisplay(position), reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, type, index, featureMoved.id, [0, 0, 0]);
+			geolocator.reverseGeolocate(map.convertPointForDisplay(position), reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, type, index, featureMoved.id, -1);
+			ui.invalidateWaypointSearch(index);
 		}
 
 		/* *********************************************************************
@@ -606,12 +595,12 @@ var Controller = ( function(w) {'use strict';
 			var errors = route.hasRoutingErrors(results);
 
 			if (!errors) {
-			ui.updateRouteSummary(results);
+				ui.updateRouteSummary(results);
 
-			ui.updateRouteInstructions(results, featureIds, map.ROUTE_LINES);
-			ui.endRouteCalculation();
+				ui.updateRouteInstructions(results, featureIds, map.ROUTE_LINES);
+				ui.endRouteCalculation();
 
-			map.zoomToRoute();
+				map.zoomToRoute();
 			} else {
 				routeCalculationError();
 			}
@@ -731,9 +720,8 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		function showDebugInfo() {
-			console.log(waypoint.numWaypoints);
-			console.log(waypoint.nextUnsetWaypoint);
-			console.log(waypoint.getNumWaypointsSet());
+			console.log(waypoint.getNumWaypoints());
+			console.log(waypoint.getNextUnsetWaypoint());
 		}
 
 		/* *********************************************************************
@@ -771,6 +759,7 @@ var Controller = ( function(w) {'use strict';
 			ui.register('ui:selectWaypointType', selectWaypointType);
 			ui.register('ui:movedWaypoints', handleMovedWaypoints);
 			ui.register('ui:removeWaypoint', handleRemoveWaypoint);
+			ui.register('ui:searchAgainWaypoint', handleSearchAgainWaypoint);
 			ui.register('ui:resetRoute', handleResetRoute);
 
 			ui.register('ui:geolocationRequest', handleGeolocationRequest);

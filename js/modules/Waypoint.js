@@ -9,32 +9,14 @@ var Waypoint = (function(w) {'use strict';
 
 	var numWaypointsSet = 0;
 
+	var waypointsSet = [false, false];
+	var requestCounterWaypoints = [0, 0];
+
 	/**
 	 * Constructor
 	 */
 	function Waypoint() {
-		this.numWaypoints = 2;
-		this.requestCounterWaypoints = [0, 0];
 		this.nextUnsetWaypoint = 0;
-
-	}
-
-	function setNumWaypointsSet(number) {
-		numWaypointsSet = number;
-		if (numWaypointsSet < 0) {
-			numWaypointsSet = 0;
-		}
-	}
-
-	function getNumWaypointsSet() {
-		return numWaypointsSet;
-	}
-
-	function changeNumberOfWaypointsSet(delta) {
-		numWaypointsSet = numWaypointsSet + delta;
-		if (numWaypointsSet < 0) {
-			numWaypointsSet = 0;
-		}
 	}
 
 	/**
@@ -156,13 +138,85 @@ var Waypoint = (function(w) {'use strict';
 		return type;
 	}
 
+	function addWaypoint(index) {
+		if (index) {
+			waypointsSet.splice(index, 0, false);
+			requestCounterWaypoints.splice(index, 0, 0);
+		} else {
+			waypointsSet.push(false);
+			requestCounterWaypoints.push(0);
+		}
+	}
 
-	Waypoint.prototype.setNumWaypointsSet = setNumWaypointsSet;
-	Waypoint.prototype.getNumWaypointsSet = getNumWaypointsSet;
-	Waypoint.prototype.changeNumberOfWaypointsSet = changeNumberOfWaypointsSet;
+	function removeWaypoint(index) {
+		if (index) {
+			waypointsSet.splice(index, 1);
+			requestCounterWaypoints.splice(index, 1);
+		}
+	}
+
+	function getNumWaypoints() {
+		return waypointsSet.length;
+	}
+
+	function setWaypoint(index) {
+		waypointsSet[index] = true;
+	}
+
+	function unsetWaypoint(index) {
+		waypointsSet[index] = false;
+	}
+
+	function getRequestCounterWaypoint(index) {
+		return requestCounterWaypoints[index];
+	}
+
+	function incrRequestCounterWaypoint(index) {
+		requestCounterWaypoints[index]++;
+	}
+
+	function decrRequestCounterWaypoint(index, value) {
+		requestCounterWaypoints[index]--;
+	}
+
+	/**
+	 * find the next unset waypoint in the list of all waypoints starting at a given index
+	 * @param {Object} startingAt index to start looking for an empty waypoint
+	 * @return index of the empty waypoint or -1 if none exists
+	 */
+	function getNextUnsetWaypoint(startingAt) {
+		var start = startingAt ? startingAt : 0;
+		for (var i = start; i < waypointsSet.length; i++) {
+			if (!waypointsSet[i]) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	function getNumWaypointsSet() {
+		var cnt = 0;
+		for (var i = 0; i < waypointsSet.length; i++) {
+			if (waypointsSet[i]) {
+				cnt++;
+			}
+		}
+		return cnt;
+	}
+
 	Waypoint.prototype.find = find;
 	Waypoint.prototype.parseResultsToPoints = parseResultsToPoints;
 	Waypoint.prototype.determineWaypointType = determineWaypointType;
+	Waypoint.prototype.getNumWaypoints = getNumWaypoints;
+	Waypoint.prototype.addWaypoint = addWaypoint;
+	Waypoint.prototype.removeWaypoint = removeWaypoint;
+	Waypoint.prototype.setWaypoint = setWaypoint;
+	Waypoint.prototype.unsetWaypoint = unsetWaypoint;
+	Waypoint.prototype.getRequestCounterWaypoint = getRequestCounterWaypoint;
+	Waypoint.prototype.incrRequestCounterWaypoint = incrRequestCounterWaypoint;
+	Waypoint.prototype.decrRequestCounterWaypoint = decrRequestCounterWaypoint;
+	Waypoint.prototype.getNextUnsetWaypoint = getNextUnsetWaypoint;
+	Waypoint.prototype.getNumWaypointsSet = getNumWaypointsSet;
 
 	return new Waypoint();
 })(window);
