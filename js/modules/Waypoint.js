@@ -149,14 +149,10 @@ var Waypoint = (function(w) {'use strict';
 	}
 
 	function removeWaypoint(index) {
-		console.log("before removing")
-		console.log(waypointsSet);
 		if (index) {
 			waypointsSet.splice(index, 1);
 			requestCounterWaypoints.splice(index, 1);
 		}
-		console.log("after  removing");
-		console.log(waypointsSet);
 	}
 
 	function getNumWaypoints() {
