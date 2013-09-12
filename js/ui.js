@@ -476,7 +476,6 @@ var Ui = ( function(w) {'use strict';
 			//insert information as waypoint
 			var rootElement = $('#' + index);
 			rootElement.removeClass('unset');
-
 			address.setAttribute('data-shortAddress', shortAddress);
 
 			var children = rootElement.children();
@@ -538,21 +537,50 @@ var Ui = ( function(w) {'use strict';
 
 				$(e.currentTarget).parent().remove();
 			} else {
-				var wpElement = $(e.currentTarget).parent().get(0);
-				wpElement.setAttribute('class', 'guiComponent waypoint unset');
-				wpElement.querySelector('.searchAgainButton').hide();
-				wpElement.querySelector('.guiComponent').show()
+				var wpElement = $(e.currentTarget).parent();
+				var wpIndex = wpElement.attr('id');
+				//delete waypoint
+				wpElement.remove();
 
-				var result = wpElement.querySelector('.waypointResult');
-				result.innerHTML = '';
+				//generate an empty waypoint
+				var draftWp = $('#Draft');
+				var newWp = draftWp.clone();
+				newWp.attr('id', wpIndex)
+				if (wpIndex > 0) {
+					newWp.insertAfter($('#' + (wpIndex - 1)));
+				} else {
+					newWp.insertAfter(draftWp);
+				}
+				newWp.show();
+
+				//decide which buttons to show
+				var buttons = newWp.children();
+				//show remove waypoint
+				buttons[0].show();
+
+				if (wpIndex == 1) {
+					//show only move down button
+					buttons[2].hide();
+					buttons[1].show();
+				} else if (wpIndex == 0) {
+					//show only move up button
+					buttons[1].hide();
+					buttons[2].show();
+				}
+
+				//add event handling
+				newWp = newWp.get(0);
+				newWp.querySelector('.searchWaypoint').addEventListener('keyup', handleSearchWaypointInput);
+				newWp.querySelector('.moveUpWaypoint').addEventListener('click', handleMoveUpWaypointClick);
+				newWp.querySelector('.moveDownWaypoint').addEventListener('click', handleMoveDownWaypointClick);
+				newWp.querySelector('.removeWaypoint').addEventListener('click', handleRemoveWaypointClick);
+				newWp.querySelector('.searchAgainButton').addEventListener('click', handleSearchAgainWaypointClick);
 			}
 
 			theInterface.emit('ui:removeWaypoint', {
 				wpIndex : currentId,
 				featureId : featureId
 			});
-
-			var numwp = $('.waypoint').length - 1;
 		}
 
 		/**

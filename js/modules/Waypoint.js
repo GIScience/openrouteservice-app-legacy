@@ -119,7 +119,7 @@ var Waypoint = (function(w) {'use strict';
 		var type;
 		if (wpIndex == 0) {
 			type = this.type.START;
-		} else if (wpIndex == this.numWaypoints - 1) {
+		} else if (wpIndex == waypointsSet.length - 1) {
 			type = this.type.END;
 		} else {
 			type = this.type.VIA;
@@ -149,22 +149,29 @@ var Waypoint = (function(w) {'use strict';
 	}
 
 	function removeWaypoint(index) {
+		console.log("before removing")
+		console.log(waypointsSet);
 		if (index) {
 			waypointsSet.splice(index, 1);
 			requestCounterWaypoints.splice(index, 1);
 		}
+		console.log("after  removing");
+		console.log(waypointsSet);
 	}
 
 	function getNumWaypoints() {
 		return waypointsSet.length;
 	}
 
-	function setWaypoint(index) {
-		waypointsSet[index] = true;
+	/**
+	 * @param set: either true (to mark the waypoint set) or false (to mark the waypoint as unset) 
+	 */
+	function setWaypoint(index, set) {
+		waypointsSet[index] = set;
 	}
 
-	function unsetWaypoint(index) {
-		waypointsSet[index] = false;
+	function getWaypointSet(index) {
+		return waypointsSet[index];
 	}
 
 	function getRequestCounterWaypoint(index) {
@@ -211,7 +218,7 @@ var Waypoint = (function(w) {'use strict';
 	Waypoint.prototype.addWaypoint = addWaypoint;
 	Waypoint.prototype.removeWaypoint = removeWaypoint;
 	Waypoint.prototype.setWaypoint = setWaypoint;
-	Waypoint.prototype.unsetWaypoint = unsetWaypoint;
+	Waypoint.prototype.getWaypointSet = getWaypointSet;
 	Waypoint.prototype.getRequestCounterWaypoint = getRequestCounterWaypoint;
 	Waypoint.prototype.incrRequestCounterWaypoint = incrRequestCounterWaypoint;
 	Waypoint.prototype.decrRequestCounterWaypoint = decrRequestCounterWaypoint;

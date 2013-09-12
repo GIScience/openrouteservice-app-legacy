@@ -85,7 +85,7 @@ var Controller = ( function(w) {'use strict';
 			var waypointResultId = map.addWaypointMarker(wpIndex, featureId, type);
 			map.clearMarkers(map.SEARCH, searchIds);
 
-			waypoint.setWaypoint(wpIndex);
+			waypoint.setWaypoint(wpIndex, true);
 
 			handleRoutePresent();
 
@@ -143,7 +143,6 @@ var Controller = ( function(w) {'use strict';
 
 			//remove old waypoint marker (if exists)
 			featureId = ui.getFeatureIdOfWaypoint(wpIndex);
-			var deltaWaypointsSet;
 			if (featureId) {
 				//address has been set yet
 				map.clearMarkers(map.ROUTE_POINTS, [featureId]);
@@ -165,7 +164,7 @@ var Controller = ( function(w) {'use strict';
 			if (addWaypointAt && addWaypointAt >= 0) {
 			waypoint.addWaypoint(addWaypointAt);
 			}
-			waypoint.setWaypoint(wpIndex);
+			waypoint.setWaypoint(wpIndex, true);
 
 			//do we need to re-calculate the route?
 			handleRoutePresent();
@@ -178,6 +177,13 @@ var Controller = ( function(w) {'use strict';
 		function handleMovedWaypoints(atts) {
 			var index1 = atts.id1;
 			var index2 = atts.id2;
+			
+			//waypoint-internal:
+			var set1 = waypoint.getWaypointSet(index1);
+			var set2 = waypoint.getWaypointSet(index2);
+			waypoint.setWaypoint(index1, set2);
+			waypoint.setWaypoint(index2, set1);
+			
 			// map.switchMarkers(index1, index2);
 
 			var type = selectWaypointType(index1);
@@ -201,10 +207,10 @@ var Controller = ( function(w) {'use strict';
 			//remove map feature of deleted wayoint
 			map.clearMarkers(map.ROUTE_POINTS, [featureId]);
 
-			if (idx >= 2) {
+			if (waypoint.getNumWaypoints() > 2) {
 				waypoint.removeWaypoint(idx);
 			} else {
-				waypoint.unsetWaypoint(idx);
+				waypoint.setWaypoint(idx, false);
 			}
 			handleRoutePresent();
 
@@ -248,7 +254,7 @@ var Controller = ( function(w) {'use strict';
 			//to re-view the search results of the waypoint search, the whole thing is re-calculated using existant functions
 
 			//waypoint-internal
-			waypoint.unsetWaypoint(wpIndex);
+			waypoint.setWaypoint(wpIndex, false);
 		}
 
 		function handleResetRoute() {
