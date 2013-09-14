@@ -7,7 +7,7 @@ var Route = ( function(w) {"use strict";
 			this.routePresent = false;
 		}
 
-		function calculate(routePoints, successCallback, failureCallback, language, routePref, reoutePrefDetail, avoidMotorways, avoidTollways, avoidAreas) {
+		function calculate(routePoints, successCallback, failureCallback, language, routePref, avoidMotorways, avoidTollways, avoidAreas) {
 			var writer = new XMLWriter('UTF-8', '1.0');
 			writer.writeStartDocument();
 			//<xls:XLS>

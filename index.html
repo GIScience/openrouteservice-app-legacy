@@ -50,7 +50,7 @@
 				<div id="routingPanel" class="panel panelLight">
 					<div class="guiComponent route">
 						<div class="panel panelLight">
-							<div class="collapsible guiComponent">
+							<div class="collapsible guiComponent routeOptions">
 								<div class="collapsibleHead clickable collapsed">
 									Route options:
 									<br>
@@ -64,10 +64,10 @@
 										<button id="pedestrian" class="btn routeOptionsButton"><img src="img/picto-dude.png">
 										</button>
 									</div>
-									<div class="panel panelMedium" style="">
+									<div class="panel panelMedium" id="carOptions" style="">
 										<label class="radio">
 											<div>
-												<input type="radio" id="Fastest" name="car">
+												<input type="radio" id="Fastest" name="car" checked="checked">
 												fastest route
 											</div></label><label class="radio">
 											<div>
@@ -75,10 +75,10 @@
 												shortest route
 											</div></label>
 									</div>
-									<div class="panel panelMedium" style="display: none;">
+									<div class="panel panelMedium" id="bicycleOptions" style="display: none;">
 										<label class="radio">
 											<div>
-												<input type="radio" id="Bicycle" name="bicycle">
+												<input type="radio" id="Bicycle" name="bicycle" checked="checked">
 												shortest route
 											</div></label><label class="radio">
 											<div>
@@ -98,18 +98,18 @@
 												racing bike
 											</div></label>
 									</div>
-									<div class="panel panelMedium" style="display: none;">
+									<div class="panel panelMedium" id="pedestrianOptions" style="display: none;">
 										<label class="radio">
 											<div>
-												<input type="radio" id="Pedestrian" name="pedestrian">
+												<input type="radio" id="Pedestrian" name="pedestrian" checked="checked">
 												pedestrian
 											</div></label>
 									</div>
-									<div class="panel panelMedium" style="">
+									<div class="panel panelMedium" id="avoidables" style="">
 										<label class="checkbox">
-											<input type="checkbox" id="motorways">
+											<input type="checkbox" id="Highway">
 											Avoid highways</label><label class="checkbox">
-											<input type="checkbox" id="motorways">
+											<input type="checkbox" id="Tollway">
 											Avoid toll roads</label>
 									</div>
 									<div class="panel panelMedium" id="avoidAreas">
@@ -394,7 +394,6 @@
 		<script type="text/javascript" src="js/namespaces.js"></script>
 		<script type="text/javascript" src="js/util.js"></script>
 		<script type="text/javascript" src="js/list.js"></script>
-		<!-- <script type="text/javascript" src="js/convert.js"></script> -->
 		<script type="text/javascript" src="js/OpenRouteService.js"></script>
 		<script type="text/javascript" src="js/event.js"></script>
 		<script type="text/javascript" src="js/modules/Waypoint.js"></script>

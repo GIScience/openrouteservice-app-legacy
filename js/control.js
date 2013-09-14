@@ -563,18 +563,16 @@ var Controller = ( function(w) {'use strict';
 						routePoints[i] = map.convertPointForDisplay(routePoints[i]);
 					}
 				}
+				
+				var prefs = ui.getRoutePreferences();
+				var routePref = prefs[0];
+				var avoidHighway = prefs[1][0];
+				var avoidTollway = prefs[1][1];
 
 				//TODO define variables for route options
-				var routePref;
-				//car, bike,...
-				var routePrefDetail;
-				//fastest, safest,...
-				var avoidMotorways;
-				//avoid toll way/ motorway
-				var avoidTollways;
 				var avoidAreas;
 
-				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.language, routePref, routePrefDetail, avoidMotorways, avoidTollways, avoidAreas);
+				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.language, routePref, avoidHighway, avoidTollway, avoidAreas);
 			} else {
 				//internal
 				route.routePresent = false;
@@ -783,6 +781,7 @@ var Controller = ( function(w) {'use strict';
 			ui.register('ui:zoomToMarker', handleZoomToMarker);
 			map.register('map:waypointMoved', handleWaypointMoved);
 
+			ui.register('ui:routingParamsChanged', handleRoutePresent);
 			ui.register('ui:zoomToRoute', handleZoomToRoute);
 
 			ui.register('ui:openPermalinkRequest', handlePermalinkRequest);

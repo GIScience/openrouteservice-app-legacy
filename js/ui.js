@@ -9,6 +9,8 @@ var Ui = ( function(w) {'use strict';
 		orsTabs = ['route', 'search'],
 		//search POI options: searchNearRoute, maxDist to route, distance Unit for maxDist, search query
 		searchPoiAtts = ['false', '100', 'm', ''],
+		//routing options for car, bike and pedestrian
+		routeOptions = [list.routePreferences.get('car')[0], [null, null]],
 		//is a route available?
 		routeIsPresent = false,
 		//timeout to wait before sending a request after the user finished typing
@@ -1057,6 +1059,10 @@ var Ui = ( function(w) {'use strict';
 		 * ROUTE
 		 * *********************************************************************/
 
+		function getRoutePreferences() {
+			return routeOptions;
+		}
+
 		function getRoutePoints() {
 			var allRoutePoints = [];
 			var numWaypoints = $('.waypoint').length - 1;
@@ -1312,6 +1318,81 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/* *********************************************************************
+		* ROUTE OPTIONS
+		* *********************************************************************/
+		/**
+		 *when the user wants to switch between route options for cars/bikes/pedestrians and clicks the button to switch views
+		 */
+		function switchRouteOptionsPane(e) {
+			var parent = $('.routePreferenceBtns').get(0);
+			var optionType = e.currentTarget.id;
+
+			//switch the buttons above
+			var allBtn = parent.querySelectorAll('button');
+			for (var i = 0; i < allBtn.length; i++) {
+				var btn = allBtn[i];
+				if (btn == e.currentTarget) {
+					btn.addClassName('active');
+					//adapt image
+					var imgElement = btn.querySelector('img');
+					imgElement.setAttribute('src', list.routePreferencesImages.get(btn.id)[1]);
+
+					//set the selected entry as currently selected route option
+					var options = $('#' + btn.id + 'Options').get(0).querySelector('input[checked="checked"]');
+					routeOptions[0] = options.id;
+					theInterface.emit('ui:routingParamsChanged');
+					//TODO save current selection in preferences
+				} else {
+					btn.removeClassName('active');
+					//adapt image
+					var imgElement = btn.querySelector('img');
+					imgElement.setAttribute('src', list.routePreferencesImages.get(btn.id)[0]);
+				}
+			}
+
+			//switch the content
+			var car = $('#carOptions');
+			var bike = $('#bicycleOptions');
+			var ped = $('#pedestrianOptions');
+			var avoidables = $('#avoidables');
+			if (optionType === 'car') {
+				car.show();
+				avoidables.show();
+				bike.hide();
+				ped.hide();
+			} else if (optionType === 'bicycle') {
+				car.hide();
+				avoidables.hide();
+				bike.show();
+				ped.hide();
+			} else {
+				car.hide();
+				avoidables.hide();
+				bike.hide();
+				ped.show();
+			}
+		}
+
+		function handleOptionsChanged(e) {
+			var item = e.srcElement.id;
+			if ($.inArray(item, list.routeAvoidables) >= 0) {
+				//is a route avoidable
+				if (item === list.routeAvoidables[0]) {
+					//if the avoidable is set, remove it (and vice versa)
+					routeOptions[1][0] = routeOptions[1][0] ? null : item;
+				} else {
+					routeOptions[1][1] = routeOptions[1][1] ? null : item;
+				}
+			} else {
+				//is a regular route option
+				routeOptions[0] = item;
+			}
+
+			theInterface.emit('ui:routingParamsChanged');
+			//TODO save current selection in preferences
+		}
+
+		/* *********************************************************************
 		 * PERMALINK
 		 * *********************************************************************/
 
@@ -1396,6 +1477,12 @@ var Ui = ( function(w) {'use strict';
 			$('#fnct_searchPoi_distanceUnit').change(handleSearchPoiDistanceUnit);
 			$('#zoomToPoiResults').click(handleZoomToPoiResults);
 
+			//route options
+			$('#car').click(switchRouteOptionsPane);
+			$('#bicycle').click(switchRouteOptionsPane);
+			$('#pedestrian').click(switchRouteOptionsPane);
+			$('.routeOptions').change(handleOptionsChanged);
+
 			//permalink
 			$('#fnct_permalink').click(handleOpenPerma);
 		}
@@ -1426,6 +1513,7 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.updateSearchAddressResultList = updateSearchAddressResultList;
 		Ui.prototype.showSearchAddressError = showSearchAddressError;
 
+		Ui.prototype.getRoutePreferences = getRoutePreferences;
 		Ui.prototype.setRouteIsPresent = setRouteIsPresent;
 		Ui.prototype.searchPoiChangeToSearchingState = searchPoiChangeToSearchingState;
 		Ui.prototype.updateSearchPoiResultList = updateSearchPoiResultList;
@@ -1450,6 +1538,7 @@ var Ui = ( function(w) {'use strict';
 /* *********************************************************************
 * ICONS
 * *********************************************************************/
+
 //icons for markers on map
 Ui.markerIcons = {
 	start : ['img/marker-start.png', 'img/marker-start-high.png'],
