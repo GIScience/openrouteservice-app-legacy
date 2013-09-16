@@ -7,8 +7,6 @@
  */
 var Waypoint = (function(w) {'use strict';
 
-	var numWaypointsSet = 0;
-
 	var waypointsSet = [false, false];
 	var requestCounterWaypoints = [0, 0];
 

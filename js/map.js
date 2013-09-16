@@ -15,7 +15,6 @@ var Map = ( function() {"use strict";
 				fillEm : '#fba400'
 			}
 		};
-		//FIXME line:strokeWidthEm is displayed too small. why? looks ugly
 
 		var $ = window.jQuery;
 
@@ -277,7 +276,7 @@ var Map = ( function() {"use strict";
 			});
 
 			//define order
-			this.theMap.addLayers([layerRouteLines, layerTrack, layerSearch, layerPoi, layerAvoid, layerRoutePoints]);
+			this.theMap.addLayers([layerRouteLines, layerTrack, layerSearch, layerPoi, layerRoutePoints, layerAvoid]);
 
 			/* *********************************************************************
 			 * MAP CONTROLS
@@ -314,6 +313,7 @@ var Map = ( function() {"use strict";
 				self.emit('map:markerDeEmph', feature.id);
 			};
 			this.theMap.addControl(this.selectMarker);
+
 			this.selectMarker.activate();
 
 			//copied from http://openlayers.org/dev/examples/select-feature-multilayer.html
@@ -419,6 +419,29 @@ var Map = ( function() {"use strict";
 			};
 			this.theMap.addControl(dragWaypoints);
 			dragWaypoints.activate();
+
+			//avoid area controls
+			this.avoidTools = {
+				'create' : new OpenLayers.Control.DrawFeature(layerAvoid, OpenLayers.Handler.Polygon, {
+					featureAdded : function() {
+						self.emit('map:routingParamsChanged');
+					}
+				}),
+				'edit' : new OpenLayers.Control.ModifyFeature(layerAvoid),
+				'remove' : new OpenLayers.Control.SelectFeature(layerAvoid, {
+					onSelect : function(feature) {
+						layerAvoid.removeFeatures([feature]);
+						self.emit('map:routingParamsChanged');
+					}
+				})
+			};
+			for (var key in this.avoidTools) {
+				this.theMap.addControl(this.avoidTools[key]);
+			}
+			//trigger an event after changing the avoid area polygon
+			layerAvoid.events.register('afterfeaturemodified', this.theMap, function(feature) {
+				self.emit('map:routingParamsChanged');
+			});
 
 			/* *********************************************************************
 			 * MAP LOCATION
@@ -598,6 +621,18 @@ var Map = ( function() {"use strict";
 			}
 		}
 
+		/**
+		 * activate or deactivate all select controls
+		 * (used by the avoid area tools which require all selectFeature controls to be off)
+		 */
+		function activateSelectControl(activate) {
+			if (activate) {
+				this.selectMarker.activate();
+			} else {
+				this.selectMarker.deactivate();
+			}
+		}
+
 		/* *********************************************************************
 		* FOR MODULES (e.g. search, routing,...)
 		* *********************************************************************/
@@ -745,7 +780,6 @@ var Map = ( function() {"use strict";
 		 * @param {Object} listOfPoints array of OpenLayers.LonLat
 		 */
 		function addSearchPoiResultMarkers(listOfPoints) {
-			//TODO must be tested when DB is available again
 			var layerPoiResults = this.theMap.getLayersByName(this.POI)[0];
 			var listOfFeatures = [];
 			for (var i = 0; i < listOfPoints.length; i++) {
@@ -844,6 +878,51 @@ var Map = ( function() {"use strict";
 			}
 		}
 
+		/*
+		* AVOID AREAS
+		*/
+
+		/**
+		 * activate or deactivate the given avoid area tool (draw, modify, delete)
+		 * @param {Object} tool: control to select
+		 * @param {Object} activate: if true, the control is activated; if false, it is deactivated
+		 */
+		function avoidAreaTools(tool, activate) {
+			for (var key in this.avoidTools) {
+				this.avoidTools[key].deactivate();
+			}
+			if (activate) {
+				this.avoidTools[tool].activate();
+			}
+		}
+
+		/**
+		 * used for e.g. routing service request
+		 */
+		function getAvoidAreas() {
+			var layerAvoid = this.theMap.getLayersByName(this.AVOID)[0];
+			return layerAvoid.features;
+		}
+
+		/**
+		 * used e.g. for permalink
+		 */
+		function getAvoidAreasString() {
+			var layerAvoid = this.theMap.getLayersByName(this.AVOID)[0];
+
+			//serialize these features to string
+			var avAreaString = "";
+			for (var avAreas = 0; avAreas < layerAvoid.features.length; avAreas++) {
+				var avAreaPoints = layerAvoid.features[avAreas].geometry.components[0].components;
+				for (var pt = 0; pt < avAreaPoints.length; pt++) {
+					avAreaString += avAreaPoints[pt].x + "%2C" + avAreaPoints[pt].y + "%2C";
+				}
+			}
+			//slice away the last separator '%2C'
+			avAreaString = avAreaString.substring(0, avAreaString.length - 3);
+			return avAreaString;
+		}
+
 
 		map.prototype = new EventEmitter();
 		map.prototype.constructor = map;
@@ -858,6 +937,7 @@ var Map = ( function() {"use strict";
 		map.prototype.emphMarker = emphMarker;
 		map.prototype.convertFeatureIdToPositionString = convertFeatureIdToPositionString;
 		map.prototype.getFirstPointIdOfLine = getFirstPointIdOfLine;
+		map.prototype.activateSelectControl = activateSelectControl;
 
 		map.prototype.addWaypointMarker = addWaypointMarker;
 		map.prototype.addWaypointAtPos = addWaypointAtPos;
@@ -875,8 +955,11 @@ var Map = ( function() {"use strict";
 		map.prototype.zoomToMarker = zoomToMarker;
 
 		map.prototype.zoomToRoute = zoomToRoute;
-
 		map.prototype.updateRoute = updateRoute;
+
+		map.prototype.avoidAreaTools = avoidAreaTools;
+		map.prototype.getAvoidAreas = getAvoidAreas;
+		map.prototype.getAvoidAreasString = getAvoidAreasString;
 
 		return map;
 	}());

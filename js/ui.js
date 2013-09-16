@@ -1392,6 +1392,40 @@ var Ui = ( function(w) {'use strict';
 			//TODO save current selection in preferences
 		}
 
+		/**
+		 * the user clicks on one of the buttons to handle avoid areas (draw, edit, delete)
+		 */
+		function avoidAreasToolClicked(e) {
+			var btn = e.target;
+			var tag = e.target.tagName;
+			if (tag.toUpperCase() == 'IMG') {
+				//we selected the image inside the button; get the parent (this will be the button).
+				btn = $(e.target).parent().get(0);
+			}
+
+			//will be either create, edit or remove
+			var mainPart = 'avoid'.length;
+			var toolType = btn.id.substring(mainPart).toLowerCase();
+
+			var btnIsActive = btn.className.indexOf('active') > -1;
+
+			//set all btns to inactive
+			var allBtn = $(btn).parent().get(0).querySelectorAll('button');
+			for (var i = 0; i < allBtn.length; i++) {
+				$(allBtn[i]).removeClass('active');
+			}
+			//activate current button if necessary
+			if (!btnIsActive) {
+				$(btn).addClass('active');
+			}
+
+			theInterface.emit('ui:avoidAreaControls', {
+				toolType : toolType,
+				//if the button has been active before, it will be de-activated now!
+				activated : !btnIsActive
+			});
+		}
+
 		/* *********************************************************************
 		 * PERMALINK
 		 * *********************************************************************/
@@ -1482,6 +1516,7 @@ var Ui = ( function(w) {'use strict';
 			$('#bicycle').click(switchRouteOptionsPane);
 			$('#pedestrian').click(switchRouteOptionsPane);
 			$('.routeOptions').change(handleOptionsChanged);
+			$('#avoidAreasToolbar').click(avoidAreasToolClicked);
 
 			//permalink
 			$('#fnct_permalink').click(handleOpenPerma);
@@ -1505,6 +1540,7 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.setWaypointType = setWaypointType;
 		Ui.prototype.addWaypointAfter = addWaypointAfter;
 		Ui.prototype.addWaypointResultByRightclick = addWaypointResultByRightclick;
+		Ui.prototype.invalidateWaypointSearch = invalidateWaypointSearch;
 		Ui.prototype.setMoveDownButton = setMoveDownButton;
 		Ui.prototype.setMoveUpButton = setMoveUpButton;
 		Ui.prototype.showSearchingAtWaypoint = showSearchingAtWaypoint;

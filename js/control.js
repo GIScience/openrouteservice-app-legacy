@@ -569,8 +569,8 @@ var Controller = ( function(w) {'use strict';
 				var avoidHighway = prefs[1][0];
 				var avoidTollway = prefs[1][1];
 
-				//TODO define variables for route options
-				var avoidAreas;
+				//TODO get avoid areas as params for route calculation
+				var avoidAreas = map.getAvoidAreas();
 
 				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.language, routePref, avoidHighway, avoidTollway, avoidAreas);
 			} else {
@@ -617,6 +617,31 @@ var Controller = ( function(w) {'use strict';
 
 		function handleZoomToRoute() {
 			map.zoomToRoute();
+		}
+		
+		/**
+		 * a tool for handling avoid areas has been selected/ deactivated.
+		 * If the avoid area tools are active, all selectFeature-controls of the map layers have to be deactivated (otherwise these layers always stay on top and prevent the user from modifying his avoidAreas)
+		 * Delegate the tool call to the map object.
+		 */
+		var activeAvoidAreaButtons = 0;
+		function avoidAreaToolClicked(atts) {
+			var toolTpye = atts.toolType;
+			var activated = atts.activated;
+			
+			//if at least one button is active, the selectFeature control has to be deactivated
+			if (activated) {
+				activeAvoidAreaButtons++;
+			} else {
+				activeAvoidAreaButtons--;
+			}
+			if (activeAvoidAreaButtons > 0) {
+				map.activateSelectControl(false);
+			} else {
+				map.activateSelectControl(true);
+			}
+			//actual avoid area handling is done in the map object
+			map.avoidAreaTools(toolTpye, activated);
 		}
 
 		/* *********************************************************************
@@ -783,6 +808,9 @@ var Controller = ( function(w) {'use strict';
 
 			ui.register('ui:routingParamsChanged', handleRoutePresent);
 			ui.register('ui:zoomToRoute', handleZoomToRoute);
+			
+			ui.register('ui:avoidAreaControls', avoidAreaToolClicked);
+			map.register('map:routingParamsChanged', handleRoutePresent);
 
 			ui.register('ui:openPermalinkRequest', handlePermalinkRequest);
 
