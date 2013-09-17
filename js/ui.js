@@ -1426,6 +1426,16 @@ var Ui = ( function(w) {'use strict';
 			});
 		}
 
+		function showAvoidAreasError(showError) {
+			var el = $('#avoidAreasError');
+			el.html(preferences.translate('invalidAvoidArea'));
+			if (showError) {
+				el.show();
+			} else {
+				el.hide();
+			}
+		}
+
 		/* *********************************************************************
 		 * PERMALINK
 		 * *********************************************************************/
@@ -1549,6 +1559,9 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.updateSearchAddressResultList = updateSearchAddressResultList;
 		Ui.prototype.showSearchAddressError = showSearchAddressError;
 
+		Ui.prototype.showCurrentLocation = showCurrentLocation;
+		Ui.prototype.stopGeolocation = stopGeolocation;
+
 		Ui.prototype.getRoutePreferences = getRoutePreferences;
 		Ui.prototype.setRouteIsPresent = setRouteIsPresent;
 		Ui.prototype.searchPoiChangeToSearchingState = searchPoiChangeToSearchingState;
@@ -1562,9 +1575,8 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.endRouteCalculation = endRouteCalculation;
 		Ui.prototype.updateRouteInstructions = updateRouteInstructions;
 		Ui.prototype.showRoutingError = showRoutingError;
-
-		Ui.prototype.showCurrentLocation = showCurrentLocation;
-		Ui.prototype.stopGeolocation = stopGeolocation;
+		
+		Ui.prototype.showAvoidAreasError = showAvoidAreasError;
 
 		theInterface = new Ui();
 

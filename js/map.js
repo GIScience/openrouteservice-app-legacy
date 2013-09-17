@@ -424,6 +424,10 @@ var Map = ( function() {"use strict";
 			this.avoidTools = {
 				'create' : new OpenLayers.Control.DrawFeature(layerAvoid, OpenLayers.Handler.Polygon, {
 					featureAdded : function() {
+						var errorous = self.checkAvoidAreasIntersectThemselves();
+						if (errorous) {
+							self.emit('map:errorsInAvoidAreas', true);
+						}
 						self.emit('map:routingParamsChanged');
 					}
 				}),
@@ -431,6 +435,10 @@ var Map = ( function() {"use strict";
 				'remove' : new OpenLayers.Control.SelectFeature(layerAvoid, {
 					onSelect : function(feature) {
 						layerAvoid.removeFeatures([feature]);
+						var errorous = self.checkAvoidAreasIntersectThemselves();
+						if (!errorous) {
+							self.emit('map:errorsInAvoidAreas', false);
+						}
 						self.emit('map:routingParamsChanged');
 					}
 				})
@@ -440,6 +448,12 @@ var Map = ( function() {"use strict";
 			}
 			//trigger an event after changing the avoid area polygon
 			layerAvoid.events.register('afterfeaturemodified', this.theMap, function(feature) {
+				var errorous = self.checkAvoidAreasIntersectThemselves();
+				if (errorous) {
+					self.emit('map:errorsInAvoidAreas', true);
+				} else {
+					self.emit('map:errorsInAvoidAreas', false);
+				}
 				self.emit('map:routingParamsChanged');
 			});
 
@@ -896,6 +910,59 @@ var Map = ( function() {"use strict";
 			}
 		}
 
+		function checkAvoidAreasIntersectThemselves() {
+			//code adapted from http://lists.osgeo.org/pipermail/openlayers-users/2012-March/024285.html
+			var layer = this.theMap.getLayersByName(this.AVOID)[0];
+			var intersect = false;
+			for (var ftNum = 0; ftNum < layer.features.length; ftNum++) {
+				var fauxpoint = [];
+				var line = [];
+				var led = layer.features[ftNum];
+
+				var strng = led.geometry.toString();
+				var coord = strng.split(',');
+				// remove the 'Polygon((' from the 1st coord
+				coord[0] = coord[0].substr(9);
+				// Remove the '))' from the last coord
+				coord[coord.length - 1] = coord[coord.length - 1].substr(0, coord[coord.length - 1].length - 2);
+
+				//convert to lines
+				for ( i = 0; i < coord.length; i++) {
+					var lonlat = coord[i].split(' ');
+					fauxpoint.push(new OpenLayers.Geometry.Point(lonlat[0], lonlat[1]));
+					if (i > 0) {
+						// create an array with the 2 last points
+						var point = [fauxpoint[i - 1], fauxpoint[i]];
+						//create the line
+						line.push(new OpenLayers.Geometry.LineString(point));
+					}
+				}
+
+				// Check every line against every line
+				for (var i = 1; i < line.length; i++) {
+					for (var j = 1; j < line.length; j++) {
+						// get points of the I line in an array
+						var vi = line[i].getVertices();
+						// get points of the J line in an array
+						var vj = line[j].getVertices();
+
+						/*
+						 *  the lines must be differents and not adjacents.
+						 *  The end or start point of an adjacent line will be intersect,
+						 *  and adjacent lines never intersect in other point than the ends.
+						 */
+						if (i != j && vi[1].toString() != vj[0].toString() && vi[0].toString() != vj[1].toString()) {
+							// the intersect check
+							if (line[i].intersects(line[j])) {
+								intersect = true;
+							}
+						}
+					}
+				}
+			}
+			return intersect;
+		}
+
 		/**
 		 * used for e.g. routing service request
 		 */
@@ -958,6 +1025,7 @@ var Map = ( function() {"use strict";
 		map.prototype.updateRoute = updateRoute;
 
 		map.prototype.avoidAreaTools = avoidAreaTools;
+		map.prototype.checkAvoidAreasIntersectThemselves = checkAvoidAreasIntersectThemselves;
 		map.prototype.getAvoidAreas = getAvoidAreas;
 		map.prototype.getAvoidAreasString = getAvoidAreasString;
 

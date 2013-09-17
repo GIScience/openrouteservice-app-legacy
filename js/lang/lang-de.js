@@ -90,6 +90,7 @@ var lang_de = {
 		'avoidAreaDraw':  'Bereich zeichnen',
 		'avoidAreaModify':  'Bereich bearbeiten',
 		'avoidAreaRemove':  'Bereich l&ouml;schen',	
+		'invalidAvoidArea' : 'Bereiche, die sich selbst schneiden sind nicht erlaubt. Bitte entfernen bzw. korrigieren Sie diese Bereiche. Sonst kann keine Route berechnet werden.',
 	
 	//GPX Extras
 		'gpxDownloadError': 'Beim Herunterladen der Route ist leider ein Fehler aufgetreten.',

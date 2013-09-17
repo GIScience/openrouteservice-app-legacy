@@ -644,6 +644,13 @@ var Controller = ( function(w) {'use strict';
 			map.avoidAreaTools(toolTpye, activated);
 		}
 
+		/**
+		 * if avoid areas intersect themselves they are invalid and no route calculation can be done. Inform the user by showing an error message in the UI 
+		 */
+		function avoidAreasError(errorous) {
+			ui.showAvoidAreasError(errorous);
+		}
+
 		/* *********************************************************************
 		 * PERMALINK
 		 * *********************************************************************/
@@ -810,6 +817,7 @@ var Controller = ( function(w) {'use strict';
 			ui.register('ui:zoomToRoute', handleZoomToRoute);
 			
 			ui.register('ui:avoidAreaControls', avoidAreaToolClicked);
+			map.register('map:errorsInAvoidAreas', avoidAreasError);
 			map.register('map:routingParamsChanged', handleRoutePresent);
 
 			ui.register('ui:openPermalinkRequest', handlePermalinkRequest);

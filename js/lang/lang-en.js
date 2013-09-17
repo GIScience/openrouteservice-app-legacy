@@ -92,6 +92,7 @@ var lang_en = {
 		'avoidAreaDraw': 'draw avoid area',
 		'avoidAreaModify': 'modify avoid area',
 		'avoidAreaRemove': 'remove avoid area',	
+		'invalidAvoidArea' : 'Avoid areas are not allowed to intersect themselves. Please remove or correct this area. Otherwise no route calculation is possible.',
 	
 	//GPX Extras
 		'gpxDownloadError': 'Unfortunately an error occured when downlodng the route.',

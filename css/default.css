@@ -381,7 +381,7 @@ button.routeOptionsButton > img {
 
 /* avoid area controls*/
 #avoidAreas {
-	height: 30px;
+	/*height: 30px;*/
 }
 #avoidAreasTitle {
 	height: 30px;
@@ -389,35 +389,9 @@ button.routeOptionsButton > img {
 	padding-top: 5px;
 	margin-right: 15px;
 }
-.olControlEditingToolbar {
-	float: right;
-	height: 30px;
-}
-.olControlEditingToolbar div {
-}
-.olControlEditingToolbar .olControlDrawFeatureItemInactive {
-	background-image: url("../img/draw_polygon_off.png");
-	background-repeat: no-repeat;
-}
-.olControlEditingToolbar .olControlDrawFeatureItemActive {
-	background-image: url("../img/draw_polygon_on.png");
-	background-repeat: no-repeat;
-}
-.olControlEditingToolbar .olControlModifyFeatureItemInactive {
-	background-image: url("../img/move_vertex_off.png");
-	background-repeat: no-repeat;
-}
-.olControlEditingToolbar .olControlModifyFeatureItemActive {
-	background-image: url("../img/move_vertex_on.png");
-	background-repeat: no-repeat;
-}
-.olControlEditingToolbar .olControlRemoveFeatureItemInactive {
-	background-image: url("../img/remove_polygon_off.png");
-	background-repeat: no-repeat;
-}
-.olControlEditingToolbar .olControlRemoveFeatureItemActive {
-	background-image: url("../img/remove_polygon_on.png");
-	background-repeat: no-repeat;
+#avoidAreasError {
+	margin-top: 10px;
+	margin-bottom: 0px;
 }
 
 /* checkbox for POI search to mark all POIs near the route */
