@@ -32,6 +32,7 @@ var Map = ( function() {"use strict";
 			this.SEARCH = 'searchResults';
 			this.AVOID = 'avoidAreas';
 			this.TRACK = 'track';
+			this.ACCESSIBILITY = 'accessiblity';
 
 			var self = this;
 
@@ -275,8 +276,14 @@ var Map = ( function() {"use strict";
 				}
 			});
 
+			//accessibility
+			var layerAccessibility = new OpenLayers.Layer.Vector(this.ACCESSIBILITY, {
+				displayInLayerSwitcher : false
+			});
+			layerAccessibility.redraw(true);
+
 			//define order
-			this.theMap.addLayers([layerRouteLines, layerTrack, layerSearch, layerPoi, layerRoutePoints, layerAvoid]);
+			this.theMap.addLayers([layerAccessibility, layerRouteLines, layerTrack, layerSearch, layerPoi, layerRoutePoints, layerAvoid]);
 
 			/* *********************************************************************
 			 * MAP CONTROLS
@@ -343,7 +350,7 @@ var Map = ( function() {"use strict";
 
 						//build new popup menu
 						var pos = self.theMap.getLonLatFromViewPortPx(e.xy);
-						var displayPos = self.convertPointForDisplay(pos);
+						var displayPos = util.convertPointForDisplay(pos);
 
 						var menuObject = $('#mapContextMenu').clone();
 						menuObject.attr('id', 'menu');
@@ -460,14 +467,14 @@ var Map = ( function() {"use strict";
 			/* *********************************************************************
 			 * MAP LOCATION
 			 * *********************************************************************/
-			var hd = this.convertPointForMap(new OpenLayers.LonLat(8.692953, 49.409445));
+			var hd = util.convertPointForMap(new OpenLayers.LonLat(8.692953, 49.409445));
 			this.theMap.setCenter(hd, 13);
 
 			/* *********************************************************************
 			 * MAP EVENTS
 			 * *********************************************************************/
 			function emitMapChangedEvent(e) {
-				var centerTransformed = self.convertPointForDisplay(self.theMap.getCenter());
+				var centerTransformed = util.convertPointForDisplay(self.theMap.getCenter());
 				self.emit('map:changed', {
 					layer : self.serializeLayers(),
 					zoom : self.theMap.getZoom(),
@@ -531,32 +538,6 @@ var Map = ( function() {"use strict";
 					layers[indices[i]].setVisibility(true);
 				}
 			}
-		}
-
-		/* *********************************************************************
-		* TRANSFORMATION OF POINTS
-		* *********************************************************************/
-
-		/**
-		 * transforms a given point to the display-projection of the map
-		 * @param {Object} pt OpenLayers LonLat point to transform
-		 */
-		function convertPointForDisplay(pt) {
-			var src = new OpenLayers.Projection('EPSG:900913');
-			var dest = new OpenLayers.Projection('EPSG:4326');
-			var ptCopy = new OpenLayers.LonLat(pt.lon, pt.lat);
-			return ptCopy.transform(src, dest);
-		}
-
-		/**
-		 * transforms a given point to the internal projection of the map
-		 * @param {Object} pt OpenLayers LonLat point to transform
-		 */
-		function convertPointForMap(pt) {
-			var src = new OpenLayers.Projection('EPSG:4326');
-			var dest = new OpenLayers.Projection('EPSG:900913');
-			var ptCopy = new OpenLayers.LonLat(pt.lon, pt.lat);
-			return ptCopy.transform(src, dest);
 		}
 
 		/* *********************************************************************
@@ -745,7 +726,7 @@ var Map = ( function() {"use strict";
 				var feature = null;
 				if (point) {
 
-					point = this.convertPointForMap(point);
+					point = util.convertPointForMap(point);
 					point = new OpenLayers.Geometry.Point(point.lon, point.lat);
 
 					if (wpIndex) {
@@ -802,7 +783,7 @@ var Map = ( function() {"use strict";
 				var icon = Ui.poiIcons['poi_' + point.iconType];
 				icon = icon ? icon : Ui.poiIcons['poi_default'];
 
-				point = this.convertPointForMap(point);
+				point = util.convertPointForMap(point);
 				point = new OpenLayers.Geometry.Point(point.lon, point.lat);
 				var feature = new OpenLayers.Feature.Vector(point, {
 					icon : icon,
@@ -990,15 +971,32 @@ var Map = ( function() {"use strict";
 			return avAreaString;
 		}
 
+		/*
+		 * ACCESSIBILITY ANALYSIS
+		 */
+
+		function addAccessiblityPolygon(polygon) {
+			var layer = this.theMap.getLayersByName(this.ACCESSIBILITY)[0];
+			var newFeature = new OpenLayers.Feature.Vector(polygon);
+			newFeature.style = {
+				'strokeColor' : '#0000ff',
+				'fillColor' : '#0000ff',
+				'fillOpacity' : 0.4
+			};
+			layer.addFeatures([newFeature]);
+		}
+		
+		function eraseAccessibilityFeatures() {
+			var layer = this.theMap.getLayersByName(this.ACCESSIBILITY)[0];
+			layer.removeAllFeatures();
+		}
+
 
 		map.prototype = new EventEmitter();
 		map.prototype.constructor = map;
 
 		map.prototype.serializeLayers = serializeLayers;
 		map.prototype.restoreLayerPrefs = restoreLayerPrefs;
-
-		map.prototype.convertPointForDisplay = convertPointForDisplay;
-		map.prototype.convertPointForMap = convertPointForMap;
 
 		map.prototype.clearMarkers = clearMarkers;
 		map.prototype.emphMarker = emphMarker;
@@ -1028,6 +1026,9 @@ var Map = ( function() {"use strict";
 		map.prototype.checkAvoidAreasIntersectThemselves = checkAvoidAreasIntersectThemselves;
 		map.prototype.getAvoidAreas = getAvoidAreas;
 		map.prototype.getAvoidAreasString = getAvoidAreasString;
+
+		map.prototype.addAccessiblityPolygon = addAccessiblityPolygon;
+		map.prototype.eraseAccessibilityFeatures = eraseAccessibilityFeatures;
 
 		return map;
 	}());

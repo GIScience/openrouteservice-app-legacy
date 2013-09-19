@@ -10,6 +10,28 @@ util = ( function() {'use strict';
 			},
 
 			/**
+			 * transforms a given point to the display-projection of the map
+			 * @param {Object} pt OpenLayers LonLat point to transform
+			 */
+			convertPointForDisplay : function(pt) {
+				var src = new OpenLayers.Projection('EPSG:900913');
+				var dest = new OpenLayers.Projection('EPSG:4326');
+				var ptCopy = new OpenLayers.LonLat(pt.lon, pt.lat);
+				return ptCopy.transform(src, dest);
+			},
+
+			/**
+			 * transforms a given point to the internal projection of the map
+			 * @param {Object} pt OpenLayers LonLat point to transform
+			 */
+			convertPointForMap : function(pt) {
+				var src = new OpenLayers.Projection('EPSG:4326');
+				var dest = new OpenLayers.Projection('EPSG:900913');
+				var ptCopy = new OpenLayers.LonLat(pt.lon, pt.lat);
+				return ptCopy.transform(src, dest);
+			},
+
+			/**
 			 * takes a given string and parses it to DOM objects
 			 * @param s: the String to parse
 			 * @return xml DOM object or ActiveXObject

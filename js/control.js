@@ -1,6 +1,6 @@
 var Controller = ( function(w) {'use strict';
 
-		var $ = w.jQuery, ui = w.Ui, waypoint = w.Waypoint, geolocator = w.Geolocator, searchAddress = w.SearchAddress, searchPoi = w.SearchPoi, route = w.Route, perma = w.Permalink, analyze = w.AccessibilityAnalysis, preferences = w.Preferences, openRouteService = w.OpenRouteService, Map = w.Map,
+		var $ = w.jQuery, ui = w.Ui, waypoint = w.Waypoint, geolocator = w.Geolocator, searchAddress = w.SearchAddress, searchPoi = w.SearchPoi, route = w.Route, perma = w.Permalink, analyse = w.AccessibilityAnalysis, preferences = w.Preferences, openRouteService = w.OpenRouteService, Map = w.Map,
 		//the map
 		map;
 
@@ -149,7 +149,7 @@ var Controller = ( function(w) {'use strict';
 			}
 
 			//add the new marker
-			var newFeatureId = map.addWaypointAtPos(map.convertPointForMap(pos), wpIndex, wpType);
+			var newFeatureId = map.addWaypointAtPos(util.convertPointForMap(pos), wpIndex, wpType);
 
 			geolocator.reverseGeolocate(pos, reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, wpType, wpIndex, newFeatureId);
 		}
@@ -159,7 +159,7 @@ var Controller = ( function(w) {'use strict';
 			if (addWaypointAt && addWaypointAt >= 0) {
 				ui.addWaypointAfter(addWaypointAt - 1, waypoint.getNumWaypoints());
 				waypoint.setWaypoint(addWaypointAt, true);
-				
+
 			}
 			waypoint.setWaypoint(wpIndex, true);
 
@@ -288,7 +288,7 @@ var Controller = ( function(w) {'use strict';
 			//TODO handleGeolocateSuccess: implement/ test
 			console.log(position.coords);
 			var pos = new OpenLayers.LonLat(position.coords.latitude, position.coords.longitude);
-			var pos = map.convertPointForMap(pos);
+			var pos = util.convertPointForMap(pos);
 			map.theMap.moveTo(pos);
 			geolocator.reverseGeolocate(position, handleReverseGeolocationSuccess, handleReverseGeolocationFailure, preferences.language);
 		}
@@ -505,7 +505,7 @@ var Controller = ( function(w) {'use strict';
 
 			//use the next unset waypoint for the new waypoint (append one if no unset wp exists) (some lines below)
 			var index = waypoint.getNextUnsetWaypoint();
-			
+
 			var type;
 			if (index == 0) {
 				type = waypoint.type.START;
@@ -514,18 +514,18 @@ var Controller = ( function(w) {'use strict';
 			} else {
 				type = waypoint.type.VIA;
 			}
-			
+
 			var addWp = -1;
 			if (index < 0) {
 				//no unset wayoint left -> add a new one (as VIA)
 				// waypoint.addWaypoint(); <- this is called by ui.AddWaypointAfter(...), not necessary here.
-				addWp = waypoint.getNumWaypoints()-1;
+				addWp = waypoint.getNumWaypoints() - 1;
 				index = addWp;
 			}
-			
+
 			//use position to add the waypoint
 			var featureId = map.addWaypointAtPos(position, index, type);
-			geolocator.reverseGeolocate(map.convertPointForDisplay(position), reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, type, index, featureId, addWp);
+			geolocator.reverseGeolocate(util.convertPointForDisplay(position), reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, type, index, featureId, addWp);
 
 			//markers of the search results will not be removed cause the search is still visible.
 		}
@@ -534,7 +534,7 @@ var Controller = ( function(w) {'use strict';
 			var position = new OpenLayers.LonLat(featureMoved.geometry.x, featureMoved.geometry.y);
 			var index = ui.getWaypiontIndexByFeatureId(featureMoved.id);
 			var type = waypoint.determineWaypointType(index);
-			geolocator.reverseGeolocate(map.convertPointForDisplay(position), reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, type, index, featureMoved.id, -1);
+			geolocator.reverseGeolocate(util.convertPointForDisplay(position), reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, type, index, featureMoved.id, -1);
 			ui.invalidateWaypointSearch(index);
 		}
 
@@ -556,7 +556,7 @@ var Controller = ( function(w) {'use strict';
 					routePoints[i] = routePoints[i].split(' ');
 					if (routePoints[i].length == 2) {
 						routePoints[i] = new OpenLayers.LonLat(routePoints[i][0], routePoints[i][1]);
-						routePoints[i] = map.convertPointForDisplay(routePoints[i]);
+						routePoints[i] = util.convertPointForDisplay(routePoints[i]);
 					}
 				}
 
@@ -588,8 +588,8 @@ var Controller = ( function(w) {'use strict';
 			results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
 
 			// each route instruction has a part of this lineString as geometry for this instruction
-			var routeLines = route.parseResultsToLineStrings(results, map.convertPointForMap);
-			var routePoints = route.parseResultsToCornerPoints(results, map.convertPointForMap);
+			var routeLines = route.parseResultsToLineStrings(results, util.convertPointForMap);
+			var routePoints = route.parseResultsToCornerPoints(results, util.convertPointForMap);
 			var featureIds = map.updateRoute(routeLines, routePoints);
 
 			var errors = route.hasRoutingErrors(results);
@@ -661,18 +661,40 @@ var Controller = ( function(w) {'use strict';
 
 		function handleAnalyzeAccessibility(atts) {
 			var pos = atts.position;
-			var dist = atts.distance;
+			if (pos) {
+				//assuming we have a position set...
+				pos = util.convertPositionStringToLonLat(pos);
+				pos = util.convertPointForDisplay(pos);
+				var dist = atts.distance;
 
-			//TODO more params necessary?
-			analyze.analyze(pos, dist, accessibilitySuccessCallback, accessibilityFailureCallback);
+				ui.showAccessibilityError(false);
+				ui.showSearchingAtAccessibility(true);
+				
+				map.eraseAccessibilityFeatures();
+
+				analyse.analyze(pos, dist, accessibilitySuccessCallback, accessibilityFailureCallback);
+			} else {
+				//no position, no analyse!
+				ui.showAccessibilityError(true);
+			}
+
 		}
 
-		function accessibilitySuccessCallback() {
-			//TODO implement
+		function accessibilitySuccessCallback(result) {
+			var bounds = analyse.parseResultsToBounds(result);
+			if (bounds) {
+				map.theMap.zoomToExtent(bounds, true);
+				var polygon = analyse.parseResultsToPolygon(result);
+				map.addAccessiblityPolygon(polygon);
+
+				ui.showSearchingAtAccessibility(false);
+			} else {
+				accessibilityFailureCallback();
+			}
 		}
 
 		function accessibilityFailureCallback() {
-			//TODO implement
+			ui.showAccessibilityError(true);
 		}
 
 		/* *********************************************************************
@@ -749,7 +771,7 @@ var Controller = ( function(w) {'use strict';
 
 			var pos = preferences.loadMapPosition(lon, lat);
 			if (pos) {
-				pos = map.convertPointForMap(pos);
+				pos = util.convertPointForMap(pos);
 				map.theMap.setCenter(pos);
 			}
 			zoom = preferences.loadMapZoom(zoom);

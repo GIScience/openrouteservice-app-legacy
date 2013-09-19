@@ -1470,12 +1470,27 @@ var Ui = ( function(w) {'use strict';
 				position = element.getAttribute('data-position');
 			}
 
-			//TODO is it ok to assume the first waypoint to be set and display an error message otherwise or do we have to look for the 1st SET waypoint?
-
 			theInterface.emit('ui:analyzeAccessibility', {
 				distance : distance,
 				position : position
 			});
+		}
+		
+		function showSearchingAtAccessibility(showSpinner) {
+			if (showSpinner) {
+				$('#accessibilityCalculation').show();	
+			} else {
+				$('#accessibilityCalculation').hide();
+			}
+		}
+		
+		function showAccessibilityError(showError) {
+			if (showError) {
+				$('#accessibilityError').show();	
+			} else {
+				$('#accessibilityError').hide();
+			}
+			
 		}
 
 		/* *********************************************************************
@@ -1614,7 +1629,10 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.showRoutingError = showRoutingError;
 
 		Ui.prototype.showAvoidAreasError = showAvoidAreasError;
-
+		
+		Ui.prototype.showSearchingAtAccessibility = showSearchingAtAccessibility;
+		Ui.prototype.showAccessibilityError = showAccessibilityError;
+		
 		theInterface = new Ui();
 
 		return theInterface;

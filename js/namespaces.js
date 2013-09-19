@@ -6,11 +6,13 @@ namespaces = {
 	ows : 'http://www.opengis.net/ows/1.1',
 	xlink : 'http://www.w3.org/1999/xlink',
 	xsi : 'http://www.w3.org/2001/XMLSchema-instance',
-	ascc : 'http://www.ascc.net/xml/schematron'
+	ascc : 'http://www.ascc.net/xml/schematron',
+	aas : 'http://www.geoinform.fh-mainz.de/aas'
 };
 
 namespaces.schemata = {
 	directoryService : 'http://www.opengis.net/xls http://schemas.opengis.net/ols/1.1.0/DirectoryService.xsd',
+	analyseService : 'http://www.geoinform.fh-mainz.de/aas',
 	gatewayService : 'http://www.opengis.net/xls http://schemas.opengis.net/ols/1.1.0/GatewayService.xsd',
 	locationUtilityService : 'http://www.opengis.net/xls http://schemas.opengis.net/ols/1.1.0/LocationUtilityService.xsd',
 	presentationService : 'http://www.opengis.net/xls http://schemas.opengis.net/ols/1.1.0/PresentationService.xsd',
