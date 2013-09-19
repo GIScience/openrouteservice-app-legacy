@@ -205,8 +205,7 @@
 									Whole Route
 								</div>
 								<div class="collapsibleBody" style="display: none;">
-									<div id="routeFromTo">
-									</div>
+									<div id="routeFromTo"></div>
 									<table></table>
 								</div>
 							</div>
@@ -227,7 +226,23 @@
 										<btn class="btn" id="fnct_permalink">
 											Permalink
 										</btn>
-									</div><label><b>GPX</b></label>
+									</div>
+									<div class="panel panelMedium">
+										<p>
+											Accessibility analysis
+										</p><span>Select minutes: </span>
+										<input type="text" id="accessibilityDistance" class="textfield" value="15">
+										<btn class="btn" id="analyzeAccessibility">
+											Analyze
+										</btn>
+										<div class="alert alert-info searchingBlue" id="accessibilityCalculation" style="display: none;">
+											The accessibility is being analyzed...
+										</div>
+										<div class="alert alert-error" id="accessibilityError" style="display: none;">
+											An error occured during the accessibility analysis. Did you forget to set a start point?
+										</div>
+									</div>
+									<label><b>GPX</b></label>
 									<div class="panel panelMedium">
 										<p>
 											Download of current route in GPX format
@@ -318,7 +333,10 @@
 			<!-- Map goes here -->
 		</div>
 
+		
+
 		<div class="disclaimer">
+			<a id="debug">debug - </a>
 			<a href="contact.html" class="inlineLink">(c) 2008-2013 &nbsp; -</a>
 			<a href="contact.html#disclaimer" class="inlineLink">Disclaimer &nbsp; -</a>
 			<a href="contact.html#license" class="inlineLink">License</a>
@@ -403,6 +421,7 @@
 		<script type="text/javascript" src="js/modules/SearchPoi.js"></script>
 		<script type="text/javascript" src="js/modules/Route.js"></script>
 		<script type="text/javascript" src="js/modules/Permalink.js"></script>
+		<script type="text/javascript" src="js/modules/AccessibilityAnalysis.js"></script>
 		<script type="text/javascript" src="js/modules/Preferences.js"></script>
 		<script type="text/javascript" src="js/map.js"></script>
 		<script type="text/javascript" src="js/ui.js"></script>

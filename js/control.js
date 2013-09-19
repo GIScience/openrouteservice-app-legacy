@@ -1,6 +1,6 @@
 var Controller = ( function(w) {'use strict';
 
-		var $ = w.jQuery, ui = w.Ui, waypoint = w.Waypoint, geolocator = w.Geolocator, searchAddress = w.SearchAddress, searchPoi = w.SearchPoi, route = w.Route, perma = w.Permalink, preferences = w.Preferences, openRouteService = w.OpenRouteService, Map = w.Map,
+		var $ = w.jQuery, ui = w.Ui, waypoint = w.Waypoint, geolocator = w.Geolocator, searchAddress = w.SearchAddress, searchPoi = w.SearchPoi, route = w.Route, perma = w.Permalink, analyze = w.AccessibilityAnalysis, preferences = w.Preferences, openRouteService = w.OpenRouteService, Map = w.Map,
 		//the map
 		map;
 
@@ -93,8 +93,8 @@ var Controller = ( function(w) {'use strict';
 			ui.setWaypointFeatureId(wpIndex, waypointResultId, position, map.ROUTE_POINTS);
 		}
 
-		function handleAddWaypoint() {
-			waypoint.addWaypoint();
+		function handleAddWaypoint(newWaypointIndex) {
+			waypoint.addWaypoint(newWaypointIndex);
 
 			//re-calculate type of last (now next-to-last) waypoint
 			var index = waypoint.getNumWaypoints() - 2;
@@ -155,16 +155,18 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		function reverseGeocodeSuccess(addressResult, wpType, wpIndex, featureId, addWaypointAt) {
+			//adapt the waypoint internals:
+			if (addWaypointAt && addWaypointAt >= 0) {
+				ui.addWaypointAfter(addWaypointAt - 1, waypoint.getNumWaypoints());
+				waypoint.setWaypoint(addWaypointAt, true);
+				
+			}
+			waypoint.setWaypoint(wpIndex, true);
+
 			ui.showSearchingAtWaypoint(wpIndex, false);
 			var newIndex = ui.addWaypointResultByRightclick(addressResult, wpType, wpIndex);
 			var position = map.convertFeatureIdToPositionString(featureId, map.ROUTE_POINTS);
 			ui.setWaypointFeatureId(newIndex, featureId, position, map.ROUTE_POINTS);
-
-			//adapt the waypoint internals:
-			if (addWaypointAt && addWaypointAt >= 0) {
-			waypoint.addWaypoint(addWaypointAt);
-			}
-			waypoint.setWaypoint(wpIndex, true);
 
 			//do we need to re-calculate the route?
 			handleRoutePresent();
@@ -177,13 +179,13 @@ var Controller = ( function(w) {'use strict';
 		function handleMovedWaypoints(atts) {
 			var index1 = atts.id1;
 			var index2 = atts.id2;
-			
+
 			//waypoint-internal:
 			var set1 = waypoint.getWaypointSet(index1);
 			var set2 = waypoint.getWaypointSet(index2);
 			waypoint.setWaypoint(index1, set2);
 			waypoint.setWaypoint(index2, set1);
-			
+
 			// map.switchMarkers(index1, index2);
 
 			var type = selectWaypointType(index1);
@@ -402,14 +404,6 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		/**
-		 * POI search along a route is only possible if there exists a route.
-		 * This checks if there is a route available
-		 */
-		function handleCheckRouteIsPresent() {
-			ui.setRouteIsPresent(route.routePresent);
-		}
-
-		/**
 		 * parses the user input for the POI search and calls the SearchPoi module to build a search request
 		 */
 		function handleSearchPoiRequest(atts) {
@@ -509,15 +503,9 @@ var Controller = ( function(w) {'use strict';
 			var id = atts.id;
 			var position = util.convertPositionStringToLonLat(atts.position);
 
-			//use the next unset waypoint for the new waypoint (append one if no unset wp exists)
-			var addWp = -1;
+			//use the next unset waypoint for the new waypoint (append one if no unset wp exists) (some lines below)
 			var index = waypoint.getNextUnsetWaypoint();
-			if (index < 0) {
-				//no unset wayoint left -> add a new one
-				// waypoint.addWaypoint(); <- this is called by ui.AddWaypointAfter(...), not necessary here.
-				addWp = waypoint.getNumWaypoints();
-			}
-
+			
 			var type;
 			if (index == 0) {
 				type = waypoint.type.START;
@@ -526,7 +514,15 @@ var Controller = ( function(w) {'use strict';
 			} else {
 				type = waypoint.type.VIA;
 			}
-
+			
+			var addWp = -1;
+			if (index < 0) {
+				//no unset wayoint left -> add a new one (as VIA)
+				// waypoint.addWaypoint(); <- this is called by ui.AddWaypointAfter(...), not necessary here.
+				addWp = waypoint.getNumWaypoints()-1;
+				index = addWp;
+			}
+			
 			//use position to add the waypoint
 			var featureId = map.addWaypointAtPos(position, index, type);
 			geolocator.reverseGeolocate(map.convertPointForDisplay(position), reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, type, index, featureId, addWp);
@@ -563,7 +559,7 @@ var Controller = ( function(w) {'use strict';
 						routePoints[i] = map.convertPointForDisplay(routePoints[i]);
 					}
 				}
-				
+
 				var prefs = ui.getRoutePreferences();
 				var routePref = prefs[0];
 				var avoidHighway = prefs[1][0];
@@ -618,7 +614,7 @@ var Controller = ( function(w) {'use strict';
 		function handleZoomToRoute() {
 			map.zoomToRoute();
 		}
-		
+
 		/**
 		 * a tool for handling avoid areas has been selected/ deactivated.
 		 * If the avoid area tools are active, all selectFeature-controls of the map layers have to be deactivated (otherwise these layers always stay on top and prevent the user from modifying his avoidAreas)
@@ -628,7 +624,7 @@ var Controller = ( function(w) {'use strict';
 		function avoidAreaToolClicked(atts) {
 			var toolTpye = atts.toolType;
 			var activated = atts.activated;
-			
+
 			//if at least one button is active, the selectFeature control has to be deactivated
 			if (activated) {
 				activeAvoidAreaButtons++;
@@ -645,7 +641,7 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		/**
-		 * if avoid areas intersect themselves they are invalid and no route calculation can be done. Inform the user by showing an error message in the UI 
+		 * if avoid areas intersect themselves they are invalid and no route calculation can be done. Inform the user by showing an error message in the UI
 		 */
 		function avoidAreasError(errorous) {
 			ui.showAvoidAreasError(errorous);
@@ -657,6 +653,26 @@ var Controller = ( function(w) {'use strict';
 
 		function handlePermalinkRequest() {
 			perma.openPerma();
+		}
+
+		/* *********************************************************************
+		 * ACCESSIBILITY ANALYSIS
+		 * *********************************************************************/
+
+		function handleAnalyzeAccessibility(atts) {
+			var pos = atts.position;
+			var dist = atts.distance;
+
+			//TODO more params necessary?
+			analyze.analyze(pos, dist, accessibilitySuccessCallback, accessibilityFailureCallback);
+		}
+
+		function accessibilitySuccessCallback() {
+			//TODO implement
+		}
+
+		function accessibilityFailureCallback() {
+			//TODO implement
 		}
 
 		/* *********************************************************************
@@ -758,6 +774,7 @@ var Controller = ( function(w) {'use strict';
 		function showDebugInfo() {
 			console.log(waypoint.getNumWaypoints());
 			console.log(waypoint.getNextUnsetWaypoint());
+			console.log(waypoint.getDebugInfo())
 		}
 
 		/* *********************************************************************
@@ -815,12 +832,14 @@ var Controller = ( function(w) {'use strict';
 
 			ui.register('ui:routingParamsChanged', handleRoutePresent);
 			ui.register('ui:zoomToRoute', handleZoomToRoute);
-			
+
 			ui.register('ui:avoidAreaControls', avoidAreaToolClicked);
 			map.register('map:errorsInAvoidAreas', avoidAreasError);
 			map.register('map:routingParamsChanged', handleRoutePresent);
 
 			ui.register('ui:openPermalinkRequest', handlePermalinkRequest);
+
+			ui.register('ui:analyzeAccessibility', handleAnalyzeAccessibility);
 
 			initializeOrs();
 		}

@@ -16,7 +16,7 @@ var Ui = ( function(w) {'use strict';
 		//timeout to wait before sending a request after the user finished typing
 		DONE_TYPING_INTERVAL = 1200,
 		//timers for user input (search)
-		typingTimerSearchAddress, typingTimerSearchPoi,
+		typingTimerSearchAddress, typingTimerSearchPoi, typingTimerSearchPoiDistance,
 		//timers for user input (waypoints)
 		timer0, timer1, typingTimerWaypoints = [timer0, timer1];
 
@@ -407,7 +407,8 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 *add a new waypoint element after given waypoint index
-		 * @idx (int) index of the predecessor waypoint
+		 * @param idx (int) index of the predecessor waypoint
+		 * @param numWaypoints (int) number of waypoints BEFORE inserting the new one
 		 */
 		function addWaypointAfter(idx, numWaypoints) {
 			//for the current element, show the move down button (will later be at least the next to last one)
@@ -458,7 +459,7 @@ var Ui = ( function(w) {'use strict';
 			newWp.querySelector('.removeWaypoint').addEventListener('click', handleRemoveWaypointClick);
 			newWp.querySelector('.searchAgainButton').addEventListener('click', handleSearchAgainWaypointClick);
 
-			theInterface.emit('ui:addWaypoint');
+			theInterface.emit('ui:addWaypoint', newIndex);
 		}
 
 		function addWaypointResultByRightclick(request, typeOfWaypoint, index) {
@@ -868,8 +869,6 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		function handleSearchPoiInput(e) {
-			searchPoiAtts[3] = e.currentTarget.value;
-
 			clearTimeout(typingTimerSearchPoi);
 			if (e.keyIdentifier != 'Shift' && e.currentTarget.value.length != 0) {
 				typingTimerSearchPoi = setTimeout(function() {
@@ -882,6 +881,8 @@ var Ui = ( function(w) {'use strict';
 					while (numResults.hasChildNodes()) {
 						numResults.removeChild(numResults.lastChild);
 					}
+
+					searchPoiAtts[3] = e.currentTarget.value;
 
 					var lastSearchResults = $('#searchPoi').attr('data-search');
 					theInterface.emit('ui:searchPoiRequest', {
@@ -908,16 +909,17 @@ var Ui = ( function(w) {'use strict';
 		function handleSearchPoiNearRoute(e) {
 			searchPoiAtts[0] = e.currentTarget.checked;
 
-			if (searchPoiAtts[3].length > 0 && routeIsPresent) {
+			if (!routeIsPresent) {
+				$('#checkboxWarn').text(preferences.translate('noRouteFound'));
+				$('#checkboxWarn').show();
+			} else if (searchPoiAtts[3].length > 0 && routeIsPresent) {
 				theInterface.emit('ui:searchPoiRequest', {
 					query : searchPoiAtts[3],
 					nearRoute : searchPoiAtts[0],
 					maxDist : searchPoiAtts[1],
-					distUnit : searchPoiAtts[2]
+					distUnit : searchPoiAtts[2],
+					lastSearchResults : $('#searchPoi').attr('data-search')
 				});
-			} else {
-				$('#checkboxWarn').text(preferences.translate('noRouteFound'));
-				$('#checkboxWarn').show();
 			}
 
 			//if we're not searching near route, hide erorr message
@@ -927,20 +929,27 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		function handleSearchPoiDistance(e) {
-			searchPoiAtts[1] = e.currentTarget.value;
-			theInterface.emit('ui:checkDistanceToRoute', {
-				dist : searchPoiAtts[1],
-				unit : searchPoiAtts[2]
-			});
+			clearTimeout(typingTimerSearchPoiDistance);
+			if (e.keyIdentifier != 'Shift' && e.currentTarget.value.length != 0) {
+				typingTimerSearchPoiDistance = setTimeout(function() {
+					searchPoiAtts[1] = e.currentTarget.value;
+					theInterface.emit('ui:checkDistanceToRoute', {
+						dist : searchPoiAtts[1],
+						unit : searchPoiAtts[2]
+					});
 
-			if (searchPoiAtts[3].length > 0 && searchPoiAtts[0] == true && routeIsPresent) {
-				theInterface.emit('ui:searchPoiRequest', {
-					query : searchPoiAtts[3],
-					nearRoute : searchPoiAtts[0],
-					maxDist : searchPoiAtts[1],
-					distUnit : searchPoiAtts[2]
-				});
+					if (searchPoiAtts[3].length > 0 && searchPoiAtts[0] == true && routeIsPresent) {
+						theInterface.emit('ui:searchPoiRequest', {
+							query : searchPoiAtts[3],
+							nearRoute : searchPoiAtts[0],
+							maxDist : searchPoiAtts[1],
+							distUnit : searchPoiAtts[2],
+							lastSearchResults : $('#searchPoi').attr('data-search')
+						});
+					}
+				}, DONE_TYPING_INTERVAL);
 			}
+
 		}
 
 		function handleSearchPoiDistanceUnit(e) {
@@ -955,7 +964,8 @@ var Ui = ( function(w) {'use strict';
 					query : searchPoiAtts[3],
 					nearRoute : searchPoiAtts[0],
 					maxDist : searchPoiAtts[1],
-					distUnit : searchPoiAtts[2]
+					distUnit : searchPoiAtts[2],
+					lastSearchResults : $('#searchPoi').attr('data-search')
 				});
 			}
 		}
@@ -963,7 +973,10 @@ var Ui = ( function(w) {'use strict';
 		function updateSearchPoiResultList(request, listOfFeatures, layername) {
 			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
 			var results = request.responseXML ? request.responseXML : util.parseStringToDOM(request.responseText);
-			var resultContainer = $('#fnct_searchPoiResults');
+			var resultContainer = $('#fnct_searchPoiResults').get(0);
+			while (resultContainer.hasChildNodes()) {
+				resultContainer.removeChild(resultContainer.lastChild);
+			}
 
 			//insert POI information to page
 			var allPoi;
@@ -1015,7 +1028,7 @@ var Ui = ( function(w) {'use strict';
 							'data-layer' : layername
 						});
 						element.insert(useAsWaypointButton);
-						resultContainer.append(element);
+						$(resultContainer).append(element);
 					}
 				}
 			});
@@ -1445,6 +1458,27 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/* *********************************************************************
+		 * ACCESSIBILITY ANALSYIS
+		 * *********************************************************************/
+
+		function handleAnalyzeAccessibility() {
+			var distance = $('#accessibilityDistance').val();
+			var position = null;
+			var element = $('#0').get(0);
+			element = element.querySelector('.address');
+			if (element) {
+				position = element.getAttribute('data-position');
+			}
+
+			//TODO is it ok to assume the first waypoint to be set and display an error message otherwise or do we have to look for the 1st SET waypoint?
+
+			theInterface.emit('ui:analyzeAccessibility', {
+				distance : distance,
+				position : position
+			});
+		}
+
+		/* *********************************************************************
 		* CLASS-SPECIFIC
 		* *********************************************************************/
 
@@ -1530,6 +1564,9 @@ var Ui = ( function(w) {'use strict';
 
 			//permalink
 			$('#fnct_permalink').click(handleOpenPerma);
+
+			//accessibility analysis
+			$('#analyzeAccessibility').click(handleAnalyzeAccessibility);
 		}
 
 
@@ -1575,7 +1612,7 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.endRouteCalculation = endRouteCalculation;
 		Ui.prototype.updateRouteInstructions = updateRouteInstructions;
 		Ui.prototype.showRoutingError = showRoutingError;
-		
+
 		Ui.prototype.showAvoidAreasError = showAvoidAreasError;
 
 		theInterface = new Ui();

@@ -24,7 +24,7 @@ namespaces.services = {
 	geocoding : 'http://openls.geog.uni-heidelberg.de/testing2011/geocode', //for address search requests
 	routing : 'http://openls.geog.uni-heidelberg.de/testing2011/route', //for routing requests
 	directory : 'http://openls.geog.uni-heidelberg.de/testing2011/directory', //for POI search requests
-	//analyse : 'http://openls.geog.uni-heidelberg.de/osm/eu/analyse',
+	analyse : 'http://openls.geog.uni-heidelberg.de/osm/eu/analyse',
 	wps : 'http://wasserkuppe.geog.uni-heidelberg.de:8080/deegree3wps/services' //for calculation of polygon around route for POI search
 	//profile: 'http://watzmann.geog.uni-heidelberg.de:8080/deegree/all' 			//for height profile of route
 };

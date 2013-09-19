@@ -204,6 +204,10 @@ var Waypoint = (function(w) {'use strict';
 		}
 		return cnt;
 	}
+	
+	function getDebugInfo() {
+		return waypointsSet;
+	}
 
 	Waypoint.prototype.find = find;
 	Waypoint.prototype.parseResultsToPoints = parseResultsToPoints;
@@ -218,6 +222,7 @@ var Waypoint = (function(w) {'use strict';
 	Waypoint.prototype.decrRequestCounterWaypoint = decrRequestCounterWaypoint;
 	Waypoint.prototype.getNextUnsetWaypoint = getNextUnsetWaypoint;
 	Waypoint.prototype.getNumWaypointsSet = getNumWaypointsSet;
+	Waypoint.prototype.getDebugInfo = getDebugInfo;
 
 	return new Waypoint();
 })(window);
