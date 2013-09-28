@@ -1,6 +1,6 @@
 var Controller = ( function(w) {'use strict';
 
-		var $ = w.jQuery, ui = w.Ui, waypoint = w.Waypoint, geolocator = w.Geolocator, searchAddress = w.SearchAddress, searchPoi = w.SearchPoi, route = w.Route, perma = w.Permalink, analyse = w.AccessibilityAnalysis, preferences = w.Preferences, openRouteService = w.OpenRouteService, Map = w.Map,
+		var $ = w.jQuery, ui = w.Ui, waypoint = w.Waypoint, geolocator = w.Geolocator, searchAddress = w.SearchAddress, searchPoi = w.SearchPoi, route = w.Route, analyse = w.AccessibilityAnalysis, preferences = w.Preferences, openRouteService = w.OpenRouteService, Map = w.Map,
 		//the map
 		map;
 
@@ -91,6 +91,9 @@ var Controller = ( function(w) {'use strict';
 
 			var position = map.convertFeatureIdToPositionString(waypointResultId, map.ROUTE_POINTS);
 			ui.setWaypointFeatureId(wpIndex, waypointResultId, position, map.ROUTE_POINTS);
+
+			//update preferences
+			handleWaypointChanged(map.getWaypointsString());
 		}
 
 		function handleAddWaypoint(newWaypointIndex) {
@@ -113,7 +116,6 @@ var Controller = ( function(w) {'use strict';
 		function selectWaypointType(wpIndex) {
 			var type = waypoint.determineWaypointType(wpIndex);
 			ui.setWaypointType(wpIndex, type);
-			map.setWaypointMarker(wpIndex, type);
 			return type;
 		}
 
@@ -170,6 +172,9 @@ var Controller = ( function(w) {'use strict';
 
 			//do we need to re-calculate the route?
 			handleRoutePresent();
+
+			//update preferences
+			handleWaypointChanged(map.getWaypointsString());
 		}
 
 		function reverseGeocodeFailure() {
@@ -200,6 +205,8 @@ var Controller = ( function(w) {'use strict';
 			var position = map.convertFeatureIdToPositionString(newFtId, map.ROUTE_POINTS);
 			ui.setWaypointFeatureId(index2, newFtId, position, map.ROUTE_POINTS);
 
+			//update preferences
+			handleWaypointChanged(map.getWaypointsString());
 		}
 
 		function handleRemoveWaypoint(atts) {
@@ -243,6 +250,9 @@ var Controller = ( function(w) {'use strict';
 					ui.setMoveUpButton(idx, false);
 				}
 			}
+
+			//update preferences
+			handleWaypointChanged(map.getWaypointsString());
 		}
 
 		function handleSearchAgainWaypoint(atts) {
@@ -257,6 +267,9 @@ var Controller = ( function(w) {'use strict';
 
 			//waypoint-internal
 			waypoint.setWaypoint(wpIndex, false);
+
+			//update preferences
+			handleWaypointChanged(map.getWaypointsString());
 		}
 
 		function handleResetRoute() {
@@ -268,6 +281,16 @@ var Controller = ( function(w) {'use strict';
 			}
 
 			handleRoutePresent();
+
+			//update preferences
+			handleWaypointChanged(null);
+		}
+
+		function handleWaypointChanged(waypointStringList) {
+			handlePrefsChanged({
+				key : preferences.waypointIdx,
+				value : waypointStringList
+			});
 		}
 
 		/* *********************************************************************
@@ -536,6 +559,9 @@ var Controller = ( function(w) {'use strict';
 			var type = waypoint.determineWaypointType(index);
 			geolocator.reverseGeolocate(util.convertPointForDisplay(position), reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, type, index, featureMoved.id, -1);
 			ui.invalidateWaypointSearch(index);
+
+			//update preferences
+			handleWaypointChanged(map.getWaypointsString());
 		}
 
 		/* *********************************************************************
@@ -564,8 +590,6 @@ var Controller = ( function(w) {'use strict';
 				var routePref = prefs[0];
 				var avoidHighway = prefs[1][0];
 				var avoidTollway = prefs[1][1];
-
-				//TODO get avoid areas as params for route calculation
 				var avoidAreas = map.getAvoidAreas();
 
 				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.language, routePref, avoidHighway, avoidTollway, avoidAreas);
@@ -648,11 +672,43 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		/* *********************************************************************
-		 * PERMALINK
+		 * PERMALINK AND COOKIES
 		 * *********************************************************************/
 
 		function handlePermalinkRequest() {
-			perma.openPerma();
+			preferences.openPermalink();
+		}
+
+		/**
+		 * update the given preference parameter in the cookies. If no cookies exist, write new ones with current parameters
+		 */
+		function updateCookies(key, value) {
+			if (preferences.areCookiesAVailable()) {
+				//there are cookies available, only update the changed information
+				preferences.updateCookies(key, value);
+			} else {
+				//no cookies found so far, we need to write all information
+				var lon = map.theMap.getCenter().lon;
+				var lat = map.theMap.getCenter().lat;
+				var zoom = map.theMap.getZoom();
+				var layer = map.serializeLayers();
+
+				preferences.writeMapCookies(lon, lat, zoom, layer);
+				preferences.writePrefsCookies();
+			}
+		}
+
+		/**
+		 * map parameters are usually modified together. This is more efficient than calling updateCookies(key, val) three times.
+		 */
+		function updateMapCookies(lon, lat, zoom, layer) {
+			if (preferences.areCookiesAVailable()) {
+				preferences.writeMapCookies(lon, lat, zoom, layer);
+			} else {
+				//write all information, not only map stuff
+				updateCookies(null, null);
+			}
+
 		}
 
 		/* *********************************************************************
@@ -669,7 +725,7 @@ var Controller = ( function(w) {'use strict';
 
 				ui.showAccessibilityError(false);
 				ui.showSearchingAtAccessibility(true);
-				
+
 				map.eraseAccessibilityFeatures();
 
 				analyse.analyze(pos, dist, accessibilitySuccessCallback, accessibilityFailureCallback);
@@ -697,24 +753,20 @@ var Controller = ( function(w) {'use strict';
 			ui.showAccessibilityError(true);
 		}
 
+		function handleAvoidAreaChanged(avoidAreaString) {
+			handlePrefsChanged({
+				key : preferences.avoidAreasIdx,
+				value : avoidAreaString
+			});
+		}
+
 		/* *********************************************************************
 		 * MAP
 		 * *********************************************************************/
 
 		function handleMapChanged(mapState) {
-			//TODO fill variables
-			// var waypoints = this.serializeWaypoints();
-			// var routeOpt = this.routeOptions.getRoutePreference();
-			// var motorways = this.routeOptions.getAvoidMotorways();
-			// var tollways = this.routeOptions.getAvoidTollways();
-			// var avoidAreas = this.routeOptions.getAvoidAreasString();
-
-			//update the permalink
-			perma.update(mapState.lon, mapState.lat, mapState.zoom, mapState.layer);
-			//, waypoints, routeOpt, motorways, tollways, avoidAreas);
-
 			//update cookies
-			preferences.writeMapCookies(mapState.lon, mapState.lat, mapState.zoom, mapState.layer);
+			updateMapCookies(mapState.lon, mapState.lat, mapState.zoom, mapState.layer);
 		}
 
 		function handleMarkerEmph(markerId) {
@@ -745,10 +797,10 @@ var Controller = ( function(w) {'use strict';
 		 * PREFERENCES
 		 * *********************************************************************/
 
-		function handlePrefsChanged(prefsState) {
-			//TODO handlePrefsChanged: implement
-			//update cookies
-			preferences.writeMapCookies(prefsState.language, prefsState.distanceUnit, prefsState.version);
+		function handlePrefsChanged(atts) {
+			var key = atts.key;
+			var value = atts.value;
+			preferences.updatePreferences(key, value);
 		}
 
 		/* *********************************************************************
@@ -759,17 +811,16 @@ var Controller = ( function(w) {'use strict';
 			//apply GET variables and/or cookies and set the user's language,...
 			var getVars = preferences.loadPreferencesOnStartup();
 
-			var lon = getVars['lon'];
-			var lat = getVars['lat'];
-			var zoom = getVars['zoom'];
-			var layer = getVars['layers'];
-			var waypoints = getVars['waypoints'];
-			var routeOpt = getVars['routeOpt'];
-			var motorways = getVars['motorways'];
-			var tollways = getVars['tollways'];
-			var avoidAreas = getVars['avoidAreas'];
+			var pos = getVars[preferences.getPrefName(preferences.positionIdx)];
+			var zoom = getVars[preferences.getPrefName(preferences.zoomIdx)];
+			var layer = getVars[preferences.getPrefName(preferences.layerIdx)];
+			var waypoints = getVars[preferences.getPrefName(preferences.waypointIdx)];
+			var routeOpt = getVars[preferences.getPrefName(preferences.routeOptionsIdx)];
+			var motorways = getVars[preferences.getPrefName(preferences.avoidHighwayIdx)];
+			var tollways = getVars[preferences.getPrefName(preferences.avoidTollwayIdx)];
+			var avoidAreas = getVars[preferences.getPrefName(preferences.avoidAreasIdx)];
 
-			var pos = preferences.loadMapPosition(lon, lat);
+			pos = preferences.loadMapPosition(pos);
 			if (pos) {
 				pos = util.convertPointForMap(pos);
 				map.theMap.setCenter(pos);
@@ -782,11 +833,40 @@ var Controller = ( function(w) {'use strict';
 			if (layer) {
 				map.restoreLayerPrefs(layer);
 			}
-			waypoints = preferences.loadWaypoints(waypoints);
-			//TODO how to apply waypoints to route
 
-			//TODO how to handle route options
-			preferences.loadRouteOptions(routeOpt, motorways, tollways, avoidAreas);
+			//waypoints: array of OL.LonLat representing one wayoint each
+			waypoints = preferences.loadWaypoints(waypoints);
+			if (waypoints && waypoints.length > 0) {
+				for (var i = 0; i < waypoints.length; i++) {
+					var type = Waypoint.type.VIA;
+					if (i == 0) {
+						type = Waypoint.type.START;
+					} else if (i == waypoints.length - 1) {
+						type = Waypoint.type.END;
+					}
+					handleAddWaypointByRightclick({
+						pos : waypoints[i],
+						type : type
+					})
+				}
+				if (waypoints.length >= 2) {
+					handleRoutePresent();
+				}
+			}
+
+			routeOpt = preferences.loadRouteOptions(routeOpt);
+			//TODO apply route options
+			ui.setRouteOption(routeOpt);
+			var res = preferences.loadAvoidables(motorways, tollways);
+			motorways = res[0];
+			tollways = res[1];
+			ui.setAvoidables(motorways, tollways);
+
+			var avoidables = preferences.loadAvoidables(motorways, tollways);
+			//avoidAreas: array of OL.Polygon representing one avoid area each
+			avoidAreas = preferences.loadAvoidAreas(avoidAreas);
+			//apply avoid areas
+			map.addAvoidAreas(avoidAreas);
 
 			if (!preferences.areCookiesAVailable()) {
 				ui.showNewToOrsPopup();
@@ -851,12 +931,14 @@ var Controller = ( function(w) {'use strict';
 			ui.register('ui:useAsWaypoint', handleUseAsWaypoint);
 			ui.register('ui:zoomToMarker', handleZoomToMarker);
 			map.register('map:waypointMoved', handleWaypointMoved);
+			// map.register('map:waypointChanged', handleWaypointChanged);
 
 			ui.register('ui:routingParamsChanged', handleRoutePresent);
 			ui.register('ui:zoomToRoute', handleZoomToRoute);
 
 			ui.register('ui:avoidAreaControls', avoidAreaToolClicked);
 			map.register('map:errorsInAvoidAreas', avoidAreasError);
+			map.register('map:avoidAreaChanged', handleAvoidAreaChanged);
 			map.register('map:routingParamsChanged', handleRoutePresent);
 
 			ui.register('ui:openPermalinkRequest', handlePermalinkRequest);

@@ -436,6 +436,7 @@ var Map = ( function() {"use strict";
 							self.emit('map:errorsInAvoidAreas', true);
 						}
 						self.emit('map:routingParamsChanged');
+						self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
 					}
 				}),
 				'edit' : new OpenLayers.Control.ModifyFeature(layerAvoid),
@@ -447,6 +448,7 @@ var Map = ( function() {"use strict";
 							self.emit('map:errorsInAvoidAreas', false);
 						}
 						self.emit('map:routingParamsChanged');
+						self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
 					}
 				})
 			};
@@ -462,6 +464,7 @@ var Map = ( function() {"use strict";
 					self.emit('map:errorsInAvoidAreas', false);
 				}
 				self.emit('map:routingParamsChanged');
+				self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
 			});
 
 			/* *********************************************************************
@@ -526,7 +529,7 @@ var Map = ( function() {"use strict";
 
 			//set given map layer active
 			var baseLayer = params.indexOf('B') >= 0 ? params.indexOf('B') : 0;
-			indices.push(baseLayer);
+			this.theMap.setBaseLayer(this.theMap.layers[baseLayer]);
 
 			//determine which overlays to set active
 			var regex = /T/gi;
@@ -652,6 +655,10 @@ var Map = ( function() {"use strict";
 				layerWaypoints.addFeatures([newFeature]);
 				return newFeature.id;
 			}
+
+			// console.log("buh!")
+			// //TODO update preferences: waypoints
+			// self.emit('map:waypointChanged', getWaypointsString());
 		}
 
 		/**
@@ -668,26 +675,10 @@ var Map = ( function() {"use strict";
 			});
 			layerWaypoints.addFeatures([newFeature]);
 			return newFeature.id;
-		}
 
-		/**
-		 * refresh the eventually existing marker for the given waypoint index with the given type
-		 */
-		function setWaypointMarker(wpIndex, type) {
-			var layerWaypoints = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
-			for (var i = 0; i < layerWaypoints.features.length; i++) {
-				var marker = layerWaypoints.features[i];
-				if (marker.data.id == 'waypoint_' + wpIndex) {
-					//marker for this waypoint exists, check the markerIcon
-					var newMarker = new OpenLayers.Geometry.Point(marker.geometry.x, marker.geometry.y);
-					var newFeature = new OpenLayers.Feature.Vector(newMarker, {
-						icon : Ui.markerIcons[type][0],
-						iconEm : Ui.markerIcons[type][1],
-					});
-					layerWaypoints.addFeatures([newFeature]);
-					layerWaypoints.removeFeatures([marker]);
-				}
-			}
+			// console.log("buh!")
+			// //TODO update preferences: waypoints
+			// self.emit('map:waypointChanged', getWaypointsString());
 		}
 
 		function setWaypointType(featureId, type) {
@@ -706,6 +697,25 @@ var Map = ( function() {"use strict";
 				var id = newFeature.id;
 			}
 			return id;
+		}
+
+		/**
+		 * used e.g. for permalink
+		 */
+		function getWaypointsString() {
+			var layer = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
+
+			//serialize these features to string
+			var wpString = "";
+			for (var i = 0; i < layer.features.length; i++) {
+				var ft = layer.features[i].geometry;
+				ft = new OpenLayers.LonLat(ft.x ,ft.y);
+				ft = util.convertPointForDisplay(ft);
+				wpString = wpString + ft.lon + ',' + ft.lat + ',';
+			}
+			//slice away the last separator ','
+			wpString = wpString.substring(0, wpString.length - 3);
+			return wpString;
 		}
 
 		/*
@@ -943,6 +953,20 @@ var Map = ( function() {"use strict";
 			}
 			return intersect;
 		}
+		
+		function addAvoidAreas(areas) {
+			var layerAvoid = this.theMap.getLayersByName(this.AVOID)[0];
+			if (areas && areas.length > 0) {
+				var allFt = [];
+				for (var i = 0; i < areas.length; i++) {
+					var ft = new OpenLayers.Feature.Vector(areas[i])
+					allFt.push(ft);
+				}
+				layerAvoid.addFeatures(allFt);
+			}
+			var self = this;
+			this.emit('map:avoidAreaChanged', self.getAvoidAreasString());
+		}
 
 		/**
 		 * used for e.g. routing service request
@@ -963,10 +987,15 @@ var Map = ( function() {"use strict";
 			for (var avAreas = 0; avAreas < layerAvoid.features.length; avAreas++) {
 				var avAreaPoints = layerAvoid.features[avAreas].geometry.components[0].components;
 				for (var pt = 0; pt < avAreaPoints.length; pt++) {
-					avAreaString += avAreaPoints[pt].x + "%2C" + avAreaPoints[pt].y + "%2C";
+					avAreaString += avAreaPoints[pt].x + escape(',') + avAreaPoints[pt].y + escape(',');
 				}
+				//slice away the last separator ','
+				avAreaString = avAreaString.substring(0, avAreaString.length - 3);
+				//separator for next avoid area
+				avAreaString = avAreaString + escape(';');
+
 			}
-			//slice away the last separator '%2C'
+			//slice away the last separator ';'
 			avAreaString = avAreaString.substring(0, avAreaString.length - 3);
 			return avAreaString;
 		}
@@ -985,7 +1014,7 @@ var Map = ( function() {"use strict";
 			};
 			layer.addFeatures([newFeature]);
 		}
-		
+
 		function eraseAccessibilityFeatures() {
 			var layer = this.theMap.getLayersByName(this.ACCESSIBILITY)[0];
 			layer.removeAllFeatures();
@@ -1006,8 +1035,8 @@ var Map = ( function() {"use strict";
 
 		map.prototype.addWaypointMarker = addWaypointMarker;
 		map.prototype.addWaypointAtPos = addWaypointAtPos;
-		map.prototype.setWaypointMarker = setWaypointMarker;
 		map.prototype.setWaypointType = setWaypointType;
+		map.prototype.getWaypointsString = getWaypointsString;
 
 		map.prototype.addSearchAddressResultMarkers = addSearchAddressResultMarkers;
 		map.prototype.zoomToAddressResults = zoomToAddressResults;
@@ -1024,6 +1053,7 @@ var Map = ( function() {"use strict";
 
 		map.prototype.avoidAreaTools = avoidAreaTools;
 		map.prototype.checkAvoidAreasIntersectThemselves = checkAvoidAreasIntersectThemselves;
+		map.prototype.addAvoidAreas = addAvoidAreas;
 		map.prototype.getAvoidAreas = getAvoidAreas;
 		map.prototype.getAvoidAreasString = getAvoidAreasString;
 

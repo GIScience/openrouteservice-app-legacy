@@ -1326,7 +1326,6 @@ var Ui = ( function(w) {'use strict';
 		function showRoutingError() {
 			var el = $('#routeError');
 			el.html(preferences.translate('noRouteAvailable'));
-			// el.html(preferences.translate('calculatingRoute'));
 			el.show();
 		}
 
@@ -1354,7 +1353,10 @@ var Ui = ( function(w) {'use strict';
 					var options = $('#' + btn.id + 'Options').get(0).querySelector('input[checked="checked"]');
 					routeOptions[0] = options.id;
 					theInterface.emit('ui:routingParamsChanged');
-					//TODO save current selection in preferences
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.routeOptionsIdx,
+						value : routeOptions[0]
+					});
 				} else {
 					btn.removeClassName('active');
 					//adapt image
@@ -1393,16 +1395,69 @@ var Ui = ( function(w) {'use strict';
 				if (item === list.routeAvoidables[0]) {
 					//if the avoidable is set, remove it (and vice versa)
 					routeOptions[1][0] = routeOptions[1][0] ? null : item;
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.avoidHighwayIdx,
+						value : routeOptions[1][0] != null
+					});
 				} else {
 					routeOptions[1][1] = routeOptions[1][1] ? null : item;
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.avoidTollwayIdx,
+						value : routeOptions[1][1] != null
+					});
 				}
 			} else {
 				//is a regular route option
 				routeOptions[0] = item;
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.routeOptionsIdx,
+					value : routeOptions[0]
+				});
+			}
+			theInterface.emit('ui:routingParamsChanged');
+		}
+
+		/**
+		 * used to activate and show the given route option on startup if necessary
+		 * @paran routeOption: one of 'Fastest', 'Shortest', 'BicycleLane',...
+		 */
+		function setRouteOption(routeOption) {
+			//set checkox with $('#' + routeOption) active
+			var el = $('#' + routeOption);
+			if (el) {
+				el.attr('checked', true)
 			}
 
-			theInterface.emit('ui:routingParamsChanged');
-			//TODO save current selection in preferences
+			//set parent div (with all available options for car/bike/pedestrian visible
+			var parentOptions = list.routePreferences.keys();
+			var parent;
+			for (var i = 0; i < parentOptions.length; i++) {
+				console.log(parentOptions[i])
+				if (list.routePreferences.get(parentOptions[i]).indexOf(routeOption) != -1) {
+					//show div
+					$('#' + parentOptions[i] + 'Options').show();
+					//activate corresponding button
+					$('#' + parentOptions[i]).addClass('active');
+				} else {
+					//deactivate/ hide others
+					$('#' + parentOptions[i] + 'Options').hide();
+					$('#' + parentOptions[i]).removeClass('active');
+				}
+			}
+		}
+
+		/**
+		 * used to activate the checkboxes for "avoid tollways" and "avoid highways" on startup if necessary
+		 * @param highway: true, if highway checkbox is to be checked
+		 * @param tollway: accordingly.
+		 */
+		function setAvoidables(highway, tollway) {
+			var highwayTrue = (highway === 'true') || highway == true;
+			var tollwayTrue = (tollway === 'true') || tollway == true;
+			routeOptions[1][0] = highwayTrue;
+			routeOptions[1][1] = tollwayTrue;
+			$('#Highway').attr('checked', highwayTrue);
+			$('#Tollway').attr('checked', tollwayTrue);
 		}
 
 		/**
@@ -1475,22 +1530,22 @@ var Ui = ( function(w) {'use strict';
 				position : position
 			});
 		}
-		
+
 		function showSearchingAtAccessibility(showSpinner) {
 			if (showSpinner) {
-				$('#accessibilityCalculation').show();	
+				$('#accessibilityCalculation').show();
 			} else {
 				$('#accessibilityCalculation').hide();
 			}
 		}
-		
+
 		function showAccessibilityError(showError) {
 			if (showError) {
-				$('#accessibilityError').show();	
+				$('#accessibilityError').show();
 			} else {
 				$('#accessibilityError').hide();
 			}
-			
+
 		}
 
 		/* *********************************************************************
@@ -1527,7 +1582,9 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		function debug() {
+			console.log(w.Preferences)
 			theInterface.emit('ui:startDebug');
+
 		}
 
 		/* *********************************************************************
@@ -1628,11 +1685,13 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.updateRouteInstructions = updateRouteInstructions;
 		Ui.prototype.showRoutingError = showRoutingError;
 
+		Ui.prototype.setRouteOption = setRouteOption;
+		Ui.prototype.setAvoidables = setAvoidables;
 		Ui.prototype.showAvoidAreasError = showAvoidAreasError;
-		
+
 		Ui.prototype.showSearchingAtAccessibility = showSearchingAtAccessibility;
 		Ui.prototype.showAccessibilityError = showAccessibilityError;
-		
+
 		theInterface = new Ui();
 
 		return theInterface;
