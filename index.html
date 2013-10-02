@@ -342,7 +342,10 @@
 			<a href="contact.html#license" class="inlineLink">License</a>
 		</div>
 
+		<!-- arrow to show/hide sidebar -->
 		<a class="sidebarVisible" id="toggleSidebar"><img src="img/arrowLeft.png" alt="/"></a>
+		
+		<!-- popup for user preferences (language, distance unit,...) -->
 		<div id="sitePrefsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sitePrefs">
 			<div class="modal-header">
 				<a href="#" class="close" data-dismiss="modal" aria-hidden="true">×</a><h3 id="sitePrefs">Site Preferences</h3>
@@ -351,21 +354,19 @@
 				<h4>Version</h4>
 				<p>
 					Please choose the number of options:&nbsp;
-					<select id="extendedVersionPrefs">
-						<option value="0">standard version</option><option value="1" selected="true">extended version</option>
-					</select>
+					<select id="extendedVersionPrefs"></select>
 				</p><h4>Languages</h4>
 				<p>
 					Please select your language:&nbsp;
-					<select id="languagePrefs">
-						<option value="0">German</option><option value="1" selected="true">English</option>
-					</select>
+					<select id="languagePrefs"></select>
+					</p><h4>Routing Languages</h4>
+				<p>
+					Please select your language:&nbsp;
+					<select id="routingLanguagePrefs"></select>
 				</p><h4>Distance Units</h4>
 				<p>
 					Please select your distance unit:&nbsp;
-					<select id="unitPrefs">
-						<option value="0" selected="true">m / km</option><option value="1">yd / mi</option>
-					</select>
+					<select id="unitPrefs">	</select>
 				</p>
 			</div>
 			<div class="modal-footer">

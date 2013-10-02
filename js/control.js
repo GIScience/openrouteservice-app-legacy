@@ -672,46 +672,6 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		/* *********************************************************************
-		 * PERMALINK AND COOKIES
-		 * *********************************************************************/
-
-		function handlePermalinkRequest() {
-			preferences.openPermalink();
-		}
-
-		/**
-		 * update the given preference parameter in the cookies. If no cookies exist, write new ones with current parameters
-		 */
-		function updateCookies(key, value) {
-			if (preferences.areCookiesAVailable()) {
-				//there are cookies available, only update the changed information
-				preferences.updateCookies(key, value);
-			} else {
-				//no cookies found so far, we need to write all information
-				var lon = map.theMap.getCenter().lon;
-				var lat = map.theMap.getCenter().lat;
-				var zoom = map.theMap.getZoom();
-				var layer = map.serializeLayers();
-
-				preferences.writeMapCookies(lon, lat, zoom, layer);
-				preferences.writePrefsCookies();
-			}
-		}
-
-		/**
-		 * map parameters are usually modified together. This is more efficient than calling updateCookies(key, val) three times.
-		 */
-		function updateMapCookies(lon, lat, zoom, layer) {
-			if (preferences.areCookiesAVailable()) {
-				preferences.writeMapCookies(lon, lat, zoom, layer);
-			} else {
-				//write all information, not only map stuff
-				updateCookies(null, null);
-			}
-
-		}
-
-		/* *********************************************************************
 		 * ACCESSIBILITY ANALYSIS
 		 * *********************************************************************/
 
@@ -794,13 +754,61 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		/* *********************************************************************
-		 * PREFERENCES
+		 * PREFERENCES, PERMALINK AND COOKIES
 		 * *********************************************************************/
 
 		function handlePrefsChanged(atts) {
 			var key = atts.key;
 			var value = atts.value;
 			preferences.updatePreferences(key, value);
+		}
+
+		/**
+		 * the user changed preferences in the option panel and wants to save the changes
+		 */
+		function updateUserPreferences(atts) {
+			updateCookies(preferences.versionIdx, atts.version);
+			updateCookies(preferences.languageIdx, atts.language);
+			updateCookies(preferences.routingLanguageIdx, atts.routingLanguage);
+			updateCookies(preferences.distanceUnitIdx, atts.distanceUnit);
+
+			handleRoutePresent();
+		}
+
+		function handlePermalinkRequest() {
+			preferences.openPermalink();
+		}
+
+		/**
+		 * update the given preference parameter in the cookies. If no cookies exist, write new ones with current parameters
+		 */
+		function updateCookies(key, value) {
+			if (preferences.areCookiesAVailable()) {
+				//there are cookies available, only update the changed information
+				preferences.updateCookies(key, value);
+			} else {
+				//no cookies found so far, we need to write all information
+				var lon = map.theMap.getCenter().lon;
+				var lat = map.theMap.getCenter().lat;
+				var zoom = map.theMap.getZoom();
+				var layer = map.serializeLayers();
+
+				preferences.writeMapCookies(lon, lat, zoom, layer);
+				preferences.writePrefsCookies();
+			}
+		}
+
+		/**
+		 * map parameters are usually modified together. This is more efficient than calling updateCookies(key, val) three times.
+		 */
+		function updateMapCookies(lon, lat, zoom, layer) {
+			if (preferences.areCookiesAVailable()) {
+				preferences.writeMapCookies(lon, lat, zoom, layer);
+			} else {
+				//write all information, not only map stuff
+				updateCookies(null, null);
+			}
+
 		}
 
 		/* *********************************************************************
@@ -855,7 +863,6 @@ var Controller = ( function(w) {'use strict';
 			}
 
 			routeOpt = preferences.loadRouteOptions(routeOpt);
-			//TODO apply route options
 			ui.setRouteOption(routeOpt);
 			var res = preferences.loadAvoidables(motorways, tollways);
 			motorways = res[0];
@@ -871,6 +878,8 @@ var Controller = ( function(w) {'use strict';
 			if (!preferences.areCookiesAVailable()) {
 				ui.showNewToOrsPopup();
 			}
+
+			ui.setUserPreferences(preferences.version, preferences.language, preferences.routingLanguage, preferences.distanceUnit);
 		}
 
 		function showDebugInfo() {
@@ -931,7 +940,6 @@ var Controller = ( function(w) {'use strict';
 			ui.register('ui:useAsWaypoint', handleUseAsWaypoint);
 			ui.register('ui:zoomToMarker', handleZoomToMarker);
 			map.register('map:waypointMoved', handleWaypointMoved);
-			// map.register('map:waypointChanged', handleWaypointChanged);
 
 			ui.register('ui:routingParamsChanged', handleRoutePresent);
 			ui.register('ui:zoomToRoute', handleZoomToRoute);
@@ -941,9 +949,10 @@ var Controller = ( function(w) {'use strict';
 			map.register('map:avoidAreaChanged', handleAvoidAreaChanged);
 			map.register('map:routingParamsChanged', handleRoutePresent);
 
-			ui.register('ui:openPermalinkRequest', handlePermalinkRequest);
-
 			ui.register('ui:analyzeAccessibility', handleAnalyzeAccessibility);
+
+			ui.register('ui:saveUserPreferences', updateUserPreferences);
+			ui.register('ui:openPermalinkRequest', handlePermalinkRequest);
 
 			initializeOrs();
 		}

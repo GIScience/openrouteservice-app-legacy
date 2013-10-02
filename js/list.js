@@ -5,10 +5,12 @@
 list = {
 	languages: ['de', 'en'], 
 	
-	//if this is changed, please adapt the distance calculation in ORS.Gui.SearchPoi.observeInputfield
-	distanceUnits: ['m', 'km', 'yd', 'mi'],
+	routingLanguages : ['en', 'de', 'bg', 'cz', 'nl', 'hr', 'hu', 'nl_BE', 'es', 'eo', 'fi', 'fr', 'it', 'pt_BR', 'ro', 'ru', 'se', 'dk', 'tr', 'ca', 'ja', 'no', 'vi', 'nb', 'de-rheinl', 'de-opplat', 'de-berlin', 'de-swabia', 'de-ruhrpo', 'de-at-ooe', 'de-bay'],
+		
+	// distanceUnits: ['m', 'km', 'yd', 'mi'],
 	distanceUnitsPreferences : ['m', 'yd'],
-	// distanceUnitsRoute: ['m / km', 'yd / mi'],
+	//as visible in the user preferences popup
+	distanceUnitsInPopup: ['m / km', 'yd / mi'],
 	
 	version : ['standardVersion', 'extendedVersion'],
 	

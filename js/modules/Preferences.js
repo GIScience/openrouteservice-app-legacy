@@ -31,7 +31,7 @@ var Preferences = (function(w) {'use strict';
 		this.routingLanguage = 'en';
 		this.distanceUnit = 'm';
 		this.version = list.version['extendedVersion'];
-		this.dictionary = window['lang_' + this.language];
+		this.dictionary = window['lang_' + 'en']; //TODO if multi-language site is available: this.dictionary = window['lang_' + this.language];
 
 		//set permalink links
 		permaInfo[this.languageIdx] = this.language;
@@ -81,7 +81,8 @@ var Preferences = (function(w) {'use strict';
 
 	function loadPreferencesOnStartup() {
 		this.language = this.setLanguage();
-		this.dictionary = window['lang_' + this.language];
+		this.dictionary = window['lang_' + 'en']; //TODO if multi-language site is available: this.dictionary = window['lang_' + this.language];
+		this.routingLanguage = this.setRoutingLanguage();
 		this.distanceUnit = this.setDistanceUnit();
 		this.version = this.setVersion();
 
@@ -100,7 +101,6 @@ var Preferences = (function(w) {'use strict';
 
 	function setLanguage() {
 		console.log("reading language...")
-		console.log(this)
 
 		//read from cookie
 		var lang = readCookie(prefNames[this.languageIdx]);
@@ -117,6 +117,32 @@ var Preferences = (function(w) {'use strict';
 				lang = 'en';
 			}
 			console.log("language determined by browsers lang: " + lang);
+		}
+
+		if (list.languages.indexOf(lang) == -1) {
+			//this language doesn't exist in ORS, use default
+			lang = 'en';
+		}
+
+		return lang;
+	}
+
+	function setRoutingLanguage() {
+		console.log("reading routing language...")
+
+		//read from cookie
+		var lang = readCookie(prefNames[this.routingLanguageIdx]);
+		console.log("routing language determined by cookie: " + lang);
+
+		//if no cookie is available, use the language of the ORS site
+		if (!lang) {
+			var lang = this.language;
+			console.log("language determined by site lang: " + lang);
+		}
+
+		if (list.routingLanguages.indexOf(lang) == -1) {
+			//this language doesn't exist in ORS, use default
+			lang = 'en';
 		}
 		return lang;
 	}
@@ -315,6 +341,8 @@ var Preferences = (function(w) {'use strict';
 	 * if the user changes e.g. route options from "mountainbike" to "pedestrian", update this information in the permaInfo array.
 	 */
 	function updatePreferences(key, value) {
+		console.log(key);
+		console.log(value)
 		permaInfo[key] = escape(value);
 	}
 
@@ -393,12 +421,22 @@ var Preferences = (function(w) {'use strict';
 	 * if the user e.g. changes the language of the application this is updated in the cookie
 	 */
 	function updateCookies(key, value) {
-		var exdate = new Date();
-		//cookie expires in 30 days
-		exdate.setDate(exdate.getDate() + 30);
-		document.cookie = prefNames[key] + "=" + escape(value) + ";expires=" + exdate.toUTCString();
+		if (value && value.length > 0) {
+			var exdate = new Date();
+			//cookie expires in 30 days
+			exdate.setDate(exdate.getDate() + 30);
+			document.cookie = prefNames[key] + "=" + escape(value) + ";expires=" + exdate.toUTCString();
 
-		permaInfo[key] = escape(value);
+			permaInfo[key] = escape(value);
+
+			//the preference is one of language, routingLanguage, distanceUnit and version -> have to be saved in separate variable
+			this.language = key == this.languageIdx ? value : this.langauge;
+			this.routingLanguage = key == this.routingLanguageIdx ? value : this.routingLanguage;
+			this.distanceUnit = key == this.distanceUnitIdx ? value : this.distanceUnit;
+			this.version = key == this.versionIdx ? value : this.version;
+			
+			this.dictionary = window['lang_' + 'en']; //TODO if multi-language site is available: this.dictionary = window['lang_' + this.language];
+		}
 	}
 
 	/**
@@ -432,9 +470,10 @@ var Preferences = (function(w) {'use strict';
 	Preferences.prototype.reverseTranslate = reverseTranslate;
 
 	Preferences.prototype.loadPreferencesOnStartup = loadPreferencesOnStartup;
-	//actually, setLang, setDist, setVersion should be private; but then there are some problems with calling some varaibles, etc.
-	//Didn't find a solution for that, so I use this workaround.
+	//actually, setLang, setRoutingLang, setDist, setVersion should be private; but then there are some problems with calling some varaibles, etc.
+	//Didn't find a solution for that, so I used this workaround.
 	Preferences.prototype.setLanguage = setLanguage;
+	Preferences.prototype.setRoutingLanguage = setRoutingLanguage;
 	Preferences.prototype.setDistanceUnit = setDistanceUnit;
 	Preferences.prototype.setVersion = setVersion;
 	Preferences.prototype.loadMapPosition = loadMapPosition;

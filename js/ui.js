@@ -1432,7 +1432,6 @@ var Ui = ( function(w) {'use strict';
 			var parentOptions = list.routePreferences.keys();
 			var parent;
 			for (var i = 0; i < parentOptions.length; i++) {
-				console.log(parentOptions[i])
 				if (list.routePreferences.get(parentOptions[i]).indexOf(routeOption) != -1) {
 					//show div
 					$('#' + parentOptions[i] + 'Options').show();
@@ -1549,6 +1548,143 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/* *********************************************************************
+		 * USER PREFERENCES
+		 * *********************************************************************/
+
+		function loadPreferencePopupData() {
+			//versions
+			var container = $('#extendedVersionPrefs');
+			for (var i = 0; i < list.version.length; i++) {
+				var optionElement = new Element('option', {
+					'value' : i
+				});
+				if (i == 0 ) {
+					optionElement.selected = true;
+				}
+				$(optionElement).html(preferences.translate(list.version[i]));
+				container.append(optionElement);
+			}
+			//languages
+			container = $('#languagePrefs');
+			for (var i = 0; i < list.languages.length; i++) {
+				var optionElement = new Element('option', {
+					'value' : i
+				});
+				if (i == 0 ) {
+					optionElement.selected = true;
+				}
+				$(optionElement).html(preferences.translate(list.languages[i]));
+				container.append(optionElement);
+			}
+
+			//routing languages
+			container = $('#routingLanguagePrefs');
+			for (var i = 0; i < list.routingLanguages.length; i++) {
+				var optionElement = new Element('option', {
+					'value' : i
+				});
+				if (i == 0 ) {
+					optionElement.selected = true;
+				}
+				$(optionElement).html(preferences.translate(list.routingLanguages[i]));
+				container.append(optionElement);
+			}
+
+			//distance units
+			container = $('#unitPrefs');
+			for (var i = 0; i < list.distanceUnitsPreferences.length; i++) {
+				var optionElement = new Element('option', {
+					'value' : i
+				});
+				if (i == 0 ) {
+					optionElement.selected = true;
+				}
+				$(optionElement).html(list.distanceUnitsInPopup[i]);
+				container.append(optionElement);
+			}
+		}
+
+		function handleSaveUserPreferences() {
+			var version = $('#extendedVersionPrefs').find(":selected").text();
+			var language = $('#languagePrefs').find(":selected").text();
+			var routingLanguage = $('#routingLanguagePrefs').find(":selected").text();
+			var distanceUnit = $('#unitPrefs').find(":selected").text();
+
+			//version: one of list.version
+			version = preferences.reverseTranslate(version);
+
+			//language: one of list.languages
+			language = preferences.reverseTranslate(language);
+
+			//routing language: one of list.routingLanguages
+			routingLanguage = preferences.reverseTranslate(routingLanguage);
+
+			//units: one of list.distanceUnitsInPopup
+			distanceUnit = distanceUnit.split(' / ');
+			for (var i = 0; i < distanceUnit.length; i++) {
+				for (var j = 0; j < list.distanceUnitsPreferences.length; j++) {
+					if (distanceUnit[i] === list.distanceUnitsPreferences[j]) {
+						distanceUnit = list.distanceUnitsPreferences[j];
+						i = distanceUnit.length;
+						break;
+					}
+				}
+			}
+
+			theInterface.emit('ui:saveUserPreferences', {
+				version : version,
+				language : language,
+				routingLanguage : routingLanguage,
+				distanceUnit : distanceUnit
+			});
+
+			//hide preferences window
+			$('#sitePrefsModal').modal('hide');
+		}
+
+		function setUserPreferences(version, language, routingLanguage, distanceUnit) {
+			//setting version
+			var container = $('#extendedVersionPrefs').get(0);
+			container = container.options;
+			for (var i = 0; i < list.version.length; i++) {
+				if (list.version[i] === version) {
+					//set selected = true
+					container[i].selected = true;
+				}
+			}
+
+			//setting language
+			container = $('#languagePrefs').get(0);
+			container = container.options;
+			for (var i = 0; i < list.languages.length; i++) {
+				if (list.languages[i] === language) {
+					//set selected = true
+					container[i].selected = true;
+				}
+			}
+
+			//setting routingLanguage
+			container = $('#routingLanguagePrefs').get(0);
+			container = container.options;
+			for (var i = 0; i < list.routingLanguages.length; i++) {
+				if (list.routingLanguages[i] === routingLanguage) {
+					//set selected = true
+					container[i].selected = true;
+				}
+			}
+
+			//setting distanceUnit
+			container = $('#unitPrefs').get(0);
+			container = container.options;
+			for (var i = 0; i < list.distanceUnitsPreferences.length; i++) {
+				if (list.distanceUnitsPreferences[i] === distanceUnit) {
+					//set selected = true
+					container[i].selected = true;
+				}
+			}
+		}
+
+		/* *********************************************************************
 		* CLASS-SPECIFIC
 		* *********************************************************************/
 
@@ -1579,6 +1715,8 @@ var Ui = ( function(w) {'use strict';
 			dataSource = '["' + dataSource + '"]';
 
 			$('#fnct_searchPoi').attr('data-source', dataSource);
+
+			loadPreferencePopupData();
 		}
 
 		function debug() {
@@ -1639,6 +1777,9 @@ var Ui = ( function(w) {'use strict';
 
 			//accessibility analysis
 			$('#analyzeAccessibility').click(handleAnalyzeAccessibility);
+
+			//user preferences
+			$('#savePrefsBtn').click(handleSaveUserPreferences);
 		}
 
 
@@ -1691,6 +1832,8 @@ var Ui = ( function(w) {'use strict';
 
 		Ui.prototype.showSearchingAtAccessibility = showSearchingAtAccessibility;
 		Ui.prototype.showAccessibilityError = showAccessibilityError;
+
+		Ui.prototype.setUserPreferences = setUserPreferences;
 
 		theInterface = new Ui();
 
