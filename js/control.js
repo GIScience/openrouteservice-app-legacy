@@ -774,7 +774,8 @@ var Controller = ( function(w) {'use strict';
 			updateCookies(preferences.routingLanguageIdx, atts.routingLanguage);
 			updateCookies(preferences.distanceUnitIdx, atts.distanceUnit);
 
-			handleRoutePresent();
+			//reload page to apply changed preferences (e.g. other site language)
+			handlePermalinkRequest();
 		}
 
 		function handlePermalinkRequest() {
