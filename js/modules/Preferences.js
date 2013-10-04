@@ -341,8 +341,6 @@ var Preferences = (function(w) {'use strict';
 	 * if the user changes e.g. route options from "mountainbike" to "pedestrian", update this information in the permaInfo array.
 	 */
 	function updatePreferences(key, value) {
-		console.log(key);
-		console.log(value)
 		permaInfo[key] = escape(value);
 	}
 

@@ -633,6 +633,8 @@ var Controller = ( function(w) {'use strict';
 		function routeCalculationError() {
 			ui.endRouteCalculation();
 			ui.showRoutingError();
+			ui.hideRouteSummary();
+			ui.hideRouteInstructions();
 		}
 
 		function handleZoomToRoute() {

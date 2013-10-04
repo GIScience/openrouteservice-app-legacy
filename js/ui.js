@@ -1319,6 +1319,14 @@ var Ui = ( function(w) {'use strict';
 
 		}
 
+		function hideRouteSummary() {
+			$('#routeSummaryContainer').hide();
+		}
+
+		function hideRouteInstructions() {
+			$('#routeInstructionsContainer').hide();
+		}
+
 		function handleZoomToRouteClick() {
 			theInterface.emit('ui:zoomToRoute');
 		}
@@ -1558,7 +1566,7 @@ var Ui = ( function(w) {'use strict';
 				var optionElement = new Element('option', {
 					'value' : i
 				});
-				if (i == 0 ) {
+				if (i == 0) {
 					optionElement.selected = true;
 				}
 				$(optionElement).html(preferences.translate(list.version[i]));
@@ -1570,7 +1578,7 @@ var Ui = ( function(w) {'use strict';
 				var optionElement = new Element('option', {
 					'value' : i
 				});
-				if (i == 0 ) {
+				if (i == 0) {
 					optionElement.selected = true;
 				}
 				$(optionElement).html(preferences.translate(list.languages[i]));
@@ -1583,7 +1591,7 @@ var Ui = ( function(w) {'use strict';
 				var optionElement = new Element('option', {
 					'value' : i
 				});
-				if (i == 0 ) {
+				if (i == 0) {
 					optionElement.selected = true;
 				}
 				$(optionElement).html(preferences.translate(list.routingLanguages[i]));
@@ -1596,7 +1604,7 @@ var Ui = ( function(w) {'use strict';
 				var optionElement = new Element('option', {
 					'value' : i
 				});
-				if (i == 0 ) {
+				if (i == 0) {
 					optionElement.selected = true;
 				}
 				$(optionElement).html(list.distanceUnitsInPopup[i]);
@@ -1824,6 +1832,8 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.startRouteCalculation = startRouteCalculation;
 		Ui.prototype.endRouteCalculation = endRouteCalculation;
 		Ui.prototype.updateRouteInstructions = updateRouteInstructions;
+		Ui.prototype.hideRouteSummary = hideRouteSummary;
+		Ui.prototype.hideRouteInstructions = hideRouteInstructions;
 		Ui.prototype.showRoutingError = showRoutingError;
 
 		Ui.prototype.setRouteOption = setRouteOption;
