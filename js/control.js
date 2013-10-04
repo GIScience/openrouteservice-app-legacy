@@ -592,7 +592,7 @@ var Controller = ( function(w) {'use strict';
 				var avoidTollway = prefs[1][1];
 				var avoidAreas = map.getAvoidAreas();
 
-				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.language, routePref, avoidHighway, avoidTollway, avoidAreas);
+				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, avoidHighway, avoidTollway, avoidAreas);
 			} else {
 				//internal
 				route.routePresent = false;
@@ -769,13 +769,17 @@ var Controller = ( function(w) {'use strict';
 		 * the user changed preferences in the option panel and wants to save the changes
 		 */
 		function updateUserPreferences(atts) {
-			updateCookies(preferences.versionIdx, atts.version);
-			updateCookies(preferences.languageIdx, atts.language);
-			updateCookies(preferences.routingLanguageIdx, atts.routingLanguage);
-			updateCookies(preferences.distanceUnitIdx, atts.distanceUnit);
+			if (preferences.version == atts.version && preferences.language == atts.language && preferences.routingLanguage == atts.routingLanguage && preferences.distanceUnit == atts.distanceUnit) {
+				//nothing changed...
+			} else {
+				updateCookies(preferences.versionIdx, atts.version);
+				updateCookies(preferences.languageIdx, atts.language);
+				updateCookies(preferences.routingLanguageIdx, atts.routingLanguage);
+				updateCookies(preferences.distanceUnitIdx, atts.distanceUnit);
 
-			//reload page to apply changed preferences (e.g. other site language)
-			handlePermalinkRequest();
+				//reload page to apply changed preferences (e.g. other site language)
+				handlePermalinkRequest();
+			}
 		}
 
 		function handlePermalinkRequest() {
