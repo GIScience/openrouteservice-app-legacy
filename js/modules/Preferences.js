@@ -460,6 +460,16 @@ var Preferences = (function(w) {'use strict';
 		query = query.substring(0, query.length - 1);
 		window.open(query);
 	}
+	
+	function reloadWithPerma() {
+		var query = '?';
+		for (var i = 0; i < prefNames.length; i++) {
+			query += prefNames[i] + '=' + permaInfo[i] + '&';
+		}
+		//slice away last '&'
+		query = query.substring(0, query.length - 1);
+		window.location.search = query;
+	}
 
 
 	Preferences.prototype.getPrefName = getPrefName;
@@ -491,6 +501,8 @@ var Preferences = (function(w) {'use strict';
 	Preferences.prototype.areCookiesAVailable = areCookiesAVailable;
 
 	Preferences.prototype.openPermalink = openPermalink;
+	Preferences.prototype.reloadWithPerma = reloadWithPerma;
+	
 
 	return new Preferences();
 })(window);

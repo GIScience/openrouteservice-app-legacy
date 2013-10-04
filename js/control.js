@@ -778,7 +778,7 @@ var Controller = ( function(w) {'use strict';
 				updateCookies(preferences.distanceUnitIdx, atts.distanceUnit);
 
 				//reload page to apply changed preferences (e.g. other site language)
-				handlePermalinkRequest();
+				preferences.reloadWithPerma();
 			}
 		}
 
