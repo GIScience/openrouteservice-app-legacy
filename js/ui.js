@@ -109,8 +109,17 @@ var Ui = ( function(w) {'use strict';
 		 * highlight the element
 		 */
 		function emphElement(elementId) {
-			$('#' + elementId).get(0).addClassName('highlight');
-			$('#' + elementId).get(0).addClassName('active');
+			var element = $('#' + elementId);
+			
+			//if parent has class even or odd (== belongs to route instructions), only use class active, no highlight!
+			var parentClass = element.parent().attr('class');
+			var isRouteInstruction = (parentClass.indexOf('even') >= 0) || (parentClass.indexOf('odd') >= 0);
+
+			if (isRouteInstruction) {
+				element.get(0).addClassName('active');
+			} else {
+				element.get(0).addClassName('highlight');
+			}
 		}
 
 		/**
