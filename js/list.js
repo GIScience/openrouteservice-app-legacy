@@ -3,9 +3,9 @@
  */
 
 list = {
-	languages: ['de', 'en'], 
+	languages: ['de', 'en', 'pl'], 
 	
-	routingLanguages : ['en', 'de', 'bg', 'cz', 'nl', 'hr', 'hu', 'nl_BE', 'es', 'eo', 'fi', 'fr', 'it', 'pt_BR', 'ro', 'ru', 'se', 'dk', 'tr', 'ca', 'ja', 'no', 'vi', 'nb', 'de-rheinl', 'de-opplat', 'de-berlin', 'de-swabia', 'de-ruhrpo', 'de-at-ooe', 'de-bay'],
+	routingLanguages : ['en', 'de', 'pl', 'bg', 'cz', 'nl', 'hr', 'hu', 'nl_BE', 'es', 'eo', 'fi', 'fr', 'it', 'pt_BR', 'ro', 'ru', 'se', 'dk', 'tr', 'ca', 'ja', 'no', 'vi', 'nb', 'de-rheinl', 'de-opplat', 'de-berlin', 'de-swabia', 'de-ruhrpo', 'de-at-ooe', 'de-bay'],
 		
 	// distanceUnits: ['m', 'km', 'yd', 'mi'],
 	distanceUnitsPreferences : ['m', 'yd'],

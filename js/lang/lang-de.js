@@ -99,6 +99,13 @@ var lang_de = {
 		'gpxUploadRouteText' :  'GPX-Route aus Datei anzeigen und neuberechnen',
 		'gpxUploadTrackText' :  'GPX-Track aus Datei anzeigen', 
 	
+		//accessibility Analysis
+		'accessibilityAnalysis' : 'Erreichbarkeits-Analyse',
+		'setAccessibilityMinutes' : 'Minuten ausw&auml;hlen: ',
+		'analyze' : 'Analysieren',
+		'calculatingAccessibility' : 'Die Erreichbarkeit wird analysiert...',
+		'accessibilityError' : 'W&auml;hrend der Erreichbarkeits-Analyse ist leider ein Fehler aufgetreten. Haben Sie vergessen einen Startpunkt zu setzen?',
+	
 	// List languages
 		'en': 'Englisch',
 		'de':  'Deutsch',
