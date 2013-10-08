@@ -709,7 +709,7 @@ var Map = ( function() {"use strict";
 			var wpString = "";
 			for (var i = 0; i < layer.features.length; i++) {
 				var ft = layer.features[i].geometry;
-				ft = new OpenLayers.LonLat(ft.x ,ft.y);
+				ft = new OpenLayers.LonLat(ft.x, ft.y);
 				ft = util.convertPointForDisplay(ft);
 				wpString = wpString + ft.lon + ',' + ft.lat + ',';
 			}
@@ -953,7 +953,7 @@ var Map = ( function() {"use strict";
 			}
 			return intersect;
 		}
-		
+
 		function addAvoidAreas(areas) {
 			var layerAvoid = this.theMap.getLayersByName(this.AVOID)[0];
 			if (areas && areas.length > 0) {
@@ -1020,6 +1020,25 @@ var Map = ( function() {"use strict";
 			layer.removeAllFeatures();
 		}
 
+		/*
+		 * IMPORT / EXPORT
+		 */
+
+		function writeRouteToString(singleRouteLineString) {
+			var formatter = new OpenLayers.Format.GPX();
+			
+			var route;
+			if (singleRouteLineString) {
+				// console.log(layer.features)
+				var ft = new OpenLayers.Feature.Vector(singleRouteLineString)
+					route = formatter.write([ft]);
+					//insert line breaks for nicely readable code
+					route = route.replace(/></g, '>\n<');
+					//note: doesn't include namespaces in every tag any more
+			}
+			return route;
+		}
+
 
 		map.prototype = new EventEmitter();
 		map.prototype.constructor = map;
@@ -1059,6 +1078,8 @@ var Map = ( function() {"use strict";
 
 		map.prototype.addAccessiblityPolygon = addAccessiblityPolygon;
 		map.prototype.eraseAccessibilityFeatures = eraseAccessibilityFeatures;
+
+		map.prototype.writeRouteToString = writeRouteToString;
 
 		return map;
 	}());

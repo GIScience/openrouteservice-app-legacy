@@ -611,6 +611,11 @@ var Controller = ( function(w) {'use strict';
 
 			results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
 
+			//use all-in-one-LineString to save the whole route in a single string 
+			var routeLineString = route.writeRouteToSingleLineString(results);
+			var routeString = map.writeRouteToString(routeLineString);
+			route.routeString = routeString;
+			
 			// each route instruction has a part of this lineString as geometry for this instruction
 			var routeLines = route.parseResultsToLineStrings(results, util.convertPointForMap);
 			var routePoints = route.parseResultsToCornerPoints(results, util.convertPointForMap);
@@ -720,6 +725,25 @@ var Controller = ( function(w) {'use strict';
 				key : preferences.avoidAreasIdx,
 				value : avoidAreaString
 			});
+		}
+
+		/* *********************************************************************
+		 * EXPORT / IMPORT
+		 * *********************************************************************/
+
+		function handleExportRoute() {
+			ui.showExportRouteError(false);
+
+			var routeString = route.routeString;
+			if (routeString) {
+				//writing String to File seems not possible. We open a window with the content instead.
+				w = window.open('about:blank', '_blank', 'height=300,width=400');
+				w.document.write('<xmp>' + routeString + '</xmp>');				
+			} else {
+				//error, route does not exist. Nothing can be exported
+				ui.showExportRouteError(true);
+			}
+
 		}
 
 		/* *********************************************************************
@@ -957,6 +981,8 @@ var Controller = ( function(w) {'use strict';
 			map.register('map:routingParamsChanged', handleRoutePresent);
 
 			ui.register('ui:analyzeAccessibility', handleAnalyzeAccessibility);
+
+			ui.register('ui:exportRouteGpx', handleExportRoute);
 
 			ui.register('ui:saveUserPreferences', updateUserPreferences);
 			ui.register('ui:openPermalinkRequest', handlePermalinkRequest);

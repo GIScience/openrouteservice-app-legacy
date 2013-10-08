@@ -670,3 +670,7 @@ img {
 	vertical-align: baseline;
 	text-align: center;
 }
+
+#exportGpxError {
+	margin-top : 5px;
+}

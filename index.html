@@ -242,14 +242,17 @@
 											An error occured during the accessibility analysis. Did you forget to set a start point?
 										</div>
 									</div>
-									<label><b>GPX</b></label>
+									<label><b>Export/ Import</b></label>
 									<div class="panel panelMedium">
 										<p>
 											Download of current route in GPX format
 										</p>
-										<btn class="btn">
+										<btn class="btn" id="exportRouteGpx">
 											Download GPX
 										</btn>
+										<div class="alert alert-error" style="display:none" id="exportGpxError">
+											Unfortunately an error occured when downlodng the route.
+										</div>
 									</div>
 									<div class="panel panelMedium">
 										<p>

@@ -94,8 +94,8 @@ var lang_en = {
 	'invalidAvoidArea' : 'Avoid areas are not allowed to intersect themselves. Please remove or correct this area. Otherwise no route calculation is possible.',
 
 	//GPX Extras
-	'gpxDownloadError' : 'Unfortunately an error occured when downlodng the route.',
-	'gpxUploadError' : 'Unfortunately an error occured when uploading the route.',
+	'gpxDownloadError' : 'Unfortunately an error occured while downlodng the route.',
+	'gpxUploadError' : 'Unfortunately an error occured while uploading the route.',
 	'gpxDownloadText' : 'Download of current route in GPX format',
 	'gpxUploadRouteText' : 'Upload a route from a GPX-file with re-calculation',
 	'gpxUploadTrackText' : 'Upload of GPX-track for display on the map',

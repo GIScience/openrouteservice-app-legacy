@@ -1563,6 +1563,22 @@ var Ui = ( function(w) {'use strict';
 			}
 
 		}
+		
+		/* *********************************************************************
+		 * EXPORT / IMPORT
+		 * *********************************************************************/
+		
+		function handleExportRouteClick() {
+			theInterface.emit('ui:exportRouteGpx');
+		}
+		
+		function showExportRouteError(showError) {
+			if (showError) {
+				$('#exportGpxError').show();
+			} else {
+				$('#exportGpxError').hide();
+			}
+		}
 
 		/* *********************************************************************
 		 * USER PREFERENCES
@@ -1795,6 +1811,9 @@ var Ui = ( function(w) {'use strict';
 			//accessibility analysis
 			$('#analyzeAccessibility').click(handleAnalyzeAccessibility);
 
+			//export/ import
+			$('#exportRouteGpx').click(handleExportRouteClick);
+
 			//user preferences
 			$('#savePrefsBtn').click(handleSaveUserPreferences);
 		}
@@ -1851,6 +1870,8 @@ var Ui = ( function(w) {'use strict';
 
 		Ui.prototype.showSearchingAtAccessibility = showSearchingAtAccessibility;
 		Ui.prototype.showAccessibilityError = showAccessibilityError;
+		
+		Ui.prototype.showExportRouteError = showExportRouteError;
 
 		Ui.prototype.setUserPreferences = setUserPreferences;
 
