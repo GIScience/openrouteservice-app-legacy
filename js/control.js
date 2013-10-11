@@ -772,6 +772,8 @@ var Controller = ( function(w) {'use strict';
 							handleUseAsWaypoint(wps[0]);
 							wp2 = wps[1];
 							//the 2nd point cannot be appended immediately. we have to wait for the reverse geocoding request to be finished (and all other stuff executed in the callback function)
+						} else {
+							ui.showImportRouteError(true);
 						}
 					};
 				}
@@ -786,6 +788,41 @@ var Controller = ( function(w) {'use strict';
 				//prevent infinite loop
 				wp2 = null;
 			}
+		}
+
+		function handleUploadTrack(file) {
+			ui.showImportRouteError(false);
+			//clean old track from map (at the moment only one track is supported)
+			map.clearMarkers(map.TRACK);
+			if (file) {
+				if (!window.FileReader) {
+					// File APIs are not supported, e.g. IE
+					ui.showImportRouteError(true);
+				} else {
+					var r = new FileReader();
+					r.readAsText(file);
+
+					r.onload = function(e) {
+						var data = e.target.result;
+						//remove gpx: tags; Firefox cannot cope with that.
+						data = data.replace(/gpx:/g, '');
+
+						var track = map.parseStringToTrack(data);
+						if (!track) {
+							ui.showImportRouteError(true);
+						} else {
+							//add features to map
+							map.addTrackToMap(track);
+						}
+					};
+				}
+			} else {
+				ui.showImportRouteError(true);
+			}
+		}
+		
+		function handleRemoveTrack() {
+			map.clearMarkers(map.TRACK);
 		}
 
 		/* *********************************************************************
@@ -1027,6 +1064,8 @@ var Controller = ( function(w) {'use strict';
 			ui.register('ui:exportRouteGpx', handleExportRoute);
 			ui.register('ui:uploadRoute', handleUuploadRoute);
 			ui.register('control:reverseGeocodeCompleted', uploadRouteTrigger2ndWaypoint);
+			ui.register('ui:uploadTrack', handleUploadTrack);
+			ui.register('ui:removeTrack', handleRemoveTrack);
 
 			ui.register('ui:saveUserPreferences', updateUserPreferences);
 			ui.register('ui:openPermalinkRequest', handlePermalinkRequest);

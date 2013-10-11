@@ -1024,6 +1024,10 @@ var Map = ( function() {"use strict";
 		 * IMPORT / EXPORT
 		 */
 
+		/**
+		 * generates a GPX String based on the route
+ 		 * @param {Object} singleRouteLineString: current route as a single OL.Gemoetry.LineString
+		 */
 		function writeRouteToString(singleRouteLineString) {
 			var formatter = new OpenLayers.Format.GPX();
 
@@ -1039,9 +1043,17 @@ var Map = ( function() {"use strict";
 			return route;
 		}
 
+		/**
+		 * Based on the String with GPX information two waypoints - the start and end of the GPX track - are extracted
+ 		 * @param {Object} routeString: String with GPX track
+ 		 * @return: array of two waypoints of OL.LonLat or null if no adequate data available
+		 */
 		function parseStringToWaypoints(routeString) {
 			var formatter = new OpenLayers.Format.GPX();
 			var featureVectors = formatter.read(routeString);
+			if (!featureVectors || featureVectors.length == 0) {
+				return null;
+			}
 			var linePoints = featureVectors[0].geometry.components;
 			if (linePoints && linePoints.length >= 2) {
 				//only proceed if the route contains at least 2 points (which can be interpreted as start and end)
@@ -1054,13 +1066,39 @@ var Map = ( function() {"use strict";
 				return null;
 			}
 		}
-		
-		function parseStringToTrack(trackString) {
-			console.log(routeString);
-			//TODO test
 
+		/**
+		 * Based on the String with GPX information a track (an OL.Geometry.LineString object) is extracted 
+ 		 * @param {Object} trackString: String with GPX track
+ 		 * @return array of OL.FeatureVectors (usually only one) containing the track points
+		 */
+		function parseStringToTrack(trackString) {
 			var formatter = new OpenLayers.Format.GPX();
-			return formatter.read(routeString);
+			var trackFeatures = formatter.read(trackString);
+			if (!trackFeatures || trackFeatures.length == 0) {
+				return null;
+			}
+			//convert all points
+			for (var i = 0; i < trackFeatures.length; i++) {
+				var points = trackFeatures[i].geometry.components;
+				for (var j = 0; j < points.length; j++) {
+					points[j] = util.convertPointForMap(points[j]);
+				}
+			}
+			return trackFeatures;
+		}
+
+		/**
+		 * add the given track features to the map and zoom to all tracks
+ 		 * @param {Object} trackFeatures: array of OL.FeatureVectors (usually only one) with track points
+		 */
+		function addTrackToMap(trackFeatures) {
+			var layer = this.theMap.getLayersByName(this.TRACK)[0];
+			layer.addFeatures(trackFeatures);
+
+			//zoom to track
+			var resultBounds = layer.getDataExtent();
+			this.theMap.zoomToExtent(resultBounds);
 		}
 
 
@@ -1105,6 +1143,8 @@ var Map = ( function() {"use strict";
 
 		map.prototype.writeRouteToString = writeRouteToString;
 		map.prototype.parseStringToWaypoints = parseStringToWaypoints;
+		map.prototype.parseStringToTrack = parseStringToTrack;
+		map.prototype.addTrackToMap = addTrackToMap;
 
 		return map;
 	}());

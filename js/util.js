@@ -16,8 +16,16 @@ util = ( function() {'use strict';
 			convertPointForDisplay : function(pt) {
 				var src = new OpenLayers.Projection('EPSG:900913');
 				var dest = new OpenLayers.Projection('EPSG:4326');
-				var ptCopy = new OpenLayers.LonLat(pt.lon, pt.lat);
-				return ptCopy.transform(src, dest);
+
+				if (pt.x && pt.y) {
+					//the input is likely to be of OL.Geometry.Point... special handling necessary
+					var ptCopy = new OpenLayers.LonLat(pt.x, pt.y);
+					ptCopy = ptCopy.transform(src, dest);
+					return new OpenLayers.Geometry.Point(ptCopy.lon, ptCopy.lat);
+				} else {
+					var ptCopy = new OpenLayers.LonLat(pt.lon, pt.lat);
+					return ptCopy.transform(src, dest);
+				}
 			},
 
 			/**
@@ -27,8 +35,16 @@ util = ( function() {'use strict';
 			convertPointForMap : function(pt) {
 				var src = new OpenLayers.Projection('EPSG:4326');
 				var dest = new OpenLayers.Projection('EPSG:900913');
-				var ptCopy = new OpenLayers.LonLat(pt.lon, pt.lat);
-				return ptCopy.transform(src, dest);
+
+				if (pt.x && pt.y) {
+					//the input is likely to be of OL.Geometry.Point... special handling necessary
+					var ptCopy = new OpenLayers.LonLat(pt.x, pt.y);
+					ptCopy = ptCopy.transform(src, dest);
+					return new OpenLayers.Geometry.Point(ptCopy.lon, ptCopy.lat);
+				} else {
+					var ptCopy = new OpenLayers.LonLat(pt.lon, pt.lat);
+					return ptCopy.transform(src, dest);
+				}
 			},
 
 			/**

@@ -1576,7 +1576,7 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
-		function handleImportRouteSelection(e) {
+		function handleImportRouteSelection() {
 			var file;
 			var fileInput = $$('#gpxUploadFiles input[type="file"]')[0];
 			if (fileInput && fileInput.files && fileInput.files.length > 0) {
@@ -1589,12 +1589,12 @@ var Ui = ( function(w) {'use strict';
 			if (file) {
 				theInterface.emit('ui:uploadRoute', file);
 			}
-
 		}
 
 		function handleImportRouteRemove(e) {
 			//if the file is removed from the view, we do NOT remove the waypoints from the list, etc.
-			//so nothing happens at all.
+			//just remove the erorr message if visible
+			showImportRouteError(false);
 		}
 		
 		function showImportRouteError(showError) {
@@ -1603,6 +1603,26 @@ var Ui = ( function(w) {'use strict';
 			} else {
 				$('#importGpxError').hide();
 			}
+		}
+		
+		function handleImportTrackSelection() {
+			var file;
+			var fileInput = $$('#gpxUploadTrack input[type="file"]')[0];
+			if (fileInput && fileInput.files && fileInput.files.length > 0) {
+				file = fileInput.files[0];
+			} else if (fileInput && fileInput.value) {
+				//IE doesn't know x.files
+				file = fileInput.value;
+			}
+
+			if (file) {
+				theInterface.emit('ui:uploadTrack', file); //TODO to support multiple GPX tracks, use data-attributes containing the OL-Feature-Id of the element (see search/waypoints)
+			}
+		}
+		
+		function handleImportTrackRemove() {
+			//remove the track from the map
+			theInterface.emit('ui:removeTrack');
 		}
 
 		/* *********************************************************************
@@ -1840,6 +1860,8 @@ var Ui = ( function(w) {'use strict';
 			$('#exportRouteGpx').click(handleExportRouteClick);
 			$('#gpxUploadFiles').change(handleImportRouteSelection);
 			$('#gpxUploadFilesDelete').click(handleImportRouteRemove);
+			$('#gpxUploadTrack').change(handleImportTrackSelection);
+			$('#gpxUploadTrackDelete').click(handleImportTrackRemove);
 
 			//user preferences
 			$('#savePrefsBtn').click(handleSaveUserPreferences);
