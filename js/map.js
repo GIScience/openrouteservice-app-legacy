@@ -1026,17 +1026,41 @@ var Map = ( function() {"use strict";
 
 		function writeRouteToString(singleRouteLineString) {
 			var formatter = new OpenLayers.Format.GPX();
-			
+
 			var route;
 			if (singleRouteLineString) {
 				// console.log(layer.features)
 				var ft = new OpenLayers.Feature.Vector(singleRouteLineString)
-					route = formatter.write([ft]);
-					//insert line breaks for nicely readable code
-					route = route.replace(/></g, '>\n<');
-					//note: doesn't include namespaces in every tag any more
+				route = formatter.write([ft]);
+				//insert line breaks for nicely readable code
+				route = route.replace(/></g, '>\n<');
+				//note: doesn't include namespaces in every tag any more
 			}
 			return route;
+		}
+
+		function parseStringToWaypoints(routeString) {
+			var formatter = new OpenLayers.Format.GPX();
+			var featureVectors = formatter.read(routeString);
+			var linePoints = featureVectors[0].geometry.components;
+			if (linePoints && linePoints.length >= 2) {
+				//only proceed if the route contains at least 2 points (which can be interpreted as start and end)
+				var startPos = new OpenLayers.LonLat(linePoints[0].x, linePoints[0].y);
+				startPos = util.convertPointForMap(startPos);
+				var endPos = new OpenLayers.LonLat(linePoints[linePoints.length - 1].x, linePoints[linePoints.length - 1].y);
+				endPos = util.convertPointForMap(endPos);
+				return [startPos, endPos];
+			} else {
+				return null;
+			}
+		}
+		
+		function parseStringToTrack(trackString) {
+			console.log(routeString);
+			//TODO test
+
+			var formatter = new OpenLayers.Format.GPX();
+			return formatter.read(routeString);
 		}
 
 
@@ -1080,6 +1104,7 @@ var Map = ( function() {"use strict";
 		map.prototype.eraseAccessibilityFeatures = eraseAccessibilityFeatures;
 
 		map.prototype.writeRouteToString = writeRouteToString;
+		map.prototype.parseStringToWaypoints = parseStringToWaypoints;
 
 		return map;
 	}());

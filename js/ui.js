@@ -110,7 +110,7 @@ var Ui = ( function(w) {'use strict';
 		 */
 		function emphElement(elementId) {
 			var element = $('#' + elementId);
-			
+
 			//if parent has class even or odd (== belongs to route instructions), only use class active, no highlight!
 			var parentClass = element.parent().attr('class');
 			var isRouteInstruction = (parentClass.indexOf('even') >= 0) || (parentClass.indexOf('odd') >= 0);
@@ -861,11 +861,7 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		function handleUseAsWaypoint(e) {
-			theInterface.emit('ui:useAsWaypoint', {
-				id : e.currentTarget.id,
-				position : e.currentTarget.getAttribute('data-position'),
-				layer : e.currentTarget.getAttribute('data-layer')
-			});
+			theInterface.emit('ui:useAsWaypoint', e.currentTarget.getAttribute('data-position'));
 
 		}
 
@@ -1563,20 +1559,49 @@ var Ui = ( function(w) {'use strict';
 			}
 
 		}
-		
+
 		/* *********************************************************************
 		 * EXPORT / IMPORT
 		 * *********************************************************************/
-		
+
 		function handleExportRouteClick() {
 			theInterface.emit('ui:exportRouteGpx');
 		}
-		
+
 		function showExportRouteError(showError) {
 			if (showError) {
 				$('#exportGpxError').show();
 			} else {
 				$('#exportGpxError').hide();
+			}
+		}
+
+		function handleImportRouteSelection(e) {
+			var file;
+			var fileInput = $$('#gpxUploadFiles input[type="file"]')[0];
+			if (fileInput && fileInput.files && fileInput.files.length > 0) {
+				file = fileInput.files[0];
+			} else if (fileInput && fileInput.value) {
+				//IE doesn't know x.files
+				file = fileInput.value;
+			}
+
+			if (file) {
+				theInterface.emit('ui:uploadRoute', file);
+			}
+
+		}
+
+		function handleImportRouteRemove(e) {
+			//if the file is removed from the view, we do NOT remove the waypoints from the list, etc.
+			//so nothing happens at all.
+		}
+		
+		function showImportRouteError(showError) {
+			if (showError) {
+				$('#importGpxError').show();
+			} else {
+				$('#importGpxError').hide();
 			}
 		}
 
@@ -1813,6 +1838,8 @@ var Ui = ( function(w) {'use strict';
 
 			//export/ import
 			$('#exportRouteGpx').click(handleExportRouteClick);
+			$('#gpxUploadFiles').change(handleImportRouteSelection);
+			$('#gpxUploadFilesDelete').click(handleImportRouteRemove);
 
 			//user preferences
 			$('#savePrefsBtn').click(handleSaveUserPreferences);
@@ -1870,8 +1897,9 @@ var Ui = ( function(w) {'use strict';
 
 		Ui.prototype.showSearchingAtAccessibility = showSearchingAtAccessibility;
 		Ui.prototype.showAccessibilityError = showAccessibilityError;
-		
+
 		Ui.prototype.showExportRouteError = showExportRouteError;
+		Ui.prototype.showImportRouteError = showImportRouteError;
 
 		Ui.prototype.setUserPreferences = setUserPreferences;
 

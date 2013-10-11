@@ -262,7 +262,7 @@
 											<div id="gpxUploadFiles" class="fileupload fileupload-new" data-provides="fileupload">
 												<span class="btn btn-file"><span class="fileupload-new">Select file</span><span class="fileupload-exists">Change</span>
 													<input type="file">
-												</span><span class="fileupload-preview"></span><a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float:none">x</a>
+												</span><span class="fileupload-preview"></span><a href="#" id="gpxUploadFilesDelete" class="close fileupload-exists" data-dismiss="fileupload" style="float:none">x</a>
 											</div>
 										</form>
 									</div>
@@ -278,6 +278,7 @@
 											</div>
 										</form>
 									</div>
+									<div id="importGpxError" clss="alert alert-error">Unfortunately an error occured while uploading the route.</div>
 								</div>
 							</div>
 						</div>

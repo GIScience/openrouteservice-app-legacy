@@ -175,6 +175,10 @@ var Controller = ( function(w) {'use strict';
 
 			//update preferences
 			handleWaypointChanged(map.getWaypointsString());
+
+			//cannot be emmited by 'this', so let's use sth that is known inside the callback...
+			ui.emit('control:reverseGeocodeCompleted');
+			//TODO how can this be triggered? -> after that append 2nd waypoint from GPX route file
 		}
 
 		function reverseGeocodeFailure() {
@@ -522,9 +526,10 @@ var Controller = ( function(w) {'use strict';
 		 * add a search result (address, POI) as a waypoint to the current route
 		 * @param markerId: id of the marker to use as waypoint
 		 */
-		function handleUseAsWaypoint(atts) {
-			var id = atts.id;
-			var position = util.convertPositionStringToLonLat(atts.position);
+		function handleUseAsWaypoint(position) {
+			if ('string' == typeof position) {
+				position = util.convertPositionStringToLonLat(position);
+			}
 
 			//use the next unset waypoint for the new waypoint (append one if no unset wp exists) (some lines below)
 			var index = waypoint.getNextUnsetWaypoint();
@@ -532,17 +537,17 @@ var Controller = ( function(w) {'use strict';
 			var type;
 			if (index == 0) {
 				type = waypoint.type.START;
-			} else if (index >= waypoint.getNumWaypoints() - 1) {
-				type = waypoint.type.END;
-			} else {
+			} else if (index >= 0 && index < waypoint.getNumWaypoints() - 1) {
 				type = waypoint.type.VIA;
+			} else {
+				type = waypoint.type.END;
 			}
 
 			var addWp = -1;
 			if (index < 0) {
-				//no unset wayoint left -> add a new one (as VIA)
+				//no unset wayoint left -> add a new one (as END)
 				// waypoint.addWaypoint(); <- this is called by ui.AddWaypointAfter(...), not necessary here.
-				addWp = waypoint.getNumWaypoints() - 1;
+				addWp = waypoint.getNumWaypoints();
 				index = addWp;
 			}
 
@@ -611,11 +616,11 @@ var Controller = ( function(w) {'use strict';
 
 			results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
 
-			//use all-in-one-LineString to save the whole route in a single string 
+			//use all-in-one-LineString to save the whole route in a single string
 			var routeLineString = route.writeRouteToSingleLineString(results);
 			var routeString = map.writeRouteToString(routeLineString);
 			route.routeString = routeString;
-			
+
 			// each route instruction has a part of this lineString as geometry for this instruction
 			var routeLines = route.parseResultsToLineStrings(results, util.convertPointForMap);
 			var routePoints = route.parseResultsToCornerPoints(results, util.convertPointForMap);
@@ -738,12 +743,49 @@ var Controller = ( function(w) {'use strict';
 			if (routeString) {
 				//writing String to File seems not possible. We open a window with the content instead.
 				w = window.open('about:blank', '_blank', 'height=300,width=400');
-				w.document.write('<xmp>' + routeString + '</xmp>');				
+				w.document.write('<xmp>' + routeString + '</xmp>');
 			} else {
 				//error, route does not exist. Nothing can be exported
 				ui.showExportRouteError(true);
 			}
+		}
 
+		var wp2;
+		function handleUuploadRoute(file) {
+			ui.showImportRouteError(false);
+			if (file) {
+				if (!window.FileReader) {
+					// File APIs are not supported, e.g. IE
+					ui.showImportRouteError(true);
+				} else {
+					var r = new FileReader();
+					r.readAsText(file);
+
+					r.onload = function(e) {
+						var data = e.target.result;
+						//remove gpx: tags; Firefox cannot cope with that.
+						data = data.replace(/gpx:/g, '');
+						var wps = map.parseStringToWaypoints(data);
+
+						//add waypoints to route
+						if (wps && wps.length == 2) {
+							handleUseAsWaypoint(wps[0]);
+							wp2 = wps[1];
+							//the 2nd point cannot be appended immediately. we have to wait for the reverse geocoding request to be finished (and all other stuff executed in the callback function)
+						}
+					};
+				}
+			} else {
+				ui.showImportRouteError(true);
+			}
+		}
+
+		function uploadRouteTrigger2ndWaypoint() {
+			if (wp2 != null) {
+				handleUseAsWaypoint(wp2);
+				//prevent infinite loop
+				wp2 = null;
+			}
 		}
 
 		/* *********************************************************************
@@ -983,6 +1025,8 @@ var Controller = ( function(w) {'use strict';
 			ui.register('ui:analyzeAccessibility', handleAnalyzeAccessibility);
 
 			ui.register('ui:exportRouteGpx', handleExportRoute);
+			ui.register('ui:uploadRoute', handleUuploadRoute);
+			ui.register('control:reverseGeocodeCompleted', uploadRouteTrigger2ndWaypoint);
 
 			ui.register('ui:saveUserPreferences', updateUserPreferences);
 			ui.register('ui:openPermalinkRequest', handlePermalinkRequest);
