@@ -227,7 +227,7 @@
 											Permalink
 										</btn>
 									</div>
-									<div class="panel panelMedium">
+									<div class="panel panelMedium" id="accessibilityAnalysis">
 										<p>
 											Accessibility analysis
 										</p><span>Select minutes: </span>
@@ -242,44 +242,48 @@
 											An error occured during the accessibility analysis. Did you forget to set a start point?
 										</div>
 									</div>
-									<label><b>Export/ Import</b></label>
-									<div class="panel panelMedium">
-										<p>
-											Download of current route in GPX format
-										</p>
-										<btn class="btn" id="exportRouteGpx">
-											Download GPX
-										</btn>
-										<div class="alert alert-error" style="display:none" id="exportGpxError">
-											Unfortunately an error occured when downlodng the route.
+									<div id="exportImport">
+										<label><b>Export/ Import</b></label>
+										<div class="panel panelMedium">
+											<p>
+												Download of current route in GPX format
+											</p>
+											<btn class="btn" id="exportRouteGpx">
+												Download GPX
+											</btn>
+											<div class="alert alert-error" style="display:none" id="exportGpxError">
+												Unfortunately an error occured when downlodng the route.
+											</div>
+										</div>
+										<div class="panel panelMedium">
+											<p>
+												Upload a route from a GPX-file with re-calculation
+											</p>
+											<form class="fileUploadForm">
+												<div id="gpxUploadFiles" class="fileupload fileupload-new" data-provides="fileupload">
+													<span class="btn btn-file"><span class="fileupload-new">Select file</span><span class="fileupload-exists">Change</span>
+														<input type="file">
+													</span><span class="fileupload-preview"></span><a href="#" id="gpxUploadFilesDelete" class="close fileupload-exists" data-dismiss="fileupload" style="float:none">x</a>
+												</div>
+											</form>
+										</div>
+										<div class="panel panelMedium">
+											<p>
+												Upload of GPX-track for display on the map
+											</p>
+											<form class="fileUploadForm">
+												<div id="gpxUploadTrack" class="fileupload fileupload-new" data-provides="fileupload">
+													<span class="btn btn-file"><span class="fileupload-new">Select file</span><span class="fileupload-exists">Add</span>
+														<input type="file">
+													</span><span class="fileupload-preview"></span><a href="#" id="gpxUploadTrackDelete" class="close fileupload-exists" data-dismiss="fileupload" style="float:none">x</a>
+												</div>
+												<!-- <div id="trackList"></div> -->
+											</form>
+										</div>
+										<div id="importGpxError" class="alert alert-error" style="display:none">
+											Unfortunately an error occured while uploading the route.
 										</div>
 									</div>
-									<div class="panel panelMedium">
-										<p>
-											Upload a route from a GPX-file with re-calculation
-										</p>
-										<form class="fileUploadForm">
-											<div id="gpxUploadFiles" class="fileupload fileupload-new" data-provides="fileupload">
-												<span class="btn btn-file"><span class="fileupload-new">Select file</span><span class="fileupload-exists">Change</span>
-													<input type="file">
-												</span><span class="fileupload-preview"></span><a href="#" id="gpxUploadFilesDelete" class="close fileupload-exists" data-dismiss="fileupload" style="float:none">x</a>
-											</div>
-										</form>
-									</div>
-									<div class="panel panelMedium">
-										<p>
-											Upload of GPX-track for display on the map
-										</p>
-										<form class="fileUploadForm">
-											<div id="gpxUploadTrack" class="fileupload fileupload-new" data-provides="fileupload">
-												<span class="btn btn-file"><span class="fileupload-new">Select file</span><span class="fileupload-exists">Add</span>
-													<input type="file">
-												</span><span class="fileupload-preview"></span><a href="#" id="gpxUploadTrackDelete" class="close fileupload-exists" data-dismiss="fileupload" style="float:none">x</a>
-											</div>
-											<!-- <div id="trackList"></div> -->
-										</form>
-									</div>
-									<div id="importGpxError" class="alert alert-error" style="display:none">Unfortunately an error occured while uploading the route.</div>
 								</div>
 							</div>
 						</div>
@@ -418,10 +422,8 @@
 		<script type="text/javascript" src="js/namespaces.js"></script>
 		<script type="text/javascript" src="js/util.js"></script>
 		<script type="text/javascript" src="js/list.js"></script>
-
 		<script type="text/javascript" src="js/modules/Preferences.js"></script>
 		<script type="text/javascript" src="js/OpenRouteService.js"></script>
-
 		<script type="text/javascript" src="js/event.js"></script>
 		<script type="text/javascript" src="js/modules/Waypoint.js"></script>
 		<script type="text/javascript" src="js/modules/Geolocation.js"></script>
@@ -429,9 +431,9 @@
 		<script type="text/javascript" src="js/modules/SearchPoi.js"></script>
 		<script type="text/javascript" src="js/modules/Route.js"></script>
 		<script type="text/javascript" src="js/modules/AccessibilityAnalysis.js"></script>
-
+		<script type="text/javascript" src="js/ui/ui.js"></script>
+		<script type="text/javascript" src="js/ui/Versions.js"></script>
 		<script type="text/javascript" src="js/map.js"></script>
-		<script type="text/javascript" src="js/ui.js"></script>
 		<script type="text/javascript" src="js/control.js"></script>
 		<script type="text/javascript" src="js/ORS.OpenLayers.js"></script>
 

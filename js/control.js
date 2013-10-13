@@ -1,6 +1,6 @@
 var Controller = ( function(w) {'use strict';
 
-		var $ = w.jQuery, ui = w.Ui, waypoint = w.Waypoint, geolocator = w.Geolocator, searchAddress = w.SearchAddress, searchPoi = w.SearchPoi, route = w.Route, analyse = w.AccessibilityAnalysis, preferences = w.Preferences, openRouteService = w.OpenRouteService, Map = w.Map,
+		var $ = w.jQuery, ui = w.Ui, uiVersions = w.Versions, waypoint = w.Waypoint, geolocator = w.Geolocator, searchAddress = w.SearchAddress, searchPoi = w.SearchPoi, route = w.Route, analyse = w.AccessibilityAnalysis, preferences = w.Preferences, openRouteService = w.OpenRouteService, Map = w.Map,
 		//the map
 		map;
 
@@ -988,7 +988,10 @@ var Controller = ( function(w) {'use strict';
 			if (!preferences.areCookiesAVailable()) {
 				ui.showNewToOrsPopup();
 			}
-
+			
+			//hide or show Ui elements based on the version
+			uiVersions.applyVersion(preferences.version)
+			//in the user preferences popup, set appropriate element active
 			ui.setUserPreferences(preferences.version, preferences.language, preferences.routingLanguage, preferences.distanceUnit);
 		}
 
