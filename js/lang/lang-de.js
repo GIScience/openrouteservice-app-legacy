@@ -31,6 +31,7 @@ var lang_de = {
 		'routeSummary':  'Zusammenfassung',
 		'routeInstructions':  'Wegbeschreibung',
 		'routeLinkText' :  'Permalink zur aktuellen Route',
+		'permalinkButton' : 'Permalink',
 	
 	//Geolocation
 		'geolocationNotification' : 'Der Routenplaner versucht Ihren Standort zu bestimmen. Wenn Sie die Anfrage nicht best&auml;tigen, werden Sie in K&uuml;rze weitergeleitet.',
@@ -93,11 +94,15 @@ var lang_de = {
 		'invalidAvoidArea' : 'Bereiche, die sich selbst schneiden sind nicht erlaubt. Bitte entfernen bzw. korrigieren Sie diese Bereiche. Sonst kann keine Route berechnet werden.',
 	
 	//GPX Extras
+		'imExport' : 'Import/ Export',
 		'gpxDownloadError': 'Beim Herunterladen der Route ist leider ein Fehler aufgetreten.',
 		'gpxUploadError': 'Beim Upload der Route ist leider ein Fehler aufgetreten.',
 		'gpxDownloadText' :  'Aktuelle Route im GPX-Format herunterladen',
+		'gpxDownloadButton' : 'GPX herunterladen',
 		'gpxUploadRouteText' :  'GPX-Route aus Datei anzeigen und neuberechnen',
 		'gpxUploadTrackText' :  'GPX-Track aus Datei anzeigen', 
+		'selectFile' : 'Datei ausw&auml;hlen',
+		'changeFile' : '&Auml;ndern',
 	
 		//accessibility Analysis
 		'accessibilityAnalysis' : 'Erreichbarkeits-Analyse',

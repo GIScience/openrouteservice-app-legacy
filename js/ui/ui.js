@@ -92,8 +92,6 @@ var Ui = ( function(w) {'use strict';
 		* LANGUAGE-SPECIFIC
 		* *********************************************************************/
 
-		//TODO load text for all elements on the page with specific language
-
 		function showNewToOrsPopup() {
 			var label = new Element('label');
 			label.insert(preferences.translate('infoTextVersions'));
@@ -1629,59 +1627,6 @@ var Ui = ( function(w) {'use strict';
 		 * USER PREFERENCES
 		 * *********************************************************************/
 
-		function loadPreferencePopupData() {
-			//versions
-			var container = $('#extendedVersionPrefs');
-			for (var i = 0; i < list.version.length; i++) {
-				var optionElement = new Element('option', {
-					'value' : i
-				});
-				if (i == 0) {
-					optionElement.selected = true;
-				}
-				$(optionElement).html(preferences.translate(list.version[i]));
-				container.append(optionElement);
-			}
-			//languages
-			container = $('#languagePrefs');
-			for (var i = 0; i < list.languages.length; i++) {
-				var optionElement = new Element('option', {
-					'value' : i
-				});
-				if (i == 0) {
-					optionElement.selected = true;
-				}
-				$(optionElement).html(preferences.translate(list.languages[i]));
-				container.append(optionElement);
-			}
-
-			//routing languages
-			container = $('#routingLanguagePrefs');
-			for (var i = 0; i < list.routingLanguages.length; i++) {
-				var optionElement = new Element('option', {
-					'value' : i
-				});
-				if (i == 0) {
-					optionElement.selected = true;
-				}
-				$(optionElement).html(preferences.translate(list.routingLanguages[i]));
-				container.append(optionElement);
-			}
-
-			//distance units
-			container = $('#unitPrefs');
-			for (var i = 0; i < list.distanceUnitsPreferences.length; i++) {
-				var optionElement = new Element('option', {
-					'value' : i
-				});
-				if (i == 0) {
-					optionElement.selected = true;
-				}
-				$(optionElement).html(list.distanceUnitsInPopup[i]);
-				container.append(optionElement);
-			}
-		}
-
 		function handleSaveUserPreferences() {
 			var version = $('#extendedVersionPrefs').find(":selected").text();
 			var language = $('#languagePrefs').find(":selected").text();
@@ -1766,37 +1711,6 @@ var Ui = ( function(w) {'use strict';
 		* CLASS-SPECIFIC
 		* *********************************************************************/
 
-		/**
-		 * fill the autocompletion dropdown menu for the POI search with all available POI categories
-		 */
-		function loadDynamicData() {
-			var categoriesToDisplay = [];
-			var dummyDiv = new Element('div');
-			var typeCategories = $A(list.poiTypes.keys()).each(function(poiType) {
-				var detailedTypes = list.poiTypes.get(poiType);
-
-				//trick to decode HTML signs
-				dummyDiv.innerHTML = preferences.translate(poiType);
-				var decoded = dummyDiv.firstChild.nodeValue;
-				categoriesToDisplay.push(decoded);
-
-				$A(detailedTypes).each(function(detailedType) {
-					//trick to decode HTML signs
-					dummyDiv.innerHTML = preferences.translate(detailedType);
-					var decoded = dummyDiv.firstChild.nodeValue;
-					categoriesToDisplay.push(decoded);
-				})
-			})
-			//convert the array to required string-representation
-			var dataSource = categoriesToDisplay.toString().replace(/,/g, '","');
-			//enclose all values with ""
-			dataSource = '["' + dataSource + '"]';
-
-			$('#fnct_searchPoi').attr('data-source', dataSource);
-
-			loadPreferencePopupData();
-		}
-
 		function debug() {
 			console.log(w.Preferences)
 			theInterface.emit('ui:startDebug');
@@ -1808,8 +1722,6 @@ var Ui = ( function(w) {'use strict';
 		 * *********************************************************************/
 
 		function Ui() {
-			loadDynamicData();
-
 			$('#debug').click(debug);
 
 			//switch views

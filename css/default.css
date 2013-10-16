@@ -56,6 +56,11 @@ div.olControlScaleLine {
 /**
  * CSS for non-map elements
  */
+/* labels for main tabs (plan route, search)*/
+.tabLabels {
+	float: right;
+	font-weight: bold;
+}
 /* Header in Gui.Tool elements */
 .toolHeading {
 	font-size: 130%;
@@ -282,6 +287,10 @@ div.olControlScaleLine {
 	background-repeat: no-repeat;
 	white-space: nowrap;
 }
+/*preferences popup*/
+#sitePrefsModal label {
+	float:left;
+}
 
 .logo {
 	height: 30px;
@@ -396,8 +405,15 @@ button.routeOptionsButton > img {
 
 /* checkbox for POI search to mark all POIs near the route */
 #poiNearRoute {
-	margin-left: 5px;
+	/*margin-left: 5px;*/
 	vertical-align: text-top;
+	width : 100%;
+}
+#fnct_searchPoi_nearRoute {
+	margin : 0 0 0 0px;
+}
+.poisNearRoute {
+	float : left;
 }
 /* textfield to define the distance for "next to route" */
 #fnct_searchPoi_distance {
@@ -672,5 +688,5 @@ img {
 }
 
 #exportGpxError {
-	margin-top : 5px;
+	margin-top: 5px;
 }

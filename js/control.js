@@ -1,6 +1,6 @@
 var Controller = ( function(w) {'use strict';
 
-		var $ = w.jQuery, ui = w.Ui, uiVersions = w.Versions, waypoint = w.Waypoint, geolocator = w.Geolocator, searchAddress = w.SearchAddress, searchPoi = w.SearchPoi, route = w.Route, analyse = w.AccessibilityAnalysis, preferences = w.Preferences, openRouteService = w.OpenRouteService, Map = w.Map,
+		var $ = w.jQuery, ui = w.Ui, uiVersions = w.Versions, uiLanguages = w.Languages, waypoint = w.Waypoint, geolocator = w.Geolocator, searchAddress = w.SearchAddress, searchPoi = w.SearchPoi, route = w.Route, analyse = w.AccessibilityAnalysis, preferences = w.Preferences, openRouteService = w.OpenRouteService, Map = w.Map,
 		//the map
 		map;
 
@@ -820,7 +820,7 @@ var Controller = ( function(w) {'use strict';
 				ui.showImportRouteError(true);
 			}
 		}
-		
+
 		function handleRemoveTrack() {
 			map.clearMarkers(map.TRACK);
 		}
@@ -893,10 +893,7 @@ var Controller = ( function(w) {'use strict';
 		 * update the given preference parameter in the cookies. If no cookies exist, write new ones with current parameters
 		 */
 		function updateCookies(key, value) {
-			if (preferences.areCookiesAVailable()) {
-				//there are cookies available, only update the changed information
-				preferences.updateCookies(key, value);
-			} else {
+			if (!preferences.areCookiesAVailable()) {
 				//no cookies found so far, we need to write all information
 				var lon = map.theMap.getCenter().lon;
 				var lat = map.theMap.getCenter().lat;
@@ -905,7 +902,11 @@ var Controller = ( function(w) {'use strict';
 
 				preferences.writeMapCookies(lon, lat, zoom, layer);
 				preferences.writePrefsCookies();
+
+				//then write the requested data...
 			}
+			//there are cookies available (by now), only update the changed information
+			preferences.updateCookies(key, value);
 		}
 
 		/**
@@ -988,9 +989,20 @@ var Controller = ( function(w) {'use strict';
 			if (!preferences.areCookiesAVailable()) {
 				ui.showNewToOrsPopup();
 			}
-			
+		}
+
+		function loadDynamicUiData() {
+			//load Ui elements with selected language
+			uiLanguages.applyLanguage();
+
+			//load dropdown menus, etc. in the correct language
+			uiLanguages.loadPoiTypeData();
+			uiLanguages.loadPreferencePopupData();
+			uiLanguages.loadPoiDistanceUnitData();
+
 			//hide or show Ui elements based on the version
 			uiVersions.applyVersion(preferences.version)
+
 			//in the user preferences popup, set appropriate element active
 			ui.setUserPreferences(preferences.version, preferences.language, preferences.routingLanguage, preferences.distanceUnit);
 		}
@@ -1074,6 +1086,7 @@ var Controller = ( function(w) {'use strict';
 			ui.register('ui:openPermalinkRequest', handlePermalinkRequest);
 
 			initializeOrs();
+			loadDynamicUiData();
 		}
 
 

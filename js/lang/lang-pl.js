@@ -32,6 +32,7 @@ var lang_pl = {
 	'routeSummary' : 'Podsumowanie',
 	'routeInstructions' : 'Instrukcje do trasy',
 	'routeLinkText' : 'Trwa&#x0142;y odno&#x015B;nik do bie&#x017C;&#x0105;cej trasy',
+	'permalinkButton' : '',
 
 	//Geolocation
 	'geolocationNotification' : 'Serwis pr&oacute;buje znale&#x017A;&#x0107; twoje po&#x0142;o&#x017C;enie. Je&#x015B;li nie chcesz zaakceptowa&#x0107; tego zapytania, za chwil&#x0119; zostaniesz przekierowany.',
@@ -94,11 +95,15 @@ var lang_pl = {
 	'invalidAvoidArea' : '',
 
 	//GPX Extras
+	'imExport' : '',
 	'gpxDownloadError' : 'Niestety, podczas pobierania trasy pojawi&#x0142; si&#x0119; b&#x0142;&#x0105;d.',
 	'gpxUploadError' : 'Niestety, podczas wysy&#x0142;ania trasy pojawi&#x0142; si&#x0119; b&#x0142;&#x0105;d.',
 	'gpxDownloadText' : 'Pobierz bie&#x017C;&#x0105;c&#x0105; tras&#x0119; w formacie GPX',
+	'gpxDownloadButton' : '',
 	'gpxUploadRouteText' : 'Wy&#x015B;lij tras&#x0119; z pliku GPX i przelicz j&#x0105;',
 	'gpxUploadTrackText' : 'Wy&#x015B;lij tras&#x0119; z pliku GPX i wy&#x015B;wietl j&#x0105; na mapie',
+	'selectFile' : '',
+	'changeFile' : '',
 
 	//Accessibility Analysis
 	'accessibilityAnalysis' : 'Analiza dost&#x0119;pno&#x015B;ci',

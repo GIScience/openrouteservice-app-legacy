@@ -31,7 +31,7 @@ var Preferences = (function(w) {'use strict';
 		this.routingLanguage = 'en';
 		this.distanceUnit = 'm';
 		this.version = list.version['extendedVersion'];
-		this.dictionary = window['lang_' + 'en']; //TODO if multi-language site is available: this.dictionary = window['lang_' + this.language];
+		this.dictionary = window['lang_' + this.language];
 
 		//set permalink links
 		permaInfo[this.languageIdx] = this.language;
@@ -81,7 +81,7 @@ var Preferences = (function(w) {'use strict';
 
 	function loadPreferencesOnStartup() {
 		this.language = this.setLanguage();
-		this.dictionary = window['lang_' + 'en']; //TODO if multi-language site is available: this.dictionary = window['lang_' + this.language];
+		this.dictionary = window['lang_' + this.language];
 		this.routingLanguage = this.setRoutingLanguage();
 		this.distanceUnit = this.setDistanceUnit();
 		this.version = this.setVersion();
@@ -433,7 +433,7 @@ var Preferences = (function(w) {'use strict';
 			this.distanceUnit = key == this.distanceUnitIdx ? value : this.distanceUnit;
 			this.version = key == this.versionIdx ? value : this.version;
 			
-			this.dictionary = window['lang_' + 'en']; //TODO if multi-language site is available: this.dictionary = window['lang_' + this.language];
+			this.dictionary = window['lang_' + this.language];
 		}
 	}
 
