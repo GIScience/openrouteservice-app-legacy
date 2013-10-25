@@ -311,12 +311,16 @@ var Controller = ( function(w) {'use strict';
 		 * @return {[type]}          [description]
 		 */
 		function handleGeolocateSuccess(position) {
-			console.log("geolocation success")
-			//TODO handleGeolocateSuccess: implement/ test
 			console.log(position.coords);
-			var pos = new OpenLayers.LonLat(position.coords.latitude, position.coords.longitude);
-			var pos = util.convertPointForMap(pos);
+			var pos = new OpenLayers.LonLat(position.coords.longitude, position.coords.latitude);
+			pos = util.convertPointForMap(pos);
 			map.theMap.moveTo(pos);
+			
+			//add marker at current position
+			//TODO
+			
+			//show current position as address in the Ui pane
+			//TODO
 			geolocator.reverseGeolocate(position, handleReverseGeolocationSuccess, handleReverseGeolocationFailure, preferences.language);
 		}
 
@@ -940,9 +944,17 @@ var Controller = ( function(w) {'use strict';
 			var avoidAreas = getVars[preferences.getPrefName(preferences.avoidAreasIdx)];
 
 			pos = preferences.loadMapPosition(pos);
-			if (pos) {
+			if (pos && pos != 'null') {
 				pos = util.convertPointForMap(pos);
 				map.theMap.setCenter(pos);
+			} else {
+				//position not set, use geolocation feature to determine position
+				var locationSuccess = function(position) {
+					var pos = new OpenLayers.LonLat(position.coords.longitude, position.coords.latitude);
+					pos = util.convertPointForMap(pos);
+					map.theMap.moveTo(pos);
+				};
+				geolocator.locate(locationSuccess, null, null);
 			}
 			zoom = preferences.loadMapZoom(zoom);
 			if (zoom) {
