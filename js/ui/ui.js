@@ -1,5 +1,4 @@
 var Ui = ( function(w) {'use strict';
-
 		var $ = w.jQuery,
 		//Ui interface
 		theInterface,
@@ -626,10 +625,7 @@ var Ui = ( function(w) {'use strict';
 			var wpElement = $(e.currentTarget).parent();
 			var index = wpElement.attr('id');
 
-			console.log(wpElement);
-
 			var addrElement = wpElement.get(0).querySelector('.address');
-			console.log(addrElement)
 			var featureId = addrElement.getAttribute('id');
 			var layer = addrElement.getAttribute('data-layer');
 
@@ -784,7 +780,8 @@ var Ui = ( function(w) {'use strict';
 
 		function showGeolocationSearching(showSearching) {
 			if (showSearching) {
-				$('#fnct_geolocation').addClass('searching'); //XXX
+				$('#fnct_geolocation').addClass('searching');
+				//XXX
 			} else {
 				$('#fnct_geolocation').removeClass('searching');
 			}
@@ -1774,9 +1771,8 @@ var Ui = ( function(w) {'use strict';
 		 * *********************************************************************/
 
 		function debug() {
-			console.log(w.Preferences)
+			console.log()
 			theInterface.emit('ui:startDebug');
-
 		}
 
 		/* *********************************************************************
@@ -1784,6 +1780,8 @@ var Ui = ( function(w) {'use strict';
 		 * *********************************************************************/
 
 		function Ui() {
+			//to use debug info, remove the .hide() statement and fill function debug() above
+			$('#debug').hide();
 			$('#debug').click(debug);
 
 			//switch views
@@ -1871,7 +1869,7 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.showCurrentLocation = showCurrentLocation;
 		Ui.prototype.showGeolocationSearching = showGeolocationSearching;
 		Ui.prototype.showGeolocationError = showGeolocationError;
-		
+
 		Ui.prototype.getRoutePreferences = getRoutePreferences;
 		Ui.prototype.setRouteIsPresent = setRouteIsPresent;
 		Ui.prototype.searchPoiChangeToSearchingState = searchPoiChangeToSearchingState;

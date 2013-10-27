@@ -1,4 +1,4 @@
-var Preferences = (function(w) {'use strict';
+var Preferences = ( function(w) {'use strict';
 
 	//are there any cookies of thie page yet?
 	var cookiesAvailable = false;
@@ -100,12 +100,9 @@ var Preferences = (function(w) {'use strict';
 	}
 
 	function setLanguage() {
-		console.log("reading language...")
-
 		//read from cookie
 		var lang = readCookie(prefNames[this.languageIdx]);
-		console.log("language determined by cookie: " + lang);
-
+		
 		//if no cookie is available, use the browser's language
 		if (!lang) {
 			var userLang = (navigator.language) ? navigator.language : navigator.userLanguage;
@@ -116,7 +113,6 @@ var Preferences = (function(w) {'use strict';
 				//everything else is set to English
 				lang = 'en';
 			}
-			console.log("language determined by browsers lang: " + lang);
 		}
 
 		if (list.languages.indexOf(lang) == -1) {
@@ -128,16 +124,12 @@ var Preferences = (function(w) {'use strict';
 	}
 
 	function setRoutingLanguage() {
-		console.log("reading routing language...")
-
 		//read from cookie
 		var lang = readCookie(prefNames[this.routingLanguageIdx]);
-		console.log("routing language determined by cookie: " + lang);
-
+		
 		//if no cookie is available, use the language of the ORS site
 		if (!lang) {
 			var lang = this.language;
-			console.log("language determined by site lang: " + lang);
 		}
 
 		if (list.routingLanguages.indexOf(lang) == -1) {
@@ -148,31 +140,23 @@ var Preferences = (function(w) {'use strict';
 	}
 
 	function setDistanceUnit() {
-		console.log("reading distance unit...")
-
 		//read from cookie
 		var distUnit = readCookie(prefNames[this.distanceUnitIdx]);
-		console.log("distanceUnit determined by cookie: " + distUnit);
 
 		//if no cookie is available, use default
 		if (!distUnit) {
 			distUnit = list.distanceUnitsPreferences[0];
-			console.log("distanceUnit set automatically: " + distUnit);
 		}
 		return distUnit;
 	}
 
 	function setVersion() {
-		console.log("reading version...")
-
 		//read from cookie
 		var siteVersion = readCookie(prefNames[this.versionIdx]);
-		console.log("version determined by cookie: " + siteVersion);
-
+		
 		//if no cookie is available, use default
 		if (!siteVersion) {
 			siteVersion = list.version[0];
-			console.log("version set automatically: " + siteVersion);
 		}
 		return siteVersion;
 	}
@@ -181,15 +165,9 @@ var Preferences = (function(w) {'use strict';
 	 * @param pos: extracted from the GET variables in readGetVars(); array containing lon and lat coordinates
 	 */
 	function loadMapPosition(pos) {
-		console.log("reading map positon...")
-
 		if (pos && pos.length == 2) {
 			//use GET variables (permalink)
 			pos = new OpenLayers.LonLat(pos[0], pos[1]);
-			console.log("pos determined by GET: " + pos);
-		} else {
-			//use Geolocation feature
-			//TODO
 		}
 		if (!pos) {
 			//if GET is not set and geolocation not available use cookie
@@ -198,10 +176,9 @@ var Preferences = (function(w) {'use strict';
 			if (pos != "null") {
 				var pos = pos.split(',');
 				pos = new OpenLayers.LonLat(pos[0], pos[1]);
-				console.log("pos determined by cookie: " + pos);
 			}
 		}
-		//if neither GET nor cookie have been set -> use default (Heidelberg) which is automatically set when initializing the map
+		//if neither GET nor cookie have been set -> use Geolocation (called in control.js) or default (Heidelberg) which is automatically set when initializing the map
 
 		//save this location in the permaInfo array
 		permaInfo[this.positionIdx] = escape(pos.lon + ',' + pos.lat);
@@ -471,7 +448,6 @@ var Preferences = (function(w) {'use strict';
 		window.location.search = query;
 	}
 
-
 	Preferences.prototype.getPrefName = getPrefName;
 
 	Preferences.prototype.translate = translate;
@@ -503,6 +479,5 @@ var Preferences = (function(w) {'use strict';
 	Preferences.prototype.openPermalink = openPermalink;
 	Preferences.prototype.reloadWithPerma = reloadWithPerma;
 	
-
 	return new Preferences();
-})(window);
+}(window));

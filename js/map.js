@@ -733,7 +733,6 @@ var Map = ( function() {"use strict";
 				layer.addFeatures([feature]);
 				this.theMap.moveTo(position, 14);
 			}
-			console.log(feature)
 			return feature;
 		}
 
@@ -1052,7 +1051,6 @@ var Map = ( function() {"use strict";
 
 			var route;
 			if (singleRouteLineString) {
-				// console.log(layer.features)
 				var ft = new OpenLayers.Feature.Vector(singleRouteLineString)
 				route = formatter.write([ft]);
 				//insert line breaks for nicely readable code

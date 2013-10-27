@@ -1004,9 +1004,7 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		function showDebugInfo() {
-			console.log(waypoint.getNumWaypoints());
-			console.log(waypoint.getNextUnsetWaypoint());
-			console.log(waypoint.getDebugInfo())
+			console.log();
 		}
 
 		/* *********************************************************************

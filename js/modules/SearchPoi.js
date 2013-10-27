@@ -18,9 +18,6 @@ var SearchPoi = ( function(window) {"use strict";
 		 * @param  {Function} callback Callback which is called after the results are returned from Nominatim
 		 */
 		function find(searchQuery, refPoint, maxDist, distanceUnit, successCallback, failureCallback, language) {
-			console.log(searchQuery);
-			console.log(refPoint)
-			
 			maxDist = maxDist > 5000 ? 5000 : maxDist;
 			distanceUnit = distanceUnit.toUpperCase();
 			
