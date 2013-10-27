@@ -178,7 +178,6 @@ var Controller = ( function(w) {'use strict';
 
 			//cannot be emmited by 'this', so let's use sth that is known inside the callback...
 			ui.emit('control:reverseGeocodeCompleted');
-			//TODO how can this be triggered? -> after that append 2nd waypoint from GPX route file
 		}
 
 		function reverseGeocodeFailure() {
@@ -302,6 +301,8 @@ var Controller = ( function(w) {'use strict';
 		 * *********************************************************************/
 
 		function handleGeolocationRequest() {
+			ui.showGeolocationSearching(true);
+			ui.showGeolocationError(false);
 			geolocator.locate(handleGeolocateSuccess, handleGeolocateError, handleGeolocateNoSupport, preferences.language);
 		}
 
@@ -311,55 +312,38 @@ var Controller = ( function(w) {'use strict';
 		 * @return {[type]}          [description]
 		 */
 		function handleGeolocateSuccess(position) {
-			console.log(position.coords);
 			var pos = new OpenLayers.LonLat(position.coords.longitude, position.coords.latitude);
-			pos = util.convertPointForMap(pos);
-			map.theMap.moveTo(pos);
-			
+
 			//add marker at current position
-			//TODO
-			
+			var feature = map.addGeolocationResultMarker(pos);
+
 			//show current position as address in the Ui pane
-			//TODO
-			geolocator.reverseGeolocate(position, handleReverseGeolocationSuccess, handleReverseGeolocationFailure, preferences.language);
+			geolocator.reverseGeolocate(pos, handleReverseGeolocationSuccess, handleGeolocateError, preferences.language, null, null, feature);
 		}
 
 		/**
-		 * [handleGeolocateError description]
-		 * @param  {[type]} error [description]
-		 * @return {[type]}       [description]
+		 * runtime error during geolocation 
 		 */
-		function handleGeolocateError(error) {
-			switch (error.code) {
-				case error.UNKNOWN_ERROR:
-					ui.stopGeolocation('The location acquisition process failed');
-					break;
-				case error.PERMISSION_DENIED:
-					ui.stopGeolocation();
-					break;
-				case error.POSITION_UNAVAILABLE:
-					ui.stopGeolocation('The position of the device could not be determined. One or more of the location providers used in the location acquisition process reported an internal error that caused the process to fail entirely.');
-					break;
-				case error.TIMEOUT:
-					console.log("timeout in geoloc.")
-					ui.stopGeolocation('The location acquisition timed out');
-					break;
-			}
+		function handleGeolocateError() {
+			ui.showGeolocationError(true, false);
+			ui.showGeolocationSearching(false);
 		}
 
 		/**
-		 * [handleGeolocateNoSupport description]
+		 * geolocation is not supported by the user's browser
 		 */
 		function handleGeolocateNoSupport() {
-			ui.stopGeolocation('Geolocation API is not supported by your browser.');
+			ui.showGeolocationError(true, true);
+			ui.showGeolocationSearching(false);
 		}
 
-		function handleReverseGeolocationSuccess(result) {
-			ui.showCurrentLocation(result);
-		}
-
-		function handleReverseGeolocationFailure() {
-			ui.stopGeolocation("Your current location could not be determined.");
+		/**
+		 * show the reverse-geocoded position as address in the Ui;
+		 * parameters nn0 and nn1 are not relevant here (only used in waypoint geocoding)
+		 */
+		function handleReverseGeolocationSuccess(result, nn0, nn1, feature) {
+			ui.showGeolocationSearching(false);
+			ui.showCurrentLocation(result, feature.id, map.GEOLOCATION, feature.geometry);
 		}
 
 		/* *********************************************************************

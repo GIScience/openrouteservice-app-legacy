@@ -89,8 +89,8 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/* *********************************************************************
-		* LANGUAGE-SPECIFIC
-		* *********************************************************************/
+		 * LANGUAGE-SPECIFIC
+		 * *********************************************************************/
 
 		function showNewToOrsPopup() {
 			var label = new Element('label');
@@ -111,7 +111,10 @@ var Ui = ( function(w) {'use strict';
 
 			//if parent has class even or odd (== belongs to route instructions), only use class active, no highlight!
 			var parentClass = element.parent().attr('class');
-			var isRouteInstruction = (parentClass.indexOf('even') >= 0) || (parentClass.indexOf('odd') >= 0);
+			var isRouteInstruction = false;
+			if (parentClass) {
+				isRouteInstruction = (parentClass.indexOf('even') >= 0) || (parentClass.indexOf('odd') >= 0);
+			}
 
 			if (isRouteInstruction) {
 				element.get(0).addClassName('active');
@@ -623,7 +626,10 @@ var Ui = ( function(w) {'use strict';
 			var wpElement = $(e.currentTarget).parent();
 			var index = wpElement.attr('id');
 
+			console.log(wpElement);
+
 			var addrElement = wpElement.get(0).querySelector('.address');
+			console.log(addrElement)
 			var featureId = addrElement.getAttribute('id');
 			var layer = addrElement.getAttribute('data-layer');
 
@@ -741,8 +747,63 @@ var Ui = ( function(w) {'use strict';
 			theInterface.emit('ui:geolocationRequest');
 		}
 
-		function showCurrentLocation() {
-			//TODO implement
+		function showCurrentLocation(request, featureId, layername, point) {
+			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
+			var results = request.responseXML ? request.responseXML : util.parseStringToDOM(request.responseText);
+
+			var resultContainer = $('#geolocationResult');
+			resultContainer.empty();
+
+			var addressResult = util.getElementsByTagNameNS(results, namespaces.xls, 'Address');
+			addressResult = addressResult ? addressResult[0] : null;
+			var address = util.parseAddress(addressResult);
+
+			//use as waypoint button
+			var useAsWaypointButton = new Element('span', {
+				'class' : 'clickable useAsWaypoint',
+				'title' : 'use as waypoint',
+				'id' : featureId,
+				'data-position' : point.x + ' ' + point.y,
+				'data-layer' : layername
+			});
+			address.insert(useAsWaypointButton);
+
+			//set data-attributes
+			address.setAttribute('data-layer', layername);
+			address.setAttribute('id', featureId);
+			address.setAttribute('data-position', point.x + ' ' + point.y);
+
+			resultContainer.append(address);
+
+			//event handling
+			$('.address').mouseover(handleMouseOverElement);
+			$('.address').mouseout(handleMouseOutElement);
+			$('.address').click(handleSearchResultClick);
+			$('.useAsWaypoint').click(handleUseAsWaypoint);
+		}
+
+		function showGeolocationSearching(showSearching) {
+			if (showSearching) {
+				$('#fnct_geolocation').addClass('searching'); //XXX
+			} else {
+				$('#fnct_geolocation').removeClass('searching');
+			}
+		}
+
+		function showGeolocationError(showError, notSupportedError) {
+			var el = $('#geolocationError');
+			if (showError) {
+				if (notSupportedError) {
+					//show error: geolocation is not supported
+					el.html(p.translate('geolocationNotSupported'));
+				} else {
+					//show regular runtime error
+					el.html(p.translate('geolocationRuntimeError'));
+				}
+				el.show();
+			} else {
+				el.hide();
+			}
 		}
 
 		function stopGeolocation(text) {
@@ -1594,7 +1655,7 @@ var Ui = ( function(w) {'use strict';
 			//just remove the erorr message if visible
 			showImportRouteError(false);
 		}
-		
+
 		function showImportRouteError(showError) {
 			if (showError) {
 				$('#importGpxError').show();
@@ -1602,7 +1663,7 @@ var Ui = ( function(w) {'use strict';
 				$('#importGpxError').hide();
 			}
 		}
-		
+
 		function handleImportTrackSelection() {
 			var file;
 			var fileInput = $$('#gpxUploadTrack input[type="file"]')[0];
@@ -1614,10 +1675,11 @@ var Ui = ( function(w) {'use strict';
 			}
 
 			if (file) {
-				theInterface.emit('ui:uploadTrack', file); //TODO to support multiple GPX tracks, use data-attributes containing the OL-Feature-Id of the element (see search/waypoints)
+				theInterface.emit('ui:uploadTrack', file);
+				//TODO to support multiple GPX tracks, use data-attributes containing the OL-Feature-Id of the element (see search/waypoints)
 			}
 		}
-		
+
 		function handleImportTrackRemove() {
 			//remove the track from the map
 			theInterface.emit('ui:removeTrack');
@@ -1708,8 +1770,8 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/* *********************************************************************
-		* CLASS-SPECIFIC
-		* *********************************************************************/
+		 * CLASS-SPECIFIC
+		 * *********************************************************************/
 
 		function debug() {
 			console.log(w.Preferences)
@@ -1807,8 +1869,9 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.showSearchAddressError = showSearchAddressError;
 
 		Ui.prototype.showCurrentLocation = showCurrentLocation;
-		Ui.prototype.stopGeolocation = stopGeolocation;
-
+		Ui.prototype.showGeolocationSearching = showGeolocationSearching;
+		Ui.prototype.showGeolocationError = showGeolocationError;
+		
 		Ui.prototype.getRoutePreferences = getRoutePreferences;
 		Ui.prototype.setRouteIsPresent = setRouteIsPresent;
 		Ui.prototype.searchPoiChangeToSearchingState = searchPoiChangeToSearchingState;

@@ -120,8 +120,7 @@ div.olControlScaleLine {
 	padding-left: 3px;
 }
 .searching {
-	background: url(../img/ajax-loader-white.gif) no-repeat 97% 50%;
-	background-color: rgb(255,127,127);
+	background: url(../img/ajax-loader-transp.gif) no-repeat 97% 50%;
 }
 .searchingBlue {
 	background: url(../img/ajax-loader-blue.gif) no-repeat 95% 50%;

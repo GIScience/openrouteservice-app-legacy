@@ -86,6 +86,7 @@ util = ( function() {'use strict';
 					return element.getElementsByTagName(nsTag + ':' + tagName);
 				}
 			},
+			
 			parseAddress : function(xmlAddress) {
 				if (!xmlAddress) {
 					return;

@@ -14,12 +14,9 @@ var Geolocator = ( function(w) {"use strict";
 		 * @param {Object} locationError used to view an error message on the UI
 		 */
 		function locate(locationSuccess, locationError, locationNotSupported) {
-			console.log("in geolocation.locate()")
 			if (w.navigator.geolocation) {
-				console.log("locating...")
 				w.navigator.geolocation.getCurrentPosition(locationSuccess, locationError);
 			} else {
-				console.log("geoloc. not supported")
 				locationNotSupported();
 			}
 		}

@@ -28,8 +28,9 @@ var Map = ( function() {"use strict";
 			this.ROUTE_POINTS = 'routePoints';
 			this.ROUTE_INSTRUCTIONS = 'routeInstructions';
 			this.GEOLOCATION = 'Geolocation';
+			this.SEARCH = 'Address Search';
 			this.POI = 'poi';
-			this.SEARCH = 'searchResults';
+			this.GEOLOCATION = 'searchResults';
 			this.AVOID = 'avoidAreas';
 			this.TRACK = 'track';
 			this.ACCESSIBILITY = 'accessiblity';
@@ -210,10 +211,10 @@ var Map = ( function() {"use strict";
 			});
 
 			//Geolocation
-			//TODO why an extra layer? can we use this.SEARCH?
-			// var layerGeolocation = new OpenLayers.Layer.Markers(this.GEOLOCATION, {
-			// displayInLayerSwitcher : false
-			// });
+			var layerGeolocation = new OpenLayers.Layer.Vector(this.GEOLOCATION, {
+				styleMap : searchStyleMap,
+				displayInLayerSwitcher : false
+			});
 
 			//for default style
 			var poiTemplate = {
@@ -283,7 +284,7 @@ var Map = ( function() {"use strict";
 			layerAccessibility.redraw(true);
 
 			//define order
-			this.theMap.addLayers([layerAccessibility, layerRouteLines, layerTrack, layerSearch, layerPoi, layerRoutePoints, layerAvoid]);
+			this.theMap.addLayers([layerAccessibility, layerRouteLines, layerTrack, layerGeolocation, layerSearch, layerPoi, layerRoutePoints, layerAvoid]);
 
 			/* *********************************************************************
 			 * MAP CONTROLS
@@ -309,7 +310,7 @@ var Map = ( function() {"use strict";
 			this.theMap.addControl(new OpenLayers.Control.Permalink());
 			this.theMap.addControl(new OpenLayers.Control.Attribution());
 
-			this.selectMarker = new OpenLayers.Control.SelectFeature([layerSearch, layerRoutePoints, layerPoi, layerRouteLines], {
+			this.selectMarker = new OpenLayers.Control.SelectFeature([layerSearch, layerGeolocation, layerRoutePoints, layerPoi, layerRouteLines], {
 				hover : true
 			});
 			//highlighting of the markers's DOM representation (address text) on mouseover
@@ -655,10 +656,6 @@ var Map = ( function() {"use strict";
 				layerWaypoints.addFeatures([newFeature]);
 				return newFeature.id;
 			}
-
-			// console.log("buh!")
-			// //TODO update preferences: waypoints
-			// self.emit('map:waypointChanged', getWaypointsString());
 		}
 
 		/**
@@ -675,10 +672,6 @@ var Map = ( function() {"use strict";
 			});
 			layerWaypoints.addFeatures([newFeature]);
 			return newFeature.id;
-
-			// console.log("buh!")
-			// //TODO update preferences: waypoints
-			// self.emit('map:waypointChanged', getWaypointsString());
 		}
 
 		function setWaypointType(featureId, type) {
@@ -716,6 +709,32 @@ var Map = ( function() {"use strict";
 			//slice away the last separator ','
 			wpString = wpString.substring(0, wpString.length - 3);
 			return wpString;
+		}
+
+		/*
+		 * GEOLOCATION
+		 */
+
+		function addGeolocationResultMarker(position) {
+			var layer = this.theMap.getLayersByName(this.GEOLOCATION)[0];
+			layer.removeAllFeatures();
+
+			//convert corrdinates of marker
+			var feature = null;
+			if (position) {
+				position = util.convertPointForMap(position);
+				var point = new OpenLayers.Geometry.Point(position.lon, position.lat);
+
+				feature = new OpenLayers.Feature.Vector(point, {
+					icon : Ui.markerIcons.unset[0],
+					iconEm : Ui.markerIcons.unset[1],
+				});
+
+				layer.addFeatures([feature]);
+				this.theMap.moveTo(position, 14);
+			}
+			console.log(feature)
+			return feature;
 		}
 
 		/*
@@ -1021,12 +1040,12 @@ var Map = ( function() {"use strict";
 		}
 
 		/*
-		 * IMPORT / EXPORT
-		 */
+		* IMPORT / EXPORT
+		*/
 
 		/**
 		 * generates a GPX String based on the route
- 		 * @param {Object} singleRouteLineString: current route as a single OL.Gemoetry.LineString
+		 * @param {Object} singleRouteLineString: current route as a single OL.Gemoetry.LineString
 		 */
 		function writeRouteToString(singleRouteLineString) {
 			var formatter = new OpenLayers.Format.GPX();
@@ -1045,8 +1064,8 @@ var Map = ( function() {"use strict";
 
 		/**
 		 * Based on the String with GPX information two waypoints - the start and end of the GPX track - are extracted
- 		 * @param {Object} routeString: String with GPX track
- 		 * @return: array of two waypoints of OL.LonLat or null if no adequate data available
+		 * @param {Object} routeString: String with GPX track
+		 * @return: array of two waypoints of OL.LonLat or null if no adequate data available
 		 */
 		function parseStringToWaypoints(routeString) {
 			var formatter = new OpenLayers.Format.GPX();
@@ -1068,9 +1087,9 @@ var Map = ( function() {"use strict";
 		}
 
 		/**
-		 * Based on the String with GPX information a track (an OL.Geometry.LineString object) is extracted 
- 		 * @param {Object} trackString: String with GPX track
- 		 * @return array of OL.FeatureVectors (usually only one) containing the track points
+		 * Based on the String with GPX information a track (an OL.Geometry.LineString object) is extracted
+		 * @param {Object} trackString: String with GPX track
+		 * @return array of OL.FeatureVectors (usually only one) containing the track points
 		 */
 		function parseStringToTrack(trackString) {
 			var formatter = new OpenLayers.Format.GPX();
@@ -1090,7 +1109,7 @@ var Map = ( function() {"use strict";
 
 		/**
 		 * add the given track features to the map and zoom to all tracks
- 		 * @param {Object} trackFeatures: array of OL.FeatureVectors (usually only one) with track points
+		 * @param {Object} trackFeatures: array of OL.FeatureVectors (usually only one) with track points
 		 */
 		function addTrackToMap(trackFeatures) {
 			var layer = this.theMap.getLayersByName(this.TRACK)[0];
@@ -1118,6 +1137,8 @@ var Map = ( function() {"use strict";
 		map.prototype.addWaypointAtPos = addWaypointAtPos;
 		map.prototype.setWaypointType = setWaypointType;
 		map.prototype.getWaypointsString = getWaypointsString;
+
+		map.prototype.addGeolocationResultMarker = addGeolocationResultMarker;
 
 		map.prototype.addSearchAddressResultMarkers = addSearchAddressResultMarkers;
 		map.prototype.zoomToAddressResults = zoomToAddressResults;
