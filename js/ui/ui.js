@@ -1604,16 +1604,22 @@ var Ui = ( function(w) {'use strict';
 				$('#accessibilityCalculation').show();
 			} else {
 				$('#accessibilityCalculation').hide();
+				$('#removeAccessibility').show();
 			}
 		}
 
 		function showAccessibilityError(showError) {
 			if (showError) {
 				$('#accessibilityError').show();
+				$('#removeAccessibility').hide();
 			} else {
 				$('#accessibilityError').hide();
 			}
-
+		}
+		
+		function handleRemoveAccessibility() {
+			$('#removeAccessibility').hide();
+			theInterface.emit('ui:removeAccessibility');
 		}
 
 		/* *********************************************************************
@@ -1827,7 +1833,8 @@ var Ui = ( function(w) {'use strict';
 
 			//accessibility analysis
 			$('#analyzeAccessibility').click(handleAnalyzeAccessibility);
-
+			$('#removeAccessibility').click(handleRemoveAccessibility);
+			
 			//export/ import
 			$('#exportRouteGpx').click(handleExportRouteClick);
 			$('#gpxUploadFiles').change(handleImportRouteSelection);

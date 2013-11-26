@@ -719,6 +719,10 @@ var Controller = ( function(w) {'use strict';
 				value : avoidAreaString
 			});
 		}
+		
+		function handleRemoveAccessibility() {
+			map.clearMarkers(map.ACCESSIBILITY);
+		}
 
 		/* *********************************************************************
 		 * EXPORT / IMPORT
@@ -1069,6 +1073,7 @@ var Controller = ( function(w) {'use strict';
 			map.register('map:routingParamsChanged', handleRoutePresent);
 
 			ui.register('ui:analyzeAccessibility', handleAnalyzeAccessibility);
+			ui.register('ui:removeAccessibility', handleRemoveAccessibility);
 
 			ui.register('ui:exportRouteGpx', handleExportRoute);
 			ui.register('ui:uploadRoute', handleUuploadRoute);
