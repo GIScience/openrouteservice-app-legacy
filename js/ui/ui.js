@@ -781,7 +781,6 @@ var Ui = ( function(w) {'use strict';
 		function showGeolocationSearching(showSearching) {
 			if (showSearching) {
 				$('#fnct_geolocation').addClass('searching');
-				//XXX
 			} else {
 				$('#fnct_geolocation').removeClass('searching');
 			}
@@ -1334,6 +1333,8 @@ var Ui = ( function(w) {'use strict';
 					$(tdElementDist).mouseout(handleMouseOutDist);
 					$(tdElementText).mouseover(handleMouseOverText);
 					$(tdElementText).mouseout(handleMouseOutText);
+					$(tdElementDist).click(handleClickRouteInstr);
+					$(tdElementText).click(handleClickRouteInstr);
 				});
 			}
 
@@ -1377,7 +1378,13 @@ var Ui = ( function(w) {'use strict';
 					layer : parent.getAttribute('data-layer')
 				});
 			}
-
+			
+			/**
+			 * when the distance or text part of the route instruction is clicked, trigger zooming to that part of the route
+			 */
+			function handleClickRouteInstr(e) {
+				theInterface.emit('ui:zoomToRouteInstruction', e.currentTarget.id);
+			}
 		}
 
 		function hideRouteSummary() {

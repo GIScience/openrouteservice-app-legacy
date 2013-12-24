@@ -47,7 +47,8 @@ var Map = ( function() {"use strict";
 				projection : new OpenLayers.Projection('EPSG:900913'),
 				//necessary so that mouse position views 'correct' coords
 				displayProjection : new OpenLayers.Projection('EPSG:4326'),
-				theme : "lib/OpenLayersTheme.css"
+				theme : "lib/OpenLayersTheme.css",
+				maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34)
 			});
 
 			/* *********************************************************************
@@ -58,7 +59,6 @@ var Map = ( function() {"use strict";
 			var mapSurfer_name = "OpenMapSurfer Roads";
 			var mapSurfer_options = {
 				type : 'png',
-				displayOutsideMaxExtent : true,
 				isBaseLayer : true,
 				numZoomLevels : 19,
 				attribution : 'Maps and data: &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> and contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
@@ -488,7 +488,18 @@ var Map = ( function() {"use strict";
 			}
 
 
-			this.theMap.events.register('zoomend', this.theMap, emitMapChangedEvent);
+			var self = this;
+			this.theMap.events.register('zoomend', this.theMap, function(e) {
+				
+				// var x = this.getZoom();
+				// console.log(x)
+				// if (x < 15) {
+					// console.log("zooming to 15!")
+					// this.zoomTo(15);
+					// console.log(this.getZoom())
+				// }
+				emitMapChangedEvent(e);
+			});
 			this.theMap.events.register('moveend', this.theMap, emitMapChangedEvent);
 			this.theMap.events.register('changelayer', this.theMap, emitMapChangedEvent);
 
@@ -578,6 +589,26 @@ var Map = ( function() {"use strict";
 		 */
 		function zoomToMarker(position, zoom) {
 			this.theMap.moveTo(position, zoom);
+		}
+		
+		/**
+		 * zoom to a given feature vector defined by its vector id.
+		 * @param mapLayer: layer of the map where the feature is located
+		 * @param zoom: optional zoom level 
+		 */
+		function zoomToFeature(mapLayer, vectorId, zoom) {
+			mapLayer = this.theMap.getLayersByName(mapLayer);
+			if (mapLayer && mapLayer.length > 0) {
+				mapLayer = mapLayer[0];
+			}
+			var vectors = mapLayer.getFeatureById(vectorId);
+			var bounds = vectors.geometry.getBounds();
+			
+			if (zoom) {
+				this.theMap.moveTo(bounds.getCenterLonLat(), zoom);
+			} else {
+				this.theMap.zoomToExtent(bounds);
+			}
 		}
 
 		function emphMarker(layer, featureId, emph) {
@@ -1147,6 +1178,7 @@ var Map = ( function() {"use strict";
 		map.prototype.zoomToPoiResults = zoomToPoiResults;
 
 		map.prototype.zoomToMarker = zoomToMarker;
+		map.prototype.zoomToFeature = zoomToFeature;
 
 		map.prototype.zoomToRoute = zoomToRoute;
 		map.prototype.updateRoute = updateRoute;

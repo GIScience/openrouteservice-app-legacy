@@ -295,6 +295,10 @@ var Controller = ( function(w) {'use strict';
 				value : waypointStringList
 			});
 		}
+		
+		function handleZoomToRouteInstruction(vectorId) {
+			map.zoomToFeature(map.ROUTE_LINES, vectorId);
+		}
 
 		/* *********************************************************************
 		 * GEOLOCATION
@@ -1048,6 +1052,7 @@ var Controller = ( function(w) {'use strict';
 			ui.register('ui:removeWaypoint', handleRemoveWaypoint);
 			ui.register('ui:searchAgainWaypoint', handleSearchAgainWaypoint);
 			ui.register('ui:resetRoute', handleResetRoute);
+			ui.register('ui:zoomToRouteInstruction', handleZoomToRouteInstruction);
 
 			ui.register('ui:geolocationRequest', handleGeolocationRequest);
 
