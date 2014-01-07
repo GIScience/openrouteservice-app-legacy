@@ -1,8 +1,13 @@
 /**
- * various utility methods for getting and setting attributes
+ * various utility methods for the site
  */
 util = ( function() {'use strict';
 		var util = {
+			/**
+			 * positions are often set as data-attributes in the Ui/ HTML file. Converts them to OpenLayers.LonLat position
+			 * @param positionString: String containing the coordinates
+			 * @return: OpenLayers.LonLat with these coordinates 
+			 */
 			convertPositionStringToLonLat : function(positionString) {
 				var pos = positionString.split(' ');
 				pos = new OpenLayers.LonLat(pos[0], pos[1]);
@@ -11,7 +16,7 @@ util = ( function() {'use strict';
 
 			/**
 			 * transforms a given point to the display-projection of the map
-			 * @param {Object} pt OpenLayers LonLat point to transform
+			 * @param {Object} pt: OpenLayers LonLat point to transform
 			 */
 			convertPointForDisplay : function(pt) {
 				var src = new OpenLayers.Projection('EPSG:900913');
@@ -30,7 +35,7 @@ util = ( function() {'use strict';
 
 			/**
 			 * transforms a given point to the internal projection of the map
-			 * @param {Object} pt OpenLayers LonLat point to transform
+			 * @param {Object} pt: OpenLayers LonLat point to transform
 			 */
 			convertPointForMap : function(pt) {
 				var src = new OpenLayers.Projection('EPSG:4326');
@@ -87,6 +92,11 @@ util = ( function() {'use strict';
 				}
 			},
 			
+			/**
+			 * parses the XML result for an address into HTML format
+			 * @param xmlAddress: XML encoded address result 
+			 * @return: address result wrapped in appropriate HTML tags
+			 */
 			parseAddress : function(xmlAddress) {
 				if (!xmlAddress) {
 					return;
@@ -160,6 +170,11 @@ util = ( function() {'use strict';
 				return element;
 			},
 
+			/**
+			 * parses the XML result for an address into short HTML format
+			 * @param xmlAddress: XML encoded address result 
+			 * @return: address result partly wrapped in appropriate HTML tags
+			 */
 			parseAddressShort : function(address) {
 				var element = "";
 				if (address) {

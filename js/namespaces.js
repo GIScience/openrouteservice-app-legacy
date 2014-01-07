@@ -1,3 +1,10 @@
+/**
+ * all URLs used in the openrouteservice 
+ */
+
+/**
+ * namespaces and schemata e.g. for XML requests to services 
+ */
 namespaces = {
 	xls : 'http://www.opengis.net/xls',
 	sch : 'http://www.ascc.net/xml/schematron',
@@ -9,7 +16,6 @@ namespaces = {
 	ascc : 'http://www.ascc.net/xml/schematron',
 	aas : 'http://www.geoinform.fh-mainz.de/aas'
 };
-
 namespaces.schemata = {
 	directoryService : 'http://www.opengis.net/xls http://schemas.opengis.net/ols/1.1.0/DirectoryService.xsd',
 	analyseService : 'http://www.geoinform.fh-mainz.de/aas',
@@ -21,7 +27,11 @@ namespaces.schemata = {
 	lineStringService : 'http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/geometryBasic0d1d.xsd'
 };
 
-//important note: all these URLs must be listed in the cgi-bin/proxy.cgi script of the server running ORS!
+
+/**
+ * services that are called by openrouteservice, e.g. to determine the route between two waypoints
+ * important note: all these URLs must be listed in the cgi-bin/proxy.cgi script of the server running ORS!
+ */
 namespaces.services = {
 	geocoding : 'http://openls.geog.uni-heidelberg.de/testing2011/geocode', //for address search requests
 	routing : 'http://openls.geog.uni-heidelberg.de/testing2011/route', //for routing requests
@@ -31,7 +41,9 @@ namespaces.services = {
 	//profile: 'http://watzmann.geog.uni-heidelberg.de:8080/deegree/all' 			//for height profile of route
 };
 
-//map layers used in ORS.Map.js
+/**
+ * map layers used on the openlayers map
+ */
 //url to ORS-WMS map layer
 namespaces.layerWms = 'http://129.206.228.72/cached/osm?';
 //url to Open Map Surfer layer

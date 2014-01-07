@@ -1,4 +1,11 @@
+/**
+ * OpenLayers map and functions
+ */
 var Map = ( function() {"use strict";
+		/**
+		 * create the layer styleMap by giving the default style a context;
+		 * based on: http://openlayers.org/dev/examples/styles-context.html
+		 */
 		var pointAndLineStyle = {
 			line : {
 				stroke : '#009ad5',
@@ -15,6 +22,74 @@ var Map = ( function() {"use strict";
 				fillEm : '#fba400'
 			}
 		};
+
+		// layer routePoints (= waypoints)
+		//for default style
+		var routePointsTemplate = {
+			pointRadius : 16,
+			stroke : true,
+			strokeColor : '#ff0000',
+			graphicZIndex : 6,
+			externalGraphic : "${icon}",
+			graphicXOffset : -10,
+			graphicYOffset : -30,
+			graphicWidth : 21,
+			graphicHeight : 30
+		};
+		//for select style
+		var routePointsSelTemplate = {
+			graphicZIndex : 10,
+			externalGraphic : "${iconEm}",
+			graphicXOffset : -10,
+			graphicYOffset : -30,
+			graphicWidth : 21,
+			graphicHeight : 30
+		};
+
+		//route lines
+		var routeLineTemplate = {
+			pointRadius : 0,
+			fillOpacity : 1,
+			strokeWidth : 5,
+			strokeColor : '${stroke}',
+			fillColor : '${fill}',
+			graphicZIndex : 2,
+			cursor : 'pointer'
+		};
+		var routeLineSelTemplate = {
+			pointRadius : 6,
+			strokeWidth : '${strokeWidthEm}',
+			strokeColor : '${strokeEm}',
+			fillColor : '${fillEm}',
+			graphicZIndex : 3
+		};
+
+		//POI layer
+		var poiTemplate = {
+			pointRadius : 16,
+			stroke : true,
+			strokeColor : '#ff0000',
+			graphicZIndex : 6,
+			externalGraphic : "${icon}",
+			graphicXOffset : -10,
+			graphicYOffset : -30,
+			graphicWidth : 21,
+			graphicHeight : 30,
+			graphicOpacity : 1
+		};
+		var poiSelTemplate = {
+			graphicZIndex : 10,
+			externalGraphic : "${iconEm}",
+			graphicXOffset : -20,
+			graphicYOffset : -40,
+			graphicWidth : 41,
+			graphicHeight : 50,
+			graphicOpacity : 0.7
+		};
+
+		/* *********************************************************************
+		 * LAYER NAMES
+		 * *********************************************************************/
 
 		var $ = window.jQuery;
 
@@ -48,7 +123,7 @@ var Map = ( function() {"use strict";
 				//necessary so that mouse position views 'correct' coords
 				displayProjection : new OpenLayers.Projection('EPSG:4326'),
 				theme : "lib/OpenLayersTheme.css",
-				maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34)
+				maxExtent : new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34)
 			});
 
 			/* *********************************************************************
@@ -142,36 +217,9 @@ var Map = ( function() {"use strict";
 				})
 			});
 
-			/*
-			* create the layer styleMap by giving the default style a context;
-			* based on: http://openlayers.org/dev/examples/styles-context.html
-			*/
-
-			//for default style
-			var template = {
-				pointRadius : 16,
-				stroke : true,
-				strokeColor : '#ff0000',
-				graphicZIndex : 6,
-				externalGraphic : "${icon}",
-				graphicXOffset : -10,
-				graphicYOffset : -30,
-				graphicWidth : 21,
-				graphicHeight : 30
-			};
-			//for select style
-			var selTemplate = {
-				graphicZIndex : 10,
-				externalGraphic : "${iconEm}",
-				graphicXOffset : -10,
-				graphicYOffset : -30,
-				graphicWidth : 21,
-				graphicHeight : 30
-			};
-
 			var searchStyleMap = new OpenLayers.StyleMap({
-				"default" : new OpenLayers.Style(template),
-				"select" : new OpenLayers.Style(selTemplate)
+				"default" : new OpenLayers.Style(routePointsTemplate),
+				"select" : new OpenLayers.Style(routePointsSelTemplate)
 			});
 
 			var layerRoutePoints = new OpenLayers.Layer.Vector(this.ROUTE_POINTS, {
@@ -181,24 +229,6 @@ var Map = ( function() {"use strict";
 					yOrdering : true
 				}
 			});
-
-			//route lines
-			var routeLineTemplate = {
-				pointRadius : 0,
-				fillOpacity : 1,
-				strokeWidth : 5,
-				strokeColor : '${stroke}',
-				fillColor : '${fill}',
-				graphicZIndex : 2,
-				cursor : 'pointer'
-			};
-			var routeLineSelTemplate = {
-				pointRadius : 6,
-				strokeWidth : '${strokeWidthEm}',
-				strokeColor : '${strokeEm}',
-				fillColor : '${fillEm}',
-				graphicZIndex : 3
-			};
 
 			var routeLineStyleMap = new OpenLayers.StyleMap({
 				'default' : new OpenLayers.Style(routeLineTemplate),
@@ -215,30 +245,6 @@ var Map = ( function() {"use strict";
 				styleMap : searchStyleMap,
 				displayInLayerSwitcher : false
 			});
-
-			//for default style
-			var poiTemplate = {
-				pointRadius : 16,
-				stroke : true,
-				strokeColor : '#ff0000',
-				graphicZIndex : 6,
-				externalGraphic : "${icon}",
-				graphicXOffset : -10,
-				graphicYOffset : -30,
-				graphicWidth : 21,
-				graphicHeight : 30,
-				graphicOpacity : 1
-			};
-			//for select style
-			var poiSelTemplate = {
-				graphicZIndex : 10,
-				externalGraphic : "${iconEm}",
-				graphicXOffset : -20,
-				graphicYOffset : -40,
-				graphicWidth : 41,
-				graphicHeight : 50,
-				graphicOpacity : 0.7
-			};
 
 			var poiStyleMap = new OpenLayers.StyleMap({
 				"default" : new OpenLayers.Style(poiTemplate),
@@ -415,7 +421,8 @@ var Map = ( function() {"use strict";
 			// // For IE browsers.
 			// };
 			//
-			//close the context menu when zooming or panning,... //TODO placed in ui?
+
+			//close the context menu when zooming or panning,...
 			function closeContextMenu() {
 				$('#menu').remove();
 			};
@@ -487,17 +494,8 @@ var Map = ( function() {"use strict";
 				});
 			}
 
-
 			var self = this;
 			this.theMap.events.register('zoomend', this.theMap, function(e) {
-				
-				// var x = this.getZoom();
-				// console.log(x)
-				// if (x < 15) {
-					// console.log("zooming to 15!")
-					// this.zoomTo(15);
-					// console.log(this.getZoom())
-				// }
 				emitMapChangedEvent(e);
 			});
 			this.theMap.events.register('moveend', this.theMap, emitMapChangedEvent);
@@ -590,11 +588,11 @@ var Map = ( function() {"use strict";
 		function zoomToMarker(position, zoom) {
 			this.theMap.moveTo(position, zoom);
 		}
-		
+
 		/**
 		 * zoom to a given feature vector defined by its vector id.
 		 * @param mapLayer: layer of the map where the feature is located
-		 * @param zoom: optional zoom level 
+		 * @param zoom: optional zoom level
 		 */
 		function zoomToFeature(mapLayer, vectorId, zoom) {
 			mapLayer = this.theMap.getLayersByName(mapLayer);
@@ -603,7 +601,7 @@ var Map = ( function() {"use strict";
 			}
 			var vectors = mapLayer.getFeatureById(vectorId);
 			var bounds = vectors.geometry.getBounds();
-			
+
 			if (zoom) {
 				this.theMap.moveTo(bounds.getCenterLonLat(), zoom);
 			} else {
@@ -611,6 +609,12 @@ var Map = ( function() {"use strict";
 			}
 		}
 
+		/**
+		 * when performing certain actions on the Ui, OL features need to be emphasized/ deemphasized.
+		 * @param layer: the layer the feature is located on
+		 * @param featureId: OL id of the feature to emph/deemph
+		 * @param empg: if true, the feature is emphasized; if false, the feature is deemphasized
+		 */
 		function emphMarker(layer, featureId, emph) {
 			var layer = this.theMap.getLayersByName(layer);
 			layer = layer ? layer[0] : null;
@@ -627,6 +631,12 @@ var Map = ( function() {"use strict";
 			}
 		}
 
+		/**
+		 * based on an OL feature id and the layer the feature is located on, the position is looked up
+		 * @param featureId: OL feature ID as string
+		 * @param layer: string name of the layer the feature is located on.
+		 * @return: string with the position of the feature; style: 'x-coordinate y-coordinate' 
+		 */
 		function convertFeatureIdToPositionString(featureId, layer) {
 			var mapLayer = this.theMap.getLayersByName(layer);
 			if (mapLayer && mapLayer.length > 0) {
@@ -638,6 +648,12 @@ var Map = ( function() {"use strict";
 			}
 		}
 
+		/**
+		 * based on the ID of the feature, looks up the first point in a line, e.g. used in route lines
+		 * @param featureId: OL feature ID as string
+		 * @param layer: string name of the layer the feature is located on.
+		 * @return: string ID of the first point.  
+		 */
 		function getFirstPointIdOfLine(featureId, layer) {
 			var mapLayer = this.theMap.getLayersByName(layer);
 			if (mapLayer && mapLayer.length > 0) {
@@ -652,8 +668,9 @@ var Map = ( function() {"use strict";
 		}
 
 		/**
-		 * activate or deactivate all select controls
+		 * activates or deactivates all select controls
 		 * (used by the avoid area tools which require all selectFeature controls to be off)
+		 * @param activate: if true, select controls are activated; if false, they are de-activated.
 		 */
 		function activateSelectControl(activate) {
 			if (activate) {
@@ -672,6 +689,10 @@ var Map = ( function() {"use strict";
 		*/
 		/**
 		 * for the given waypoint index, select the given search result element (by index) and convert it to a waypoint marker with the given type
+		 * @param wpIndex: int containing the index of the waypoint
+		 * @param featureId: OL feature ID as string
+		 * @param type: type of the waypoint (start, via, end)
+		 * @return: ID of the waypoint feature
 		 */
 		function addWaypointMarker(wpIndex, featureId, type) {
 			var layerSearchResults = this.theMap.getLayersByName(this.SEARCH)[0];
@@ -691,6 +712,9 @@ var Map = ( function() {"use strict";
 
 		/**
 		 * add a waypoint marker with the given type at the given position (e.g. by clicking on the map saying 'add a waypoint here')
+		 * @param position: OL LonLat containing the position where the new waypoint should be created
+		 * @param wpIndex: int index the waypoint should be assigned to
+		 * @param type: type of the waypoint (start, via, end)
 		 */
 		function addWaypointAtPos(position, wpIndex, type) {
 			var layerWaypoints = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
@@ -705,6 +729,11 @@ var Map = ( function() {"use strict";
 			return newFeature.id;
 		}
 
+		/**
+		 * sets the type of the given waypoint identified by its feature ID
+		 * @param featureId: OL feature ID as string
+		 * @param type: type of the waypoint (start, via, end)
+		 */
 		function setWaypointType(featureId, type) {
 			var layerWaypoints = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
 			var feature = layerWaypoints.getFeatureById(featureId);
@@ -724,7 +753,8 @@ var Map = ( function() {"use strict";
 		}
 
 		/**
-		 * used e.g. for permalink
+		 * encode all waypoints by their position in a string; used e.g. for permalink
+		 * @return: string of LonLat positions; style: 'lon1,lat1,lon2,lat2,...lonk,latk'
 		 */
 		function getWaypointsString() {
 			var layer = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
@@ -746,6 +776,11 @@ var Map = ( function() {"use strict";
 		 * GEOLOCATION
 		 */
 
+		/**
+		 * adds a marker for the geolocation result at the given position
+		 * @param position: OL LonLat
+		 * @return: the OL Feature.Vector which was set at the given position 
+		 */
 		function addGeolocationResultMarker(position) {
 			var layer = this.theMap.getLayersByName(this.GEOLOCATION)[0];
 			layer.removeAllFeatures();
@@ -775,6 +810,7 @@ var Map = ( function() {"use strict";
 		 * transform given search results to markers and add them on the map.
 		 * (this is also used for waypoint search results)
 		 * @param {Object} listOfPoints array of OpenLayers.LonLat
+		 * @return array with added OL.Feature.Vector
 		 */
 		function addSearchAddressResultMarkers(listOfPoints, wpIndex) {
 			var layerSearchResults = this.theMap.getLayersByName(this.SEARCH)[0];
@@ -813,7 +849,7 @@ var Map = ( function() {"use strict";
 		}
 
 		/**
-		 * view all address results on the map
+		 * views all address results on the map by zooming to the level at which all features of the search are visible
 		 * (this is also used for waypoint search results)
 		 */
 		function zoomToAddressResults() {
@@ -830,8 +866,9 @@ var Map = ( function() {"use strict";
 		*/
 
 		/**
-		 * transform given search results to markers and add them on the map.
+		 * transforms given search results to features and adds them on the map.
 		 * @param {Object} listOfPoints array of OpenLayers.LonLat
+		 * @return array of added OL.Feature.Vector with the added features
 		 */
 		function addSearchPoiResultMarkers(listOfPoints) {
 			var layerPoiResults = this.theMap.getLayersByName(this.POI)[0];
@@ -856,13 +893,13 @@ var Map = ( function() {"use strict";
 		}
 
 		/**
-		 * Emphasize the given search result marker
-		 * @param {Object} markerId id of the marker to emphasize
+		 * Emphasizes the given search result feature
+		 * @param {String} featureId: OL feature id of the feature to emphasize
 		 */
-		function emphasizeSearchPoiMarker(markerId) {
+		function emphasizeSearchPoiMarker(featureId) {
 			var layerPoiResults = this.theMap.getLayersByName(this.POI)[0];
 			$A(layerPoiResults.markers).each(function(marker) {
-				if (marker.id == markerId) {
+				if (marker.id == featureId) {
 					marker.setOpacity(1);
 					marker.inflate(1.4);
 				}
@@ -870,19 +907,22 @@ var Map = ( function() {"use strict";
 		}
 
 		/**
-		 * Deemphasize the given search result marker
-		 * @param {Object} markerId id of the marker to deemphasize
+		 * Deemphasizes the given search result feature
+		 * @param {String} featureId: OL feature id of the feature to deemphasize
 		 */
-		function deEmphasizeSearchPoiMarker(markerId) {
+		function deEmphasizeSearchPoiMarker(featureId) {
 			var layerPoiResults = this.theMap.getLayersByName(this.POI)[0];
 			$A(layerPoiResults.markers).each(function(marker) {
-				if (marker.id == markerId) {
+				if (marker.id == featureId) {
 					marker.setOpacity(0.7);
 					marker.inflate(0.715);
 				}
 			});
 		}
 
+		/**
+		 * zooms the map so that all POI features become visible 
+		 */
 		function zoomToPoiResults() {
 			var layerPoiResults = this.theMap.getLayersByName(this.POI)[0];
 			var resultBounds = layerPoiResults.getDataExtent();
@@ -897,8 +937,9 @@ var Map = ( function() {"use strict";
 		*/
 
 		/**
-		 *draw given points as route line on the map
-		 * @param {Object} routeLineSegments array of OL.Geometry.LineString
+		 * draws given points as route line on the map
+		 * @param {Object} routeLineSegments: array of OL.Geometry.LineString
+		 * @return array of OL.Feature.Vector added to the layer
 		 */
 		function updateRoute(routeLineSegments, routeLinePoints) {
 			var layer = this.theMap.getLayersByName(this.ROUTE_LINES)[0];
@@ -924,6 +965,9 @@ var Map = ( function() {"use strict";
 			return ftIds;
 		}
 
+		/**
+		 * zooms the map so that the whole route becomes visible (i.e. all features of the route line layer) 
+		 */
 		function zoomToRoute() {
 			var layer = this.theMap.getLayersByName(this.ROUTE_LINES)[0];
 			var dataExtent = layer.getDataExtent();
@@ -937,7 +981,7 @@ var Map = ( function() {"use strict";
 		*/
 
 		/**
-		 * activate or deactivate the given avoid area tool (draw, modify, delete)
+		 * activates or deactivates the given avoid area tool (draw, modify, delete)
 		 * @param {Object} tool: control to select
 		 * @param {Object} activate: if true, the control is activated; if false, it is deactivated
 		 */
@@ -950,6 +994,10 @@ var Map = ( function() {"use strict";
 			}
 		}
 
+		/**
+		 * checks if two avoid ares, i.e. polygons intersect each other.
+		 * @return true, if polygons intersect; otherwise false 
+		 */
 		function checkAvoidAreasIntersectThemselves() {
 			//code adapted from http://lists.osgeo.org/pipermail/openlayers-users/2012-March/024285.html
 			var layer = this.theMap.getLayersByName(this.AVOID)[0];
@@ -1003,6 +1051,10 @@ var Map = ( function() {"use strict";
 			return intersect;
 		}
 
+		/**
+		 * add the given areas as avoid area polygons to the appropriate map layer
+		 * @param areas: array of avoid area polygons (OL.Feature.Vector) 
+		 */
 		function addAvoidAreas(areas) {
 			var layerAvoid = this.theMap.getLayersByName(this.AVOID)[0];
 			if (areas && areas.length > 0) {
@@ -1018,7 +1070,9 @@ var Map = ( function() {"use strict";
 		}
 
 		/**
+		 * gets all avoid area polygons
 		 * used for e.g. routing service request
+		 * @return avoid areas as array of OL.Feature.Vector
 		 */
 		function getAvoidAreas() {
 			var layerAvoid = this.theMap.getLayersByName(this.AVOID)[0];
@@ -1026,7 +1080,9 @@ var Map = ( function() {"use strict";
 		}
 
 		/**
+		 * gets all avoid area polygons
 		 * used e.g. for permalink
+		 * @return avoid areas as string of polygon points; style: 'poly1pt1.y,poly1pt1.x,poly1pt2.x,poly1pt2.y,...'
 		 */
 		function getAvoidAreasString() {
 			var layerAvoid = this.theMap.getLayersByName(this.AVOID)[0];
@@ -1053,6 +1109,10 @@ var Map = ( function() {"use strict";
 		 * ACCESSIBILITY ANALYSIS
 		 */
 
+		/**
+		 * adds the given polygon as avoid area polygon to the map layer
+		 *  @param polygon: OL.Feature.Vector, the polygon to add
+		 */
 		function addAccessiblityPolygon(polygon) {
 			var layer = this.theMap.getLayersByName(this.ACCESSIBILITY)[0];
 			var newFeature = new OpenLayers.Feature.Vector(polygon);
@@ -1064,6 +1124,9 @@ var Map = ( function() {"use strict";
 			layer.addFeatures([newFeature]);
 		}
 
+		/**
+		 * removes all accessibility analysis features from the layer
+		 */
 		function eraseAccessibilityFeatures() {
 			var layer = this.theMap.getLayersByName(this.ACCESSIBILITY)[0];
 			layer.removeAllFeatures();
@@ -1076,6 +1139,7 @@ var Map = ( function() {"use strict";
 		/**
 		 * generates a GPX String based on the route
 		 * @param {Object} singleRouteLineString: current route as a single OL.Gemoetry.LineString
+		 * @return string with encoded route information
 		 */
 		function writeRouteToString(singleRouteLineString) {
 			var formatter = new OpenLayers.Format.GPX();
