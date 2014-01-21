@@ -33,6 +33,7 @@ var Controller = ( function(w) {'use strict';
 
 		/**
 		 * parses the user input for the waypoint search and calls the Waypoint module to build a search request
+		 * @param atts: query: the search query; wpIndex: index of the waypoint; searchIds: map feature ids of previous searches
 		 */
 		function handleWaypointRequest(atts) {
 			ui.searchWaypointChangeToSearchingState(true, atts.wpIndex);
@@ -49,6 +50,8 @@ var Controller = ( function(w) {'use strict';
 
 		/**
 		 * forwards the waypoint search results to the Ui to display the addresses and to the map in order to add markers.
+		 * @param results: results of the search query in XML format
+		 * @param wpIndex: index of the waypoint
 		 */
 		function handleSearchWaypointResults(results, wpIndex) {
 			waypoint.decrRequestCounterWaypoint(wpIndex);
@@ -64,6 +67,7 @@ var Controller = ( function(w) {'use strict';
 
 		/**
 		 * calls the UI to show a search error
+		 * @param: wpIndex: index of the waypoint
 		 */
 		function handleSearchWaypointFailure(wpIndex) {
 			waypoint.decrRequestCounterWaypoint(wpIndex);
@@ -73,6 +77,10 @@ var Controller = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * the user selects one of the search results as new waypoint. The corresponding map feature is set, other search results are removed. Ui and internal variables are updated.
+		 * @param atts: wpIndex: index of the waypoint; featureId: map feature id of the selected marker; searchIds: string of all search features for this search
+		 */
 		function handleWaypointResultClick(atts) {
 			var wpIndex = atts.wpIndex;
 			var featureId = atts.featureId;
@@ -96,6 +104,10 @@ var Controller = ( function(w) {'use strict';
 			handleWaypointChanged(map.getWaypointsString());
 		}
 
+		/**
+		 * the user clicks on a field to add a new empty waypoint. Internal variables and waypoint attributes are updated
+		 * @param: newWaypointIndex: index which is assigned to the new waypoint
+		 */
 		function handleAddWaypoint(newWaypointIndex) {
 			waypoint.addWaypoint(newWaypointIndex);
 
@@ -112,6 +124,7 @@ var Controller = ( function(w) {'use strict';
 
 		/**
 		 * mark the given waypoint either as start, via or end according to the waypoint's position in the route
+		 * @param wpIndex: index of the waypoint
 		 */
 		function selectWaypointType(wpIndex) {
 			var type = waypoint.determineWaypointType(wpIndex);
@@ -120,7 +133,8 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		/**
-		 * what happens after the user sets a waypoint by clicking on the map saying "add waypoint..."
+		 * the user sets a waypoint by clicking on the map saying "add waypoint...". The waypoint is displayed on Ui and on the map, internal variables are updated and the address of the waypoint is looked up.
+		 * @param atts: pos: position of the new waypoint, type: type of the waypoint
 		 */
 		function handleAddWaypointByRightclick(atts) {
 			var pos = atts.pos;
@@ -156,6 +170,14 @@ var Controller = ( function(w) {'use strict';
 			geolocator.reverseGeolocate(pos, reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, wpType, wpIndex, newFeatureId);
 		}
 
+		/**
+		 * handles the results of the reverse geolocation service call by showing/removing features on the map, calling the Ui,...
+		 * @param addressResult: result of the service request in XML format
+		 * @param wpType: type of the waypoint
+		 * @param wpIndex: index of the waypoint
+		 * @param featureId: id of the map feature
+		 * @param addWaypointAt: index where to add the waypoint
+		 */
 		function reverseGeocodeSuccess(addressResult, wpType, wpIndex, featureId, addWaypointAt) {
 			//adapt the waypoint internals:
 			if (addWaypointAt && addWaypointAt >= 0) {
@@ -180,10 +202,16 @@ var Controller = ( function(w) {'use strict';
 			ui.emit('control:reverseGeocodeCompleted');
 		}
 
+		/**
+		 * error handling for the reverse geocode service request
+		 */
 		function reverseGeocodeFailure() {
 			//TODO implement
 		}
 
+		/**
+		 * after waypoints have been moved, re-calculations are necessary: update of internal variables, waypoint type exchange,...
+		 */
 		function handleMovedWaypoints(atts) {
 			var index1 = atts.id1;
 			var index2 = atts.id2;
@@ -212,6 +240,10 @@ var Controller = ( function(w) {'use strict';
 			handleWaypointChanged(map.getWaypointsString());
 		}
 
+		/**
+		 * the user removed a waypoint. Internal variables are updated, waypoint types checked,...
+		 * @param atts: wpIndex: index of the waypoint, featureId: id of the map feature of the waypoint
+		 */
 		function handleRemoveWaypoint(atts) {
 			var idx = atts.wpIndex;
 			var featureId = atts.featureId;
@@ -258,6 +290,11 @@ var Controller = ( function(w) {'use strict';
 			handleWaypointChanged(map.getWaypointsString());
 		}
 
+		/**
+		 * the user wants to set an existing waypoint at a different location and re-enables the search field by clicking on "search again".
+		 * old map features are removed, internal variables are updated
+		 * @param atts: waypointFeature: map feature of the waypoint; waypointLayer: layer the map feature is located on, wpIndex: index of the waypoint
+		 */
 		function handleSearchAgainWaypoint(atts) {
 			var waypointFeature = atts.waypointFeature;
 			var waypointLayer = atts.waypointLayer;
@@ -275,6 +312,9 @@ var Controller = ( function(w) {'use strict';
 			handleWaypointChanged(map.getWaypointsString());
 		}
 
+		/**
+		 * the whole route and its waypoints are removed. Internal variables are updated
+		 */
 		function handleResetRoute() {
 			//remove all waypoint markers
 			map.clearMarkers(map.ROUTE_POINTS);
@@ -289,21 +329,32 @@ var Controller = ( function(w) {'use strict';
 			handleWaypointChanged(null);
 		}
 
+		/**
+		 * is called when one or more waypoints have changed. Updates internal variables (preferences).
+		 * @param waypointStringList: string containing all waypoints
+		 */
 		function handleWaypointChanged(waypointStringList) {
 			handlePrefsChanged({
 				key : preferences.waypointIdx,
 				value : waypointStringList
 			});
 		}
-		
+
+		/**
+		 * map is zoomed to the selected part of the route (route instruction)
+		 * @param vectorId: id of the map feature to zoom to
+		 */
 		function handleZoomToRouteInstruction(vectorId) {
 			map.zoomToFeature(map.ROUTE_LINES, vectorId);
 		}
 
 		/* *********************************************************************
-		 * GEOLOCATION
-		 * *********************************************************************/
+		* GEOLOCATION
+		* *********************************************************************/
 
+		/**
+		 * call the geolocation service to retrieve the user's current location
+		 */
 		function handleGeolocationRequest() {
 			ui.showGeolocationSearching(true);
 			ui.showGeolocationError(false);
@@ -311,9 +362,8 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		/**
-		 * [handleGeolocateSuccess description]
-		 * @param  {[type]} position [description]
-		 * @return {[type]}          [description]
+		 * handles the result of the geolocation service by adding a map feature at the result location
+		 * @param position: service result containing the result location
 		 */
 		function handleGeolocateSuccess(position) {
 			var pos = new OpenLayers.LonLat(position.coords.longitude, position.coords.latitude);
@@ -326,7 +376,7 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		/**
-		 * runtime error during geolocation 
+		 * handles a runtime error during geolocation
 		 */
 		function handleGeolocateError() {
 			ui.showGeolocationError(true, false);
@@ -334,7 +384,7 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		/**
-		 * geolocation is not supported by the user's browser
+		 * shows a message if the geolocation is not supported by the user's browser
 		 */
 		function handleGeolocateNoSupport() {
 			ui.showGeolocationError(true, true);
@@ -342,8 +392,11 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		/**
-		 * show the reverse-geocoded position as address in the Ui;
+		 * shows the reverse-geocoded position as address in the Ui;
 		 * parameters nn0 and nn1 are not relevant here (only used in waypoint geocoding)
+		 * @param result: service response in XML format
+		 * @param nn0, nn1: arbitrary
+		 * @param feature: map feature at the position the address was retrieved for
 		 */
 		function handleReverseGeolocationSuccess(result, nn0, nn1, feature) {
 			ui.showGeolocationSearching(false);
@@ -356,6 +409,7 @@ var Controller = ( function(w) {'use strict';
 
 		/**
 		 * parses the user input for the address search and calls the SearchAddress module to build a search request
+		 * @param atts: address: address as text string the user wants to search for; lastSearchResults: string of OL feature ids for the last search results
 		 */
 		function handleSearchAddressRequest(atts) {
 			var address = atts.address;
@@ -374,6 +428,7 @@ var Controller = ( function(w) {'use strict';
 
 		/**
 		 * forwards the address search results to the Ui to display the addresses and to the map in order to add markers.
+		 * @param results: XML results of the address search
 		 */
 		function handleSearchAddressResults(results) {
 			searchAddress.requestCounter--;
@@ -399,12 +454,15 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		/**
-		 * remove old address markers from the map when starting a new address search
+		 * removes old address features from the map when starting a new address search
 		 */
 		function handleClearSearchAddressMarkers() {
 			map.clearMarkers(map.SEARCH);
 		}
 
+		/**
+		 * moves and zooms the map so that all address search result map features become visible
+		 */
 		function handleZoomToAddressResults() {
 			map.zoomToAddressResults();
 		}
@@ -414,8 +472,9 @@ var Controller = ( function(w) {'use strict';
 		* *********************************************************************/
 
 		/**
-		 * check if the given distance is suitable for POI search near route
+		 * checks if the given distance is suitable for POI search near route
 		 * maximum distance supported by the service is 5000 meters.
+		 * @param atts: dist: distance as string; unit: distance unit as string
 		 */
 		function handleCheckDistanceToRoute(atts) {
 			var dist = util.convertDistToMeters(parseInt(atts.dist), atts.unit);
@@ -424,6 +483,7 @@ var Controller = ( function(w) {'use strict';
 
 		/**
 		 * parses the user input for the POI search and calls the SearchPoi module to build a search request
+		 * @param atts: query: the POI search query as string; nearRoute: true if a POI search along a given route should be performed; maxDist: maximum distance for POIs off the route; lastSearchResults: list of OL map feature ids of the last search
 		 */
 		function handleSearchPoiRequest(atts) {
 			var poi = atts.query;
@@ -466,6 +526,7 @@ var Controller = ( function(w) {'use strict';
 
 		/**
 		 * forwards the POI search results to the Ui to display the POIs and to the map in order to add markers.
+		 * @param results: XML search results
 		 */
 		function handleSearchPoiResults(results) {
 			searchPoi.requestCounter--;
@@ -491,16 +552,23 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		/**
-		 * remove old POI markers from the map when starting a new POI search
+		 * removes old POI map features from the map when starting a new POI search
 		 */
 		function handleClearSearchPoiMarkers() {
 			map.clearMarkers(map.POI);
 		}
 
+		/**
+		 * moves and zooms the map so that all POI search results become visible
+		 */
 		function handleZoomToPoiResults() {
 			map.zoomToPoiResults();
 		}
 
+		/**
+		 * moves and zooms the map to the given/ clicked POI marker
+		 * @param atts: position: position of the map feature as string, layer: map layer the feature is located on
+		 */
 		function handleZoomToMarker(atts) {
 			var position = util.convertPositionStringToLonLat(atts.position);
 			var layer = atts.layer;
@@ -515,8 +583,8 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		/**
-		 * add a search result (address, POI) as a waypoint to the current route
-		 * @param markerId: id of the marker to use as waypoint
+		 * adds a search result (address, POI) as a waypoint to the current route
+		 * @param position: the position of the feature to use
 		 */
 		function handleUseAsWaypoint(position) {
 			if ('string' == typeof position) {
@@ -550,6 +618,10 @@ var Controller = ( function(w) {'use strict';
 			//markers of the search results will not be removed cause the search is still visible.
 		}
 
+		/**
+		 * after a waypoint has been moved on the map, the address of the moved waypoint is updated (as well as other internal stuff)
+		 * @param featureMoved: the map feature that has been moved
+		 */
 		function handleWaypointMoved(featureMoved) {
 			var position = new OpenLayers.LonLat(featureMoved.geometry.x, featureMoved.geometry.y);
 			var index = ui.getWaypiontIndexByFeatureId(featureMoved.id);
@@ -566,7 +638,9 @@ var Controller = ( function(w) {'use strict';
 		* *********************************************************************/
 
 		/**
-		 *if there are at least two waypoint set, a route can be calculated and displayed
+		 * checks if a route can be calculated and displayed (if least two waypoints are set)
+		 * if >= 2 wp: requests the route and associated information
+		 * else: hides route information
 		 */
 		function handleRoutePresent() {
 			var isRoutePresent = waypoint.getNumWaypointsSet() >= 2;
@@ -602,6 +676,10 @@ var Controller = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * processes route results: triggers displaying the route on the map, showing instructions and a summary
+		 * @param results: XML route service results
+		 */
 		function routeCalculationSuccess(results) {
 			route.routePresent = true;
 			ui.setRouteIsPresent(true);
@@ -632,6 +710,9 @@ var Controller = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * shows a route calculation error; hides route information
+		 */
 		function routeCalculationError() {
 			ui.endRouteCalculation();
 			ui.showRoutingError();
@@ -639,6 +720,9 @@ var Controller = ( function(w) {'use strict';
 			ui.hideRouteInstructions();
 		}
 
+		/**
+		 * moves and zooms the map so that the whole route becomes visible
+		 */
 		function handleZoomToRoute() {
 			map.zoomToRoute();
 		}
@@ -647,6 +731,7 @@ var Controller = ( function(w) {'use strict';
 		 * a tool for handling avoid areas has been selected/ deactivated.
 		 * If the avoid area tools are active, all selectFeature-controls of the map layers have to be deactivated (otherwise these layers always stay on top and prevent the user from modifying his avoidAreas)
 		 * Delegate the tool call to the map object.
+		 * @param atts: toolType: either drawing, moving or deleting avoid areas ; activated: true, if the feature should be activated; false otherwise
 		 */
 		var activeAvoidAreaButtons = 0;
 		function avoidAreaToolClicked(atts) {
@@ -670,15 +755,31 @@ var Controller = ( function(w) {'use strict';
 
 		/**
 		 * if avoid areas intersect themselves they are invalid and no route calculation can be done. Inform the user by showing an error message in the UI
+		 * @param errorous: true, if the error message should be shown; false if it should be hidden
 		 */
 		function avoidAreasError(errorous) {
 			ui.showAvoidAreasError(errorous);
 		}
 
-		/* *********************************************************************
-		 * ACCESSIBILITY ANALYSIS
-		 * *********************************************************************/
+		/**
+		 * updates internal preference variables after an avoid area change
+		 * @param avoidAreaString: string of avoid area polygon points
+		 */
+		function handleAvoidAreaChanged(avoidAreaString) {
+			handlePrefsChanged({
+				key : preferences.avoidAreasIdx,
+				value : avoidAreaString
+			});
+		}
 
+		/* *********************************************************************
+		* ACCESSIBILITY ANALYSIS
+		* *********************************************************************/
+
+		/**
+		 * requests the accessibility analysis based on the start waypoint
+		 * @param atts: position: position of the start waypoint; distance: distance for the accessibility analysis in minutes
+		 */
 		function handleAnalyzeAccessibility(atts) {
 			var pos = atts.position;
 			if (pos) {
@@ -700,6 +801,10 @@ var Controller = ( function(w) {'use strict';
 
 		}
 
+		/**
+		 * processes the accessibility analsysis response;  map zooms to the resulting area, area is shown on the map
+		 * @param result: XML response from the service
+		 */
 		function accessibilitySuccessCallback(result) {
 			var bounds = analyse.parseResultsToBounds(result);
 			if (bounds) {
@@ -713,25 +818,27 @@ var Controller = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * processes the accessibility error response and displays an error
+		 */
 		function accessibilityFailureCallback() {
 			ui.showAccessibilityError(true);
 		}
 
-		function handleAvoidAreaChanged(avoidAreaString) {
-			handlePrefsChanged({
-				key : preferences.avoidAreasIdx,
-				value : avoidAreaString
-			});
-		}
-		
+		/**
+		 * removes the accessibility map features
+		 */
 		function handleRemoveAccessibility() {
 			map.clearMarkers(map.ACCESSIBILITY);
 		}
 
 		/* *********************************************************************
-		 * EXPORT / IMPORT
-		 * *********************************************************************/
+		* EXPORT / IMPORT
+		* *********************************************************************/
 
+		/**
+		 * extracts route information and displays the track in a new window formatted as GPX
+		 */
 		function handleExportRoute() {
 			ui.showExportRouteError(false);
 
@@ -746,6 +853,11 @@ var Controller = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * uploads start and end point from a GPX file and calculates the route between these points
+		 * required HTML5 file api
+		 * @param file: the GPX file to upload
+		 */
 		var wp2;
 		function handleUuploadRoute(file) {
 			ui.showImportRouteError(false);
@@ -778,6 +890,9 @@ var Controller = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * extracts the 2nd waypoint from the GPX file
+		 */
 		function uploadRouteTrigger2ndWaypoint() {
 			if (wp2 != null) {
 				handleUseAsWaypoint(wp2);
@@ -786,6 +901,11 @@ var Controller = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * uploads the track GPX file and displays it on the map. NO route re-calculation!
+		 * required HTML5 file api
+		 * @param file: the GPX file to upload
+		 */
 		function handleUploadTrack(file) {
 			ui.showImportRouteError(false);
 			//clean old track from map (at the moment only one track is supported)
@@ -817,27 +937,46 @@ var Controller = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * removes an uploaded track from the map
+		 */
 		function handleRemoveTrack() {
 			map.clearMarkers(map.TRACK);
 		}
 
 		/* *********************************************************************
-		 * MAP
-		 * *********************************************************************/
+		* MAP
+		* *********************************************************************/
 
+		/**
+		 * triggers an update of the cookies when the map changed
+		 * @param mapState: lon: lon-coordinate of the current position; lat: lat-coordinate; zoom: current zoom level; layer: active layer (and overlays)
+		 */
 		function handleMapChanged(mapState) {
 			//update cookies
 			updateMapCookies(mapState.lon, mapState.lat, mapState.zoom, mapState.layer);
 		}
 
+		/**
+		 * highlights the correspoinding Ui element based on the given map feature/ marker, e.g. the corresponding POI description
+		 * @param markerId: OL feature id to highlight
+		 */
 		function handleMarkerEmph(markerId) {
 			ui.emphElement(markerId);
 		}
 
+		/**
+		 * un-highlights the correspoinding Ui element based on the given map feature/ marker, e.g. the corresponding POI description
+		 * @param markerId: OL feature id to deemphasize
+		 */
 		function handleMarkerDeEmph(markerId) {
 			ui.deEmphElement(markerId);
 		}
 
+		/**
+		 * highlights the corresponding map feature based on the given Ui element, e.g. the corresponding POI marker
+		 * @param atts: id: OL feature id of the element; layer: map layer the feature is located on
+		 */
 		function handleElementEmph(atts) {
 			var id = atts.id;
 			var layer = atts.layer;
@@ -846,6 +985,10 @@ var Controller = ( function(w) {'use strict';
 			map.emphMarker(layer, id, true);
 		}
 
+		/**
+		 * un-highlights the corresponding map feature based on the given Ui element, e.g. the corresponding POI marker
+		 * @param atts: id: OL feature id of the element; layer: map layer the feature is located on
+		 */
 		function handleElementDeEmph(atts) {
 			var id = atts.id;
 			var layer = atts.layer;
@@ -858,6 +1001,10 @@ var Controller = ( function(w) {'use strict';
 		 * PREFERENCES, PERMALINK AND COOKIES
 		 * *********************************************************************/
 
+		/**
+		 * updates internal preferences (language, distance unit, ...)
+		 * @param atts: key: id of the variable name; value: value that should be assigned to that variable 
+		 */
 		function handlePrefsChanged(atts) {
 			var key = atts.key;
 			var value = atts.value;
@@ -866,6 +1013,7 @@ var Controller = ( function(w) {'use strict';
 
 		/**
 		 * the user changed preferences in the option panel and wants to save the changes
+		 * @param atts: version: site version; language: site language; routingLanguage: language of routing instructions; distanceUnit: distance unit like m/km or yd/mi
 		 */
 		function updateUserPreferences(atts) {
 			if (preferences.version == atts.version && preferences.language == atts.language && preferences.routingLanguage == atts.routingLanguage && preferences.distanceUnit == atts.distanceUnit) {
@@ -887,6 +1035,8 @@ var Controller = ( function(w) {'use strict';
 
 		/**
 		 * update the given preference parameter in the cookies. If no cookies exist, write new ones with current parameters
+		 * @param key: id of the variable name
+		 * @param value: value that should be assigned to that variable
 		 */
 		function updateCookies(key, value) {
 			if (!preferences.areCookiesAVailable()) {
@@ -907,6 +1057,10 @@ var Controller = ( function(w) {'use strict';
 
 		/**
 		 * map parameters are usually modified together. This is more efficient than calling updateCookies(key, val) three times.
+		 * @param lon: lon coordinate of current position
+		 * @param lat: lat coordinate of current position
+		 * @param zoom: current zoom level
+		 * @param layer: active layer, including overlays (OL encode)
 		 */
 		function updateMapCookies(lon, lat, zoom, layer) {
 			if (preferences.areCookiesAVailable()) {
@@ -922,6 +1076,9 @@ var Controller = ( function(w) {'use strict';
 		 * startup
 		 * *********************************************************************/
 
+		/**
+		 * apply GET variables, read cookies or apply standard values to initialize the ORS page 
+		 */
 		function initializeOrs() {
 			//apply GET variables and/or cookies and set the user's language,...
 			var getVars = preferences.loadPreferencesOnStartup();
@@ -995,6 +1152,9 @@ var Controller = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * apply selected site language, load dynamic menus, etc. 
+		 */
 		function loadDynamicUiData() {
 			//load Ui elements with selected language
 			uiLanguages.applyLanguage();
@@ -1011,6 +1171,9 @@ var Controller = ( function(w) {'use strict';
 			ui.setUserPreferences(preferences.version, preferences.language, preferences.routingLanguage, preferences.distanceUnit);
 		}
 
+		/**
+		 * can be called to output debug information 
+		 */
 		function showDebugInfo() {
 			console.log();
 		}
@@ -1019,7 +1182,7 @@ var Controller = ( function(w) {'use strict';
 		* class-specific
 		* *********************************************************************/
 		/**
-		 * [initialize description]
+		 * initialization
 		 */
 		function initialize() {
 			map = new Map('map');
