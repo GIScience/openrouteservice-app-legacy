@@ -183,6 +183,9 @@ var Languages = (function(w) {'use strict';
 		}
 	}
 	
+	/**
+	 * auto-build dropdown menu for distance unit selection 
+	 */
 	function loadPoiDistanceUnitData() {
 		var container = $('#fnct_searchPoi_distanceUnit');
 		for (var i = 0; i < list.distanceUnits.length; i++) {

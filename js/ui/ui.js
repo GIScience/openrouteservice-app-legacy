@@ -25,6 +25,7 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * user clicks on e.g. routing tab to view routing functionality
+		 * @param e: the event
 		 */
 		function handleSwitchTabs(e) {
 			var tab = e.currentTarget.id;
@@ -44,6 +45,7 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * expands or collapses option panels
+		 * @param e: the event
 		 */
 		function handleToggleCollapsibles(e) {
 			if (e.currentTarget.hasClassName('collapsed')) {
@@ -67,6 +69,7 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * makes the sidebar visible or invisible (larger map)
+		 * @param e: the event
 		 */
 		function handleToggleSidebar(e) {
 			var side = document.getElementById('sidebar');
@@ -88,9 +91,12 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/* *********************************************************************
-		 * LANGUAGE-SPECIFIC
-		 * *********************************************************************/
+		* LANGUAGE-SPECIFIC
+		* *********************************************************************/
 
+		/**
+		 * if it is the user's first visit to ORS show a popup with information about the settings (version, language,...)
+		 */
 		function showNewToOrsPopup() {
 			var label = new Element('label');
 			label.insert(preferences.translate('infoTextVersions'));
@@ -104,6 +110,7 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * highlight the element
+		 * @param elementId: id of the element to highlight
 		 */
 		function emphElement(elementId) {
 			var element = $('#' + elementId);
@@ -124,6 +131,7 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * de-highlight the element
+		 * @param elementId: id of the element to deemphasize
 		 */
 		function deEmphElement(elementId) {
 			$('#' + elementId).get(0).removeClassName('highlight');
@@ -132,6 +140,7 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * highlight the mouseover element and emphasize the corresponding marker
+		 * @param e: the event
 		 */
 		function handleMouseOverElement(e) {
 			e.currentTarget.addClassName('highlight');
@@ -143,6 +152,7 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * de-highlight the mouseover element and emphasize the corresponding marker
+		 * @param e: the event
 		 */
 		function handleMouseOutElement(e) {
 			e.currentTarget.removeClassName('highlight');
@@ -153,9 +163,13 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/* *********************************************************************
-		 * WAYPOINTS
-		 * *********************************************************************/
+		* WAYPOINTS
+		* *********************************************************************/
 
+		/**
+		 * the user typed input for the waypoint search. forward the input to start a query
+		 * @param e: the event
+		 */
 		function handleSearchWaypointInput(e) {
 			var waypointElement = $(e.currentTarget).parent().parent();
 
@@ -182,6 +196,11 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * hides or shows a search spinner while searching for the wayoint's address
+		 * @param changeToSearching: true, if the spinner should be shown; false otherwise
+		 * @param wpIndex: index of the waypoint where to show the spinner
+		 */
 		function searchWaypointChangeToSearchingState(changeToSearching, wpIndex) {
 			var rootElement = $('#' + wpIndex).get(0);
 			var inputElement = rootElement.querySelector('input');
@@ -194,6 +213,13 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * shows the results of the waypoint search on the Ui building a list of result entries that can be selected as waypoint
+		 * @param request: response from the service
+		 * @param listOfFeatures: list of OL feature IDs of the search result markers
+		 * @param layername: map layer these features are located on
+		 * @param wpIndex: index of the waypoint the search was performed for
+		 */
 		function updateSearchWaypointResultList(request, listOfFeatures, layername, wpIndex) {
 			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
 			var results = request.responseXML ? request.responseXML : util.parseStringToDOM(request.responseText);
@@ -237,7 +263,8 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/**
-		 * view an error message when problems occured during geocoding
+		 * views an error message when problems occured during geocoding
+		 * @param wpIndex: index of the waypoint to show the message for
 		 */
 		function showSearchWaypointError(wpIndex) {
 			var rootElement = $('#' + wpIndex).get(0);
@@ -247,7 +274,8 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/**
-		 * when the user clicks on a waypoint search result, use it as waypoint
+		 * when the user clicks on a waypoint search result, it is used as waypoint. The search results vanish and only the selected address is shown.
+		 * @param e: the event
 		 */
 		function handleSearchWaypointResultClick(e) {
 			var rootElement = $(e.currentTarget).parent().parent().parent().parent();
@@ -274,6 +302,13 @@ var Ui = ( function(w) {'use strict';
 			});
 		}
 
+		/**
+		 * Sets attributes of the selected waypoint.
+		 * @param wpIndex: index of the waypoint to set the attributes for
+		 * @param featureId: ID of the OL feature that represents the waypoint location
+		 * @param position: position of the feature as string
+		 * @param layer: map layer the feature is located on
+		 */
 		function setWaypointFeatureId(wpIndex, featureId, position, layer) {
 			var rootElement = $('#' + wpIndex).get(0);
 			var address = rootElement.querySelector('.address');
@@ -284,6 +319,11 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * retrieves the OL feature ID of the given waypoint
+		 * @param wpIndex: index of the waypoint to get the feature ID from
+		 * @return: the ID of the OL feature
+		 */
 		function getFeatureIdOfWaypoint(wpIndex) {
 			var rootElement = $('#' + wpIndex).get(0);
 			var address = rootElement.querySelector('.address');
@@ -291,6 +331,11 @@ var Ui = ( function(w) {'use strict';
 			return id;
 		}
 
+		/**
+		 * retrieves the index of the waypoint based on the given OL feature ID
+		 * @param featureId: the ID of the OL feature
+		 * @return: the index of the wayoint; null if the waypoint does not exist
+		 */
 		function getWaypiontIndexByFeatureId(featureId) {
 			var wpResult = $('#' + featureId);
 			var wpElement;
@@ -307,6 +352,10 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * The user clicked on the button to move the waypoint up in the list of waypoints for the route calculation. The waypoint element is moved upwards; internal attributes are adapted.
+		 * @param e: the event
+		 */
 		function handleMoveUpWaypointClick(e) {
 			//index of waypoint
 			var waypointElement = $(e.currentTarget).parent();
@@ -356,6 +405,10 @@ var Ui = ( function(w) {'use strict';
 			});
 		}
 
+		/**
+		 * The user clicked on the button to move down the waypoint in the list of waypoints for the route calculation. The waypoint element is moved downwards; internal attributes are adapted.
+		 * @param e: the event
+		 */
 		function handleMoveDownWaypointClick(e) {
 			//index of waypoint
 			var waypointElement = $(e.currentTarget).parent();
@@ -404,6 +457,10 @@ var Ui = ( function(w) {'use strict';
 			});
 		}
 
+		/**
+		 * The user clicks on the button to add a waypoint. A new empty waypoint is generated.
+		 *  @param e: the event
+		 */
 		function handleAddWaypointClick(e) {
 			//id of prior to last waypoint:
 			var waypointId = $(e.currentTarget).prev().attr('id');
@@ -415,9 +472,9 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/**
-		 *add a new waypoint element after given waypoint index
-		 * @param idx (int) index of the predecessor waypoint
-		 * @param numWaypoints (int) number of waypoints BEFORE inserting the new one
+		 *adds a new waypoint element after given waypoint index
+		 * @param idx: (int) index of the predecessor waypoint
+		 * @param numWaypoints: (int) number of waypoints BEFORE inserting the new one
 		 */
 		function addWaypointAfter(idx, numWaypoints) {
 			//for the current element, show the move down button (will later be at least the next to last one)
@@ -471,6 +528,13 @@ var Ui = ( function(w) {'use strict';
 			theInterface.emit('ui:addWaypoint', newIndex);
 		}
 
+		/**
+		 * set a waypint with the service respponse after the user requested to set a waypoint by clicking on the map (right click).
+		 * @param request: the service response
+		 * @param typeOfWaypoint: one of START, VIA or END
+		 * @param index: index of the waypoint
+		 * @return: the index of the wayoint
+		 */
 		function addWaypointResultByRightclick(request, typeOfWaypoint, index) {
 			var numWaypoints = $('.waypoint').length - 1;
 			while (index >= numWaypoints) {
@@ -520,6 +584,10 @@ var Ui = ( function(w) {'use strict';
 			return index;
 		}
 
+		/**
+		 * When the user added a waypoint using the standard waypoint search and then e.g. moves the waypoint feature on the map, former search results must be invalidated because they do not match the new position.
+		 * @param wpIndex: index of the waypoint
+		 */
 		function invalidateWaypointSearch(wpIndex) {
 			var wpElement = $('#' + wpIndex);
 			if (wpElement) {
@@ -527,6 +595,10 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * The user clicks on the button to remove the waypoint for the route calculation. The waypoint element is deleted; internal attributes are adapted.
+		 * @param e: the event
+		 */
 		function handleRemoveWaypointClick(e) {
 			var numWaypoints = $('.waypoint').length - 1;
 
@@ -596,7 +668,9 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/**
-		 *show or hide the "move waypoint down" button
+		 *shows or hides the "move waypoint down" button
+		 * @param wpIndex: index of the waypoint
+		 * @param show: if true, the button becomes visible; invisible otherwise
 		 */
 		function setMoveDownButton(wpIndex, show) {
 			var rootElement = $('#' + wpIndex).get(0);
@@ -609,7 +683,9 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/**
-		 *show or hide the "move waypoint up" button
+		 *shows or hides the "move waypoint up" button
+		 * @param wpIndex: index of the waypoint
+		 * @param show: if true, the button becomes visible; invisible otherwise
 		 */
 		function setMoveUpButton(wpIndex, show) {
 			var rootElement = $('#' + wpIndex).get(0);
@@ -621,6 +697,10 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * The user clicks on the search again button to re-view the list of search results for the selected waypoint. Search results are shown, displaying map features is triggered.
+		 * @param e: the event
+		 */
 		function handleSearchAgainWaypointClick(e) {
 			var wpElement = $(e.currentTarget).parent();
 			var index = wpElement.attr('id');
@@ -672,6 +752,11 @@ var Ui = ( function(w) {'use strict';
 			});
 		}
 
+		/**
+		 * assigns the waypoint the given type
+		 * @param wpIndex: index of the waypoint
+		 * @param type: type of the wayoint, one of START, VIA, END or UNSET
+		 */
 		function setWaypointType(wpIndex, type) {
 			var el = $('#' + wpIndex);
 			el.removeClass('unset');
@@ -681,6 +766,9 @@ var Ui = ( function(w) {'use strict';
 			el.addClass(type);
 		}
 
+		/**
+		 * The whole route is removed, waypoints are emptied or deleted (if more than two exist)
+		 */
 		function handleResetRoute() {
 			//remove markers on map
 			theInterface.emit('ui:resetRoute');
@@ -723,6 +811,11 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * shows or hides a spinner during waypoint address calculation
+		 * @param wpIndex: index of the waypoint
+		 * @param showSearching: if true, the spinner is shown; hidden otherwise.
+		 */
 		function showSearchingAtWaypoint(wpIndex, showSearching) {
 			var wp = $('#' + wpIndex).get(0);
 			var inputElement = wp.querySelector('input');
@@ -736,13 +829,24 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/* *********************************************************************
-		 * GEOLOCATION
-		 * *********************************************************************/
+		* GEOLOCATION
+		* *********************************************************************/
 
+		/**
+		 * triggers the geolocation request to retrieve the uer's current location
+		 * @param e: the event
+		 */
 		function handleGeolocationClick(e) {
 			theInterface.emit('ui:geolocationRequest');
 		}
 
+		/**
+		 * processes the geolocation service responses and shows the user's current location as address (and marker on map)
+		 * @param request: the service response
+		 * @param featureId: ID of the map feature representing the current location
+		 * @param layername: map layer name that contains the feature
+		 * @param point: coordinate position of the feature
+		 */
 		function showCurrentLocation(request, featureId, layername, point) {
 			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
 			var results = request.responseXML ? request.responseXML : util.parseStringToDOM(request.responseText);
@@ -778,6 +882,10 @@ var Ui = ( function(w) {'use strict';
 			$('.useAsWaypoint').click(handleUseAsWaypoint);
 		}
 
+		/**
+		 * shows or hides a spinner while retrieving the location
+		 * @param showSearching: if true, the spinner is shown; hidden otherwise
+		 */
 		function showGeolocationSearching(showSearching) {
 			if (showSearching) {
 				$('#fnct_geolocation').addClass('searching');
@@ -786,6 +894,11 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * shows or hides an error message, either when a runtime error occurs or when the geolocation feature is not supported
+		 * @param showError: if true, the error message is shown; hidden otherwise
+		 * @param notSupportedError: if true, the 'geolocation is not supported'-error is addressed; else, the 'runtime error during geolocation' is addressed
+		 */
 		function showGeolocationError(showError, notSupportedError) {
 			var el = $('#geolocationError');
 			if (showError) {
@@ -802,16 +915,15 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
-		function stopGeolocation(text) {
-			if (text) {
-				$('#geolocationError').text = text;
-			}
-		}
-
 		/* *********************************************************************
-		 * SEARCH ADDRESS
-		 * *********************************************************************/
+		* SEARCH ADDRESS
+		* *********************************************************************/
 
+		/**
+		 * The user enters an address search string which should be passed on to the service. Previous search results are removed.
+		 * The search is automatically triggered after the user stopped typing for a certain period of time (DONE_TYPING_INTERVAL)
+		 * @param e: the event
+		 */
 		function handleSearchAddressInput(e) {
 			clearTimeout(typingTimerSearchAddress);
 			if (e.keyIdentifier != 'Shift' && e.currentTarget.value.length != 0) {
@@ -835,6 +947,10 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * shows or hides a search spinner while searching for an address
+		 * @param changeToSearching: if true, the spinner is shown; hidden otherwise
+		 */
 		function searchAddressChangeToSearchingState(changeToSearching) {
 			if (changeToSearching) {
 				$('#fnct_searchAddress').addClass('searching');
@@ -844,6 +960,12 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * shows the results of an address search in the Ui.
+		 * @param request: the address search response from the service
+		 * @param listOfFeatures: array of OL features representing address locations on the map
+		 * @param layername: map layer name the features are located on
+		 */
 		function updateSearchAddressResultList(request, listOfFeatures, layername) {
 			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
 			var results = request.responseXML ? request.responseXML : util.parseStringToDOM(request.responseText);
@@ -896,7 +1018,7 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/**
-		 * view an error message when problems occured during geolocation
+		 * views an error message when problems occur during address search
 		 */
 		function showSearchAddressError() {
 			var errorContainer = $('#searchAddressError');
@@ -904,10 +1026,16 @@ var Ui = ( function(w) {'use strict';
 			errorContainer.show();
 		}
 
+		/**
+		 * triggers moving and zooming the map so that all address search results become visible on the screen
+		 */
 		function handleZoomToAddressResults(e) {
 			theInterface.emit('ui:zoomToAddressResults');
 		}
 
+		/**
+		 * The user clicked on one of the search results. Triggers the zooming of the map to the corresponding map feature
+		 */
 		function handleSearchResultClick(e) {
 			theInterface.emit('ui:zoomToMarker', {
 				position : e.currentTarget.getAttribute('data-position'),
@@ -915,6 +1043,9 @@ var Ui = ( function(w) {'use strict';
 			});
 		}
 
+		/**
+		 * The user wants to include this search result as waypoint in the route. Triggers the addition of that point. 
+		 */
 		function handleUseAsWaypoint(e) {
 			theInterface.emit('ui:useAsWaypoint', e.currentTarget.getAttribute('data-position'));
 
@@ -924,10 +1055,19 @@ var Ui = ( function(w) {'use strict';
 		 * SEARCH POI
 		 * *********************************************************************/
 
+		/**
+		 * internal flag for route availabiligy on the page
+		 * @present: set to true if a route is present; not present otherwise 
+		 */
 		function setRouteIsPresent(present) {
 			routeIsPresent = present;
 		}
 
+		/**
+		 * The user enters a POI search string which should be passed on to the service. Previous search results are removed.
+		 * The search is automatically triggered after the user stopped typing for a certain period of time (DONE_TYPING_INTERVAL)
+		 * @param e: the event
+		 */
 		function handleSearchPoiInput(e) {
 			clearTimeout(typingTimerSearchPoi);
 			if (e.keyIdentifier != 'Shift' && e.currentTarget.value.length != 0) {
@@ -957,6 +1097,10 @@ var Ui = ( function(w) {'use strict';
 
 		}
 
+		/**
+		 * shows or hides a search spinner while searching for a POI
+		 * @param changeToSearching: if true, the spinner is shown; hidden otherwise
+		 */
 		function searchPoiChangeToSearchingState(changeToSearching) {
 			if (changeToSearching) {
 				$('#fnct_searchPoi').addClass('searching');
@@ -966,6 +1110,11 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * is called when the user selects the option to look for POIs along the route
+		 * shows an error message, if necessary (if no route is present) 
+		 * triggers a service call to look for the POIs
+		 */
 		function handleSearchPoiNearRoute(e) {
 			searchPoiAtts[0] = e.currentTarget.checked;
 
@@ -988,6 +1137,11 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * is called when the user selects the option to look for POIs along the route
+		 * shows an error message, if necessary (if no route is present or an invalid distance is selected)
+		 * triggers a service call to look for the POIs 
+		 */
 		function handleSearchPoiDistance(e) {
 			clearTimeout(typingTimerSearchPoiDistance);
 			if (e.keyIdentifier != 'Shift' && e.currentTarget.value.length != 0) {
@@ -1012,6 +1166,11 @@ var Ui = ( function(w) {'use strict';
 
 		}
 
+		/**
+		 * is called when the user selects the option to look for POIs along the route
+		 * shows an error message, if necessary (if no route is present or an invalid distance is selected)
+		 * triggers a service call to look for the POIs 
+		 */
 		function handleSearchPoiDistanceUnit(e) {
 			searchPoiAtts[2] = e.currentTarget.value;
 			theInterface.emit('ui:checkDistanceToRoute', {
@@ -1030,6 +1189,12 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * shows the results of an POI search in the Ui.
+		 * @param request: the POI search response from the service
+		 * @param listOfFeatures: array of OL features representing POI locations on the map
+		 * @param layername: map layer name the features are located on
+		 */
 		function updateSearchPoiResultList(request, listOfFeatures, layername) {
 			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
 			var results = request.responseXML ? request.responseXML : util.parseStringToDOM(request.responseText);
@@ -1109,12 +1274,19 @@ var Ui = ( function(w) {'use strict';
 			$('.useAsWaypoint').click(handleUseAsWaypoint);
 		}
 
+		/**
+		 *  views an error message when problems occur during POI lookup
+		 */
 		function showSearchPoiError() {
 			var errorContainer = $('#searchPoiError');
 			errorContainer.html(preferences.translate("searchError"));
 			errorContainer.show();
 		}
 
+		/**
+		 * shows or hides an error message for incorrect distance parameters (show POIs XY m/yd/km/... from route)
+		 * @param isIncorrect: if true, an error message is displyed; hidden otherwise 
+		 */
 		function showSearchPoiDistUnitError(isIncorrect) {
 			if (isIncorrect) {
 				$('#inputWarn').text(preferences.translate('distaneNotSupported'));
@@ -1124,6 +1296,9 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * triggers moving and zooming the map so that all POI search results become visible on the screen 
+		 */
 		function handleZoomToPoiResults(e) {
 			theInterface.emit('ui:zoomToPoiResults');
 		}
@@ -1131,11 +1306,18 @@ var Ui = ( function(w) {'use strict';
 		/* *********************************************************************
 		 * ROUTE
 		 * *********************************************************************/
-
+		
+		/**
+		 * returns the Ui variable routeOptions 
+		 */
 		function getRoutePreferences() {
 			return routeOptions;
 		}
 
+		/**
+		 * gets a list of route points, i.e. waypoint coordinates
+		 * @return array of strings containing the coordinates 
+		 */
 		function getRoutePoints() {
 			var allRoutePoints = [];
 			var numWaypoints = $('.waypoint').length - 1;
@@ -1149,6 +1331,10 @@ var Ui = ( function(w) {'use strict';
 			return allRoutePoints;
 		}
 
+		/**
+		 * gets a short description of the route destination
+		 * @return string of the destination in short form or null if the last waypoint is not set 
+		 */
 		function getRouteDestination() {
 			//find the last waypoint set
 			var lastSetWaypoint = -1;
@@ -1169,6 +1355,9 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * shows a spinner for the route calculation process and hides previously displayed error messages 
+		 */
 		function startRouteCalculation() {
 			var el = $('#routeCalculate');
 			el.show();
@@ -1177,10 +1366,17 @@ var Ui = ( function(w) {'use strict';
 			$('#routeError').hide();
 		}
 
+		/**
+		 * hides the spinner for the route calculation process 
+		 */
 		function endRouteCalculation() {
 			$('#routeCalculate').hide();
 		}
 
+		/**
+		 * displays general route information as a route summary
+		 * @param results: response of the service containing the route summary information 
+		 */
 		function updateRouteSummary(results) {
 			if (!results) {
 				//hide container
@@ -1227,8 +1423,10 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/**
-		 * @param mapFeatureIds: list of IDs of OpenLayers elements containing BOTH - ids for route line segments AND corner points:
-		 * [routeLineSegment_0, cornerPoint_0, routeLineSegment_1, cornerPoint_1,...]
+		 * displays instructions for the route
+		 * @param results: response of the service
+		 * @param mapFeatureIds: list of IDs of OpenLayers elements containing BOTH - ids for route line segments AND corner points: [routeLineSegment_0, cornerPoint_0, routeLineSegment_1, cornerPoint_1,...]
+		 * @param mapLayer: map layer containing these features
 		 */
 		function updateRouteInstructions(results, mapFeatureIds, mapLayer) {
 			if (!results) {
@@ -1338,6 +1536,9 @@ var Ui = ( function(w) {'use strict';
 				});
 			}
 
+			/**
+			 * called when the user moves over the distance part of a route instruction. Triggers highlighting the corresponding route part 
+			 */
 			function handleMouseOverDist(e) {
 				e.currentTarget.addClassName('active');
 				var parent = $(e.currentTarget).parent().get(0);
@@ -1349,6 +1550,9 @@ var Ui = ( function(w) {'use strict';
 
 			}
 
+			/**
+			 * called when the user moves out of the distance part of a route instruction. Triggers un-highlighting the corresponding route part 
+			 */
 			function handleMouseOutDist(e) {
 				e.currentTarget.removeClassName('active');
 				var parent = $(e.currentTarget).parent().get(0);
@@ -1359,6 +1563,9 @@ var Ui = ( function(w) {'use strict';
 				});
 			}
 
+			/**
+			 * called when the user moves over the instruction part of the route instruction. Trigger highlighting the corresponding route point 
+			 */
 			function handleMouseOverText(e) {
 				e.currentTarget.addClassName('active');
 				var parent = $(e.currentTarget).parent().get(0);
@@ -1369,6 +1576,9 @@ var Ui = ( function(w) {'use strict';
 				});
 			}
 
+			/**
+			 * called when the user moves out of the instruction part of a route instruction. Triggers un-highlighting the corresponding route point  
+			 */
 			function handleMouseOutText(e) {
 				e.currentTarget.removeClassName('active');
 				var parent = $(e.currentTarget).parent().get(0);
@@ -1378,27 +1588,40 @@ var Ui = ( function(w) {'use strict';
 					layer : parent.getAttribute('data-layer')
 				});
 			}
-			
+
 			/**
-			 * when the distance or text part of the route instruction is clicked, trigger zooming to that part of the route
+			 * when the distance or text part of the route instruction is clicked, triggers zooming to that part of the route
 			 */
 			function handleClickRouteInstr(e) {
 				theInterface.emit('ui:zoomToRouteInstruction', e.currentTarget.id);
 			}
-		}
 
+		}
+		
+		/**
+		 * hides the route summary pane, e.g. when no route is available
+		 */
 		function hideRouteSummary() {
 			$('#routeSummaryContainer').hide();
 		}
 
+		/**
+		 * hides the route instructions pane, e.g. when no route is available
+		 */
 		function hideRouteInstructions() {
 			$('#routeInstructionsContainer').hide();
 		}
 
+		/**
+		 * triggers zooming to the whole route 
+		 */
 		function handleZoomToRouteClick() {
 			theInterface.emit('ui:zoomToRoute');
 		}
 
+		/**
+		 * displays an error message when no route between the selected waypoints could be found or another error happened during route calculation 
+		 */
 		function showRoutingError() {
 			var el = $('#routeError');
 			el.html(preferences.translate('noRouteAvailable'));
@@ -1409,7 +1632,8 @@ var Ui = ( function(w) {'use strict';
 		* ROUTE OPTIONS
 		* *********************************************************************/
 		/**
-		 *when the user wants to switch between route options for cars/bikes/pedestrians and clicks the button to switch views
+		 * when the user wants to switch between route options for cars/bikes/pedestrians and clicks the button to switch views
+		 * @param e: the event
 		 */
 		function switchRouteOptionsPane(e) {
 			var parent = $('.routePreferenceBtns').get(0);
@@ -1464,6 +1688,10 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * checks if routing options have changed and triggers a route recalculation if appropriate
+		 * @param e: the event 
+		 */
 		function handleOptionsChanged(e) {
 			var item = e.srcElement.id;
 			if ($.inArray(item, list.routeAvoidables) >= 0) {
@@ -1537,6 +1765,7 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * the user clicks on one of the buttons to handle avoid areas (draw, edit, delete)
+		 * @param e: the event
 		 */
 		function avoidAreasToolClicked(e) {
 			var btn = e.target;
@@ -1569,6 +1798,10 @@ var Ui = ( function(w) {'use strict';
 			});
 		}
 
+		/**
+		 * shows or hides an avoid area error message, e.g. if one avoid area intersects itself
+		 * @param showError: if true, shows the error message; hides it otherwise 
+		 */
 		function showAvoidAreasError(showError) {
 			var el = $('#avoidAreasError');
 			el.html(preferences.translate('invalidAvoidArea'));
@@ -1583,6 +1816,9 @@ var Ui = ( function(w) {'use strict';
 		 * PERMALINK
 		 * *********************************************************************/
 
+		/**
+		 * triggers opening a new window with the permalink 
+		 */
 		function handleOpenPerma() {
 			theInterface.emit('ui:openPermalinkRequest');
 		}
@@ -1591,6 +1827,9 @@ var Ui = ( function(w) {'use strict';
 		 * ACCESSIBILITY ANALSYIS
 		 * *********************************************************************/
 
+		/**
+		 * triggers the calculation of the accessibility analsyis with the current distance value 
+		 */
 		function handleAnalyzeAccessibility() {
 			var distance = $('#accessibilityDistance').val();
 			var position = null;
@@ -1606,6 +1845,10 @@ var Ui = ( function(w) {'use strict';
 			});
 		}
 
+		/**
+		 * shows a spinner during accessibility analysis calculation
+		 * @param showSpinner: if true, show the spinner; hide otherwise 
+		 */
 		function showSearchingAtAccessibility(showSpinner) {
 			if (showSpinner) {
 				$('#accessibilityCalculation').show();
@@ -1615,6 +1858,10 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * displays an accessibility analysis error message
+		 * @param showError: if true, displays the error; hides it otherwise
+		 */
 		function showAccessibilityError(showError) {
 			if (showError) {
 				$('#accessibilityError').show();
@@ -1623,7 +1870,10 @@ var Ui = ( function(w) {'use strict';
 				$('#accessibilityError').hide();
 			}
 		}
-		
+
+		/**
+		 * triggers removing former accessibility calculations from the map 
+		 */
 		function handleRemoveAccessibility() {
 			$('#removeAccessibility').hide();
 			theInterface.emit('ui:removeAccessibility');
@@ -1633,10 +1883,17 @@ var Ui = ( function(w) {'use strict';
 		 * EXPORT / IMPORT
 		 * *********************************************************************/
 
+		/**
+		 * triggers the export route to GPX function 
+		 */
 		function handleExportRouteClick() {
 			theInterface.emit('ui:exportRouteGpx');
 		}
 
+		/**
+		 * displays or hides a route export error
+		 * @param showError: if true, the error is displayed; hidden otherwise 
+		 */
 		function showExportRouteError(showError) {
 			if (showError) {
 				$('#exportGpxError').show();
@@ -1645,6 +1902,9 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * forwards the selected GPX file and triggers the waypoint extraction to upload a route from the file 
+		 */
 		function handleImportRouteSelection() {
 			var file;
 			var fileInput = $$('#gpxUploadFiles input[type="file"]')[0];
@@ -1660,12 +1920,19 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * removes the file from the import route dialogue 
+		 */
 		function handleImportRouteRemove(e) {
 			//if the file is removed from the view, we do NOT remove the waypoints from the list, etc.
 			//just remove the erorr message if visible
 			showImportRouteError(false);
 		}
 
+		/**
+		 * shows an import error (route import)
+		 * @param showError: if true, the error is displayed; hidden otherwise 
+		 */
 		function showImportRouteError(showError) {
 			if (showError) {
 				$('#importGpxError').show();
@@ -1674,6 +1941,9 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * forwards the selected GPX file and triggers the coordinate extraction to upload a track from the file 
+		 */
 		function handleImportTrackSelection() {
 			var file;
 			var fileInput = $$('#gpxUploadTrack input[type="file"]')[0];
@@ -1690,6 +1960,9 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * removes the file from the import track dialogue and triggers the deletion of the track on the map 
+		 */
 		function handleImportTrackRemove() {
 			//remove the track from the map
 			theInterface.emit('ui:removeTrack');
@@ -1699,6 +1972,9 @@ var Ui = ( function(w) {'use strict';
 		 * USER PREFERENCES
 		 * *********************************************************************/
 
+		/**
+		 * extracts selected user preferences and forwards them for saving in the preference module 
+		 */
 		function handleSaveUserPreferences() {
 			var version = $('#extendedVersionPrefs').find(":selected").text();
 			var language = $('#languagePrefs').find(":selected").text();
@@ -1737,6 +2013,13 @@ var Ui = ( function(w) {'use strict';
 			$('#sitePrefsModal').modal('hide');
 		}
 
+		/**
+		 * applies the given user preferences
+		 * @param version: version of the site: standard, extended,...
+		 * @param language: language of the site
+		 * @param routingLanguage: language of the routing instructions
+		 * @param distanceUnit: unit of distances used on the site 
+		 */
 		function setUserPreferences(version, language, routingLanguage, distanceUnit) {
 			//setting version
 			var container = $('#extendedVersionPrefs').get(0);
@@ -1782,7 +2065,10 @@ var Ui = ( function(w) {'use strict';
 		/* *********************************************************************
 		 * CLASS-SPECIFIC
 		 * *********************************************************************/
-
+		
+		/**
+		 * used for debugging information 
+		 */
 		function debug() {
 			console.log()
 			theInterface.emit('ui:startDebug');
@@ -1841,7 +2127,7 @@ var Ui = ( function(w) {'use strict';
 			//accessibility analysis
 			$('#analyzeAccessibility').click(handleAnalyzeAccessibility);
 			$('#removeAccessibility').click(handleRemoveAccessibility);
-			
+
 			//export/ import
 			$('#exportRouteGpx').click(handleExportRouteClick);
 			$('#gpxUploadFiles').change(handleImportRouteSelection);
