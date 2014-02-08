@@ -26,6 +26,11 @@ var Geolocator = ( function(w) {"use strict";
 		 * @param {Object} position the user's current position
 		 * @param {Object} successCallback used to view the address of the current location on the UI
 		 * @param {Object} failureCallback used to view an error message on the UI
+		 * @param language: the language of the results
+		 * @param waypointType: type of the waypoint that has to be looked up, one of START, VIA or END
+		 * @param waypointIndex: index of the wayoint
+		 * @param featureId: OL map feature id of this waypoint
+		 * @param routePresent: flag set to true if a route is available
 		 */
 		function reverseGeolocate(position, successCallback, failureCallback, language, waypointType, waypointIndex, featureId, routePresent) {
 			var writer = new XMLWriter('UTF-8', '1.0');

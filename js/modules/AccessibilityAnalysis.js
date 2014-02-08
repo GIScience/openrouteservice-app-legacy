@@ -7,6 +7,13 @@ var AccessibilityAnalysis = ( function(w) {"use strict";
 
 		}
 
+		/**
+		 * builds and sends the service request
+		 * @param {Object} position: OL LonLat or Point representing the reference point
+		 * @param {int} distanceInMinutes: radius of the analysis
+		 * @param {Object} successCallback: function callback
+		 * @param {Object} failureCallback: function callback
+		 */
 		function analyze(position, distanceInMinutes, successCallback, failureCallback) {
 			var writer = new XMLWriter('UTF-8', '1.0');
 			writer.writeStartDocument();
@@ -81,6 +88,11 @@ var AccessibilityAnalysis = ( function(w) {"use strict";
 			});
 		}
 
+		/**
+		 * processes the results and extracts area bounds
+		 * @param {Object} result: the response of the service
+		 * @return OL.Bounds containing the accessible area
+		 */
 		function parseResultsToBounds(result) {
 			result = result.responseXML ? result.responseXML : util.parseStringToDOM(result.responseText);
 			var boundingBox = util.getElementsByTagNameNS(result, namespaces.aas, 'BoundingBox');
@@ -96,6 +108,11 @@ var AccessibilityAnalysis = ( function(w) {"use strict";
 			return bounds;
 		}
 
+		/**
+		 * processes the results and extracts area polygons
+		 * @param {Object} result: the response of the service
+		 * @return OL.Geometry.Polygon representing the accessible area
+		 */
 		function parseResultsToPolygon(result) {
 			result = result.responseXML ? result.responseXML : util.parseStringToDOM(result.responseText);
 			var area = util.getElementsByTagNameNS(result, namespaces.aas, 'AccessibilityGeometry');

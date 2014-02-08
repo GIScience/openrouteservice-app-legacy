@@ -8,6 +8,17 @@ var Route = ( function(w) {"use strict";
 			this.routeString = null;
 		}
 
+		/**
+		 * builds and sends the service request and calls the callback function
+		 * @param routePoints: array of OL.LonLat representing the waypoints of the route
+		 * @param successCallback: Callback which is called after the results are returned from the service
+		 * @param failureCallback: Callback which is called after an error occured
+		 * @param language: language for the routing instructions
+		 * @param routePref: route preference, e.g. Fastest
+		 * @param avoidMotorways: flag set to true if motorways should be avoided in the route; else: false
+		 * @param avoidTollways: flag set to true if tollways should be avoided in the route; else: false
+		 * @param avoidAreas: array of avoid areas represented by OL.Geometry.Polygons
+		 */
 		function calculate(routePoints, successCallback, failureCallback, language, routePref, avoidMotorways, avoidTollways, avoidAreas) {
 			var writer = new XMLWriter('UTF-8', '1.0');
 			writer.writeStartDocument();
@@ -134,7 +145,9 @@ var Route = ( function(w) {"use strict";
 		}
 		
 		/**
-		 * 
+		 * parses the routing results of the service to a single 'path'
+		 * @param results: response of the service
+		 * @param routeString: OL.Geometry.LineString representing the whole route
 		 */
 		function writeRouteToSingleLineString(results) {
 			var routeString = [];

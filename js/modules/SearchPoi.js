@@ -14,8 +14,12 @@ var SearchPoi = ( function(window) {"use strict";
 
 		/**
 		 * Sends the request with the POI to the service and calls the callback function.
-		 * @param  {String}   poi  POI to be searched
-		 * @param  {Function} callback Callback which is called after the results are returned from Nominatim
+		 * @param {String} searchQuery: POI to be searched
+		 * @param refPoint: reference point picked from the middle of the map to form the center of the POI search OR route points when POIs along the route have to be searched
+		 * @param maxDist: maximum distance from route to POI (applies only for "find POI along route"-search)
+		 * @param {Function} successCallback: Callback which is called after the results are returned from Nominatim
+		 * @param {Function} failureCallback: failureCallback used to view an error message on the UI
+		 * @param language: language of the results
 		 */
 		function find(searchQuery, refPoint, maxDist, distanceUnit, successCallback, failureCallback, language) {
 			maxDist = maxDist > 5000 ? 5000 : maxDist;
@@ -104,6 +108,13 @@ var SearchPoi = ( function(window) {"use strict";
 			});
 		}
 
+		/**
+		 * builds part of the XML request; applies to finding all POIs on the visible map that match the query
+		 * @param writer: the XML writer 
+		 * @param refPoint: the center of the (visible) map
+		 * @maxDist: maximum distance to the reference point
+		 * @distanceUnit: unit of distance
+		 */
 		function findPoisOnScreen(writer, refPoint, maxDist, distanceUnit) {
 			if (refPoint && refPoint.length > 0) {
 				refPoint = refPoint[0];
@@ -135,6 +146,12 @@ var SearchPoi = ( function(window) {"use strict";
 			writer.writeEndElement();
 		}
 
+		/**
+		 * builds part of the XML request; applies to finding all POIs along the route that match the query
+		 * @param writer: the XML writer 
+		 * @param refPoint: the route line
+		 * @maxDist: maximum distance to the route
+		 */
 		function findPoisNearRoute(writer, refPoint, maxDist) {
 			//calculate buffer polygon around route
 			var routePoints = [];
@@ -197,6 +214,7 @@ var SearchPoi = ( function(window) {"use strict";
 		/**
 		 *extract points to use for markers on map
 		 * @param {Object} results the (xml) results from the service
+		 * @return: array of OL.LonLat representing the coordinates of the search results 
 		 */
 		function parseResultsToPoints(results) {
 			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...

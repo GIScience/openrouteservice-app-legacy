@@ -14,10 +14,10 @@ var SearchAddress = ( function(window) {"use strict";
 
 		/**
 		 * Sends the address search request to the service and calls the callback function.
-		 * @param  {String}   address  Address to be geocoded
-		 * @param  {Function} successCallback Callback which is called after the results are returned from Nominatim
-		 * @param  {Function} failureCallback Callback which is called after an error occured
-		 * @param  {Inteter} index of the waypoint in the route
+		 * @param  {String} address:  Address to be geocoded
+		 * @param  {Function} successCallback: Callback which is called after the results are returned from Nominatim
+		 * @param  {Function} failureCallback: Callback which is called after an error occured
+		 * @param  {String} language: language of the results
 		 */
 		function find(address, successCallback, failureCallback, language) {			
 			//build request
@@ -71,6 +71,7 @@ var SearchAddress = ( function(window) {"use strict";
 		/**
 		 *extract points to use for markers on map
 		 * @param {Object} results the (xml) results from the service
+		 * @return: array of OL.LonLat representing the coordinates of the address results
 		 */
 		function parseResultsToPoints(results) {
 			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...

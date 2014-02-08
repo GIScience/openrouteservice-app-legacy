@@ -22,7 +22,8 @@ var Waypoint = (function(w) {'use strict';
 	 * @param  {String}   address  Address to be geocoded
 	 * @param  {Function} successCallback Callback which is called after the results are returned from Nominatim
 	 * @param  {Function} failureCallback Callback which is called after an error occured
-	 * @param  {Inteter} index of the waypoint in the route
+	 * @param  {Integer} index of the waypoint in the route
+	 * @param language: language of the results
 	 */
 	function find(address, successCallback, failureCallback, wpIndex, language) {
 		//build request
@@ -82,6 +83,8 @@ var Waypoint = (function(w) {'use strict';
 	/**
 	 *extract points to use for markers on map
 	 * @param {Object} results the (xml) results from the service
+	 * @param wpIndex: index of the waypoint
+	 * @return: array of OL.LonLat representing the coordinates of the waypoint results
 	 */
 	function parseResultsToPoints(results, wpIndex) {
 		//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
@@ -112,6 +115,7 @@ var Waypoint = (function(w) {'use strict';
 
 	/**
 	 * set the type of the waypoint either as start, via or end according to the waypoint's position in the route
+	 * @return the type
 	 */
 	function determineWaypointType(wpIndex) {
 		var type;
@@ -136,6 +140,10 @@ var Waypoint = (function(w) {'use strict';
 		return type;
 	}
 
+	/**
+	 * adds a waypoint at the given index. if no index is given, the waypoint is appended at the end of the list
+	 * @param index: index of the waypoint to add 
+	 */
 	function addWaypoint(index) {
 		if (index) {
 			waypointsSet.splice(index, 0, false);
@@ -146,6 +154,10 @@ var Waypoint = (function(w) {'use strict';
 		}
 	}
 
+	/**
+	 * removes the waypoint at the given index.
+	 * @param index: index of the waypoint to remove. Nothing is removed if no index is given. 
+	 */
 	function removeWaypoint(index) {
 		if (index) {
 			waypointsSet.splice(index, 1);
@@ -153,35 +165,58 @@ var Waypoint = (function(w) {'use strict';
 		}
 	}
 
+	/**
+	 * get the number of waypoints 
+	 */
 	function getNumWaypoints() {
 		return waypointsSet.length;
 	}
 
 	/**
+	 * marks the given waypoint as set or unset
+	 * @param index: index of the waypoint to set
 	 * @param set: either true (to mark the waypoint set) or false (to mark the waypoint as unset) 
 	 */
 	function setWaypoint(index, set) {
 		waypointsSet[index] = set;
 	}
 
+	/**
+	 * gets the 'set' state of the given waypoint
+	 * @param index: index of the waypoint
+	 * @return: true, if the given waypoint is set; false otherwise 
+	 */
 	function getWaypointSet(index) {
 		return waypointsSet[index];
 	}
 
+	/**
+	 * gets the number of currently pending requests for the given waypoint
+	 * @param index: the index of the waypoint
+	 * @return: number of active requests 
+	 */
 	function getRequestCounterWaypoint(index) {
 		return requestCounterWaypoints[index];
 	}
 
+	/**
+	 * increases the number of active requests for the given waypoint
+	 * @param index: the index of the waypoint 
+	 */
 	function incrRequestCounterWaypoint(index) {
 		requestCounterWaypoints[index]++;
 	}
 
-	function decrRequestCounterWaypoint(index, value) {
+	/**
+	 * decreases the number of active requests for the given waypoint
+	 * @param index: index of the waypoint 
+	 */
+	function decrRequestCounterWaypoint(index) {
 		requestCounterWaypoints[index]--;
 	}
 
 	/**
-	 * find the next unset waypoint in the list of all waypoints starting at a given index
+	 * finds the next unset waypoint in the list of all waypoints starting at a given index
 	 * @param {Object} startingAt index to start looking for an empty waypoint
 	 * @return index of the empty waypoint or -1 if none exists
 	 */
@@ -195,6 +230,9 @@ var Waypoint = (function(w) {'use strict';
 		return -1;
 	}
 	
+	/**
+	 * @return number of set waypoints 
+	 */
 	function getNumWaypointsSet() {
 		var cnt = 0;
 		for (var i = 0; i < waypointsSet.length; i++) {
@@ -205,6 +243,9 @@ var Waypoint = (function(w) {'use strict';
 		return cnt;
 	}
 	
+	/**
+	 * used for debugging information 
+	 */
 	function getDebugInfo() {
 		return waypointsSet;
 	}

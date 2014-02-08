@@ -62,6 +62,7 @@ var Preferences = ( function(w) {'use strict';
 	/**
 	 * finds the appropriate term in the dictionary based on the local translation, e.g. the German equivalent for 'bureau de change' (Wechselstube) will map to 'bureau_de_change'
 	 * @param {Object} translation: the translated value
+	 * @return the term or empty string if there exists no term for the translation
 	 */
 	function reverseTranslate(translation) {
 		for (var term in this.dictionary ) {
@@ -79,6 +80,10 @@ var Preferences = ( function(w) {'use strict';
 	 * PREFERENCES
 	 */
 
+	/**
+	 * automatically determines default parameters for variables or applies GET variables
+	 * @return GET variables that need to be applied to other objects directly 
+	 */
 	function loadPreferencesOnStartup() {
 		this.language = this.setLanguage();
 		this.dictionary = window['lang_' + this.language];
@@ -90,6 +95,10 @@ var Preferences = ( function(w) {'use strict';
 		return readGetVars();
 	}
 
+	/**
+	 * extracts GET variables
+	 * @return array of GET variables
+	 */
 	function readGetVars() {
 		var res = OpenLayers.Util.getParameters();
 		var getVars = new Array();
@@ -99,6 +108,10 @@ var Preferences = ( function(w) {'use strict';
 		return getVars;
 	}
 
+	/**
+	 * determines language by cookie information, browser language or uses English by default
+	 * @return the language 
+	 */
 	function setLanguage() {
 		//read from cookie
 		var lang = readCookie(prefNames[this.languageIdx]);
@@ -122,7 +135,11 @@ var Preferences = ( function(w) {'use strict';
 
 		return lang;
 	}
-
+	
+	/**
+	 * determines language for routing instructions either by cookie information, browser language or uses English by default
+	 * @return the language
+	 */
 	function setRoutingLanguage() {
 		//read from cookie
 		var lang = readCookie(prefNames[this.routingLanguageIdx]);
@@ -139,6 +156,10 @@ var Preferences = ( function(w) {'use strict';
 		return lang;
 	}
 
+	/**
+	 * determines the distance unit either by cookie information or uses m/ km by default
+	 * @return the distance unit 
+	 */
 	function setDistanceUnit() {
 		//read from cookie
 		var distUnit = readCookie(prefNames[this.distanceUnitIdx]);
@@ -150,6 +171,10 @@ var Preferences = ( function(w) {'use strict';
 		return distUnit;
 	}
 
+	/**
+	 * determines the site version either by cookie or using the standard version by default
+	 * @return the version 
+	 */
 	function setVersion() {
 		//read from cookie
 		var siteVersion = readCookie(prefNames[this.versionIdx]);
@@ -162,7 +187,9 @@ var Preferences = ( function(w) {'use strict';
 	}
 
 	/**
+	 * determines the map positoin by using GET variable, cookie or geolocation feature
 	 * @param pos: extracted from the GET variables in readGetVars(); array containing lon and lat coordinates
+	 * @return the position
 	 */
 	function loadMapPosition(pos) {
 		if (pos && pos.length == 2) {
@@ -187,7 +214,9 @@ var Preferences = ( function(w) {'use strict';
 	}
 
 	/**
+	 * determines the zoom level of the map by using GET variable or cookie
 	 * @param zoomGet: extracted from the GET variables in readGetVars()
+	 * @return the zoom level
 	 */
 	function loadMapZoom(zoomGet) {
 		//use GET variable (permalink)
@@ -204,7 +233,9 @@ var Preferences = ( function(w) {'use strict';
 	}
 
 	/**
+	 * determines active map layers by using GET variable or cookie
 	 * @param layerCode: extracted from the GET variables in readGetVars()
+	 * @return the encoded layer information
 	 */
 	function loadMapLayer(layerCode) {
 		//use GET variable (permalink)
@@ -221,7 +252,9 @@ var Preferences = ( function(w) {'use strict';
 	}
 
 	/**
+	 * determines waypoints by using GET variable (default is no waypoints set)
 	 * @param waypoints: extracted from the GET variables in readGetVars()
+	 * @return array of waypoints represented by OL.LonLat coordinates
 	 */
 	function loadWaypoints(waypoints) {
 		if (waypoints) {
@@ -239,7 +272,9 @@ var Preferences = ( function(w) {'use strict';
 	}
 
 	/**
+	 * determines route options by GET variable
 	 * @param routeOpt: extracted from the GET variables in readGetVars()
+	 * @return the route options
 	 */
 	function loadRouteOptions(routeOpt) {
 		routeOpt = unescape(routeOpt);
@@ -269,7 +304,9 @@ var Preferences = ( function(w) {'use strict';
 	}
 
 	/**
+	 * determines route option avoidables by GET variable
 	 * @param highway, tollway: extracted from the GET variables in readGetVars()
+	 * @return the avoidables
 	 */
 	function loadAvoidables(highway, tollway) {
 		var avoidables = [false, false];
@@ -291,7 +328,9 @@ var Preferences = ( function(w) {'use strict';
 	}
 
 	/**
+	 * determines avoid areas by GET variable
 	 * @param avoidAreas: extracted from the GET variables in readGetVars()
+	 * @return an array of avoid areas; each area is represented by an OL.Geometry.Polygon
 	 */
 	function loadAvoidAreas(avoidAreas) {
 		permaInfo[this.avoidAreasIdx] = avoidAreas == undefined ? null : avoidAreas;
@@ -316,6 +355,8 @@ var Preferences = ( function(w) {'use strict';
 
 	/**
 	 * if the user changes e.g. route options from "mountainbike" to "pedestrian", update this information in the permaInfo array.
+	 * @param key: the index of the permaInfo array to update
+	 * @param value: the value that should be assigned to that field
 	 */
 	function updatePreferences(key, value) {
 		permaInfo[key] = escape(value);
@@ -326,7 +367,9 @@ var Preferences = ( function(w) {'use strict';
 	*/
 
 	/**
-	 * returns the cookie with the given name
+	 * gets the cookie with the given name
+	 * @param name: the name of the cookie
+	 * @return: the content of the cookie
 	 */
 	function readCookie(name) {
 		if (!name) {
@@ -355,6 +398,10 @@ var Preferences = ( function(w) {'use strict';
 	/**
 	 * Used to write all information at once; e.g. if no cookies ara available so far
 	 * when the map position, zoom level or selected mapLayer changes, refresh the cookies with the current data
+	 * @param lon: lon coordinate of current position
+	 * @param lat: lat coordinate of current position
+	 * @param zoomLvl: map zoom level
+	 * @param layerCode: encoded layer information (which layers and overlays are active)
 	 */
 	function writeMapCookies(lon, lat, zoomLvl, layerCode) {
 		//convert position into String
@@ -394,6 +441,8 @@ var Preferences = ( function(w) {'use strict';
 
 	/**
 	 * if the user e.g. changes the language of the application this is updated in the cookie
+	 * @param key: the index of the prefNames array to update
+	 * @param value: the value that should be assigned to that field
 	 */
 	function updateCookies(key, value) {
 		if (value && value.length > 0) {
@@ -438,6 +487,9 @@ var Preferences = ( function(w) {'use strict';
 		window.open(query);
 	}
 	
+	/**
+	 * the site is reloaded with the permalink (used after preferences have been changed) 
+	 */
 	function reloadWithPerma() {
 		var query = '?';
 		for (var i = 0; i < prefNames.length; i++) {
