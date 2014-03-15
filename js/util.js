@@ -16,7 +16,7 @@ util = ( function() {'use strict';
 
 			/**
 			 * transforms a given point to the display-projection of the map
-			 * @param {Object} pt: OpenLayers LonLat point to transform
+			 * @param {Object} pt: OpenLayers LonLat or Point coordinates to transform
 			 */
 			convertPointForDisplay : function(pt) {
 				var src = new OpenLayers.Projection('EPSG:900913');
@@ -35,7 +35,7 @@ util = ( function() {'use strict';
 
 			/**
 			 * transforms a given point to the internal projection of the map
-			 * @param {Object} pt: OpenLayers LonLat point to transform
+			 * @param {Object} pt: OpenLayers LonLat or Point coordinates to transform
 			 */
 			convertPointForMap : function(pt) {
 				var src = new OpenLayers.Projection('EPSG:4326');

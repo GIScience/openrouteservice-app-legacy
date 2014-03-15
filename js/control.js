@@ -945,6 +945,43 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		/* *********************************************************************
+		 * HEIGHT PROFILE
+		 * *********************************************************************/
+
+		/**
+		 * extracts information from the given file and shows the height profile
+		 * @param file: the file with elevation information
+		 */
+		function handleUploadHeightProfile(file) {
+			if (file) {
+				if (!window.FileReader) {
+					// File APIs are not supported, e.g. IE
+					//todo: show error
+				} else {
+					var r = new FileReader();
+					r.readAsText(file);
+
+					r.onload = function(e) {
+						var data = e.target.result;
+						var eleArray = map.parseStringToElevationPoints(data);
+
+						ui.showHeightProfile(eleArray);
+					};
+				}
+			} else {
+				//todo: show error
+			}
+		}
+		
+		/**
+		 * hovers the correspoinding position on the map/ the height profile
+		 * @param atts: lon: lon coordinate, lat: lat coordinate
+		 */
+		function handleHeightProfileHover(atts) {
+			map.hoverPosition(atts.lon, atts.lat);
+		}
+
+		/* *********************************************************************
 		* MAP
 		* *********************************************************************/
 
@@ -998,12 +1035,12 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		/* *********************************************************************
-		 * PREFERENCES, PERMALINK AND COOKIES
-		 * *********************************************************************/
+		* PREFERENCES, PERMALINK AND COOKIES
+		* *********************************************************************/
 
 		/**
 		 * updates internal preferences (language, distance unit, ...)
-		 * @param atts: key: id of the variable name; value: value that should be assigned to that variable 
+		 * @param atts: key: id of the variable name; value: value that should be assigned to that variable
 		 */
 		function handlePrefsChanged(atts) {
 			var key = atts.key;
@@ -1073,11 +1110,11 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		/* *********************************************************************
-		 * startup
-		 * *********************************************************************/
+		* startup
+		* *********************************************************************/
 
 		/**
-		 * apply GET variables, read cookies or apply standard values to initialize the ORS page 
+		 * apply GET variables, read cookies or apply standard values to initialize the ORS page
 		 */
 		function initializeOrs() {
 			//apply GET variables and/or cookies and set the user's language,...
@@ -1153,7 +1190,7 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		/**
-		 * apply selected site language, load dynamic menus, etc. 
+		 * apply selected site language, load dynamic menus, etc.
 		 */
 		function loadDynamicUiData() {
 			//load Ui elements with selected language
@@ -1172,7 +1209,7 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		/**
-		 * can be called to output debug information 
+		 * can be called to output debug information
 		 */
 		function showDebugInfo() {
 			console.log();
@@ -1248,6 +1285,9 @@ var Controller = ( function(w) {'use strict';
 			ui.register('control:reverseGeocodeCompleted', uploadRouteTrigger2ndWaypoint);
 			ui.register('ui:uploadTrack', handleUploadTrack);
 			ui.register('ui:removeTrack', handleRemoveTrack);
+
+			ui.register('ui:uploadHeightProfile', handleUploadHeightProfile);
+			ui.register('ui:heightProfileHover', handleHeightProfileHover);
 
 			ui.register('ui:saveUserPreferences', updateUserPreferences);
 			ui.register('ui:openPermalinkRequest', handlePermalinkRequest);

@@ -56,6 +56,9 @@ div.olControlScaleLine {
 /**
  * CSS for non-map elements
  */
+.headingElement {
+	font-weight: bold;
+}
 /* labels for main tabs (plan route, search)*/
 .tabLabels {
 	float: right;
@@ -519,7 +522,28 @@ button.routeOptionsButton > img {
 	top: 50px;
 	left: 400px;
 	right: 0px;
+	bottom: 25px;
+}
+.heightContent {
+	float: left;
+}
+#heightProfile {
+	position: absolute;
+	left: 400px;
+	right: 0px;
 	bottom: 0px;
+	height: 200px;
+	display: none;
+}
+#heightProfileChart {
+	position: absolute;
+	/*height: 180px;*/
+	height: 170px;
+	bottom: 5px;
+	right: 5px;
+	left: 5px;
+	/*z-index: -1;*/
+	width: 100%;
 }
 #geolocationNotification {
 	width: 80%;
@@ -559,6 +583,13 @@ button.routeOptionsButton > img {
 	opacity: 1;
 	padding: 2px 5px 0px 0px;
 }
+#toggleHeightProfile {
+	position: absolute;
+	z-index: 1040;
+	background-color: #FFFFFF;
+	opacity: 1;
+	padding: 2px 5px 0px 0px;
+}
 .sidebarVisible {
 	cursor: pointer;
 	top: 65px;
@@ -574,7 +605,20 @@ button.routeOptionsButton > img {
 	transform: scaleX(-1);
 	filter: fliph; /*IE*/
 }
-
+.heightProfileVisible {
+	cursor: pointer;
+	right: 10px;
+	bottom: 180px;
+	-ms-transform: rotate(270deg); /* IE 9 */
+	-webkit-transform: rotate(270deg); /* Chrome, Safari, Opera */
+}
+.heightProfileInvisible {
+	cursor: pointer;
+	left: 415px;
+	bottom: 3px;
+	-ms-transform: rotate(90deg); /* IE 9 */
+	-webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+}
 .panel {
 	/* panels in the sidebar
 	 * (similar to class 'well' from bootstrap but with other margins and color)*/

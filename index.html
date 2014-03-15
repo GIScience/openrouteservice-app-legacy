@@ -4,6 +4,7 @@
 		<title>OpenRouteService</title>
 		<meta name="robots" content="index, follow">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<link rel="stylesheet" type="text/css" href="lib/rickshaw/rickshaw.min.css">
 		<link rel="stylesheet" type="text/css" href="css/bootstrap-ext.min.css">
 		<!-- for file upload -->
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min_2.2.1.css">
@@ -303,7 +304,7 @@
 							Show my current location
 						</div><div class="alert alert-error" id="geolocationError" style="display: none;"></div>
 						<div id="geolocationResult"></div>
-						
+
 					</div>
 				</div>
 				<div id="searchPlace" class="panel panelLight">
@@ -345,6 +346,21 @@
 			<!-- Map goes here -->
 		</div>
 
+		<div id="heightProfile">
+			<!-- Height profile goes here -->
+			<label class="headingElement heightContent" id="heightProfileHeadingLabel">Height Profile</label>
+			<label class="heightContent" id="heightProfiletInfoLabel">&nbsp;&nbsp; Upload a route to show its height profile &nbsp;&nbsp;</label>
+			<form class="fileUploadForm heightContent">
+				<div id="uploadHeightProfileFiles" class="fileupload fileupload-new" data-provides="fileupload">
+					<span class="btn btn-file"><span class="fileupload-new fileUploadNewLabel">Select file</span><span class="fileupload-exists fileUploadExistsLabel">Change</span>
+						<input type="file">
+					</span>&nbsp;<span class="fileupload-preview"></span>
+				</div>
+			</form>
+			
+			<div id="heightProfileChart"></div>
+		</div>
+
 		<div class="disclaimer">
 			<a id="debug">debug - </a>
 			<a href="contact.html" class="inlineLink">(c) 2008-2013 &nbsp; -</a>
@@ -354,6 +370,9 @@
 
 		<!-- arrow to show/hide sidebar -->
 		<a class="sidebarVisible" id="toggleSidebar"><img src="img/arrowLeft.png" alt="/"></a>
+
+		<!-- arrow to show/hide height Profile -->
+		<a class="heightProfileInvisible" id="toggleHeightProfile"><img src="img/arrowLeft.png" alt="/"></a>
 
 		<!-- popup for user preferences (language, distance unit,...) -->
 		<div id="sitePrefsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sitePrefs">
@@ -413,6 +432,9 @@
 		<script type="text/javascript" src="lib/XMLWriter-1.0.0-min.js"></script>
 		<script type="text/javascript" src="lib/jsts/javascript.util.js"></script>
 		<script type="text/javascript" src="lib/jsts/jsts-0.13.1.js"></script>
+		<script type="text/javascript" src="lib/rickshaw/d3.min.js"></script>
+		<script type="text/javascript" src="lib/rickshaw/d3.layout.min.js"></script>
+		<script type="text/javascript" src="lib/rickshaw/rickshaw.min.js"></script>
 		<!-- ORS language files -->
 		<script type="text/javascript" src="js/lang/lang-de.js"></script>
 		<script type="text/javascript" src="js/lang/lang-en.js"></script>

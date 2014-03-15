@@ -109,6 +109,7 @@ var Map = ( function() {"use strict";
 			this.AVOID = 'avoidAreas';
 			this.TRACK = 'track';
 			this.ACCESSIBILITY = 'accessiblity';
+			this.HEIGHTS = 'Height Profile';
 
 			var self = this;
 
@@ -289,8 +290,13 @@ var Map = ( function() {"use strict";
 			});
 			layerAccessibility.redraw(true);
 
+			//height profile
+			var layerHeights = new OpenLayers.Layer.Vector(this.HEIGHTS, {
+				displayInLayerSwitcher : false
+			});
+
 			//define order
-			this.theMap.addLayers([layerAccessibility, layerRouteLines, layerTrack, layerGeolocation, layerSearch, layerPoi, layerRoutePoints, layerAvoid]);
+			this.theMap.addLayers([layerHeights, layerAccessibility, layerRouteLines, layerTrack, layerGeolocation, layerSearch, layerPoi, layerRoutePoints, layerAvoid]);
 
 			/* *********************************************************************
 			 * MAP CONTROLS
@@ -635,7 +641,7 @@ var Map = ( function() {"use strict";
 		 * based on an OL feature id and the layer the feature is located on, the position is looked up
 		 * @param featureId: OL feature ID as string
 		 * @param layer: string name of the layer the feature is located on.
-		 * @return: string with the position of the feature; style: 'x-coordinate y-coordinate' 
+		 * @return: string with the position of the feature; style: 'x-coordinate y-coordinate'
 		 */
 		function convertFeatureIdToPositionString(featureId, layer) {
 			var mapLayer = this.theMap.getLayersByName(layer);
@@ -652,7 +658,7 @@ var Map = ( function() {"use strict";
 		 * based on the ID of the feature, looks up the first point in a line, e.g. used in route lines
 		 * @param featureId: OL feature ID as string
 		 * @param layer: string name of the layer the feature is located on.
-		 * @return: string ID of the first point.  
+		 * @return: string ID of the first point.
 		 */
 		function getFirstPointIdOfLine(featureId, layer) {
 			var mapLayer = this.theMap.getLayersByName(layer);
@@ -773,13 +779,13 @@ var Map = ( function() {"use strict";
 		}
 
 		/*
-		 * GEOLOCATION
-		 */
+		* GEOLOCATION
+		*/
 
 		/**
 		 * adds a marker for the geolocation result at the given position
 		 * @param position: OL LonLat
-		 * @return: the OL Feature.Vector which was set at the given position 
+		 * @return: the OL Feature.Vector which was set at the given position
 		 */
 		function addGeolocationResultMarker(position) {
 			var layer = this.theMap.getLayersByName(this.GEOLOCATION)[0];
@@ -921,7 +927,7 @@ var Map = ( function() {"use strict";
 		}
 
 		/**
-		 * zooms the map so that all POI features become visible 
+		 * zooms the map so that all POI features become visible
 		 */
 		function zoomToPoiResults() {
 			var layerPoiResults = this.theMap.getLayersByName(this.POI)[0];
@@ -966,7 +972,7 @@ var Map = ( function() {"use strict";
 		}
 
 		/**
-		 * zooms the map so that the whole route becomes visible (i.e. all features of the route line layer) 
+		 * zooms the map so that the whole route becomes visible (i.e. all features of the route line layer)
 		 */
 		function zoomToRoute() {
 			var layer = this.theMap.getLayersByName(this.ROUTE_LINES)[0];
@@ -996,7 +1002,7 @@ var Map = ( function() {"use strict";
 
 		/**
 		 * checks if two avoid ares, i.e. polygons intersect each other.
-		 * @return true, if polygons intersect; otherwise false 
+		 * @return true, if polygons intersect; otherwise false
 		 */
 		function checkAvoidAreasIntersectThemselves() {
 			//code adapted from http://lists.osgeo.org/pipermail/openlayers-users/2012-March/024285.html
@@ -1053,7 +1059,7 @@ var Map = ( function() {"use strict";
 
 		/**
 		 * add the given areas as avoid area polygons to the appropriate map layer
-		 * @param areas: array of avoid area polygons (OL.Feature.Vector) 
+		 * @param areas: array of avoid area polygons (OL.Feature.Vector)
 		 */
 		function addAvoidAreas(areas) {
 			var layerAvoid = this.theMap.getLayersByName(this.AVOID)[0];
@@ -1106,8 +1112,8 @@ var Map = ( function() {"use strict";
 		}
 
 		/*
-		 * ACCESSIBILITY ANALYSIS
-		 */
+		* ACCESSIBILITY ANALYSIS
+		*/
 
 		/**
 		 * adds the given polygon as avoid area polygon to the map layer
@@ -1213,6 +1219,52 @@ var Map = ( function() {"use strict";
 			this.theMap.zoomToExtent(resultBounds);
 		}
 
+		/*
+		* HEIGHT PROFILE
+		*/
+
+		/**
+		 * extracts coordinates with elevation data (lon, lat, ele)
+		 * @param {Object} data string containing the coorinates
+		 * @return: array of OL.LonLat.Ele coordinates
+		 */
+		function parseStringToElevationPoints(data) {
+			var results = util.parseStringToDOM(data);
+			var ptArray = [];
+
+			var layer = this.theMap.getLayersByName(this.SEARCH)[0];
+
+			var points = util.getElementsByTagNameNS(results, '', 'trkpt');
+			$A(points).each(function(pt) {
+				var lat = pt.attributes[0].value;
+				var lon = pt.attributes[1].value;
+				var ele = pt.textContent;
+
+				var pt = new OpenLayers.LonLat.Ele(lon, lat, ele);
+				ptArray.push(pt);
+			});
+			return ptArray;
+		}
+
+		/**
+		 * shows a hover marker at the given position (and erases all other hover markers)
+		 * @param {Object} lon: lon coordinate of the position
+		 * @param {Object} lat: lat coordinate of the position
+		 */
+		function hoverPosition(lon, lat) {
+			var layer = this.theMap.getLayersByName(this.HEIGHTS)[0];
+			layer.removeAllFeatures();
+
+			var point = util.convertPointForMap(new OpenLayers.LonLat(lon, lat));
+			point = new OpenLayers.Geometry.Point(point.lon, point.lat);
+
+			var ft = new OpenLayers.Feature.Vector(point, {
+				icon : Ui.markerIcons.unset[0],
+				iconEm : Ui.markerIcons.unset[1],
+			});
+			layer.addFeatures([ft]);
+		}
+
 
 		map.prototype = new EventEmitter();
 		map.prototype.constructor = map;
@@ -1260,6 +1312,9 @@ var Map = ( function() {"use strict";
 		map.prototype.parseStringToWaypoints = parseStringToWaypoints;
 		map.prototype.parseStringToTrack = parseStringToTrack;
 		map.prototype.addTrackToMap = addTrackToMap;
+
+		map.prototype.parseStringToElevationPoints = parseStringToElevationPoints;
+		map.prototype.hoverPosition = hoverPosition;
 
 		return map;
 	}());

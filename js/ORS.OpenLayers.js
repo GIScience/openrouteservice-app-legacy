@@ -26,4 +26,20 @@
 		},
 		CLASS_NAME : "OpenLayers.Control.Click"
 	});
+	
+	/**
+	 * extend a LonLat point with an elevation attribute 
+	 */
+	OpenLayers.LonLat.Ele = OpenLayers.Class(OpenLayers.LonLat, {
+		lon : null,
+		// lat : double,
+		// elevation : double, 
+		
+		initialize : function(lon, lat, ele) {
+			this.lon = lon;
+			this.lat = lat;
+			this.ele = ele; 
+		},		
+		CLASS_NAME : "OpenLayers.LonLat.Ele"
+	})
 }());

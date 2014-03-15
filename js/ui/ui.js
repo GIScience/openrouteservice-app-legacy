@@ -73,10 +73,13 @@ var Ui = ( function(w) {'use strict';
 		 */
 		function handleToggleSidebar(e) {
 			var side = document.getElementById('sidebar');
+
+			//when calling this for the first time on page startup, style.display attribute will be empty which corresponds to the default case of "visible"
 			if (side.style.display == 'none') {
 				//sidebar is not visible, show it
 				$('#sidebar').css('display', 'inline');
 				$('#map').css('left', '415px');
+				$('#heightProfile').css('left', '415px');
 				$('#toggleSidebar').attr('class', 'sidebarVisible');
 				//trigger map update
 				theInterface.emit('ui:mapPositionChanged');
@@ -84,7 +87,33 @@ var Ui = ( function(w) {'use strict';
 				//sidebar is visible, hide it
 				$('#sidebar').css('display', 'none');
 				$('#map').css('left', '25px');
+				$('#heightProfile').css('left', '25px');
 				$('#toggleSidebar').attr('class', 'sidebarInvisible');
+				//trigger map update
+				theInterface.emit('ui:mapPositionChanged');
+			}
+		}
+
+		/**
+		 * makes the height profile pane visible or invisible (larger map)
+		 * @param e: the event
+		 */
+		function handleToggleHeightProfile(e) {
+			var height = $('#heightProfile').get(0);
+
+			//when calling this for the first time on page startup, style.display attribute will be empty which corresponds to the default case of "not visible"
+			if (height.style.display == 'inline') {
+				//height profile is visible, hide it
+				$('#heightProfile').css('display', 'none');
+				$('#map').css('bottom', '25px');
+				$('#toggleHeightProfile').attr('class', 'heightProfileInvisible');
+				//trigger map update
+				theInterface.emit('ui:mapPositionChanged');
+			} else {
+				//height profile is not visible, show it
+				$('#heightProfile').css('display', 'inline');
+				$('#map').css('bottom', '200px');
+				$('#toggleHeightProfile').attr('class', 'heightProfileVisible');
 				//trigger map update
 				theInterface.emit('ui:mapPositionChanged');
 			}
@@ -1044,7 +1073,7 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/**
-		 * The user wants to include this search result as waypoint in the route. Triggers the addition of that point. 
+		 * The user wants to include this search result as waypoint in the route. Triggers the addition of that point.
 		 */
 		function handleUseAsWaypoint(e) {
 			theInterface.emit('ui:useAsWaypoint', e.currentTarget.getAttribute('data-position'));
@@ -1052,12 +1081,12 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/* *********************************************************************
-		 * SEARCH POI
-		 * *********************************************************************/
+		* SEARCH POI
+		* *********************************************************************/
 
 		/**
 		 * internal flag for route availabiligy on the page
-		 * @present: set to true if a route is present; not present otherwise 
+		 * @present: set to true if a route is present; not present otherwise
 		 */
 		function setRouteIsPresent(present) {
 			routeIsPresent = present;
@@ -1112,7 +1141,7 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * is called when the user selects the option to look for POIs along the route
-		 * shows an error message, if necessary (if no route is present) 
+		 * shows an error message, if necessary (if no route is present)
 		 * triggers a service call to look for the POIs
 		 */
 		function handleSearchPoiNearRoute(e) {
@@ -1140,7 +1169,7 @@ var Ui = ( function(w) {'use strict';
 		/**
 		 * is called when the user selects the option to look for POIs along the route
 		 * shows an error message, if necessary (if no route is present or an invalid distance is selected)
-		 * triggers a service call to look for the POIs 
+		 * triggers a service call to look for the POIs
 		 */
 		function handleSearchPoiDistance(e) {
 			clearTimeout(typingTimerSearchPoiDistance);
@@ -1169,7 +1198,7 @@ var Ui = ( function(w) {'use strict';
 		/**
 		 * is called when the user selects the option to look for POIs along the route
 		 * shows an error message, if necessary (if no route is present or an invalid distance is selected)
-		 * triggers a service call to look for the POIs 
+		 * triggers a service call to look for the POIs
 		 */
 		function handleSearchPoiDistanceUnit(e) {
 			searchPoiAtts[2] = e.currentTarget.value;
@@ -1285,7 +1314,7 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * shows or hides an error message for incorrect distance parameters (show POIs XY m/yd/km/... from route)
-		 * @param isIncorrect: if true, an error message is displyed; hidden otherwise 
+		 * @param isIncorrect: if true, an error message is displyed; hidden otherwise
 		 */
 		function showSearchPoiDistUnitError(isIncorrect) {
 			if (isIncorrect) {
@@ -1297,18 +1326,18 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/**
-		 * triggers moving and zooming the map so that all POI search results become visible on the screen 
+		 * triggers moving and zooming the map so that all POI search results become visible on the screen
 		 */
 		function handleZoomToPoiResults(e) {
 			theInterface.emit('ui:zoomToPoiResults');
 		}
 
 		/* *********************************************************************
-		 * ROUTE
-		 * *********************************************************************/
-		
+		* ROUTE
+		* *********************************************************************/
+
 		/**
-		 * returns the Ui variable routeOptions 
+		 * returns the Ui variable routeOptions
 		 */
 		function getRoutePreferences() {
 			return routeOptions;
@@ -1316,7 +1345,7 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * gets a list of route points, i.e. waypoint coordinates
-		 * @return array of strings containing the coordinates 
+		 * @return array of strings containing the coordinates
 		 */
 		function getRoutePoints() {
 			var allRoutePoints = [];
@@ -1333,7 +1362,7 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * gets a short description of the route destination
-		 * @return string of the destination in short form or null if the last waypoint is not set 
+		 * @return string of the destination in short form or null if the last waypoint is not set
 		 */
 		function getRouteDestination() {
 			//find the last waypoint set
@@ -1356,7 +1385,7 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/**
-		 * shows a spinner for the route calculation process and hides previously displayed error messages 
+		 * shows a spinner for the route calculation process and hides previously displayed error messages
 		 */
 		function startRouteCalculation() {
 			var el = $('#routeCalculate');
@@ -1367,7 +1396,7 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/**
-		 * hides the spinner for the route calculation process 
+		 * hides the spinner for the route calculation process
 		 */
 		function endRouteCalculation() {
 			$('#routeCalculate').hide();
@@ -1375,7 +1404,7 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * displays general route information as a route summary
-		 * @param results: response of the service containing the route summary information 
+		 * @param results: response of the service containing the route summary information
 		 */
 		function updateRouteSummary(results) {
 			if (!results) {
@@ -1537,7 +1566,7 @@ var Ui = ( function(w) {'use strict';
 			}
 
 			/**
-			 * called when the user moves over the distance part of a route instruction. Triggers highlighting the corresponding route part 
+			 * called when the user moves over the distance part of a route instruction. Triggers highlighting the corresponding route part
 			 */
 			function handleMouseOverDist(e) {
 				e.currentTarget.addClassName('active');
@@ -1551,7 +1580,7 @@ var Ui = ( function(w) {'use strict';
 			}
 
 			/**
-			 * called when the user moves out of the distance part of a route instruction. Triggers un-highlighting the corresponding route part 
+			 * called when the user moves out of the distance part of a route instruction. Triggers un-highlighting the corresponding route part
 			 */
 			function handleMouseOutDist(e) {
 				e.currentTarget.removeClassName('active');
@@ -1564,7 +1593,7 @@ var Ui = ( function(w) {'use strict';
 			}
 
 			/**
-			 * called when the user moves over the instruction part of the route instruction. Trigger highlighting the corresponding route point 
+			 * called when the user moves over the instruction part of the route instruction. Trigger highlighting the corresponding route point
 			 */
 			function handleMouseOverText(e) {
 				e.currentTarget.addClassName('active');
@@ -1577,7 +1606,7 @@ var Ui = ( function(w) {'use strict';
 			}
 
 			/**
-			 * called when the user moves out of the instruction part of a route instruction. Triggers un-highlighting the corresponding route point  
+			 * called when the user moves out of the instruction part of a route instruction. Triggers un-highlighting the corresponding route point
 			 */
 			function handleMouseOutText(e) {
 				e.currentTarget.removeClassName('active');
@@ -1597,7 +1626,7 @@ var Ui = ( function(w) {'use strict';
 			}
 
 		}
-		
+
 		/**
 		 * hides the route summary pane, e.g. when no route is available
 		 */
@@ -1613,14 +1642,14 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/**
-		 * triggers zooming to the whole route 
+		 * triggers zooming to the whole route
 		 */
 		function handleZoomToRouteClick() {
 			theInterface.emit('ui:zoomToRoute');
 		}
 
 		/**
-		 * displays an error message when no route between the selected waypoints could be found or another error happened during route calculation 
+		 * displays an error message when no route between the selected waypoints could be found or another error happened during route calculation
 		 */
 		function showRoutingError() {
 			var el = $('#routeError');
@@ -1690,7 +1719,7 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * checks if routing options have changed and triggers a route recalculation if appropriate
-		 * @param e: the event 
+		 * @param e: the event
 		 */
 		function handleOptionsChanged(e) {
 			var item = e.srcElement.id;
@@ -1800,7 +1829,7 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * shows or hides an avoid area error message, e.g. if one avoid area intersects itself
-		 * @param showError: if true, shows the error message; hides it otherwise 
+		 * @param showError: if true, shows the error message; hides it otherwise
 		 */
 		function showAvoidAreasError(showError) {
 			var el = $('#avoidAreasError');
@@ -1813,22 +1842,22 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/* *********************************************************************
-		 * PERMALINK
-		 * *********************************************************************/
+		* PERMALINK
+		* *********************************************************************/
 
 		/**
-		 * triggers opening a new window with the permalink 
+		 * triggers opening a new window with the permalink
 		 */
 		function handleOpenPerma() {
 			theInterface.emit('ui:openPermalinkRequest');
 		}
 
 		/* *********************************************************************
-		 * ACCESSIBILITY ANALSYIS
-		 * *********************************************************************/
+		* ACCESSIBILITY ANALSYIS
+		* *********************************************************************/
 
 		/**
-		 * triggers the calculation of the accessibility analsyis with the current distance value 
+		 * triggers the calculation of the accessibility analsyis with the current distance value
 		 */
 		function handleAnalyzeAccessibility() {
 			var distance = $('#accessibilityDistance').val();
@@ -1847,7 +1876,7 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * shows a spinner during accessibility analysis calculation
-		 * @param showSpinner: if true, show the spinner; hide otherwise 
+		 * @param showSpinner: if true, show the spinner; hide otherwise
 		 */
 		function showSearchingAtAccessibility(showSpinner) {
 			if (showSpinner) {
@@ -1872,7 +1901,7 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/**
-		 * triggers removing former accessibility calculations from the map 
+		 * triggers removing former accessibility calculations from the map
 		 */
 		function handleRemoveAccessibility() {
 			$('#removeAccessibility').hide();
@@ -1880,11 +1909,11 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/* *********************************************************************
-		 * EXPORT / IMPORT
-		 * *********************************************************************/
+		* EXPORT / IMPORT
+		* *********************************************************************/
 
 		/**
-		 * triggers the export route to GPX function 
+		 * triggers the export route to GPX function
 		 */
 		function handleExportRouteClick() {
 			theInterface.emit('ui:exportRouteGpx');
@@ -1892,7 +1921,7 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * displays or hides a route export error
-		 * @param showError: if true, the error is displayed; hidden otherwise 
+		 * @param showError: if true, the error is displayed; hidden otherwise
 		 */
 		function showExportRouteError(showError) {
 			if (showError) {
@@ -1903,7 +1932,7 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/**
-		 * forwards the selected GPX file and triggers the waypoint extraction to upload a route from the file 
+		 * forwards the selected GPX file and triggers the waypoint extraction to upload a route from the file
 		 */
 		function handleImportRouteSelection() {
 			var file;
@@ -1921,7 +1950,7 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/**
-		 * removes the file from the import route dialogue 
+		 * removes the file from the import route dialogue
 		 */
 		function handleImportRouteRemove(e) {
 			//if the file is removed from the view, we do NOT remove the waypoints from the list, etc.
@@ -1931,7 +1960,7 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * shows an import error (route import)
-		 * @param showError: if true, the error is displayed; hidden otherwise 
+		 * @param showError: if true, the error is displayed; hidden otherwise
 		 */
 		function showImportRouteError(showError) {
 			if (showError) {
@@ -1942,7 +1971,7 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/**
-		 * forwards the selected GPX file and triggers the coordinate extraction to upload a track from the file 
+		 * forwards the selected GPX file and triggers the coordinate extraction to upload a track from the file
 		 */
 		function handleImportTrackSelection() {
 			var file;
@@ -1961,7 +1990,7 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/**
-		 * removes the file from the import track dialogue and triggers the deletion of the track on the map 
+		 * removes the file from the import track dialogue and triggers the deletion of the track on the map
 		 */
 		function handleImportTrackRemove() {
 			//remove the track from the map
@@ -1969,11 +1998,84 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/* *********************************************************************
-		 * USER PREFERENCES
-		 * *********************************************************************/
+		* HEIGHT PROFILE
+		* *********************************************************************/
 
 		/**
-		 * extracts selected user preferences and forwards them for saving in the preference module 
+		 * forwards the selected height profile file and triggers data extraction to visualize the elevation data
+		 */
+		function handleUploadHeightProfileSelection() {
+			var file;
+			var fileInput = $$('#uploadHeightProfileFiles input[type="file"]')[0];
+			if (fileInput && fileInput.files && fileInput.files.length > 0) {
+				file = fileInput.files[0];
+			} else if (fileInput && fileInput.value) {
+				//IE doesn't know x.files
+				file = fileInput.value;
+			}
+			console.log(file)
+			if (file) {
+				theInterface.emit('ui:uploadHeightProfile', file);
+			}
+		}
+
+		/**
+		 * shows the height profile as graph in the Ui.
+		 * @param elevationPoints: array of OL.LonLat.Ele containing x, y and elevation information
+		 */
+		function showHeightProfile(elevationPoints) {
+			var heightData = [];
+			for (var i = 0; i < elevationPoints.length; i++) {
+				var element = {
+					x : i,
+					y : parseInt(elevationPoints[i].ele)
+				};
+				heightData.push(element);
+			}
+
+			//define the height profile graph using Rickshaw library
+			var graph = new Rickshaw.Graph({
+				element : $('#heightProfileChart').get(0),
+				series : [{
+					color : 'steelblue',
+					data : heightData,
+					name : 'height'
+				}]
+			});
+			graph.render();
+
+			//shor percentage labels at the x axis
+			var xAxis = new Rickshaw.Graph.Axis.X({
+				graph : graph,
+				tickFormat : function(x) {
+					return Math.round(100 * x / elevationPoints.length) + '%'
+				}
+			});
+			xAxis.render();
+
+			//hover behavior of the height profile
+			var hoverDetail = new Rickshaw.Graph.HoverDetail({
+				graph : graph,
+				//show nothing for x; name and heightData for y (default)
+				xFormatter : function(x) {
+					//show hover-maker for this position
+					theInterface.emit('ui:heightProfileHover', {
+						lon : elevationPoints[x].lon,
+						lat : elevationPoints[x].lat
+					});
+
+					return elevationPoints[x].lon + ' ' + elevationPoints[x].lat;
+				}
+			});
+
+		}
+
+		/* *********************************************************************
+		* USER PREFERENCES
+		* *********************************************************************/
+
+		/**
+		 * extracts selected user preferences and forwards them for saving in the preference module
 		 */
 		function handleSaveUserPreferences() {
 			var version = $('#extendedVersionPrefs').find(":selected").text();
@@ -2018,7 +2120,7 @@ var Ui = ( function(w) {'use strict';
 		 * @param version: version of the site: standard, extended,...
 		 * @param language: language of the site
 		 * @param routingLanguage: language of the routing instructions
-		 * @param distanceUnit: unit of distances used on the site 
+		 * @param distanceUnit: unit of distances used on the site
 		 */
 		function setUserPreferences(version, language, routingLanguage, distanceUnit) {
 			//setting version
@@ -2063,11 +2165,11 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/* *********************************************************************
-		 * CLASS-SPECIFIC
-		 * *********************************************************************/
-		
+		* CLASS-SPECIFIC
+		* *********************************************************************/
+
 		/**
-		 * used for debugging information 
+		 * used for debugging information
 		 */
 		function debug() {
 			console.log()
@@ -2089,6 +2191,7 @@ var Ui = ( function(w) {'use strict';
 			$('.collapsibleHead').click(handleToggleCollapsibles);
 			//hide & view sidebar
 			$('#toggleSidebar').click(handleToggleSidebar);
+			$('#toggleHeightProfile').click(handleToggleHeightProfile);
 
 			//waypoints
 			$('.searchWaypoint').keyup(handleSearchWaypointInput);
@@ -2134,6 +2237,9 @@ var Ui = ( function(w) {'use strict';
 			$('#gpxUploadFilesDelete').click(handleImportRouteRemove);
 			$('#gpxUploadTrack').change(handleImportTrackSelection);
 			$('#gpxUploadTrackDelete').click(handleImportTrackRemove);
+
+			//height profile
+			$('#uploadHeightProfileFiles').change(handleUploadHeightProfileSelection)
 
 			//user preferences
 			$('#savePrefsBtn').click(handleSaveUserPreferences);
@@ -2195,6 +2301,8 @@ var Ui = ( function(w) {'use strict';
 
 		Ui.prototype.showExportRouteError = showExportRouteError;
 		Ui.prototype.showImportRouteError = showImportRouteError;
+
+		Ui.prototype.showHeightProfile = showHeightProfile;
 
 		Ui.prototype.setUserPreferences = setUserPreferences;
 
