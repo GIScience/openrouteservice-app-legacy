@@ -87,9 +87,6 @@ var Waypoint = (function(w) {'use strict';
 	 * @return: array of OL.LonLat representing the coordinates of the waypoint results
 	 */
 	function parseResultsToPoints(results, wpIndex) {
-		//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
-		results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
-
 		var europeBbox = new OpenLayers.Bounds(-31.303, 34.09, 50.455, 71.869);
 
 		var listOfPoints = [];

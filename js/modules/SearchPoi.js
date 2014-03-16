@@ -217,9 +217,6 @@ var SearchPoi = ( function(window) {"use strict";
 		 * @return: array of OL.LonLat representing the coordinates of the search results 
 		 */
 		function parseResultsToPoints(results) {
-			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
-			results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
-
 			var listOfPoints = [];
 
 			var geocodeResponseList = util.getElementsByTagNameNS(results, namespaces.xls, 'DirectoryResponse');

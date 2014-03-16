@@ -244,15 +244,12 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * shows the results of the waypoint search on the Ui building a list of result entries that can be selected as waypoint
-		 * @param request: response from the service
+		 * @param results: response from the service in XML format
 		 * @param listOfFeatures: list of OL feature IDs of the search result markers
 		 * @param layername: map layer these features are located on
 		 * @param wpIndex: index of the waypoint the search was performed for
 		 */
-		function updateSearchWaypointResultList(request, listOfFeatures, layername, wpIndex) {
-			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
-			var results = request.responseXML ? request.responseXML : util.parseStringToDOM(request.responseText);
-
+		function updateSearchWaypointResultList(results, listOfFeatures, layername, wpIndex) {
 			//insert address information to page
 			var allAddress;
 			var allIds = '';
@@ -559,20 +556,18 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * set a waypint with the service respponse after the user requested to set a waypoint by clicking on the map (right click).
-		 * @param request: the service response
+		 * @param results: the service response in XML format
 		 * @param typeOfWaypoint: one of START, VIA or END
 		 * @param index: index of the waypoint
 		 * @return: the index of the wayoint
 		 */
-		function addWaypointResultByRightclick(request, typeOfWaypoint, index) {
+		function addWaypointResultByRightclick(results, typeOfWaypoint, index) {
 			var numWaypoints = $('.waypoint').length - 1;
 			while (index >= numWaypoints) {
 				addWaypointAfter(numWaypoints - 1);
 				numWaypoints++;
 			}
 
-			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
-			var results = request.responseXML ? request.responseXML : util.parseStringToDOM(request.responseText);
 			var addressResult = util.getElementsByTagNameNS(results, namespaces.xls, 'Address');
 			addressResult = addressResult ? addressResult[0] : null;
 			var address = util.parseAddress(addressResult);
@@ -991,14 +986,11 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * shows the results of an address search in the Ui.
-		 * @param request: the address search response from the service
+		 * @param results: the address search response from the service in XML format
 		 * @param listOfFeatures: array of OL features representing address locations on the map
 		 * @param layername: map layer name the features are located on
 		 */
-		function updateSearchAddressResultList(request, listOfFeatures, layername) {
-			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
-			var results = request.responseXML ? request.responseXML : util.parseStringToDOM(request.responseText);
-
+		function updateSearchAddressResultList(results, listOfFeatures, layername) {
 			//insert address information to page
 			var allAddress;
 			var allIds = "";
@@ -1220,13 +1212,11 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * shows the results of an POI search in the Ui.
-		 * @param request: the POI search response from the service
+		 * @param results: the POI search response from the service in XML format
 		 * @param listOfFeatures: array of OL features representing POI locations on the map
 		 * @param layername: map layer name the features are located on
 		 */
-		function updateSearchPoiResultList(request, listOfFeatures, layername) {
-			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
-			var results = request.responseXML ? request.responseXML : util.parseStringToDOM(request.responseText);
+		function updateSearchPoiResultList(results, listOfFeatures, layername) {
 			var resultContainer = $('#fnct_searchPoiResults').get(0);
 			while (resultContainer.hasChildNodes()) {
 				resultContainer.removeChild(resultContainer.lastChild);

@@ -54,14 +54,25 @@ var Controller = ( function(w) {'use strict';
 		 * @param wpIndex: index of the waypoint
 		 */
 		function handleSearchWaypointResults(results, wpIndex) {
-			waypoint.decrRequestCounterWaypoint(wpIndex);
-			if (waypoint.getRequestCounterWaypoint(wpIndex) == 0) {
-				var listOfPoints = waypoint.parseResultsToPoints(results, wpIndex);
+			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
+			results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
 
-				ui.searchWaypointChangeToSearchingState(false, wpIndex);
+			//when the service gives response but contains an error the response is handeled as success, not error. We have to check for an error tag here:
+			var responseError = util.getElementsByTagNameNS(results, namespaces.xls, 'ErrorList').length;
+			if (parseInt(responseError) > 0) {
+				//service response contains an error, switch to error handling function
+				handleSearchWaypointFailure(wpIndex);
+			} else {
 
-				var listOfFeatures = map.addSearchAddressResultMarkers(listOfPoints, wpIndex);
-				ui.updateSearchWaypointResultList(results, listOfFeatures, map.SEARCH, wpIndex);
+				waypoint.decrRequestCounterWaypoint(wpIndex);
+				if (waypoint.getRequestCounterWaypoint(wpIndex) == 0) {
+					var listOfPoints = waypoint.parseResultsToPoints(results, wpIndex);
+
+					ui.searchWaypointChangeToSearchingState(false, wpIndex);
+
+					var listOfFeatures = map.addSearchAddressResultMarkers(listOfPoints, wpIndex);
+					ui.updateSearchWaypointResultList(results, listOfFeatures, map.SEARCH, wpIndex);
+				}
 			}
 		}
 
@@ -179,34 +190,46 @@ var Controller = ( function(w) {'use strict';
 		 * @param addWaypointAt: index where to add the waypoint
 		 */
 		function reverseGeocodeSuccess(addressResult, wpType, wpIndex, featureId, addWaypointAt) {
-			//adapt the waypoint internals:
-			if (addWaypointAt && addWaypointAt >= 0) {
-				ui.addWaypointAfter(addWaypointAt - 1, waypoint.getNumWaypoints());
-				waypoint.setWaypoint(addWaypointAt, true);
+			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
+			var addressResult = addressResult.responseXML ? addressResult.responseXML : util.parseStringToDOM(addressResult.responseText);
 
+			//when the service gives response but contains an error the response is handeled as success, not error. We have to check for an error tag here:
+			var responseError = util.getElementsByTagNameNS(addressResult, namespaces.xls, 'ErrorList').length;
+			if (parseInt(responseError) > 0) {
+				//service response contains an error, switch to error handling function
+				reverseGeocodeFailure(wpIndex);
+			} else {
+
+				//adapt the waypoint internals:
+				if (addWaypointAt && addWaypointAt >= 0) {
+					ui.addWaypointAfter(addWaypointAt - 1, waypoint.getNumWaypoints());
+					waypoint.setWaypoint(addWaypointAt, true);
+
+				}
+				waypoint.setWaypoint(wpIndex, true);
+
+				ui.showSearchingAtWaypoint(wpIndex, false);
+				var newIndex = ui.addWaypointResultByRightclick(addressResult, wpType, wpIndex);
+				var position = map.convertFeatureIdToPositionString(featureId, map.ROUTE_POINTS);
+				ui.setWaypointFeatureId(newIndex, featureId, position, map.ROUTE_POINTS);
+
+				//do we need to re-calculate the route?
+				handleRoutePresent();
+
+				//update preferences
+				handleWaypointChanged(map.getWaypointsString());
+
+				//cannot be emmited by 'this', so let's use sth that is known inside the callback...
+				ui.emit('control:reverseGeocodeCompleted');
 			}
-			waypoint.setWaypoint(wpIndex, true);
-
-			ui.showSearchingAtWaypoint(wpIndex, false);
-			var newIndex = ui.addWaypointResultByRightclick(addressResult, wpType, wpIndex);
-			var position = map.convertFeatureIdToPositionString(featureId, map.ROUTE_POINTS);
-			ui.setWaypointFeatureId(newIndex, featureId, position, map.ROUTE_POINTS);
-
-			//do we need to re-calculate the route?
-			handleRoutePresent();
-
-			//update preferences
-			handleWaypointChanged(map.getWaypointsString());
-
-			//cannot be emmited by 'this', so let's use sth that is known inside the callback...
-			ui.emit('control:reverseGeocodeCompleted');
 		}
 
 		/**
 		 * error handling for the reverse geocode service request
+		 * @param wpIndex: index of the waypoint
 		 */
-		function reverseGeocodeFailure() {
-			//TODO implement
+		function reverseGeocodeFailure(wpIndex) {
+			ui.showSearchingAtWaypoint(wpIndex, false);
 		}
 
 		/**
@@ -431,14 +454,25 @@ var Controller = ( function(w) {'use strict';
 		 * @param results: XML results of the address search
 		 */
 		function handleSearchAddressResults(results) {
-			searchAddress.requestCounter--;
-			if (searchAddress.requestCounter == 0) {
-				var listOfPoints = searchAddress.parseResultsToPoints(results);
+			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
+			results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
 
-				ui.searchAddressChangeToSearchingState(false);
+			//when the service gives response but contains an error the response is handeled as success, not error. We have to check for an error tag here:
+			var responseError = util.getElementsByTagNameNS(results, namespaces.xls, 'ErrorList').length;
+			if (parseInt(responseError) > 0) {
+				//service response contains an error, switch to error handling function
+				handleSearchAddressFailure();
+			} else {
 
-				var listOfFeatures = map.addSearchAddressResultMarkers(listOfPoints);
-				ui.updateSearchAddressResultList(results, listOfFeatures, map.SEARCH);
+				searchAddress.requestCounter--;
+				if (searchAddress.requestCounter == 0) {
+					var listOfPoints = searchAddress.parseResultsToPoints(results);
+
+					ui.searchAddressChangeToSearchingState(false);
+
+					var listOfFeatures = map.addSearchAddressResultMarkers(listOfPoints);
+					ui.updateSearchAddressResultList(results, listOfFeatures, map.SEARCH);
+				}
 			}
 		}
 
@@ -529,14 +563,26 @@ var Controller = ( function(w) {'use strict';
 		 * @param results: XML search results
 		 */
 		function handleSearchPoiResults(results) {
-			searchPoi.requestCounter--;
-			if (searchPoi.requestCounter == 0) {
-				var listOfPoints = searchPoi.parseResultsToPoints(results);
+			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
+			results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
 
-				ui.searchPoiChangeToSearchingState(false);
+			//when the service gives response but contains an error the response is handeled as success, not error. We have to check for an error tag here:
+			var responseError = util.getElementsByTagNameNS(results, namespaces.xls, 'ErrorList').length;
+			if (parseInt(responseError) > 0) {
+				//service response contains an error, switch to error handling function
+				handleSearchPoiFailure();
+			} else {
 
-				var listOfFeatures = map.addSearchPoiResultMarkers(listOfPoints);
-				ui.updateSearchPoiResultList(results, listOfFeatures, map.POI);
+				searchPoi.requestCounter--;
+				if (searchPoi.requestCounter == 0) {
+
+					var listOfPoints = searchPoi.parseResultsToPoints(results);
+
+					ui.searchPoiChangeToSearchingState(false);
+
+					var listOfFeatures = map.addSearchPoiResultMarkers(listOfPoints);
+					ui.updateSearchPoiResultList(results, listOfFeatures, map.POI);
+				}
 			}
 		}
 
@@ -686,27 +732,34 @@ var Controller = ( function(w) {'use strict';
 
 			results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
 
-			//use all-in-one-LineString to save the whole route in a single string
-			var routeLineString = route.writeRouteToSingleLineString(results);
-			var routeString = map.writeRouteToString(routeLineString);
-			route.routeString = routeString;
-
-			// each route instruction has a part of this lineString as geometry for this instruction
-			var routeLines = route.parseResultsToLineStrings(results, util.convertPointForMap);
-			var routePoints = route.parseResultsToCornerPoints(results, util.convertPointForMap);
-			var featureIds = map.updateRoute(routeLines, routePoints);
-
-			var errors = route.hasRoutingErrors(results);
-
-			if (!errors) {
-				ui.updateRouteSummary(results);
-
-				ui.updateRouteInstructions(results, featureIds, map.ROUTE_LINES);
-				ui.endRouteCalculation();
-
-				map.zoomToRoute();
-			} else {
+			//when the service gives response but contains an error the response is handeled as success, not error. We have to check for an error tag here:
+			var responseError = util.getElementsByTagNameNS(results, namespaces.xls, 'ErrorList').length;
+			if (parseInt(responseError) > 0) {
+				//service response contains an error, switch to error handling function
 				routeCalculationError();
+			} else {
+				//use all-in-one-LineString to save the whole route in a single string
+				var routeLineString = route.writeRouteToSingleLineString(results);
+				var routeString = map.writeRouteToString(routeLineString);
+				route.routeString = routeString;
+
+				// each route instruction has a part of this lineString as geometry for this instruction
+				var routeLines = route.parseResultsToLineStrings(results, util.convertPointForMap);
+				var routePoints = route.parseResultsToCornerPoints(results, util.convertPointForMap);
+				var featureIds = map.updateRoute(routeLines, routePoints);
+
+				var errors = route.hasRoutingErrors(results);
+
+				if (!errors) {
+					ui.updateRouteSummary(results);
+
+					ui.updateRouteInstructions(results, featureIds, map.ROUTE_LINES);
+					ui.endRouteCalculation();
+
+					map.zoomToRoute();
+				} else {
+					routeCalculationError();
+				}
 			}
 		}
 
@@ -806,15 +859,24 @@ var Controller = ( function(w) {'use strict';
 		 * @param result: XML response from the service
 		 */
 		function accessibilitySuccessCallback(result) {
-			var bounds = analyse.parseResultsToBounds(result);
-			if (bounds) {
-				map.theMap.zoomToExtent(bounds, true);
-				var polygon = analyse.parseResultsToPolygon(result);
-				map.addAccessiblityPolygon(polygon);
+			result = result.responseXML ? result.responseXML : util.parseStringToDOM(result.responseText);
 
-				ui.showSearchingAtAccessibility(false);
-			} else {
+			//when the service gives response but contains an error the response is handeled as success, not error. We have to check for an error tag here:
+			var responseError = util.getElementsByTagNameNS(result, namespaces.xls, 'ErrorList').length;
+			if (parseInt(responseError) > 0) {
+				//service response contains an error
 				accessibilityFailureCallback();
+			} else {
+				var bounds = analyse.parseResultsToBounds(result);
+				if (bounds) {
+					map.theMap.zoomToExtent(bounds, true);
+					var polygon = analyse.parseResultsToPolygon(result);
+					map.addAccessiblityPolygon(polygon);
+
+					ui.showSearchingAtAccessibility(false);
+				} else {
+					accessibilityFailureCallback();
+				}
 			}
 		}
 
@@ -945,8 +1007,8 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		/* *********************************************************************
-		 * HEIGHT PROFILE
-		 * *********************************************************************/
+		* HEIGHT PROFILE
+		* *********************************************************************/
 
 		/**
 		 * extracts information from the given file and shows the height profile
@@ -972,7 +1034,7 @@ var Controller = ( function(w) {'use strict';
 				//todo: show error
 			}
 		}
-		
+
 		/**
 		 * hovers the correspoinding position on the map/ the height profile
 		 * @param atts: lon: lon coordinate, lat: lat coordinate

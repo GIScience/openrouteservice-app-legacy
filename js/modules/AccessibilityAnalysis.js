@@ -91,21 +91,20 @@ var AccessibilityAnalysis = ( function(w) {"use strict";
 		/**
 		 * processes the results and extracts area bounds
 		 * @param {Object} result: the response of the service
-		 * @return OL.Bounds containing the accessible area
+		 * @return OL.Bounds containing the accessible area; null in case of an error response
 		 */
 		function parseResultsToBounds(result) {
-			result = result.responseXML ? result.responseXML : util.parseStringToDOM(result.responseText);
-			var boundingBox = util.getElementsByTagNameNS(result, namespaces.aas, 'BoundingBox');
-			var bounds;
-			if (boundingBox && boundingBox.length > 0) {
-				bounds = new OpenLayers.Bounds();
-				$A(util.getElementsByTagNameNS(boundingBox[0], namespaces.gml, 'pos')).each(function(position) {
-					position = util.convertPositionStringToLonLat(position.firstChild.nodeValue);
-					position = util.convertPointForMap(position);
-					bounds.extend(position);
-				});
-			}
-			return bounds;
+				var boundingBox = util.getElementsByTagNameNS(result, namespaces.aas, 'BoundingBox');
+				var bounds;
+				if (boundingBox && boundingBox.length > 0) {
+					bounds = new OpenLayers.Bounds();
+					$A(util.getElementsByTagNameNS(boundingBox[0], namespaces.gml, 'pos')).each(function(position) {
+						position = util.convertPositionStringToLonLat(position.firstChild.nodeValue);
+						position = util.convertPointForMap(position);
+						bounds.extend(position);
+					});
+				}
+				return bounds;
 		}
 
 		/**
@@ -114,7 +113,6 @@ var AccessibilityAnalysis = ( function(w) {"use strict";
 		 * @return OL.Geometry.Polygon representing the accessible area
 		 */
 		function parseResultsToPolygon(result) {
-			result = result.responseXML ? result.responseXML : util.parseStringToDOM(result.responseText);
 			var area = util.getElementsByTagNameNS(result, namespaces.aas, 'AccessibilityGeometry');
 			var poly;
 			if (area) {
