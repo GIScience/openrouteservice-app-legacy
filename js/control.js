@@ -361,6 +361,8 @@ var Controller = ( function(w) {'use strict';
 				key : preferences.waypointIdx,
 				value : waypointStringList
 			});
+			
+			handleRoutePresent();
 		}
 
 		/**
@@ -771,6 +773,7 @@ var Controller = ( function(w) {'use strict';
 			ui.showRoutingError();
 			ui.hideRouteSummary();
 			ui.hideRouteInstructions();
+			map.updateRoute();
 		}
 
 		/**

@@ -11,6 +11,6 @@
 
 /**
  * @author: Oliver Roick, roick@uni-heidelberg.de, Carina Eichler, carina.eichler@uni-heidelberg.de
- * @verion: 0.2
+ * @verion: 0.3
  */
  
