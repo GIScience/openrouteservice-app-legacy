@@ -537,12 +537,10 @@ button.routeOptionsButton > img {
 }
 #heightProfileChart {
 	position: absolute;
-	/*height: 180px;*/
 	height: 170px;
 	bottom: 5px;
 	right: 5px;
 	left: 5px;
-	/*z-index: -1;*/
 	width: 100%;
 }
 #geolocationNotification {
@@ -717,6 +715,18 @@ img {
 	display: none;
 }
 #newToOrs > label {
+	width: 220px;
+	line-height: 1.1;
+}
+
+/* popup with information about a service timeout */
+#serviceTimeout {
+	display:none;
+	position: absolute;
+	left: 430px;
+	top: 70px;
+}
+#serviceTimeout > label {
 	width: 220px;
 	line-height: 1.1;
 }

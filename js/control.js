@@ -2,7 +2,11 @@ var Controller = ( function(w) {'use strict';
 
 		var $ = w.jQuery, ui = w.Ui, uiVersions = w.Versions, uiLanguages = w.Languages, waypoint = w.Waypoint, geolocator = w.Geolocator, searchAddress = w.SearchAddress, searchPoi = w.SearchPoi, route = w.Route, analyse = w.AccessibilityAnalysis, preferences = w.Preferences, openRouteService = w.OpenRouteService, Map = w.Map,
 		//the map
-		map;
+		map,
+		//Timeout for service responses
+		SERVICE_TIMEOUT_INTERVAL = 10000,
+		//timer
+		timerRoute; //TODO more timers for various service calls
 
 		function Controller() {
 			//path to the proxy-script as workaround for JavaScript security errors
@@ -361,7 +365,7 @@ var Controller = ( function(w) {'use strict';
 				key : preferences.waypointIdx,
 				value : waypointStringList
 			});
-			
+
 			handleRoutePresent();
 		}
 
@@ -712,6 +716,15 @@ var Controller = ( function(w) {'use strict';
 				var avoidAreas = map.getAvoidAreas();
 
 				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, avoidHighway, avoidTollway, avoidAreas);
+				//try to read a variable that is set after the service response was received. If this variable is not set after a while -> timeout.
+				clearTimeout(timerRoute);
+				timerRoute = setTimeout(function() {
+					if (!route.routePresent) {
+						//if no response has been received after the defined interval, show a timeout error.
+						ui.showServiceTimeoutPopup();  //TODO use for other service calls as well
+					}
+					console.log(route.routePresent)
+				}, SERVICE_TIMEOUT_INTERVAL);
 			} else {
 				//internal
 				route.routePresent = false;
@@ -1028,9 +1041,18 @@ var Controller = ( function(w) {'use strict';
 
 					r.onload = function(e) {
 						var data = e.target.result;
+						//calculate the height profile
 						var eleArray = map.parseStringToElevationPoints(data);
-
 						ui.showHeightProfile(eleArray);
+						
+						//show the track on the map
+						//remove gpx: tags; Firefox cannot cope with that.
+						data = data.replace(/gpx:/g, '');
+						var track = map.parseStringToTrack(data);
+						if (track) {
+							//add features to map
+							map.addTrackToMap(track);
+						}
 					};
 				}
 			} else {
@@ -1044,6 +1066,14 @@ var Controller = ( function(w) {'use strict';
 		 */
 		function handleHeightProfileHover(atts) {
 			map.hoverPosition(atts.lon, atts.lat);
+		}
+		
+		/**
+		 * removes an uploaded height profile track from the map 
+		 */
+		function handleRemoveHeightProfile() {
+			map.clearMarkers(map.TRACK);
+			map.clearMarkers(map.HEIGHTS);
 		}
 
 		/* *********************************************************************
@@ -1353,6 +1383,7 @@ var Controller = ( function(w) {'use strict';
 
 			ui.register('ui:uploadHeightProfile', handleUploadHeightProfile);
 			ui.register('ui:heightProfileHover', handleHeightProfileHover);
+			ui.register('ui:removeHeightProfileTrack', handleRemoveHeightProfile);
 
 			ui.register('ui:saveUserPreferences', updateUserPreferences);
 			ui.register('ui:openPermalinkRequest', handlePermalinkRequest);

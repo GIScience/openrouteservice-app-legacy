@@ -132,6 +132,13 @@ var Ui = ( function(w) {'use strict';
 			$('#newToOrs').append(label);
 			$('#newToOrs').show();
 		}
+		
+		function showServiceTimeoutPopup() {
+			var label = new Element('label');
+			label.insert(preferences.translate('serverError'));
+			$('#serviceTimeout').append(label);
+			$('#serviceTimeout').show();
+		}
 
 		/* *********************************************************************
 		* ALL MARKER ELEMENTS
@@ -2003,7 +2010,6 @@ var Ui = ( function(w) {'use strict';
 				//IE doesn't know x.files
 				file = fileInput.value;
 			}
-			console.log(file)
 			if (file) {
 				theInterface.emit('ui:uploadHeightProfile', file);
 			}
@@ -2057,7 +2063,18 @@ var Ui = ( function(w) {'use strict';
 					return elevationPoints[x].lon + ' ' + elevationPoints[x].lat;
 				}
 			});
-
+			//note: deleting the height profile, i.e. ghe rickshaw graph and re-loading another file causes errors in the Rickshaw.Graph.HoverDetail feature though optically everything seems to work fine.
+			//I didn't find a reason for that behavior so far.
+		}
+		
+		/**
+		 * removes the height profile from the UI 
+		 */
+		function handleHeightProfileRemove() {
+			$('#heightProfileChart').empty();
+						
+			//remove the track from the map
+			theInterface.emit('ui:removeHeightProfileTrack');			
 		}
 
 		/* *********************************************************************
@@ -2229,7 +2246,8 @@ var Ui = ( function(w) {'use strict';
 			$('#gpxUploadTrackDelete').click(handleImportTrackRemove);
 
 			//height profile
-			$('#uploadHeightProfileFiles').change(handleUploadHeightProfileSelection)
+			$('#uploadHeightProfileFiles').change(handleUploadHeightProfileSelection);
+			$('#heightProfileFilesDelete').click(handleHeightProfileRemove);
 
 			//user preferences
 			$('#savePrefsBtn').click(handleSaveUserPreferences);
@@ -2240,6 +2258,7 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.constructor = Ui;
 
 		Ui.prototype.showNewToOrsPopup = showNewToOrsPopup;
+		Ui.prototype.showServiceTimeoutPopup = showServiceTimeoutPopup;
 
 		Ui.prototype.emphElement = emphElement;
 		Ui.prototype.deEmphElement = deEmphElement;

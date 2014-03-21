@@ -5,7 +5,7 @@ var lang_en = {
 	'half-right' : 'half right',
 	'straight' : 'straight',
 
-	'serverError' : 'We are sorry. An error occured during the calculations on the server. Please try again later.',
+	'serverError' : 'We are sorry. An error occured during the calculation on the server. Please try again later.',
 
 	'contact' : 'Info&nbsp;&amp;&nbsp;Contact',
 

@@ -354,11 +354,18 @@
 				<div id="uploadHeightProfileFiles" class="fileupload fileupload-new" data-provides="fileupload">
 					<span class="btn btn-file"><span class="fileupload-new fileUploadNewLabel">Select file</span><span class="fileupload-exists fileUploadExistsLabel">Change</span>
 						<input type="file">
-					</span>&nbsp;<span class="fileupload-preview"></span>
+					</span>&nbsp;<span class="fileupload-preview"></span><a href="#" id="heightProfileFilesDelete" class="close fileupload-exists" data-dismiss="fileupload" style="float:none">x</a>
 				</div>
 			</form>
-			
+
 			<div id="heightProfileChart"></div>
+		</div>
+
+		<!-- Popup for service timeouts -->
+		<div class="alert alert-error" id="serviceTimeout">
+			<button type="button" class="close" data-dismiss="alert">
+				×
+			</button>
 		</div>
 
 		<div class="disclaimer">
@@ -435,7 +442,7 @@
 		<script type="text/javascript" src="lib/rickshaw/d3.min.js"></script>
 		<script type="text/javascript" src="lib/rickshaw/d3.layout.min.js"></script>
 		<script type="text/javascript" src="lib/rickshaw/rickshaw.min.js"></script>
-			
+
 		<!-- ORS single file -->
 		<!-- <script type="text/javascript" src="build/ORS.js"></script> -->
 
@@ -458,7 +465,7 @@
 		<script type="text/javascript" src="js/map.js"></script>
 		<script type="text/javascript" src="js/control.js"></script>
 		<script type="text/javascript" src="js/ORS.OpenLayers.js"></script>
-		
+
 		<!-- ORS language files -->
 		<script type="text/javascript" src="js/lang/lang-de.js"></script>
 		<script type="text/javascript" src="js/lang/lang-en.js"></script>
