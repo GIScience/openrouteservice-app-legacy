@@ -522,27 +522,29 @@ button.routeOptionsButton > img {
 	top: 50px;
 	left: 400px;
 	right: 0px;
-	bottom: 25px;
+	/*bottom: 25px;   uncomment for height pofile */
+	bottom: 0px;
 }
-.heightContent {
+/* uncomment for height pofile */
+/*.heightContent {
 	float: left;
-}
-#heightProfile {
+}*/
+/*#heightProfile {
 	position: absolute;
 	left: 400px;
 	right: 0px;
 	bottom: 0px;
 	height: 200px;
 	display: none;
-}
-#heightProfileChart {
+}*/
+/*#heightProfileChart {
 	position: absolute;
 	height: 170px;
 	bottom: 5px;
 	right: 5px;
 	left: 5px;
 	width: 100%;
-}
+}*/
 #geolocationNotification {
 	width: 80%;
 	margin-left: auto;
@@ -581,13 +583,14 @@ button.routeOptionsButton > img {
 	opacity: 1;
 	padding: 2px 5px 0px 0px;
 }
-#toggleHeightProfile {
+/* uncomment for height pofile*/
+/*#toggleHeightProfile {
 	position: absolute;
 	z-index: 1040;
 	background-color: #FFFFFF;
 	opacity: 1;
 	padding: 2px 5px 0px 0px;
-}
+}*/
 .sidebarVisible {
 	cursor: pointer;
 	top: 65px;
@@ -603,20 +606,21 @@ button.routeOptionsButton > img {
 	transform: scaleX(-1);
 	filter: fliph; /*IE*/
 }
-.heightProfileVisible {
+/* uncomment for height pofile*/
+/*.heightProfileVisible {
 	cursor: pointer;
 	right: 10px;
 	bottom: 180px;
-	-ms-transform: rotate(270deg); /* IE 9 */
-	-webkit-transform: rotate(270deg); /* Chrome, Safari, Opera */
-}
-.heightProfileInvisible {
+	-ms-transform: rotate(270deg);
+	-webkit-transform: rotate(270deg)
+}*/
+/*.heightProfileInvisible {
 	cursor: pointer;
 	left: 415px;
 	bottom: 3px;
-	-ms-transform: rotate(90deg); /* IE 9 */
-	-webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
-}
+	-ms-transform: rotate(90deg);
+	-webkit-transform: rotate(90deg);
+}*/
 .panel {
 	/* panels in the sidebar
 	 * (similar to class 'well' from bootstrap but with other margins and color)*/
