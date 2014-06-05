@@ -50,13 +50,14 @@ namespaces.schemata = {
 /**
  * services that are called by openrouteservice, e.g. to determine the route between two waypoints
  * important note: all these URLs must be listed in the cgi-bin/proxy.cgi script of the server running ORS!
+ * important note: all URLs have been blanked out for security reasons, if you want to become an active ORS code contributor please contact us: openrouteserviceATgeog.uni-heidelberg.de 
  */
 namespaces.services = {
-	geocoding : 'http://openls.geog.uni-heidelberg.de/testing2011/geocode', //for address search requests
-	routing : 'http://openls.geog.uni-heidelberg.de/testing2011/route', //for routing requests
-	directory : 'http://openls.geog.uni-heidelberg.de/testing2011/directory', //for POI search requests
-	analyse : 'http://openls.geog.uni-heidelberg.de/osm/eu/analyse',
-	wps : 'http://wasserkuppe.geog.uni-heidelberg.de:8080/deegree3wps/services' //for calculation of polygon around route for POI search
+	geocoding : '', //for address search requests
+	routing : '', //for routing requests
+	directory : '', //for POI search requests
+	analyse : '',
+	wps : '' //for calculation of polygon around route for POI search
 	//profile: 'http://watzmann.geog.uni-heidelberg.de:8080/deegree/all' 			//for height profile of route
 };
 
@@ -64,14 +65,14 @@ namespaces.services = {
  * map layers used on the openlayers map
  */
 //url to ORS-WMS map layer
-namespaces.layerWms = 'http://129.206.228.72/cached/osm?';
+namespaces.layerWms = '';
 //url to Open Map Surfer layer
-namespaces.layerMapSurfer = 'http://129.206.74.245:8001/tms_r.ashx?x=${x}&y=${y}&z=${z}';
+namespaces.layerMapSurfer = '';
 //url to hillshade overlay
-namespaces.layerHs = 'http://129.206.228.72/cached/hillshade?';
+namespaces.layerHs = '';
 //urls to TMC overlay
-namespaces.overlayTmc = 'http://koenigstuhl.geog.uni-heidelberg.de/tmc/wms';
-namespaces.overlayTmcLines = 'http://openls.geog.uni-heidelberg.de/geoserver/wms';
+namespaces.overlayTmc = '';
+namespaces.overlayTmcLines = '';
 /* ======================================================================
     util.js
    ====================================================================== */
