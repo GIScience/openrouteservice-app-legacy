@@ -50,7 +50,8 @@ namespaces.schemata = {
 /**
  * services that are called by openrouteservice, e.g. to determine the route between two waypoints
  * important note: all these URLs must be listed in the cgi-bin/proxy.cgi script of the server running ORS!
- * important note: all URLs have been blanked out for security reasons, if you want to become an active ORS code contributor please contact us: openrouteserviceATgeog.uni-heidelberg.de 
+ * important note: all URLs have been blanked out for security reasons
+ * if you want to become an active ORS code contributor please contact us: openrouteserviceATgeog.uni-heidelberg.de 
  */
 namespaces.services = {
 	geocoding : '', //for address search requests
