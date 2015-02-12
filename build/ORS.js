@@ -3712,7 +3712,7 @@ var Ui = ( function(w) {'use strict';
 					var text = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Instruction')[0];
 					text = text.text || text.textContent;
 
-					var distance = util.getElementsByTagNameNS(instruction, namespaces.xls, 'distance')[0];
+					var distance = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Distance')[0];
 					var distanceValue = distance.getAttribute('value');
 					var distanceUnit = distance.getAttribute('uom');
 					var distArr = [];
