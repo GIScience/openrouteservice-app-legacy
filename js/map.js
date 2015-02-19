@@ -132,78 +132,89 @@ var Map = ( function() {"use strict";
 			* *********************************************************************/
 
 			//layer 1 - open map surfer
-			var mapSurfer_name = "OpenMapSurfer Roads";
-			var mapSurfer_options = {
-				type : 'png',
-				isBaseLayer : true,
-				numZoomLevels : 19,
-				attribution : 'Maps and data: &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> and contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-			};
-			var layerMapSurfer = new OpenLayers.Layer.XYZ(mapSurfer_name, namespaces.layerMapSurfer, mapSurfer_options);
-			this.theMap.addLayer(layerMapSurfer);
+			if (namespaces.layerMapSurfer.length) {
+					var mapSurfer_name = "OpenMapSurfer Roads";
+					var mapSurfer_options = {
+						type : 'png',
+						isBaseLayer : true,
+						numZoomLevels : 19,
+						attribution : 'Maps and data: &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> and contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+					};
+					var layerMapSurfer = new OpenLayers.Layer.XYZ(mapSurfer_name, namespaces.layerMapSurfer, mapSurfer_options);
+					this.theMap.addLayer(layerMapSurfer);
+			}
+
 
 			//layer 2 - mapnik
 			var osmLayer = new OpenLayers.Layer.OSM();
 			this.theMap.addLayer(osmLayer);
 
-			//layer 3 - osm-wms worldwide
-			var wms_name = "OSM-WMS worldwide";
-			var wms_options = {
-				layers : 'osm_auto:all',
-				srs : 'EPSG:900913',
-				format : 'image/png',
-				numZoomLevels : 19
-			};
-			var layerOSM = new OpenLayers.Layer.WMS(wms_name, namespaces.layerWms, wms_options, {
-				'buffer' : 2,
-				'attribution' : 'Maps and data: &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> and contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
-			});
-			this.theMap.addLayer(layerOSM);
+			if (namespaces.layerWms.length) {
+				//layer 3 - osm-wms worldwide
+				var wms_name = "OSM-WMS worldwide";
+				var wms_options = {
+					layers : 'osm_auto:all',
+					srs : 'EPSG:900913',
+					format : 'image/png',
+					numZoomLevels : 19
+				};
+				var layerOSM = new OpenLayers.Layer.WMS(wms_name, namespaces.layerWms, wms_options, {
+					'buffer' : 2,
+					'attribution' : 'Maps and data: &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> and contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+				});
+				this.theMap.addLayer(layerOSM);
+			}
 
 			//layer 4 - cycle map
 			var layerCycle = new OpenLayers.Layer.OSM("OpenCycleMap", ["http://a.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png", "http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png", "http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png"]);
 			this.theMap.addLayer(layerCycle);
 
 			//overlay - hillshade
-			var hs_options = {
-				layers : 'europe_wms:hs_srtm_europa',
-				srs : 'EPSG:900913',
-				format : 'image/jpeg',
-				transparent : 'true'
-			};
-			var hs2 = new OpenLayers.Layer.WMS("Hillshade", namespaces.layerHs, hs_options);
-			hs2.setOpacity(0.2);
-			hs2.visibility = false;
-			this.theMap.addLayer(hs2);
+			if (namespaces.layerHs.length) {
+				var hs_options = {
+					layers : 'europe_wms:hs_srtm_europa',
+					srs : 'EPSG:900913',
+					format : 'image/jpeg',
+					transparent : 'true'
+				};
+				var hs2 = new OpenLayers.Layer.WMS("Hillshade", namespaces.layerHs, hs_options);
+				hs2.setOpacity(0.2);
+				hs2.visibility = false;
+				this.theMap.addLayer(hs2);
+			}
 
 			//TODO too many requests sent
 			//overlay - traffic
-			var layerTMC_lines = new OpenLayers.Layer.WMS("Germany TMC (Streets)", namespaces.overlayTmcLines, {
-				'layers' : 'osm_tmc:lines',
-				srs : 'EPSG:31467',
-				transparent : true,
-				format : 'image/png',
-				tiled : 'true'
-			}, {
-				displayInLayerSwitcher : false,
-				visibility : false
-			});
-			this.theMap.addLayer(layerTMC_lines);
+			if (namespaces.overlayTmcLines.length) {
+				var layerTMC_lines = new OpenLayers.Layer.WMS("Germany TMC (Streets)", namespaces.overlayTmcLines, {
+					'layers' : 'osm_tmc:lines',
+					srs : 'EPSG:31467',
+					transparent : true,
+					format : 'image/png',
+					tiled : 'true'
+				}, {
+					displayInLayerSwitcher : false,
+					visibility : false
+				});
+				this.theMap.addLayer(layerTMC_lines);
+			}
 
-			var layerTMC = new OpenLayers.Layer.WMS("TMC Germany", namespaces.overlayTmc, {
-				layers : 'tmc:tmcpoints',
-				styles : 'tmcPoint_All',
-				srs : 'EPSG:31467',
-				transparent : true,
-				format : 'image/png',
-				tiled : 'true'
-			}, {
-				visibility : false
-			});
-			this.theMap.addLayer(layerTMC);
-			layerTMC.events.register('visibilitychanged', 'map', function(e) {
-				layerTMC_lines.setVisibility(layerTMC.getVisibility());
-			});
+			if (namespaces.overlayTmc.length) {
+				var layerTMC = new OpenLayers.Layer.WMS("TMC Germany", namespaces.overlayTmc, {
+					layers : 'tmc:tmcpoints',
+					styles : 'tmcPoint_All',
+					srs : 'EPSG:31467',
+					transparent : true,
+					format : 'image/png',
+					tiled : 'true'
+				}, {
+					visibility : false
+				});
+				this.theMap.addLayer(layerTMC);
+				layerTMC.events.register('visibilitychanged', 'map', function(e) {
+					layerTMC_lines.setVisibility(layerTMC.getVisibility());
+				});
+			}
 
 			//layrers required for routing, etc.
 			//route points
