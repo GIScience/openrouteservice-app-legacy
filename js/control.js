@@ -110,8 +110,6 @@ var Controller = ( function(w) {'use strict';
 
 			waypoint.setWaypoint(wpIndex, true);
 
-			handleRoutePresent();
-
 			var position = map.convertFeatureIdToPositionString(waypointResultId, map.ROUTE_POINTS);
 			ui.setWaypointFeatureId(wpIndex, waypointResultId, position, map.ROUTE_POINTS);
 
@@ -217,9 +215,6 @@ var Controller = ( function(w) {'use strict';
 				var position = map.convertFeatureIdToPositionString(featureId, map.ROUTE_POINTS);
 				ui.setWaypointFeatureId(newIndex, featureId, position, map.ROUTE_POINTS);
 
-				//do we need to re-calculate the route?
-				handleRoutePresent();
-
 				//update preferences
 				handleWaypointChanged(map.getWaypointsString());
 
@@ -264,7 +259,7 @@ var Controller = ( function(w) {'use strict';
 			ui.setWaypointFeatureId(index2, newFtId, position, map.ROUTE_POINTS);
 
 			//update preferences
-			handleWaypointChanged(map.getWaypointsString());
+			handleWaypointChanged(map.getWaypointsString(), true);
 		}
 
 		/**
@@ -283,7 +278,6 @@ var Controller = ( function(w) {'use strict';
 			} else {
 				waypoint.setWaypoint(idx, false);
 			}
-			handleRoutePresent();
 
 			//re-calculate the waypoint types
 			for (var i = 0; i < waypoint.getNumWaypoints(); i++) {
@@ -350,8 +344,6 @@ var Controller = ( function(w) {'use strict';
 				waypoint.removeWaypoint(i);
 			}
 
-			handleRoutePresent();
-
 			//update preferences
 			handleWaypointChanged(null);
 		}
@@ -360,13 +352,15 @@ var Controller = ( function(w) {'use strict';
 		 * is called when one or more waypoints have changed. Updates internal variables (preferences).
 		 * @param waypointStringList: string containing all waypoints
 		 */
-		function handleWaypointChanged(waypointStringList) {
+		function handleWaypointChanged(waypointStringList, doNotCalculateRoute) {
 			handlePrefsChanged({
 				key : preferences.waypointIdx,
 				value : waypointStringList
 			});
 
-			handleRoutePresent();
+			if (!doNotCalculateRoute) {
+				handleRoutePresent();
+			}
 		}
 
 		/**
@@ -723,7 +717,6 @@ var Controller = ( function(w) {'use strict';
 						//if no response has been received after the defined interval, show a timeout error.
 						ui.showServiceTimeoutPopup();  //TODO use for other service calls as well
 					}
-					console.log(route.routePresent)
 				}, SERVICE_TIMEOUT_INTERVAL);
 			} else {
 				//internal
@@ -1044,7 +1037,7 @@ var Controller = ( function(w) {'use strict';
 						//calculate the height profile
 						var eleArray = map.parseStringToElevationPoints(data);
 						ui.showHeightProfile(eleArray);
-						
+
 						//show the track on the map
 						//remove gpx: tags; Firefox cannot cope with that.
 						data = data.replace(/gpx:/g, '');
@@ -1067,9 +1060,9 @@ var Controller = ( function(w) {'use strict';
 		function handleHeightProfileHover(atts) {
 			map.hoverPosition(atts.lon, atts.lat);
 		}
-		
+
 		/**
-		 * removes an uploaded height profile track from the map 
+		 * removes an uploaded height profile track from the map
 		 */
 		function handleRemoveHeightProfile() {
 			map.clearMarkers(map.TRACK);

@@ -143,7 +143,7 @@ var Route = ( function(w) {"use strict";
 				failure : failureCallback
 			});
 		}
-		
+
 		/**
 		 * parses the routing results of the service to a single 'path'
 		 * @param results: response of the service
@@ -152,17 +152,17 @@ var Route = ( function(w) {"use strict";
 		function writeRouteToSingleLineString(results) {
 			var routeString = [];
 			var routeGeometry = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteGeometry')[0];
-						
+
 			$A(util.getElementsByTagNameNS(routeGeometry, namespaces.gml, 'pos')).each(function(point) {
 						point = point.text || point.textContent;
 						point = point.split(' ');
 						point = new OpenLayers.Geometry.Point(point[0], point[1]);
 						routeString.push(point);
 					});
-			routeString = new OpenLayers.Geometry.LineString(routeString);			
+			routeString = new OpenLayers.Geometry.LineString(routeString);
 			return routeString;
 		}
-		
+
 		/**
 		 * the line strings represent a part of the route when driving on one street (e.g. 7km on autoroute A7)
 		 * we examine the lineStrings from the instruction list to get one lineString-ID per route segment so that we can support mouseover/mouseout events on the route and the instructions
