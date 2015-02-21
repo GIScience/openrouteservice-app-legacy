@@ -638,12 +638,14 @@ var Map = ( function() {"use strict";
 
 			if (layer) {
 				var marker = layer.getFeatureById(featureId);
-				if (emph) {
-					//emphasize feature
-					this.selectMarker.select(marker);
-				} else {
-					//de-emphasize feature
-					this.selectMarker.unselect(marker);
+				if (marker) {
+					if (emph) {
+						//emphasize feature
+						this.selectMarker.select(marker);
+					} else {
+						//de-emphasize feature
+						this.selectMarker.unselect(marker);
+					}
 				}
 			}
 		}

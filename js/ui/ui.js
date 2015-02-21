@@ -263,6 +263,7 @@ var Ui = ( function(w) {'use strict';
 			var rootElement = $('#' + wpIndex).get(0);
 			var resultContainer = rootElement.querySelector('.searchWaypointResults');
 			var geocodeResponseList = util.getElementsByTagNameNS(results, namespaces.xls, 'GeocodeResponseList');
+
 			$A(geocodeResponseList).each(function(geocodeResponse) {
 				allAddress = $A(util.getElementsByTagNameNS(geocodeResponse, namespaces.xls, 'Address'));
 				for (var i = 0; i < allAddress.length; i++) {
@@ -317,22 +318,28 @@ var Ui = ( function(w) {'use strict';
 			rootElement = rootElement.get(0);
 
 			rootElement.querySelector('.searchAgainButton').show();
-			rootElement.querySelector('.guiComponent').hide();
+			var component = rootElement.querySelector('.guiComponent');
+			if (!component.hasClassName('route')) {
+				component.hide();
+				var waypointResultElement = rootElement.querySelector('.waypointResult');
+				//remove older entries:
+				while (waypointResultElement.firstChild) {
+					waypointResultElement.removeChild(waypointResultElement.firstChild);
+				}
+				waypointResultElement.insert(e.currentTarget);
+				waypointResultElement.show();
 
-			var waypointResultElement = rootElement.querySelector('.waypointResult');
-			//remove older entries:
-			while (waypointResultElement.firstChild) {
-				waypointResultElement.removeChild(waypointResultElement.firstChild);
+				//remove search markers and add a new waypoint marker
+				theInterface.emit('ui:waypointResultClick', {
+					wpIndex : index,
+					featureId : e.currentTarget.id,
+					searchIds : rootElement.getAttribute('data-search')
+				});
+			} else {
+				handleSearchAgainWaypointClick({
+					currentTarget: e.currentTarget.up('.waypointResult')
+				})
 			}
-			waypointResultElement.insert(e.currentTarget);
-			waypointResultElement.show();
-
-			//remove search markers and add a new waypoint marker
-			theInterface.emit('ui:waypointResultClick', {
-				wpIndex : index,
-				featureId : e.currentTarget.id,
-				searchIds : rootElement.getAttribute('data-search')
-			});
 		}
 
 		/**

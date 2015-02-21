@@ -712,12 +712,14 @@ var Controller = ( function(w) {'use strict';
 				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, avoidHighway, avoidTollway, avoidAreas);
 				//try to read a variable that is set after the service response was received. If this variable is not set after a while -> timeout.
 				clearTimeout(timerRoute);
-				timerRoute = setTimeout(function() {
-					if (!route.routePresent) {
-						//if no response has been received after the defined interval, show a timeout error.
-						ui.showServiceTimeoutPopup();  //TODO use for other service calls as well
-					}
-				}, SERVICE_TIMEOUT_INTERVAL);
+
+				// Took that out for now, seems not to work properly, needs more investigation (Oliver Roick, 21 Feb 2015)
+				// timerRoute = setTimeout(function() {
+				// 	if (!route.routePresent) {
+				// 		//if no response has been received after the defined interval, show a timeout error.
+				// 		ui.showServiceTimeoutPopup();  //TODO use for other service calls as well
+				// 	}
+				// }, SERVICE_TIMEOUT_INTERVAL);
 			} else {
 				//internal
 				route.routePresent = false;
