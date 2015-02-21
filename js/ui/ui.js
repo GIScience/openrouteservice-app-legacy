@@ -132,7 +132,7 @@ var Ui = ( function(w) {'use strict';
 			$('#newToOrs').append(label);
 			$('#newToOrs').show();
 		}
-		
+
 		function showServiceTimeoutPopup() {
 			var label = new Element('label');
 			label.insert(preferences.translate('serverError'));
@@ -1480,7 +1480,7 @@ var Ui = ( function(w) {'use strict';
 					var text = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Instruction')[0];
 					text = text.text || text.textContent;
 
-					var distance = util.getElementsByTagNameNS(instruction, namespaces.xls, 'distance')[0];
+					var distance = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Distance')[0];
 					var distanceValue = distance.getAttribute('value');
 					var distanceUnit = distance.getAttribute('uom');
 					var distArr = [];
@@ -2066,15 +2066,15 @@ var Ui = ( function(w) {'use strict';
 			//note: deleting the height profile, i.e. ghe rickshaw graph and re-loading another file causes errors in the Rickshaw.Graph.HoverDetail feature though optically everything seems to work fine.
 			//I didn't find a reason for that behavior so far.
 		}
-		
+
 		/**
-		 * removes the height profile from the UI 
+		 * removes the height profile from the UI
 		 */
 		function handleHeightProfileRemove() {
 			$('#heightProfileChart').empty();
-						
+
 			//remove the track from the map
-			theInterface.emit('ui:removeHeightProfileTrack');			
+			theInterface.emit('ui:removeHeightProfileTrack');
 		}
 
 		/* *********************************************************************
