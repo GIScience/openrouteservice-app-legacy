@@ -4,21 +4,21 @@ var lang_de = {
 	'half-left' : 'halb links',
 	'half-right' : 'halb rechts',
 	'straight' : 'geradeaus',
-	
-	'serverError': 'Sorry, wä&auml;rend der Berechnung ist ein Fehler auf dem Server passiert. Bitte versuchen Sie es sp&auml;ter noch einmal ',
+
+	'serverError': 'Sorry, w&auml;hrend der Berechnung ist ein Fehler auf dem Server passiert. Bitte versuchen Sie es sp&auml;ter noch einmal ',
 	'contact': 'Info&nbsp;&amp;&nbsp;Kontakt',
-		
+
 		'closeBtn': 'Schlie&szlig;en',
 		'saveBtn': 'Speichern',
-		
+
 		'untitled' :  'Unbenannt',
 		'infoTextVersions' :  'Neu auf OpenRouteService? Nutzen Sie erweiterte Routen-Optionen über die Seiteneinstellungen. ',
-		
+
 		'routePlanner':  'Routen-Planer ',
 		'search':  'Suche',
 		'routeOptions':  'Art der Route',
 		'routeExtras':  'Route-Extras',
-		
+
 	//Routing
 		'planRoute':  'Route planen',
 		'calculatingRoute':  'Route wird berechnet...',
@@ -32,7 +32,7 @@ var lang_de = {
 		'routeInstructions':  'Wegbeschreibung',
 		'routeLinkText' :  'Permalink zur aktuellen Route',
 		'permalinkButton' : 'Permalink',
-	
+
 	//Geolocation
 		'geolocationNotification' : 'Der Routenplaner versucht Ihren Standort zu bestimmen. Wenn Sie die Anfrage nicht best&auml;tigen, werden Sie in K&uuml;rze weitergeleitet.',
 		'currentLocation' :  'Meine aktuelle Position',
@@ -40,18 +40,18 @@ var lang_de = {
 		'showCurrentLocation' :  'Aktuellen Ort zeigen',
 		'geolocationNotSupported' :  'Diese Funktionalit&auml;t wird von Ihrem Browser leider nicht unterst&uuml;tzt.',
 		'geolocationRuntimeError' :  'W&auml;hrend der Standortabfrage ist leider ein Fehler aufgetreten!',
-	
+
 	//search in general
 		'zoomToSearchResults':  'Ergebnisse in der Karte anzeigen',
 		'selectResult':  'W&auml;hlen Sie ein Suchergebnis aus:',
 		'searchAgain':  'erneut Suchen',
 		'searchError' : 'W&auml;hrend der Suche ist leider ein Fehler aufgetreten!',
-	
+
 	//Address search
 		'searchForPoints':  'Nach Adresse suchen',
 		'enterAddress':  'Addresse eingeben',
-	
-	//POI search	
+
+	//POI search
 		'distaneNotSupported' :  'Maximalwert: 5000 Meter',
 		'noRouteFound' :  'Keine Route vorhanden, in deren N&auml;he POIs gesuche werden k&ouml;nnen.',
 		'searchForPoi':  'Nach POI suchen',
@@ -60,19 +60,19 @@ var lang_de = {
 		'enterPoi':  'POI eingeben',
 		'numPoiResults1' :  '<b>',
 		'numPoiResults2' :  ' Ergebnisse gefunden</b> (max. 100):',
-	
+
 	// context menu
-		'useAsStartPoint':  'Als Startpunkt verwenden', 
+		'useAsStartPoint':  'Als Startpunkt verwenden',
 		'useAsViaPoint':  'Als Viapunkt einf&uuml;gen',
 		'useAsEndPoint':  'Als Zielpunkt verwenden',
-	
+
 	//Waypoint options
 		'addWaypoint':  'Wegpunkt hinzuf&uuml;gen',
 		'moveUpWaypoint':  'Wegpunkt nach Oben verschieben',
 		'moveDownWaypoint':  'Wegpunkt nach Unten verschieben',
 		'removeWaypoint':  'Wegpunkt entfernen',
 		'useAsWaypoint' :  'als Wegpunkt &uuml;bernehmen',
-		
+
 	//Route Preferences
 		'Shortest':  'K&uuml;rzester Weg',
 		'Fastest':  'Schnellster Weg',
@@ -82,17 +82,17 @@ var lang_de = {
 		'BicycleRoute':  'Bevorzuge Fahrradweg',
 		'BicycleMTB':  'Mountainbike',
 		'BicycleRacer':  'Rennrad',
-		
+
 		'avoidMotorways':  'Autobahnen vermeiden',
 		'avoidTollways':  'Mautstra&szlig;en vermeiden',
-		
+
 	//Avoid areas
 		'avoidAreas':  'Bereiche vermeiden',
 		'avoidAreaDraw':  'Bereich zeichnen',
 		'avoidAreaModify':  'Bereich bearbeiten',
-		'avoidAreaRemove':  'Bereich l&ouml;schen',	
+		'avoidAreaRemove':  'Bereich l&ouml;schen',
 		'invalidAvoidArea' : 'Bereiche, die sich selbst schneiden sind nicht erlaubt. Bitte entfernen bzw. korrigieren Sie diese Bereiche. Sonst kann keine Route berechnet werden.',
-	
+
 	//GPX Extras
 		'imExport' : 'Import/ Export',
 		'gpxDownloadError': 'Beim Herunterladen der Route ist leider ein Fehler aufgetreten.',
@@ -100,17 +100,17 @@ var lang_de = {
 		'gpxDownloadText' :  'Aktuelle Route im GPX-Format herunterladen',
 		'gpxDownloadButton' : 'GPX herunterladen',
 		'gpxUploadRouteText' :  'GPX-Route aus Datei anzeigen und neuberechnen',
-		'gpxUploadTrackText' :  'GPX-Track aus Datei anzeigen', 
+		'gpxUploadTrackText' :  'GPX-Track aus Datei anzeigen',
 		'selectFile' : 'Datei ausw&auml;hlen',
 		'changeFile' : '&Auml;ndern',
-	
+
 		//accessibility Analysis
 		'accessibilityAnalysis' : 'Erreichbarkeits-Analyse',
 		'setAccessibilityMinutes' : 'Minuten ausw&auml;hlen: ',
 		'analyze' : 'Analysieren',
 		'calculatingAccessibility' : 'Die Erreichbarkeit wird analysiert...',
 		'accessibilityError' : 'W&auml;hrend der Erreichbarkeits-Analyse ist leider ein Fehler aufgetreten. Haben Sie vergessen einen Startpunkt zu setzen?',
-	
+
 	// List languages
 		'en': 'Englisch',
 		'de':  'Deutsch',
@@ -144,25 +144,25 @@ var lang_de = {
         'de-ruhrpo' : 'Deutsch: Ruhrpott',
         'de-bay' : 'Deutsch: Bayern',
         'de-at-ooe' : 'Deutsch: &Ouml;sterreich',
-	
+
 	// List distance units
 		'km': 'Kilometer',
-		'm': 'Meter', 
+		'm': 'Meter',
         'mi': 'Meilen',
         'yd': 'Yards',
-        
+
 	// List time units
-		'days': 'Tag(e)', 
+		'days': 'Tag(e)',
 		'hours': 'Stunde(n)',
 		'minutes': 'Minute(n)',
 		'seconds': 'Sekunde(n)',
-		
+
 	//List versions
-		'standardVersion' :  'Standard Version', 
+		'standardVersion' :  'Standard Version',
 		'extendedVersion' :  'Erweiterte Version',
-	
+
 	//Site Preferences
-		'sitePreferences' : 'Optionen', 
+		'sitePreferences' : 'Optionen',
 		'language':  'Sprachen',
 		'routingLanguage' : 'Sprache f&uuml;r Routing-Anweisungen',
 		'distance' :  'Entfernungseinheiten',
@@ -171,7 +171,7 @@ var lang_de = {
 		'routingLanguageText' : 'Bitte w&auml;hlen Sie Ihre Sprache:&nbsp;',
 		'distanceText' :  'Bitte w&auml;hlen Sie Ihre Entfernungseinheit:&nbsp;',
 		'versionText' :  'Bitte w&auml;hlen Sie den Detail-Grad:&nbsp;',
-	
+
 	//POI categories
 		'amenity': 'Einrichtungen',
 		'public_tran': '&Ouml;pnv',
@@ -179,8 +179,8 @@ var lang_de = {
 		'tourism': 'Tourismus',
 		'leisure': 'Freizeit',
 		'sport': 'Sport',
-		
-	// POI types	
+
+	// POI types
 		'atm': 'Geldautomat',
         'bank': 'Bank',
         'bureau_de_change': 'Wechselstube',
