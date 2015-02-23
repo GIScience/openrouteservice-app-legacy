@@ -1010,11 +1010,14 @@ var Ui = ( function(w) {'use strict';
 			var allIds = "";
 			var resultContainer = $('#fnct_searchAddressResults');
 			var geocodeResponseList = util.getElementsByTagNameNS(results, namespaces.xls, 'GeocodeResponseList');
+
+			var resultCount = 0;
 			$A(geocodeResponseList).each(function(geocodeResponse) {
 				allAddress = $A(util.getElementsByTagNameNS(geocodeResponse, namespaces.xls, 'Address'));
 				for (var i = 0; i < allAddress.length; i++) {
 					//listOfPoitnts[i] == null if result is not in Europe
 					if (listOfFeatures[i]) {
+						resultCount++;
 						var address = allAddress[i];
 						address = util.parseAddress(address);
 						var lonLat = listOfFeatures[i].geometry;
@@ -1043,7 +1046,7 @@ var Ui = ( function(w) {'use strict';
 
 			//show number of results and link to zoom
 			var numResults = $('#zoomToAddressResults');
-			numResults.html(preferences.translate('numPoiResults1') + allAddress.length + preferences.translate('numPoiResults2'));
+			numResults.html(preferences.translate('numPoiResults1') + resultCount + preferences.translate('numPoiResults2'));
 
 			//event handling
 			$('.address').mouseover(handleMouseOverElement);
@@ -1658,6 +1661,7 @@ var Ui = ( function(w) {'use strict';
 		function showRoutingError() {
 			var el = $('#routeError');
 			el.html(preferences.translate('noRouteAvailable'));
+
 			el.show();
 		}
 

@@ -467,7 +467,6 @@ var Controller = ( function(w) {'use strict';
 				searchAddress.requestCounter--;
 				if (searchAddress.requestCounter == 0) {
 					var listOfPoints = searchAddress.parseResultsToPoints(results);
-
 					ui.searchAddressChangeToSearchingState(false);
 
 					var listOfFeatures = map.addSearchAddressResultMarkers(listOfPoints);
