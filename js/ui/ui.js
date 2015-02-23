@@ -1425,13 +1425,12 @@ var Ui = ( function(w) {'use strict';
 				totalTime = totalTime.textContent || totalTime.text;
 				//<period>PT5Y2M10D15H18M43S</period>
 				//The example above indicates a period of five years, two months, 10 days, 15 hours, a8 minutes and 43 seconds
-				totalTime = totalTime.substring(0, totalTime.indexOf('M') + 1);
 				totalTime = totalTime.replace('P', '');
 				totalTime = totalTime.replace('T', '');
 				totalTime = totalTime.replace('D', ' ' + preferences.translate('days') + ' ');
 				totalTime = totalTime.replace('H', ' ' + preferences.translate('hours') + ' ');
 				totalTime = totalTime.replace('M', ' ' + preferences.translate('minutes') + ' ');
-				//cut the seconds off!: duration = duration.replace('S', ' second(s)');
+				totalTime = totalTime.replace('S', ' ' + preferences.translate('seconds') + ' ');
 
 				var distance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'TotalDistance')[0];
 				var distanceValue = distance.getAttribute('value');
