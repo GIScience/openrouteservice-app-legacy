@@ -74,8 +74,13 @@ var Controller = ( function(w) {'use strict';
 
 					ui.searchWaypointChangeToSearchingState(false, wpIndex);
 
-					var listOfFeatures = map.addSearchAddressResultMarkers(listOfPoints, wpIndex);
-					ui.updateSearchWaypointResultList(results, listOfFeatures, map.SEARCH, wpIndex);
+					if (listOfPoints.length) {
+						var listOfFeatures = map.addSearchAddressResultMarkers(listOfPoints, wpIndex);
+						ui.updateSearchWaypointResultList(results, listOfFeatures, map.SEARCH, wpIndex);
+					} else {
+						ui.showSearchWaypointError(wpIndex)
+					}
+
 				}
 			}
 		}
