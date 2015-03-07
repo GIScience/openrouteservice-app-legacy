@@ -5,7 +5,7 @@ var Ui = ( function(w) {'use strict';
 		//preferences for language selection
 		preferences = w.Preferences,
 		//functionality of ORS placed in separate tabs
-		orsTabs = ['route', 'search'],
+		orsTabs = ['route', 'search', 'geolocation'],
 		//search POI options: searchNearRoute, maxDist to route, distance Unit for maxDist, search query
 		searchPoiAtts = ['false', '100', 'm', ''],
 		//routing options for car, bike and pedestrian
@@ -926,9 +926,9 @@ var Ui = ( function(w) {'use strict';
 		 */
 		function showGeolocationSearching(showSearching) {
 			if (showSearching) {
-				$('#fnct_geolocation').addClass('searching');
+				$('#geolocationHead').addClass('searching');
 			} else {
-				$('#fnct_geolocation').removeClass('searching');
+				$('#geolocationHead').removeClass('searching');
 			}
 		}
 
@@ -2224,7 +2224,7 @@ var Ui = ( function(w) {'use strict';
 			$('#zoomToRouteButton').click(handleZoomToRouteClick);
 
 			//geolocation
-			$('#fnct_geolocation').click(handleGeolocationClick);
+			$('#geolocation').click(handleGeolocationClick);
 			//search address
 			$('#fnct_searchAddress').keyup(handleSearchAddressInput);
 			$('#zoomToAddressResults').click(handleZoomToAddressResults);

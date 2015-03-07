@@ -643,7 +643,7 @@ button.routeOptionsButton > img {
 	background-color: #fff;
 	padding: 0 7px;
 }
-#currentLocation, #searchPlace, #searchPoi {
+#currentLocation, #searchPlace, #searchPoi, #geoloc {
 	margin: 10px;
 	padding-bottom: 0px;
 }
@@ -747,4 +747,3 @@ img {
 #exportGpxError {
 	margin-top: 5px;
 }
-
