@@ -945,6 +945,7 @@ var Map = ( function() {"use strict";
 		function zoomToPoiResults() {
 			var layerPoiResults = this.theMap.getLayersByName(this.POI)[0];
 			var resultBounds = layerPoiResults.getDataExtent();
+
 			if (resultBounds) {
 				this.theMap.zoomToExtent(resultBounds);
 				if (this.theMap.getZoom() > 14) {

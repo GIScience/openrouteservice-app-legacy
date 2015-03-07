@@ -1687,6 +1687,7 @@ var Ui = ( function(w) {'use strict';
 
 					//set the selected entry as currently selected route option
 					var options = $('#' + btn.id + 'Options').get(0).querySelector('input[checked="checked"]');
+
 					routeOptions[0] = options.id;
 					theInterface.emit('ui:routingParamsChanged');
 					theInterface.emit('ui:prefsChanged', {
