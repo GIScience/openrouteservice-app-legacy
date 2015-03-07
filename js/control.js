@@ -116,6 +116,7 @@ var Controller = ( function(w) {'use strict';
 			waypoint.setWaypoint(wpIndex, true);
 
 			var position = map.convertFeatureIdToPositionString(waypointResultId, map.ROUTE_POINTS);
+			map.zoomToMarker(util.convertPositionStringToLonLat(position), 14);
 			ui.setWaypointFeatureId(wpIndex, waypointResultId, position, map.ROUTE_POINTS);
 
 			//update preferences
