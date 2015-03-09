@@ -1,6 +1,6 @@
 /**
  * note: naming conventions for result elements:
- * map markers as well as DOM elements have an id like "address_ID", e.g. address_4 
+ * map markers as well as DOM elements have an id like "address_ID", e.g. address_4
  */
 var SearchAddress = ( function(window) {"use strict";
 
@@ -19,7 +19,7 @@ var SearchAddress = ( function(window) {"use strict";
 		 * @param  {Function} failureCallback: Callback which is called after an error occured
 		 * @param  {String} language: language of the results
 		 */
-		function find(address, successCallback, failureCallback, language) {			
+		function find(address, successCallback, failureCallback, language) {
 			//build request
 			var writer = new XMLWriter('UTF-8', '1.0');
 			writer.writeStartDocument();
@@ -93,7 +93,6 @@ var SearchAddress = ( function(window) {"use strict";
 					}
 				}
 			});
-
 			return listOfPoints;
 		}
 

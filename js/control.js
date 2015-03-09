@@ -74,8 +74,13 @@ var Controller = ( function(w) {'use strict';
 
 					ui.searchWaypointChangeToSearchingState(false, wpIndex);
 
-					var listOfFeatures = map.addSearchAddressResultMarkers(listOfPoints, wpIndex);
-					ui.updateSearchWaypointResultList(results, listOfFeatures, map.SEARCH, wpIndex);
+					if (listOfPoints.length) {
+						var listOfFeatures = map.addSearchAddressResultMarkers(listOfPoints, wpIndex);
+						ui.updateSearchWaypointResultList(results, listOfFeatures, map.SEARCH, wpIndex);
+					} else {
+						ui.showSearchWaypointError(wpIndex)
+					}
+
 				}
 			}
 		}
@@ -111,6 +116,7 @@ var Controller = ( function(w) {'use strict';
 			waypoint.setWaypoint(wpIndex, true);
 
 			var position = map.convertFeatureIdToPositionString(waypointResultId, map.ROUTE_POINTS);
+			map.zoomToMarker(util.convertPositionStringToLonLat(position), 14);
 			ui.setWaypointFeatureId(wpIndex, waypointResultId, position, map.ROUTE_POINTS);
 
 			//update preferences
@@ -467,7 +473,6 @@ var Controller = ( function(w) {'use strict';
 				searchAddress.requestCounter--;
 				if (searchAddress.requestCounter == 0) {
 					var listOfPoints = searchAddress.parseResultsToPoints(results);
-
 					ui.searchAddressChangeToSearchingState(false);
 
 					var listOfFeatures = map.addSearchAddressResultMarkers(listOfPoints);
@@ -712,12 +717,14 @@ var Controller = ( function(w) {'use strict';
 				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, avoidHighway, avoidTollway, avoidAreas);
 				//try to read a variable that is set after the service response was received. If this variable is not set after a while -> timeout.
 				clearTimeout(timerRoute);
-				timerRoute = setTimeout(function() {
-					if (!route.routePresent) {
-						//if no response has been received after the defined interval, show a timeout error.
-						ui.showServiceTimeoutPopup();  //TODO use for other service calls as well
-					}
-				}, SERVICE_TIMEOUT_INTERVAL);
+
+				// Took that out for now, seems not to work properly, needs more investigation (Oliver Roick, 21 Feb 2015)
+				// timerRoute = setTimeout(function() {
+				// 	if (!route.routePresent) {
+				// 		//if no response has been received after the defined interval, show a timeout error.
+				// 		ui.showServiceTimeoutPopup();  //TODO use for other service calls as well
+				// 	}
+				// }, SERVICE_TIMEOUT_INTERVAL);
 			} else {
 				//internal
 				route.routePresent = false;

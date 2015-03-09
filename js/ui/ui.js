@@ -5,7 +5,7 @@ var Ui = ( function(w) {'use strict';
 		//preferences for language selection
 		preferences = w.Preferences,
 		//functionality of ORS placed in separate tabs
-		orsTabs = ['route', 'search'],
+		orsTabs = ['route', 'search', 'geolocation'],
 		//search POI options: searchNearRoute, maxDist to route, distance Unit for maxDist, search query
 		searchPoiAtts = ['false', '100', 'm', ''],
 		//routing options for car, bike and pedestrian
@@ -132,7 +132,7 @@ var Ui = ( function(w) {'use strict';
 			$('#newToOrs').append(label);
 			$('#newToOrs').show();
 		}
-		
+
 		function showServiceTimeoutPopup() {
 			var label = new Element('label');
 			label.insert(preferences.translate('serverError'));
@@ -263,6 +263,7 @@ var Ui = ( function(w) {'use strict';
 			var rootElement = $('#' + wpIndex).get(0);
 			var resultContainer = rootElement.querySelector('.searchWaypointResults');
 			var geocodeResponseList = util.getElementsByTagNameNS(results, namespaces.xls, 'GeocodeResponseList');
+
 			$A(geocodeResponseList).each(function(geocodeResponse) {
 				allAddress = $A(util.getElementsByTagNameNS(geocodeResponse, namespaces.xls, 'Address'));
 				for (var i = 0; i < allAddress.length; i++) {
@@ -317,22 +318,28 @@ var Ui = ( function(w) {'use strict';
 			rootElement = rootElement.get(0);
 
 			rootElement.querySelector('.searchAgainButton').show();
-			rootElement.querySelector('.guiComponent').hide();
+			var component = rootElement.querySelector('.guiComponent');
+			if (!component.hasClassName('route')) {
+				component.hide();
+				var waypointResultElement = rootElement.querySelector('.waypointResult');
+				//remove older entries:
+				while (waypointResultElement.firstChild) {
+					waypointResultElement.removeChild(waypointResultElement.firstChild);
+				}
+				waypointResultElement.insert(e.currentTarget);
+				waypointResultElement.show();
 
-			var waypointResultElement = rootElement.querySelector('.waypointResult');
-			//remove older entries:
-			while (waypointResultElement.firstChild) {
-				waypointResultElement.removeChild(waypointResultElement.firstChild);
+				//remove search markers and add a new waypoint marker
+				theInterface.emit('ui:waypointResultClick', {
+					wpIndex : index,
+					featureId : e.currentTarget.id,
+					searchIds : rootElement.getAttribute('data-search')
+				});
+			} else {
+				handleSearchAgainWaypointClick({
+					currentTarget: e.currentTarget.up('.waypointResult')
+				})
 			}
-			waypointResultElement.insert(e.currentTarget);
-			waypointResultElement.show();
-
-			//remove search markers and add a new waypoint marker
-			theInterface.emit('ui:waypointResultClick', {
-				wpIndex : index,
-				featureId : e.currentTarget.id,
-				searchIds : rootElement.getAttribute('data-search')
-			});
 		}
 
 		/**
@@ -919,9 +926,9 @@ var Ui = ( function(w) {'use strict';
 		 */
 		function showGeolocationSearching(showSearching) {
 			if (showSearching) {
-				$('#fnct_geolocation').addClass('searching');
+				$('#geolocationHead').addClass('searching');
 			} else {
-				$('#fnct_geolocation').removeClass('searching');
+				$('#geolocationHead').removeClass('searching');
 			}
 		}
 
@@ -1003,11 +1010,14 @@ var Ui = ( function(w) {'use strict';
 			var allIds = "";
 			var resultContainer = $('#fnct_searchAddressResults');
 			var geocodeResponseList = util.getElementsByTagNameNS(results, namespaces.xls, 'GeocodeResponseList');
+
+			var resultCount = 0;
 			$A(geocodeResponseList).each(function(geocodeResponse) {
 				allAddress = $A(util.getElementsByTagNameNS(geocodeResponse, namespaces.xls, 'Address'));
 				for (var i = 0; i < allAddress.length; i++) {
 					//listOfPoitnts[i] == null if result is not in Europe
 					if (listOfFeatures[i]) {
+						resultCount++;
 						var address = allAddress[i];
 						address = util.parseAddress(address);
 						var lonLat = listOfFeatures[i].geometry;
@@ -1036,7 +1046,7 @@ var Ui = ( function(w) {'use strict';
 
 			//show number of results and link to zoom
 			var numResults = $('#zoomToAddressResults');
-			numResults.html(preferences.translate('numPoiResults1') + allAddress.length + preferences.translate('numPoiResults2'));
+			numResults.html(preferences.translate('numPoiResults1') + resultCount + preferences.translate('numPoiResults2'));
 
 			//event handling
 			$('.address').mouseover(handleMouseOverElement);
@@ -1415,13 +1425,12 @@ var Ui = ( function(w) {'use strict';
 				totalTime = totalTime.textContent || totalTime.text;
 				//<period>PT5Y2M10D15H18M43S</period>
 				//The example above indicates a period of five years, two months, 10 days, 15 hours, a8 minutes and 43 seconds
-				totalTime = totalTime.substring(0, totalTime.indexOf('M') + 1);
 				totalTime = totalTime.replace('P', '');
 				totalTime = totalTime.replace('T', '');
 				totalTime = totalTime.replace('D', ' ' + preferences.translate('days') + ' ');
 				totalTime = totalTime.replace('H', ' ' + preferences.translate('hours') + ' ');
 				totalTime = totalTime.replace('M', ' ' + preferences.translate('minutes') + ' ');
-				//cut the seconds off!: duration = duration.replace('S', ' second(s)');
+				totalTime = totalTime.replace('S', ' ' + preferences.translate('seconds') + ' ');
 
 				var distance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'TotalDistance')[0];
 				var distanceValue = distance.getAttribute('value');
@@ -1480,7 +1489,7 @@ var Ui = ( function(w) {'use strict';
 					var text = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Instruction')[0];
 					text = text.text || text.textContent;
 
-					var distance = util.getElementsByTagNameNS(instruction, namespaces.xls, 'distance')[0];
+					var distance = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Distance')[0];
 					var distanceValue = distance.getAttribute('value');
 					var distanceUnit = distance.getAttribute('uom');
 					var distArr = [];
@@ -1651,6 +1660,7 @@ var Ui = ( function(w) {'use strict';
 		function showRoutingError() {
 			var el = $('#routeError');
 			el.html(preferences.translate('noRouteAvailable'));
+
 			el.show();
 		}
 
@@ -1677,6 +1687,7 @@ var Ui = ( function(w) {'use strict';
 
 					//set the selected entry as currently selected route option
 					var options = $('#' + btn.id + 'Options').get(0).querySelector('input[checked="checked"]');
+
 					routeOptions[0] = options.id;
 					theInterface.emit('ui:routingParamsChanged');
 					theInterface.emit('ui:prefsChanged', {
@@ -2066,15 +2077,15 @@ var Ui = ( function(w) {'use strict';
 			//note: deleting the height profile, i.e. ghe rickshaw graph and re-loading another file causes errors in the Rickshaw.Graph.HoverDetail feature though optically everything seems to work fine.
 			//I didn't find a reason for that behavior so far.
 		}
-		
+
 		/**
-		 * removes the height profile from the UI 
+		 * removes the height profile from the UI
 		 */
 		function handleHeightProfileRemove() {
 			$('#heightProfileChart').empty();
-						
+
 			//remove the track from the map
-			theInterface.emit('ui:removeHeightProfileTrack');			
+			theInterface.emit('ui:removeHeightProfileTrack');
 		}
 
 		/* *********************************************************************
@@ -2213,7 +2224,7 @@ var Ui = ( function(w) {'use strict';
 			$('#zoomToRouteButton').click(handleZoomToRouteClick);
 
 			//geolocation
-			$('#fnct_geolocation').click(handleGeolocationClick);
+			$('#geolocation').click(handleGeolocationClick);
 			//search address
 			$('#fnct_searchAddress').keyup(handleSearchAddressInput);
 			$('#zoomToAddressResults').click(handleZoomToAddressResults);
