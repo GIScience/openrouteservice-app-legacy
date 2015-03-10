@@ -61,22 +61,34 @@
 								</div>
 								<div class="collapsibleBody" style="display: none;">
 									<div class="btn-group routePreferenceBtns">
-										<button id="car" class="btn routeOptionsButton active"><img src="img/picto-car-high.png">
+										<button id="car" class="btn routeOptionsButton"><img src="img/picto-car-high.png">
 										</button>
 										<button id="bicycle" class="btn routeOptionsButton"><img src="img/picto-bike.png">
 										</button>
 										<button id="pedestrian" class="btn routeOptionsButton"><img src="img/picto-dude.png">
 										</button>
+										<button id="wheelchair" class="btn routeOptionsButton"><img src="img/picto-wheelchair.png">
+										</button>
 									</div>
 									<div class="panel panelMedium" id="carOptions" style="">
 										<div class="radio">
-											<input type="radio" id="Fastest" name="car" checked value="fastest">
+											<input type="radio" id="Fastest" name="car" checked="checked" value="fastest">
 											<label id="fastestLabel"> fastest route</label>
 										</div>
 										<div class="radio">
 											<input type="radio" id="Shortest" name="car" value="shortest">
 											<label id="shortestLabel">shortest route</label>
 										</div>
+									</div>
+									<div class="panel panelMedium" id="avoidables" style="">
+										<label class="checkbox">
+											<input type="checkbox" id="Highway">
+											<label id="avoidMotorLabel">Avoid highways</label>
+										</label>
+										<label class="checkbox">
+											<input type="checkbox" id="Tollway">
+											<label id="avoidTollLabel">Avoid toll roads</label>
+										</label>
 									</div>
 									<div class="panel panelMedium" id="bicycleOptions" style="display: none;">
 										<div class="radio">
@@ -101,17 +113,55 @@
 										</div>
 									</div>
 									<div class="panel panelMedium" id="pedestrianOptions" style="display: none;">
-										<div class="radio">
-											<input type="radio" id="Pedestrian" name="pedestrian"  value="pedestrian" checked="checked">
-											<label id="PedestrianLabel">pedestrian</label>
-										</div>
+										<label class="radio">
+											<div>
+												<input type="radio" id="Pedestrian" name="pedestrian" checked="checked">
+												<label id="PedestrianLabel">pedestrian</label>
+											</div>
+										</label>
 									</div>
-									<div class="panel panelMedium" id="avoidables" style="">
-										<label class="checkbox">
-											<input type="checkbox" id="Highway">
-											<label id="avoidMotorLabel">Avoid highways</label></label><label class="checkbox">
-											<input type="checkbox" id="Tollway">
-											<label id="avoidTollLabel">Avoid toll roads</label></label>
+									<div class="panel panelMedium" id="wheelchairOptions" style="display: none;">
+										<label class="radio">
+											<div>
+												<input type="radio" id="Wheelchair" name="wheelchair" checked="checked">
+												<label id="WheelchairLabel">wheelchair</label>
+											</div>
+										</label>
+									</div>
+									<div class="panel panelMedium" id="wheelchairParameters" style="display: none;">
+										<label id="surfaceLabel">Surface</label>
+										<select id="Surface">
+											<option id="asphaltOption">Asphalt</option>
+											<option id="cobblestoneFlattenedOption">Flattened Cobblestone</option>
+											<option id="cobblestoneOption">Cobblestone</option>
+											<option id="compactedOption">Compacted</option>
+											<option id="allSurfacesOption">All Surfaces</option>
+										</select>
+										<!-- 
+										<label id="smoothnessLabel">Smoothness</label>
+										<select id="Smoothness">
+											<option id="excellentOption">Excellent</option>
+											<option id="goodOption">Good</option>
+											<option id="intermediateOption">Intermediate</option>
+											<option id="badOption">Bad</option>
+											<option id="allSmoothnessesOption">All Smoothnesses</option>
+										</select> 
+										 -->
+										<label id="inclineLabel">Maximum Incline</label>
+										<select id="Incline">
+											<option id="threePercentOption">Up to 3%</option>
+											<option id="sixPercentOption">Up to 6%</option>
+											<option id="tenPercentOption">Up to 10%</option>
+											<option id="fifteenPercentOption">Up to 15%</option>
+											<option id="allInclinesOption">All Inclines</option>
+										</select>
+										<label id="slopedCurbLabel">Maximum Sloped Curb</label>
+										<select id="SlopedCurb">
+											<option id="threeCmOption">Up to 3cm</option>
+											<option id="sixCmOption">Up to 6cm</option>
+											<option id="tenCmOption">Up to 10cm</option>
+											<option id="allSlopedCurbesOption">All Sloped Curbs</option>
+										</select>
 									</div>
 									<div class="panel panelMedium" id="avoidAreas">
 										<label id="avoidAreasTitle">Areas to avoid</label>
