@@ -713,8 +713,9 @@ var Controller = ( function(w) {'use strict';
 				var avoidHighway = prefs[1][0];
 				var avoidTollway = prefs[1][1];
 				var avoidAreas = map.getAvoidAreas();
+				var extendedRoutePreferences = prefs[2];
 
-				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, avoidHighway, avoidTollway, avoidAreas);
+				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, avoidHighway, avoidTollway, avoidAreas, extendedRoutePreferences);
 				//try to read a variable that is set after the service response was received. If this variable is not set after a while -> timeout.
 				clearTimeout(timerRoute);
 
@@ -1222,6 +1223,9 @@ var Controller = ( function(w) {'use strict';
 			var routeOpt = getVars[preferences.getPrefName(preferences.routeOptionsIdx)];
 			var motorways = getVars[preferences.getPrefName(preferences.avoidHighwayIdx)];
 			var tollways = getVars[preferences.getPrefName(preferences.avoidTollwayIdx)];
+			var surface = getVars[preferences.getPrefName(preferences.surfaceIdx)];
+			var incline = getVars[preferences.getPrefName(preferences.inclineIdx)];
+			var slopedCurb = getVars[preferences.getPrefName(preferences.slopedCurbIdx)];
 			var avoidAreas = getVars[preferences.getPrefName(preferences.avoidAreasIdx)];
 
 			pos = preferences.loadMapPosition(pos);
@@ -1268,12 +1272,18 @@ var Controller = ( function(w) {'use strict';
 
 			routeOpt = preferences.loadRouteOptions(routeOpt);
 			ui.setRouteOption(routeOpt);
-			var res = preferences.loadAvoidables(motorways, tollways);
-			motorways = res[0];
-			tollways = res[1];
-			ui.setAvoidables(motorways, tollways);
-
 			var avoidables = preferences.loadAvoidables(motorways, tollways);
+			motorways = avoidables[0];
+			tollways = avoidables[1];
+			ui.setAvoidables(motorways, tollways);
+			
+			var wheelParameters = preferences.loadWheelParameters(surface, incline, slopedCurb);
+			surface = wheelParameters[0];
+			incline = wheelParameters[1];
+			slopedCurb = wheelParameters[2];
+			ui.setWheelParameters(surface, incline, slopedCurb);
+			
+
 			//avoidAreas: array of OL.Polygon representing one avoid area each
 			avoidAreas = preferences.loadAvoidAreas(avoidAreas);
 			//apply avoid areas
