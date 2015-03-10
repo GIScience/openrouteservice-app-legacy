@@ -77,6 +77,7 @@ var lang_de = {
 		'Shortest':  'K&uuml;rzester Weg',
 		'Fastest':  'Schnellster Weg',
 		'Pedestrian':  'Fußg&auml;nger',
+		'Wheelchair':  'Barrierefrei',
 		'Bicycle':  'K&uuml;rzester Weg',
 		'BicycleSafety':  'Sicherster Weg',
 		'BicycleRoute':  'Bevorzuge Fahrradweg',
@@ -85,6 +86,70 @@ var lang_de = {
 
 		'avoidMotorways':  'Autobahnen vermeiden',
 		'avoidTollways':  'Mautstra&szlig;en vermeiden',
+		
+	//Surfaces:
+		'surface': 'Oberfläche',
+		'paved': 'Befestigt',
+        'asphalt': 'wie Beton oder Asphalt',
+        'concrete': 'Beton',
+        'paving_stones': 'Betonpflaster',
+        'concrete:plates': 'Betonplatten',
+        'cobblestone:flattened': 'wie Pflastersteine oder besser',
+        'concrete:lanes': 'Betonspurplatten',
+        'cobblestone': 'wie Kopfsteinpflaster oder besser', 
+        'unpaved': 'Unbefestigt (unspezifiziert)', 
+        'fine_gravel': 'Splitt oder Kies', 
+        'compacted': 'wie verdichteter Untergrund oder besser', 
+        'metal': 'Metall', 
+        'ice': 'Eis', 
+        'grass_paver': 'Rasengittersteine', 
+        'sand': 'Sand', 
+        'dirt': 'Unbefestigt', 
+        'earth': 'Trampelpfad', 
+        'grass': 'Gras', 
+        'gravel': 'Schotter', 
+        'ground': 'Erde', 
+        'mud': 'Matsch', 
+        'pebblestone': 'loser Kies', 
+        'salt': 'Salz', 
+        'snow': 'Schnee', 
+        'wood': 'Holz', 
+        'woodchips': 'Holzschnitzel',
+        'all_surfaces': 'Alle Bel&auml;ge',
+
+    // Smoothnesses
+        'smoothness': 'Oberfl&auml;chenbeschaffenheit',
+        'excellent': 'Sehr gut',
+        'good': 'Gut',
+        'intermediate': 'Mittel', 
+        'bad': 'Schlecht', 
+        'very_bad': 'Sehr Schlecht', 
+        'horrible': '', 
+        'very_horrible': '', 
+        'impassable': '',
+        'all_smoothnesses': 'Alle Oberfl&auml;chenbeschaffenheiten', 
+        
+    // Tracktypes
+        'grade1': 'Wasserfester Belag', 
+        'grade2': 'Wassergebundene Decke',
+        'grade3': 'Befestigter oder ausgebesserter Weg', 
+        'grade4': 'Unbefestigter Weg', 
+        'grade5': 'Unbefestigter Weg',
+        
+    // Inclines
+		'incline': 'Maximale Steigung',
+		'threepercent' : 'Bis zu 3%',
+		'sixpercent' : 'Bis zu 6%',
+		'tenpercent' : 'Bis zu 10%',
+		'fifteenpercent' : 'Bis zu 15%',
+		'all_inclines' : 'Alle Steigungen',
+		
+	// Sloped Curbs
+		'sloped_curb' : 'Maximale Bordsteinh&ouml;he',
+		'threecm' : 'Bis zu 3 cm',
+		'sixcm' : 'Bis zu 6 cm',
+		'tencm' : 'Bis zu 10 cm',
+		'all_sloped_curbs' :  'Alle Bordsteinh&ouml;hen',
 
 	//Avoid areas
 		'avoidAreas':  'Bereiche vermeiden',

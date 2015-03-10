@@ -78,6 +78,7 @@ var lang_en = {
 	'Shortest' : 'shortest route',
 	'Fastest' : 'fastest route',
 	'Pedestrian' : 'pedestrian',
+	'Wheelchair' : 'accessible route',
 	'Bicycle' : 'shortest route',
 	'BicycleSafety' : 'safest route',
 	'BicycleRoute' : 'prefer bicycle lane',
@@ -86,6 +87,29 @@ var lang_en = {
 
 	'avoidMotorways' : 'Avoid highways',
 	'avoidTollways' : 'Avoid toll roads',
+	
+	//Surfaces:
+	'surface': 'Surface',
+    'asphalt': 'concrete, asphalt',
+    'cobblestone:flattened': 'flattened cobblestone and better',
+    'cobblestone': 'cobblestone and better', 
+    'compacted': 'compacted', 
+    'all_surfaces': 'flexible',
+
+    // Inclines
+	'incline': 'max incline',
+	'threepercent' : 'up to 3%',
+	'sixpercent' : 'up to 6%',
+	'tenpercent' : 'up to 10%',
+	'fifteenpercent' : 'up to 15%',
+	'all_inclines' : 'flexible',
+	
+	// Sloped Curbs
+	'sloped_curb' : 'max height of sloped curb',
+	'threecm' : 'up to 3 cm',
+	'sixcm' : 'up to 6 cm',
+	'tencm' : 'up to 10 cm',
+	'all_sloped_curbs' :  'flexible',
 
 	//Avoid areas
 	'avoidAreas' : 'Areas to avoid',
