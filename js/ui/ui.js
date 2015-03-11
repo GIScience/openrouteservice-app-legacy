@@ -1730,7 +1730,10 @@ var Ui = ( function(w) {'use strict';
 		 * @param e: the event
 		 */
 		function handleOptionsChanged(e) {
-			var item = e.srcElement.id;
+			
+			if (item != null){var item = e.srcElement.id} //get the src Element from IE/ Chrome
+			else {var item = e.target.id }  // get the target element in Firefox
+			
 			if ($.inArray(item, list.routeAvoidables) >= 0) {
 				//is a route avoidable
 				if (item === list.routeAvoidables[0]) {
