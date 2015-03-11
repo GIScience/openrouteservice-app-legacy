@@ -1,21 +1,21 @@
 <?php
 /*+-------------+----------------------------------------------------------*
- *|        /\   |   University of Bonn                                     *
+ *|        /\   |     University of Heidelberg                             *
  *|       |  |  |     Department of Geography                              *
- *|      _|  |_ |     Chair of Cartography                                 *
+ *|      _|  |_ |     GIScience Research Group                             *
  *|    _/      \|                                                          *
  *|___|         |                                                          *
- *|             |     Meckenheimer Allee 172                               *
- *|             |     D-53115 Bonn, Germany                                *
+ *|             |     Berliner Straße 48	                               *
+ *|             |     D-69221 Heidelberg, Germany                          *
  *+-------------+----------------------------------------------------------*/
 /**
- * <p><b>Title: Connect to Web Service </b></p>
- * <p><b>Description:</b> Functions for connect to web service </p>
+ * <p><b>Title: RS </b></p>
+ * <p><b>Description:</b> Functions for RS </p>
  *
- * <p><b>Copyright:</b> Copyright (c) 2008</p>
- * <p><b>Institution:</b> University of Bonn, Department of Geography</p>
- * @author Pascal Neis, neis@geographie.uni-bonn.de
- * @version 1.0 2008-07-11
+ * <p><b>Copyright:</b> Copyright (c) 2015</p>
+ * <p><b>Institution:</b> University of Heidelberg, Department of Geography</p>
+ * @author Pascal Neis, Enrico Steiger , openrouteservice at geog.uni-heidelberg.de
+ * @version 1.0 2015-02-01
  */
  
 ///////////////////////////////////////////////////
