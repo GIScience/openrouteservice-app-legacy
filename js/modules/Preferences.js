@@ -3,10 +3,10 @@ var Preferences = ( function(w) {'use strict';
 	//are there any cookies of thie page yet?
 	var cookiesAvailable = false;
 
-	var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version'];
+	var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version','avUnpaved', 'avFerry',];
 
 	//store information that can be used for the permalink
-	var permaInfo = [null, null, null, null, null, null, null, null, null, null, null];
+	var permaInfo = [null, null, null, null, null, null, null, null, null, null, null, null, null];
 
 	/**
 	 * Constructor
@@ -25,6 +25,8 @@ var Preferences = ( function(w) {'use strict';
 		this.routingLanguageIdx = 9;
 		this.distanceUnitIdx = 10;
 		this.versionIdx = 11;
+		this.avoidUnpavedIdx = 12;
+		this.avoidFerryIdx = 13;
 
 		//define variables
 		this.language = 'en';
@@ -308,21 +310,35 @@ var Preferences = ( function(w) {'use strict';
 	 * @param highway, tollway: extracted from the GET variables in readGetVars()
 	 * @return the avoidables
 	 */
-	function loadAvoidables(highway, tollway) {
-		var avoidables = [false, false];
+	function loadAvoidables(highway, tollway, unpaved, ferry) {
+		var avoidables = [false, false, false, false];
 		//highway
 		if (unescape(highway) === 'true') {
-			avoidables[0] = true;
+			avoidables[1] = true;
 			permaInfo[this.avoidHighwayIdx] = true;
 		} else {
 			permaInfo[this.avoidHighwayIdx] = false;
 		}
 		//tollway
 		if (unescape(tollway) === 'true') {
-			avoidables[1] = true;
+			avoidables[2] = true;
 			permaInfo[this.avoidTollwayIdx] = true;
 		} else {
 			permaInfo[this.avoidTollwayIdx] = false;
+		}
+		//unpaved
+		if (unescape(unpaved) === 'true') {
+			avoidables[3] = true;
+			permaInfo[this.avoidUnpavedIdx] = true;
+		} else {
+			permaInfo[this.avoidUnpavedIdx] = false;
+		}
+		//ferry
+		if (unescape(ferry) === 'true') {
+			avoidables[4] = true;
+			permaInfo[this.avoidFerryIdx] = true;
+		} else {
+			permaInfo[this.avoidFerryIdx] = false;
 		}
 		return avoidables;
 	}

@@ -39,7 +39,7 @@ list = {
 		'pedestrian': ['Pedestrian']
 	}),
 	
-	routeAvoidables : ['Highway', 'Tollway'],
+	routeAvoidables : ['Highway', 'Tollway', 'Unpavedroads', 'Ferry'],
 	
 	routePreferencesImages: new Hash({
 		'car': ['img/picto-car.png', 'img/picto-car-high.png'],

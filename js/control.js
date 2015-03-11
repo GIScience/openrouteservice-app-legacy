@@ -712,9 +712,11 @@ var Controller = ( function(w) {'use strict';
 				var routePref = prefs[0];
 				var avoidHighway = prefs[1][0];
 				var avoidTollway = prefs[1][1];
+				var avoidUnpavedRoads = prefs[1][2];
+				var avoidFerry = prefs[1][3];
 				var avoidAreas = map.getAvoidAreas();
 
-				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, avoidHighway, avoidTollway, avoidAreas);
+				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, avoidHighway, avoidTollway,avoidUnpavedRoads,avoidFerry, avoidAreas);
 				//try to read a variable that is set after the service response was received. If this variable is not set after a while -> timeout.
 				clearTimeout(timerRoute);
 
@@ -1222,6 +1224,8 @@ var Controller = ( function(w) {'use strict';
 			var routeOpt = getVars[preferences.getPrefName(preferences.routeOptionsIdx)];
 			var motorways = getVars[preferences.getPrefName(preferences.avoidHighwayIdx)];
 			var tollways = getVars[preferences.getPrefName(preferences.avoidTollwayIdx)];
+			var unpaved = getVars[preferences.getPrefName(preferences.avoidUnpavedIdx)];
+			var ferry = getVars[preferences.getPrefName(preferences.avoidFerryIdx)];
 			var avoidAreas = getVars[preferences.getPrefName(preferences.avoidAreasIdx)];
 
 			pos = preferences.loadMapPosition(pos);
@@ -1268,12 +1272,14 @@ var Controller = ( function(w) {'use strict';
 
 			routeOpt = preferences.loadRouteOptions(routeOpt);
 			ui.setRouteOption(routeOpt);
-			var res = preferences.loadAvoidables(motorways, tollways);
-			motorways = res[0];
-			tollways = res[1];
-			ui.setAvoidables(motorways, tollways);
+			var res = preferences.loadAvoidables(motorways, tollways, unpaved, ferry);
+			motorways = res[1];
+			tollways = res[2];
+			unpaved = res[3];
+			ferry = res[4];
+			ui.setAvoidables(motorways, tollways, unpaved, ferry);
 
-			var avoidables = preferences.loadAvoidables(motorways, tollways);
+			var avoidables = preferences.loadAvoidables(motorways, tollways, unpaved, ferry);
 			//avoidAreas: array of OL.Polygon representing one avoid area each
 			avoidAreas = preferences.loadAvoidAreas(avoidAreas);
 			//apply avoid areas

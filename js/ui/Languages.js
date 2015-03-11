@@ -34,6 +34,9 @@ var Languages = (function(w) {'use strict';
 		$('#avoidMotorLabel').html(p.translate('avoidMotorways'));
 		$('#avoidTollLabel').html(p.translate('avoidTollways'));
 		$('#avoidAreasTitle').html(p.translate('avoidAreas'));
+		$('#avoidMotorLabel').html(p.translate('avoidMotorways'));
+		$('#avoidunpavedRoadsLabel').html(p.translate('avoidunpavedRoads'));
+		$('#avoidFerryLabel').html(p.translate('avoidFerry'));
 
 		//routing
 		$('#resetRoute').html(p.translate('resetRoute'));

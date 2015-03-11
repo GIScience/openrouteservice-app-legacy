@@ -86,6 +86,8 @@ var lang_en = {
 
 	'avoidMotorways' : 'Avoid highways',
 	'avoidTollways' : 'Avoid toll roads',
+	'avoidunpavedRoads':  'Avoid unpaved roads',
+	'avoidFerry':  'Avoid ferry connections',
 
 	//Avoid areas
 	'avoidAreas' : 'Areas to avoid',
