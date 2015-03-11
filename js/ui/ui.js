@@ -1735,16 +1735,34 @@ var Ui = ( function(w) {'use strict';
 				//is a route avoidable
 				if (item === list.routeAvoidables[0]) {
 					//if the avoidable is set, remove it (and vice versa)
+
 					routeOptions[1][0] = routeOptions[1][0] ? null : item;
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.avoidHighwayIdx,
+
 						value : routeOptions[1][0] != null
 					});
-				} else {
+				}
+			if (item === list.routeAvoidables[1]) {
+					//if the avoidable is set, remove it (and vice versa)
 					routeOptions[1][1] = routeOptions[1][1] ? null : item;
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.avoidTollwayIdx,
 						value : routeOptions[1][1] != null
+					});
+				}
+			if (item === list.routeAvoidables[2]) {
+					//if the avoidable is set, remove it (and vice versa)
+					routeOptions[1][2] = routeOptions[1][2] ? null : item;
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.avoidUnpavedIdx,
+						value : routeOptions[1][2] != null
+					});
+				}				else if (item === list.routeAvoidables[3]) {
+					routeOptions[1][3] = routeOptions[1][3] ? null : item;
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.avoidFerryIdx,
+						value : routeOptions[1][3] != null
 					});
 				}
 			} else {
@@ -1791,13 +1809,19 @@ var Ui = ( function(w) {'use strict';
 		 * @param highway: true, if highway checkbox is to be checked
 		 * @param tollway: accordingly.
 		 */
-		function setAvoidables(highway, tollway) {
+		function setAvoidables(highway, tollway,unpaved,ferry) {
 			var highwayTrue = (highway === 'true') || highway == true;
 			var tollwayTrue = (tollway === 'true') || tollway == true;
+			var unpavedTrue = (unpaved === 'true') || unpaved == true;
+			var ferryTrue = (ferry === 'true') || ferry == true;
 			routeOptions[1][0] = highwayTrue;
 			routeOptions[1][1] = tollwayTrue;
+			routeOptions[1][2] = unpavedTrue;
+			routeOptions[1][3] = ferryTrue;
 			$('#Highway').attr('checked', highwayTrue);
 			$('#Tollway').attr('checked', tollwayTrue);
+			$('#Unpavedroads').attr('checked', unpavedTrue);
+			$('#Ferry').attr('checked', ferryTrue);
 		}
 
 		/**

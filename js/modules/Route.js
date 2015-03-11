@@ -17,9 +17,11 @@ var Route = ( function(w) {"use strict";
 		 * @param routePref: route preference, e.g. Fastest
 		 * @param avoidMotorways: flag set to true if motorways should be avoided in the route; else: false
 		 * @param avoidTollways: flag set to true if tollways should be avoided in the route; else: false
+		 * @param avoidunpavedRoads: flag set to true if unpaved roads should be avoided in the route; else: false
+		 * @param avoidFerry: flag set to true if ferrys should be avoided in the route; else: false
 		 * @param avoidAreas: array of avoid areas represented by OL.Geometry.Polygons
 		 */
-		function calculate(routePoints, successCallback, failureCallback, language, routePref, avoidMotorways, avoidTollways, avoidAreas) {
+		function calculate(routePoints, successCallback, failureCallback, language, routePref, avoidMotorways, avoidTollways,avoidunpavedRoads,avoidFerry, avoidAreas) {
 			var writer = new XMLWriter('UTF-8', '1.0');
 			writer.writeStartDocument();
 			//<xls:XLS>
@@ -114,6 +116,12 @@ var Route = ( function(w) {"use strict";
 			}
 			if (avoidTollways) {
 				writer.writeElementString('xls:AvoidFeature', 'Tollway');
+			}
+			if (avoidunpavedRoads) {
+				writer.writeElementString('xls:AvoidFeature', 'Unpavedroads');
+			}
+			if (avoidFerry) {
+				writer.writeElementString('xls:AvoidFeature', 'Ferry');
 			}
 			//</xls:AvoidList>
 			writer.writeEndElement();

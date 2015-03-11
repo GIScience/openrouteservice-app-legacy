@@ -85,6 +85,8 @@ var lang_de = {
 
 		'avoidMotorways':  'Autobahnen vermeiden',
 		'avoidTollways':  'Mautstra&szlig;en vermeiden',
+		'avoidunpavedRoads':  'Unbefestigte Straßen vermeiden',
+		'avoidFerry':  'Fährverbindungen vermeiden',
 
 	//Avoid areas
 		'avoidAreas':  'Bereiche vermeiden',
