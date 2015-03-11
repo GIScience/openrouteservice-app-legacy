@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>OSM AAS | Testclient</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="SHORTCUT ICON" href="../favicon.ico">
+
+<style type="text/css">
+<!--
+.Stil1 {
+	font-size: 18px;
+	font-weight: bold;
+	font-family: Arial, Helvetica, sans-serif;
+}
+body,td,th {
+	font-family: Arial, Helvetica, sans-serif;
+}
+body {
+	margin-right: 100px;
+}
+-->
+</style>
+</head>
+
+<body>
+<form name="form1" method="post" action="">
+  <table width="700" border="1" align="center" cellpadding="5" cellspacing="0">
+    <tr>
+      <td colspan="3" nowrap><div align="left"><span class="Stil1">OSM AAS - Testclient by 
+        <a href="http://www.openrouteservice.org/">www.OpenRouteService.org </a> </span>
+      </div></td>
+    </tr>
+    <tr>
+      <td nowrap>URL : </td>
+      <td colspan="2"><input id="url" value="http://openls.geog.uni-heidelberg.de/testing2015/analysis" size="80"></td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap>Request : </td>
+      <td colspan="2"><textarea name="REQUEST" cols="70" rows="20">
+<?xml version="1.0" encoding="UTF-8" ?>
+<aas:AAS version="1.0" xmlns:aas="http://www.geoinform.fh-mainz.de/aas" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.geoinform.fh-mainz.de/aas">
+	<aas:RequestHeader>
+	</aas:RequestHeader>
+	<aas:Request methodName="AccessibilityRequest" requestID="4711" version="1.0">
+		<aas:DetermineAccessibilityRequest>
+			<aas:Accessibility>
+				<aas:AccessibilityPreference>
+					<aas:Time Duration="PT0H1M00S" />
+				</aas:AccessibilityPreference>
+				<aas:LocationPoint>
+					<aas:Position>
+						<gml:Point xmlns:gml="http://www.opengis.net/gml" srsName="EPSG:4326">
+							<gml:pos>8.683278170381747 49.416249934004064</gml:pos>
+						</gml:Point>
+					</aas:Position>
+				</aas:LocationPoint>
+			</aas:Accessibility>
+			<aas:AccessibilityGeometryRequest>
+				<aas:PolygonPreference>Detailed</aas:PolygonPreference>
+			</aas:AccessibilityGeometryRequest>
+		</aas:DetermineAccessibilityRequest>
+	</aas:Request>
+</aas:AAS>
+      </textarea></td>
+    </tr>
+    <tr align="right" valign="bottom">
+      <td height="42" colspan="3">        
+        <div align="right">
+          <input type="reset" value="Reset">
+          <input type="submit" onClick="form1.action = url.value" value="Send">
+        </div></td>
+    </tr>
+  </table>
+</form>
+  <p align="center"><strong>oder</strong></p>
+<form action="" method="post" enctype="multipart/form-data" name="form2">
+<table width="700" border="1" align="center" cellpadding="5" cellspacing="0">
+  <tr align="right" valign="bottom">
+    <td align="left" valign="top" nowrap>Request :</td>
+    <td><div align="left">
+        <input name="REQUEST2" type="file" size="60">
+    </div></td>
+  </tr>
+  <tr>
+    <td colspan="2"><div align="right">
+        <input type="reset" value="Reset">
+        <input type="submit" onClick="form2.action = form1.url.value" value="Upload">
+    </div></td>
+    </tr>
+</table>
+</form>
+      <script src="http://www.google-analytics.com/urchin.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			_uacct = "UA-1075278-3";
+			urchinTracker(); 
+		</script>
+</body>
+</html>
