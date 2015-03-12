@@ -1430,8 +1430,10 @@ var Ui = ( function(w) {'use strict';
 				totalTime = totalTime.replace('D', ' ' + preferences.translate('days') + ' ');
 				totalTime = totalTime.replace('H', ' ' + preferences.translate('hours') + ' ');
 				totalTime = totalTime.replace('M', ' ' + preferences.translate('minutes') + ' ');
-				totalTime = totalTime.replace('S', ' ' + preferences.translate('seconds') + ' ');
-
+				totalTime = totalTime.slice(0,-1);
+				totalTime = totalTime + (' ' + preferences.translate('seconds') + ' ');
+				//totalTime = totalTime.replace('S', ' ' + preferences.translate('seconds') + ' ');
+			
 				var distance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'TotalDistance')[0];
 				var distanceValue = distance.getAttribute('value');
 				var distanceUnit = distance.getAttribute('uom');
