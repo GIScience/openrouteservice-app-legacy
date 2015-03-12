@@ -138,7 +138,7 @@ var Map = ( function() {"use strict";
 						type : 'png',
 						isBaseLayer : true,
 						numZoomLevels : 19,
-						attribution : 'Maps and data: &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> and contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+						attribution : 'Map data &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> contributors, powered by <a href="http://mapsurfernet.com/">MapSurfer.NET</a>',
 					};
 					var layerMapSurfer = new OpenLayers.Layer.XYZ(mapSurfer_name, namespaces.layerMapSurfer, mapSurfer_options);
 					this.theMap.addLayer(layerMapSurfer);
@@ -160,7 +160,7 @@ var Map = ( function() {"use strict";
 				};
 				var layerOSM = new OpenLayers.Layer.WMS(wms_name, namespaces.layerWms, wms_options, {
 					'buffer' : 2,
-					'attribution' : 'Maps and data: &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> and contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+					'attribution' : 'Map data: &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> contributors'
 				});
 				this.theMap.addLayer(layerOSM);
 			}
