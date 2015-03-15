@@ -681,7 +681,7 @@ var Controller = ( function(w) {'use strict';
 			ui.invalidateWaypointSearch(index);
 
 			//update preferences
-			handleWaypointChanged(map.getWaypointsString());
+			handleWaypointChanged(map.getWaypointsString(), true);
 		}
 
 		/* *********************************************************************
