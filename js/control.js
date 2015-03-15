@@ -744,6 +744,7 @@ var Controller = ( function(w) {'use strict';
 		 * @param results: XML route service results
 		 */
 		function routeCalculationSuccess(results) {
+			var zoomToMap = !route.routePresent;
 			route.routePresent = true;
 			ui.setRouteIsPresent(true);
 
@@ -773,7 +774,7 @@ var Controller = ( function(w) {'use strict';
 					ui.updateRouteInstructions(results, featureIds, map.ROUTE_LINES);
 					ui.endRouteCalculation();
 
-					map.zoomToRoute();
+					if (zoomToMap) map.zoomToRoute();
 				} else {
 					routeCalculationError();
 				}
