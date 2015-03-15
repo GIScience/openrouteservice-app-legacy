@@ -53,6 +53,7 @@ var Map = ( function() {"use strict";
 			strokeWidth : 5,
 			strokeColor : '${stroke}',
 			fillColor : '${fill}',
+			strokeOpacity: 0.6,
 			graphicZIndex : 2,
 			cursor : 'pointer'
 		};
@@ -61,6 +62,7 @@ var Map = ( function() {"use strict";
 			strokeWidth : '${strokeWidthEm}',
 			strokeColor : '${strokeEm}',
 			fillColor : '${fillEm}',
+			strokeOpacity: 0.6,
 			graphicZIndex : 3
 		};
 
