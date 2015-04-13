@@ -1430,8 +1430,10 @@ var Ui = ( function(w) {'use strict';
 				totalTime = totalTime.replace('D', ' ' + preferences.translate('days') + ' ');
 				totalTime = totalTime.replace('H', ' ' + preferences.translate('hours') + ' ');
 				totalTime = totalTime.replace('M', ' ' + preferences.translate('minutes') + ' ');
-				totalTime = totalTime.replace('S', ' ' + preferences.translate('seconds') + ' ');
-
+				totalTime = totalTime.slice(0,-1);
+				totalTime = totalTime + (' ' + preferences.translate('seconds') + ' ');
+				//totalTime = totalTime.replace('S', ' ' + preferences.translate('seconds') + ' ');
+			
 				var distance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'TotalDistance')[0];
 				var distanceValue = distance.getAttribute('value');
 				var distanceUnit = distance.getAttribute('uom');
@@ -1730,7 +1732,10 @@ var Ui = ( function(w) {'use strict';
 		 * @param e: the event
 		 */
 		function handleOptionsChanged(e) {
-			var item = e.srcElement.id;
+			
+			if (item != null){var item = e.srcElement.id} //get the src Element from IE/ Chrome
+			else {var item = e.target.id }  // get the target element in Firefox
+			
 			if ($.inArray(item, list.routeAvoidables) >= 0) {
 				//is a route avoidable
 				if (item === list.routeAvoidables[0]) {
