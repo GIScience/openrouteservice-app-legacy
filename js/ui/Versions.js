@@ -32,13 +32,13 @@ var Versions = ( function(w) {'use strict';
 	 */
 	function applyStandardVersion() {
 		//hide avoid areas
-		$('#avoidAreas').hide();
+		$('#avoidAreas').show();
 		
 		//hide import/export features
-		$('#exportImport').hide();
+		$('#exportImport').show();
 		
 		//hide accessibility analysis
-		$('#accessibilityAnalysis').hide();
+		$('#accessibilityAnalysis').show();
 	}
 	
 	/**

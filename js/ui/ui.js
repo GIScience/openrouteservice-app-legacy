@@ -8,8 +8,8 @@ var Ui = ( function(w) {'use strict';
 		orsTabs = ['route', 'search', 'geolocation'],
 		//search POI options: searchNearRoute, maxDist to route, distance Unit for maxDist, search query
 		searchPoiAtts = ['false', '100', 'm', ''],
-		//routing options for car, bike and pedestrian
-		routeOptions = [list.routePreferences.get('car')[0], [null, null]],
+		//routing options for car, bike, pedestrian and truck
+		routeOptions = [list.routePreferences.get('car')[0], [null, null, null], [null, null, null]],
 		//is a route available?
 		routeIsPresent = false,
 		//timeout to wait before sending a request after the user finished typing
@@ -1673,6 +1673,9 @@ var Ui = ( function(w) {'use strict';
 		 * when the user wants to switch between route options for cars/bikes/pedestrians and clicks the button to switch views
 		 * @param e: the event
 		 */
+		 
+		 
+		 
 		function switchRouteOptionsPane(e) {
 			var parent = $('.routePreferenceBtns').get(0);
 			var optionType = e.currentTarget.id;
@@ -1703,30 +1706,75 @@ var Ui = ( function(w) {'use strict';
 					imgElement.setAttribute('src', list.routePreferencesImages.get(btn.id)[0]);
 				}
 			}
-
+			
+			 
 			//switch the content
 			var car = $('#carOptions');
 			var bike = $('#bicycleOptions');
 			var ped = $('#pedestrianOptions');
+			var truckparameter = $('#truckOptions_restrict');
+			var truck = $('#truckOptions');
 			var avoidables = $('#avoidables');
+			
 			if (optionType === 'car') {
 				car.show();
 				avoidables.show();
 				bike.hide();
 				ped.hide();
+				 truck.hide();
+				truckparameter.hide();
+				$('#accessibilityAnalysis').show();
 			} else if (optionType === 'bicycle') {
 				car.hide();
 				avoidables.hide();
 				bike.show();
 				ped.hide();
-			} else {
+				truck.hide();
+				truckparameter.hide();
+				$('#accessibilityAnalysis').show();
+			} else if (optionType === 'truck') {
+				car.hide();
+				avoidables.show();
+				bike.hide();
+				ped.hide();
+				truck.show();
+				truckparameter.show();
+				$('#accessibilityAnalysis').show();
+			}  else {
 				car.hide();
 				avoidables.hide();
 				bike.hide();
 				ped.show();
-			}
+				truck.hide();
+				truckparameter.hide();
+				}
 		}
+		
+		
+		
+		 function setTruckParameters(truck_length, truck_height, truck_weight) {
+		var lengthParamIndex = 0;
+		var heightParamIndex = 0;
+		var weightParamIndex = 0;
+			
+			var truck_length = truckParameters[0];
+			var truck_height = truckParameters[1];
+			var truck_weight = truckParameters[2];
 
+			preferences.loadtruckParameters(truck_length, truck_height, truck_weight)
+			routeOptions[2][0]= truck_length;
+			routeOptions[2][1]= truck_height;
+			routeOptions[2][2]= truck_weight;
+		
+			
+		
+			$('#value_length_slide')[lengthParamIndex].selected = true;
+			$('#value_height_slide')[heightParamIndex].selected = true;
+			$('#value_weight_slide')[weightParamIndex].selected = true;
+			
+			 }					;	
+			
+		
 		/**
 		 * checks if routing options have changed and triggers a route recalculation if appropriate
 		 * @param e: the event
@@ -2268,6 +2316,7 @@ var Ui = ( function(w) {'use strict';
 			$('#car').click(switchRouteOptionsPane);
 			$('#bicycle').click(switchRouteOptionsPane);
 			$('#pedestrian').click(switchRouteOptionsPane);
+			$('#truck').click(switchRouteOptionsPane);
 			$('.routeOptions').change(handleOptionsChanged);
 			$('#avoidAreasToolbar').click(avoidAreasToolClicked);
 
@@ -2344,6 +2393,7 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.setRouteOption = setRouteOption;
 		Ui.prototype.setAvoidables = setAvoidables;
 		Ui.prototype.showAvoidAreasError = showAvoidAreasError;
+
 
 		Ui.prototype.showSearchingAtAccessibility = showSearchingAtAccessibility;
 		Ui.prototype.showAccessibilityError = showAccessibilityError;
@@ -2493,4 +2543,7 @@ Ui.poiIcons = {
 	poi_water_park : 'img/poi/water_park.png',
 	//default icon
 	poi_default : 'img/poi/building_number.png'
+	
+	
+	
 };

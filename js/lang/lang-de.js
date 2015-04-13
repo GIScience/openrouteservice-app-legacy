@@ -82,6 +82,9 @@ var lang_de = {
 		'BicycleRoute':  'Bevorzuge Fahrradweg',
 		'BicycleMTB':  'Mountainbike',
 		'BicycleRacer':  'Rennrad',
+		'TruckLength' : 'Maximale L&auml;nge',
+		'TruckHeight' : 'Maximale H&ouml;he',
+		'TruckWeight' : 'Maximales Gewicht',
 
 		'avoidMotorways':  'Autobahnen vermeiden',
 		'avoidTollways':  'Mautstra&szlig;en vermeiden',

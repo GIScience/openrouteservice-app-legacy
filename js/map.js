@@ -133,16 +133,25 @@ var Map = ( function() {"use strict";
 			/* *********************************************************************
 			* MAP LAYERS
 			* *********************************************************************/
+			
+		
+			
 
+			
 			//layer 1 - open map surfer
 			if (namespaces.layerMapSurfer.length) {
+			
+			
+			
+					
 					var mapSurfer_name = "OpenMapSurfer Roads";
+					var myvar = 'blabla';
 					var mapSurfer_options = {
 						type : 'png',
 						isBaseLayer : true,
 						numZoomLevels : 19,
 						attribution : 'Map data &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> contributors, powered by <a href="http://mapsurfernet.com/">MapSurfer.NET</a>',
-
+						
 						resolutions: [39135.7584765625, 19567.87923828125, 9783.939619140625,
 							4891.9698095703125, 2445.9849047851562, 1222.9924523925781,
 							611.4962261962891, 305.74811309814453, 152.87405654907226,
@@ -162,7 +171,7 @@ var Map = ( function() {"use strict";
 					var layerMapSurfer = new OpenLayers.Layer.XYZ(mapSurfer_name, namespaces.layerMapSurfer, mapSurfer_options);
 					this.theMap.addLayer(layerMapSurfer);
 			}
-
+	
 
 			//layer 2 - mapnik
 			var osmLayer = new OpenLayers.Layer.OSM();

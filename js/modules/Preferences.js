@@ -3,10 +3,10 @@ var Preferences = ( function(w) {'use strict';
 	//are there any cookies of thie page yet?
 	var cookiesAvailable = false;
 
-	var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version','avUnpaved', 'avFerry',];
+	var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version','avUnpaved', 'avFerry','value_length','value_height','value_weight'];
 
 	//store information that can be used for the permalink
-	var permaInfo = [null, null, null, null, null, null, null, null, null, null, null, null, null];
+	var permaInfo = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null];
 
 	/**
 	 * Constructor
@@ -27,6 +27,9 @@ var Preferences = ( function(w) {'use strict';
 		this.versionIdx = 11;
 		this.avoidUnpavedIdx = 12;
 		this.avoidFerryIdx = 13;
+		this.value_lengthIdx = 14;
+		this.value_heightIdx = 15;
+		this.value_weightIdx = 16;
 
 		//define variables
 		this.language = 'en';
@@ -283,10 +286,9 @@ var Preferences = ( function(w) {'use strict';
 
 		//set a default in the permaInfo Array if routeOpt == null, undef, etc.
 		if (routeOpt == undefined || routeOpt == null || routeOpt == 'undefined') {
-			permaInfo[this.routeOptionsIdx] = list.routePreferences.get('car')[0];
-		} else {
-			permaInfo[this.routeOptionsIdx] = routeOpt;
-		}
+			routeOpt = list.routePreferences.get('car')[0];
+}
+	permaInfo[this.routeOptionsIdx] = routeOpt;
 
 		//check if the routeOpt parameter is a valid routeOption.
 		var mainObjects = list.routePreferences.keys();
@@ -305,6 +307,48 @@ var Preferences = ( function(w) {'use strict';
 		return routeOpt;
 	}
 
+	
+/**
+	* determines route option wheelchair parameters by GET variable
+	* @param surface, incline, slopedCurb: extracted from the GET variables in readGetVars()
+	* @return the wheelchair parameters
+	*/
+ function loadtruckParameters(truck_length, truck_height, truck_weight) {
+ var truckParameters = [null, null, null];
+
+ // truck width
+ // value_length = null;
+ // truck height
+ // value_height = null;
+ // truck weight
+//  value_weight = null;
+  
+ if (value_length != null) {
+ truckParameters[0] = document.getElementById("value_length").value;}
+ else {
+			truckParameters[0] == false;
+		}
+ 
+  if (value_height != null) { 
+ truckParameters[1] = document.getElementById("value_height").value;}
+  else {
+			truckParameters[1] == false;
+		}
+ 
+   if (value_weight != null) { 
+ truckParameters[2] = document.getElementById("value_weight").value;}
+  else {
+			truckParameters[2] == false;
+		}
+
+ permaInfo[this.value_lengthIdx] = unescape(truck_length);
+ permaInfo[this.value_heightIdx] = unescape(truck_height);
+ permaInfo[this.value_weightIdx] = unescape(truck_weight);
+
+ return truckParameters;
+ }
+	
+	
 	/**
 	 * determines route option avoidables by GET variable
 	 * @param highway, tollway: extracted from the GET variables in readGetVars()
@@ -535,6 +579,7 @@ var Preferences = ( function(w) {'use strict';
 	Preferences.prototype.loadRouteOptions = loadRouteOptions;
 	Preferences.prototype.loadAvoidables = loadAvoidables;
 	Preferences.prototype.loadAvoidAreas = loadAvoidAreas;
+	Preferences.prototype.loadtruckParameters = loadtruckParameters;
 
 	Preferences.prototype.writeMapCookies = writeMapCookies;
 	Preferences.prototype.writePrefsCookies = writePrefsCookies;

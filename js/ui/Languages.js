@@ -31,6 +31,10 @@ var Languages = (function(w) {'use strict';
 		$('#BicycleMtbLabel').html(p.translate('BicycleMTB'));
 		$('#BicycleRacerLabel').html(p.translate('BicycleRacer'));
 		$('#PedestrianLabel').html(p.translate('Pedestrian'));
+		$('#trucklengthLabel').html(p.translate('TruckLength'));
+		$('#truckheigthLabel').html(p.translate('TruckHeight'));
+		$('#truckweigthLabel').html(p.translate('TruckWeight'));
+		
 		$('#avoidMotorLabel').html(p.translate('avoidMotorways'));
 		$('#avoidTollLabel').html(p.translate('avoidTollways'));
 		$('#avoidAreasTitle').html(p.translate('avoidAreas'));

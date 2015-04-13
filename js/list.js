@@ -5,7 +5,7 @@
 list = {
 	languages: ['de', 'en', 'pl'], 
 	
-	routingLanguages : ['en', 'de', 'pl', 'bg', 'cz', 'nl', 'hr', 'hu','ua', 'nl_BE', 'es', 'eo', 'fi', 'fr', 'it', 'pt_BR', 'ro', 'ru', 'se', 'dk', 'tr', 'ca', 'ja', 'no', 'vi', 'nb', 'de-rheinl', 'de-opplat', 'de-berlin', 'de-swabia', 'de-ruhrpo', 'de-at-ooe', 'de-bay'],
+	routingLanguages : ['en', 'de', 'pl', 'bg', 'cz', 'nl', 'hr', 'hu', 'nl_BE', 'es', 'eo', 'fi', 'fr', 'it', 'pt_BR', 'ro', 'ru', 'se', 'dk', 'tr', 'ca', 'ja', 'no', 'vi', 'nb', 'de-rheinl', 'de-opplat', 'de-berlin', 'de-swabia', 'de-ruhrpo', 'de-at-ooe', 'de-bay'],
 		
 	distanceUnits: ['m', 'km', 'yd', 'mi'],
 	distanceUnitsPreferences : ['m', 'yd'],
@@ -36,7 +36,8 @@ list = {
 	routePreferences: new Hash({
 		'car': ['Fastest', 'Shortest'],
 		'bicycle': ['Bicycle', 'BicycleSafety', 'BicycleRoute', 'BicycleMTB', 'BicycleRacer'],
-		'pedestrian': ['Pedestrian']
+		'pedestrian': ['Pedestrian'],
+		'car': ['Fastest', 'Shortest']
 	}),
 	
 	routeAvoidables : ['Highway', 'Tollway', 'Unpavedroads', 'Ferry'],
@@ -44,6 +45,7 @@ list = {
 	routePreferencesImages: new Hash({
 		'car': ['img/picto-car.png', 'img/picto-car-high.png'],
 		'bicycle': ['img/picto-bike.png', 'img/picto-bike-high.png'],
-		'pedestrian' : ['img/picto-dude.png', 'img/picto-dude-high.png']
+		'pedestrian' : ['img/picto-dude.png', 'img/picto-dude-high.png'],
+		'truck' : ['img/picto-truck.png', 'img/picto-truck-high.png']
 	})
 };

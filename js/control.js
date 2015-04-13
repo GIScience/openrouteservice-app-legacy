@@ -715,8 +715,9 @@ var Controller = ( function(w) {'use strict';
 				var avoidUnpavedRoads = prefs[1][2];
 				var avoidFerry = prefs[1][3];
 				var avoidAreas = map.getAvoidAreas();
+				var extendedRoutePreferences = prefs[2];
 
-				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, avoidHighway, avoidTollway,avoidUnpavedRoads,avoidFerry, avoidAreas);
+				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferences, avoidHighway, avoidTollway,avoidUnpavedRoads,avoidFerry, avoidAreas);
 				//try to read a variable that is set after the service response was received. If this variable is not set after a while -> timeout.
 				clearTimeout(timerRoute);
 
@@ -1228,6 +1229,10 @@ var Controller = ( function(w) {'use strict';
 			var unpaved = getVars[preferences.getPrefName(preferences.avoidUnpavedIdx)];
 			var ferry = getVars[preferences.getPrefName(preferences.avoidFerryIdx)];
 			var avoidAreas = getVars[preferences.getPrefName(preferences.avoidAreasIdx)];
+			
+			var truck_length = getVars[preferences.getPrefName(preferences.truck_lengthIdx)];
+			var truck_height = getVars[preferences.getPrefName(preferences.truck_heightIdx)];
+			var truck_weight = getVars[preferences.getPrefName(preferences.truck_weightIdx)];
 
 			pos = preferences.loadMapPosition(pos);
 			if (pos && pos != 'null') {
@@ -1280,11 +1285,22 @@ var Controller = ( function(w) {'use strict';
 			ferry = res[4];
 			ui.setAvoidables(motorways, tollways, unpaved, ferry);
 
+
 			var avoidables = preferences.loadAvoidables(motorways, tollways, unpaved, ferry);
 			//avoidAreas: array of OL.Polygon representing one avoid area each
 			avoidAreas = preferences.loadAvoidAreas(avoidAreas);
 			//apply avoid areas
 			map.addAvoidAreas(avoidAreas);
+			
+			var truckParameters = preferences.loadtruckParameters(truck_length, truck_height, truck_weight);
+			 truck_length = truckParameters[0];
+			 truck_height = truckParameters[1];
+			 truck_weight = truckParameters[2];
+			
+			 
+			ui.setTruckParameters(truck_length, truck_height, truck_weight);
+			
+
 
 			if (!preferences.areCookiesAVailable()) {
 				ui.showNewToOrsPopup();
