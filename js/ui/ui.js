@@ -398,7 +398,6 @@ var Ui = ( function(w) {'use strict';
 		 */
 		function handleMoveUpWaypointClick(e) {
 
-			console.log('moved')
 			//index of waypoint
 			var waypointElement = $(e.currentTarget).parent();
 			var index = parseInt(waypointElement.attr('id'));
@@ -1681,7 +1680,6 @@ var Ui = ( function(w) {'use strict';
 		 
 		function switchRouteOptionsPane(e) {
 
-			console.log('changed')
 			var parent = $('.routePreferenceBtns').get(0);
 			var optionType = e.currentTarget.id;
 
@@ -1701,8 +1699,6 @@ var Ui = ( function(w) {'use strict';
 
 					routeOptions[0] = options.id; 
 					routeOptions[3] = options.name;
-
-					console.log(routeOptions);
 
 					theInterface.emit('ui:routingParamsChanged');
 					theInterface.emit('ui:prefsChanged', {
@@ -1777,9 +1773,6 @@ var Ui = ( function(w) {'use strict';
 		 */
 		function handleOptionsChanged(e) {
 			
-			console.log('handleoptionschanged')
-			console.log(e.srcElement.id)
-
 			if (item != null){
 				var item = e.srcElement.id
 			} //get the src Element from IE/ Chrome 
@@ -1828,7 +1821,7 @@ var Ui = ( function(w) {'use strict';
 				// do nothing 
 
 			} else {
-				console.log('else')
+
 				//is a regular route option
 				routeOptions[0] = item;
 				theInterface.emit('ui:prefsChanged', {

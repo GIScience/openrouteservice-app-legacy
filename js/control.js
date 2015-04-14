@@ -243,8 +243,6 @@ var Controller = ( function(w) {'use strict';
 		 */
 		function handleMovedWaypoints(atts) {
 
-			console.log('moved')
-
 			var index1 = atts.id1;
 			var index2 = atts.id2;
 
@@ -730,8 +728,6 @@ var Controller = ( function(w) {'use strict';
 				var avoidUnpavedRoads = prefs[1][2];
 				var avoidFerry = prefs[1][3];
 				var avoidAreas = map.getAvoidAreas();
-
-				console.log(prefs)
 
 				// check whether truck button is active and send extendedRoutePreferences, otherwise don't 
 				if(prefs[3] == 'truck')
