@@ -41,6 +41,8 @@ list = {
 	}),
 	
 	routeAvoidables : ['Highway', 'Tollway', 'Unpavedroads', 'Ferry'],
+
+	truckParams : ['value_length_slide', 'value_height_slide', 'value_weigth_slide'],
 	
 	routePreferencesImages: new Hash({
 		'car': ['img/picto-car.png', 'img/picto-car-high.png'],

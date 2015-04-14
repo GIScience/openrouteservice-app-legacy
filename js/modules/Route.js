@@ -22,6 +22,8 @@ var Route = ( function(w) {"use strict";
 		 * @param avoidAreas: array of avoid areas represented by OL.Geometry.Polygons
 		 */
 		function calculate(routePoints, successCallback, failureCallback, language, routePref,extendedRoutePreferences, avoidMotorways, avoidTollways,avoidunpavedRoads,avoidFerry, avoidAreas) {
+
+			console.log(extendedRoutePreferences)
 			var writer = new XMLWriter('UTF-8', '1.0');
 			writer.writeStartDocument();
 			//<xls:XLS>
@@ -49,27 +51,29 @@ var Route = ( function(w) {"use strict";
 			writer.writeStartElement('xls:RoutePlan');
 			//<xls:RoutePreference />
 			writer.writeElementString('xls:RoutePreference', routePref || 'Fastest');
-			writer.writeStartElement('xls:ExtendedRoutePreference');
-			if (routePref === 'truck') {
-			 //truck width
-			 if (extendedRoutePreferences[0] != null) {
-			 writer.writeElementString('xls:width', extendedRoutePreferences[0]);
-			 writer.writeEndElement();
-			 }
-			 //truck heigth
-			 if (extendedRoutePreferences[1] != null) {
-			 writer.writeElementString('xls:height', extendedRoutePreferences[1]);
-			 writer.writeEndElement();
-			 }
-			 //truck weigth
-			 if (extendedRoutePreferences[2] != null) {
-			 writer.writeElementString('xls:weight', extendedRoutePreferences[2]);
-			 writer.writeEndElement();
-			 }
-			 }
-			 //</xls:ExtendedRoutePreference>
-			 writer.writeEndElement();
-				 
+			
+
+			if (extendedRoutePreferences != null ) {
+				if (routePref == 'Fastest' || routePref == 'Shortest') {
+
+					writer.writeStartElement('xls:ExtendedRoutePreference');
+					//truck width
+					if (extendedRoutePreferences[0] != null) {
+						writer.writeElementString('xls:width', extendedRoutePreferences[0]);
+					}
+					//truck heigth
+					 if (extendedRoutePreferences[1] != null) {
+						 writer.writeElementString('xls:height', extendedRoutePreferences[1]);
+					 }
+					 //truck weigth
+					 if (extendedRoutePreferences[2] != null) {
+						 writer.writeElementString('xls:weight', extendedRoutePreferences[2]);
+					 }
+					//</xls:ExtendedRoutePreference>
+					writer.writeEndElement();
+				}
+			}
+
 			//<xls:WayPointList>
 			writer.writeStartElement('xls:WayPointList');
 			for (var i = 0; i < routePoints.length; i++) {

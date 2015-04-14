@@ -308,45 +308,25 @@ var Preferences = ( function(w) {'use strict';
 	}
 
 	
-/**
+	/**
 	* determines route option wheelchair parameters by GET variable
 	* @param surface, incline, slopedCurb: extracted from the GET variables in readGetVars()
 	* @return the wheelchair parameters
 	*/
- function loadtruckParameters(truck_length, truck_height, truck_weight) {
- var truckParameters = [null, null, null];
+	function loadtruckParameters() {
+	
+		var truckParameters = [null, null, null];
 
- // truck width
- // value_length = null;
- // truck height
- // value_height = null;
- // truck weight
-//  value_weight = null;
-  
- if (value_length != null) {
- truckParameters[0] = document.getElementById("value_length").value;}
- else {
-			truckParameters[0] == false;
-		}
- 
-  if (value_height != null) { 
- truckParameters[1] = document.getElementById("value_height").value;}
-  else {
-			truckParameters[1] == false;
-		}
- 
-   if (value_weight != null) { 
- truckParameters[2] = document.getElementById("value_weight").value;}
-  else {
-			truckParameters[2] == false;
-		}
+		truckParameters[0] = document.getElementById("value_length").value;
+		truckParameters[1] = document.getElementById("value_height").value;
+		truckParameters[2] = document.getElementById("value_weight").value;
+		
+		permaInfo[this.value_lengthIdx] = unescape(truckParameters[0]);
+		permaInfo[this.value_heightIdx] = unescape(truckParameters[1]);
+		permaInfo[this.value_weightIdx] = unescape(truckParameters[2]);
 
- permaInfo[this.value_lengthIdx] = unescape(truck_length);
- permaInfo[this.value_heightIdx] = unescape(truck_height);
- permaInfo[this.value_weightIdx] = unescape(truck_weight);
-
- return truckParameters;
- }
+		return truckParameters;
+	}
 	
 	
 	/**

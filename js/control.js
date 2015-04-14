@@ -156,6 +156,7 @@ var Controller = ( function(w) {'use strict';
 		 * @param atts: pos: position of the new waypoint, type: type of the waypoint
 		 */
 		function handleAddWaypointByRightclick(atts) {
+
 			var pos = atts.pos;
 			var wpType = atts.type;
 			var featureId;
@@ -241,6 +242,9 @@ var Controller = ( function(w) {'use strict';
 		 * after waypoints have been moved, re-calculations are necessary: update of internal variables, waypoint type exchange,...
 		 */
 		function handleMovedWaypoints(atts) {
+
+			console.log('moved')
+
 			var index1 = atts.id1;
 			var index2 = atts.id2;
 
@@ -694,9 +698,12 @@ var Controller = ( function(w) {'use strict';
 		 * else: hides route information
 		 */
 		function handleRoutePresent() {
+
+			//console.log('present?')
 			var isRoutePresent = waypoint.getNumWaypointsSet() >= 2;
 
 			if (isRoutePresent) {
+
 				ui.startRouteCalculation();
 
 				var routePoints = ui.getRoutePoints();
@@ -709,13 +716,30 @@ var Controller = ( function(w) {'use strict';
 				}
 
 				var prefs = ui.getRoutePreferences();
+
+				var truckParameters = preferences.loadtruckParameters();
+				var truck_length = truckParameters[0];
+				var truck_height = truckParameters[1];
+				var truck_weight = truckParameters[2];
+
+				ui.setTruckParameters(truck_length, truck_height, truck_weight);
+
 				var routePref = prefs[0];
 				var avoidHighway = prefs[1][0];
 				var avoidTollway = prefs[1][1];
 				var avoidUnpavedRoads = prefs[1][2];
 				var avoidFerry = prefs[1][3];
 				var avoidAreas = map.getAvoidAreas();
-				var extendedRoutePreferences = prefs[2];
+
+				console.log(prefs)
+
+				// check whether truck button is active and send extendedRoutePreferences, otherwise don't 
+				if(prefs[3] == 'truck')
+				{
+					var extendedRoutePreferences = prefs[2];
+				} else {
+					var extendedRoutePreferences = null;
+				}
 
 				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferences, avoidHighway, avoidTollway,avoidUnpavedRoads,avoidFerry, avoidAreas);
 				//try to read a variable that is set after the service response was received. If this variable is not set after a while -> timeout.
@@ -729,6 +753,7 @@ var Controller = ( function(w) {'use strict';
 				// 	}
 				// }, SERVICE_TIMEOUT_INTERVAL);
 			} else {
+
 				//internal
 				route.routePresent = false;
 				ui.setRouteIsPresent(false);
@@ -1216,6 +1241,7 @@ var Controller = ( function(w) {'use strict';
 		 * apply GET variables, read cookies or apply standard values to initialize the ORS page
 		 */
 		function initializeOrs() {
+
 			//apply GET variables and/or cookies and set the user's language,...
 			var getVars = preferences.loadPreferencesOnStartup();
 
@@ -1291,16 +1317,15 @@ var Controller = ( function(w) {'use strict';
 			avoidAreas = preferences.loadAvoidAreas(avoidAreas);
 			//apply avoid areas
 			map.addAvoidAreas(avoidAreas);
-			
-			var truckParameters = preferences.loadtruckParameters(truck_length, truck_height, truck_weight);
-			 truck_length = truckParameters[0];
-			 truck_height = truckParameters[1];
-			 truck_weight = truckParameters[2];
-			
-			 
-			ui.setTruckParameters(truck_length, truck_height, truck_weight);
-			
 
+			
+			var truckParameters = preferences.loadtruckParameters();
+
+			truck_length = truckParameters[0];
+			truck_height = truckParameters[1];
+			truck_weight = truckParameters[2];
+						 
+			ui.setTruckParameters(truck_length, truck_height, truck_weight);
 
 			if (!preferences.areCookiesAVailable()) {
 				ui.showNewToOrsPopup();
