@@ -882,13 +882,16 @@ var Controller = ( function(w) {'use strict';
 				pos = util.convertPositionStringToLonLat(pos);
 				pos = util.convertPointForDisplay(pos);
 				var dist = atts.distance;
-
+				
+				var prefs = ui.getRoutePreferences();
+				var routePref = prefs[0];
+				
 				ui.showAccessibilityError(false);
 				ui.showSearchingAtAccessibility(true);
 
 				map.eraseAccessibilityFeatures();
 
-				analyse.analyze(pos, dist, accessibilitySuccessCallback, accessibilityFailureCallback);
+				analyse.analyze(pos, routePref, dist, accessibilitySuccessCallback, accessibilityFailureCallback);
 			} else {
 				//no position, no analyse!
 				ui.showAccessibilityError(true);

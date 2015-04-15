@@ -57,11 +57,11 @@ var Route = ( function(w) {"use strict";
 				if (routePref == 'Fastest' || routePref == 'Shortest') {
 
 					writer.writeStartElement('xls:ExtendedRoutePreference');
-					//truck length
-					if (extendedRoutePreferences[0] != null) {
-						writer.writeElementString('xls:length', extendedRoutePreferences[0]);
-					}
-					//truck heigth
+					//truck width
+					 if (extendedRoutePreferences[3] != null) {
+						 writer.writeElementString('xls:width', extendedRoutePreferences[3]);
+					 }
+					 //truck heigth
 					 if (extendedRoutePreferences[1] != null) {
 						 writer.writeElementString('xls:height', extendedRoutePreferences[1]);
 					 }
@@ -69,9 +69,9 @@ var Route = ( function(w) {"use strict";
 					 if (extendedRoutePreferences[2] != null) {
 						 writer.writeElementString('xls:weight', extendedRoutePreferences[2]);
 					 }
-					 //truck width
-					 if (extendedRoutePreferences[3] != null) {
-						 writer.writeElementString('xls:width', extendedRoutePreferences[3]);
+					 //truck length
+					if (extendedRoutePreferences[0] != null) {
+						writer.writeElementString('xls:length', extendedRoutePreferences[0]);
 					 }
 					//</xls:ExtendedRoutePreference>
 					writer.writeEndElement();

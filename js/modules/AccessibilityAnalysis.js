@@ -6,7 +6,6 @@ var AccessibilityAnalysis = ( function(w) {"use strict";
 		function AccessibilityAnalysis() {
 
 		}
-
 		/**
 		 * builds and sends the service request
 		 * @param {Object} position: OL LonLat or Point representing the reference point
@@ -14,7 +13,7 @@ var AccessibilityAnalysis = ( function(w) {"use strict";
 		 * @param {Object} successCallback: function callback
 		 * @param {Object} failureCallback: function callback
 		 */
-		function analyze(position, distanceInMinutes, successCallback, failureCallback) {
+		function analyze(position,routePref, distanceInMinutes, successCallback, failureCallback) {
 			var writer = new XMLWriter('UTF-8', '1.0');
 			writer.writeStartDocument();
 			//<aas:AAS>
@@ -36,6 +35,8 @@ var AccessibilityAnalysis = ( function(w) {"use strict";
 			writer.writeStartElement('aas:Accessibility');
 			//<aas:AccessibilityPreference>
 			writer.writeStartElement('aas:AccessibilityPreference');
+			//<aas:RoutePreference>
+			writer.writeElementString('aas:RoutePreference', routePref || 'Fastest');
 			//<aas:Time/>
 			writer.writeStartElement('aas:Time');
 			writer.writeAttributeString('Duration', 'PT0H' + distanceInMinutes + 'M00S');
