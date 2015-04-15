@@ -123,29 +123,39 @@
 									</div>
 									<div class="panel panelMedium" id="truckOptions_restrict" style="display: none;">
 																		
-											<table style="margin-left: 0px; width: 80%" border="0">
+											<table style="margin-left: 0px; width: 80%" border="0" cellpadding="0" cellspacing="0">
 												
 												<tr>
 												<td>
 												<label id="trucklengthLabel">length</label>
 												<form>
-												<input type="text" value="15" min="0" max="50" autocomplete="off" id="value_length" style="width: 30px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_length_slide.value=this.value"><span class="inputvalue"> m</span>
-												<input type="range" min="0" max="50" value="15" step="0.5" id="value_length_slide" style="width: 130px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_length.value=this.value" />
+												<input type="text" value="15" min="0" max="50" autocomplete="off" id="value_length" style="height:  20px; width: 30px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_length_slide.value=this.value"><span class="inputvalue"> m</span>
+												<input type="range" min="0" max="50" value="15" step="0.5" id="value_length_slide" style="height:  20px;width: 130px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_length.value=this.value" />
 												</form>
 												</td><td><img src="img/picto-truck-long.png"></td>
 												</tr>
-												<tr><td>
+												<tr>
+												<tr>
+												<td>
+												<label id="truckwidthLabel">width</label>
+												<form>
+												<input type="text" value="4" min="0" max="20" autocomplete="off" id="value_width" style="height:  20px;width: 30px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_width_slide.value=this.value"><span class="inputvalue"> m</span>
+												<input type="range" min="0" max="20" value="4" step="0.5" id="value_width_slide" style="height:  20px;width: 130px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_width.value=this.value" />
+												</form>
+												</td><td><img src="img/picto-truck-width.png"></td>
+												</tr>
+												<td>
 												<label id="truckheightLabel">height</label>
 												<form>
-												<input type="text" value="4" autocomplete="off" id="value_height" style="width: 30px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_height_slide.value=this.value"><span class="inputvalue"> m</span>
-												<input type="range" min="0" max="15" value="4" step="0.5" id="value_height_slide" style="width: 130px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_height.value=this.value"  />
+												<input type="text" value="4" autocomplete="off" id="value_height" style="height:  20px;width: 30px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_height_slide.value=this.value"><span class="inputvalue"> m</span>
+												<input type="range" min="0" max="15" value="4" step="0.5" id="value_height_slide" style="height:  20px;width: 130px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_height.value=this.value"  />
 												</form>
 												</td><td><img src="img/picto-truck-height.png"></td>
 												</tr><tr><td>
 												<label id="truckweightLabel">weight</label>
 												<form>
-												<input type="text" value="7" autocomplete="off" id="value_weight" style="width: 30px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_weight.value=this.value"><span class="inputvalue"> &nbsp;t&nbsp;</span>
-												<input type="range" min="0" max="50" value="4" step="0.5" id="value_weigth_slide" style="width: 130px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_weight.value=this.value"  />
+												<input type="text" value="7" autocomplete="off" id="value_weight" style="height:  20px;width: 30px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_weight.value=this.value"><span class="inputvalue"> &nbsp;t&nbsp;</span>
+												<input type="range" min="0" max="50" value="4" step="0.5" id="value_weigth_slide" style="height:  20px;width: 130px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_weight.value=this.value"  />
 												</form>
 												</td><td><img src="img/picto-truck-weight.png"></td>
 												</tr>

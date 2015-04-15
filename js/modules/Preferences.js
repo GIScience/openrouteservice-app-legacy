@@ -3,10 +3,10 @@ var Preferences = ( function(w) {'use strict';
 	//are there any cookies of thie page yet?
 	var cookiesAvailable = false;
 
-	var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version','avUnpaved', 'avFerry','value_length','value_height','value_weight'];
+	var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version','avUnpaved', 'avFerry','value_length','value_height','value_weight','value_width'];
 
 	//store information that can be used for the permalink
-	var permaInfo = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null];
+	var permaInfo = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,null];
 
 	/**
 	 * Constructor
@@ -30,6 +30,7 @@ var Preferences = ( function(w) {'use strict';
 		this.value_lengthIdx = 14;
 		this.value_heightIdx = 15;
 		this.value_weightIdx = 16;
+		this.value_widthIdx = 17;
 
 		//define variables
 		this.language = 'en';
@@ -315,15 +316,17 @@ var Preferences = ( function(w) {'use strict';
 	*/
 	function loadtruckParameters() {
 	
-		var truckParameters = [null, null, null];
+		var truckParameters = [null, null, null,null];
 
 		truckParameters[0] = document.getElementById("value_length").value;
 		truckParameters[1] = document.getElementById("value_height").value;
 		truckParameters[2] = document.getElementById("value_weight").value;
+		truckParameters[3] = document.getElementById("value_width").value;
 		
 		permaInfo[this.value_lengthIdx] = unescape(truckParameters[0]);
 		permaInfo[this.value_heightIdx] = unescape(truckParameters[1]);
 		permaInfo[this.value_weightIdx] = unescape(truckParameters[2]);
+		permaInfo[this.value_widthIdx] = unescape(truckParameters[3]);
 
 		return truckParameters;
 	}

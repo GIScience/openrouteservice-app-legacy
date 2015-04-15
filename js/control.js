@@ -719,8 +719,9 @@ var Controller = ( function(w) {'use strict';
 				var truck_length = truckParameters[0];
 				var truck_height = truckParameters[1];
 				var truck_weight = truckParameters[2];
+				var truck_width = truckParameters[3];
 
-				ui.setTruckParameters(truck_length, truck_height, truck_weight);
+				ui.setTruckParameters(truck_length, truck_height, truck_weight, truck_width);
 
 				var routePref = prefs[0];
 				var avoidHighway = prefs[1][0];
@@ -1255,6 +1256,7 @@ var Controller = ( function(w) {'use strict';
 			var truck_length = getVars[preferences.getPrefName(preferences.truck_lengthIdx)];
 			var truck_height = getVars[preferences.getPrefName(preferences.truck_heightIdx)];
 			var truck_weight = getVars[preferences.getPrefName(preferences.truck_weightIdx)];
+			var truck_width = getVars[preferences.getPrefName(preferences.truck_widthIdx)];
 
 			pos = preferences.loadMapPosition(pos);
 			if (pos && pos != 'null') {
@@ -1320,8 +1322,9 @@ var Controller = ( function(w) {'use strict';
 			truck_length = truckParameters[0];
 			truck_height = truckParameters[1];
 			truck_weight = truckParameters[2];
+			truck_width = truckParameters[3];
 						 
-			ui.setTruckParameters(truck_length, truck_height, truck_weight);
+			ui.setTruckParameters(truck_length, truck_height, truck_weight,truck_width);
 
 			if (!preferences.areCookiesAVailable()) {
 				ui.showNewToOrsPopup();

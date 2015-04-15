@@ -9,7 +9,7 @@ var Ui = ( function(w) {'use strict';
 		//search POI options: searchNearRoute, maxDist to route, distance Unit for maxDist, search query
 		searchPoiAtts = ['false', '100', 'm', ''],
 		//routing options for car, bike, pedestrian and truck
-		routeOptions = [list.routePreferences.get('car')[0], [null, null, null], [null, null, null], 'car'],
+		routeOptions = [list.routePreferences.get('car')[0], [null, null, null], [null, null, null,null], 'car'],
 		//is a route available?
 		routeIsPresent = false,
 		//timeout to wait before sending a request after the user finished typing
@@ -1758,11 +1758,12 @@ var Ui = ( function(w) {'use strict';
 		
 		
 		
-		function setTruckParameters(truck_length, truck_height, truck_weight) {
+		function setTruckParameters(truck_length, truck_height, truck_weight,truck_width) {
 
 			routeOptions[2][0] = truck_length;
 			routeOptions[2][1] = truck_height;
 			routeOptions[2][2] = truck_weight;
+			routeOptions[2][3] = truck_width;
 
 		}
 

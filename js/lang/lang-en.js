@@ -86,6 +86,7 @@ var lang_en = {
 	'TruckLength' : 'maximum length',
 	'TruckHeight' : 'maximum height',
 	'TruckWeight' : 'maximum weight',
+	'TruckWidth' : 'maximum width',
 
 	'avoidMotorways' : 'Avoid highways',
 	'avoidTollways' : 'Avoid toll roads',

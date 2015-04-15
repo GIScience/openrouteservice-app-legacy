@@ -57,9 +57,9 @@ var Route = ( function(w) {"use strict";
 				if (routePref == 'Fastest' || routePref == 'Shortest') {
 
 					writer.writeStartElement('xls:ExtendedRoutePreference');
-					//truck width
+					//truck length
 					if (extendedRoutePreferences[0] != null) {
-						writer.writeElementString('xls:width', extendedRoutePreferences[0]);
+						writer.writeElementString('xls:length', extendedRoutePreferences[0]);
 					}
 					//truck heigth
 					 if (extendedRoutePreferences[1] != null) {
@@ -68,6 +68,10 @@ var Route = ( function(w) {"use strict";
 					 //truck weigth
 					 if (extendedRoutePreferences[2] != null) {
 						 writer.writeElementString('xls:weight', extendedRoutePreferences[2]);
+					 }
+					 //truck width
+					 if (extendedRoutePreferences[3] != null) {
+						 writer.writeElementString('xls:width', extendedRoutePreferences[3]);
 					 }
 					//</xls:ExtendedRoutePreference>
 					writer.writeEndElement();

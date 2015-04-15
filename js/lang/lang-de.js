@@ -85,6 +85,7 @@ var lang_de = {
 		'TruckLength' : 'Maximale L&auml;nge',
 		'TruckHeight' : 'Maximale H&ouml;he',
 		'TruckWeight' : 'Maximales Gewicht',
+		'TruckWidth' : 'Maximale Breite',
 
 		'avoidMotorways':  'Autobahnen vermeiden',
 		'avoidTollways':  'Mautstra&szlig;en vermeiden',
