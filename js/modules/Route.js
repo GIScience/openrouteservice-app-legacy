@@ -23,7 +23,6 @@ var Route = ( function(w) {"use strict";
 		 */
 		function calculate(routePoints, successCallback, failureCallback, language, routePref,extendedRoutePreferences, avoidMotorways, avoidTollways,avoidunpavedRoads,avoidFerry, avoidAreas) {
 
-			console.log(extendedRoutePreferences)
 			var writer = new XMLWriter('UTF-8', '1.0');
 			writer.writeStartDocument();
 			//<xls:XLS>

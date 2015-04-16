@@ -2332,7 +2332,7 @@ var Ui = ( function(w) {'use strict';
 			$('#removeAccessibility').click(handleRemoveAccessibility);
 
 			//export/ import
-			$('#exportRouteGpx').click(handleExportRouteClick);
+			$('#export-gpx').click(handleExportRouteClick);
 			$('#gpxUploadFiles').change(handleImportRouteSelection);
 			$('#gpxUploadFilesDelete').click(handleImportRouteRemove);
 			$('#gpxUploadTrack').change(handleImportTrackSelection);
