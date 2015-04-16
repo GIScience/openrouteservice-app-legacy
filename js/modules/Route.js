@@ -19,7 +19,9 @@ var Route = ( function(w) {"use strict";
 		 * @param avoidTollways: flag set to true if tollways should be avoided in the route; else: false
 		 * @param avoidAreas: array of avoid areas represented by OL.Geometry.Polygons
 		 */
-		function calculate(routePoints, successCallback, failureCallback, language, routePref, avoidMotorways, avoidTollways, avoidAreas, extendedRoutePreferences) {
+		function calculate(routePoints, successCallback, failureCallback, language, routePref,extendedRoutePreferences, avoidMotorways, avoidTollways,avoidunpavedRoads,avoidFerry, avoidAreas) {
+
+			console.log(extendedRoutePreferences)
 			var writer = new XMLWriter('UTF-8', '1.0');
 			writer.writeStartDocument();
 			//<xls:XLS>
@@ -47,38 +49,63 @@ var Route = ( function(w) {"use strict";
 			writer.writeStartElement('xls:RoutePlan');
 			//<xls:RoutePreference />
 			writer.writeElementString('xls:RoutePreference', routePref || 'Fastest');
-			//<xls:ExtendedRoutePreference>
-			writer.writeStartElement('xls:ExtendedRoutePreference');
-			if (routePref === 'Wheelchair') {
-				//tracktype
-				if (extendedRoutePreferences[2] != null) {
-					writer.writeStartElement('xls:trackTypes');
-					writer.writeElementString('xls:trackType', extendedRoutePreferences[2]);
-					writer.writeEndElement();
+			
+						
+			if (extendedRoutePreferences != null ) {
+				//<xls:ExtendedRoutePreference>
+				writer.writeStartElement('xls:ExtendedRoutePreference');
+				
+				if (routePref == 'Fastest' || routePref == 'Shortest') {
+
+					//truck width
+					 if (extendedRoutePreferences[3] != null) {
+						 writer.writeElementString('xls:width', extendedRoutePreferences[3]);
+					 }
+					 //truck heigth
+					 if (extendedRoutePreferences[1] != null) {
+						 writer.writeElementString('xls:height', extendedRoutePreferences[1]);
+					 }
+					 //truck weigth
+					 if (extendedRoutePreferences[2] != null) {
+						 writer.writeElementString('xls:weight', extendedRoutePreferences[2]);
+					 }
+					 //truck length
+					if (extendedRoutePreferences[0] != null) {
+						writer.writeElementString('xls:length', extendedRoutePreferences[0]);
+					 }
 				}
-				//surface
-				if (extendedRoutePreferences[0] != null) {
-					writer.writeStartElement('xls:surfaceTypes');
-					writer.writeElementString('xls:surfaceType', extendedRoutePreferences[0]);
-					writer.writeEndElement();
+				
+				if (routePref === 'Wheelchair') {
+					//tracktype
+					if (extendedRoutePreferences[2] != null) {
+						writer.writeStartElement('xls:trackTypes');
+						writer.writeElementString('xls:trackType', extendedRoutePreferences[2]);
+						writer.writeEndElement();
+					}
+					//surface
+					if (extendedRoutePreferences[0] != null) {
+						writer.writeStartElement('xls:surfaceTypes');
+						writer.writeElementString('xls:surfaceType', extendedRoutePreferences[0]);
+						writer.writeEndElement();
+					}
+					//smoothness
+					if (extendedRoutePreferences[1] != null) {
+						writer.writeStartElement('xls:smoothnessTypes');
+						writer.writeElementString('xls:smoothnessType', extendedRoutePreferences[1]);
+						writer.writeEndElement();
+					}
+					//incline
+					if (extendedRoutePreferences[3] != null) {
+						writer.writeElementString('xls:incline', extendedRoutePreferences[3]);
+					}
+					//sloped curb
+					if (extendedRoutePreferences[4] != null) {
+						writer.writeElementString('xls:slopedCurb', extendedRoutePreferences[4]);
+					}
 				}
-				//smoothness
-				if (extendedRoutePreferences[1] != null) {
-					writer.writeStartElement('xls:smoothnessTypes');
-					writer.writeElementString('xls:smoothnessType', extendedRoutePreferences[1]);
-					writer.writeEndElement();
-				}
-				//incline
-				if (extendedRoutePreferences[3] != null) {
-					writer.writeElementString('xls:incline', extendedRoutePreferences[3]);
-				}
-				//sloped curb
-				if (extendedRoutePreferences[4] != null) {
-					writer.writeElementString('xls:slopedCurb', extendedRoutePreferences[4]);
-				}
-			} 
-			//</xls:ExtendedRoutePreference>
-			writer.writeEndElement();
+				//</xls:ExtendedRoutePreference>
+				writer.writeEndElement();
+			}
 			
 			//<xls:WayPointList>
 			writer.writeStartElement('xls:WayPointList');
@@ -147,6 +174,12 @@ var Route = ( function(w) {"use strict";
 			}
 			if (avoidTollways) {
 				writer.writeElementString('xls:AvoidFeature', 'Tollway');
+			}
+			if (avoidunpavedRoads) {
+				writer.writeElementString('xls:AvoidFeature', 'Unpavedroads');
+			}
+			if (avoidFerry) {
+				writer.writeElementString('xls:AvoidFeature', 'Ferry');
 			}
 			//</xls:AvoidList>
 			writer.writeEndElement();
