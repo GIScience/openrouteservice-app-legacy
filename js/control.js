@@ -1321,10 +1321,7 @@ var Controller = ( function(w) {'use strict';
 			slopedCurb = wheelParameters[2];
 			ui.setWheelParameters(surface, incline, slopedCurb);
 			
-			if (routeOpt == 'Wheelchair') {
-				// $("#routeOptions").removeClass('collapsed');
-				// $("#routeOptions").parent().get(0).querySelector('.collapsibleBody').show();
-			}
+
 
 
 			//var avoidables = preferences.loadAvoidables(motorways, tollways, unpaved, ferry);
