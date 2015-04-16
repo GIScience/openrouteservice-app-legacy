@@ -84,9 +84,15 @@ var lang_en = {
 	'BicycleRoute' : 'prefer bicycle lane',
 	'BicycleMTB' : 'mountain bike',
 	'BicycleRacer' : 'racing bike',
+	'TruckLength' : 'maximum length',
+	'TruckHeight' : 'maximum height',
+	'TruckWeight' : 'maximum weight',
+	'TruckWidth' : 'maximum width',
 
 	'avoidMotorways' : 'Avoid highways',
 	'avoidTollways' : 'Avoid toll roads',
+	'avoidunpavedRoads':  'Avoid unpaved roads',
+	'avoidFerry':  'Avoid ferry connections',
 	
 	//Surfaces:
 	'surface': 'Surface',
