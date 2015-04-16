@@ -11,7 +11,7 @@ var Map = ( function() {"use strict";
 				stroke : '#009ad5',
 				fill : '#009ad5',
 				strokeWidthEm : 5,
-				strokeEm : '#fba400',
+				strokeEm : '#fb5400',
 				fillEm : '#009ad5'
 			},
 			point : {
