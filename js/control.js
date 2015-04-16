@@ -681,7 +681,7 @@ var Controller = ( function(w) {'use strict';
 			ui.invalidateWaypointSearch(index);
 
 			//update preferences
-			handleWaypointChanged(map.getWaypointsString());
+			handleWaypointChanged(map.getWaypointsString(), true);
 		}
 
 		/* *********************************************************************
@@ -709,13 +709,36 @@ var Controller = ( function(w) {'use strict';
 				}
 
 				var prefs = ui.getRoutePreferences();
+
+				var truckParameters = preferences.loadtruckParameters();
+				var truck_length = truckParameters[0];
+				var truck_height = truckParameters[1];
+				var truck_weight = truckParameters[2];
+				var truck_width = truckParameters[3];
+
+				ui.setTruckParameters(truck_length, truck_height, truck_weight, truck_width);
+
 				var routePref = prefs[0];
 				var avoidHighway = prefs[1][0];
 				var avoidTollway = prefs[1][1];
+				var avoidUnpavedRoads = prefs[1][2];
+				var avoidFerry = prefs[1][3];
 				var avoidAreas = map.getAvoidAreas();
-				var extendedRoutePreferences = prefs[2];
+				
+				
+				// check whether truck button is active and send extendedRoutePreferences, otherwise don't 
+				if(prefs[3] == 'truck') {
+					var extendedRoutePreferences = prefs[2];
+				} 
+				// check whether wheelchair button is active and send extendedRoutePreferences, otherwise don't
+				else  if (prefs[3] == 'wheelchair') {
+					var extendedRoutePreferences = prefs[4];
+				}
+				else {
+					var extendedRoutePreferences = null;
+				}
 
-				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, avoidHighway, avoidTollway, avoidAreas, extendedRoutePreferences);
+				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferences, avoidHighway, avoidTollway,avoidUnpavedRoads,avoidFerry, avoidAreas);
 				//try to read a variable that is set after the service response was received. If this variable is not set after a while -> timeout.
 				clearTimeout(timerRoute);
 
@@ -743,6 +766,7 @@ var Controller = ( function(w) {'use strict';
 		 * @param results: XML route service results
 		 */
 		function routeCalculationSuccess(results) {
+			var zoomToMap = !route.routePresent;
 			route.routePresent = true;
 			ui.setRouteIsPresent(true);
 
@@ -772,7 +796,7 @@ var Controller = ( function(w) {'use strict';
 					ui.updateRouteInstructions(results, featureIds, map.ROUTE_LINES);
 					ui.endRouteCalculation();
 
-					map.zoomToRoute();
+					if (zoomToMap) map.zoomToRoute();
 				} else {
 					routeCalculationError();
 				}
@@ -857,13 +881,16 @@ var Controller = ( function(w) {'use strict';
 				pos = util.convertPositionStringToLonLat(pos);
 				pos = util.convertPointForDisplay(pos);
 				var dist = atts.distance;
-
+				
+				var prefs = ui.getRoutePreferences();
+				var routePref = prefs[0];
+				
 				ui.showAccessibilityError(false);
 				ui.showSearchingAtAccessibility(true);
 
 				map.eraseAccessibilityFeatures();
 
-				analyse.analyze(pos, dist, accessibilitySuccessCallback, accessibilityFailureCallback);
+				analyse.analyze(pos, routePref, dist, accessibilitySuccessCallback, accessibilityFailureCallback);
 			} else {
 				//no position, no analyse!
 				ui.showAccessibilityError(true);
@@ -1223,10 +1250,19 @@ var Controller = ( function(w) {'use strict';
 			var routeOpt = getVars[preferences.getPrefName(preferences.routeOptionsIdx)];
 			var motorways = getVars[preferences.getPrefName(preferences.avoidHighwayIdx)];
 			var tollways = getVars[preferences.getPrefName(preferences.avoidTollwayIdx)];
+
+			var unpaved = getVars[preferences.getPrefName(preferences.avoidUnpavedIdx)];
+			var ferry = getVars[preferences.getPrefName(preferences.avoidFerryIdx)];
+			var avoidAreas = getVars[preferences.getPrefName(preferences.avoidAreasIdx)];
+			
+			var truck_length = getVars[preferences.getPrefName(preferences.truck_lengthIdx)];
+			var truck_height = getVars[preferences.getPrefName(preferences.truck_heightIdx)];
+			var truck_weight = getVars[preferences.getPrefName(preferences.truck_weightIdx)];
+			var truck_width = getVars[preferences.getPrefName(preferences.truck_widthIdx)];
+						
 			var surface = getVars[preferences.getPrefName(preferences.surfaceIdx)];
 			var incline = getVars[preferences.getPrefName(preferences.inclineIdx)];
 			var slopedCurb = getVars[preferences.getPrefName(preferences.slopedCurbIdx)];
-			var avoidAreas = getVars[preferences.getPrefName(preferences.avoidAreasIdx)];
 
 			pos = preferences.loadMapPosition(pos);
 			if (pos && pos != 'null') {
@@ -1272,10 +1308,12 @@ var Controller = ( function(w) {'use strict';
 
 			routeOpt = preferences.loadRouteOptions(routeOpt);
 			ui.setRouteOption(routeOpt);
-			var avoidables = preferences.loadAvoidables(motorways, tollways);
-			motorways = avoidables[0];
-			tollways = avoidables[1];
-			ui.setAvoidables(motorways, tollways);
+			var res = preferences.loadAvoidables(motorways, tollways, unpaved, ferry);
+			motorways = res[1];
+			tollways = res[2];
+			unpaved = res[3];
+			ferry = res[4];
+			ui.setAvoidables(motorways, tollways, unpaved, ferry);
 			
 			var wheelParameters = preferences.loadWheelParameters(surface, incline, slopedCurb);
 			surface = wheelParameters[0];
@@ -1283,11 +1321,27 @@ var Controller = ( function(w) {'use strict';
 			slopedCurb = wheelParameters[2];
 			ui.setWheelParameters(surface, incline, slopedCurb);
 			
+			if (routeOpt == 'Wheelchair') {
+				// $("#routeOptions").removeClass('collapsed');
+				// $("#routeOptions").parent().get(0).querySelector('.collapsibleBody').show();
+			}
 
+
+			//var avoidables = preferences.loadAvoidables(motorways, tollways, unpaved, ferry);
 			//avoidAreas: array of OL.Polygon representing one avoid area each
 			avoidAreas = preferences.loadAvoidAreas(avoidAreas);
 			//apply avoid areas
 			map.addAvoidAreas(avoidAreas);
+
+			
+			var truckParameters = preferences.loadtruckParameters();
+
+			truck_length = truckParameters[0];
+			truck_height = truckParameters[1];
+			truck_weight = truckParameters[2];
+			truck_width = truckParameters[3];
+						 
+			ui.setTruckParameters(truck_length, truck_height, truck_weight,truck_width);
 
 			if (!preferences.areCookiesAVailable()) {
 				ui.showNewToOrsPopup();
