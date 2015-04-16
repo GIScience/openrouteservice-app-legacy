@@ -952,7 +952,6 @@ var Controller = ( function(w) {'use strict';
 
 			var exportGPXElement = document.getElementById('export-gpx');
 
-
 			var routeString = route.routeString;
 			
 			if (routeString) {
