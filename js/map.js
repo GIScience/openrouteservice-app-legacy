@@ -134,11 +134,21 @@ var Map = ( function() {"use strict";
 			* MAP LAYERS
 			* *********************************************************************/
 
+			this.theMap.events.register('zoomend', this, function (event) {
+				var x = this.theMap.getZoom();
+
+				if(x < 3) {
+					this.theMap.setCenter(0, 3);
+				}
+	    	});
+
+
 			//layer 1 - open map surfer
 			if (namespaces.layerMapSurfer.length) {
 				var mapSurfer_options = {
 					type : 'png',
 					isBaseLayer : true,
+					numZoomLevels : 19,
 					attribution : 'Map data &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> contributors, powered by <a href="http://mapsurfernet.com/">MapSurfer.NET</a>',
 				};
 
