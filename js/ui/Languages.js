@@ -31,10 +31,23 @@ var Languages = (function(w) {'use strict';
 		$('#BicycleMtbLabel').html(p.translate('BicycleMTB'));
 		$('#BicycleRacerLabel').html(p.translate('BicycleRacer'));
 		$('#PedestrianLabel').html(p.translate('Pedestrian'));
+
+		$('#fastestLabelTruck').html(p.translate('Fastest'));
+		$('#shortestLabelTruck').html(p.translate('Shortest'));
+		$('#trucklengthLabel').html(p.translate('TruckLength'));
+		$('#truckheightLabel').html(p.translate('TruckHeight'));
+		$('#truckweightLabel').html(p.translate('TruckWeight'));
+		$('#truckwidthLabel').html(p.translate('TruckWidth'));
+		
 		$('#WheelchairLabel').html(p.translate('Wheelchair'));
+		
 		$('#avoidMotorLabel').html(p.translate('avoidMotorways'));
 		$('#avoidTollLabel').html(p.translate('avoidTollways'));
 		$('#avoidAreasTitle').html(p.translate('avoidAreas'));
+		$('#avoidMotorLabel').html(p.translate('avoidMotorways'));
+		$('#avoidunpavedRoadsLabel').html(p.translate('avoidunpavedRoads'));
+		$('#avoidFerryLabel').html(p.translate('avoidFerry'));
+		
 		
 		//wheelchair parameters
 		$('#surfaceLabel').html(p.translate('surface'));
