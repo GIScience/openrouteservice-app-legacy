@@ -8,8 +8,8 @@ var Ui = ( function(w) {'use strict';
 		orsTabs = ['route', 'search', 'geolocation'],
 		//search POI options: searchNearRoute, maxDist to route, distance Unit for maxDist, search query
 		searchPoiAtts = ['false', '100', 'm', ''],
-		//routing options for car, bike and pedestrian
-		routeOptions = [list.routePreferences.get('car')[0], [null, null], [null, null, null]],
+		//routing options for car, bike, pedestrian, truck and wheelchair
+		routeOptions = [list.routePreferences.get('car')[0], [null, null, null], [null, null, null,null], 'car', [null, null, null, null, null]],
 		//is a route available?
 		routeIsPresent = false,
 		//timeout to wait before sending a request after the user finished typing
@@ -1430,8 +1430,10 @@ var Ui = ( function(w) {'use strict';
 				totalTime = totalTime.replace('D', ' ' + preferences.translate('days') + ' ');
 				totalTime = totalTime.replace('H', ' ' + preferences.translate('hours') + ' ');
 				totalTime = totalTime.replace('M', ' ' + preferences.translate('minutes') + ' ');
-				totalTime = totalTime.replace('S', ' ' + preferences.translate('seconds') + ' ');
-
+				totalTime = totalTime.slice(0,-1);
+				totalTime = totalTime + (' ' + preferences.translate('seconds') + ' ');
+				//totalTime = totalTime.replace('S', ' ' + preferences.translate('seconds') + ' ');
+			
 				var distance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'TotalDistance')[0];
 				var distanceValue = distance.getAttribute('value');
 				var distanceUnit = distance.getAttribute('uom');
@@ -1668,12 +1670,125 @@ var Ui = ( function(w) {'use strict';
 		* ROUTE OPTIONS
 		* *********************************************************************/
 		/**
+		 * when the user wants to switch between route options for cars/bikes/pedestrians and clicks the button to switch views
+		 * @param e: the event
+		 */
+		 
+		 
+		 
+		function switchRouteOptionsPane(e) {
+
+			var parent = $('.routePreferenceBtns').get(0);
+			var optionType = e.currentTarget.id;
+
+			//switch the buttons above
+			var allBtn = parent.querySelectorAll('button');
+			for (var i = 0; i < allBtn.length; i++) {
+				var btn = allBtn[i];
+				if (btn == e.currentTarget) {
+					btn.addClassName('active');
+					//adapt image
+					var imgElement = btn.querySelector('img');
+					imgElement.setAttribute('src', list.routePreferencesImages.get(btn.id)[1]);
+
+					//set the selected entry as currently selected route option
+
+					var options = $('#' + btn.id + 'Options').get(0).querySelector('input[checked="checked"]');
+
+					routeOptions[0] = options.id; 
+					routeOptions[3] = options.name;
+
+					theInterface.emit('ui:routingParamsChanged');
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.routeOptionsIdx,
+						value : routeOptions[0]
+					});
+				} else {
+					btn.removeClassName('active');
+					//adapt image
+					var imgElement = btn.querySelector('img');
+					imgElement.setAttribute('src', list.routePreferencesImages.get(btn.id)[0]);
+				}
+			}
+			
+			 
+			//switch the content
+			var car = $('#carOptions');
+			var bike = $('#bicycleOptions');
+			var ped = $('#pedestrianOptions');
+			var truckparameter = $('#truckOptions_restrict');
+			var truck = $('#truckOptions');
+			var avoidables = $('#avoidables');
+			var wheel = $('#wheelchairOptions');
+			var wheelParameters = $('#wheelchairParameters');
+			if (optionType === 'car') {
+				car.show();
+				avoidables.show();
+				bike.hide();
+				ped.hide();
+				truck.hide();
+				truckparameter.hide();
+				wheel.hide();
+				wheelParameters.hide();
+				$('#accessibilityAnalysis').show();
+			} else if (optionType === 'bicycle') {
+				car.hide();
+				avoidables.hide();
+				bike.show();
+				ped.hide();
+				truck.hide();
+				truckparameter.hide();
+				wheel.hide();
+				wheelParameters.hide();
+				$('#accessibilityAnalysis').show();
+			} else if (optionType === 'truck') {
+				car.hide();
+				avoidables.show();
+				bike.hide();
+				ped.hide();
+				truck.show();
+				truckparameter.show();
+				wheel.hide();
+				wheelParameters.hide();
+				$('#accessibilityAnalysis').show();
+			}
+			else if (optionType === 'pedestrian') {
+				car.hide();
+				avoidables.hide();
+				bike.hide();
+				ped.show();
+				truck.hide();
+				truckparameter.hide();
+				wheel.hide();
+				wheelParameters.hide();
+			}
+			else {
+				car.hide();
+				avoidables.hide();
+				bike.hide();
+				ped.hide();
+				truck.hide();
+				truckparameter.hide();
+				wheel.show();
+				wheelParameters.show();
+			}
+		}
+		
+		function setTruckParameters(truck_length, truck_height, truck_weight,truck_width) {
+
+			routeOptions[2][0] = truck_length;
+			routeOptions[2][1] = truck_height;
+			routeOptions[2][2] = truck_weight;
+			routeOptions[2][3] = truck_width;
+
+		}
+		
+		/**
 		 * when the user wants to switch between route options
 		 * @param activeRouteOption: the active route option, i.e. one of car,bicycle,pedestrian,wheelchair
 		 */
 		function switchRouteOptionsButton(activeRouteOption) {
 			var parent = $('.routePreferenceBtns').get(0);
-
 			//switch the buttons above
 			var allBtn = parent.querySelectorAll('button');
 			for (var i = 0; i < allBtn.length; i++) {
@@ -1692,80 +1807,7 @@ var Ui = ( function(w) {'use strict';
 				}
 			}
 		}
-		
-		/**
-		 * when the user wants to switch between route options for cars/bikes/pedestrians and clicks the button to switch views
-		 * @param e: the event
-		 */
-		function switchRouteOptionsPane(e) {
-			var parent = $('.routePreferenceBtns').get(0);
-			var optionType = e.currentTarget.id;
 
-			//switch the buttons above
-			var allBtn = parent.querySelectorAll('button');
-			for (var i = 0; i < allBtn.length; i++) {
-				var btn = allBtn[i];
-				if (btn == e.currentTarget) {
-					btn.addClassName('active');
-					//adapt image
-					var imgElement = btn.querySelector('img');
-					imgElement.setAttribute('src', list.routePreferencesImages.get(btn.id)[1]);
-
-					//set the selected entry as currently selected route option
-					var options = $('#' + btn.id + 'Options').get(0).querySelector('input[checked="checked"]');
-
-					routeOptions[0] = options.id;
-					theInterface.emit('ui:routingParamsChanged');
-					theInterface.emit('ui:prefsChanged', {
-						key : preferences.routeOptionsIdx,
-						value : routeOptions[0]
-					});
-				} else {
-					btn.removeClassName('active');
-					//adapt image
-					var imgElement = btn.querySelector('img');
-					imgElement.setAttribute('src', list.routePreferencesImages.get(btn.id)[0]);
-				}
-			}
-
-			//switch the content
-			var car = $('#carOptions');
-			var avoidables = $('#avoidables');
-			var bike = $('#bicycleOptions');
-			var ped = $('#pedestrianOptions');
-			var wheel = $('#wheelchairOptions');
-			var wheelParameters = $('#wheelchairParameters');
-			if (optionType === 'car') {
-				car.show();
-				avoidables.show();
-				bike.hide();
-				ped.hide();
-				wheel.hide();
-				wheelParameters.hide();
-			} else if (optionType === 'bicycle') {
-				car.hide();
-				avoidables.hide();
-				bike.show();
-				ped.hide();
-				wheel.hide();
-				wheelParameters.hide();
-			} else if (optionType === 'pedestrian') {
-				car.hide();
-				avoidables.hide();
-				bike.hide();
-				ped.show();
-				wheel.hide();
-				wheelParameters.hide();
-			}
-			else {
-				car.hide();
-				avoidables.hide();
-				bike.hide();
-				ped.hide();
-				wheel.show();
-				wheelParameters.show();
-			}
-		}
 
 		/**
 		 * checks if routing options have changed and triggers a route recalculation if appropriate
@@ -1779,62 +1821,90 @@ var Ui = ( function(w) {'use strict';
 				//is a route avoidable
 				if (itemId === list.routeAvoidables[0]) {
 					//if the avoidable is set, remove it (and vice versa)
+
 					routeOptions[1][0] = routeOptions[1][0] ? null : itemId;
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.avoidHighwayIdx,
+
 						value : routeOptions[1][0] != null
 					});
-				} 
-				else {
+				}
+				if (itemId === list.routeAvoidables[1]) {
+					//if the avoidable is set, remove it (and vice versa)
 					routeOptions[1][1] = routeOptions[1][1] ? null : itemId;
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.avoidTollwayIdx,
 						value : routeOptions[1][1] != null
 					});
 				}
+				if (itemId === list.routeAvoidables[2]) {
+					//if the avoidable is set, remove it (and vice versa)
+					routeOptions[1][2] = routeOptions[1][2] ? null : itemId;
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.avoidUnpavedIdx,
+						value : routeOptions[1][2] != null
+					});
+				} 
+				else if (itemId === list.routeAvoidables[3]) {
+					routeOptions[1][3] = routeOptions[1][3] ? null : itemId;
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.avoidFerryIdx,
+						value : routeOptions[1][3] != null
+					});
+				}
 			} 
+			
+			// do nothing if truck options in sliders are changed
+			else if ($.inArray(itemId, list.truckParams) >= 0) {
+
+				// do nothing 
+
+			}
+			
 			else if ($.inArray(itemId, list.wheelchairParameters.keys()) >= 0) {
 				//is a wheelchair parameter
 				//Surface, Tracktype, Smoothness
 				if (itemId == 'Surface') {
-					routeOptions[2][0] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Surface')[target.selectedIndex] : null;
+					routeOptions[4][0] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Surface')[target.selectedIndex] : null;
 					// set also smoothness here in order to simplify user interface
-					routeOptions[2][1] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Smoothness')[target.selectedIndex] : null;
+					routeOptions[4][1] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Smoothness')[target.selectedIndex] : null;
 					// set also tracktype here in order to simplify user interface
-					routeOptions[2][2] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Tracktype')[target.selectedIndex] : null;
+					routeOptions[4][2] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Tracktype')[target.selectedIndex] : null;
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.surfaceIdx,
-						value : routeOptions[2][0]
+						value : routeOptions[4][0]
 					});
 				}
 				//Smoothness
 				else if (itemId == 'Smoothness') {
 					// done in conjunction with surface to simplify user interface
-					// routeOptions[2][1] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Smoothness')[target.selectedIndex] : null;
+					// routeOptions[4][1] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Smoothness')[target.selectedIndex] : null;
 				}
 				//Tracktype
 				else if (itemId == 'Tracktype') {
 					// done in conjunction with surface to simplify user interface
-					// routeOptions[2][2] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Tracktype')[target.selectedIndex] : null;
+					// routeOptions[4][2] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Tracktype')[target.selectedIndex] : null;
 				}
 				//Incline
 				else if (itemId == 'Incline') {
-					routeOptions[2][3] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Incline')[target.selectedIndex] : null;
+					routeOptions[4][3] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Incline')[target.selectedIndex] : null;
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.inclineIdx,
-						value : routeOptions[2][3]
+						value : routeOptions[4][3]
 					});
 				}
 				//Sloped Curb
 				else if (itemId == 'SlopedCurb') {
-					routeOptions[2][4] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('SlopedCurb')[target.selectedIndex] : null;
+					routeOptions[4][4] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('SlopedCurb')[target.selectedIndex] : null;
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.slopedCurbIdx,
-						value : routeOptions[2][4]
+						value : routeOptions[4][4]
 					});
 				}
 			}
+			 
 			else {
+
 				//is a regular route option
 				routeOptions[0] = itemId;
 				theInterface.emit('ui:prefsChanged', {
@@ -1856,7 +1926,7 @@ var Ui = ( function(w) {'use strict';
 				el.attr('checked', true)
 			}
 
-			// set parent div (with all available options for car/bike/pedestrian/wheelchair visible
+			// set parent div (with all available options for car/bike/pedestrian/truck/wheelchair visible
 			var parentOptions = list.routePreferences.keys();
 			var parent;
 			var avoidables = $('#avoidables');
@@ -1923,11 +1993,11 @@ var Ui = ( function(w) {'use strict';
 					slopedCurbParamIndex = int;
 				}
 			}
-			routeOptions[2][0] = surface;
-			routeOptions[2][1] = list.wheelchairParameters.get('Smoothness')[surfaceParamIndex];
-			routeOptions[2][2] = list.wheelchairParameters.get('Tracktype')[surfaceParamIndex];
-			routeOptions[2][3] = incline;
-			routeOptions[2][4] = slopedCurb;
+			routeOptions[4][0] = surface;
+			routeOptions[4][1] = list.wheelchairParameters.get('Smoothness')[surfaceParamIndex];
+			routeOptions[4][2] = list.wheelchairParameters.get('Tracktype')[surfaceParamIndex];
+			routeOptions[4][3] = incline;
+			routeOptions[4][4] = slopedCurb;
 			$('#Surface option')[surfaceParamIndex].selected = true;
 			// $('#Smoothness option')[surfaceParamIndex].selected = true;
 			// $('#Tracktype option')[surfaceParamIndex].selected = true;
@@ -1937,17 +2007,23 @@ var Ui = ( function(w) {'use strict';
 		
 		
 		/**
-		 * 
+		 * used to activate the checkboxes for "avoid tollways" and "avoid highways" on startup if necessary
 		 * @param highway: true, if highway checkbox is to be checked
 		 * @param tollway: accordingly.
 		 */
-		function setAvoidables(highway, tollway) {
+		function setAvoidables(highway, tollway,unpaved,ferry) {
 			var highwayTrue = (highway === 'true') || highway == true;
 			var tollwayTrue = (tollway === 'true') || tollway == true;
+			var unpavedTrue = (unpaved === 'true') || unpaved == true;
+			var ferryTrue = (ferry === 'true') || ferry == true;
 			routeOptions[1][0] = highwayTrue;
 			routeOptions[1][1] = tollwayTrue;
+			routeOptions[1][2] = unpavedTrue;
+			routeOptions[1][3] = ferryTrue;
 			$('#Highway').attr('checked', highwayTrue);
 			$('#Tollway').attr('checked', tollwayTrue);
+			$('#Unpavedroads').attr('checked', unpavedTrue);
+			$('#Ferry').attr('checked', ferryTrue);
 		}
 
 		/**
@@ -2389,6 +2465,7 @@ var Ui = ( function(w) {'use strict';
 			$('#car').click(switchRouteOptionsPane);
 			$('#bicycle').click(switchRouteOptionsPane);
 			$('#pedestrian').click(switchRouteOptionsPane);
+			$('#truck').click(switchRouteOptionsPane);
 			$('#wheelchair').click(switchRouteOptionsPane);
 			$('.routeOptions').change(handleOptionsChanged);
 			$('#avoidAreasToolbar').click(avoidAreasToolClicked);
@@ -2477,6 +2554,9 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.showHeightProfile = showHeightProfile;
 
 		Ui.prototype.setUserPreferences = setUserPreferences;
+
+		Ui.prototype.setTruckParameters = setTruckParameters;
+
 
 		theInterface = new Ui();
 
@@ -2616,4 +2696,7 @@ Ui.poiIcons = {
 	poi_water_park : 'img/poi/water_park.png',
 	//default icon
 	poi_default : 'img/poi/building_number.png'
+	
+	
+	
 };
