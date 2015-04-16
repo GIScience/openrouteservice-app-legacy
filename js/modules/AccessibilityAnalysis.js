@@ -13,7 +13,7 @@ var AccessibilityAnalysis = ( function(w) {"use strict";
 		 * @param {Object} successCallback: function callback
 		 * @param {Object} failureCallback: function callback
 		 */
-		function analyze(position,routePref, distanceInMinutes, successCallback, failureCallback) {
+		function analyze(position, distanceInMinutes, aasRoutePref, aasMethod, aasIntervall, successCallback, failureCallback) {
 			var writer = new XMLWriter('UTF-8', '1.0');
 			writer.writeStartDocument();
 			//<aas:AAS>
@@ -35,13 +35,21 @@ var AccessibilityAnalysis = ( function(w) {"use strict";
 			writer.writeStartElement('aas:Accessibility');
 			//<aas:AccessibilityPreference>
 			writer.writeStartElement('aas:AccessibilityPreference');
-			//<aas:RoutePreference>
-			writer.writeElementString('aas:RoutePreference', routePref || 'Fastest');
 			//<aas:Time/>
 			writer.writeStartElement('aas:Time');
 			writer.writeAttributeString('Duration', 'PT0H' + distanceInMinutes + 'M00S');
 			writer.writeEndElement();
 			//</aas:AccessibilityPreference
+			writer.writeStartElement('aas:AccessibilitySettings');
+			//</aas:AccessibilitySettings
+			writer.writeElementString('aas:RoutePreference', aasRoutePref || 'Fastest');
+			//<aas:RoutePreference>
+			writer.writeElementString('aas:Method', aasMethod || 'Default');
+			//<aas:Method>
+			writer.writeElementString('aas:Interval', aasIntervall || '10');
+			//<aas:Intervall>
+            writer.writeEndElement();                           
+			//</aas:AccessibilitySettings>
 			writer.writeEndElement();
 			//<aas:LocationPoint>
 			writer.writeStartElement('aas:LocationPoint');

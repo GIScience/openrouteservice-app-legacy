@@ -884,14 +884,20 @@ var Controller = ( function(w) {'use strict';
 				var dist = atts.distance;
 				
 				var prefs = ui.getRoutePreferences();
-				var routePref = prefs[0];
+				
+				//aas setting route type
+				var aasRoutePref = prefs[0];
+				//aas setting isochrone method
+				var aasMethod = null;// edit variable here
+				//aas setting intervall in meters
+				var aasIntervall = null;// edit variable here
 				
 				ui.showAccessibilityError(false);
 				ui.showSearchingAtAccessibility(true);
 
 				map.eraseAccessibilityFeatures();
 
-				analyse.analyze(pos, routePref, dist, accessibilitySuccessCallback, accessibilityFailureCallback);
+				analyse.analyze(pos, dist, aasRoutePref, aasMethod, aasIntervall, accessibilitySuccessCallback, accessibilityFailureCallback);
 			} else {
 				//no position, no analyse!
 				ui.showAccessibilityError(true);
