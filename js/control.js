@@ -156,7 +156,6 @@ var Controller = ( function(w) {'use strict';
 		 * @param atts: pos: position of the new waypoint, type: type of the waypoint
 		 */
 		function handleAddWaypointByRightclick(atts) {
-
 			var pos = atts.pos;
 			var wpType = atts.type;
 			var featureId;
@@ -242,7 +241,6 @@ var Controller = ( function(w) {'use strict';
 		 * after waypoints have been moved, re-calculations are necessary: update of internal variables, waypoint type exchange,...
 		 */
 		function handleMovedWaypoints(atts) {
-
 			var index1 = atts.id1;
 			var index2 = atts.id2;
 
@@ -696,12 +694,9 @@ var Controller = ( function(w) {'use strict';
 		 * else: hides route information
 		 */
 		function handleRoutePresent() {
-
-			//console.log('present?')
 			var isRoutePresent = waypoint.getNumWaypointsSet() >= 2;
 
 			if (isRoutePresent) {
-
 				ui.startRouteCalculation();
 
 				var routePoints = ui.getRoutePoints();
@@ -731,10 +726,14 @@ var Controller = ( function(w) {'use strict';
 				var avoidAreas = map.getAvoidAreas();
 
 				// check whether truck button is active and send extendedRoutePreferences, otherwise don't 
-				if(prefs[3] == 'truck')
-				{
+				if(prefs[3] == 'truck') {
 					var extendedRoutePreferences = prefs[2];
-				} else {
+				} 
+				// check whether wheelchair button is active and send extendedRoutePreferences, otherwise don't
+				else  if (prefs[3] == 'wheelchair') {
+					var extendedRoutePreferences = prefs[4];
+				}
+				else {
 					var extendedRoutePreferences = null;
 				}
 
@@ -1273,6 +1272,10 @@ var Controller = ( function(w) {'use strict';
 			var truck_height = getVars[preferences.getPrefName(preferences.truck_heightIdx)];
 			var truck_weight = getVars[preferences.getPrefName(preferences.truck_weightIdx)];
 			var truck_width = getVars[preferences.getPrefName(preferences.truck_widthIdx)];
+						
+			var surface = getVars[preferences.getPrefName(preferences.surfaceIdx)];
+			var incline = getVars[preferences.getPrefName(preferences.inclineIdx)];
+			var slopedCurb = getVars[preferences.getPrefName(preferences.slopedCurbIdx)];
 
 			pos = preferences.loadMapPosition(pos);
 			if (pos && pos != 'null') {
@@ -1324,9 +1327,20 @@ var Controller = ( function(w) {'use strict';
 			unpaved = res[3];
 			ferry = res[4];
 			ui.setAvoidables(motorways, tollways, unpaved, ferry);
+			
+			var wheelParameters = preferences.loadWheelParameters(surface, incline, slopedCurb);
+			surface = wheelParameters[0];
+			incline = wheelParameters[1];
+			slopedCurb = wheelParameters[2];
+			ui.setWheelParameters(surface, incline, slopedCurb);
+			
+			// if (routeOpt == 'Wheelchair') {
+				// $("#routeOptions").removeClass('collapsed');
+				// $("#routeOptions").parent().get(0).querySelector('.collapsibleBody').show();
+			// }
 
 
-			var avoidables = preferences.loadAvoidables(motorways, tollways, unpaved, ferry);
+			//var avoidables = preferences.loadAvoidables(motorways, tollways, unpaved, ferry);
 			//avoidAreas: array of OL.Polygon representing one avoid area each
 			avoidAreas = preferences.loadAvoidAreas(avoidAreas);
 			//apply avoid areas

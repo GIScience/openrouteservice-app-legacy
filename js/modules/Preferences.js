@@ -3,10 +3,10 @@ var Preferences = ( function(w) {'use strict';
 	//are there any cookies of thie page yet?
 	var cookiesAvailable = false;
 
-	var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version','avUnpaved', 'avFerry','value_length','value_height','value_weight','value_width'];
+	var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version','avUnpaved', 'avFerry','value_length','value_height','value_weight','value_width','surface','incline','slopedCurb'];
 
 	//store information that can be used for the permalink
-	var permaInfo = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,null];
+	var permaInfo = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,null,null,null,null];
 
 	/**
 	 * Constructor
@@ -31,6 +31,9 @@ var Preferences = ( function(w) {'use strict';
 		this.value_heightIdx = 15;
 		this.value_weightIdx = 16;
 		this.value_widthIdx = 17;
+		this.surfaceIdx = 18;
+		this.inclineIdx = 19;
+		this.slopedCurbIdx = 20;
 
 		//define variables
 		this.language = 'en';
@@ -288,8 +291,9 @@ var Preferences = ( function(w) {'use strict';
 		//set a default in the permaInfo Array if routeOpt == null, undef, etc.
 		if (routeOpt == undefined || routeOpt == null || routeOpt == 'undefined') {
 			routeOpt = list.routePreferences.get('car')[0];
-}
-	permaInfo[this.routeOptionsIdx] = routeOpt;
+			// routeOpt = list.routePreferences.get('wheelchair')[0];
+		}
+		permaInfo[this.routeOptionsIdx] = routeOpt;
 
 		//check if the routeOpt parameter is a valid routeOption.
 		var mainObjects = list.routePreferences.keys();
@@ -341,33 +345,69 @@ var Preferences = ( function(w) {'use strict';
 		var avoidables = [false, false, false, false];
 		//highway
 		if (unescape(highway) === 'true') {
-			avoidables[1] = true;
+			avoidables[0] = true;
 			permaInfo[this.avoidHighwayIdx] = true;
 		} else {
 			permaInfo[this.avoidHighwayIdx] = false;
 		}
 		//tollway
 		if (unescape(tollway) === 'true') {
-			avoidables[2] = true;
+			avoidables[1] = true;
 			permaInfo[this.avoidTollwayIdx] = true;
 		} else {
 			permaInfo[this.avoidTollwayIdx] = false;
 		}
 		//unpaved
 		if (unescape(unpaved) === 'true') {
-			avoidables[3] = true;
+			avoidables[2] = true;
 			permaInfo[this.avoidUnpavedIdx] = true;
 		} else {
 			permaInfo[this.avoidUnpavedIdx] = false;
 		}
 		//ferry
 		if (unescape(ferry) === 'true') {
-			avoidables[4] = true;
+			avoidables[3] = true;
 			permaInfo[this.avoidFerryIdx] = true;
 		} else {
 			permaInfo[this.avoidFerryIdx] = false;
 		}
 		return avoidables;
+	}
+	
+	/**
+	 * determines route option wheelchair parameters by GET variable
+	 * @param surface, incline, slopedCurb: extracted from the GET variables in readGetVars()
+	 * @return the wheelchair parameters
+	 */
+	function loadWheelParameters(surface, incline, slopedCurb) {
+		var wheelParameters = [null, null, null];
+		
+		//surface
+		surface = unescape(surface);
+		//incline
+		incline = unescape(incline);
+		//slopedCurb
+		slopedCurb = unescape(slopedCurb);
+		
+		if (surface == undefined || surface == null || surface == 'undefined') {
+			surface = list.wheelchairParameters.get('Surface')[1];
+		}
+		if (incline == undefined || incline == null || incline == 'undefined') {
+			incline = list.wheelchairParameters.get('Incline')[1];
+		}
+		if (slopedCurb == undefined || slopedCurb == null || slopedCurb == 'undefined') {
+			slopedCurb = list.wheelchairParameters.get('SlopedCurb')[1];
+		}
+		
+		wheelParameters[0] = surface;
+		wheelParameters[1] = incline;
+		wheelParameters[2] = slopedCurb;
+		
+		permaInfo[this.surfaceIdx] = unescape(surface);
+		permaInfo[this.inclineIdx] = unescape(incline);
+		permaInfo[this.slopedCurbIdx] = unescape(slopedCurb);
+		
+		return wheelParameters;
 	}
 
 	/**
@@ -563,6 +603,7 @@ var Preferences = ( function(w) {'use strict';
 	Preferences.prototype.loadAvoidables = loadAvoidables;
 	Preferences.prototype.loadAvoidAreas = loadAvoidAreas;
 	Preferences.prototype.loadtruckParameters = loadtruckParameters;
+	Preferences.prototype.loadWheelParameters = loadWheelParameters;
 
 	Preferences.prototype.writeMapCookies = writeMapCookies;
 	Preferences.prototype.writePrefsCookies = writePrefsCookies;
