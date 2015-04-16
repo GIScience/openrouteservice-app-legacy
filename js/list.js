@@ -36,14 +36,18 @@ list = {
 	routePreferences: new Hash({
 		'car': ['Fastest', 'Shortest'],
 		'bicycle': ['Bicycle', 'BicycleSafety', 'BicycleRoute', 'BicycleMTB', 'BicycleRacer'],
-		'pedestrian': ['Pedestrian']
+		'pedestrian': ['Pedestrian'],
+		'car': ['Fastest', 'Shortest']
 	}),
 	
-	routeAvoidables : ['Highway', 'Tollway'],
+	routeAvoidables : ['Highway', 'Tollway', 'Unpavedroads', 'Ferry'],
+
+	truckParams : ['value_length_slide', 'value_height_slide', 'value_weigth_slide',, 'value_width_slide'],
 	
 	routePreferencesImages: new Hash({
 		'car': ['img/picto-car.png', 'img/picto-car-high.png'],
 		'bicycle': ['img/picto-bike.png', 'img/picto-bike-high.png'],
-		'pedestrian' : ['img/picto-dude.png', 'img/picto-dude-high.png']
+		'pedestrian' : ['img/picto-dude.png', 'img/picto-dude-high.png'],
+		'truck' : ['img/picto-truck.png', 'img/picto-truck-high.png']
 	})
 };

@@ -42,6 +42,9 @@
 				<li>
 					<a href="#data">Data</a>
 				</li>
+				<li>
+					<a href="#donation">Donate for ORS</a>
+				</li>
 				<li class="divider">
 					&nbsp;
 				</li>
@@ -126,7 +129,7 @@
 						Software Development
 					</dt>
 					<dd>
-						Pascal Neis
+						Pascal Neis, Maxim Rylov &amp; Enrico Steiger
 					</dd>
 					<dt>
 						Website
@@ -180,19 +183,19 @@
 				</p>
 				<ul>
 					<li>
-						The <i>Directory Service</i> is a service that provides access to an online directory (e.g., Yellow Pages) to find the location of a specific or nearest place, product or service.
+						The <b>Route Service [RS]</b> determines travel routes and navigation information according to diverse criteria.
 					</li>
 					<li>
-						The <i>Gateway Service</i> is a service that fetches the position of a known mobile terminal from the network; this interface is modeled after the Mobile Location Protocol (MLP), Standard Location Immediate Service.
+						The <b>Directory Service [DS]</b> is a service that provides access to an online directory (e.g., Yellow Pages) to find the location of a specific or nearest place, product or service.
 					</li>
 					<li>
-						The <i>Location Utility Service</i> provides a Geocoder/Reverse Geocoder; the Geocoder transforms a description of a location, such as a place name, street address or postal code, into a normalized description of the location with a Point geometry usually placed using Cartesian coordinates, often latitude and longitude.
+						The <b>Location Utility Service [LUS]</b> provides a Geocoder/Reverse Geocoder; the Geocoder transforms a description of a location, such as a place name, street address or postal code, into a normalized description of the location with a Point geometry usually placed using Cartesian coordinates, often latitude and longitude.
 					</li>
+					<!-- <li>
+						The <b>Presentation Service [PS]</b> portrays a map made up of a base map derived from any geospatial data and a set of Abstract Data Types as overlays.
+					</li>-->
 					<li>
-						The <i>Presentation (Map Portrayal) Service</i> portrays a map made up of a base map derived from any geospatial data and a set of Abstract Data Types as overlays.
-					</li>
-					<li>
-						The <b>Route Service</b> determines travel routes and navigation information according to diverse criteria.
+						The <b>Accessibility Analysis Service [AAS]</b> provides a maximum reachability service from any given point or route for a set time duration.
 					</li>
 				</ul>
 				<p>
@@ -206,7 +209,7 @@
 						<i>RouteGeometry</i> &mdash; requests the routes geometry (line string containing all waypoints of the route). It is possible to define a maximum number of waypoints.
 					</li>
 					<li>
-						<i>RouteInstruction</i> &mdash; these are &quot;step by step&quot; driving instructions of the calculated route. We realized this for various languages (e.g. German, English, Italian, Swedish...).
+						<i>RouteInstruction</i> &mdash; these are &quot;step by step&quot; driving instructions of the calculated route. We realized this for various languages (e.g. German, English, Italian, ...). <br> Your language is missing? Please add your language to ORS via github <a href="https://github.com/GIScience/openrouteservice/tree/master/js/lang" target="_blank" >here</a>
 					</li>
 					<li>
 						<i>RouteMaps</i> &mdash; The calculated route is displayed on a route map. Amongst other possibilities an overview map as well as detailed maps of the start- and destination can be requested.
@@ -214,6 +217,87 @@
 				</ol>
 				<p>
 					Currently openrouteservice.org offers a end-user oriented website with an interactive map , but soon we will also make the route service available as OGC-web service, that can be used through http-based xml-requestes as specified in the OGC OpenLS Route Service specification. This will allow developers to use this servide in an open and interoperable way easily within their own applications.
+				</p>
+				<p>
+				<table style="width:90%" style="dotted" border="0">
+				  <tr>
+					<td width="40%"><h3>OpenLS Services</h3>(Status 26.02.2015)</td>
+					</tr>
+				  <tr>
+					<td>Description: Through the OpenLS interface requests can be generated  to the appropriate services without further query limitations. The offered API's are only valid for <b> one </b> year.<br>
+					<br>In case you plan a long-term use of the interfaces within your projects , please contact us via Email</td>
+				   </tr>
+					<tr>
+					 <td><h4>Routing Services [RS]*</h4></td>
+					 </tr>
+					 <tr>
+					<td>Restful Webservice route request:</td>
+					<td><a href="http://openls.geog.uni-heidelberg.de/testing2015/routing" target="_blank">http://openls.geog.uni-heidelberg.de/testing2015/routing</a></td>
+					</tr>
+					<tr>
+					<td>testclient with meta information and schema file for routing service:</td>
+					<td><a href="http://openls.geog.uni-heidelberg.de/testing2015/routing&help" target="_blank">http://openls.geog.uni-heidelberg.de/testing2015/routing&help</td>
+					</tr>
+					<tr>
+					<td> direct route request via URL + parameter:</td>
+					<td><a href="http://openls.geog.uni-heidelberg.de/testing2015/route" target="_blank">http://openls.geog.uni-heidelberg.de/testing2015/route</td>
+					</tr>
+						<tr>
+					<td>  graph routing profile update information:</td>
+					<td><a href="http://openls.geog.uni-heidelberg.de/testing2015/routing?info" target="_blank">http://openls.geog.uni-heidelberg.de/testing2015/routing?info</td>
+					</tr>
+						<tr>
+					<td><font size="-1">*currently the maximum request limitation is 1000/hour and user.  We kindly ask you to not use the service excessively. In case the server performance will be affected we reserve us the right to block individual service user.</font></td>
+					</tr>
+					<tr>
+					<td><h4>Geocoding Service [LUS]</h4></td>
+					</tr>
+					<tr>
+					<td>Restful Webservice geocode request:</td>
+					<td><a href="http://openls.geog.uni-heidelberg.de/testing2015/geocoding" target="_blank">http://openls.geog.uni-heidelberg.de/testing2015/geocoding</td>
+					</tr>
+					<tr>
+					<td>testclient with meta information and schema file for geocoding service:</td>
+					<td><a href="http://openls.geog.uni-heidelberg.de/testing2015/geocoding&help" target="_blank">http://openls.geog.uni-heidelberg.de/testing2015/geocoding&help<td>
+					</tr>
+					<tr>
+					<td>direct geocoding route request via URL + parameter:</td>
+					<td><a href="http://openls.geog.uni-heidelberg.de/testing2015/geocode" target="_blank">http://openls.geog.uni-heidelberg.de/testing2015/geocode</td>
+					</tr>
+					<tr>
+					<td><h4>Directory (POI Search) Service [DS]</h4></td>
+					</tr>
+					<tr>
+					<td>Restful Webservice directory request:</td>
+					<td><a href="http://openls.geog.uni-heidelberg.de/testing2015/directory" target="_blank">http://openls.geog.uni-heidelberg.de/testing2015/directory</td>
+					</tr>
+					<tr>
+					<td>testclient with meta information and schema file for directory service:</td>
+					<td><a href="http://openls.geog.uni-heidelberg.de/testing2015/directory&help" target="_blank">http://openls.geog.uni-heidelberg.de/testing2015/directory&help</td>
+					</tr>
+					<tr>
+					<td>direct directory request via URL + parameter:</td>
+					<td><a href="http://openls.geog.uni-heidelberg.de/testing2015/direct" target="_blank">http://openls.geog.uni-heidelberg.de/testing2015/direct
+					</tr>
+					<tr>
+					<td><h4>OpenLS Acessbility Analysis service [AAS]*</h4></td>
+					</tr>
+					<tr>
+					<td>Restful Webservice accessbility analysis request:</td>
+					<td><a href="http://openls.geog.uni-heidelberg.de/testing2015/analysis" target="_blank">http://openls.geog.uni-heidelberg.de/testing2015/analysis</td>
+					</tr>
+					<tr>
+					<td>testclient with meta information and schema file for analysis service:</td>
+					<td><a href="http://openls.geog.uni-heidelberg.de/testing2015/analysis&help" target="_blank">http://openls.geog.uni-heidelberg.de/testing2015/analysis&help<td>
+					</tr>
+					<tr>
+					<td>direct accesbility analysis request via URL + parameter:</td>
+					<td><a href="http://openls.geog.uni-heidelberg.de/testing2015/analyse" target="_blank">http://openls.geog.uni-heidelberg.de/testing2015/analyse</td>
+					</tr>
+					<tr>
+					<td><font size="-1">*for performance reasons only 30 minutes are currently supported</font></td>
+					</tr>
+				</table>
 				</p>
 				<div class="space_small">
 					&nbsp;
@@ -225,7 +309,7 @@
 				<div class="space_small">
 					&nbsp;
 				</div>
-				<h3>Papers</h3>
+				<h3>Publications</h3>
 				<p>
 					Related Publications where our OpenLS Route Service has been applied
 					(e.g. in the following projects: <a href="http://www.gdi-3d.de" target="_blank" >http://www.gdi-3d.de</a> (<a href="http://www.heidelberg-3d.de" target="_blank" >http://www.heidelberg-3d.de)</a>, <a href="http://www.ok-gis.de" target="_blank" >http://www.ok-gis.de</a>, <a href="http://www.mona3d.de" target="_blank" >http://www.mona3d.de</a> etc.).
@@ -291,7 +375,7 @@
 					&nbsp;
 				</div>
 				<h2><a name="help">ORS Help</a></h2>
-				OpenRouteService help page on OSM Wiki: <a href="http://wiki.openstreetmap.org/wiki/ORS_Help" target="_blank">Link</a>
+				OpenRouteService help page: <a href="http://wiki.openstreetmap.org/wiki/ORS_Help" target="_blank">OpenRouteService Wiki</a>
 				<div class="topOfPage">
 					<a href="#top">Top of page &nbsp;<i class="icon-chevron-up">&nbsp;</i></a>
 				</div>
@@ -306,11 +390,21 @@
 				<h2><a name="data">ORS Data</a></h2>
 				<ul>
 					<li>
-						<a href="http://www.openstreetmap.org" target="_blank">OpenStreetMap</a>
+						Routing &amp; Geocoding: <a href="http://www.openstreetmap.org" target="_blank">OpenStreetMap</a>
 					</li>
 					<li>
-						Internal use of Germany Five-Digit Zip Code from ESRI Data &amp; Maps 2004 for Geocoding
+						Map Background Layer: <a href="http://openmapsurfer.uni-hd.de/" target="_blank">OpenMapSurfer Tiles &amp; WMS </a>
 					</li>
+					<li>
+						TMC traffic Messages: <a href="http://www.bast.de/" target="_blank">BASt</a>
+					</li>
+					
+					<li>
+						ORS WebFrontend: <a href="https://github.com/GIScience/openrouteservice" target="_blank">https://github.com/GIScience/openrouteservice</a> -->
+						Please report & fix any issues <a href="https://github.com/GIScience/openrouteservice/issues" target="_blank">here</a>
+						
+					</li>
+		
 				</ul>
 				<div class="topOfPage">
 					<a href="#top">Top of page &nbsp;<i class="icon-chevron-up">&nbsp;</i></a>
@@ -342,6 +436,28 @@
 					<a href="#top">Top of page &nbsp;<i class="icon-chevron-up">&nbsp;</i></a>
 				</div>
 			</section>
+			<section id="donation">
+				<div class="space">
+					&nbsp;
+				</div>
+				<div class="space">
+					&nbsp;
+				</div>
+				<h2><a name="donation">Donate for ORS</a></h2>
+				
+				<p>
+				Help us keeping our services up to date and to be able to further improve in the future. 100% of your donation will used for the OpenRouteService project and any amount will help us!<br><br>
+				Heidelberg University<br>
+				Bank: Baden-W&uuml;rttembergische Bank<br>
+				IBAN: DE69600501017421500436<br>
+				SWIFT/BIC: SOLADEST<br>
+				Subject/Reference: "SpendenKonto OpenRouteService Abt. Geoinformatik, Prof. Zipf" <br>
+				</p>
+				
+				<div class="topOfPage">
+					<a href="#top">Top of page &nbsp;<i class="icon-chevron-up">&nbsp;</i></a>
+				</div>
+			</section>
 			<section id="wiki">
 				<div class="space">
 					&nbsp;
@@ -351,9 +467,8 @@
 				</div>
 				<h2><a name="wiki">OpenStreetmap (OSM)</a></h2>
 				<p>
-					OSM: <a href="http://www.openstreetmap.org" target="_blank">http://www.openstreetmap.org</a>
-					<br />
-					OSM Wiki: <a href="http://wiki.openstreetmap.org/wiki/OpenRouteService">http://wiki.openstreetmap.org/wiki/OpenRouteService</a>
+					<a href="http://www.openstreetmap.org" target="_blank">http://www.openstreetmap.org</a>
+							
 				</p>
 				<p>
 					"OpenStreetMap is an editable map of the whole world, which is being built largely from scratch using GPS traces, and released with an open content license. The OpenStreetMap License allows free (or almost free) access to our map images and all of our underlying map data, and the project aims to promote new and interesting uses of this data ..." Read more on: <a href="http://wiki.openstreetmap.org" target="_blank">http://wiki.openstreetmap.org</a>.

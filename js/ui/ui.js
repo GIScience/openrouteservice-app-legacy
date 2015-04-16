@@ -8,8 +8,8 @@ var Ui = ( function(w) {'use strict';
 		orsTabs = ['route', 'search', 'geolocation'],
 		//search POI options: searchNearRoute, maxDist to route, distance Unit for maxDist, search query
 		searchPoiAtts = ['false', '100', 'm', ''],
-		//routing options for car, bike and pedestrian
-		routeOptions = [list.routePreferences.get('car')[0], [null, null]],
+		//routing options for car, bike, pedestrian and truck
+		routeOptions = [list.routePreferences.get('car')[0], [null, null, null], [null, null, null,null], 'car'],
 		//is a route available?
 		routeIsPresent = false,
 		//timeout to wait before sending a request after the user finished typing
@@ -397,6 +397,7 @@ var Ui = ( function(w) {'use strict';
 		 * @param e: the event
 		 */
 		function handleMoveUpWaypointClick(e) {
+
 			//index of waypoint
 			var waypointElement = $(e.currentTarget).parent();
 			var index = parseInt(waypointElement.attr('id'));
@@ -576,6 +577,7 @@ var Ui = ( function(w) {'use strict';
 		 * @return: the index of the wayoint
 		 */
 		function addWaypointResultByRightclick(results, typeOfWaypoint, index) {
+			
 			var numWaypoints = $('.waypoint').length - 1;
 			while (index >= numWaypoints) {
 				addWaypointAfter(numWaypoints - 1);
@@ -1430,8 +1432,10 @@ var Ui = ( function(w) {'use strict';
 				totalTime = totalTime.replace('D', ' ' + preferences.translate('days') + ' ');
 				totalTime = totalTime.replace('H', ' ' + preferences.translate('hours') + ' ');
 				totalTime = totalTime.replace('M', ' ' + preferences.translate('minutes') + ' ');
-				totalTime = totalTime.replace('S', ' ' + preferences.translate('seconds') + ' ');
-
+				totalTime = totalTime.slice(0,-1);
+				totalTime = totalTime + (' ' + preferences.translate('seconds') + ' ');
+				//totalTime = totalTime.replace('S', ' ' + preferences.translate('seconds') + ' ');
+			
 				var distance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'TotalDistance')[0];
 				var distanceValue = distance.getAttribute('value');
 				var distanceUnit = distance.getAttribute('uom');
@@ -1671,7 +1675,11 @@ var Ui = ( function(w) {'use strict';
 		 * when the user wants to switch between route options for cars/bikes/pedestrians and clicks the button to switch views
 		 * @param e: the event
 		 */
+		 
+		 
+		 
 		function switchRouteOptionsPane(e) {
+
 			var parent = $('.routePreferenceBtns').get(0);
 			var optionType = e.currentTarget.id;
 
@@ -1686,9 +1694,12 @@ var Ui = ( function(w) {'use strict';
 					imgElement.setAttribute('src', list.routePreferencesImages.get(btn.id)[1]);
 
 					//set the selected entry as currently selected route option
+
 					var options = $('#' + btn.id + 'Options').get(0).querySelector('input[checked="checked"]');
 
-					routeOptions[0] = options.id;
+					routeOptions[0] = options.id; 
+					routeOptions[3] = options.name;
+
 					theInterface.emit('ui:routingParamsChanged');
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.routeOptionsIdx,
@@ -1701,53 +1712,117 @@ var Ui = ( function(w) {'use strict';
 					imgElement.setAttribute('src', list.routePreferencesImages.get(btn.id)[0]);
 				}
 			}
-
+			
+			 
 			//switch the content
 			var car = $('#carOptions');
 			var bike = $('#bicycleOptions');
 			var ped = $('#pedestrianOptions');
+			var truckparameter = $('#truckOptions_restrict');
+			var truck = $('#truckOptions');
 			var avoidables = $('#avoidables');
+			
 			if (optionType === 'car') {
 				car.show();
 				avoidables.show();
 				bike.hide();
 				ped.hide();
+				truck.hide();
+				truckparameter.hide();
+				$('#accessibilityAnalysis').show();
 			} else if (optionType === 'bicycle') {
 				car.hide();
 				avoidables.hide();
 				bike.show();
 				ped.hide();
-			} else {
+				truck.hide();
+				truckparameter.hide();
+				$('#accessibilityAnalysis').show();
+			} else if (optionType === 'truck') {
+				car.hide();
+				avoidables.show();
+				bike.hide();
+				ped.hide();
+				truck.show();
+				truckparameter.show();
+				$('#accessibilityAnalysis').show();
+			}  else {
 				car.hide();
 				avoidables.hide();
 				bike.hide();
 				ped.show();
-			}
+				truck.hide();
+				truckparameter.hide();
+				}
 		}
+		
+		
+		
+		function setTruckParameters(truck_length, truck_height, truck_weight,truck_width) {
+
+			routeOptions[2][0] = truck_length;
+			routeOptions[2][1] = truck_height;
+			routeOptions[2][2] = truck_weight;
+			routeOptions[2][3] = truck_width;
+
+		}
+
 
 		/**
 		 * checks if routing options have changed and triggers a route recalculation if appropriate
 		 * @param e: the event
 		 */
 		function handleOptionsChanged(e) {
-			var item = e.srcElement.id;
+			
+			if (item != null){
+				var item = e.srcElement.id
+			} //get the src Element from IE/ Chrome 
+			else {
+				var item = e.target.id 
+			}  // get the target element in Firefox
+			
 			if ($.inArray(item, list.routeAvoidables) >= 0) {
 				//is a route avoidable
 				if (item === list.routeAvoidables[0]) {
 					//if the avoidable is set, remove it (and vice versa)
+
 					routeOptions[1][0] = routeOptions[1][0] ? null : item;
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.avoidHighwayIdx,
+
 						value : routeOptions[1][0] != null
 					});
-				} else {
+				}
+			if (item === list.routeAvoidables[1]) {
+					//if the avoidable is set, remove it (and vice versa)
 					routeOptions[1][1] = routeOptions[1][1] ? null : item;
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.avoidTollwayIdx,
 						value : routeOptions[1][1] != null
 					});
 				}
+			if (item === list.routeAvoidables[2]) {
+					//if the avoidable is set, remove it (and vice versa)
+					routeOptions[1][2] = routeOptions[1][2] ? null : item;
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.avoidUnpavedIdx,
+						value : routeOptions[1][2] != null
+					});
+				} else if (item === list.routeAvoidables[3]) {
+					routeOptions[1][3] = routeOptions[1][3] ? null : item;
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.avoidFerryIdx,
+						value : routeOptions[1][3] != null
+					});
+				}
+
+			// do nothing if truck options in sliders are changed
+			} else if ($.inArray(item, list.truckParams) >= 0) {
+
+				// do nothing 
+
 			} else {
+
 				//is a regular route option
 				routeOptions[0] = item;
 				theInterface.emit('ui:prefsChanged', {
@@ -1791,13 +1866,19 @@ var Ui = ( function(w) {'use strict';
 		 * @param highway: true, if highway checkbox is to be checked
 		 * @param tollway: accordingly.
 		 */
-		function setAvoidables(highway, tollway) {
+		function setAvoidables(highway, tollway,unpaved,ferry) {
 			var highwayTrue = (highway === 'true') || highway == true;
 			var tollwayTrue = (tollway === 'true') || tollway == true;
+			var unpavedTrue = (unpaved === 'true') || unpaved == true;
+			var ferryTrue = (ferry === 'true') || ferry == true;
 			routeOptions[1][0] = highwayTrue;
 			routeOptions[1][1] = tollwayTrue;
+			routeOptions[1][2] = unpavedTrue;
+			routeOptions[1][3] = ferryTrue;
 			$('#Highway').attr('checked', highwayTrue);
 			$('#Tollway').attr('checked', tollwayTrue);
+			$('#Unpavedroads').attr('checked', unpavedTrue);
+			$('#Ferry').attr('checked', ferryTrue);
 		}
 
 		/**
@@ -2239,6 +2320,7 @@ var Ui = ( function(w) {'use strict';
 			$('#car').click(switchRouteOptionsPane);
 			$('#bicycle').click(switchRouteOptionsPane);
 			$('#pedestrian').click(switchRouteOptionsPane);
+			$('#truck').click(switchRouteOptionsPane);
 			$('.routeOptions').change(handleOptionsChanged);
 			$('#avoidAreasToolbar').click(avoidAreasToolClicked);
 
@@ -2250,7 +2332,7 @@ var Ui = ( function(w) {'use strict';
 			$('#removeAccessibility').click(handleRemoveAccessibility);
 
 			//export/ import
-			$('#exportRouteGpx').click(handleExportRouteClick);
+			$('#export-gpx').click(handleExportRouteClick);
 			$('#gpxUploadFiles').change(handleImportRouteSelection);
 			$('#gpxUploadFilesDelete').click(handleImportRouteRemove);
 			$('#gpxUploadTrack').change(handleImportTrackSelection);
@@ -2316,6 +2398,7 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.setAvoidables = setAvoidables;
 		Ui.prototype.showAvoidAreasError = showAvoidAreasError;
 
+
 		Ui.prototype.showSearchingAtAccessibility = showSearchingAtAccessibility;
 		Ui.prototype.showAccessibilityError = showAccessibilityError;
 
@@ -2325,6 +2408,9 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.showHeightProfile = showHeightProfile;
 
 		Ui.prototype.setUserPreferences = setUserPreferences;
+
+		Ui.prototype.setTruckParameters = setTruckParameters;
+
 
 		theInterface = new Ui();
 
@@ -2464,4 +2550,7 @@ Ui.poiIcons = {
 	poi_water_park : 'img/poi/water_park.png',
 	//default icon
 	poi_default : 'img/poi/building_number.png'
+	
+	
+	
 };

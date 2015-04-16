@@ -9,6 +9,7 @@
 		<!-- for file upload -->
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min_2.2.1.css">
 		<link rel="stylesheet" type="text/css" href="css/default.css">
+
 	</head>
 	<body id="main">
 		<!-- navigation bar on top -->
@@ -59,7 +60,7 @@
 									Route options:
 									<br>
 								</div>
-								<div class="collapsibleBody" style="display: none;">
+								<div class="collapsibleBody" >
 									<div class="btn-group routePreferenceBtns">
 										<button id="car" class="btn routeOptionsButton active"><img src="img/picto-car-high.png">
 										</button>
@@ -67,6 +68,8 @@
 										</button>
 										<button id="pedestrian" class="btn routeOptionsButton"><img src="img/picto-dude.png">
 										</button>
+										<button id="truck" class="btn routeOptionsButton"><img src="img/picto-truck.png">
+										</button>	
 									</div>
 									<div class="panel panelMedium" id="carOptions" style="">
 										<div class="radio">
@@ -106,12 +109,80 @@
 											<label id="PedestrianLabel">pedestrian</label>
 										</div>
 									</div>
+									
+									<div class="panel panelMedium" id="truckOptions" style="display: none;">
+										<div class="radio">
+											<input type="radio" id="Fastest" name="truck" value="fastest" checked="checked">
+											<label id="fastestLabelTruck"> fastest route</label>
+										</div>
+										<div class="radio">
+											<input type="radio" id="Shortest" name="truck" value="shortest">
+											<label id="shortestLabelTruck">shortest route</label>
+										</div>
+										
+									</div>
+									<div class="panel panelMedium" id="truckOptions_restrict" style="display: none;">
+																		
+											<table style="margin-left: 0px; width: 80%" border="0" cellpadding="0" cellspacing="0">
+												
+												<tr>
+												<td>
+												<label id="trucklengthLabel">length</label>
+												<form>
+												<input type="text" value="15" min="0" max="50" autocomplete="off" id="value_length" style="height:  20px; width: 30px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_length_slide.value=this.value"><span class="inputvalue"> m</span>
+												<input type="range" min="0" max="50" value="15" step="0.5" id="value_length_slide" style="height:  20px;width: 130px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_length.value=this.value" />
+												</form>
+												</td><td><img src="img/picto-truck-long.png"></td>
+												</tr>
+												<tr>
+												<tr>
+												<td>
+												<label id="truckwidthLabel">width</label>
+												<form>
+												<input type="text" value="4" min="0" max="20" autocomplete="off" id="value_width" style="height:  20px;width: 30px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_width_slide.value=this.value"><span class="inputvalue"> m</span>
+												<input type="range" min="0" max="20" value="4" step="0.5" id="value_width_slide" style="height:  20px;width: 130px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_width.value=this.value" />
+												</form>
+												</td><td><img src="img/picto-truck-width.png"></td>
+												</tr>
+												<td>
+												<label id="truckheightLabel">height</label>
+												<form>
+												<input type="text" value="4" autocomplete="off" id="value_height" style="height:  20px;width: 30px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_height_slide.value=this.value"><span class="inputvalue"> m</span>
+												<input type="range" min="0" max="15" value="4" step="0.5" id="value_height_slide" style="height:  20px;width: 130px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_height.value=this.value"  />
+												</form>
+												</td><td><img src="img/picto-truck-height.png"></td>
+												</tr><tr><td>
+												<label id="truckweightLabel">weight</label>
+												<form>
+												<input type="text" value="7" autocomplete="off" id="value_weight" style="height:  20px;width: 30px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_weight.value=this.value"><span class="inputvalue"> &nbsp;t&nbsp;</span>
+												<input type="range" min="0" max="50" value="4" step="0.5" id="value_weigth_slide" style="height:  20px;width: 130px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_weight.value=this.value"  />
+												</form>
+												</td><td><img src="img/picto-truck-weight.png"></td>
+												</tr>
+											
+											</table>
+									</div>
+									
+
+								
 									<div class="panel panelMedium" id="avoidables" style="">
 										<label class="checkbox">
 											<input type="checkbox" id="Highway">
-											<label id="avoidMotorLabel">Avoid highways</label></label><label class="checkbox">
+											<label id="avoidMotorLabel">Avoid highways</label>
+										</label>										
+										<label class="checkbox">
 											<input type="checkbox" id="Tollway">
-											<label id="avoidTollLabel">Avoid toll roads</label></label>
+											<label id="avoidTollLabel">Avoid toll roads</label>
+										</label>
+										<label class="checkbox">
+											<input type="checkbox" id="Unpavedroads">
+											<label id="avoidunpavedRoadsLabel">Avoid unpaved roads</label>
+										</label>
+										<label class="checkbox">
+											<input type="checkbox" id="Ferry">
+											<label id="avoidFerryLabel">Avoid ferrys</label>
+										</label>
+										
 									</div>
 									<div class="panel panelMedium" id="avoidAreas">
 										<label id="avoidAreasTitle">Areas to avoid</label>
@@ -252,9 +323,12 @@
 											<p id="exportInfoLabel">
 												Download of current route in GPX format
 											</p>
-											<btn class="btn" id="exportRouteGpx">
+											<!--<btn class="btn" id="exportRouteGpx" download="route.gpx">
 												Download GPX
-											</btn>
+											</btn>-->
+
+											<a id="export-gpx" class="btn" download="map.gpx"><i class="icon-download"></i>Export GPX</a>
+
 											<div class="alert alert-error" style="display:none" id="exportGpxError">
 												Unfortunately an error occured while downlodng the route.
 											</div>
@@ -359,7 +433,7 @@
 
 		<div class="disclaimer">
 			<a id="debug">debug - </a>
-			<a href="contact.html" class="inlineLink">(c) 2008-2013 &nbsp; -</a>
+			<a href="contact.html" class="inlineLink">(c) 2008-2015 &nbsp; -</a>
 			<a href="contact.html#disclaimer" class="inlineLink">Disclaimer &nbsp; -</a>
 			<a href="contact.html#license" class="inlineLink">License</a>
 		</div>

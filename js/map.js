@@ -11,7 +11,7 @@ var Map = ( function() {"use strict";
 				stroke : '#009ad5',
 				fill : '#009ad5',
 				strokeWidthEm : 5,
-				strokeEm : '#fba400',
+				strokeEm : '#fb5400',
 				fillEm : '#009ad5'
 			},
 			point : {
@@ -53,6 +53,7 @@ var Map = ( function() {"use strict";
 			strokeWidth : 5,
 			strokeColor : '${stroke}',
 			fillColor : '${fill}',
+			strokeOpacity: 0.6,
 			graphicZIndex : 2,
 			cursor : 'pointer'
 		};
@@ -61,6 +62,7 @@ var Map = ( function() {"use strict";
 			strokeWidth : '${strokeWidthEm}',
 			strokeColor : '${strokeEm}',
 			fillColor : '${fillEm}',
+			strokeOpacity: 0.6,
 			graphicZIndex : 3
 		};
 
@@ -124,26 +126,35 @@ var Map = ( function() {"use strict";
 				//necessary so that mouse position views 'correct' coords
 				displayProjection : new OpenLayers.Projection('EPSG:4326'),
 				theme : "lib/OpenLayersTheme.css",
-				maxExtent : new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34)
+				maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34),
+				restrictedExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34)
 			});
 
 			/* *********************************************************************
 			* MAP LAYERS
 			* *********************************************************************/
 
+			this.theMap.events.register('zoomend', this, function (event) {
+				var x = this.theMap.getZoom();
+
+				if(x < 3) {
+					this.theMap.setCenter(0, 3);
+				}
+	    	});
+
+
 			//layer 1 - open map surfer
 			if (namespaces.layerMapSurfer.length) {
-					var mapSurfer_name = "OpenMapSurfer Roads";
-					var mapSurfer_options = {
-						type : 'png',
-						isBaseLayer : true,
-						numZoomLevels : 19,
-						attribution : 'Maps and data: &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> and contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-					};
-					var layerMapSurfer = new OpenLayers.Layer.XYZ(mapSurfer_name, namespaces.layerMapSurfer, mapSurfer_options);
-					this.theMap.addLayer(layerMapSurfer);
-			}
+				var mapSurfer_options = {
+					type : 'png',
+					isBaseLayer : true,
+					numZoomLevels : 19,
+					attribution : 'Map data &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> contributors, powered by <a href="http://mapsurfernet.com/">MapSurfer.NET</a>',
+				};
 
+				var mapSurfer_new = new OpenLayers.Layer.XYZ("OpenMapSurfer", namespaces.layerMapSurfer, mapSurfer_options);
+				this.theMap.addLayer(mapSurfer_new);
+			}
 
 			//layer 2 - mapnik
 			var osmLayer = new OpenLayers.Layer.OSM();
@@ -160,10 +171,11 @@ var Map = ( function() {"use strict";
 				};
 				var layerOSM = new OpenLayers.Layer.WMS(wms_name, namespaces.layerWms, wms_options, {
 					'buffer' : 2,
-					'attribution' : 'Maps and data: &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> and contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+					'attribution' : 'Map data: &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> contributors'
 				});
 				this.theMap.addLayer(layerOSM);
 			}
+
 
 			//layer 4 - cycle map
 			var layerCycle = new OpenLayers.Layer.OSM("OpenCycleMap", ["http://a.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png", "http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png", "http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png"]);
