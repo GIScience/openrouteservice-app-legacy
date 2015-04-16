@@ -53,9 +53,11 @@ var Route = ( function(w) {"use strict";
 			
 
 			if (extendedRoutePreferences != null ) {
+				//<xls:ExtendedRoutePreference>
+				writer.writeStartElement('xls:ExtendedRoutePreference');
+				
 				if (routePref == 'Fastest' || routePref == 'Shortest') {
 
-					writer.writeStartElement('xls:ExtendedRoutePreference');
 					//truck width
 					 if (extendedRoutePreferences[3] != null) {
 						 writer.writeElementString('xls:width', extendedRoutePreferences[3]);
@@ -72,9 +74,38 @@ var Route = ( function(w) {"use strict";
 					if (extendedRoutePreferences[0] != null) {
 						writer.writeElementString('xls:length', extendedRoutePreferences[0]);
 					 }
-					//</xls:ExtendedRoutePreference>
-					writer.writeEndElement();
 				}
+				
+				if (routePref === 'Wheelchair') {
+					//tracktype
+					if (extendedRoutePreferences[2] != null) {
+						writer.writeStartElement('xls:trackTypes');
+						writer.writeElementString('xls:trackType', extendedRoutePreferences[2]);
+						writer.writeEndElement();
+					}
+					//surface
+					if (extendedRoutePreferences[0] != null) {
+						writer.writeStartElement('xls:surfaceTypes');
+						writer.writeElementString('xls:surfaceType', extendedRoutePreferences[0]);
+						writer.writeEndElement();
+					}
+					//smoothness
+					if (extendedRoutePreferences[1] != null) {
+						writer.writeStartElement('xls:smoothnessTypes');
+						writer.writeElementString('xls:smoothnessType', extendedRoutePreferences[1]);
+						writer.writeEndElement();
+					}
+					//incline
+					if (extendedRoutePreferences[3] != null) {
+						writer.writeElementString('xls:incline', extendedRoutePreferences[3]);
+					}
+					//sloped curb
+					if (extendedRoutePreferences[4] != null) {
+						writer.writeElementString('xls:slopedCurb', extendedRoutePreferences[4]);
+					}
+				}
+				//</xls:ExtendedRoutePreference>
+				writer.writeEndElement();
 			}
 
 			//<xls:WayPointList>
