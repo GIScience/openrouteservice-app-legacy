@@ -1,4 +1,4 @@
-var lang_ned = {			
+var lang_nl = {			
     'left':'links',
     'right':'  rechts',
     'half-left':'  half links',

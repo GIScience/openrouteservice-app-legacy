@@ -1,4 +1,4 @@
-var lang_hun = {			
+var lang_hu = {			
     'left'	:'	balra',
     'right':'helyes',
     'half-left':'fél balra',
@@ -33,12 +33,12 @@ var lang_hun = {
     'geolocation':'A hely',
     'showCurrentLocation':'Mutassa a jelenlegi helyérol',
     'geolocationNotSupported':'Az Ön böngészoje nem támogatja ezt a funkciót.',
-    'geolocationRuntimeError':'Hiba a helyét ellenorzés akkor \ 're sorry!',
+    'geolocationRuntimeError':'Hiba a helyét ellenorzés akkor ',
     //search in general
     'zoomToSearchResults':'Nagyítás a keresési eredmények',
     'selectResult':'Válasszon ki egy eredmény',
     'searchAgain':'keressen újra',
-    'searchError':'Hiba történt miközben keresi akkor \ 're sorry!',
+    'searchError':'Hiba történt miközben keresi akkor',
     //Address search
     'searchForPoints':'Keressen egy címet',
     'enterAddress':'adja meg a címet',

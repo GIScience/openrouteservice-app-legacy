@@ -1,4 +1,4 @@
-var lang_esp = {
+var lang_es = {
     'left':'izquierda',
     'right':'derecho',
     'half-left':'media izquierda',
