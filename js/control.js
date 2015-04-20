@@ -886,10 +886,11 @@ var Controller = ( function(w) {'use strict';
 				
 				//aas setting route type
 				var aasRoutePref = prefs[0];
-				//aas setting isochrone method
-				var aasMethod = 'Default';// edit variable here
+				
 				//aas setting intervall in meters
-				var aasIntervall = '10';// edit variable here
+				var aasIntervall= $('#accessibilityAnalysisIsochronesIntervall').val();
+				//aas setting isochrone method
+				var aasMethod= $('#accessibilityAnalysisMethodList').val();
 				
 				ui.showAccessibilityError(false);
 				ui.showSearchingAtAccessibility(true);

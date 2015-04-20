@@ -177,10 +177,10 @@ var lang_de = {
 
 		//accessibility Analysis
 		'accessibilityAnalysis' : 'Erreichbarkeits-Analyse',
-		'setAccessibilityMinutes' : 'Minuten ausw&auml;hlen: ',
+		'setAccessibilityMinutes' : 'Minuten ausw&auml;hlen',
 		'analyze' : 'Analysieren',
-		'accessibilityAnalysisIsochrones' : 'Isochronenintervall ausw&auml;hlen:',
-		'accessibilityAnalysisMethod' : 'Isochronen Methode ausw&auml;hlen',
+		'accessibilityAnalysisIsochrones' : 'Isochronenintervall ausw&auml;hlen',
+		'accessibilityAnalysisMethod' : 'Isochronenmethode ausw&auml;hlen',
 		'calculatingAccessibility' : 'Die Erreichbarkeit wird analysiert...',
 		'accessibilityError' : 'W&auml;hrend der Erreichbarkeits-Analyse ist leider ein Fehler aufgetreten. Haben Sie vergessen einen Startpunkt zu setzen?',
 

@@ -137,10 +137,10 @@ var lang_en = {
 
 	//Accessibility Analysis
 	'accessibilityAnalysis' : 'Accessibility analysis',
-	'setAccessibilityMinutes' : 'Select minutes: ',
+	'setAccessibilityMinutes' : 'Select minutes',
 	'analyze' : 'Analyze',
-	'accessibilityAnalysisIsochrones' : 'Select isochrone intervall:',
-	'accessibilityAnalysisMethod' : 'Select Isochrone method',
+	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',
+	'accessibilityAnalysisMethod' : 'Isochrone method',
 	'calculatingAccessibility' : 'The accessibility is being analyzed...',
 	'accessibilityError' : 'An error occured during the accessibility analysis. Did you forget to set a start point?',
 
