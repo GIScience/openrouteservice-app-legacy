@@ -39,6 +39,7 @@ var AccessibilityAnalysis = ( function(w) {"use strict";
 			writer.writeStartElement('aas:Time');
 			writer.writeAttributeString('Duration', 'PT0H' + distanceInMinutes + 'M00S');
 			writer.writeEndElement();
+			writer.writeEndElement();
 			//</aas:AccessibilityPreference
 			writer.writeStartElement('aas:AccessibilitySettings');
 			//</aas:AccessibilitySettings
