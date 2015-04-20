@@ -12,7 +12,7 @@ var lang_de = {
 		'saveBtn': 'Speichern',
 
 		'untitled' :  'Unbenannt',
-		'infoTextVersions' :  'Neu auf OpenRouteService? Nutzen Sie erweiterte Routen-Optionen über die Seiteneinstellungen. ',
+		'infoTextVersions' :  'Neu auf OpenRouteService? Nutzen Sie erweiterte Routen-Optionen &uuml;ber die Seiteneinstellungen. ',
 
 		'routePlanner':  'Routen-Planer ',
 		'search':  'Suche',
