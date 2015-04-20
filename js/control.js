@@ -887,9 +887,9 @@ var Controller = ( function(w) {'use strict';
 				//aas setting route type
 				var aasRoutePref = prefs[0];
 				//aas setting isochrone method
-				var aasMethod = null;// edit variable here
+				var aasMethod = 'Default';// edit variable here
 				//aas setting intervall in meters
-				var aasIntervall = null;// edit variable here
+				var aasIntervall = '10';// edit variable here
 				
 				ui.showAccessibilityError(false);
 				ui.showSearchingAtAccessibility(true);
