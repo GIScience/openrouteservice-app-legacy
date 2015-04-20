@@ -1,4 +1,4 @@
-var lang_fra = {			
+var lang_fr = {			
     'left':'gauche',
     'right':'droite',
     'half-left':'l&eacute; g&egrave;rement &agrave;  gauche',
@@ -15,7 +15,7 @@ var lang_fra = {
     'routeOptions':'Options d\'itin&eacute; raire',
     'routeExtras':'Extras d\'itin&eacute; aires',
     //Routing
-    'planRoute':'Pr&eacute; voir l'\'itin&eacute; raire',
+    'planRoute':'Pr&eacute; voir l\'itin&eacute; raire',
     'calculatingRoute':'Calcul de l\'itin&eacute; raire...',
     'noRouteAvailable':'D&eacute; sol&eacute;  aucun itin&eacute; raire n\'a &eacute; t&eacute;  trouv&eacute;  entre les points s&eacute; lectionn&eacute; s. Merci de choisir vos points plus pr&egrave;s d\'une route.',
     'routeFromTo':'Itin&eacute; raire vers',
