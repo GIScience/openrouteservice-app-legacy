@@ -94,6 +94,8 @@ var Languages = (function(w) {'use strict';
 		$('#accessibilityAnalysisLabel').html(p.translate('accessibilityAnalysis'));
 		$('#accessibilityAnalysisMinutes').html(p.translate('setAccessibilityMinutes'));
 		$('#analyzeAccessibility').html(p.translate('analyze'));
+		$('#accessibilityAnalysisIsochrones').html(p.translate('accessibilityAnalysisIsochrones'));
+		$('#accessibilityAnalysisMethod').html(p.translate('accessibilityAnalysisMethod'));
 		$('#accessibilityCalculation').html(p.translate('calculatingAccessibility'));
 		$('#accessibilityError').html(p.translate('accessibilityError'));
 		//export/ import

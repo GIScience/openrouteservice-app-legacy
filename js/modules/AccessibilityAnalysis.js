@@ -39,17 +39,16 @@ var AccessibilityAnalysis = ( function(w) {"use strict";
 			writer.writeStartElement('aas:Time');
 			writer.writeAttributeString('Duration', 'PT0H' + distanceInMinutes + 'M00S');
 			writer.writeEndElement();
-			writer.writeEndElement();
 			//</aas:AccessibilityPreference
+			writer.writeEndElement();
+			//<aas:AccessibilitySettings
 			writer.writeStartElement('aas:AccessibilitySettings');
-			//</aas:AccessibilitySettings
 			writer.writeElementString('aas:RoutePreference', aasRoutePref || 'Fastest');
 			//<aas:RoutePreference>
 			writer.writeElementString('aas:Method', aasMethod || 'Default');
 			//<aas:Method>
 			writer.writeElementString('aas:Interval', aasIntervall || '10');
-			//<aas:Intervall>
-            writer.writeEndElement();                           
+			//<aas:Intervall>                         
 			//</aas:AccessibilitySettings>
 			writer.writeEndElement();
 			//<aas:LocationPoint>
@@ -69,7 +68,7 @@ var AccessibilityAnalysis = ( function(w) {"use strict";
 			//</aas:Position>
 			writer.writeEndElement();
 			//</aas:LocationPoint>
-			writer.writeEndElement();
+			writer.writeEndElement(); 
 			//</aas:Accessibility>
 			writer.writeEndElement();
 			//<aas:AccessibilityGeometryRequest>
@@ -78,11 +77,12 @@ var AccessibilityAnalysis = ( function(w) {"use strict";
 			writer.writeStartElement('aas:PolygonPreference');
 			writer.writeString('Detailed');
 			writer.writeEndElement();
-			//</ aas:AccessibilityGeometryRequest
+			//</aas:AccessibilityGeometryRequest
 			writer.writeEndElement();
-			//</ aas:DetermineAccessibilityRequest
-			writer.writeEndElement();
+			//</aas:DetermineAccessibilityRequest>
+			writer.writeEndElement('aas:DetermineAccessibilityRequest');
 			//</aas:Request>
+			writer.writeEndElement();
 			writer.writeEndElement();
 			//</aas:AAS>
 			writer.writeEndDocument();

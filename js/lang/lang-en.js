@@ -139,6 +139,8 @@ var lang_en = {
 	'accessibilityAnalysis' : 'Accessibility analysis',
 	'setAccessibilityMinutes' : 'Select minutes: ',
 	'analyze' : 'Analyze',
+	'accessibilityAnalysisIsochrones' : 'Select isochrone intervall:',
+	'accessibilityAnalysisMethod' : 'Select Isochrone method',
 	'calculatingAccessibility' : 'The accessibility is being analyzed...',
 	'accessibilityError' : 'An error occured during the accessibility analysis. Did you forget to set a start point?',
 
