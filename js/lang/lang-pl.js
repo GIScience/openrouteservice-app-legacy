@@ -168,6 +168,7 @@ var lang_pl = {
 	'ca' : 'katalo&#x0144;ski',
 	'ja' : 'japo&#x0144;ski',
 	'no' : 'norweski',
+	'ua' : 'ukrai&#324ski',
 	'vi' : 'wietnamski',
 	'nb' : 'norweski Bokm&aring;l',
 	'de-rheinl' : 'niemiecki: Nadrenia',

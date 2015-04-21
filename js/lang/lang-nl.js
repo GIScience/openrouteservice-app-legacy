@@ -14,7 +14,8 @@ var lang_nl = {
     'search':'  Zoeken',
     'routeOptions':'  Route-opties',
     'routeExtras':'  Route extras',
-    //Routing
+   
+   //Routing
     'planRoute':'  Plan route',
     'calculatingRoute':'  Route berekenen ...',
     'noRouteAvailable':'  Sorry, geen route gevonden tussen de geselecteerde punten. Kies uw punten dichter bij een weg. ',
@@ -27,22 +28,26 @@ var lang_nl = {
     'routeInstructions':'  Route-instructies',
     'routeLinkText':'  Permanente link voor de huidige route',
     'permalinkButton':'  Permanente',
-    //Geolocation
+    
+	//Geolocation
     'geolocationNotification':'  De routing planner probeert uit te vinden uw locatie. Als u niet wilt dat het verzoek accepteert, wordt u doorgestuurd in een moment. ',
     'currentLocation':'  Mijn huidige locatie',
     'geolocation':'  Mijn locatie',
     'showCurrentLocation':'  Toon mijn huidige locatie',
     'geolocationNotSupported':'  Uw browser ondersteunt geen ondersteuning voor deze functie.',
     'geolocationRuntimeError':'  Er is een fout opgetreden tijdens de locatie controleren, we \ re sorry! ',
-    //search in general
+   
+   //search in general
     'zoomToSearchResults':'  Zoom naar zoekresultaten',
     'selectResult':'  Selecteer een resultaat',
     'searchAgain':'  Opnieuw zoeken',
     'searchError':'  Er is een fout opgetreden tijdens het zoeken, we \ re sorry! ',
-    //Address search
+  
+	//Address search
     'searchForPoints':'  Zoeken naar een adres',
     'enterAddress':'  voer een adres',
-    //POI search
+    
+	//POI search
     'distaneNotSupported':'  maximale afstand',
     'noRouteFound':'  Geen route te zoeken naar POIs in de buurt.',
     'searchForPoi':'  Zoek een POI',
@@ -51,17 +56,20 @@ var lang_nl = {
     'enterPoi':'  enter een POI',
     'numPoiResults1':'  <b> Aantal resultaten',
     'numPoiResults2':'  </ B> (max. 100)',
-    // context menu
+   
+   // context menu
     'useAsStartPoint':'  gebruiken als uitgangspunt',
     'useAsViaPoint':'  invoegen als via-punt',
     'useAsEndPoint':'  gebruiken als bestemming',
-    //Waypoint options
+   
+   //Waypoint options
     'addWaypoint':'  Waypoint toevoegen',
     'moveUpWaypoint':'  Move waypoint up',
     'moveDownWaypoint':'  Verplaats Waypoint down',
     'removeWaypoint':'  Verwijder waypoint',
     'useAsWaypoint':'  gebruiken als tussenstop,',
-    //Route Preferences
+    
+	//Route Preferences
     'Shortest':'  kortste route',
     'Fastest':'  snelste route',
     'Pedestrian':'  voetganger',
@@ -111,7 +119,7 @@ var lang_nl = {
     'avoidAreaRemove':'  verwijderen vermijden gebied',
     'invalidAvoidArea':'  Vermijd gebieden zijn niet toegestaan ??om zichzelf te snijden. Verwijder of corrigeer dit gebied. Anders is er geen route berekening mogelijk is. ',
    
-   //GPX Extras
+	//GPX Extras
     'imExport':'  Import / Export',
     'gpxDownloadError':'  Helaas is er een fout opgetreden tijdens het downlodng de route.',
     'gpxUploadError':'  Helaas is er een fout opgetreden tijdens het uploaden van de route.',
@@ -130,7 +138,8 @@ var lang_nl = {
     'analyze':'  Analyseren',
     'calculatingAccessibility':'  De toegankelijkheid wordt geanalyseerd ...',
     'accessibilityError':'  Er is een fout opgetreden tijdens de toegankelijkheid analyse. Vergat u om een beginpunt in te stellen? ',
-    // List languages
+   
+   // List languages
     'en':'  Engels',
     'de':'  Duits',
     'pl':'  Pools',
@@ -154,6 +163,7 @@ var lang_nl = {
     'ca':'  Catalaanse',
     'ja':'  Japans',
     'no':'  Noorse',
+	'ua' : 'Oekra&iuml;ens',
     'vi':'  Vietnamese',
     'nb':'  Noors Bokm&aring;l',
     'de-rheinl':'  Duits',
@@ -163,20 +173,24 @@ var lang_nl = {
     'de-ruhrpo':'  Duits',
     'de-bay':'  Duits',
     'de-at-ooe':'  Duits',
-    // List distance units
+   
+   // List distance units
     'km':'  kilometers',
     'm':'  meter',
     'mi':'  mijl',
     'yd':'  werven',
-    // List time units
+   
+   // List time units
     'days':'  dag (en) ,',
     'hours':'  hour (s)',
     'minutes':'  minute (s)',
     'seconds':'  second (s)',
-    //List versions
+    
+	//List versions
     'standardVersion':'  standaardversie',
     'extendedVersion':'  extended version',
-    //Site Preferences
+    
+	//Site Preferences
     'sitePreferences':'  Site Preferences',
     'language':'  Talen',
     'routingLanguage':'  Taal voor het routeren van instructies',
@@ -186,14 +200,16 @@ var lang_nl = {
     'routingLanguageText':'  Selecteer uw taal',
     'distanceText':'  Selecteer uw afstand unit',
     'versionText':'  Kies de aantal opties',
-    //POI categories
+    
+	//POI categories
     'amenity':'  faciliteiten',
     'public_tran':'  openbaar vervoer',
     'shop':'  winkels',
     'tourism':'  toerisme',
     'leisure':'  vrije tijd',
     'sport':'  sport',
-    //POI types
+    
+	//POI types
     'atm':'  ATM',
     'bank':'  bank',
     'bureau_de_change':'  wisselkantoor',

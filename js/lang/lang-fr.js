@@ -27,22 +27,26 @@ var lang_fr = {
     'routeInstructions':'Instructions de l\'itin&eacute;raire',
     'routeLinkText':'  Lien permanent pour l\'itin&eacute;raire actuel',
     'permalinkButton':'Permalien',
-    //Geolocation
+   
+   //Geolocation
     'geolocationNotification':'Le planificateur de routage essaie de trouver votre emplacement. Si vous ne voulez pas accepter la demande vous allez &ecirc;tre redirig&eacute;dans un instant. ',
     'currentLocation':'Ma position actuelle',
     'geolocation':'Ma position',
     'showCurrentLocation':'Voir mon emplacement actuel',
     'geolocationNotSupported':'Votre navigateur ne supporte pas cette fonction. ',
     'geolocationRuntimeError':'  Une erreur s\'est produite lors de v&eacute;rification de votre position, nous sommes d&eacute;sol&eacute;s !',
-    //search in general
+    
+	//search in general
     'zoomToSearchResults':'Zoom sur les r&eacute;sultats de recherche',
     'selectResult':'S&eacute;lectionner un r&eacute;sultat',
     'searchAgain':'Chercher &agrave;  nouveau',
     'searchError':'  Une erreur s\'est produite lors de la recherche, nous sommes d&eacute;sol&eacute;s !',
-    //Address search
+    
+	//Address search
     'searchForPoints':'Rechercher une adresse',
     'enterAddress':'entrer une adresse',
-    //POI search
+    
+	//POI search
     'distaneNotSupported':'distance maximale : 5 kilom&egrave;tres',
     'noRouteFound':'Pas d\'itin&eacute;raire &agrave;  proximit&eacute;duquel chercher un POI.',
     'searchForPoi':'Rechercher un POI',
@@ -51,17 +55,20 @@ var lang_fr = {
     'enterPoi':'entrer un point d\'int&eacute;r&ecirc;t',
     'numPoiResults1':'<b>Nombre de r&eacute;sultats :',
     'numPoiResults2':' </b> (max. 100):',
-    // context menu
+    
+	// context menu
     'useAsStartPoint':'utiliser comme point de d&eacute;part ',
     'useAsViaPoint':'ins&eacute;rer comme point interm&eacute;diaire ',
     'useAsEndPoint':'utiliser comme destination ',
-    //Waypoint options
+    
+	//Waypoint options
     'addWaypoint':'  Ajouter des points de passage',
     'moveUpWaypoint':'D&eacute;placer le point de passage vers le haut',
     'moveDownWaypoint':'D&eacute;placer le point de passage vers le bas',
     'removeWaypoint':'Supprimer le point de passage',
     'useAsWaypoint':'utiliser comme point de passage',
-    //Route Preferences
+    
+	//Route Preferences
     'Shortest':'itin&eacute;raire le plus court',
     'Fastest':'itin&eacute;raire le plus rapide',
     'Pedestrian':'pi&eacute;ton',
@@ -155,6 +162,7 @@ var lang_fr = {
     'ca':'Catalan',
     'ja':'Japonais',
     'no':'Norv&eacute;gien',
+	'ua' : 'Ucranian',
     'vi':'Vietnamien',
     'nb':'Norv&eacute;gien',
     'de-rheinl':'Allemand',

@@ -154,6 +154,7 @@ var lang_it = {
     'ca':'Catalano',
     'ja':'Giapponese',
     'no':'Norvegese',
+	'ua' : 'Ucraino',
     'vi':'Vietnamese',
     'nb':'Norvegese bokmal',
     'de-rheinl':'Tedesco',
