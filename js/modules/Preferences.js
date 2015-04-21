@@ -204,7 +204,6 @@ var Preferences = ( function(w) {'use strict';
 	 * @return the position
 	 */
 	function loadMapPosition(pos) {
-		console.log(pos)
 		if (pos && pos.length == 2) {
 			//use GET variables (permalink)
 			pos = new OpenLayers.LonLat(pos[0], pos[1]);
@@ -444,9 +443,12 @@ var Preferences = ( function(w) {'use strict';
 	 * if the user changes e.g. route options from "mountainbike" to "pedestrian", update this information in the permaInfo array.
 	 * @param key: the index of the permaInfo array to update
 	 * @param value: the value that should be assigned to that field
+	 * @param idx: optional which indicates position of waypoint
 	 */
 	function updatePreferences(key, value) {
+
 		permaInfo[key] = escape(value);
+		
 	}
 
 	/*
@@ -565,9 +567,7 @@ var Preferences = ( function(w) {'use strict';
 	 * open new window with the permalink
 	 */
 	function openPermalink() {
-		console.log('openPermalink')
-		console.log(prefNames);
-		console.log(permaInfo);
+		
 		var query = '?';
 		for (var i = 0; i < prefNames.length; i++) {
 			query += prefNames[i] + '=' + permaInfo[i] + '&';

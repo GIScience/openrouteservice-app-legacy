@@ -40,7 +40,7 @@ var Controller = ( function(w) {'use strict';
 		 * @param atts: query: the search query; wpIndex: index of the waypoint; searchIds: map feature ids of previous searches
 		 */
 		function handleWaypointRequest(atts) {
-			console.log('handleWaypointRequest')
+
 			ui.searchWaypointChangeToSearchingState(true, atts.wpIndex);
 			var lastSearchResults = atts.searchIds;
 			lastSearchResults = lastSearchResults ? lastSearchResults.split(' ') : null;
@@ -61,18 +61,16 @@ var Controller = ( function(w) {'use strict';
 		function handleSearchWaypointResults(results, wpIndex) {
 			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
 			results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
-			console.log('handleSearchWaypointResults')
+
 			//when the service gives response but contains an error the response is handeled as success, not error. We have to check for an error tag here:
 			var responseError = util.getElementsByTagNameNS(results, namespaces.xls, 'ErrorList').length;
 			if (parseInt(responseError) > 0) {
 				//service response contains an error, switch to error handling function
 				handleSearchWaypointFailure(wpIndex);
 			} else {
-				console.log(wpIndex)
 				waypoint.decrRequestCounterWaypoint(wpIndex);
 				if (waypoint.getRequestCounterWaypoint(wpIndex) == 0) {
 					var listOfPoints = waypoint.parseResultsToPoints(results, wpIndex);
-					console.log(wpIndex)
 					ui.searchWaypointChangeToSearchingState(false, wpIndex);
 
 					if (listOfPoints.length) {
@@ -104,8 +102,6 @@ var Controller = ( function(w) {'use strict';
 		 */
 		function handleWaypointResultClick(atts) {
 
-			console.log('wp field')
-
 			var wpIndex = atts.wpIndex;
 			var featureId = atts.featureId;
 			var searchIds = atts.searchIds;
@@ -123,8 +119,15 @@ var Controller = ( function(w) {'use strict';
 			map.zoomToMarker(util.convertPositionStringToLonLat(position), 14);
 			ui.setWaypointFeatureId(wpIndex, waypointResultId, position, map.ROUTE_POINTS);
 
-			//update preferences
-			handleWaypointChanged(map.getWaypointsString());
+			// check if EndPoint is set only. If true set Permalink accordingly
+			if (map.getWaypointsAmount() == 1 && wpIndex == 1) {
+					var endPoint = true;
+					handleWaypointChanged(map.getWaypointsString(endPoint));
+				} else {
+					var endPoint = false;
+					handleWaypointChanged(map.getWaypointsString(endPoint));
+			}
+
 		}
 
 		/**
@@ -229,9 +232,14 @@ var Controller = ( function(w) {'use strict';
 				ui.setWaypointFeatureId(newIndex, featureId, position, map.ROUTE_POINTS);
 
 				//update preferences
-				console.log(map.getWaypointsString())
-				console.log(wpIndex)
-				handleWaypointChanged(map.getWaypointsString(),wpIndex);
+				//check if EndPoint is set only. If true set Permalink accordingly
+				if (map.getWaypointsAmount() == 1 && wpIndex == 1) {
+					var endPoint = true;
+					handleWaypointChanged(map.getWaypointsString(endPoint));
+				} else {
+					var endPoint = false;
+					handleWaypointChanged(map.getWaypointsString(endPoint));
+				}
 
 				//cannot be emmited by 'this', so let's use sth that is known inside the callback...
 				ui.emit('control:reverseGeocodeCompleted');
@@ -368,14 +376,12 @@ var Controller = ( function(w) {'use strict';
 		 * check whether point is start or end point, preferences have to be updated accordingly that permalink still works correctly
 		 * @param waypointStringList: string containing all waypoints
 		 */
-		function handleWaypointChanged(waypointStringList, wayPointIndex, doNotCalculateRoute) {
+		function handleWaypointChanged(waypointStringList, doNotCalculateRoute) {
 
-			console.log(waypointStringList)
-			console.log(wayPointIndex)
 
 			handlePrefsChanged({
 				key : preferences.waypointIdx,
-				value : waypointStringList
+				value : waypointStringList,
 			});
 
 			if (!doNotCalculateRoute) {
@@ -1192,6 +1198,7 @@ var Controller = ( function(w) {'use strict';
 		/**
 		 * updates internal preferences (language, distance unit, ...)
 		 * @param atts: key: id of the variable name; value: value that should be assigned to that variable
+		 * @param wpIndex: indicates position of waypoint
 		 */
 		function handlePrefsChanged(atts) {
 			var key = atts.key;
@@ -1218,7 +1225,7 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		function handlePermalinkRequest() {
-			console.log('permaLink')
+
 			preferences.openPermalink();
 		}
 
@@ -1270,7 +1277,6 @@ var Controller = ( function(w) {'use strict';
 		 */
 		function initializeOrs() {
 
-
 			//apply GET variables and/or cookies and set the user's language,...
 			var getVars = preferences.loadPreferencesOnStartup();
 
@@ -1315,16 +1321,25 @@ var Controller = ( function(w) {'use strict';
 			if (layer) {
 				map.restoreLayerPrefs(layer);
 			}
-
 			//waypoints: array of OL.LonLat representing one wayoint each
 			waypoints = preferences.loadWaypoints(waypoints);
+
+
 			if (waypoints && waypoints.length > 0) {
+
+
 				for (var i = 0; i < waypoints.length; i++) {
-					var type = Waypoint.type.VIA;
-					if (i == 0) {
+
+					var type;
+
+					if (waypoints[i].lat == 0 & waypoints[i].lon == 0) {
+						continue
+					} else if (i == 0) {
 						type = Waypoint.type.START;
 					} else if (i == waypoints.length - 1) {
 						type = Waypoint.type.END;
+					} else {
+						type = Waypoint.type.VIA;
 					}
 					handleAddWaypointByRightclick({
 						pos : waypoints[i],

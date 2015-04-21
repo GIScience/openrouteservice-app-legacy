@@ -785,14 +785,32 @@ var Map = ( function() {"use strict";
 		}
 
 		/**
+		 * get number of waypoints
+		 * @return: amount of waypoints
+		 */
+		function getWaypointsAmount() {
+			var layer = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
+			var nWaypoints = layer.features.length
+			return nWaypoints;
+		}
+
+		/**
 		 * encode all waypoints by their position in a string; used e.g. for permalink
 		 * @return: string of LonLat positions; style: 'lon1,lat1,lon2,lat2,...lonk,latk'
 		 */
-		function getWaypointsString() {
+		function getWaypointsString(endPoint) {
+			// if endPoint is true add (0,0) to beginning of string
+			// this is then caught 
+			if (endPoint == true) {
+				var wpString = "0%2C0%2C";
+			} else {
+				var wpString = "";
+			}
+
 			var layer = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
 
 			//serialize these features to string
-			var wpString = "";
+			
 			for (var i = 0; i < layer.features.length; i++) {
 				var ft = layer.features[i].geometry;
 				ft = new OpenLayers.LonLat(ft.x, ft.y);
@@ -801,6 +819,7 @@ var Map = ( function() {"use strict";
 			}
 			//slice away the last separator ','
 			wpString = wpString.substring(0, wpString.length - 3);
+
 			return wpString;
 		}
 
@@ -1311,6 +1330,7 @@ var Map = ( function() {"use strict";
 		map.prototype.addWaypointAtPos = addWaypointAtPos;
 		map.prototype.setWaypointType = setWaypointType;
 		map.prototype.getWaypointsString = getWaypointsString;
+		map.prototype.getWaypointsAmount = getWaypointsAmount;
 
 		map.prototype.addGeolocationResultMarker = addGeolocationResultMarker;
 
