@@ -920,8 +920,8 @@ var Controller = ( function(w) {'use strict';
 				//aas setting intervall in meters
 				var aasIntervall= $('#accessibilityAnalysisIsochronesIntervall').val();
 				//aas setting isochrone method
-				var aasMethod= $('#accessibilityAnalysisMethodList').val();
-				
+				var aasMethod= document.getElementById('#accessibilityAnalysisMethodList');
+							
 				ui.showAccessibilityError(false);
 				ui.showSearchingAtAccessibility(true);
 
