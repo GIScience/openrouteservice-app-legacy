@@ -1,5 +1,5 @@
 var lang_cz = {			
-    'left'	:'	vlevo',
+    'left'	:'vlevo',
     'right':'pr&aacute;vo',
     'half-left':'napul vlevo',
     'half-right':'napul pravdu',
