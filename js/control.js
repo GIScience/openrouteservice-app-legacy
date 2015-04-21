@@ -290,6 +290,7 @@ var Controller = ( function(w) {'use strict';
 		 * @param atts: wpIndex: index of the waypoint, featureId: id of the map feature of the waypoint
 		 */
 		function handleRemoveWaypoint(atts) {
+
 			var idx = atts.wpIndex;
 			var featureId = atts.featureId;
 
@@ -330,8 +331,17 @@ var Controller = ( function(w) {'use strict';
 				}
 			}
 
+
 			//update preferences
-			handleWaypointChanged(map.getWaypointsString());
+			//check if EndPoint is set only. If true set Permalink accordingly
+			if (map.getWaypointsAmount() == 1 && idx == 0) {
+				var endPoint = true;
+				handleWaypointChanged(map.getWaypointsString(endPoint));
+			} else {
+				var endPoint = false;
+				handleWaypointChanged(map.getWaypointsString(endPoint));
+			}
+
 		}
 
 		/**
