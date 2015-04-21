@@ -83,6 +83,8 @@ var lang_ua = {
     'BicycleRoute': 'віддавати перевагу виділеним доріжкам',
     'BicycleMTB': 'гірський велосипед',
     'BicycleRacer': 'швидкісний велосипед',
+	'Wheelchair' : 'доступний маршрут',
+	
 	'avoidunpavedRoads':  'Уникайте грунтові дороги',
 	'avoidFerry':  'Уникайте пороми',
 	'TruckLength' : 'Максимальна довжина',

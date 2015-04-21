@@ -70,6 +70,8 @@ var lang_nl = {
     'BicycleRoute':'  liever fietspad',
     'BicycleMTB':'  mountainbike',
     'BicycleRacer':'  racefiets',
+	'Wheelchair' : 'toegankelijke route',
+	
     'avoidMotorways':'  Vermijd snelwegen',
     'avoidTollways':'  Vermijd tolwegen',
 	'avoidunpavedRoads':  'Vermijd onverharde wegen',

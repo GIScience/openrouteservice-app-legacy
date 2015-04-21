@@ -70,6 +70,7 @@ var lang_it = {
     'BicycleRoute':'preferire pista ciclabile',
     'BicycleMTB':'mountain bike',
     'BicycleRacer':'bici da corsa',
+	'Wheelchair' : 'percorso accessibile',
     'avoidMotorways':'Evitare autostrade',
     'avoidTollways':'Evitare strade a pedaggio',
 	'avoidunpavedRoads':  'Evita strade non asfaltate',

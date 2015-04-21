@@ -83,6 +83,7 @@ var lang_pl = {
 	'BicycleRoute' : 'preferuj &#x015B;cie&#x017C;ki rowerowe',
 	'BicycleMTB' : 'rowery terenowy',
 	'BicycleRacer' : 'rower wy&#x015B;cigowy',
+	'Wheelchair' : 'dost&#281;pne trasy',
 	
 	'avoidMotorways' : 'unikaj autostrad',
 	'avoidTollways' : 'unikaj dr&oacute;g p&#x0142;atnych',

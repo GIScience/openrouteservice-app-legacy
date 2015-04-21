@@ -83,6 +83,7 @@ var lang_ru = {
     'BicycleRoute': 'предпочитать выделенные дорожки',
     'BicycleMTB': 'горный велосипед',
     'BicycleRacer': 'скоростной велосипед',
+	'Wheelchair' : 'доступный маршрут',
  
     'avoidMotorways': 'Избегать автодорог',
     'avoidTollways': 'Избегать платных дорог',
