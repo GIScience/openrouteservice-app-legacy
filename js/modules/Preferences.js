@@ -47,6 +47,9 @@ var Preferences = ( function(w) {'use strict';
 		permaInfo[this.routingLanguageIdx] = this.routingLanguage;
 		permaInfo[this.distanceUnitIdx] = this.distanceUnit;
 		permaInfo[this.versionIdx] = this.version;
+
+		
+
 		//other fields are filled with default values when reading GET variables/ cookies etc.
 
 		cookiesAvailable = false;
@@ -201,6 +204,7 @@ var Preferences = ( function(w) {'use strict';
 	 * @return the position
 	 */
 	function loadMapPosition(pos) {
+		console.log(pos)
 		if (pos && pos.length == 2) {
 			//use GET variables (permalink)
 			pos = new OpenLayers.LonLat(pos[0], pos[1]);
@@ -267,9 +271,9 @@ var Preferences = ( function(w) {'use strict';
 	 */
 	function loadWaypoints(waypoints) {
 		if (waypoints) {
+			
 			//save waypoints in permaInfo array
 			permaInfo[this.waypointIdx] = waypoints == undefined ? null : waypoints;
-
 			waypoints = unescape(waypoints);
 			var lonLatCoordinates = waypoints.split(',');
 			waypoints = [];
@@ -561,6 +565,9 @@ var Preferences = ( function(w) {'use strict';
 	 * open new window with the permalink
 	 */
 	function openPermalink() {
+		console.log('openPermalink')
+		console.log(prefNames);
+		console.log(permaInfo);
 		var query = '?';
 		for (var i = 0; i < prefNames.length; i++) {
 			query += prefNames[i] + '=' + permaInfo[i] + '&';

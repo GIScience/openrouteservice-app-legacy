@@ -134,13 +134,14 @@ var Map = ( function() {"use strict";
 			* MAP LAYERS
 			* *********************************************************************/
 
+			// checks whether zoom level is smaller 3 as no minimum zoom can be set
 			this.theMap.events.register('zoomend', this, function (event) {
 				var x = this.theMap.getZoom();
 
 				if(x < 3) {
 					this.theMap.setCenter(0, 3);
 				}
-	    	});
+			});
 
 
 			//layer 1 - open map surfer

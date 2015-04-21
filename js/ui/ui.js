@@ -207,6 +207,7 @@ var Ui = ( function(w) {'use strict';
 		 * @param e: the event
 		 */
 		function handleSearchWaypointInput(e) {
+			console.log('handleSearchWaypointInput')
 			var waypointElement = $(e.currentTarget).parent().parent();
 
 			//index of the waypoint (0st, 1st 2nd,...)
@@ -257,6 +258,7 @@ var Ui = ( function(w) {'use strict';
 		 * @param wpIndex: index of the waypoint the search was performed for
 		 */
 		function updateSearchWaypointResultList(results, listOfFeatures, layername, wpIndex) {
+			console.log('updateSearchWaypointResultList')
 			//insert address information to page
 			var allAddress;
 			var allIds = '';
@@ -312,6 +314,7 @@ var Ui = ( function(w) {'use strict';
 		 * @param e: the event
 		 */
 		function handleSearchWaypointResultClick(e) {
+			console.log('ui handleSearchWaypointResultClick')
 			var rootElement = $(e.currentTarget).parent().parent().parent().parent();
 			var index = rootElement.attr('id');
 			rootElement.removeClass('unset');

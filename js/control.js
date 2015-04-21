@@ -40,6 +40,7 @@ var Controller = ( function(w) {'use strict';
 		 * @param atts: query: the search query; wpIndex: index of the waypoint; searchIds: map feature ids of previous searches
 		 */
 		function handleWaypointRequest(atts) {
+			console.log('handleWaypointRequest')
 			ui.searchWaypointChangeToSearchingState(true, atts.wpIndex);
 			var lastSearchResults = atts.searchIds;
 			lastSearchResults = lastSearchResults ? lastSearchResults.split(' ') : null;
@@ -60,18 +61,18 @@ var Controller = ( function(w) {'use strict';
 		function handleSearchWaypointResults(results, wpIndex) {
 			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
 			results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
-
+			console.log('handleSearchWaypointResults')
 			//when the service gives response but contains an error the response is handeled as success, not error. We have to check for an error tag here:
 			var responseError = util.getElementsByTagNameNS(results, namespaces.xls, 'ErrorList').length;
 			if (parseInt(responseError) > 0) {
 				//service response contains an error, switch to error handling function
 				handleSearchWaypointFailure(wpIndex);
 			} else {
-
+				console.log(wpIndex)
 				waypoint.decrRequestCounterWaypoint(wpIndex);
 				if (waypoint.getRequestCounterWaypoint(wpIndex) == 0) {
 					var listOfPoints = waypoint.parseResultsToPoints(results, wpIndex);
-
+					console.log(wpIndex)
 					ui.searchWaypointChangeToSearchingState(false, wpIndex);
 
 					if (listOfPoints.length) {
@@ -102,6 +103,9 @@ var Controller = ( function(w) {'use strict';
 		 * @param atts: wpIndex: index of the waypoint; featureId: map feature id of the selected marker; searchIds: string of all search features for this search
 		 */
 		function handleWaypointResultClick(atts) {
+
+			console.log('wp field')
+
 			var wpIndex = atts.wpIndex;
 			var featureId = atts.featureId;
 			var searchIds = atts.searchIds;
@@ -128,6 +132,7 @@ var Controller = ( function(w) {'use strict';
 		 * @param: newWaypointIndex: index which is assigned to the new waypoint
 		 */
 		function handleAddWaypoint(newWaypointIndex) {
+
 			waypoint.addWaypoint(newWaypointIndex);
 
 			//re-calculate type of last (now next-to-last) waypoint
@@ -198,6 +203,8 @@ var Controller = ( function(w) {'use strict';
 		 * @param addWaypointAt: index where to add the waypoint
 		 */
 		function reverseGeocodeSuccess(addressResult, wpType, wpIndex, featureId, addWaypointAt) {
+			
+
 			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
 			var addressResult = addressResult.responseXML ? addressResult.responseXML : util.parseStringToDOM(addressResult.responseText);
 
@@ -222,7 +229,9 @@ var Controller = ( function(w) {'use strict';
 				ui.setWaypointFeatureId(newIndex, featureId, position, map.ROUTE_POINTS);
 
 				//update preferences
-				handleWaypointChanged(map.getWaypointsString());
+				console.log(map.getWaypointsString())
+				console.log(wpIndex)
+				handleWaypointChanged(map.getWaypointsString(),wpIndex);
 
 				//cannot be emmited by 'this', so let's use sth that is known inside the callback...
 				ui.emit('control:reverseGeocodeCompleted');
@@ -356,9 +365,14 @@ var Controller = ( function(w) {'use strict';
 
 		/**
 		 * is called when one or more waypoints have changed. Updates internal variables (preferences).
+		 * check whether point is start or end point, preferences have to be updated accordingly that permalink still works correctly
 		 * @param waypointStringList: string containing all waypoints
 		 */
-		function handleWaypointChanged(waypointStringList, doNotCalculateRoute) {
+		function handleWaypointChanged(waypointStringList, wayPointIndex, doNotCalculateRoute) {
+
+			console.log(waypointStringList)
+			console.log(wayPointIndex)
+
 			handlePrefsChanged({
 				key : preferences.waypointIdx,
 				value : waypointStringList
@@ -1204,6 +1218,7 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		function handlePermalinkRequest() {
+			console.log('permaLink')
 			preferences.openPermalink();
 		}
 
@@ -1254,6 +1269,7 @@ var Controller = ( function(w) {'use strict';
 		 * apply GET variables, read cookies or apply standard values to initialize the ORS page
 		 */
 		function initializeOrs() {
+
 
 			//apply GET variables and/or cookies and set the user's language,...
 			var getVars = preferences.loadPreferencesOnStartup();

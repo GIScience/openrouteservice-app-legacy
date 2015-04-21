@@ -22,6 +22,7 @@ var SearchPoi = ( function(window) {"use strict";
 		 * @param language: language of the results
 		 */
 		function find(searchQuery, refPoint, maxDist, distanceUnit, successCallback, failureCallback, language) {
+
 			maxDist = maxDist > 5000 ? 5000 : maxDist;
 			distanceUnit = distanceUnit.toUpperCase();
 			

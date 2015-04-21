@@ -20,6 +20,7 @@ var SearchAddress = ( function(window) {"use strict";
 		 * @param  {String} language: language of the results
 		 */
 		function find(address, successCallback, failureCallback, language) {
+
 			//build request
 			var writer = new XMLWriter('UTF-8', '1.0');
 			writer.writeStartDocument();
