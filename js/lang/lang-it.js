@@ -72,13 +72,44 @@ var lang_it = {
     'BicycleRacer':'bici da corsa',
     'avoidMotorways':'Evitare autostrade',
     'avoidTollways':'Evitare strade a pedaggio',
+	'avoidunpavedRoads':  'Evita strade non asfaltate',
+	'avoidFerry':  'Evitare i collegamenti marittimi',
+	'TruckLength' : 'lunghezza massima',
+	'TruckHeight' : 'altezza massima',
+	'TruckWeight' : 'peso massimo',
+	'TruckWidth' : 'larghezza massima',
+	
+	//Surfaces:
+	'surface': 'piano stradale',
+    'asphalt': 'cemento , asfalto',
+    'cobblestone:flattened': 'ciottoli appiattita e meglio',
+    'cobblestone': 'ciottoli e meglio', 
+    'compacted': 'compatto', 
+    'all_surfaces': 'flessibile',
+
+    // Inclines
+	'incline': 'max pendenza',
+	'threepercent' : 'fino a 3%',
+	'sixpercent' : 'fino a 6%',
+	'tenpercent' : 'fino a 10%',
+	'fifteenpercent' : 'fino a 15%',
+	'all_inclines' : 'flessibile',
+	
+	// Sloped Curbs
+	'sloped_curb' : 'altezza max di marciapiede in pendenza',
+	'threecm' : 'fino a 3 cm',
+	'sixcm' : 'fino a 6 cm',
+	'tencm' : 'fino a 10 cm',
+	'all_sloped_curbs' :  'flessibile',
+	
     //Avoid areas
     'avoidAreas':'Le aree da evitare ',
     'avoidAreaDraw':'disegnare evitare la zona',
     'avoidAreaModify':'modificare la zona da evitare',
     'avoidAreaRemove':'rimuovere zona da evitare',
     'invalidAvoidArea':'Evitare luoghi non sono autorizzati a intersecare se stessi. Si prega di rimuovere o correggere questa zona. Altrimenti nessun calcolo del percorso &egrave; possibile. ',
-    //GPX Extras
+    
+	//GPX Extras
     'imExport':'Import / Export',
     'gpxDownloadError':'Purtroppo &egrave; verificato un errore durante downlodng il percorso.',
     'gpxUploadError':'Purtroppo &egrave; verificato un errore durante il caricamento del percorso.',
@@ -88,13 +119,17 @@ var lang_it = {
     'gpxUploadTrackText':'Upload di GPX-track per la visualizzazione sulla mappa',
     'selectFile':'Seleziona file',
     'changeFile':'Change',
-    //Accessibility Analysis
+   
+   //Accessibility Analysis
+	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',
+	'accessibilityAnalysisMethod' : 'Isochrone method',
     'accessibilityAnalysis':'Analisi di accessibilit&agrave; ',
     'setAccessibilityMinutes':'Seleziona minuti',
     'analyze':'Analisi',
     'calculatingAccessibility':'Laccessibilit&agrave;  viene analizzato ...',
     'accessibilityError':'Verificato un errore durante lanalisi di accessibilit&agrave; . Hai dimenticato di impostare un punto di partenza? ',
-    // List languages
+    
+	// List languages
     'en':'Inglese',
     'de':'Tedesco',
     'pl':'Polacco',

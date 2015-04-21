@@ -72,13 +72,44 @@ var lang_nl = {
     'BicycleRacer':'  racefiets',
     'avoidMotorways':'  Vermijd snelwegen',
     'avoidTollways':'  Vermijd tolwegen',
+	'avoidunpavedRoads':  'Vermijd onverharde wegen',
+	'avoidFerry':  'Vermijd veerverbindingen',
+	'TruckLength' : 'maximumlengte',
+	'TruckHeight' : 'maximale hoogte',
+	'TruckWeight' : 'maximum gewicht',
+	'TruckWidth' : 'maximale breedte',
+	
+	//Surfaces:
+	'surface': 'oppervlak',
+    'asphalt': 'beton, asfalt',
+    'cobblestone:flattened': 'afgevlakte kasseien en betere',
+    'cobblestone': 'kasseien en betere', 
+    'compacted': 'verdicht', 
+    'all_surfaces': 'flexibele',
+
+    // Inclines
+	'incline': 'max helling',
+	'threepercent' : 'tot 3%',
+	'sixpercent' : 'tot 6%',
+	'tenpercent' : 'tot 10%',
+	'fifteenpercent' : 'tot 15%',
+	'all_inclines' : 'flexibele',
+	
+	// Sloped Curbs
+	'sloped_curb' : 'max hoogte van schuine stoeprand',
+	'threecm' : 'tot 3 cm',
+	'sixcm' : 'tot 6 cm',
+	'tencm' : 'tot 10 cm',
+	'all_sloped_curbs' :  'flexibele',
+	
     //Avoid areas
     'avoidAreas':'  Gebieden te vermijden',
     'avoidAreaDraw':'  draw gebied te voorkomen',
     'avoidAreaModify':'  vermijden gebied te wijzigen',
     'avoidAreaRemove':'  verwijderen vermijden gebied',
     'invalidAvoidArea':'  Vermijd gebieden zijn niet toegestaan ??om zichzelf te snijden. Verwijder of corrigeer dit gebied. Anders is er geen route berekening mogelijk is. ',
-    //GPX Extras
+   
+   //GPX Extras
     'imExport':'  Import / Export',
     'gpxDownloadError':'  Helaas is er een fout opgetreden tijdens het downlodng de route.',
     'gpxUploadError':'  Helaas is er een fout opgetreden tijdens het uploaden van de route.',
@@ -88,7 +119,10 @@ var lang_nl = {
     'gpxUploadTrackText':'  Upload van GPX-spoor voor weergave op de kaart',
     'selectFile':'  Selecteer bestand',
     'changeFile':'  Change',
-    //Accessibility Analysis
+    
+	//Accessibility Analysis
+	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',
+	'accessibilityAnalysisMethod' : 'Isochrone method',
     'accessibilityAnalysis':'  Toegankelijkheid analyse',
     'setAccessibilityMinutes':'  Selecteer minuten',
     'analyze':'  Analyseren',

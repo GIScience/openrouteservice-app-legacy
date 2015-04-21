@@ -14,7 +14,8 @@ var lang_es = {
     'search':'Buscar',
     'routeOptions':'Opciones de ruta',
     'routeExtras':'Ruta extras',
-    //Routing
+   
+   //Routing
     'planRoute':'Plan de ruta',
     'calculatingRoute':'Calcular ruta ...',
     'noRouteAvailable':'Lo siento no se encontr&oacute; la ruta entre los puntos seleccionados. Elija sus puntos m&aacute;  s cerca de una carretera.',
@@ -27,22 +28,26 @@ var lang_es = {
     'routeInstructions':'Instrucciones de Ruta',
     'routeLinkText':'Permalink for ruta actual',
     'permalinkButton':'Permalink',
-    //Geolocation
+    
+	//Geolocation
     'geolocationNotification':'El planificador de enrutamiento intenta averiguar su ubicaci&oacute;n. Si usted no desea aceptar la solicitud se le redirige en un momento.',
     'currentLocation':'Mi ubicaci&oacute;n actual',
     'geolocation':'Mi ubicaci&oacute;n',
     'showCurrentLocation':'Mostrar mi ubicaci&oacute;n actual',
     'geolocationNotSupported':'Su navegador no soporta esta caracter&iacute;stica.',
     'geolocationRuntimeError':'Ha ocurrido un error durante la comprobaci&oacute;n de la ubicaci&oacute;n que \ re sentimos!',
-    //search in general
+    
+	//search in general
     'zoomToSearchResults':'Zoom para buscar resultados',
     'selectResult':'Seleccione un resultado',
     'searchAgain':'buscar Again',
     'searchError':'Ha ocurrido un error durante la b&uacute;squeda que \ re sentimos!',
-    //Address search
+    
+	//Address search
     'searchForPoints':'B&uacute;squeda de una direcci&oacute;n',
     'enterAddress':'introducir una direcci&oacute;n',
-    //POI search
+    
+	//POI search
     'distaneNotSupported':'distancia m&aacute;  xima',
     'noRouteFound':'No hay ruta para buscar POIs cerca.',
     'searchForPoi':'Buscar un POI',
@@ -51,17 +56,20 @@ var lang_es = {
     'enterPoi':'introduzca un PDI',
     'numPoiResults1':'<b> N&uacute;mero de Resultados',
     'numPoiResults2':'</ B> (max. 100)',
-    // context menu
+    
+	// context menu
     'useAsStartPoint':'utilizar como punto de partida',
     'useAsViaPoint':'insertar como punto intermedio',
     'useAsEndPoint':'utilizar como destino',
-    //Waypoint options
+    
+	//Waypoint options
     'addWaypoint':'A&ntilde;adir waypoint',
     'moveUpWaypoint':'Mover waypoint hacia arriba',
     'moveDownWaypoint':'Mover waypoint hacia abajo',
     'removeWaypoint':'Eliminar waypoint',
     'useAsWaypoint':'utilizar como punto de referencia',
-    //Route Preferences
+    
+	//Route Preferences
     'Shortest':'ruta m&aacute;  s corta',
     'Fastest':'ruta m&aacute;  s r&aacute;  pida',
     'Pedestrian':'peatones',
@@ -72,13 +80,44 @@ var lang_es = {
     'BicycleRacer':'compitiendo con la bici',
     'avoidMotorways':'Evitar autopistas',
     'avoidTollways':'Evitar carreteras de peaje',
+	'avoidunpavedRoads':  'Evitar carreteras sin pavimentar',
+	'avoidFerry':  'Evitar las conexiones mar&iacute; timas',
+	'TruckLength' : 'longitud m&aacute; xima',
+	'TruckHeight' : 'altura m&aacute; xima',
+	'TruckWeight' : 'peso m&aacute; ximo',
+	'TruckWidth' : 'ancho m&aacute; ximo',
+	
+	//Surfaces:
+	'surface': 'superficie',
+    'asphalt': 'hormig&oacute;n, asfalto',
+    'cobblestone:flattened': 'adoquines aplanada y mejor',
+    'cobblestone': 'adoquines y mejor', 
+    'compacted': 'comprimido', 
+    'all_surfaces': 'flexible',
+
+    // Inclines
+	'incline': 'max inclinaci&oacute;n',
+	'threepercent' : 'hasta 3%',
+	'sixpercent' : 'hasta 6%',
+	'tenpercent' : 'hasta 10%',
+	'fifteenpercent' : 'up to 15%',
+	'all_inclines' : 'flexible',
+	
+	// Sloped Curbs
+	'sloped_curb' : 'altura m&aacute; xima de acera inclinada',
+	'threecm' : 'hasta 3 cm',
+	'sixcm' : 'hasta 6 cm',
+	'tencm' : 'hasta 10 cm',
+	'all_sloped_curbs' :  'flexible',
+	
     //Avoid areas
     'avoidAreas':'Zonas a evitar',
     'avoidAreaDraw':'draw evite superficies ',
     'avoidAreaModify':'modificar &aacute;  rea a evitar',
     'avoidAreaRemove':'remover &aacute;  rea a evitar',
     'invalidAvoidArea':'Evite las &aacute;  reas en que no se permite que se cruzan a s&iacute; mismos. Por favor eliminar o corregir esta &aacute;  rea. De lo contrario no es posible el c&aacute;  lculo de ruta.',
-    //GPX Extras
+    
+	//GPX Extras
     'imExport':'Import / Export',
     'gpxDownloadError':'Desafortunadamente un error ocurri&oacute; mientras que downlodng la ruta.',
     'gpxUploadError':'Desgraciadamente ha ocurrido un error al cargar la ruta .',
@@ -88,13 +127,17 @@ var lang_es = {
     'gpxUploadTrackText':'La subida de GPX-track para su visualizaci&oacute;n en el mapa',
     'selectFile':'Seleccionar archivo',
     'changeFile':'Change',
-    //Accessibility Analysis
+    
+	//Accessibility Analysis
+	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',
+	'accessibilityAnalysisMethod' : 'Isochrone method',
     'accessibilityAnalysis':'An&aacute;  lisis de accesibilidad',
     'setAccessibilityMinutes':'Seleccione minutos',
     'analyze':'Analizar',
     'calculatingAccessibility':'Se est&aacute;   analizando la accesibilidad ...',
     'accessibilityError':'Ha ocurrido un error durante el an&aacute;  lisis de la accesibilidad. ¿Se te olvid&oacute; fijar un punto de partida?',
-    // List languages
+    
+	// List languages
     'en':'Ingl&eacute; s',
     'de':'Alem&aacute;  n',
     'pl':'Polaco',
@@ -127,7 +170,8 @@ var lang_es = {
     'de-ruhrpo':'Alem&aacute;  n',
     'de-bay':'Alem&aacute;  n',
     'de-at-ooe':'Alem&aacute;  n',
-    // List distance units
+    
+	// List distance units
     'km':'kil&oacute;metros',
     'm':'m',
     'mi':'miles',

@@ -13,7 +13,7 @@ var lang_pl = {
 	'saveBtn' : 'Zapisz',
 	
 	'untitled' : 'bez tytu&#x0142;u',
-	'infoTextVersions' : 'Jesteś nowy na OpenRouteService? Aktywuj rozszerzone opcje w menu preferencji.',
+	'infoTextVersions' : 'Jeste&#347; nowy na OpenRouteService? Aktywuj rozszerzone opcje w menu preferencji.',
 	
 	'routePlanner' : 'Planowanie trasy',
 	'search' : 'Szukaj',
@@ -86,6 +86,35 @@ var lang_pl = {
 	
 	'avoidMotorways' : 'unikaj autostrad',
 	'avoidTollways' : 'unikaj dr&oacute;g p&#x0142;atnych',
+	'avoidunpavedRoads':  'Unika&#263; drogi gruntowe',
+	'avoidFerry':  'Unika&#263; po&#322;&#261;czenia promowe',
+	'TruckLength' : 'maksymalna d&#322;ugo&#347;&#263;',
+	'TruckHeight' : 'wysoko&#347;ci&#261; maksymalnej',
+	'TruckWeight' : 'maksymalna waga',
+	'TruckWidth' : 'maksymalna szeroko&#347;&#263;',
+	
+	//Surfaces:
+	'surface': 'nawierzchnia',
+    'asphalt': 'beton, asfalt',
+    'cobblestone:flattened': 'Bruk i lepiej sp&#322;aszczone',
+    'cobblestone': 'Bruk i lepiej', 
+    'compacted': 'zag&#281;szczony', 
+    'all_surfaces': 'elastyczny',
+
+    // Inclines
+	'incline': 'max nachylenie',
+	'threepercent' : 'a&#380; do 3%',
+	'sixpercent' : 'a&#380; do 6%',
+	'tenpercent' : 'a&#380; do 10%',
+	'fifteenpercent' : 'a&#380; do 15%',
+	'all_inclines' : 'elastyczny',
+	
+	// Sloped Curbs
+	'sloped_curb' : 'max wysoko&#347;&#263; kraw&#281;&#380;nika nachylon&#261;',
+	'threecm' : 'a&#380; do 3 cm',
+	'sixcm' : 'a&#380; do 6 cm',
+	'tencm' : 'a&#380; do 10 cm',
+	'all_sloped_curbs' :  'elastyczny',
 
 	//Avoid areas
 	'avoidAreas' : 'unikaj obszar&oacute;w',
@@ -106,6 +135,8 @@ var lang_pl = {
 	'changeFile' : '',
 
 	//Accessibility Analysis
+	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',
+	'accessibilityAnalysisMethod' : 'Isochrone method',
 	'accessibilityAnalysis' : 'Analiza dost&#x0119;pno&#x015B;ci',
 	'setAccessibilityMinutes' : 'Dost&#x0119;pno&#x015B;&#x0107; w minutach: ',
 	'analyze' : 'Analizuj',

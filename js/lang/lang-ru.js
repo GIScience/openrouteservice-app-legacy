@@ -86,6 +86,35 @@ var lang_ru = {
  
     'avoidMotorways': 'Избегать автодорог',
     'avoidTollways': 'Избегать платных дорог',
+	'avoidunpavedRoads':  'Избегайте грунтовые дороги',
+	'avoidFerry':  'Избегайте паромы',
+	'TruckLength' : 'максимальная длина',
+	'TruckHeight' : 'максимальная высота',
+	'TruckWeight' : 'максимальный вес',
+	'TruckWidth' : 'mмаксимальная ширина',
+	
+	//Surfaces:
+	'surface': 'поверхность',
+    'asphalt': 'бетон, асфальт',
+    'cobblestone:flattened': 'плоский булыжник и лучше',
+    'cobblestone': 'булыжник и лучше', 
+    'compacted': 'компактный', 
+    'all_surfaces': 'гибкий',
+
+    // Inclines
+	'incline': 'макс наклона',
+	'threepercent' : 'вплоть до 3%',
+	'sixpercent' : 'вплоть до 6%',
+	'tenpercent' : 'вплоть до 10%',
+	'fifteenpercent' : 'вплоть до 15%',
+	'all_inclines' : 'гибкий',
+	
+	// Sloped Curbs
+	'sloped_curb' : 'Максимальная высота наклонной тротуара',
+	'threecm' : 'вплоть до 3 cm',
+	'sixcm' : 'вплоть до 6 cm',
+	'tencm' : 'вплоть до 10 cm',
+	'all_sloped_curbs' :  'гибкий',
  
     //Avoid areas
     'avoidAreas': 'Избегать зоны',
@@ -106,6 +135,8 @@ var lang_ru = {
     'changeFile': 'Изменить',
  
     //Accessibility Analysis
+	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',
+	'accessibilityAnalysisMethod' : 'Isochrone method',
     'accessibilityAnalysis': 'Анализ досягаемости',
     'setAccessibilityMinutes': 'Количество минут: ',
     'analyze': 'Анализ',

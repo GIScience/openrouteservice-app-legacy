@@ -72,13 +72,44 @@ var lang_fr = {
     'BicycleRacer':'v&eacute; lo de course',
     'avoidMotorways':'&Eacute;viter les autoroutes',
     'avoidTollways':'&Eacute;viter les routes &agrave;  p&eacute; age',
-    //Avoid areas
+	'avoidunpavedRoads':  'Eviter les routes non rev&ecirc;tues',
+	'avoidFerry':  'Eviter les liaisons maritimes',
+	'TruckLength' : 'longueur maximale',
+	'TruckHeight' : 'hauteur maximale',
+	'TruckWeight' : 'poids maximal',
+	'TruckWidth' : 'largeur maximale',
+	
+	//Surfaces:
+	'surface': 'surface',
+    'asphalt': 'b&eacute; ton, l\'asphalte',
+    'cobblestone:flattened': 'pav&eacute; e aplatie et mieux',
+    'cobblestone': 'pav&eacute; e et mieux', 
+    'compacted': 'compact&eacute; ', 
+    'all_surfaces': 'flexible',
+
+    // Inclines
+	'incline': 'max inclin&eacute; ',
+	'threepercent' : 'jusqu\'&agrave; 3%',
+	'sixpercent' : 'jusqu\'&agrave; 6%',
+	'tenpercent' : 'jusqu\'&agrave; 10%',
+	'fifteenpercent' : 'jusqu\'&agrave; 15%',
+	'all_inclines' : 'flexible',
+	
+	// Sloped Curbs
+	'sloped_curb' : 'hauteur max de trottoir en pente',
+	'threecm' : 'jusqu\'&agrave; 3 cm',
+	'sixcm' : 'jusqu\'&agrave; 6 cm',
+	'tencm' : 'jusqu\'&agrave; 10 cm',
+	'all_sloped_curbs' :  'flexible',
+    
+	//Avoid areas
     'avoidAreas':'Zones &agrave;  &eacute; viter',
     'avoidAreaDraw':'dessiner une zone &agrave;  &eacute; viter',
     'avoidAreaModify':'modifier une zone &agrave;  &eacute; viter',
     'avoidAreaRemove':'enlever une zone &agrave;  &eacute; viter',
     'invalidAvoidArea':'Les zones &agrave;  &eacute; viter ne sont pas autoris&eacute; s &agrave;  s\'intersecter. Merci de supprimer ou corriger cette zone. Aucun calcul d\'itin&eacute; raire n\'est possible sinon.',
-    //GPX Extras
+    
+	//GPX Extras
     'imExport':'Importer / Exporter',
     'gpxDownloadError':'Malheureusement une erreur est survenue lors du t&eacute; l&eacute; chargement de l\'itin&eacute; raire.',
     'gpxUploadError':'Malheureusement une erreur est survenue lors du chargement de l\'itin&eacute; raire.',
@@ -88,13 +119,17 @@ var lang_fr = {
     'gpxUploadTrackText':'Envoyer des itin&eacute; raires GPX pour affichage sur la carte',
     'selectFile':'S&eacute; lectionner un fichier',
     'changeFile':'Changer',
+	
     //Accessibility Analysis
+	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',
+	'accessibilityAnalysisMethod' : 'Isochrone method',
     'accessibilityAnalysis':'Analyse de l\'accessibilit&eacute; ',
     'setAccessibilityMinutes':'S&eacute; lectionnez les minutes : ',
     'analyze':'Analyser',
     'calculatingAccessibility':'L\'accessibilit&eacute;  est en cours d\'analyse...',
     'accessibilityError':'Une erreur s\'est produite lors de l\'analyse de l\'accessibilit&eacute; . Avez-vous oubli&eacute;  de d&eacute; finir un point de d&eacute; part ?',
-    // List languages
+    
+	// List languages
     'en':'Anglais',
     'de':'Allemand',
     'pl':'Polonais',

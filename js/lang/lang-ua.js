@@ -83,6 +83,35 @@ var lang_ua = {
     'BicycleRoute': 'віддавати перевагу виділеним доріжкам',
     'BicycleMTB': 'гірський велосипед',
     'BicycleRacer': 'швидкісний велосипед',
+	'avoidunpavedRoads':  'Уникайте грунтові дороги',
+	'avoidFerry':  'Уникайте пороми',
+	'TruckLength' : 'Максимальна довжина',
+	'TruckHeight' : 'Максимальна висота системи',
+	'TruckWeight' : 'Максимальна вага',
+	'TruckWidth' : 'максимальна ширина',
+	
+	//Surfaces:
+	'surface': 'поверхня',
+    'asphalt': 'бетон, асфальт',
+    'cobblestone:flattened': 'плоский камінь і краще',
+    'cobblestone': 'кругляк і краще', 
+    'compacted': 'компактний', 
+    'all_surfaces': 'гнучкий',
+
+    // Inclines
+	'incline': 'макс нахилу',
+	'threepercent' : 'аж до 3%',
+	'sixpercent' : 'аж до 6%',
+	'tenpercent' : 'аж до 10%',
+	'fifteenpercent' : 'аж до 15%',
+	'all_inclines' : 'гнучкий',
+	
+	// Sloped Curbs
+	'sloped_curb' : 'Максимальна висота похилої тротуару',
+	'threecm' : 'аж до3 cm',
+	'sixcm' : 'аж до 6 cm',
+	'tencm' : 'аж до 10 cm',
+	'all_sloped_curbs' :  'гнучкий',
  
     'avoidMotorways': 'Уникати автодоріг',
     'avoidTollways': 'Уникати платних доріг',
@@ -106,6 +135,8 @@ var lang_ua = {
     'changeFile': 'Змінити',
  
     //Accessibility Analysis
+	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',
+	'accessibilityAnalysisMethod' : 'Isochrone method',
     'accessibilityAnalysis': 'Аналіз досяжності',
     'setAccessibilityMinutes': 'Кількість хвилин: ',
     'analyze': 'Аналіз',

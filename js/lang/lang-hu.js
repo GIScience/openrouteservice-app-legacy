@@ -72,13 +72,44 @@ var lang_hu = {
     'BicycleRacer':'versenyker&eacute; kp&aacute;  r',
     'avoidMotorways':'Ker&uuml;lje aut&oacute;p&aacute;  ly&aacute;  k',
     'avoidTollways':'Ker&uuml;lje a fizetos utak',
+	'avoidunpavedRoads':  'Ker&uuml;lje a f&ouml;ldutakat',
+	'avoidFerry':  'Ker&uuml;lje a kompj&aacute; rat',
+	'TruckLength' : 'maxim&aacute; lis hossza',
+	'TruckHeight' : 'maxim&aacute; lis magass&aacute; g',
+	'TruckWeight' : 'maxim&aacute; lis t&ouml;meg',
+	'TruckWidth' : 'maxim&aacute; lis sz&eacute; less&eacute; g',
+	
+	//Surfaces:
+	'surface': 'fel&uuml;let',
+    'asphalt': 'beton, aszfalt',
+    'cobblestone:flattened': 'lap&iacute; tott macskak&ouml;ves &eacute; s jobb',
+    'cobblestone': 'macskak&ouml;ves &eacute; s jobb', 
+    'compacted': 't&ouml;m&ouml;r&iacute; tett', 
+    'all_surfaces': 'rugalmas',
+
+    // Inclines
+	'incline': 'max lejton',
+	'threepercent' : 'ak&aacute; r 3%',
+	'sixpercent' : 'ak&aacute; r 6%',
+	'tenpercent' : 'ak&aacute; r 10%',
+	'fifteenpercent' : 'ak&aacute; r 15%',
+	'all_inclines' : 'rugalmas',
+	
+	// Sloped Curbs
+	'sloped_curb' : 'max magass&aacute; ga lejtos j&aacute; rda',
+	'threecm' : 'ak&aacute; r 3 cm',
+	'sixcm' : 'ak&aacute; r 6 cm',
+	'tencm' : 'ak&aacute; r 10 cm',
+	'all_sloped_curbs' :  'rugalmas',
+	
     //Avoid areas
     'avoidAreas':'Ter&uuml;letek elker&uuml;l&eacute; se &eacute; rdek&eacute; ben',
     'avoidAreaDraw':'felh&iacute;vni ker&uuml;lni ter&uuml;let',
     'avoidAreaModify':'m&oacute;dos&iacute;tani elker&uuml;l&eacute; se ter&uuml;let',
     'avoidAreaRemove':'elt&aacute;  vol&iacute;t&aacute;  sa elker&uuml;l&eacute; se ter&uuml;let',
     'invalidAvoidArea':'Ker&uuml;lje azokat a ter&uuml;leteket nem szabad metszik magukat. K&eacute; rj&uuml;k t&aacute;  vol&iacute;tsa el vagy jav&iacute;tsa ezen a ter&uuml;leten. Egy&eacute; bk&eacute; nt nem az &uacute;tvonaltervez&eacute; s lehets&eacute; ges. ',
-    //GPX Extras
+  
+  //GPX Extras
     'imExport':'Import / Export',
     'gpxDownloadError':'Sajnos hiba t&ouml;rt&eacute; nt a downlodng az &uacute;tvonal.',
     'gpxUploadError':'Sajnos hiba t&ouml;rt&eacute; nt a felt&ouml;lt&eacute; s az &uacute;tvonal.',
@@ -88,7 +119,10 @@ var lang_hu = {
     'gpxUploadTrackText':'Felt&ouml;lt&eacute; se GPX-p&aacute;  lya megjelen&iacute;t&eacute; s a t&eacute; rk&eacute; pen',
     'selectFile':'Select file ',
     'changeFile':'Change',
-    //Accessibility Analysis
+    
+	//Accessibility Analysis
+	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',
+	'accessibilityAnalysisMethod' : 'Isochrone method',
     'accessibilityAnalysis':'Hozz&aacute;  f&eacute; rhetos&eacute; g elemz&eacute; s',
     'setAccessibilityMinutes':'V&aacute;  lassza perc',
     'analyze':'Elemz&eacute; se',
