@@ -65,7 +65,7 @@ var lang_cn_simple = {
 	// context menu
 	'useAsStartPoint' : '作为起点',
 	'useAsViaPoint' : '途中经过',
-	'useAsEndPoint' : '作为终点'
+	'useAsEndPoint' : '作为终点',
 
 	//Waypoint options
 	'addWaypoint' : '增加路径节点',
