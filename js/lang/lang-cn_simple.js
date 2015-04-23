@@ -1,8 +1,8 @@
 var lang_cn_simple = {
 	'left' : '左',
 	'right' : '右',
-	'half-left' : '偏左',
-	'half-right' : '偏右',
+	'half-left' : '稍左',
+	'half-right' : '稍右',
 	'straight' : '直走',
 
 	'serverError' : '很抱歉，服务器端发生计算错误。请稍后再试。',
@@ -13,7 +13,7 @@ var lang_cn_simple = {
 	'saveBtn' : '保存',
 
 	'untitled' : '新文档',
-	'infoTextVersions' : '新用户？请在偏好菜单中激活扩展选项。',
+	'infoTextVersions' : '新用户？请在偏好设置菜单中激活扩展选项。',
 
 	'routePlanner' : '路径规划器',
 	'search' : '搜索',
@@ -35,7 +35,7 @@ var lang_cn_simple = {
 	'permalinkButton' : '链接',
 
 	//Geolocation
-	'geolocationNotification' : '路径规划器正努力寻找您当前地点。若您不同意请求，几秒钟之后您会被重定向。',
+	'geolocationNotification' : '浏览器正努力定位您的位置。若您不允许定位，几秒钟之后您会被重定向。',
 	'currentLocation' : '我的当前地点',
 	'geolocation' : '我的地点',
 	'showCurrentLocation' : '显示当前地点',
@@ -54,10 +54,10 @@ var lang_cn_simple = {
 
 	//POI search
 	'distaneNotSupported' : '最大距离: 5000 米',
-	'noRouteFound' : 'No route to search for POIs nearby.',
+	'noRouteFound' : '未找到路径以进行POI搜索。',
 	'searchForPoi' : '搜索POI',
 	'poiNearRoute1' : 'POI搜索范围',
-	'poiNearRoute2' : '靠近路线',
+	'poiNearRoute2' : '(路径两侧)',
 	'enterPoi' : '输入POI',
 	'numPoiResults1' : '<b>结果数量: ',
 	'numPoiResults2' : ' </b>(最大100):',
@@ -65,7 +65,7 @@ var lang_cn_simple = {
 	// context menu
 	'useAsStartPoint' : '作为起点',
 	'useAsViaPoint' : '途中经过',
-	'useAsEndPoint' : '作为重点',
+	'useAsEndPoint' : '作为终点'
 
 	//Waypoint options
 	'addWaypoint' : '增加路径节点',
@@ -78,16 +78,16 @@ var lang_cn_simple = {
 	'Shortest' : '最短路径',
 	'Fastest' : '最快路径',
 	'Pedestrian' : '行人模式',
-	'Wheelchair' : 'accessible route',
+	'Wheelchair' : '无障碍模式',
 	'Bicycle' : '最短路径',
 	'BicycleSafety' : '最安全路径',
 	'BicycleRoute' : '自行车道优先',
 	'BicycleMTB' : '山地自行车',
 	'BicycleRacer' : '公路自行车',
-	'TruckLength' : 'maximum length',
-	'TruckHeight' : 'maximum height',
-	'TruckWeight' : 'maximum weight',
-	'TruckWidth' : 'maximum width',
+	'TruckLength' : '最大长度',
+	'TruckHeight' : '最大高度',
+	'TruckWeight' : '最大重量',
+	'TruckWidth' : '最大宽度',
 	'goodsHeavyTruck' : '车辆达3.5万吨',
 	'busHeavyTruck' : '公共汽车',
 	'hgvHeavyTruck' : '重型货车',
@@ -98,36 +98,37 @@ var lang_cn_simple = {
 	'avoidTollways' : '避开收费站',
 	'avoidunpavedRoads':  '避开未铺砌道路',
 	'avoidFerry':  '避开渡船',
+	
 	//Surfaces:
-	'surface': 'Surface',
-    'asphalt': 'concrete, asphalt',
-    'cobblestone:flattened': 'flattened cobblestone and better',
-    'cobblestone': 'cobblestone and better', 
-    'compacted': 'compacted', 
-    'all_surfaces': 'flexible',
+	'surface': '表面',
+    'asphalt': '混凝土或泊油路',
+	'cobblestone:flattened': '平坦鹅卵石路或更佳',
+    'cobblestone': '鹅卵石路或更佳', 
+    'compacted': '夯实路', 
+    'all_surfaces': '任意',
 
     // Inclines
-	'incline': 'max incline',
-	'threepercent' : 'up to 3%',
-	'sixpercent' : 'up to 6%',
-	'tenpercent' : 'up to 10%',
-	'fifteenpercent' : 'up to 15%',
-	'all_inclines' : 'flexible',
+	'incline': '最大坡度',
+	'threepercent' : '不超过3%',
+	'sixpercent' : '不超过6%',
+	'tenpercent' : '不超过10%',
+	'fifteenpercent' : '不超过15%',
+	'all_inclines' : '任意',
 	
 	// Sloped Curbs
-	'sloped_curb' : 'max height of sloped curb',
-	'threecm' : 'up to 3 cm',
-	'sixcm' : 'up to 6 cm',
-	'tencm' : 'up to 10 cm',
-	'all_sloped_curbs' :  'flexible',
+	'sloped_curb' : '最大路牙高度',
+	'threecm' : '不超过3 cm',
+	'sixcm' : '不超过cm',
+	'tencm' : '不超过10 cm',
+	'all_sloped_curbs' :  '任意',
 
 
 	//Avoid areas
-	'avoidAreas' : '回避地区',
-	'avoidAreaDraw' : '绘制回避地区',
-	'avoidAreaModify' : '修改回避地区',
-	'avoidAreaRemove' : '移除回避地区',
-	'invalidAvoidArea' : '回避地区不允许自相交。请修改或移除冲突区域，否则无法进行路径计算。',
+	'avoidAreas' : '回避区域',
+	'avoidAreaDraw' : '绘制回避区域',
+	'avoidAreaModify' : '修改回避区域',
+	'avoidAreaRemove' : '移除回避区域',
+	'invalidAvoidArea' : '回避区域不能自相交。请修改或移除冲突区域，否则无法进行路径计算。',
 
 	//GPX Extras
 	'imExport' : '导入/导出',
@@ -136,16 +137,16 @@ var lang_cn_simple = {
 	'gpxDownloadText' : '以GPX格式下载当前路径',
 	'gpxDownloadButton' : '下载GPX',
 	'gpxUploadRouteText' : '从GPX文件中上传路径',
-	'gpxUploadTrackText' : '上传GPX-track并在地图上显示',
+	'gpxUploadTrackText' : '上传GPX路径文件并在地图上显示',
 	'selectFile' : '选择文件',
 	'changeFile' : '修改',
 
 	//Accessibility Analysis
 	'accessibilityAnalysis' : '可视分析',
-	'setAccessibilityMinutes' : '选择可视分钟数: ',
+	'setAccessibilityMinutes' : '可视时间（分钟）: ',
 	'analyze' : '分析',
-	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',
-	'accessibilityAnalysisMethod' : 'Isochrone method',
+	'accessibilityAnalysisIsochrones' : '等时线间距',
+	'accessibilityAnalysisMethod' : '等时间方法',
 	'calculatingAccessibility' : '正在进行可视分析...',
 	'accessibilityError' : '可视分析过程发生错误。请检查是否设定起始点。',
 
@@ -314,7 +315,7 @@ var lang_cn_simple = {
 	'motor' : '机动车运动',
 	'orienteering' : '定向越野',
 	'paddle_tennis' : '板网球',
-	'squash' : 'squash',
+	'squash' : '壁球',
 	'paragliding' : '滑翔伞',
 	'pelota' : '回力球',
 	'racquet' : '美式壁球',
