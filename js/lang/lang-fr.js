@@ -87,6 +87,11 @@ var lang_fr = {
 	'TruckHeight' : 'hauteur maximale',
 	'TruckWeight' : 'poids maximal',
 	'TruckWidth' : 'largeur maximale',
+	'goodsHeavyTruck' : 'V&eacute;hicules jusqu\'&agrave; 3,5t',
+	'busHeavyTruck' : 'Bus',
+	'hgvHeavyTruck' : 'Poids lourds',
+	'agriculturalHeavyTruck' : 'V&eacute;hicule agricole',
+	'forestryHeavyTruck' : 'V&eacute;hicule Forestal',
 	
 	//Surfaces:
 	'surface': 'surface',

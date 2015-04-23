@@ -88,6 +88,11 @@ var lang_cz = {
 	'TruckHeight' : 'maxim&aacute;ln&iacute;v&yacute;ska',
 	'TruckWeight' : 'maxim&aacute;ln&iacute;v&aacute;ha',
 	'TruckWidth' : 'maxim&aacute;ln&iacute;s&iacute;rka',
+	'goodsHeavyTruck' : 'Vozidla do 3.5t',
+	'busHeavyTruck' : 'Autobus',
+	'hgvHeavyTruck' : 'T&#283;&#382;k&eacute;n&aacute;kladn&iacute;vozidlo',
+	'agriculturalHeavyTruck' : 'zem&#283;d&#283;lsk&yacute;v&#367;z',
+	'forestryHeavyTruck' : 'Forestal vozidlo',
 	
 	//Surfaces:
 	'surface': 'povrch',
@@ -159,7 +164,7 @@ var lang_cz = {
     'pt_BR':'Portugalstina  - Portugu&ecirc;s (Brazil)',
     'ro':'Rumunsk&yacute; - Rom&acirc;n',
     'ru':'Rusk&aacute; - Русский',
-    'se':'�v&eacute;dsk&yacute; - Svenska',
+    'se':'�v&eacute;dsk&yacute; - Svenska',
     'dk':'D&aacute;nsk&yacute; - Dansk',
     'tr':'Turkish - T&uuml;rk',
     'ca':'Katal&aacute;nstina - Catal&aacute;n',

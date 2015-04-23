@@ -31,13 +31,19 @@ var Languages = (function(w) {'use strict';
 		$('#BicycleMtbLabel').html(p.translate('BicycleMTB'));
 		$('#BicycleRacerLabel').html(p.translate('BicycleRacer'));
 		$('#PedestrianLabel').html(p.translate('Pedestrian'));
-
+		
+		//truck profile
 		$('#fastestLabelTruck').html(p.translate('Fastest'));
 		$('#shortestLabelTruck').html(p.translate('Shortest'));
 		$('#trucklengthLabel').html(p.translate('TruckLength'));
 		$('#truckheightLabel').html(p.translate('TruckHeight'));
 		$('#truckweightLabel').html(p.translate('TruckWeight'));
 		$('#truckwidthLabel').html(p.translate('TruckWidth'));
+		$('#goodsHeavyTruckLabel').html(p.translate('goodsHeavyTruck'));
+		$('#busHeavyTruckLabel').html(p.translate('busHeavyTruck'));
+		$('#hgvHeavyTruckLabel').html(p.translate('hgvHeavyTruck'));
+		$('#agriculturalHeavyTruckLabel').html(p.translate('agriculturalHeavyTruck'));
+		$('#forestryHeavyTruckLabel').html(p.translate('forestryHeavyTruck'));
 		
 		$('#WheelchairLabel').html(p.translate('Wheelchair'));
 		

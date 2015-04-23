@@ -93,7 +93,12 @@ var lang_ru = {
 	'TruckHeight' : 'максимальная высота',
 	'TruckWeight' : 'максимальный вес',
 	'TruckWidth' : 'mмаксимальная ширина',
-	
+	'goodsHeavyTruck' : 'Транспорт до 3.5t',
+	'busHeavyTruck' : 'автобус',
+	'hgvHeavyTruck' : 'Грузовой автомобиль',
+	'agriculturalHeavyTruck' : 'Сельскохозяйственная машина',
+	'forestryHeavyTruck' : 'Лесной трактор',
+		
 	//Surfaces:
 	'surface': 'поверхность',
     'asphalt': 'бетон, асфальт',

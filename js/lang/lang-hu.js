@@ -88,6 +88,11 @@ var lang_hu = {
 	'TruckHeight' : 'maxim&aacute;lis magass&aacute;g',
 	'TruckWeight' : 'maxim&aacute;lis t&ouml;meg',
 	'TruckWidth' : 'maxim&aacute;lis sz&eacute;less&eacute;g',
+	'goodsHeavyTruck' : 'J&aacute;rm&#369;vek 3.5t',
+	'busHeavyTruck' : 'Busz',
+	'hgvHeavyTruck' : 'Neh&eacute;zg&eacute;pj&aacute;rm&#369;',
+	'agriculturalHeavyTruck' : 'Mez&#337;gazdas&aacute;gi j&aacute;rm&#369;',
+	'forestryHeavyTruck' : 'Erdei j&aacute;rm&#369;',
 	
 	//Surfaces:
 	'surface': 'fel&uuml;let',
@@ -145,7 +150,7 @@ var lang_hu = {
     'pl':'Alengyel - Polski',
     'bg':'Bolg&aacute;r- - български',
 	'cn_simple' : 'K&iacute;nai (Egyszer&#369;s&iacute;tett) - 中国（简体）',
-	'cn' : 'K&iacute;nai (Hagyományos) - 中国（繁体）',
+	'cn' : 'K&iacute;nai (Hagyom&aacute;nyos) - 中国（繁体）',
     'cz':'Cseh K&ouml;zt&aacute;rsas&aacute;g - Cesk&aacute;',
     'nl':'Dutch - Nederlands',
     'hr':'Horv&aacute;t - Hrvatski',

@@ -88,6 +88,11 @@ var lang_cn_simple = {
 	'TruckHeight' : 'maximum height',
 	'TruckWeight' : 'maximum weight',
 	'TruckWidth' : 'maximum width',
+	'goodsHeavyTruck' : '车辆达3.5万吨',
+	'busHeavyTruck' : '公共汽车',
+	'hgvHeavyTruck' : '重型货车',
+	'agriculturalHeavyTruck' : '农用车',
+	'forestryHeavyTruck' : '山货车',
 
 	'avoidMotorways' : '避开高速公路',
 	'avoidTollways' : '避开收费站',

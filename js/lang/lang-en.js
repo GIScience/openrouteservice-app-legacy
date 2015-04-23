@@ -88,6 +88,11 @@ var lang_en = {
 	'TruckHeight' : 'maximum height',
 	'TruckWeight' : 'maximum weight',
 	'TruckWidth' : 'maximum width',
+	'goodsHeavyTruck' : 'Vehicle up to 3.5t',
+	'busHeavyTruck' : 'Bus',
+	'hgvHeavyTruck' : 'HGV',
+	'agriculturalHeavyTruck' : 'Agricultural vehicle',
+	'forestryHeavyTruck' : 'Forestry vehicly',
 
 	'avoidMotorways' : 'Avoid highways',
 	'avoidTollways' : 'Avoid toll roads',
