@@ -101,9 +101,9 @@ var Waypoint = (function(w) {'use strict';
 
 				if (europeBbox.containsLonLat(point)) {
 					listOfPoints.push(point);
-				} else {
-					listOfPoints.push(null);
-				}
+				} //else {
+					//listOfPoints.push(null);
+				//}
 			}
 		});
 

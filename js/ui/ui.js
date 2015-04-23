@@ -292,6 +292,8 @@ var Ui = ( function(w) {'use strict';
 			numResults.html(preferences.translate('numPoiResults1') + allAddress.length + preferences.translate('numPoiResults2') + '<br/>' + preferences.translate('selectResult'));
 
 			// if one result is found then select it
+
+			console.log(listOfFeatures)
 			if (listOfFeatures.length == 1) {
 
 				$('.address').click(handleSearchWaypointResultClick);
