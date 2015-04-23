@@ -740,6 +740,17 @@ var Controller = ( function(w) {'use strict';
 
 				var prefs = ui.getRoutePreferences();
 
+				var routePref = prefs[0];
+				var avoidHighway = prefs[1][0];
+				var avoidTollway = prefs[1][1];
+				var avoidUnpavedRoads = prefs[1][2];
+				var avoidFerry = prefs[1][3];
+				var avoidAreas = map.getAvoidAreas();
+
+				
+				// get extendedType for HeavyTruck here..
+				//preferences.loadExtendedRouteOption();
+
 				var truckParameters = preferences.loadtruckParameters();
 				var truck_length = truckParameters[0];
 				var truck_height = truckParameters[1];
@@ -748,16 +759,13 @@ var Controller = ( function(w) {'use strict';
 
 				ui.setTruckParameters(truck_length, truck_height, truck_weight, truck_width);
 
-				var routePref = prefs[0];
-				var avoidHighway = prefs[1][0];
-				var avoidTollway = prefs[1][1];
-				var avoidUnpavedRoads = prefs[1][2];
-				var avoidFerry = prefs[1][3];
-				var avoidAreas = map.getAvoidAreas();
 
-				// check whether truck button is active and send extendedRoutePreferences, otherwise don't 
+				//var extendedRoutePreferences = prefs[2];
+				//console.log(extendedRoutePreferences);
+				//check whether truck button is active and send extendedRoutePreferences, otherwise don't 
 				if(prefs[3] == 'truck') {
 					var extendedRoutePreferences = prefs[2];
+					var extendedRoutePreferencesType = prefs[5];
 				} 
 				// check whether wheelchair button is active and send extendedRoutePreferences, otherwise don't
 				else  if (prefs[3] == 'wheelchair') {
@@ -765,9 +773,10 @@ var Controller = ( function(w) {'use strict';
 				}
 				else {
 					var extendedRoutePreferences = null;
+					var extendedRoutePreferencesType = null;
 				}
 
-				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferences, avoidHighway, avoidTollway,avoidUnpavedRoads,avoidFerry, avoidAreas);
+				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferences, extendedRoutePreferencesType, avoidHighway, avoidTollway,avoidUnpavedRoads,avoidFerry, avoidAreas);
 				//try to read a variable that is set after the service response was received. If this variable is not set after a while -> timeout.
 				clearTimeout(timerRoute);
 

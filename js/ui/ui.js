@@ -9,7 +9,7 @@ var Ui = ( function(w) {'use strict';
 		//search POI options: searchNearRoute, maxDist to route, distance Unit for maxDist, search query
 		searchPoiAtts = ['false', '100', 'm', ''],
 		//routing options for car, bike, pedestrian, truck and wheelchair
-		routeOptions = [list.routePreferences.get('car')[0], [null, null, null], [null, null, null,null], 'car', [null, null, null, null, null]],
+		routeOptions = [list.routePreferences.get('car')[0], [null, null, null], [null, null, null,null], 'car', [null, null, null, null, null], ],
 		//is a route available?
 		routeIsPresent = false,
 		//timeout to wait before sending a request after the user finished typing
@@ -1680,6 +1680,7 @@ var Ui = ( function(w) {'use strict';
 		 
 		function switchRouteOptionsPane(e) {
 
+
 			var parent = $('.routePreferenceBtns').get(0);
 			var optionType = e.currentTarget.id;
 
@@ -1700,6 +1701,14 @@ var Ui = ( function(w) {'use strict';
 					routeOptions[0] = options.id; 
 					routeOptions[3] = options.name;
 
+					// extended route type options is saved in routeOptions[5], check if HeavyTruck is selected and
+					// fill accordingly
+					if (optionType == 'truck') {
+						routeOptions[5] = list.routePreferences.get('truck')[1][0];
+					} else {
+						routeOptions[5] = null;
+					}
+
 					theInterface.emit('ui:routingParamsChanged');
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.routeOptionsIdx,
@@ -1713,7 +1722,7 @@ var Ui = ( function(w) {'use strict';
 				}
 			}
 			
-			 
+			
 			//switch the content
 			var car = $('#carOptions');
 			var bike = $('#bicycleOptions');
@@ -1775,6 +1784,12 @@ var Ui = ( function(w) {'use strict';
 				wheelParameters.show();
 			}
 		}
+
+
+
+
+		
+
 		
 		function setTruckParameters(truck_length, truck_height, truck_weight,truck_width) {
 
@@ -1784,12 +1799,13 @@ var Ui = ( function(w) {'use strict';
 			routeOptions[2][3] = truck_width;
 
 		}
-		
+
 		/**
 		 * when the user wants to switch between route options
 		 * @param activeRouteOption: the active route option, i.e. one of car,bicycle,pedestrian,wheelchair
 		 */
 		function switchRouteOptionsButton(activeRouteOption) {
+
 			var parent = $('.routePreferenceBtns').get(0);
 			//switch the buttons above
 			var allBtn = parent.querySelectorAll('button');
@@ -1816,9 +1832,14 @@ var Ui = ( function(w) {'use strict';
 		 * @param e: the event
 		 */
 		function handleOptionsChanged(e) {
+
 			e = e || window.event;
 		    var target = e.target || e.srcElement;
 			var itemId = target.id;
+
+			//for extended route options
+			var itemValue = target.value;
+
 			if ($.inArray(itemId, list.routeAvoidables) >= 0) {
 				//is a route avoidable
 				if (itemId === list.routeAvoidables[0]) {
@@ -1909,6 +1930,7 @@ var Ui = ( function(w) {'use strict';
 
 				//is a regular route option
 				routeOptions[0] = itemId;
+				routeOptions[5] = itemValue;
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.routeOptionsIdx,
 					value : routeOptions[0]
@@ -1923,6 +1945,7 @@ var Ui = ( function(w) {'use strict';
 		 */
 		function setRouteOption(routeOption) {
 			//set radioButton with $('#' + routeOption) active
+
 			var el = $('#' + routeOption);
 			if (el) {
 				el.attr('checked', true)
@@ -2559,6 +2582,7 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.setUserPreferences = setUserPreferences;
 
 		Ui.prototype.setTruckParameters = setTruckParameters;
+		
 
 
 		theInterface = new Ui();

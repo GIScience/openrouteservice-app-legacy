@@ -338,7 +338,23 @@ var Preferences = ( function(w) {'use strict';
 		return truckParameters;
 	}
 	
+	/**
+	* fetches extended route type option
+	* @param surface, incline, slopedCurb: extracted from the GET variables in readGetVars()
+	* @return the wheelchair parameters
+	*/
+	function loadExtendedRouteOption() {
 	
+		//extendedRouteParameter = document.getElementById("value_length").value;
+		
+		// to do fix permalink
+		//permaInfo[this.value_lengthIdx] = unescape(truckParameters[0]);
+
+		//return truckParameters;
+	}
+	
+
+
 	/**
 	 * determines route option avoidables by GET variable
 	 * @param highway, tollway: extracted from the GET variables in readGetVars()

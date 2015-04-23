@@ -21,7 +21,7 @@ var Route = ( function(w) {"use strict";
 		 * @param avoidFerry: flag set to true if ferrys should be avoided in the route; else: false
 		 * @param avoidAreas: array of avoid areas represented by OL.Geometry.Polygons
 		 */
-		function calculate(routePoints, successCallback, failureCallback, language, routePref,extendedRoutePreferences, avoidMotorways, avoidTollways,avoidunpavedRoads,avoidFerry, avoidAreas) {
+		function calculate(routePoints, successCallback, failureCallback, language, routePref,extendedRoutePreferences, extendedRoutePreferencesType, avoidMotorways, avoidTollways,avoidunpavedRoads,avoidFerry, avoidAreas) {
 
 			var writer = new XMLWriter('UTF-8', '1.0');
 			writer.writeStartDocument();
@@ -56,7 +56,13 @@ var Route = ( function(w) {"use strict";
 				//<xls:ExtendedRoutePreference>
 				writer.writeStartElement('xls:ExtendedRoutePreference');
 				
-				if (routePref == 'Fastest' || routePref == 'Shortest') {
+				if (routePref == 'HeavyTruck') {
+
+					if (extendedRoutePreferencesType != null ) {
+
+						writer.writeElementString('xls:vehicleType', extendedRoutePreferencesType);
+
+					}
 
 					//truck width
 					 if (extendedRoutePreferences[3] != null) {
@@ -73,7 +79,9 @@ var Route = ( function(w) {"use strict";
 					 //truck length
 					if (extendedRoutePreferences[0] != null) {
 						writer.writeElementString('xls:length', extendedRoutePreferences[0]);
-					 }
+					}
+
+
 				}
 				
 				if (routePref === 'Wheelchair') {
@@ -107,6 +115,9 @@ var Route = ( function(w) {"use strict";
 				//</xls:ExtendedRoutePreference>
 				writer.writeEndElement();
 			}
+
+
+
 
 			//<xls:WayPointList>
 			writer.writeStartElement('xls:WayPointList');
