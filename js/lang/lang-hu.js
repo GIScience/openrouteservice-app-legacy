@@ -142,7 +142,7 @@ var lang_hu = {
 	// List languages
     'en':'Angol',
     'de':'N&eacute;met',
-    'pl':'A lengyel',
+    'pl':'Alengyel',
     'bg':'Bolg&aacute;r',
 	'cn_simple' : 'K&iacute;nai (Egyszer&#369;s&iacute;tett)',
 	'cn' : 'K&iacute;nai (Hagyományos)',
