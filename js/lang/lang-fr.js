@@ -143,6 +143,8 @@ var lang_fr = {
     'de':'Allemand',
     'pl':'Polonais',
     'bg':'Bulgare',
+	'cn_simple' : 'Chinois (Simplifi&egrave;)',
+	'cn' : 'Chinois (Traditionnel)',
     'cz':'Tch&egrave;que',
     'nl':'Hollandais',
     'hr':'Croate',

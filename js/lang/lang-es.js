@@ -144,6 +144,8 @@ var lang_es = {
     'de':'Alem&aacute;n',
     'pl':'Polaco',
     'bg':'B&uacute;lgaro',
+	'cn_simple' : 'Chino (Simplificado)',
+	'cn' : 'Chino (Tradicional)',
     'cz':'Checo',
     'nl':'Holandesa',
     'hr':'Croata',

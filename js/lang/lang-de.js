@@ -187,6 +187,9 @@ var lang_de = {
 		// List languages alphabetically sorted
 		'bg' : 'Bulgarisch',
 		'ca' : 'Katalanisch',
+		'cn' : 'Chinesisch (Vereinfacht)',
+		'cn_simple' : 'Chinesisch (Vereinfacht)',
+		'cn' : 'Chinesisch (Traditionell)',
 		'cz' : 'Tschechisch',
 		'dk' : 'D&auml;nisch',
 		'de' : 'Deutsch',

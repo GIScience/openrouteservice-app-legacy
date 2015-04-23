@@ -144,6 +144,8 @@ var lang_hu = {
     'de':'N&eacute;met',
     'pl':'A lengyel',
     'bg':'Bolg&aacute;r',
+	'cn_simple' : 'K&iacute;nai (Egyszer&#369;s&iacute;tett)',
+	'cn' : 'K&iacute;nai (Hagyományos)',
     'cz':'Cseh K&ouml;zt&aacute;rsas&aacute;g',
     'nl':'Dutch',
     'hr':'Horv&aacute;t',

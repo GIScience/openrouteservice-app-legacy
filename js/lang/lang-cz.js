@@ -144,6 +144,8 @@ var lang_cz = {
     'de':'Nemec',
     'pl':'Polsk&yacute;',
     'bg':'Bulharsk&eacute;',
+	'cn_simple':'C&iacute;n&scaron;tina (Zjednodu&scaron;en&yacute;)',
+	'cn':'C&iacute;n&scaron;tina (Tradicn&iacute;)',
     'cz':'Cesk&aacute;',
     'nl':'Dutch',
     'hr':'Chorvatsk&eacute;',

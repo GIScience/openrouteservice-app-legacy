@@ -149,6 +149,8 @@ var lang_pl = {
 	'en' : 'angielski',
 	'pl' : 'polski',
 	'bg' : 'bu&#x0142;garski',
+	'cn_simple' : 'Chi&#324;ski (Uproszczony)',
+	'cn' : 'Chi&#324;ski (Tradycyjny)',
 	'cz' : 'czeski',
 	'nl' : 'holenderski',
 	'hr' : 'horwacki',

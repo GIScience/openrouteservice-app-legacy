@@ -144,6 +144,8 @@ var lang_nl = {
     'de':'  Duits',
     'pl':'  Pools',
     'bg':'  Bulgaarse',
+	'cn_simple' : 'Chinees (Vereenvoudigd)',
+	'cn' : 'Chinees (Traditioneel)',
     'cz':'  Tsjechisch',
     'nl':'  Nederlands',
     'hr':'  Kroatisch',
