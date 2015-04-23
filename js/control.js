@@ -41,6 +41,7 @@ var Controller = ( function(w) {'use strict';
 		 */
 		function handleWaypointRequest(atts) {
 
+
 			ui.searchWaypointChangeToSearchingState(true, atts.wpIndex);
 			var lastSearchResults = atts.searchIds;
 			lastSearchResults = lastSearchResults ? lastSearchResults.split(' ') : null;
@@ -59,6 +60,7 @@ var Controller = ( function(w) {'use strict';
 		 * @param wpIndex: index of the waypoint
 		 */
 		function handleSearchWaypointResults(results, wpIndex) {
+
 			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
 			results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
 
@@ -69,13 +71,16 @@ var Controller = ( function(w) {'use strict';
 				handleSearchWaypointFailure(wpIndex);
 			} else {
 				waypoint.decrRequestCounterWaypoint(wpIndex);
+
 				if (waypoint.getRequestCounterWaypoint(wpIndex) == 0) {
 					var listOfPoints = waypoint.parseResultsToPoints(results, wpIndex);
 					ui.searchWaypointChangeToSearchingState(false, wpIndex);
 
 					if (listOfPoints.length) {
+
 						var listOfFeatures = map.addSearchAddressResultMarkers(listOfPoints, wpIndex);
 						ui.updateSearchWaypointResultList(results, listOfFeatures, map.SEARCH, wpIndex);
+
 					} else {
 						ui.showSearchWaypointError(wpIndex)
 					}
@@ -471,6 +476,7 @@ var Controller = ( function(w) {'use strict';
 		 * @param atts: address: address as text string the user wants to search for; lastSearchResults: string of OL feature ids for the last search results
 		 */
 		function handleSearchAddressRequest(atts) {
+
 			var address = atts.address;
 			var lastSearchResults = atts.lastSearchResults;
 			lastSearchResults = lastSearchResults ? lastSearchResults.split(' ') : null;
@@ -555,6 +561,7 @@ var Controller = ( function(w) {'use strict';
 		 * @param atts: query: the POI search query as string; nearRoute: true if a POI search along a given route should be performed; maxDist: maximum distance for POIs off the route; lastSearchResults: list of OL map feature ids of the last search
 		 */
 		function handleSearchPoiRequest(atts) {
+
 			var poi = atts.query;
 			var searchNearRoute = atts.nearRoute;
 			var maxDist = atts.maxDist;
@@ -758,7 +765,6 @@ var Controller = ( function(w) {'use strict';
 				var truck_width = truckParameters[3];
 
 				ui.setTruckParameters(truck_length, truck_height, truck_weight, truck_width);
-
 
 				//var extendedRoutePreferences = prefs[2];
 				//console.log(extendedRoutePreferences);

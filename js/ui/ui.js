@@ -291,10 +291,19 @@ var Ui = ( function(w) {'use strict';
 			var numResults = $('#zoomToWaypointResults_' + wpIndex);
 			numResults.html(preferences.translate('numPoiResults1') + allAddress.length + preferences.translate('numPoiResults2') + '<br/>' + preferences.translate('selectResult'));
 
-			//event handling
-			$('.address').mouseover(handleMouseOverElement);
-			$('.address').mouseout(handleMouseOutElement);
-			$('.address').click(handleSearchWaypointResultClick);
+			// if one result is found then select it
+			if (listOfFeatures.length == 1) {
+
+				$('.address').click(handleSearchWaypointResultClick);
+				$('.address').trigger( "click" );
+
+			} else {
+				//event handling
+				$('.address').mouseover(handleMouseOverElement);
+				$('.address').mouseout(handleMouseOutElement);
+				$('.address').click(handleSearchWaypointResultClick);
+			}
+
 		}
 
 		/**
