@@ -13,7 +13,7 @@ var lang_ru = {
     'saveBtn': 'Сохранить',
  
     'untitled': 'Безымянный',
-    'infoTextVersions': 'Впервые на OpenRouteService? Включите расширенные опции в меню предпочтений сайта.',
+	'infoTextVersions': 'Впервые на OpenRouteService? Включите расширенные опции в меню Настройки.',
  
     'routePlanner': 'Маршрут',
     'search': 'Поиск',
@@ -30,7 +30,7 @@ var lang_ru = {
     'TotalDistance': 'Вся дистанция',
     'zoomToRoute': 'Весь Маршрут',
     'routeSummary': 'Сводка',
-    'routeInstructions': 'Инструкции по маршрута',
+    'routeInstructions': 'Инструкции по маршруту',
     'routeLinkText': 'Постоянная ссылка на текущий маршрут',
     'permalinkButton': 'Постоянная ссылка',
  
@@ -203,15 +203,15 @@ var lang_ru = {
     'extendedVersion': 'расширенная версия',
  
     //Site Preferences
-    'sitePreferences': 'Предпочтения Сайта',
-    'language': 'Языки',
-    'routingLanguage': 'Язык для инструкций маршрута',
-    'distance': 'Единицы длинны',
+    'sitePreferences': 'Настройки',
+    'language': 'Язык интерфейса',
+    'routingLanguage': 'Язык инструкций маршрута',
+	'distance': 'Единицы длины',
     'version': 'Версия',
-    'languageText': 'Пожалуйста выберити ваш язык:&nbsp;',
-    'routingLanguageText': 'Пожалуйста выберити ваш язык:&nbsp;',
-    'distanceText': 'Пожалуйста выберити вашу единицу длинны:&nbsp;',
-    'versionText': 'Пожалуйста выберити количество настроек:&nbsp;',
+    'languageText': 'Выберите Ваш язык:&nbsp;',
+    'routingLanguageText': 'Выберите Ваш язык:&nbsp;',
+	'distanceText': 'Выберите единицу длины:&nbsp;',
+    'versionText': 'Выберите количество настроек:&nbsp;',
  
     //POI categories
     'amenity': 'услуги',
