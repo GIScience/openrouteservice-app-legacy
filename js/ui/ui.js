@@ -538,6 +538,9 @@ var Ui = ( function(w) {'use strict';
 				id1 : currentIndex,
 				id2 : prevIndex
 			});
+
+			theInterface.emit('ui:routingParamsChanged');
+
 		}
 
 		/**
