@@ -1092,7 +1092,7 @@
            <After>之後</After>
        </FillWord>
    </Language>
-   <Language Description="Chinese-Simplified" Code="cn_simple">
+   <Language Description="Chinese-Simplified" Code="cn-simple">
        <MobilityBasedMovementInstruction>
            <Vehicle>开</Vehicle>
            <Pedestrian>走</Pedestrian>
