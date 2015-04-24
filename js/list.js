@@ -3,9 +3,9 @@
  */
 
 list = {
-	languages: ['de','en','es','fr','it','nl', 'hu','ru' ,'cz','pl','ua','cn_simple','cn'], 
+	languages: ['de','en','es','fr','it','nl', 'hu','ru','ua','cz','pl','cnsimple','cn'], 
 	
-	routingLanguages : ['en', 'de', 'pl', 'bg', 'cn','cn-simple','cz', 'nl', 'hr', 'hu', 'nl_BE', 'es', 'eo', 'fi', 'fr', 'it', 'pt_BR', 'ro', 'ru', 'se', 'dk', 'tr', 'ca', 'ja', 'no', 'vi', 'nb', 'de-rheinl', 'de-opplat', 'de-berlin', 'de-swabia', 'de-ruhrpo', 'de-at-ooe', 'de-bay'],
+	routingLanguages : ['de','en','es','fr', 'it', 'nl', 'hu', 'ru', 'ua', 'cz', 'pl', 'cnsimple','cn','bg', 'hr', 'nl_BE', 'eo', 'fi', 'fr', 'pl', 'pt_BR', 'ro', 'se', 'dk', 'tr', 'ca', 'ja', 'no', 'vi', 'nb', 'de-rheinl', 'de-opplat', 'de-berlin', 'de-swabia', 'de-ruhrpo', 'de-at-ooe', 'de-bay'],
 		
 	distanceUnits: ['m', 'km', 'yd', 'mi'],
 	distanceUnitsPreferences : ['m', 'yd'],

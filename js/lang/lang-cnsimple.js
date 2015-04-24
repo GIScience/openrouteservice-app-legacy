@@ -1,4 +1,4 @@
-var lang_cn_simple = {
+var lang_cnsimple = {
 	'left' : '左',
 	'right' : '右',
 	'half-left' : '稍左',
@@ -155,7 +155,7 @@ var lang_cn_simple = {
 	'de' : '德语 - Deutsch',
 	'pl' : '波兰语 - Polski',
 	'bg' : '保加利亚语 - български',
-	'cn-simple' : '中国（简体） - Chinese (Simplified)',
+	'cnsimple' : '中国（简体） - Chinese (Simplified)',
 	'cn' : '中国（繁体） - Chinese (Traditional)',
 	'cz' : '捷克语 - Cesk&aacute;',
 	'nl' : '荷兰语 - Nederlands',
