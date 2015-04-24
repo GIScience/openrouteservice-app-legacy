@@ -31,13 +31,58 @@ var Languages = (function(w) {'use strict';
 		$('#BicycleMtbLabel').html(p.translate('BicycleMTB'));
 		$('#BicycleRacerLabel').html(p.translate('BicycleRacer'));
 		$('#PedestrianLabel').html(p.translate('Pedestrian'));
+		
+		//truck profile
+		$('#fastestLabelTruck').html(p.translate('Fastest'));
+		$('#shortestLabelTruck').html(p.translate('Shortest'));
+		$('#trucklengthLabel').html(p.translate('TruckLength'));
+		$('#truckheightLabel').html(p.translate('TruckHeight'));
+		$('#truckweightLabel').html(p.translate('TruckWeight'));
+		$('#truckwidthLabel').html(p.translate('TruckWidth'));
+		$('#goodsHeavyTruckLabel').html(p.translate('goodsHeavyTruck'));
+		$('#busHeavyTruckLabel').html(p.translate('busHeavyTruck'));
+		$('#hgvHeavyTruckLabel').html(p.translate('hgvHeavyTruck'));
+		$('#agriculturalHeavyTruckLabel').html(p.translate('agriculturalHeavyTruck'));
+		$('#forestryHeavyTruckLabel').html(p.translate('forestryHeavyTruck'));
+		
+		$('#WheelchairLabel').html(p.translate('Wheelchair'));
+		
 		$('#avoidMotorLabel').html(p.translate('avoidMotorways'));
 		$('#avoidTollLabel').html(p.translate('avoidTollways'));
 		$('#avoidAreasTitle').html(p.translate('avoidAreas'));
 		$('#avoidMotorLabel').html(p.translate('avoidMotorways'));
 		$('#avoidunpavedRoadsLabel').html(p.translate('avoidunpavedRoads'));
 		$('#avoidFerryLabel').html(p.translate('avoidFerry'));
-
+		
+		
+		//wheelchair parameters
+		$('#surfaceLabel').html(p.translate('surface'));
+		$('#asphaltOption').html(p.translate('asphalt'));
+		$('#cobblestoneFlattenedOption').html(p.translate('cobblestone:flattened'));
+		$('#cobblestoneOption').html(p.translate('cobblestone'));
+		$('#compactedOption').html(p.translate('compacted'));
+		$('#allSurfacesOption').html(p.translate('all_surfaces'));
+		
+		$('#smoothnessLabel').html(p.translate('smoothness'));
+		$('#excellentOption').html(p.translate('excellent'));
+		$('#goodOption').html(p.translate('good'));
+		$('#intermediateOption').html(p.translate('intermediate'));
+		$('#badOption').html(p.translate('bad'));
+		$('#allSmoothnessesOption').html(p.translate('all_smoothnesses'));
+		
+		$('#inclineLabel').html(p.translate('incline'));
+		$('#threePercentOption').html(p.translate('threepercent'));
+		$('#sixPercentOption').html(p.translate('sixpercent'));
+		$('#tenPercentOption').html(p.translate('tenpercent'));
+		$('#fifteenPercentOption').html(p.translate('fifteenpercent'));
+		$('#allInclinesOption').html(p.translate('all_inclines'));
+		
+		$('#slopedCurbLabel').html(p.translate('sloped_curb'));
+		$('#threeCmOption').html(p.translate('threecm'));
+		$('#sixCmOption').html(p.translate('sixcm'));
+		$('#tenCmOption').html(p.translate('tencm'));
+		$('#allSlopedCurbesOption').html(p.translate('all_sloped_curbs'));
+		
 		//routing
 		$('#resetRoute').html(p.translate('resetRoute'));
 		$('.searchWaypoint').attr('placeholder', p.translate('enterAddress'));
@@ -55,6 +100,8 @@ var Languages = (function(w) {'use strict';
 		$('#accessibilityAnalysisLabel').html(p.translate('accessibilityAnalysis'));
 		$('#accessibilityAnalysisMinutes').html(p.translate('setAccessibilityMinutes'));
 		$('#analyzeAccessibility').html(p.translate('analyze'));
+		$('#accessibilityAnalysisIsochrones').html(p.translate('accessibilityAnalysisIsochrones'));
+		$('#accessibilityAnalysisMethod').html(p.translate('accessibilityAnalysisMethod'));
 		$('#accessibilityCalculation').html(p.translate('calculatingAccessibility'));
 		$('#accessibilityError').html(p.translate('accessibilityError'));
 		//export/ import

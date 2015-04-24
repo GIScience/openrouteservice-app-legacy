@@ -40,6 +40,8 @@ var Controller = ( function(w) {'use strict';
 		 * @param atts: query: the search query; wpIndex: index of the waypoint; searchIds: map feature ids of previous searches
 		 */
 		function handleWaypointRequest(atts) {
+
+
 			ui.searchWaypointChangeToSearchingState(true, atts.wpIndex);
 			var lastSearchResults = atts.searchIds;
 			lastSearchResults = lastSearchResults ? lastSearchResults.split(' ') : null;
@@ -58,6 +60,7 @@ var Controller = ( function(w) {'use strict';
 		 * @param wpIndex: index of the waypoint
 		 */
 		function handleSearchWaypointResults(results, wpIndex) {
+
 			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
 			results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
 
@@ -67,16 +70,17 @@ var Controller = ( function(w) {'use strict';
 				//service response contains an error, switch to error handling function
 				handleSearchWaypointFailure(wpIndex);
 			} else {
-
 				waypoint.decrRequestCounterWaypoint(wpIndex);
+
 				if (waypoint.getRequestCounterWaypoint(wpIndex) == 0) {
 					var listOfPoints = waypoint.parseResultsToPoints(results, wpIndex);
-
 					ui.searchWaypointChangeToSearchingState(false, wpIndex);
 
 					if (listOfPoints.length) {
+
 						var listOfFeatures = map.addSearchAddressResultMarkers(listOfPoints, wpIndex);
 						ui.updateSearchWaypointResultList(results, listOfFeatures, map.SEARCH, wpIndex);
+
 					} else {
 						ui.showSearchWaypointError(wpIndex)
 					}
@@ -102,6 +106,7 @@ var Controller = ( function(w) {'use strict';
 		 * @param atts: wpIndex: index of the waypoint; featureId: map feature id of the selected marker; searchIds: string of all search features for this search
 		 */
 		function handleWaypointResultClick(atts) {
+
 			var wpIndex = atts.wpIndex;
 			var featureId = atts.featureId;
 			var searchIds = atts.searchIds;
@@ -119,8 +124,15 @@ var Controller = ( function(w) {'use strict';
 			map.zoomToMarker(util.convertPositionStringToLonLat(position), 14);
 			ui.setWaypointFeatureId(wpIndex, waypointResultId, position, map.ROUTE_POINTS);
 
-			//update preferences
-			handleWaypointChanged(map.getWaypointsString());
+			// check if EndPoint is set only. If true set Permalink accordingly
+			if (map.getWaypointsAmount() == 1 && wpIndex == 1) {
+					var endPoint = true;
+					handleWaypointChanged(map.getWaypointsString(endPoint));
+				} else {
+					var endPoint = false;
+					handleWaypointChanged(map.getWaypointsString(endPoint));
+			}
+
 		}
 
 		/**
@@ -128,6 +140,7 @@ var Controller = ( function(w) {'use strict';
 		 * @param: newWaypointIndex: index which is assigned to the new waypoint
 		 */
 		function handleAddWaypoint(newWaypointIndex) {
+
 			waypoint.addWaypoint(newWaypointIndex);
 
 			//re-calculate type of last (now next-to-last) waypoint
@@ -198,6 +211,8 @@ var Controller = ( function(w) {'use strict';
 		 * @param addWaypointAt: index where to add the waypoint
 		 */
 		function reverseGeocodeSuccess(addressResult, wpType, wpIndex, featureId, addWaypointAt) {
+			
+
 			//IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
 			var addressResult = addressResult.responseXML ? addressResult.responseXML : util.parseStringToDOM(addressResult.responseText);
 
@@ -222,7 +237,14 @@ var Controller = ( function(w) {'use strict';
 				ui.setWaypointFeatureId(newIndex, featureId, position, map.ROUTE_POINTS);
 
 				//update preferences
-				handleWaypointChanged(map.getWaypointsString());
+				//check if EndPoint is set only. If true set Permalink accordingly
+				if (map.getWaypointsAmount() == 1 && wpIndex == 1) {
+					var endPoint = true;
+					handleWaypointChanged(map.getWaypointsString(endPoint));
+				} else {
+					var endPoint = false;
+					handleWaypointChanged(map.getWaypointsString(endPoint));
+				}
 
 				//cannot be emmited by 'this', so let's use sth that is known inside the callback...
 				ui.emit('control:reverseGeocodeCompleted');
@@ -273,6 +295,7 @@ var Controller = ( function(w) {'use strict';
 		 * @param atts: wpIndex: index of the waypoint, featureId: id of the map feature of the waypoint
 		 */
 		function handleRemoveWaypoint(atts) {
+
 			var idx = atts.wpIndex;
 			var featureId = atts.featureId;
 
@@ -313,8 +336,17 @@ var Controller = ( function(w) {'use strict';
 				}
 			}
 
+
 			//update preferences
-			handleWaypointChanged(map.getWaypointsString());
+			//check if EndPoint is set only. If true set Permalink accordingly
+			if (map.getWaypointsAmount() == 1 && idx == 0) {
+				var endPoint = true;
+				handleWaypointChanged(map.getWaypointsString(endPoint));
+			} else {
+				var endPoint = false;
+				handleWaypointChanged(map.getWaypointsString(endPoint));
+			}
+
 		}
 
 		/**
@@ -356,12 +388,15 @@ var Controller = ( function(w) {'use strict';
 
 		/**
 		 * is called when one or more waypoints have changed. Updates internal variables (preferences).
+		 * check whether point is start or end point, preferences have to be updated accordingly that permalink still works correctly
 		 * @param waypointStringList: string containing all waypoints
 		 */
 		function handleWaypointChanged(waypointStringList, doNotCalculateRoute) {
+
+
 			handlePrefsChanged({
 				key : preferences.waypointIdx,
-				value : waypointStringList
+				value : waypointStringList,
 			});
 
 			if (!doNotCalculateRoute) {
@@ -441,6 +476,7 @@ var Controller = ( function(w) {'use strict';
 		 * @param atts: address: address as text string the user wants to search for; lastSearchResults: string of OL feature ids for the last search results
 		 */
 		function handleSearchAddressRequest(atts) {
+
 			var address = atts.address;
 			var lastSearchResults = atts.lastSearchResults;
 			lastSearchResults = lastSearchResults ? lastSearchResults.split(' ') : null;
@@ -525,6 +561,7 @@ var Controller = ( function(w) {'use strict';
 		 * @param atts: query: the POI search query as string; nearRoute: true if a POI search along a given route should be performed; maxDist: maximum distance for POIs off the route; lastSearchResults: list of OL map feature ids of the last search
 		 */
 		function handleSearchPoiRequest(atts) {
+
 			var poi = atts.query;
 			var searchNearRoute = atts.nearRoute;
 			var maxDist = atts.maxDist;
@@ -709,6 +746,7 @@ var Controller = ( function(w) {'use strict';
 				}
 
 				var prefs = ui.getRoutePreferences();
+
 				var routePref = prefs[0];
 				var avoidHighway = prefs[1][0];
 				var avoidTollway = prefs[1][1];
@@ -716,7 +754,35 @@ var Controller = ( function(w) {'use strict';
 				var avoidFerry = prefs[1][3];
 				var avoidAreas = map.getAvoidAreas();
 
-				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, avoidHighway, avoidTollway,avoidUnpavedRoads,avoidFerry, avoidAreas);
+				
+				// get extendedType for HeavyTruck here..
+				//preferences.loadExtendedRouteOption();
+
+				var truckParameters = preferences.loadtruckParameters();
+				var truck_length = truckParameters[0];
+				var truck_height = truckParameters[1];
+				var truck_weight = truckParameters[2];
+				var truck_width = truckParameters[3];
+
+				ui.setTruckParameters(truck_length, truck_height, truck_weight, truck_width);
+
+				//var extendedRoutePreferences = prefs[2];
+				//console.log(extendedRoutePreferences);
+				//check whether truck button is active and send extendedRoutePreferences, otherwise don't 
+				if(prefs[3] == 'truck') {
+					var extendedRoutePreferences = prefs[2];
+					var extendedRoutePreferencesType = prefs[5];
+				} 
+				// check whether wheelchair button is active and send extendedRoutePreferences, otherwise don't
+				else  if (prefs[3] == 'wheelchair') {
+					var extendedRoutePreferences = prefs[4];
+				}
+				else {
+					var extendedRoutePreferences = null;
+					var extendedRoutePreferencesType = null;
+				}
+
+				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferences, extendedRoutePreferencesType, avoidHighway, avoidTollway,avoidUnpavedRoads,avoidFerry, avoidAreas);
 				//try to read a variable that is set after the service response was received. If this variable is not set after a while -> timeout.
 				clearTimeout(timerRoute);
 
@@ -728,6 +794,7 @@ var Controller = ( function(w) {'use strict';
 				// 	}
 				// }, SERVICE_TIMEOUT_INTERVAL);
 			} else {
+
 				//internal
 				route.routePresent = false;
 				ui.setRouteIsPresent(false);
@@ -859,13 +926,23 @@ var Controller = ( function(w) {'use strict';
 				pos = util.convertPositionStringToLonLat(pos);
 				pos = util.convertPointForDisplay(pos);
 				var dist = atts.distance;
-
+				
+				var prefs = ui.getRoutePreferences();
+				
+				//aas setting route type
+				var aasRoutePref = prefs[0];
+				
+				//aas setting intervall in meters
+				var aasIntervall= $('#accessibilityAnalysisIsochronesIntervall').val();
+				//aas setting isochrone method
+				var aasMethod= document.getElementById('#accessibilityAnalysisMethodList');
+							
 				ui.showAccessibilityError(false);
 				ui.showSearchingAtAccessibility(true);
 
 				map.eraseAccessibilityFeatures();
 
-				analyse.analyze(pos, dist, accessibilitySuccessCallback, accessibilityFailureCallback);
+				analyse.analyze(pos, dist, aasRoutePref, aasMethod, aasIntervall, accessibilitySuccessCallback, accessibilityFailureCallback);
 			} else {
 				//no position, no analyse!
 				ui.showAccessibilityError(true);
@@ -921,17 +998,24 @@ var Controller = ( function(w) {'use strict';
 		 * extracts route information and displays the track in a new window formatted as GPX
 		 */
 		function handleExportRoute() {
+
 			ui.showExportRouteError(false);
 
+			var exportGPXElement = document.getElementById('export-gpx');
+
 			var routeString = route.routeString;
+			
 			if (routeString) {
-				//writing String to File seems not possible. We open a window with the content instead.
-				w = window.open('about:blank', '_blank', 'height=300,width=400');
-				w.document.write('<xmp>' + routeString + '</xmp>');
+				// Create Base64 Object
+				var Base64={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",encode:function(e){var t="";var n,r,i,s,o,u,a;var f=0;e=Base64._utf8_encode(e);while(f<e.length){n=e.charCodeAt(f++);r=e.charCodeAt(f++);i=e.charCodeAt(f++);s=n>>2;o=(n&3)<<4|r>>4;u=(r&15)<<2|i>>6;a=i&63;if(isNaN(r)){u=a=64}else if(isNaN(i)){a=64}t=t+this._keyStr.charAt(s)+this._keyStr.charAt(o)+this._keyStr.charAt(u)+this._keyStr.charAt(a)}return t},decode:function(e){var t="";var n,r,i;var s,o,u,a;var f=0;e=e.replace(/[^A-Za-z0-9\+\/\=]/g,"");while(f<e.length){s=this._keyStr.indexOf(e.charAt(f++));o=this._keyStr.indexOf(e.charAt(f++));u=this._keyStr.indexOf(e.charAt(f++));a=this._keyStr.indexOf(e.charAt(f++));n=s<<2|o>>4;r=(o&15)<<4|u>>2;i=(u&3)<<6|a;t=t+String.fromCharCode(n);if(u!=64){t=t+String.fromCharCode(r)}if(a!=64){t=t+String.fromCharCode(i)}}t=Base64._utf8_decode(t);return t},_utf8_encode:function(e){e=e.replace(/\r\n/g,"\n");var t="";for(var n=0;n<e.length;n++){var r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r)}else if(r>127&&r<2048){t+=String.fromCharCode(r>>6|192);t+=String.fromCharCode(r&63|128)}else{t+=String.fromCharCode(r>>12|224);t+=String.fromCharCode(r>>6&63|128);t+=String.fromCharCode(r&63|128)}}return t},_utf8_decode:function(e){var t="";var n=0;var r=c1=c2=0;while(n<e.length){r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r);n++}else if(r>191&&r<224){c2=e.charCodeAt(n+1);t+=String.fromCharCode((r&31)<<6|c2&63);n+=2}else{c2=e.charCodeAt(n+1);c3=e.charCodeAt(n+2);t+=String.fromCharCode((r&15)<<12|(c2&63)<<6|c3&63);n+=3}}return t}}
+
+				var newRouteString = Base64.encode(routeString);
+				exportGPXElement.href = 'data:text/gpx+xml;base64,' + newRouteString;
 			} else {
 				//error, route does not exist. Nothing can be exported
 				ui.showExportRouteError(true);
 			}
+			
 		}
 
 		/**
@@ -1139,6 +1223,7 @@ var Controller = ( function(w) {'use strict';
 		/**
 		 * updates internal preferences (language, distance unit, ...)
 		 * @param atts: key: id of the variable name; value: value that should be assigned to that variable
+		 * @param wpIndex: indicates position of waypoint
 		 */
 		function handlePrefsChanged(atts) {
 			var key = atts.key;
@@ -1165,6 +1250,7 @@ var Controller = ( function(w) {'use strict';
 		}
 
 		function handlePermalinkRequest() {
+
 			preferences.openPermalink();
 		}
 
@@ -1215,6 +1301,7 @@ var Controller = ( function(w) {'use strict';
 		 * apply GET variables, read cookies or apply standard values to initialize the ORS page
 		 */
 		function initializeOrs() {
+
 			//apply GET variables and/or cookies and set the user's language,...
 			var getVars = preferences.loadPreferencesOnStartup();
 
@@ -1228,6 +1315,15 @@ var Controller = ( function(w) {'use strict';
 			var unpaved = getVars[preferences.getPrefName(preferences.avoidUnpavedIdx)];
 			var ferry = getVars[preferences.getPrefName(preferences.avoidFerryIdx)];
 			var avoidAreas = getVars[preferences.getPrefName(preferences.avoidAreasIdx)];
+			
+			var truck_length = getVars[preferences.getPrefName(preferences.truck_lengthIdx)];
+			var truck_height = getVars[preferences.getPrefName(preferences.truck_heightIdx)];
+			var truck_weight = getVars[preferences.getPrefName(preferences.truck_weightIdx)];
+			var truck_width = getVars[preferences.getPrefName(preferences.truck_widthIdx)];
+						
+			var surface = getVars[preferences.getPrefName(preferences.surfaceIdx)];
+			var incline = getVars[preferences.getPrefName(preferences.inclineIdx)];
+			var slopedCurb = getVars[preferences.getPrefName(preferences.slopedCurbIdx)];
 
 			pos = preferences.loadMapPosition(pos);
 			if (pos && pos != 'null') {
@@ -1250,16 +1346,25 @@ var Controller = ( function(w) {'use strict';
 			if (layer) {
 				map.restoreLayerPrefs(layer);
 			}
-
 			//waypoints: array of OL.LonLat representing one wayoint each
 			waypoints = preferences.loadWaypoints(waypoints);
+
+
 			if (waypoints && waypoints.length > 0) {
+
+
 				for (var i = 0; i < waypoints.length; i++) {
-					var type = Waypoint.type.VIA;
-					if (i == 0) {
+
+					var type;
+
+					if (waypoints[i].lat == 0 & waypoints[i].lon == 0) {
+						continue
+					} else if (i == 0) {
 						type = Waypoint.type.START;
 					} else if (i == waypoints.length - 1) {
 						type = Waypoint.type.END;
+					} else {
+						type = Waypoint.type.VIA;
 					}
 					handleAddWaypointByRightclick({
 						pos : waypoints[i],
@@ -1279,12 +1384,34 @@ var Controller = ( function(w) {'use strict';
 			unpaved = res[3];
 			ferry = res[4];
 			ui.setAvoidables(motorways, tollways, unpaved, ferry);
+			
+			var wheelParameters = preferences.loadWheelParameters(surface, incline, slopedCurb);
+			surface = wheelParameters[0];
+			incline = wheelParameters[1];
+			slopedCurb = wheelParameters[2];
+			ui.setWheelParameters(surface, incline, slopedCurb);
+			
+			// if (routeOpt == 'Wheelchair') {
+				// $("#routeOptions").removeClass('collapsed');
+				// $("#routeOptions").parent().get(0).querySelector('.collapsibleBody').show();
+			// }
 
-			var avoidables = preferences.loadAvoidables(motorways, tollways, unpaved, ferry);
+
+			//var avoidables = preferences.loadAvoidables(motorways, tollways, unpaved, ferry);
 			//avoidAreas: array of OL.Polygon representing one avoid area each
 			avoidAreas = preferences.loadAvoidAreas(avoidAreas);
 			//apply avoid areas
 			map.addAvoidAreas(avoidAreas);
+
+			
+			var truckParameters = preferences.loadtruckParameters();
+
+			truck_length = truckParameters[0];
+			truck_height = truckParameters[1];
+			truck_weight = truckParameters[2];
+			truck_width = truckParameters[3];
+						 
+			ui.setTruckParameters(truck_length, truck_height, truck_weight,truck_width);
 
 			if (!preferences.areCookiesAVailable()) {
 				ui.showNewToOrsPopup();
@@ -1372,6 +1499,8 @@ var Controller = ( function(w) {'use strict';
 			map.register('map:waypointMoved', handleWaypointMoved);
 
 			ui.register('ui:routingParamsChanged', handleRoutePresent);
+			ui.register('ui:handleMoveUpWaypointClick', handleRoutePresent);
+
 			ui.register('ui:zoomToRoute', handleZoomToRoute);
 
 			ui.register('ui:avoidAreaControls', avoidAreaToolClicked);

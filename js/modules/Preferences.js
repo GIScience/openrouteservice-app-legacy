@@ -3,10 +3,10 @@ var Preferences = ( function(w) {'use strict';
 	//are there any cookies of thie page yet?
 	var cookiesAvailable = false;
 
-	var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version','avUnpaved', 'avFerry',];
+	var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version','avUnpaved', 'avFerry','value_length','value_height','value_weight','value_width','surface','incline','slopedCurb'];
 
 	//store information that can be used for the permalink
-	var permaInfo = [null, null, null, null, null, null, null, null, null, null, null, null, null];
+	var permaInfo = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,null,null,null,null];
 
 	/**
 	 * Constructor
@@ -27,6 +27,13 @@ var Preferences = ( function(w) {'use strict';
 		this.versionIdx = 11;
 		this.avoidUnpavedIdx = 12;
 		this.avoidFerryIdx = 13;
+		this.value_lengthIdx = 14;
+		this.value_heightIdx = 15;
+		this.value_weightIdx = 16;
+		this.value_widthIdx = 17;
+		this.surfaceIdx = 18;
+		this.inclineIdx = 19;
+		this.slopedCurbIdx = 20;
 
 		//define variables
 		this.language = 'en';
@@ -40,6 +47,9 @@ var Preferences = ( function(w) {'use strict';
 		permaInfo[this.routingLanguageIdx] = this.routingLanguage;
 		permaInfo[this.distanceUnitIdx] = this.distanceUnit;
 		permaInfo[this.versionIdx] = this.version;
+
+		
+
 		//other fields are filled with default values when reading GET variables/ cookies etc.
 
 		cookiesAvailable = false;
@@ -260,9 +270,9 @@ var Preferences = ( function(w) {'use strict';
 	 */
 	function loadWaypoints(waypoints) {
 		if (waypoints) {
+			
 			//save waypoints in permaInfo array
 			permaInfo[this.waypointIdx] = waypoints == undefined ? null : waypoints;
-
 			waypoints = unescape(waypoints);
 			var lonLatCoordinates = waypoints.split(',');
 			waypoints = [];
@@ -283,10 +293,10 @@ var Preferences = ( function(w) {'use strict';
 
 		//set a default in the permaInfo Array if routeOpt == null, undef, etc.
 		if (routeOpt == undefined || routeOpt == null || routeOpt == 'undefined') {
-			permaInfo[this.routeOptionsIdx] = list.routePreferences.get('car')[0];
-		} else {
-			permaInfo[this.routeOptionsIdx] = routeOpt;
+			routeOpt = list.routePreferences.get('car')[0];
+			// routeOpt = list.routePreferences.get('wheelchair')[0];
 		}
+		permaInfo[this.routeOptionsIdx] = routeOpt;
 
 		//check if the routeOpt parameter is a valid routeOption.
 		var mainObjects = list.routePreferences.keys();
@@ -305,6 +315,46 @@ var Preferences = ( function(w) {'use strict';
 		return routeOpt;
 	}
 
+	
+	/**
+	* determines route option wheelchair parameters by GET variable
+	* @param surface, incline, slopedCurb: extracted from the GET variables in readGetVars()
+	* @return the wheelchair parameters
+	*/
+	function loadtruckParameters() {
+	
+		var truckParameters = [null, null, null,null];
+
+		truckParameters[0] = document.getElementById("value_length").value;
+		truckParameters[1] = document.getElementById("value_height").value;
+		truckParameters[2] = document.getElementById("value_weight").value;
+		truckParameters[3] = document.getElementById("value_width").value;
+		
+		permaInfo[this.value_lengthIdx] = unescape(truckParameters[0]);
+		permaInfo[this.value_heightIdx] = unescape(truckParameters[1]);
+		permaInfo[this.value_weightIdx] = unescape(truckParameters[2]);
+		permaInfo[this.value_widthIdx] = unescape(truckParameters[3]);
+
+		return truckParameters;
+	}
+	
+	/**
+	* fetches extended route type option
+	* @param surface, incline, slopedCurb: extracted from the GET variables in readGetVars()
+	* @return the wheelchair parameters
+	*/
+	function loadExtendedRouteOption() {
+	
+		//extendedRouteParameter = document.getElementById("value_length").value;
+		
+		// to do fix permalink
+		//permaInfo[this.value_lengthIdx] = unescape(truckParameters[0]);
+
+		//return truckParameters;
+	}
+	
+
+
 	/**
 	 * determines route option avoidables by GET variable
 	 * @param highway, tollway: extracted from the GET variables in readGetVars()
@@ -314,33 +364,69 @@ var Preferences = ( function(w) {'use strict';
 		var avoidables = [false, false, false, false];
 		//highway
 		if (unescape(highway) === 'true') {
-			avoidables[1] = true;
+			avoidables[0] = true;
 			permaInfo[this.avoidHighwayIdx] = true;
 		} else {
 			permaInfo[this.avoidHighwayIdx] = false;
 		}
 		//tollway
 		if (unescape(tollway) === 'true') {
-			avoidables[2] = true;
+			avoidables[1] = true;
 			permaInfo[this.avoidTollwayIdx] = true;
 		} else {
 			permaInfo[this.avoidTollwayIdx] = false;
 		}
 		//unpaved
 		if (unescape(unpaved) === 'true') {
-			avoidables[3] = true;
+			avoidables[2] = true;
 			permaInfo[this.avoidUnpavedIdx] = true;
 		} else {
 			permaInfo[this.avoidUnpavedIdx] = false;
 		}
 		//ferry
 		if (unescape(ferry) === 'true') {
-			avoidables[4] = true;
+			avoidables[3] = true;
 			permaInfo[this.avoidFerryIdx] = true;
 		} else {
 			permaInfo[this.avoidFerryIdx] = false;
 		}
 		return avoidables;
+	}
+	
+	/**
+	 * determines route option wheelchair parameters by GET variable
+	 * @param surface, incline, slopedCurb: extracted from the GET variables in readGetVars()
+	 * @return the wheelchair parameters
+	 */
+	function loadWheelParameters(surface, incline, slopedCurb) {
+		var wheelParameters = [null, null, null];
+		
+		//surface
+		surface = unescape(surface);
+		//incline
+		incline = unescape(incline);
+		//slopedCurb
+		slopedCurb = unescape(slopedCurb);
+		
+		if (surface == undefined || surface == null || surface == 'undefined') {
+			surface = list.wheelchairParameters.get('Surface')[1];
+		}
+		if (incline == undefined || incline == null || incline == 'undefined') {
+			incline = list.wheelchairParameters.get('Incline')[1];
+		}
+		if (slopedCurb == undefined || slopedCurb == null || slopedCurb == 'undefined') {
+			slopedCurb = list.wheelchairParameters.get('SlopedCurb')[1];
+		}
+		
+		wheelParameters[0] = surface;
+		wheelParameters[1] = incline;
+		wheelParameters[2] = slopedCurb;
+		
+		permaInfo[this.surfaceIdx] = unescape(surface);
+		permaInfo[this.inclineIdx] = unescape(incline);
+		permaInfo[this.slopedCurbIdx] = unescape(slopedCurb);
+		
+		return wheelParameters;
 	}
 
 	/**
@@ -373,9 +459,12 @@ var Preferences = ( function(w) {'use strict';
 	 * if the user changes e.g. route options from "mountainbike" to "pedestrian", update this information in the permaInfo array.
 	 * @param key: the index of the permaInfo array to update
 	 * @param value: the value that should be assigned to that field
+	 * @param idx: optional which indicates position of waypoint
 	 */
 	function updatePreferences(key, value) {
+
 		permaInfo[key] = escape(value);
+		
 	}
 
 	/*
@@ -494,6 +583,7 @@ var Preferences = ( function(w) {'use strict';
 	 * open new window with the permalink
 	 */
 	function openPermalink() {
+		
 		var query = '?';
 		for (var i = 0; i < prefNames.length; i++) {
 			query += prefNames[i] + '=' + permaInfo[i] + '&';
@@ -535,6 +625,8 @@ var Preferences = ( function(w) {'use strict';
 	Preferences.prototype.loadRouteOptions = loadRouteOptions;
 	Preferences.prototype.loadAvoidables = loadAvoidables;
 	Preferences.prototype.loadAvoidAreas = loadAvoidAreas;
+	Preferences.prototype.loadtruckParameters = loadtruckParameters;
+	Preferences.prototype.loadWheelParameters = loadWheelParameters;
 
 	Preferences.prototype.writeMapCookies = writeMapCookies;
 	Preferences.prototype.writePrefsCookies = writePrefsCookies;

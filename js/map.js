@@ -11,7 +11,7 @@ var Map = ( function() {"use strict";
 				stroke : '#009ad5',
 				fill : '#009ad5',
 				strokeWidthEm : 5,
-				strokeEm : '#fba400',
+				strokeEm : '#fb5400',
 				fillEm : '#009ad5'
 			},
 			point : {
@@ -134,35 +134,28 @@ var Map = ( function() {"use strict";
 			* MAP LAYERS
 			* *********************************************************************/
 
+			// checks whether zoom level is smaller 3 as no minimum zoom can be set
+			this.theMap.events.register('zoomend', this, function (event) {
+				var x = this.theMap.getZoom();
+
+				if(x < 3) {
+					this.theMap.setCenter(0, 3);
+				}
+			});
+
+
 			//layer 1 - open map surfer
 			if (namespaces.layerMapSurfer.length) {
-					var mapSurfer_name = "OpenMapSurfer Roads";
-					var mapSurfer_options = {
-						type : 'png',
-						isBaseLayer : true,
-						numZoomLevels : 19,
-						attribution : 'Map data &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> contributors, powered by <a href="http://mapsurfernet.com/">MapSurfer.NET</a>',
+				var mapSurfer_options = {
+					type : 'png',
+					isBaseLayer : true,
+					numZoomLevels : 19,
+					attribution : 'Map data &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> contributors, powered by <a href="http://mapsurfernet.com/">MapSurfer.NET</a>',
+				};
 
-						resolutions: [39135.7584765625, 19567.87923828125, 9783.939619140625,
-							4891.9698095703125, 2445.9849047851562, 1222.9924523925781,
-							611.4962261962891, 305.74811309814453, 152.87405654907226,
-							76.43702827453613, 38.218514137268066, 19.109257068634033,
-							9.554628534317017, 4.777314267158508, 2.388657133579254,
-							1.194328566789627,0.5971642833948135],
-						serverResolutions: [156543.03390625, 78271.516953125,
-							39135.7584765625, 19567.87923828125, 9783.939619140625,
-							4891.9698095703125, 2445.9849047851562, 1222.9924523925781,
-							611.4962261962891, 305.74811309814453, 152.87405654907226,
-							76.43702827453613, 38.218514137268066, 19.109257068634033,
-							9.554628534317017, 4.777314267158508, 2.388657133579254,
-							1.194328566789627, 0.5971642833948135, 0.29858214169740677,
-							0.14929107084870338, 0.07464553542435169]
-
-					};
-					var layerMapSurfer = new OpenLayers.Layer.XYZ(mapSurfer_name, namespaces.layerMapSurfer, mapSurfer_options);
-					this.theMap.addLayer(layerMapSurfer);
+				var mapSurfer_new = new OpenLayers.Layer.XYZ("OpenMapSurfer", namespaces.layerMapSurfer, mapSurfer_options);
+				this.theMap.addLayer(mapSurfer_new);
 			}
-
 
 			//layer 2 - mapnik
 			var osmLayer = new OpenLayers.Layer.OSM();
@@ -183,6 +176,7 @@ var Map = ( function() {"use strict";
 				});
 				this.theMap.addLayer(layerOSM);
 			}
+
 
 			//layer 4 - cycle map
 			var layerCycle = new OpenLayers.Layer.OSM("OpenCycleMap", ["http://a.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png", "http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png", "http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png"]);
@@ -791,14 +785,32 @@ var Map = ( function() {"use strict";
 		}
 
 		/**
+		 * get number of waypoints
+		 * @return: amount of waypoints
+		 */
+		function getWaypointsAmount() {
+			var layer = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
+			var nWaypoints = layer.features.length
+			return nWaypoints;
+		}
+
+		/**
 		 * encode all waypoints by their position in a string; used e.g. for permalink
 		 * @return: string of LonLat positions; style: 'lon1,lat1,lon2,lat2,...lonk,latk'
 		 */
-		function getWaypointsString() {
+		function getWaypointsString(endPoint) {
+			// if endPoint is true add (0,0) to beginning of string
+			// this is then caught 
+			if (endPoint == true) {
+				var wpString = "0%2C0%2C";
+			} else {
+				var wpString = "";
+			}
+
 			var layer = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
 
 			//serialize these features to string
-			var wpString = "";
+			
 			for (var i = 0; i < layer.features.length; i++) {
 				var ft = layer.features[i].geometry;
 				ft = new OpenLayers.LonLat(ft.x, ft.y);
@@ -807,6 +819,7 @@ var Map = ( function() {"use strict";
 			}
 			//slice away the last separator ','
 			wpString = wpString.substring(0, wpString.length - 3);
+
 			return wpString;
 		}
 
@@ -1317,6 +1330,7 @@ var Map = ( function() {"use strict";
 		map.prototype.addWaypointAtPos = addWaypointAtPos;
 		map.prototype.setWaypointType = setWaypointType;
 		map.prototype.getWaypointsString = getWaypointsString;
+		map.prototype.getWaypointsAmount = getWaypointsAmount;
 
 		map.prototype.addGeolocationResultMarker = addGeolocationResultMarker;
 

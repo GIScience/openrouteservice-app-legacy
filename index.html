@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de
 	<head>
 		<title>OpenRouteService</title>
 		<meta name="robots" content="index, follow">
@@ -59,7 +59,7 @@
 									Route options:
 									<br>
 								</div>
-								<div class="collapsibleBody" style="display: none;">
+								<div class="collapsibleBody" >
 									<div class="btn-group routePreferenceBtns">
 										<button id="car" class="btn routeOptionsButton active"><img src="img/picto-car-high.png">
 										</button>
@@ -67,10 +67,14 @@
 										</button>
 										<button id="pedestrian" class="btn routeOptionsButton"><img src="img/picto-dude.png">
 										</button>
-									</div>
+										<!-- <button id="wheelchair" class="btn routeOptionsButton"><img src="img/picto-wheelchair.png">
+										</button>
+										<button id="truck" class="btn routeOptionsButton"><img src="img/picto-truck.png">
+										</button> -->
+										</div>
 									<div class="panel panelMedium" id="carOptions" style="">
 										<div class="radio">
-											<input type="radio" id="Fastest" name="car" checked value="fastest">
+											<input type="radio" id="Fastest" name="car" checked="checked" value="fastest">
 											<label id="fastestLabel"> fastest route</label>
 										</div>
 										<div class="radio">
@@ -106,6 +110,140 @@
 											<label id="PedestrianLabel">pedestrian</label>
 										</div>
 									</div>
+									
+									<div class="panel panelMedium" id="truckOptions" style="display: none;">
+										<table style="margin-left: 0px; width: 70%" border="0" cellpadding="0" cellspacing="0">
+												<tr>
+												<td>
+										<img src="img/picto-truck-goods.png">
+												</td><td><div class="radio">
+											<input type="radio" id="HeavyTruck" name="truck" value="goods" checked="checked">
+											<label id="goodsHeavyTruckLabel"> Goods</label>
+										</div></td>
+												</tr>
+												<tr>
+												<td><img src="img/picto-truck-hgv.png"></td>
+												<td><div class="radio">
+											<input type="radio" id="HeavyTruck" name="truck" value="hgv">
+											<label id="hgvHeavyTruckLabel"> HGV</label>
+										</div></td>
+												</tr>
+												<tr>
+												<td><img src="img/picto-truck-bus.png"></td>
+												<td>
+										<div class="radio">
+											<input type="radio" id="HeavyTruck" name="truck" value="bus">
+											<label id="busHeavyTruckLabel"> Bus</label>
+										</div>
+												</tr>
+												<tr>
+												<td><img src="img/picto-truck-agricultural.png"></td>
+												<td>
+										<div class="radio">
+											<input type="radio" id="HeavyTruck" name="truck" value="agricultural">
+											<label id="agriculturalHeavyTruckLabel"> Agricultural Vehicle</label>
+										</div>
+											</td>
+												</tr>
+												<tr>
+												<td><img src="img/picto-truck-forestry.png"></td>
+												<td>
+										<div class="radio">
+											<input type="radio" id="HeavyTruck" name="truck" value="forestry">
+											<label id="forestryHeavyTruckLabel"> Forestry</label>
+										</div>
+											</td>
+												</tr>
+										</table>										
+									</div>
+									<div class="panel panelMedium" id="truckOptions_restrict" style="display: none;">
+																		
+											<table style="margin-left: 0px; width: 80%" border="0" cellpadding="0" cellspacing="0">
+												
+												<tr>
+												<td>
+												<label id="trucklengthLabel">length</label>
+												<form>
+												<input type="text" value="15" min="0" max="50" autocomplete="off" id="value_length" style="height:  20px; width: 30px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_length_slide.value=this.value"><span class="inputvalue"> m</span>
+												<input type="range" min="0" max="50" value="15" step="0.5" id="value_length_slide" style="height:  20px;width: 130px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_length.value=this.value" />
+												</form>
+												</td><td><img src="img/picto-truck-long.png"></td>
+												</tr>
+												<tr>
+												<tr>
+												<td>
+												<label id="truckwidthLabel">width</label>
+												<form>
+												<input type="text" value="4" min="0" max="20" autocomplete="off" id="value_width" style="height:  20px;width: 30px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_width_slide.value=this.value"><span class="inputvalue"> m</span>
+												<input type="range" min="0" max="20" value="4" step="0.5" id="value_width_slide" style="height:  20px;width: 130px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_width.value=this.value" />
+												</form>
+												</td><td><img src="img/picto-truck-width.png"></td>
+												</tr>
+												<td>
+												<label id="truckheightLabel">height</label>
+												<form>
+												<input type="text" value="4" autocomplete="off" id="value_height" style="height:  20px;width: 30px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_height_slide.value=this.value"><span class="inputvalue"> m</span>
+												<input type="range" min="0" max="15" value="4" step="0.5" id="value_height_slide" style="height:  20px;width: 130px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_height.value=this.value"  />
+												</form>
+												</td><td><img src="img/picto-truck-height.png"></td>
+												</tr><tr><td>
+												<label id="truckweightLabel">weight</label>
+												<form>
+												<input type="text" value="7" autocomplete="off" id="value_weight" style="height:  20px;width: 30px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_weight.value=this.value"><span class="inputvalue"> &nbsp;t&nbsp;</span>
+												<input type="range" min="0" max="50" value="4" step="0.5" id="value_weigth_slide" style="height:  20px;width: 130px; border:0; color:#6392C2; font-weight:bold;" oninput="this.form.value_weight.value=this.value"  />
+												</form>
+												</td><td><img src="img/picto-truck-weight.png"></td>
+												</tr>
+											
+											</table>
+									</div>
+									
+									<div class="panel panelMedium" id="wheelchairOptions" style="display: none;">
+										<label class="radio">
+											<div>
+												<input type="radio" id="Wheelchair" name="wheelchair" checked="checked">
+												<label id="WheelchairLabel">wheelchair</label>
+											</div>
+										</label>
+									</div>
+									<div class="panel panelMedium" id="wheelchairParameters" style="display: none;">
+										<label id="surfaceLabel">Surface</label>
+										<select id="Surface">
+											<option id="asphaltOption">Asphalt</option>
+											<option id="cobblestoneFlattenedOption">Flattened Cobblestone</option>
+											<option id="cobblestoneOption">Cobblestone</option>
+											<option id="compactedOption">Compacted</option>
+											<option id="allSurfacesOption">All Surfaces</option>
+										</select>
+										<!-- 
+										<label id="smoothnessLabel">Smoothness</label>
+										<select id="Smoothness">
+											<option id="excellentOption">Excellent</option>
+											<option id="goodOption">Good</option>
+											<option id="intermediateOption">Intermediate</option>
+											<option id="badOption">Bad</option>
+											<option id="allSmoothnessesOption">All Smoothnesses</option>
+										</select> 
+										 -->
+										<label id="inclineLabel">Maximum Incline</label>
+										<select id="Incline">
+											<option id="threePercentOption">Up to 3%</option>
+											<option id="sixPercentOption">Up to 6%</option>
+											<option id="tenPercentOption">Up to 10%</option>
+											<option id="fifteenPercentOption">Up to 15%</option>
+											<option id="allInclinesOption">All Inclines</option>
+										</select>
+										<label id="slopedCurbLabel">Maximum Sloped Curb</label>
+										<select id="SlopedCurb">
+											<option id="threeCmOption">Up to 3cm</option>
+											<option id="sixCmOption">Up to 6cm</option>
+											<option id="tenCmOption">Up to 10cm</option>
+											<option id="allSlopedCurbesOption">All Sloped Curbs</option>
+										</select>
+									</div>
+									
+
+								
 									<div class="panel panelMedium" id="avoidables" style="">
 										<label class="checkbox">
 											<input type="checkbox" id="Highway">
@@ -151,7 +289,7 @@
 							<span class="clickable removeWaypoint" title="Remove waypoint"> </span>
 							<span class="clickable moveUpWaypoint" href="#" title="Move waypoint up"> </span>
 							<span class="clickable moveDownWaypoint" href="#" title="Move Waypoint down"> </span>
-							<span class="clickable searchAgainButton" title="search Again" style="display: none;"> </span>
+							<span class="clickable searchAgainButton" title="show previous search result" style="display: none;"> </span>
 							<div class="waypointResult" style="display:none;"></div>
 							<div class="guiComponent">
 								<input type="text" class="searchWaypoint" placeholder="enter an address">
@@ -243,11 +381,26 @@
 									<div class="panel panelMedium" id="accessibilityAnalysis">
 										<p id="accessibilityAnalysisLabel">
 											Accessibility analysis
-										</p><span id="accessibilityAnalysisMinutes">Select minutes: </span>
-										<input type="text" id="accessibilityDistance" class="textfield" value="15">
-										<btn class="btn" id="analyzeAccessibility">
-											Analyze
-										</btn>
+										</p>
+										<table>
+										 	<tr>
+												<td width="150"><span id="accessibilityAnalysisMinutes">Select minutes</span></td>
+												<td><input type="text" id="accessibilityDistance" class="textfield" value="15" style="height: 26px;" >
+												<btn class="btn" id="analyzeAccessibility">Analyze</btn></td>
+												</td>
+											</tr>
+											<!--<tr>
+												<td width="150"><span id="accessibilityAnalysisIsochrones">Select Isochrone intervall</span></td>
+												<td><input type="text" id="accessibilityAnalysisIsochronesIntervall" class="textfield" value="10" style="width: 22px;"></td>
+											</tr>
+											<tr>
+												<td width="150"><label id="accessibilityAnalysisMethod">Select Isochrone method</label></td>
+												<td><select id="accessibilityAnalysisMethodList" style="width: 100px;">
+													<option id="Default">Recursive Grid</option>
+													<option id="Default2">TIN</option>
+													</select></td>
+											</tr>-->
+										</table>
 										<btn class="btn" id="removeAccessibility" style="display:none">
 											Remove
 										</btn>
@@ -264,9 +417,12 @@
 											<p id="exportInfoLabel">
 												Download of current route in GPX format
 											</p>
-											<btn class="btn" id="exportRouteGpx">
+											<!--<btn class="btn" id="exportRouteGpx" download="route.gpx">
 												Download GPX
-											</btn>
+											</btn>-->
+
+											<a id="export-gpx" class="btn" download="map.gpx"><i class="icon-download"></i>Export GPX</a>
+
 											<div class="alert alert-error" style="display:none" id="exportGpxError">
 												Unfortunately an error occured while downlodng the route.
 											</div>
@@ -467,10 +623,20 @@
 		<script type="text/javascript" src="js/control.js"></script>
 		<script type="text/javascript" src="js/ORS.OpenLayers.js"></script>
 
-		<!-- ORS language files -->
+		<!-- ORS language files alphabertically sorted -->
+		<script type="text/javascript" src="js/lang/lang-cz.js"></script>
 		<script type="text/javascript" src="js/lang/lang-de.js"></script>
 		<script type="text/javascript" src="js/lang/lang-en.js"></script>
+		<script type="text/javascript" src="js/lang/lang-es.js"></script>
+		<script type="text/javascript" src="js/lang/lang-fr.js"></script>
+		<script type="text/javascript" src="js/lang/lang-hu.js"></script>
+		<script type="text/javascript" src="js/lang/lang-it.js"></script>
+		<script type="text/javascript" src="js/lang/lang-nl.js"></script>
 		<script type="text/javascript" src="js/lang/lang-pl.js"></script>
+		<script type="text/javascript" src="js/lang/lang-ru.js"></script>
+		<script type="text/javascript" src="js/lang/lang-ua.js"></script>
+		<script type="text/javascript" src="js/lang/lang-cn.js"></script>
+		<script type="text/javascript" src="js/lang/lang-cnsimple.js"></script>
 
 	</body>
 </html>

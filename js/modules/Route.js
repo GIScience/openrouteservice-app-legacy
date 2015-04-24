@@ -21,7 +21,8 @@ var Route = ( function(w) {"use strict";
 		 * @param avoidFerry: flag set to true if ferrys should be avoided in the route; else: false
 		 * @param avoidAreas: array of avoid areas represented by OL.Geometry.Polygons
 		 */
-		function calculate(routePoints, successCallback, failureCallback, language, routePref, avoidMotorways, avoidTollways,avoidunpavedRoads,avoidFerry, avoidAreas) {
+		function calculate(routePoints, successCallback, failureCallback, language, routePref,extendedRoutePreferences, extendedRoutePreferencesType, avoidMotorways, avoidTollways,avoidunpavedRoads,avoidFerry, avoidAreas) {
+
 			var writer = new XMLWriter('UTF-8', '1.0');
 			writer.writeStartDocument();
 			//<xls:XLS>
@@ -49,6 +50,75 @@ var Route = ( function(w) {"use strict";
 			writer.writeStartElement('xls:RoutePlan');
 			//<xls:RoutePreference />
 			writer.writeElementString('xls:RoutePreference', routePref || 'Fastest');
+			
+
+			if (extendedRoutePreferences != null ) {
+				//<xls:ExtendedRoutePreference>
+				writer.writeStartElement('xls:ExtendedRoutePreference');
+				
+				if (routePref == 'HeavyTruck') {
+
+					if (extendedRoutePreferencesType != null ) {
+
+						writer.writeElementString('xls:vehicleType', extendedRoutePreferencesType);
+
+					}
+
+					//truck width
+					 if (extendedRoutePreferences[3] != null) {
+						 writer.writeElementString('xls:width', extendedRoutePreferences[3]);
+					 }
+					 //truck heigth
+					 if (extendedRoutePreferences[1] != null) {
+						 writer.writeElementString('xls:height', extendedRoutePreferences[1]);
+					 }
+					 //truck weigth
+					 if (extendedRoutePreferences[2] != null) {
+						 writer.writeElementString('xls:weight', extendedRoutePreferences[2]);
+					 }
+					 //truck length
+					if (extendedRoutePreferences[0] != null) {
+						writer.writeElementString('xls:length', extendedRoutePreferences[0]);
+					}
+
+
+				}
+				
+				if (routePref === 'Wheelchair') {
+					//tracktype
+					if (extendedRoutePreferences[2] != null) {
+						writer.writeStartElement('xls:trackTypes');
+						writer.writeElementString('xls:trackType', extendedRoutePreferences[2]);
+						writer.writeEndElement();
+					}
+					//surface
+					if (extendedRoutePreferences[0] != null) {
+						writer.writeStartElement('xls:surfaceTypes');
+						writer.writeElementString('xls:surfaceType', extendedRoutePreferences[0]);
+						writer.writeEndElement();
+					}
+					//smoothness
+					if (extendedRoutePreferences[1] != null) {
+						writer.writeStartElement('xls:smoothnessTypes');
+						writer.writeElementString('xls:smoothnessType', extendedRoutePreferences[1]);
+						writer.writeEndElement();
+					}
+					//incline
+					if (extendedRoutePreferences[3] != null) {
+						writer.writeElementString('xls:incline', extendedRoutePreferences[3]);
+					}
+					//sloped curb
+					if (extendedRoutePreferences[4] != null) {
+						writer.writeElementString('xls:slopedCurb', extendedRoutePreferences[4]);
+					}
+				}
+				//</xls:ExtendedRoutePreference>
+				writer.writeEndElement();
+			}
+
+
+
+
 			//<xls:WayPointList>
 			writer.writeStartElement('xls:WayPointList');
 			for (var i = 0; i < routePoints.length; i++) {

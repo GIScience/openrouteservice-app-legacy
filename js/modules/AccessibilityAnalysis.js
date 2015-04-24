@@ -6,7 +6,6 @@ var AccessibilityAnalysis = ( function(w) {"use strict";
 		function AccessibilityAnalysis() {
 
 		}
-
 		/**
 		 * builds and sends the service request
 		 * @param {Object} position: OL LonLat or Point representing the reference point
@@ -14,7 +13,7 @@ var AccessibilityAnalysis = ( function(w) {"use strict";
 		 * @param {Object} successCallback: function callback
 		 * @param {Object} failureCallback: function callback
 		 */
-		function analyze(position, distanceInMinutes, successCallback, failureCallback) {
+		function analyze(position, distanceInMinutes, aasRoutePref, aasMethod, aasIntervall, successCallback, failureCallback) {
 			var writer = new XMLWriter('UTF-8', '1.0');
 			writer.writeStartDocument();
 			//<aas:AAS>
@@ -42,6 +41,16 @@ var AccessibilityAnalysis = ( function(w) {"use strict";
 			writer.writeEndElement();
 			//</aas:AccessibilityPreference
 			writer.writeEndElement();
+			//<aas:AccessibilitySettings
+			writer.writeStartElement('aas:AccessibilitySettings');
+			writer.writeElementString('aas:RoutePreference', aasRoutePref || 'Fastest');
+			//<aas:RoutePreference>
+			writer.writeElementString('aas:Method', aasMethod || 'Default');
+			//<aas:Method>
+			writer.writeElementString('aas:Interval', aasIntervall || '10');
+			//<aas:Intervall>                         
+			//</aas:AccessibilitySettings>
+			writer.writeEndElement();
 			//<aas:LocationPoint>
 			writer.writeStartElement('aas:LocationPoint');
 			//<aas:Position>
@@ -59,7 +68,7 @@ var AccessibilityAnalysis = ( function(w) {"use strict";
 			//</aas:Position>
 			writer.writeEndElement();
 			//</aas:LocationPoint>
-			writer.writeEndElement();
+			writer.writeEndElement(); 
 			//</aas:Accessibility>
 			writer.writeEndElement();
 			//<aas:AccessibilityGeometryRequest>
@@ -68,11 +77,12 @@ var AccessibilityAnalysis = ( function(w) {"use strict";
 			writer.writeStartElement('aas:PolygonPreference');
 			writer.writeString('Detailed');
 			writer.writeEndElement();
-			//</ aas:AccessibilityGeometryRequest
+			//</aas:AccessibilityGeometryRequest
 			writer.writeEndElement();
-			//</ aas:DetermineAccessibilityRequest
-			writer.writeEndElement();
+			//</aas:DetermineAccessibilityRequest>
+			writer.writeEndElement('aas:DetermineAccessibilityRequest');
 			//</aas:Request>
+			writer.writeEndElement();
 			writer.writeEndElement();
 			//</aas:AAS>
 			writer.writeEndDocument();
