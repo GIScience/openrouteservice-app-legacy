@@ -47,7 +47,7 @@ var AccessibilityAnalysis = ( function(w) {"use strict";
 			//<aas:RoutePreference>
 			writer.writeElementString('aas:Method', aasMethod || 'Default');
 			//<aas:Method>
-			writer.writeElementString('aas:Interval', aasIntervall || '10');
+			writer.writeElementString('aas:Interval', aasIntervall || '1000');
 			//<aas:Intervall>                         
 			//</aas:AccessibilitySettings>
 			writer.writeEndElement();
