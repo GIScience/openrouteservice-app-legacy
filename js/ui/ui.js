@@ -280,9 +280,15 @@ var Ui = ( function(w) {'use strict';
 						address.setAttribute('data-layer', layername);
 						address.setAttribute('data-shortAddress', shortText);
 						resultContainer.appendChild(address);
+
+						console.log(listOfFeatures[i].id)
+						
 					}
 				}
 			});
+
+			
+
 			//slice away last space
 			allIds = allIds.substring(0, allIds.length - 1);
 			rootElement.setAttribute('data-search', allIds);
@@ -293,11 +299,12 @@ var Ui = ( function(w) {'use strict';
 
 			// if one result is found then select it
 
-			console.log(listOfFeatures)
+
 			if (listOfFeatures.length == 1) {
 
-				$('.address').click(handleSearchWaypointResultClick);
-				$('.address').trigger( "click" );
+				console.log(listOfFeatures)
+				$('.address').click(handleSearchWaypointResultClick).trigger("click");
+				//$('.address').trigger(clickEvent);
 
 			} else {
 				//event handling
@@ -325,6 +332,7 @@ var Ui = ( function(w) {'use strict';
 		 */
 		function handleSearchWaypointResultClick(e) {
 
+			console.log(e.target.id)
 			var rootElement = $(e.currentTarget).parent().parent().parent().parent();
 			var index = rootElement.attr('id');
 			rootElement.removeClass('unset');
@@ -456,6 +464,8 @@ var Ui = ( function(w) {'use strict';
 				id1 : currentIndex,
 				id2 : succIndex
 			});
+
+			//theInterface.emit('ui:routingParamsChanged');
 		}
 
 		/**
