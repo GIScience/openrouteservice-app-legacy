@@ -91,6 +91,11 @@ var lang_ua = {
 	'TruckHeight' : 'Максимальна висота системи',
 	'TruckWeight' : 'Максимальна вага',
 	'TruckWidth' : 'максимальна ширина',
+	'goodsHeavyTruck' : 'Транспорт до 3.5t',
+	'busHeavyTruck' : 'автобус',
+	'hgvHeavyTruck' : 'Вантажний автомобіль',
+	'agriculturalHeavyTruck' : 'Вантажний автомобіль',
+	'forestryHeavyTruck' : 'лісовий трактор',
 	
 	//Surfaces:
 	'surface': 'поверхня',
@@ -150,8 +155,8 @@ var lang_ua = {
     'de': 'Німецька - Deutsch',
     'pl': 'Польська - Polski',
     'bg': 'Болгарська - български',
-	'cn_simple' : 'Китайська (спрощена)',
-	'cn' : 'Китайська (традиційна)',
+	'cn_simple' : 'Китайська (спрощена) - 中国（简体）',
+	'cn' : 'Китайська (традиційна) - 中国（繁体）',
     'cz': 'Чеська - Cesk&aacute;',
     'nl': 'Нідерландська - Nederlands',
     'hr': 'Хорватська - Hrvatski',

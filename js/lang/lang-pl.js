@@ -93,7 +93,12 @@ var lang_pl = {
 	'TruckHeight' : 'wysoko&#347;ci&#261; maksymalnej',
 	'TruckWeight' : 'maksymalna waga',
 	'TruckWidth' : 'maksymalna szeroko&#347;&#263;',
-	
+	'goodsHeavyTruck' : 'Pojazd&oacute;w do 3.5t',
+	'busHeavyTruck' : 'Autobus',
+	'hgvHeavyTruck' : 'Pojazdy ci&#281;żarowe',
+	'agriculturalHeavyTruck' : 'Pojazd rolniczy',
+	'forestryHeavyTruck' : 'Forestal pojazdu',
+
 	//Surfaces:
 	'surface': 'nawierzchnia',
     'asphalt': 'beton, asfalt',
@@ -149,8 +154,8 @@ var lang_pl = {
 	'en' : 'Angielski - English',
 	'pl' : 'Polski',
 	'bg' : 'Bu&#x0142;garski - български',
-	'cn_simple' : 'Chi&#324;ski (Uproszczony)',
-	'cn' : 'Chi&#324;ski (Tradycyjny)',
+	'cn_simple' : 'Chi&#324;ski (Uproszczony) - 中国（简体）',
+	'cn' : 'Chi&#324;ski (Tradycyjny) - 中国（繁体）',
 	'cz' : 'Czeski - Cesk&aacute;',
 	'nl' : 'Holenderski - Nederlands',
 	'hr' : 'Horwacki - Hrvatski',

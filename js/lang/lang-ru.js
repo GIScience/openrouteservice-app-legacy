@@ -13,7 +13,7 @@ var lang_ru = {
     'saveBtn': 'Сохранить',
  
     'untitled': 'Безымянный',
-    'infoTextVersions': 'Впервые на OpenRouteService? Включите расширенные опции в меню предпочтений сайта.',
+	'infoTextVersions': 'Впервые на OpenRouteService? Включите расширенные опции в меню Настройки.',
  
     'routePlanner': 'Маршрут',
     'search': 'Поиск',
@@ -30,7 +30,7 @@ var lang_ru = {
     'TotalDistance': 'Вся дистанция',
     'zoomToRoute': 'Весь Маршрут',
     'routeSummary': 'Сводка',
-    'routeInstructions': 'Инструкции по маршрута',
+    'routeInstructions': 'Инструкции по маршруту',
     'routeLinkText': 'Постоянная ссылка на текущий маршрут',
     'permalinkButton': 'Постоянная ссылка',
  
@@ -93,7 +93,12 @@ var lang_ru = {
 	'TruckHeight' : 'максимальная высота',
 	'TruckWeight' : 'максимальный вес',
 	'TruckWidth' : 'mмаксимальная ширина',
-	
+	'goodsHeavyTruck' : 'Транспорт до 3.5t',
+	'busHeavyTruck' : 'автобус',
+	'hgvHeavyTruck' : 'Грузовой автомобиль',
+	'agriculturalHeavyTruck' : 'Сельскохозяйственная машина',
+	'forestryHeavyTruck' : 'Лесной трактор',
+		
 	//Surfaces:
 	'surface': 'поверхность',
     'asphalt': 'бетон, асфальт',
@@ -149,8 +154,8 @@ var lang_ru = {
     'de': 'Германский - Deutsch',
     'pl': 'Польский - Polski',
     'bg': 'Болгарский - български',
-	'cn_simple' : 'Китайский (упрощенный)',
-	'cn' : 'Китайский (традиционный)',
+	'cn_simple' : 'Китайский (упрощенный) - 中国（简体）',
+	'cn' : 'Китайский (традиционный) - 中国（繁体）',
     'cz': 'Чешский - Cesk&aacute;',
     'nl': 'Нидерландский - Nederlands',
     'hr': 'Хорватский - Hrvatski',
@@ -198,15 +203,15 @@ var lang_ru = {
     'extendedVersion': 'расширенная версия',
  
     //Site Preferences
-    'sitePreferences': 'Предпочтения Сайта',
-    'language': 'Языки',
-    'routingLanguage': 'Язык для инструкций маршрута',
-    'distance': 'Единицы длинны',
+    'sitePreferences': 'Настройки',
+    'language': 'Язык интерфейса',
+    'routingLanguage': 'Язык инструкций маршрута',
+	'distance': 'Единицы длины',
     'version': 'Версия',
-    'languageText': 'Пожалуйста выберити ваш язык:&nbsp;',
-    'routingLanguageText': 'Пожалуйста выберити ваш язык:&nbsp;',
-    'distanceText': 'Пожалуйста выберити вашу единицу длинны:&nbsp;',
-    'versionText': 'Пожалуйста выберити количество настроек:&nbsp;',
+    'languageText': 'Выберите Ваш язык:&nbsp;',
+    'routingLanguageText': 'Выберите Ваш язык:&nbsp;',
+	'distanceText': 'Выберите единицу длины:&nbsp;',
+    'versionText': 'Выберите количество настроек:&nbsp;',
  
     //POI categories
     'amenity': 'услуги',

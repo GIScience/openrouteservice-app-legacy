@@ -87,11 +87,16 @@ var lang_de = {
 		'TruckHeight' : 'Maximale H&ouml;he',
 		'TruckWeight' : 'Maximales Gewicht',
 		'TruckWidth' : 'Maximale Breite',
+		'goodsHeavyTruck' : 'Fahrzeuge bis 3.5t',
+		'busHeavyTruck' : 'Bus',
+		'hgvHeavyTruck' : 'Schwerlasttransport',
+		'agriculturalHeavyTruck' : 'Agrarfahrzeug',
+		'forestryHeavyTruck' : 'Forstfahrzeug',
 
 		'avoidMotorways':  'Autobahnen vermeiden',
 		'avoidTollways':  'Mautstra&szlig;en vermeiden',
 		'avoidunpavedRoads':  'Unbefestigte Straßen vermeiden',
-		'avoidFerry':  'Fährverbindungen vermeiden',
+		'avoidFerry':  'F&aumlhrverbindungen vermeiden',
 		
 	//Surfaces:
 		'surface': 'Oberfläche',

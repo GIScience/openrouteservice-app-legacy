@@ -88,7 +88,12 @@ var lang_cn = {
 	'TruckHeight' : '限高',
 	'TruckWeight' : '限重',
 	'TruckWidth' : '限寬',
-
+	'goodsHeavyTruck' : '車重達3.5噸',
+	'busHeavyTruck' : '公共汽車',
+	'hgvHeavyTruck' : '重型貨車',
+	'agriculturalHeavyTruck' : '農用車',
+	'forestryHeavyTruck' : '森林車',
+	
 	'avoidMotorways' : '避開高速公路',
 	'avoidTollways' : '避開收费站',
 	'avoidunpavedRoads':  '避開未鋪砌道路',

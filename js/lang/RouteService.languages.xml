@@ -668,7 +668,7 @@
        </MobilityBasedMovementInstruction>
        <Time>
            <Appoximation>aprox.</Appoximation>
-           <Day>día(s)</Day>
+           <Day>d&iacute;a(s)</Day>
            <Hour>hora(s)</Hour>
            <Minute>minuto(s)</Minute>
            <Second>segundo(s)</Second>
@@ -914,7 +914,7 @@
            <HalfRight>poludesno</HalfRight>
            <Right>desno</Right>
            <SharpRight>oštro desno</SharpRight>
-           <UTurn>okrenite polukužno</UTurn>
+           <UTurn>okrenite poluku&#382;no</UTurn>
        </Direction>
        <ActionNumber>Akcija br.</ActionNumber>
        <FillWord>
@@ -962,10 +962,10 @@
    <Language Description="Czech" Code="cz">
        <MobilityBasedMovementInstruction>
            <Vehicle>Jeďte</Vehicle>
-           <Pedestrian>Jděte</Pedestrian>
+           <Pedestrian>Jd&#283;te</Pedestrian>
        </MobilityBasedMovementInstruction>
        <Time>
-           <Appoximation>přibližně</Appoximation>
+           <Appoximation>přibli&#382;n&#283;</Appoximation>
            <Day>Den(dny)</Day>
            <Hour>Hodin(y)</Hour>
            <Minute>Minut(y)</Minute>
@@ -975,17 +975,17 @@
            <Curve>Odbočte</Curve>
            <SharpLeft>ostře do leva</SharpLeft>
            <Left>v levo</Left>
-           <HalfLeft>mírně v levo</HalfLeft>
-           <StraightForward>rovně</StraightForward>
-           <HalfRight>mírne v pravo</HalfRight>
+           <HalfLeft>m&iacute;rn&#283; v levo</HalfLeft>
+           <StraightForward>rovn&#283;</StraightForward>
+           <HalfRight>m&iacute;rne v pravo</HalfRight>
            <Right>v pravo</Right>
            <SharpRight>ostře do prava</SharpRight>
            <UTurn>Otočte se</UTurn>
        </Direction>
-       <ActionNumber>Číslo bodu</ActionNumber>
+       <ActionNumber>Č&iacute;slo bodu</ActionNumber>
        <FillWord>
            <StartTag>Start</StartTag>
-           <EndTag>Jste v cíli!</EndTag>
+           <EndTag>Jste v c&iacute;li!</EndTag>
            <On>na</On>
            <For>pro</For>
            <Before>před</Before>
@@ -1094,36 +1094,36 @@
    </Language>
    <Language Description="Chinese-Simplified" Code="cn_simple">
        <MobilityBasedMovementInstruction>
-           <Vehicle>Drive</Vehicle>
-           <Pedestrian>Go</Pedestrian>
+           <Vehicle>开</Vehicle>
+           <Pedestrian>走</Pedestrian>
        </MobilityBasedMovementInstruction>
        <Time>
-           <Appoximation>approx.</Appoximation>
-           <Day>day(s)</Day>
-           <Hour>hour(s)</Hour>
-           <Minute>minute(s)</Minute>
-           <Second>second(s)</Second>
+           <Appoximation>约</Appoximation>
+           <Day>天(s)</Day>
+           <Hour>时(s)</Hour>
+           <Minute>分(s)</Minute>
+           <Second>秒(s)</Second>
        </Time>
        <Direction>
-           <Curve>Turn</Curve>
+           <Curve>转</Curve>
            <SharpLeft>sharp left</SharpLeft>
-           <Left>left</Left>
-           <HalfLeft>half left</HalfLeft>
-           <StraightForward>straight forward</StraightForward>
-           <HalfRight>half right</HalfRight>
-           <Right>right</Right>
+           <Left>向左</Left>
+           <HalfLeft>稍向左</HalfLeft>
+           <StraightForward>一直向前</StraightForward>
+           <HalfRight>稍向右</HalfRight>
+           <Right>向右</Right>
            <SharpRight>sharp right</SharpRight>
-           <UTurn>turn</UTurn>
-           <InitialHeading>north, northeast, east, southeast, south, southwest, west, northwest</InitialHeading>
+           <UTurn>转</UTurn>
+           <InitialHeading>北, 东北, 东, 东南, 南, 西南, 西, 西北</InitialHeading>
        </Direction>
        <ActionNumber>Actionno.</ActionNumber>
        <FillWord>
-           <StartTag>Head</StartTag>
-           <EndTag>Arrived at destination!</EndTag>
-           <On>onto</On>
+           <StartTag>面向</StartTag>
+           <EndTag>您已到达目的地!</EndTag>
+           <On>至</On>
            <For>for</For>
-           <Before>before</Before>
-           <After>after</After>
+           <Before>之前</Before>
+           <After>之后</After>
        </FillWord>
    </Language>
 </InstructionTags>

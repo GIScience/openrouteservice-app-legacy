@@ -279,10 +279,7 @@ var Ui = ( function(w) {'use strict';
 						address.setAttribute('data-position', lonLat.x + ' ' + lonLat.y);
 						address.setAttribute('data-layer', layername);
 						address.setAttribute('data-shortAddress', shortText);
-						resultContainer.appendChild(address);
-
-						console.log(listOfFeatures[i].id)
-						
+						resultContainer.appendChild(address);						
 					}
 				}
 			});
@@ -300,17 +297,21 @@ var Ui = ( function(w) {'use strict';
 			// if one result is found then select it
 
 
-			if (listOfFeatures.length == 1) {
 
-				console.log(listOfFeatures)
-				$('.address').click(handleSearchWaypointResultClick).trigger("click");
-				//$('.address').trigger(clickEvent);
+			if (listOfFeatures.length == 1) {
+				var featureID = listOfFeatures[0].id
+
+				$(".address").click( function (event, a) {
+					// for a trigger like below a refers to featureID
+					handleSearchWaypointResultClickHelper(event, a)
+				} ).trigger("click", featureID);
+
 
 			} else {
 				//event handling
 				$('.address').mouseover(handleMouseOverElement);
 				$('.address').mouseout(handleMouseOutElement);
-				$('.address').click(handleSearchWaypointResultClick);
+				$('.address').click(handleSearchWaypointResultClickHelper);
 			}
 
 		}
@@ -327,42 +328,61 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/**
+		 * is needed to check whether one result is returned after address is inserted
+		 * if featureID is passed to the .trigger event compare it to trigger event target id
+		 * @param e: click event
+		 * @param featureID: id of address, is optional as it is only passed when one result is returned
+		 */
+		function handleSearchWaypointResultClickHelper(e, featureID) {
+
+			if (featureID != undefined) {
+				if (featureID == e.target.id) {
+					handleSearchWaypointResultClick(e)
+				}
+			} else {
+					handleSearchWaypointResultClick(e)
+			}
+		}
+
+		/**
 		 * when the user clicks on a waypoint search result, it is used as waypoint. The search results vanish and only the selected address is shown.
 		 * @param e: the event
 		 */
 		function handleSearchWaypointResultClick(e) {
+	
+					var rootElement = $(e.currentTarget).parent().parent().parent().parent();
+					var index = rootElement.attr('id');
+					rootElement.removeClass('unset');
+					rootElement = rootElement.get(0);
 
-			console.log(e.target.id)
-			var rootElement = $(e.currentTarget).parent().parent().parent().parent();
-			var index = rootElement.attr('id');
-			rootElement.removeClass('unset');
-			rootElement = rootElement.get(0);
+					rootElement.querySelector('.searchAgainButton').show();
+					var component = rootElement.querySelector('.guiComponent');
+					if (!component.hasClassName('route')) {
+						component.hide();
+						var waypointResultElement = rootElement.querySelector('.waypointResult');
+						//remove older entries:
+						while (waypointResultElement.firstChild) {
+							waypointResultElement.removeChild(waypointResultElement.firstChild);
+						}
+						waypointResultElement.insert(e.currentTarget);
+						waypointResultElement.show();
 
-			rootElement.querySelector('.searchAgainButton').show();
-			var component = rootElement.querySelector('.guiComponent');
-			if (!component.hasClassName('route')) {
-				component.hide();
-				var waypointResultElement = rootElement.querySelector('.waypointResult');
-				//remove older entries:
-				while (waypointResultElement.firstChild) {
-					waypointResultElement.removeChild(waypointResultElement.firstChild);
-				}
-				waypointResultElement.insert(e.currentTarget);
-				waypointResultElement.show();
-
-				//remove search markers and add a new waypoint marker
-				theInterface.emit('ui:waypointResultClick', {
-					wpIndex : index,
-					featureId : e.currentTarget.id,
-					searchIds : rootElement.getAttribute('data-search')
-				});
-			} else {
-				handleSearchAgainWaypointClick({
-					currentTarget: e.currentTarget.up('.waypointResult')
-				})
-			}
+						//remove search markers and add a new waypoint marker
+						theInterface.emit('ui:waypointResultClick', {
+							wpIndex : index,
+							featureId : e.currentTarget.id,
+							searchIds : rootElement.getAttribute('data-search')
+						});
+					} else {
+						handleSearchAgainWaypointClick({
+							currentTarget: e.currentTarget.up('.waypointResult')
+						})
+					}
+			
+			
 		}
 
+	
 		/**
 		 * Sets attributes of the selected waypoint.
 		 * @param wpIndex: index of the waypoint to set the attributes for
