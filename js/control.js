@@ -1499,6 +1499,8 @@ var Controller = ( function(w) {'use strict';
 			map.register('map:waypointMoved', handleWaypointMoved);
 
 			ui.register('ui:routingParamsChanged', handleRoutePresent);
+			ui.register('ui:handleMoveUpWaypointClick', handleRoutePresent);
+
 			ui.register('ui:zoomToRoute', handleZoomToRoute);
 
 			ui.register('ui:avoidAreaControls', avoidAreaToolClicked);
