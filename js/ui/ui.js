@@ -257,7 +257,7 @@ var Ui = ( function(w) {'use strict';
 		 * @param wpIndex: index of the waypoint the search was performed for
 		 */
 		function updateSearchWaypointResultList(results, listOfFeatures, layername, wpIndex) {
-
+			
 			//insert address information to page
 			var allAddress;
 			var allIds = '';
@@ -349,35 +349,52 @@ var Ui = ( function(w) {'use strict';
 		 * @param e: the event
 		 */
 		function handleSearchWaypointResultClick(e) {
-	
-					var rootElement = $(e.currentTarget).parent().parent().parent().parent();
-					var index = rootElement.attr('id');
-					rootElement.removeClass('unset');
-					rootElement = rootElement.get(0);
+			
+			var rootElement = $(e.currentTarget).parent().parent().parent().parent();
+			
+			var selectedDiv = $(e.currentTarget).parent().parent().parent().parent()[0];
+		
+			var index = rootElement.attr('id');
+			rootElement.removeClass('unset');
+			rootElement = rootElement.get(0);
 
-					rootElement.querySelector('.searchAgainButton').show();
-					var component = rootElement.querySelector('.guiComponent');
-					if (!component.hasClassName('route')) {
-						component.hide();
-						var waypointResultElement = rootElement.querySelector('.waypointResult');
-						//remove older entries:
-						while (waypointResultElement.firstChild) {
-							waypointResultElement.removeChild(waypointResultElement.firstChild);
-						}
-						waypointResultElement.insert(e.currentTarget);
-						waypointResultElement.show();
+			rootElement.querySelector('.searchAgainButton').show();
+			var component = rootElement.querySelector('.guiComponent');
+			if (!component.hasClassName('route')) {
+				component.hide();
+				var waypointResultElement = rootElement.querySelector('.waypointResult');
+				//remove older entries:
+				while (waypointResultElement.firstChild) {
+					waypointResultElement.removeChild(waypointResultElement.firstChild);
+				}
+				waypointResultElement.insert(e.currentTarget);
+				waypointResultElement.show();
 
-						//remove search markers and add a new waypoint marker
-						theInterface.emit('ui:waypointResultClick', {
-							wpIndex : index,
-							featureId : e.currentTarget.id,
-							searchIds : rootElement.getAttribute('data-search')
-						});
-					} else {
-						handleSearchAgainWaypointClick({
-							currentTarget: e.currentTarget.up('.waypointResult')
-						})
-					}
+				//remove search markers and add a new waypoint marker
+				theInterface.emit('ui:waypointResultClick', {
+					wpIndex : index,
+					featureId : e.currentTarget.id,
+					searchIds : rootElement.getAttribute('data-search')
+				});
+			} else {
+				handleSearchAgainWaypointClick({
+					currentTarget: e.currentTarget.up('.waypointResult')
+				})
+			}
+
+			// make input field not selectable
+			var thisDiv = selectedDiv.className
+			var myDiv = thisDiv.replace(/ /g,".");
+			$('.'+myDiv).css('pointer-events', 'none');
+			$('.removeWaypoint').css('pointer-events', 'auto');
+			$('.moveUpWaypoint').css('pointer-events', 'auto');
+			$('.moveDownWaypoint').css('pointer-events', 'auto');
+			$('.searchAgainButton').css('pointer-events', 'auto');
+
+
+
+			
+
 			
 			
 		}
@@ -786,7 +803,15 @@ var Ui = ( function(w) {'use strict';
 		 * @param e: the event
 		 */
 		function handleSearchAgainWaypointClick(e) {
+			
 			var wpElement = $(e.currentTarget).parent();
+			
+			// make input field selectable
+			var selectedDiv = $(e.currentTarget).parent()[0];
+			var thisDiv = selectedDiv.className
+			var myDiv = thisDiv.replace(/ /g,".");
+			$('.'+myDiv).css('pointer-events', 'auto');
+
 			var index = wpElement.attr('id');
 
 			var addrElement = wpElement.get(0).querySelector('.address');
