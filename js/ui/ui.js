@@ -485,7 +485,7 @@ var Ui = ( function(w) {'use strict';
 				id2 : succIndex
 			});
 
-			//theInterface.emit('ui:routingParamsChanged');
+			theInterface.emit('ui:routingParamsChanged');
 		}
 
 		/**
