@@ -1060,36 +1060,36 @@
    </Language> 
    <Language Description="Chinese" Code="cn">
        <MobilityBasedMovementInstruction>
-           <Vehicle>Drive</Vehicle>
-           <Pedestrian>Go</Pedestrian>
+           <Vehicle>開</Vehicle>
+           <Pedestrian>走</Pedestrian>
        </MobilityBasedMovementInstruction>
        <Time>
-           <Appoximation>approx.</Appoximation>
-           <Day>day(s)</Day>
-           <Hour>hour(s)</Hour>
-           <Minute>minute(s)</Minute>
-           <Second>second(s)</Second>
+           <Appoximation>約</Appoximation>
+           <Day>天(S)</Day>
+           <Hour>時(s)</Hour>
+           <Minute>分(s)</Minute>
+           <Second>秒(s)</Second>
        </Time>
        <Direction>
-           <Curve>Turn</Curve>
-           <SharpLeft>sharp left</SharpLeft>
-           <Left>left</Left>
-           <HalfLeft>half left</HalfLeft>
-           <StraightForward>straight forward</StraightForward>
-           <HalfRight>half right</HalfRight>
-           <Right>right</Right>
-           <SharpRight>sharp right</SharpRight>
-           <UTurn>turn</UTurn>
-           <InitialHeading>north, northeast, east, southeast, south, southwest, west, northwest</InitialHeading>
+           <Curve>轉</Curve>
+           <SharpLeft>左銳</SharpLeft>
+           <Left>向左</Left>
+           <HalfLeft>稍向左</HalfLeft>
+           <StraightForward>一直向前</StraightForward>
+           <HalfRight>稍向右</HalfRight>
+           <Right>向右</Right>
+           <SharpRight>銳權</SharpRight>
+           <UTurn>轉</UTurn>
+           <InitialHeading>北, 東北, 東, 東南, 南, 西南, 西, 西北</InitialHeading>
        </Direction>
        <ActionNumber>Actionno.</ActionNumber>
        <FillWord>
-           <StartTag>Head</StartTag>
-           <EndTag>Arrived at destination!</EndTag>
-           <On>onto</On>
-           <For>for</For>
-           <Before>before</Before>
-           <After>after</After>
+           <StartTag>面向</StartTag>
+           <EndTag>您已到達目的地!</EndTag>
+           <On>至</On>
+           <For>之前</For>
+           <Before>之前</Before>
+           <After>之後</After>
        </FillWord>
    </Language>
    <Language Description="Chinese-Simplified" Code="cn_simple">
@@ -1106,13 +1106,13 @@
        </Time>
        <Direction>
            <Curve>转</Curve>
-           <SharpLeft>sharp left</SharpLeft>
+           <SharpLeft>左锐</SharpLeft>
            <Left>向左</Left>
            <HalfLeft>稍向左</HalfLeft>
            <StraightForward>一直向前</StraightForward>
            <HalfRight>稍向右</HalfRight>
            <Right>向右</Right>
-           <SharpRight>sharp right</SharpRight>
+           <SharpRight>锐权</SharpRight>
            <UTurn>转</UTurn>
            <InitialHeading>北, 东北, 东, 东南, 南, 西南, 西, 西北</InitialHeading>
        </Direction>
