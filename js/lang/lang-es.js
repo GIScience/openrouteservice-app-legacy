@@ -150,6 +150,7 @@ var lang_es = {
     'pl':'Polaco - Polski',
     'bg':'B&uacute;lgaro- - български',
 	'cn_simple' : 'Chino (Simplificado) - 中国（简体）',
+	'cn-simple' : 'Chino (Simplificado) - 中国（简体）',
 	'cn' : 'Chino (Tradicional) - 中国（繁体）',
     'cz':'Checo - Cesk&aacute;',
     'nl':'Holandesa - Nederlands',

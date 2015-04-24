@@ -155,6 +155,7 @@ var lang_cn = {
 	'pl' : '波蘭語 - Polski',
 	'bg' : '保加利亞語 - български',
 	'cn_simple' : '中国（简体） - Chinese (Simplified)',
+	'cn-simple' : '中国（简体） - Chinese (Simplified)',
 	'cn' : '中国（繁体） - Chinese (Traditional)',
 	'cz' : '捷克語 - Cesk&aacute;',
 	'nl' : '荷蘭語 - Nederlands',

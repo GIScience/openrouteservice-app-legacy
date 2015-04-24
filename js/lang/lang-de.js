@@ -193,6 +193,7 @@ var lang_de = {
 		'bg' : 'Bulgarisch - български',
 		'ca' : 'Katalanisch - Catal&aacute;n',
 		'cn_simple' : 'Chinesisch (Vereinfacht) - 中国（简体）',
+		'cn-simple' : 'Chinesisch (Vereinfacht) - 中国（简体）',
 		'cn' : 'Chinesisch (Traditionell) - 中國（簡體）',
 		'cz' : 'Tschechisch - Cesk&aacute;',
 		'dk' : 'D&auml;nisch - Dansk',

@@ -150,6 +150,7 @@ var lang_hu = {
     'pl':'Alengyel - Polski',
     'bg':'Bolg&aacute;r- - български',
 	'cn_simple' : 'K&iacute;nai (Egyszer&#369;s&iacute;tett) - 中国（简体）',
+	'cn-simple' : 'K&iacute;nai (Egyszer&#369;s&iacute;tett) - 中国（简体）',
 	'cn' : 'K&iacute;nai (Hagyom&aacute;nyos) - 中国（繁体）',
     'cz':'Cseh K&ouml;zt&aacute;rsas&aacute;g - Cesk&aacute;',
     'nl':'Dutch - Nederlands',

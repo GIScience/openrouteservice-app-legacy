@@ -141,6 +141,7 @@ var lang_it = {
     'pl':'Polacco - Polski',
     'bg':'Bulgaro - български',
 	'cn_simple' : 'Cinese (Semplificato) - 中国（简体）',
+	'cn-simple' : 'Cinese (Semplificato) - 中国（简体）',
 	'cn' : 'Cinese(Tradizionala) - 中国（繁体）',
     'cz':'Ceco - Cesk&aacute;',
     'nl':'Olandese - Nederlands',

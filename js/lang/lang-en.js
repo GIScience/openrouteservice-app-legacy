@@ -153,6 +153,7 @@ var lang_en = {
 	'bg' : 'Bulgarian - български',
 	'ca' : 'Catalan - Catal&aacute;n',
 	'cn_simple' : 'Chinese (Simplified) - 中国（简体）',
+	'cn-simple' : 'Chinese (Simplified) - 中国（简体）',
 	'cn' : 'Chinese (Traditional) - 中国（繁体）',
 	'cz' : 'Czech - Cesk&aacute;',
 	'dk' : 'Danish - Dansk',

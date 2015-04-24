@@ -150,6 +150,7 @@ var lang_nl = {
     'pl':'Pools - Polski',
     'bg':'Bulgaarse - български',
 	'cn_simple' : 'Chinees (Vereenvoudigd) - 中国（简体）',
+	'cn-simple' : 'Chinees (Vereenvoudigd) - 中国（简体）',
 	'cn' : 'Chinees (Traditioneel) - 中国（繁体）',
     'cz':'Tsjechisch - Cesk&aacute;',
     'nl':'Nederlands',
