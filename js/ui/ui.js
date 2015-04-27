@@ -565,6 +565,7 @@ var Ui = ( function(w) {'use strict';
 		 *  @param e: the event
 		 */
 		function handleAddWaypointClick(e) {
+
 			//id of prior to last waypoint:
 			var waypointId = $(e.currentTarget).prev().attr('id');
 			var oldIndex = parseInt(waypointId);
@@ -639,6 +640,7 @@ var Ui = ( function(w) {'use strict';
 		 * @return: the index of the wayoint
 		 */
 		function addWaypointResultByRightclick(results, typeOfWaypoint, index) {
+			
 			var numWaypoints = $('.waypoint').length - 1;
 			while (index >= numWaypoints) {
 				addWaypointAfter(numWaypoints - 1);
@@ -658,7 +660,7 @@ var Ui = ( function(w) {'use strict';
 			var children = rootElement.children();
 
 			//show waypoint result and searchAgain button
-			children[3].show();
+			//children[3].show();
 			var waypointResultElement = children[4];
 			while (waypointResultElement.hasChildNodes()) {
 				waypointResultElement.removeChild(waypointResultElement.lastChild);
@@ -701,6 +703,7 @@ var Ui = ( function(w) {'use strict';
 		 * @param e: the event
 		 */
 		function handleRemoveWaypointClick(e) {
+			
 			var numWaypoints = $('.waypoint').length - 1;
 
 			var currentId = parseInt($(e.currentTarget).parent().attr('id'));
@@ -803,12 +806,13 @@ var Ui = ( function(w) {'use strict';
 		 * @param e: the event
 		 */
 		function handleSearchAgainWaypointClick(e) {
-			
+
 			var wpElement = $(e.currentTarget).parent();
 			
 			// make input field selectable
 			var selectedDiv = $(e.currentTarget).parent()[0];
 			var thisDiv = selectedDiv.className
+
 			var myDiv = thisDiv.replace(/ /g,".");
 			$('.'+myDiv).css('pointer-events', 'auto');
 
@@ -825,7 +829,9 @@ var Ui = ( function(w) {'use strict';
 			$(searchComponent).show();
 
 			var searchResults = wpElement.attr('data-search');
+
 			if (searchResults) {
+
 				//this waypoint was created by a search input. Only then it is useful to view previous search results
 				//therefore we have to re-calculate the search
 
@@ -846,6 +852,8 @@ var Ui = ( function(w) {'use strict';
 				});
 
 			} else {
+
+
 				resultComponent.removeChild(addrElement);
 				var responses = searchComponent.querySelector('.responseContainer');
 				if (responses) {
