@@ -87,7 +87,7 @@ var Waypoint = (function(w) {'use strict';
 	 * @return: array of OL.LonLat representing the coordinates of the waypoint results
 	 */
 	function parseResultsToPoints(results, wpIndex) {
-		var europeBbox = new OpenLayers.Bounds(-31.303, 34.09, 50.455, 71.869);
+		//var europeBbox = new OpenLayers.Bounds(-31.303, 34.09, 50.455, 71.869);
 
 		var listOfPoints = [];
 
@@ -99,9 +99,11 @@ var Waypoint = (function(w) {'use strict';
 				point = (point.firstChild.nodeValue).split(" ");
 				point = new OpenLayers.LonLat(point[0], point[1]);
 
-				if (europeBbox.containsLonLat(point)) {
-					listOfPoints.push(point);
-				} //else {
+				listOfPoints.push(point);
+
+				//if (europeBbox.containsLonLat(point)) {
+					//listOfPoints.push(point);
+				//} //else {
 					//listOfPoints.push(null);
 				//}
 			}

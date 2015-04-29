@@ -21,7 +21,7 @@ var Route = ( function(w) {"use strict";
 		 * @param avoidFerry: flag set to true if ferrys should be avoided in the route; else: false
 		 * @param avoidAreas: array of avoid areas represented by OL.Geometry.Polygons
 		 */
-		function calculate(routePoints, successCallback, failureCallback, language, routePref,extendedRoutePreferences, extendedRoutePreferencesType, avoidMotorways, avoidTollways,avoidunpavedRoads,avoidFerry, avoidAreas) {
+		function calculate(routePoints, successCallback, failureCallback, language, routePref,extendedRoutePreferences, extendedRoutePreferencesType, avoidMotorways, avoidTollways,avoidunpavedRoads,avoidFerry, avoidAreas, calcRouteID) {
 
 			var writer = new XMLWriter('UTF-8', '1.0');
 			writer.writeStartDocument();
@@ -214,12 +214,40 @@ var Route = ( function(w) {"use strict";
 			var xmlRequest = writer.flush();
 			writer.close();
 
-			var request = OpenLayers.Request.POST({
-				url : namespaces.services.routing,
-				data : xmlRequest,
-				success : successCallback,
-				failure : failureCallback
+
+			// var request = OpenLayers.Request.POST({
+			// 	url : namespaces.services.routing,
+			// 	data : xmlRequest,
+			// 	success : successCallback,
+			// 	failure : failureCallback
+			// });
+
+			
+
+			jQuery.ajaxPrefilter(function( options ) {
+				if ( options.crossDomain ) {
+					options.url = "http://localhost/cgi-bin/proxy.cgi?url=" + encodeURIComponent( options.url );
+					options.crossDomain = false;
+				}
 			});
+
+			// for localhost testing, set crossDomain to true
+			jQuery.ajax({
+				url: namespaces.services.routing,
+				processData: false,
+				type: "POST",
+				dataType: "xml",
+				crossDomain: false,
+				data: xmlRequest, 
+				success: function(response){
+					successCallback(response,calcRouteID)
+				},
+				error: function(response) {
+					failureCallback(response) 
+				}
+			});
+
+
 		}
 
 		/**
