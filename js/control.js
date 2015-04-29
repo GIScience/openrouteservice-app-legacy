@@ -7,6 +7,8 @@ var Controller = ( function(w) {'use strict';
 		SERVICE_TIMEOUT_INTERVAL = 10000,
 		//timer
 		timerRoute; //TODO more timers for various service calls
+		//ID for route calculation, will increment each time a route is calculated
+		var calcRouteID = 0;
 
 		function Controller() {
 			//path to the proxy-script as workaround for JavaScript security errors
@@ -731,9 +733,14 @@ var Controller = ( function(w) {'use strict';
 		 * else: hides route information
 		 */
 		function handleRoutePresent() {
+
+			
 			var isRoutePresent = waypoint.getNumWaypointsSet() >= 2;
 
 			if (isRoutePresent) {
+
+				calcRouteID++;
+
 				ui.startRouteCalculation();
 
 				var routePoints = ui.getRoutePoints();
@@ -782,7 +789,7 @@ var Controller = ( function(w) {'use strict';
 					var extendedRoutePreferencesType = null;
 				}
 
-				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferences, extendedRoutePreferencesType, avoidHighway, avoidTollway,avoidUnpavedRoads,avoidFerry, avoidAreas);
+				route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferences, extendedRoutePreferencesType, avoidHighway, avoidTollway,avoidUnpavedRoads,avoidFerry, avoidAreas, calcRouteID);
 				//try to read a variable that is set after the service response was received. If this variable is not set after a while -> timeout.
 				clearTimeout(timerRoute);
 
@@ -806,44 +813,51 @@ var Controller = ( function(w) {'use strict';
 			}
 		}
 
+
+
 		/**
 		 * processes route results: triggers displaying the route on the map, showing instructions and a summary
 		 * @param results: XML route service results
 		 */
-		function routeCalculationSuccess(results) {
-			var zoomToMap = !route.routePresent;
-			route.routePresent = true;
-			ui.setRouteIsPresent(true);
+		function routeCalculationSuccess(results,routeID) {
 
-			results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
+			// only fire if returned routeID from callback is same as current global calcRouteID
+			if (routeID == calcRouteID) {
+				
+				var zoomToMap = !route.routePresent;
+				route.routePresent = true;
+				ui.setRouteIsPresent(true);
 
-			//when the service gives response but contains an error the response is handeled as success, not error. We have to check for an error tag here:
-			var responseError = util.getElementsByTagNameNS(results, namespaces.xls, 'ErrorList').length;
-			if (parseInt(responseError) > 0) {
-				//service response contains an error, switch to error handling function
-				routeCalculationError();
-			} else {
-				//use all-in-one-LineString to save the whole route in a single string
-				var routeLineString = route.writeRouteToSingleLineString(results);
-				var routeString = map.writeRouteToString(routeLineString);
-				route.routeString = routeString;
+				//results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
 
-				// each route instruction has a part of this lineString as geometry for this instruction
-				var routeLines = route.parseResultsToLineStrings(results, util.convertPointForMap);
-				var routePoints = route.parseResultsToCornerPoints(results, util.convertPointForMap);
-				var featureIds = map.updateRoute(routeLines, routePoints);
-
-				var errors = route.hasRoutingErrors(results);
-
-				if (!errors) {
-					ui.updateRouteSummary(results);
-
-					ui.updateRouteInstructions(results, featureIds, map.ROUTE_LINES);
-					ui.endRouteCalculation();
-
-					if (zoomToMap) map.zoomToRoute();
-				} else {
+				//when the service gives response but contains an error the response is handeled as success, not error. We have to check for an error tag here:
+				var responseError = util.getElementsByTagNameNS(results, namespaces.xls, 'ErrorList').length;
+				if (parseInt(responseError) > 0) {
+					//service response contains an error, switch to error handling function
 					routeCalculationError();
+				} else {
+					//use all-in-one-LineString to save the whole route in a single string
+					var routeLineString = route.writeRouteToSingleLineString(results);
+					var routeString = map.writeRouteToString(routeLineString);
+					route.routeString = routeString;
+
+					// each route instruction has a part of this lineString as geometry for this instruction
+					var routeLines = route.parseResultsToLineStrings(results, util.convertPointForMap);
+					var routePoints = route.parseResultsToCornerPoints(results, util.convertPointForMap);
+					var featureIds = map.updateRoute(routeLines, routePoints);
+
+					var errors = route.hasRoutingErrors(results);
+
+					if (!errors) {
+						ui.updateRouteSummary(results);
+
+						ui.updateRouteInstructions(results, featureIds, map.ROUTE_LINES);
+						ui.endRouteCalculation();
+
+						if (zoomToMap) map.zoomToRoute();
+					} else {
+						routeCalculationError();
+					}
 				}
 			}
 		}
