@@ -371,10 +371,11 @@ var Map = ( function() {"use strict";
 				});
 
 				function updateInfoPanel(results) {
+					var lastUpdate = new Date(results.profiles['profile 1'].import_date.toString());
 					document.getElementById("infoPanel").innerHTML += '<br/><br/>';
-					document.getElementById("infoPanel").innerHTML += '<b>Update Status:</b> ' + results.update_status;
+					document.getElementById("infoPanel").innerHTML += '<b>Last Update:</b> ' + lastUpdate;
 					document.getElementById("infoPanel").innerHTML += '<br/>';
-					document.getElementById("infoPanel").innerHTML += '<b>Graph Next Update:</b> ' + results.next_update;
+					document.getElementById("infoPanel").innerHTML += '<b>Next Update:</b> ' + results.next_update;
 				}
 
 			}
