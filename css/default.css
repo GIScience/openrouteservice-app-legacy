@@ -43,14 +43,26 @@
 div.olControlMousePosition {
 	font-family: Verdana;
 	font-size: 2em;
-	right: 2px;
-	background-color: rgba(255,255,255,0.75);
-	padding: 2px;
-	bottom: 2px;
+	left: 2px;
+	background-color: rgba(255,255,255,0.5);
+	padding: 4px;
+	bottom: 0px;
+	max-width: 120px;
+	font-weight: bold;
 }
 div.olControlScaleLine {
 	background-color: rgba(255,255,255,0.5);
 	padding: 4px;
+	left: 2px;
+	bottom: 25px;
+}
+
+div.olControlPermalink {
+	background-color: rgba(255,255,255,0.5);
+	padding: 4px;
+	left: 2px;
+	bottom: 59px;
+	max-width: 60px;
 }
 
 /**
@@ -525,6 +537,31 @@ button.routeOptionsButton > img {
 	/*bottom: 25px;   uncomment for height pofile */
 	bottom: 0px;
 }
+
+#infoButton {
+	position: fixed;
+	background: url('../img/info-32.png') no-repeat center;
+	bottom: 10px;
+	right: 5px;
+	z-index: 999;
+	width: 32px;
+	height: 32px;
+
+}
+
+#infoPanel {
+	position: fixed;
+	-width: 200px;
+	-height: 200px;
+	background-color: rgba(255, 255, 255, 0.5);
+	border-radius: 5px;
+	z-index: 999;
+	right: 5px;
+	bottom: 13px;
+	overflow: auto;
+	display: none;
+	padding: 5px 5px 5px 5px;
+} 
 /* uncomment for height pofile */
 /*.heightContent {
 	float: left;

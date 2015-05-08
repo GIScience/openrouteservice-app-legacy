@@ -127,8 +127,12 @@ var Map = ( function() {"use strict";
 				displayProjection : new OpenLayers.Projection('EPSG:4326'),
 				theme : "lib/OpenLayersTheme.css",
 				maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34),
-				restrictedExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34)
+				restrictedExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34),
+				eventListeners: {
+			         "changebaselayer": mapBaseLayerChanged
+			    }
 			});
+
 
 			/* *********************************************************************
 			* MAP LAYERS
@@ -142,6 +146,7 @@ var Map = ( function() {"use strict";
 					this.theMap.setCenter(0, 3);
 				}
 			});
+
 
 
 			//layer 1 - open map surfer
@@ -341,10 +346,43 @@ var Map = ( function() {"use strict";
 				id : 'layerSwitcherPanel'
 			}));
 
+
+			// this function is needed to update panelInformation when Layers are changed
+			function mapBaseLayerChanged() {
+				// update map attributions in infoPanel
+				document.getElementById("infoPanel").innerHTML = self.theMap.baseLayer.attribution;
+
+				var graphInfo = "http://openls.geog.uni-heidelberg.de/osm/routing?info";
+				jQuery.ajaxPrefilter(function( options ) {
+					if ( options.crossDomain ) {
+						options.url = "http://localhost/cgi-bin/proxy.cgi?url=" + encodeURIComponent( options.url );
+						options.crossDomain = false;
+					}	
+				});
+
+				// set crossDomain to true if on localhost
+				jQuery.ajax({
+				  url: graphInfo,
+				  dataType: 'json',
+				  type: 'GET', 
+				  crossDomain: false,
+				  success: updateInfoPanel,
+				  error: updateInfoPanel
+				});
+
+				function updateInfoPanel(results) {
+					document.getElementById("infoPanel").innerHTML += '<br/><br/>';
+					document.getElementById("infoPanel").innerHTML += '<b>Update Status:</b> ' + results.update_status;
+					document.getElementById("infoPanel").innerHTML += '<br/>';
+					document.getElementById("infoPanel").innerHTML += '<b>Graph Next Update:</b> ' + results.next_update;
+				}
+
+			}
+
 			this.theMap.addControl(new OpenLayers.Control.ScaleLine());
 			this.theMap.addControl(new OpenLayers.Control.MousePosition());
 			this.theMap.addControl(new OpenLayers.Control.Permalink());
-			this.theMap.addControl(new OpenLayers.Control.Attribution());
+			//this.theMap.addControl(new OpenLayers.Control.Attribution());
 
 			this.selectMarker = new OpenLayers.Control.SelectFeature([layerSearch, layerGeolocation, layerRoutePoints, layerPoi, layerRouteLines], {
 				hover : true
@@ -514,7 +552,8 @@ var Map = ( function() {"use strict";
 			/* *********************************************************************
 			 * MAP EVENTS
 			 * *********************************************************************/
-			function emitMapChangedEvent(e) {
+			function emitMapChangedEvent(e) {			
+
 				var centerTransformed = util.convertPointForDisplay(self.theMap.getCenter());
 				self.emit('map:changed', {
 					layer : self.serializeLayers(),

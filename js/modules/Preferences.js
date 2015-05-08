@@ -590,6 +590,10 @@ var Preferences = ( function(w) {'use strict';
 		}
 		//slice away last '&'
 		query = query.substring(0, query.length - 1);
+
+		// convert to bitly
+
+
 		window.open(query);
 	}
 	

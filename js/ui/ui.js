@@ -2592,6 +2592,18 @@ var Ui = ( function(w) {'use strict';
 
 			//user preferences
 			$('#savePrefsBtn').click(handleSaveUserPreferences);
+
+			//show info 
+			$('#infoButton,#infoPanel').hover(function() {
+			      $('#infoPanel').show();
+			      $('#infoButton').hide();
+			}, function() {
+			      $('#infoPanel').hide();
+			      $('#infoButton').show();
+
+
+			});
+
 		}
 
 
