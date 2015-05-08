@@ -2602,9 +2602,8 @@ var Ui = ( function(w) {'use strict';
 			}, function() {
 			      $('#infoPanel').hide();
 			      $('#infoButton').show();
-
-
 			});
+
 
 		}
 

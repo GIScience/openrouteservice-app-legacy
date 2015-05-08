@@ -296,6 +296,7 @@ div.olControlPermalink {
 	border-radius: 6px;
 	padding: 3px;
 	max-height: 105px;
+	-min-width: 220px;
 }
 .contextMenu span {
 	vertical-align: -10px;
@@ -306,6 +307,7 @@ div.olControlPermalink {
 	background-image: url('../img/marker-start.png');
 	background-repeat: no-repeat;
 	white-space: nowrap;
+	cursor: pointer;
 }
 .useAsViaPoint {
 	padding-left: 32px;
@@ -313,6 +315,7 @@ div.olControlPermalink {
 	background-image: url('../img/marker-via.png');
 	background-repeat: no-repeat;
 	white-space: nowrap;
+	cursor: pointer;
 }
 .useAsEndPoint {
 	padding-left: 32px;
@@ -320,6 +323,7 @@ div.olControlPermalink {
 	background-image: url('../img/marker-end.png');
 	background-repeat: no-repeat;
 	white-space: nowrap;
+	cursor: pointer;
 }
 /*preferences popup*/
 #sitePrefsModal label {

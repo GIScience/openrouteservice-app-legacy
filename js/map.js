@@ -441,6 +441,17 @@ var Map = ( function() {"use strict";
 								type : Waypoint.type.START
 							});
 						};
+						options[0].onmouseover = function(e) {
+							//click on start point
+							document.getElementById("contextStart").style.color = 'black';
+							document.getElementsByClassName("useAsStartPoint")[0].style.backgroundImage = "url('img/marker-start_focus.png')";
+						};
+						options[0].onmouseout = function(e) { 
+						    document.getElementById("contextStart").style.color = '#444';
+						    document.getElementsByClassName("useAsStartPoint")[0].style.backgroundImage = "url('img/marker-start.png')";
+
+						}
+
 						options[1].onclick = function(e) {
 							//click on via point
 							self.emit('map:addWaypoint', {
@@ -448,12 +459,33 @@ var Map = ( function() {"use strict";
 								type : Waypoint.type.VIA
 							});
 						};
+						options[1].onmouseover = function(e) {
+							//click on start point
+							document.getElementById("contextVia").style.color = 'black';
+							document.getElementsByClassName("useAsViaPoint")[0].style.backgroundImage = "url('img/marker-via_focus.png')";
+
+						};
+						options[1].onmouseout = function(e) { 
+						    document.getElementById("contextVia").style.color = '#444';
+						    document.getElementsByClassName("useAsViaPoint")[0].style.backgroundImage = "url('img/marker-via.png')";
+
+						}
 						options[2].onclick = function(e) {
 							//click on end point
 							self.emit('map:addWaypoint', {
 								pos : displayPos,
 								type : Waypoint.type.END
 							});
+						}
+						options[2].onmouseover = function(e) {
+							//click on start point
+							document.getElementById("contextEnd").style.color = 'black';
+							document.getElementsByClassName("useAsEndPoint")[0].style.backgroundImage = "url('img/marker-end_focus.png')";
+						};
+						options[2].onmouseout = function(e) { 
+						    document.getElementById("contextEnd").style.color = '#444';
+						    document.getElementsByClassName("useAsEndPoint")[0].style.backgroundImage = "url('img/marker-end.png')";
+
 						}
 						//place context menu in a popup on the map
 						self.popup = new OpenLayers.Popup('menu', pos, null, menuObject.html(), false, null);
