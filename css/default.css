@@ -81,7 +81,7 @@ div.olControlPermalink {
 	color: black;
 	z-index: 999;
 	-padding-left: 5px;
-	margin-left: 5px;
+	-margin-left: 5px;
 }
 
 /**
@@ -770,9 +770,15 @@ img {
 #layerSwitcherPanel_layersDiv > .baseLayersDiv > input, .dataLayersDiv > input {
 	float: left;
 	margin-right: 5px;
+
 }
 #layerSwitcherPanel_layersDiv > .baseLayersDiv > label, .dataLayersDiv > label {
 	display: inline;
+}
+
+#layerSwitcherPanel_layersDiv {
+	font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+
 }
 
 .routePreferenceBtns {
