@@ -371,7 +371,9 @@ var Map = ( function() {"use strict";
 				});
 
 				function updateInfoPanel(results) {
-					var lastUpdate = new Date(results.profiles['profile 1'].import_date.toString());
+					var lastUpdate = new Date(results.profiles['profile 1'].import_date);
+					lastUpdate =  lastUpdate.getDay() + '.' + (parseInt(lastUpdate.getMonth())+parseInt(1)) + '.' + lastUpdate.getFullYear();
+
 					document.getElementById("infoPanel").innerHTML += '<br/><br/>';
 					document.getElementById("infoPanel").innerHTML += '<b>Last Update:</b> ' + lastUpdate;
 					document.getElementById("infoPanel").innerHTML += '<br/>';
