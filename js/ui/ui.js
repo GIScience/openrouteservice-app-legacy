@@ -2575,6 +2575,8 @@ var Ui = ( function(w) {'use strict';
 			//permalink
 			$('#fnct_permalink').click(handleOpenPerma);
 
+			$('#infoPermalink').click(handleOpenPerma);
+
 			//accessibility analysis
 			$('#analyzeAccessibility').click(handleAnalyzeAccessibility);
 			$('#removeAccessibility').click(handleRemoveAccessibility);

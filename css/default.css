@@ -43,18 +43,21 @@
 div.olControlMousePosition {
 	font-family: Verdana;
 	font-size: 2em;
-	left: 2px;
+	right: 2px;
 	background-color: rgba(255,255,255,0.5);
 	padding: 4px;
-	bottom: 0px;
+	top: 2px;
 	max-width: 120px;
+	max-height: 14px;
 	font-weight: bold;
+	border-radius: 5px
 }
 div.olControlScaleLine {
 	background-color: rgba(255,255,255,0.5);
 	padding: 4px;
-	left: 2px;
+	left: 0px;
 	bottom: 25px;
+	border-radius: 5px;
 }
 
 div.olControlPermalink {
@@ -62,7 +65,23 @@ div.olControlPermalink {
 	padding: 4px;
 	left: 2px;
 	bottom: 59px;
-	max-width: 60px;
+	max-width: 80px;
+}
+
+
+#infoPermalink {
+	position: fixed;
+	bottom: 5px;
+	cursor: pointer;
+	width: 80px;
+	font-weight: bold;
+	text-align: center;
+	background-color: rgba(255, 255, 255, 0.5);
+	border-radius: 5px;
+	color: black;
+	z-index: 999;
+	-padding-left: 5px;
+	margin-left: 5px;
 }
 
 /**
@@ -563,6 +582,7 @@ button.routeOptionsButton > img {
 	display: none;
 	padding: 5px 5px 5px 5px;
 } 
+
 /* uncomment for height pofile */
 /*.heightContent {
 	float: left;

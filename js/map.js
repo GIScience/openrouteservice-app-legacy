@@ -372,8 +372,7 @@ var Map = ( function() {"use strict";
 
 				function updateInfoPanel(results) {
 					var lastUpdate = new Date(results.profiles['profile 1'].import_date);
-					lastUpdate =  lastUpdate.getDay() + '.' + (parseInt(lastUpdate.getMonth())+parseInt(1)) + '.' + lastUpdate.getFullYear();
-
+					lastUpdate =  lastUpdate.getUTCDate() + '.' + (parseInt(lastUpdate.getMonth())+parseInt(1)) + '.' + lastUpdate.getFullYear();
 					document.getElementById("infoPanel").innerHTML += '<br/><br/>';
 					document.getElementById("infoPanel").innerHTML += '<b>Last Update:</b> ' + lastUpdate;
 					document.getElementById("infoPanel").innerHTML += '<br/>';
@@ -384,7 +383,7 @@ var Map = ( function() {"use strict";
 
 			this.theMap.addControl(new OpenLayers.Control.ScaleLine());
 			this.theMap.addControl(new OpenLayers.Control.MousePosition());
-			this.theMap.addControl(new OpenLayers.Control.Permalink());
+			//this.theMap.addControl(new OpenLayers.Control.Permalink());
 			//this.theMap.addControl(new OpenLayers.Control.Attribution());
 
 			this.selectMarker = new OpenLayers.Control.SelectFeature([layerSearch, layerGeolocation, layerRoutePoints, layerPoi, layerRouteLines], {
