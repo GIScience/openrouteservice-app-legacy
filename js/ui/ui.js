@@ -2604,6 +2604,17 @@ var Ui = ( function(w) {'use strict';
 			      $('#infoButton').show();
 			});
 
+			//keep dropdowns open
+			$('#myDropdown .dropdown-menu').on({
+				"click":function(e){
+
+			      	e.stopPropagation();
+			    }
+			});
+
+
+			
+
 
 		}
 

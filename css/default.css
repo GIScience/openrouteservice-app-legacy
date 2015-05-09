@@ -204,6 +204,7 @@ div.olControlPermalink {
 	min-height: 30px;
 	background-image: url('../img/marker-plus.png');
 	background-repeat: no-repeat;
+	font-size: 90%;
 }
 #resetRoute {
 	margin-left: 10px;
@@ -358,7 +359,6 @@ a img {
 body {
 	font-size: 90%;
 	line-height: 1.3;
-	font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   	-font-size: 1em;
   	color: rgba(0, 0, 0, 0.8);
 	background-color: #fff;
@@ -703,6 +703,73 @@ button.routeOptionsButton > img {
 	-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
+
+.label{
+	line-height: 16px;
+	font-weight: normal;
+}
+
+.radio {
+	padding-bottom: 5px;
+}
+
+#TruckTabs>li>a{
+	font-size: 90%;
+	font-weight: normal;
+	background-color: #f8f8f8;
+	padding-bottom: 4px;
+	padding-top: 4px;
+}
+
+/* bootstrap sliders */
+.mySlider input[type="text"]  {
+	width: 30px;  
+	font-weight:bold;
+	margin-left: 10px;
+}
+
+.mySlider input[type="range"]  {
+	margin-top: -5px;
+	width: 130px; 
+	border: 0; 
+	color: #6392C2; 
+	font-weight: bold;
+}
+
+.mySlider img  {
+	margin-top: -5px;
+}
+
+.wheelchairSelect {
+	width: 170px;
+	margin-top: 8px;
+}
+
+#accessibilityAnalysisLabel1 {
+	bottom: 2px;
+	margin-top: 25px;
+}
+
+.icon-eye-open {
+  background-position: -96px -118px;
+}
+
+#exportInfoLabel, #importRouteInfoLabel, #importRouteInfoLabel {
+	margin-top: 5px;
+}
+
+
+#route_totalDistance {
+	margin-top: 5px ;
+}
+
+#resetRoute {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+#hazardOptions {
+	background-color: #d8d8d8;
+}
 #routingPanel {
 	border: 0;
 	background-color: #fff;
@@ -740,6 +807,23 @@ button.routeOptionsButton > img {
 	cursor: pointer;
 }
 
+#dropdown_avoid_roads {
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 5px;
+}
+
+#dropdown_avoid_areas {
+	padding-left: 10px;
+	
+}
+
+#dropdown_avoid_roads label{
+	font-size: 0.9em;
+}
+
+
+
 /*fixes broken map tiles with OpenLayer 2.12*/
 img {
 	max-width: none;
@@ -776,10 +860,6 @@ img {
 	display: inline;
 }
 
-#layerSwitcherPanel_layersDiv {
-	font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
-
-}
 
 .routePreferenceBtns {
 	margin-bottom: 3px;
@@ -806,7 +886,7 @@ img {
 	line-height: 1.1;
 }
 
-#accessibilityDistance {
+#accessibilityDistance,#accessibilityAnalysisIsochronesIntervall,#accessibilityAnalysisMethodList {
 	width: 30px;
 	/*overwrite settings from bootstrap for input fields*/
 	padding: 2px 2px 0px 2px;
@@ -814,6 +894,11 @@ img {
 	vertical-align: baseline;
 	text-align: center;
 }
+
+
+
+
+
 
 #exportGpxError {
 	margin-top: 5px;

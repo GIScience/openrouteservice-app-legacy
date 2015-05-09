@@ -37,7 +37,7 @@ list = {
 		'car': ['Fastest', 'Shortest'],
 		'bicycle': ['Bicycle', 'BicycleSafety', 'BicycleRoute', 'BicycleMTB', 'BicycleRacer'],
 		'pedestrian': ['Pedestrian'],
-		'truck': [['HeavyTruck'],['goods', 'hgv', 'bus', 'agricultural', 'forestry']],
+		'truck': [['HeavyTruck'],['goods', 'hgv', 'bus', 'agricultural', 'forestry', 'delivery']],
 		'wheelchair': ['Wheelchair']
 	}),
 
