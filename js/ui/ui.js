@@ -1651,7 +1651,16 @@ var Ui = ( function(w) {'use strict';
 					var tdElementDist = new Element('td', {
 						'class' : 'clickable',
 						'id' : mapFeatureIds[2 * (numInstructions - 1)]
+					})
+
+
+					var spanElementDist = new Element('span', {
+						'class' : 'label label-warning',
 					}).update(distArr[0] + ' ' + distArr[1]);
+
+					tdElementDist.appendChild(spanElementDist);
+
+
 
 					trElement.appendChild(tdElementImg);
 					trElement.appendChild(tdElementText);

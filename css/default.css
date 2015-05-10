@@ -217,6 +217,12 @@ div.olControlPermalink {
 	vertical-align: top;
 	padding: 5px;
 }
+
+#routeInstructionsContainer table td:nth-child(3) {
+	width: 50px;
+}
+
+
 .clickable {
 	cursor: pointer;
 }
