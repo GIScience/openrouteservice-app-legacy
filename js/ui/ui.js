@@ -294,25 +294,26 @@ var Ui = ( function(w) {'use strict';
 			var numResults = $('#zoomToWaypointResults_' + wpIndex);
 			numResults.html(preferences.translate('numPoiResults1') + allAddress.length + preferences.translate('numPoiResults2') + '<br/>' + preferences.translate('selectResult'));
 
-			// if one result is found then select it
+			$('.address').mouseover(handleMouseOverElement);
+			$('.address').mouseout(handleMouseOutElement);
+			$('.address').click(handleSearchWaypointResultClick);
+
+			// if one result is found then select it automatically
+			// if (listOfFeatures.length == 1) {
+			// 	var featureID = listOfFeatures[0].id
+
+			// 	$(".address").click( function (event, a) {
+			// 		// for a trigger like below a refers to featureID
+			// 		handleSearchWaypointResultClickHelper(event, a)
+			// 	} ).trigger("click", featureID);
 
 
-
-			if (listOfFeatures.length == 1) {
-				var featureID = listOfFeatures[0].id
-
-				$(".address").click( function (event, a) {
-					// for a trigger like below a refers to featureID
-					handleSearchWaypointResultClickHelper(event, a)
-				} ).trigger("click", featureID);
-
-
-			} else {
-				//event handling
-				$('.address').mouseover(handleMouseOverElement);
-				$('.address').mouseout(handleMouseOutElement);
-				$('.address').click(handleSearchWaypointResultClickHelper);
-			}
+			// } else {
+			// 	//event handling
+			// 	$('.address').mouseover(handleMouseOverElement);
+			// 	$('.address').mouseout(handleMouseOutElement);
+			// 	$('.address').click(handleSearchWaypointResultClickHelper);
+			// }
 
 		}
 
@@ -333,26 +334,26 @@ var Ui = ( function(w) {'use strict';
 		 * @param e: click event
 		 * @param featureID: id of address, is optional as it is only passed when one result is returned
 		 */
-		function handleSearchWaypointResultClickHelper(e, featureID) {
+		// function handleSearchWaypointResultClickHelper(e, featureID) {
 
-			if (featureID != undefined) {
-				if (featureID == e.target.id) {
-					handleSearchWaypointResultClick(e)
-				}
-			} else {
-					handleSearchWaypointResultClick(e)
-			}
-		}
+		// 	if (featureID != undefined) {
+		// 		if (featureID == e.target.id) {
+		// 			handleSearchWaypointResultClick(e)
+		// 		}
+		// 	} else {
+		// 			handleSearchWaypointResultClick(e)
+		// 	}
+		// }
 
 		/**
 		 * when the user clicks on a waypoint search result, it is used as waypoint. The search results vanish and only the selected address is shown.
 		 * @param e: the event
 		 */
 		function handleSearchWaypointResultClick(e) {
-			
+			console.log('clickui')
 			var rootElement = $(e.currentTarget).parent().parent().parent().parent();
 			
-			var selectedDiv = $(e.currentTarget).parent().parent().parent().parent()[0];
+			// var selectedDiv = $(e.currentTarget).parent().parent().parent().parent()[0];
 		
 			var index = rootElement.attr('id');
 			rootElement.removeClass('unset');
@@ -360,7 +361,10 @@ var Ui = ( function(w) {'use strict';
 
 			rootElement.querySelector('.searchAgainButton').show();
 			var component = rootElement.querySelector('.guiComponent');
-			if (!component.hasClassName('route')) {
+			
+			if (!component.hasClassName('routeOptions')) {
+				console.log('hi')
+				console.log(component);
 				component.hide();
 				var waypointResultElement = rootElement.querySelector('.waypointResult');
 				//remove older entries:
@@ -377,25 +381,23 @@ var Ui = ( function(w) {'use strict';
 					searchIds : rootElement.getAttribute('data-search')
 				});
 			} else {
+				//console.log('else')
 				handleSearchAgainWaypointClick({
 					currentTarget: e.currentTarget.up('.waypointResult')
 				})
 			}
 
 			// make input field not selectable
-			var thisDiv = selectedDiv.className
-			var myDiv = thisDiv.replace(/ /g,".");
-			$('.'+myDiv).css('pointer-events', 'none');
-			$('.removeWaypoint').css('pointer-events', 'auto');
-			$('.moveUpWaypoint').css('pointer-events', 'auto');
-			$('.moveDownWaypoint').css('pointer-events', 'auto');
-			$('.searchAgainButton').css('pointer-events', 'auto');
+			// var thisDiv = selectedDiv.className
+			// var myDiv = thisDiv.replace(/ /g,".");
+			// $('.'+myDiv).css('pointer-events', 'none');
+			// $('.'+myDiv).css('cursor', 'auto');
+			// $('.removeWaypoint').css('pointer-events', 'auto');
+			// $('.moveUpWaypoint').css('pointer-events', 'auto');
+			// $('.moveDownWaypoint').css('pointer-events', 'auto');
+			// $('.searchAgainButton').css('pointer-events', 'auto');
 
-
-
-			
-
-			
+			//$('.address').unbind( "click", handleSearchWaypointResultClick );
 			
 		}
 
@@ -684,8 +686,10 @@ var Ui = ( function(w) {'use strict';
 				theInterface.emit('ui:selectWaypointType', index - 1);
 			}
 
+
 			return index;
 		}
+
 
 		/**
 		 * When the user added a waypoint using the standard waypoint search and then e.g. moves the waypoint feature on the map, former search results must be invalidated because they do not match the new position.
@@ -810,11 +814,12 @@ var Ui = ( function(w) {'use strict';
 			var wpElement = $(e.currentTarget).parent();
 			
 			// make input field selectable
-			var selectedDiv = $(e.currentTarget).parent()[0];
-			var thisDiv = selectedDiv.className
+			//var selectedDiv = $(e.currentTarget).parent()[0];
+			//var thisDiv = selectedDiv.className
 
-			var myDiv = thisDiv.replace(/ /g,".");
-			$('.'+myDiv).css('pointer-events', 'auto');
+			//var myDiv = thisDiv.replace(/ /g,".");
+			//$('.'+myDiv).css('cursor', 'default');
+			//$('.'+myDiv).css('pointer-events', 'auto');
 
 			var index = wpElement.attr('id');
 
@@ -1464,7 +1469,16 @@ var Ui = ( function(w) {'use strict';
 				var address = $('#' + lastSetWaypoint).get(0);
 				address = address.querySelector('.address');
 				address = address.getAttribute('data-shortAddress');
-				return address;
+				address = address.split(' ');
+				// removed undefined entries
+				var addressFormatted = '';
+				for (var i = 0; i < address.length; i++) {
+					if (address[i] != 'undefined') {
+						addressFormatted += address[i];
+						addressFormatted += ' ';
+					}
+				}
+				return addressFormatted;
 			} else {
 				return null;
 			}
@@ -1551,7 +1565,8 @@ var Ui = ( function(w) {'use strict';
 			} else {
 				//parse results and show them in the container
 
-				var destination = getRouteDestination();
+				var destination = getRouteDestination();		
+
 				$('#routeFromTo').html(preferences.translate('routeFromTo') + destination);
 
 				var container = $('#routeInstructionsContainer').get(0);

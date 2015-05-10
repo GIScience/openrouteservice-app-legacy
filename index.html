@@ -5,12 +5,12 @@
 		<meta name="robots" content="index, follow">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<link rel="stylesheet" type="text/css" href="lib/rickshaw/rickshaw.min.css">
+		<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" type="text/css" href="css/bootstrap-ext.min.css">
 		<!-- for file upload -->
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"> 
  		<link rel="stylesheet" type="text/css" href="css/default.css">
-<!--  		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
- -->	</head>
+ 	</head>
 	<body id="main">
 		<!-- navigation bar on top -->
 		<div class="navbar navbar-fixed-top" id="navbar">
@@ -30,12 +30,12 @@
 				<li>
 					<a href="contact.html#top" target="_blank" id="menuLinkInfo">Info&nbsp;&amp;&nbsp;Contact</a>
 				</li>
-				<li>
+				<!-- <li>
 					<a href="http://www.geog.uni-heidelberg.de/giscience.html" target="_blank"><img src="img/logo_giscience.png" alt="GIScrience" class="links"></a>
 				</li>
 				<li>
 					<a href="http://www.geog.uni-heidelberg.de/giscience.html" target="_blank"><img src="img/siegel_uni_hd_mittel.gif" alt="Uni HD" class="links"></a>
-				</li>
+				</li> -->
 			</ul>
 		</div>
 		<div id="sidebar">
@@ -56,7 +56,7 @@
 					<div class="guiComponent route">
 						<div class="panel panelLight">
 							<div class="collapsible guiComponent routeOptions">
-								<div class="collapsibleHead clickable collapsed" id="routeOptions">
+								<div class="collapsibleHead clickable" id="routeOptions">
 									Route options:
 									<br>
 								</div>
@@ -263,7 +263,7 @@
 									<div class="panel panelMedium" id="avoidables" style="">
 
 										<div class="btn-group" id="myDropdown">
-							                <button class="btn btn-small btn-danger"><i class="icon-road icon-white"></i>&nbsp;avoid road types</button>
+							                <button class="btn btn-small btn-danger"><i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types</button>
 							                <button class="btn btn-small btn-danger dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 							            
 							                <ul class="dropdown-menu" id="dropdown_avoid_roads">
@@ -288,7 +288,7 @@
 							        </div>								
 									<div class="panel panelMedium" id="avoidAreas">
 										<div class="btn-group" id="myDropdownAreas">
-								                <button class="btn btn btn-small btn-danger"><i class="icon-pencil icon-white"></i>&nbsp;avoid areas</button>
+								                <button class="btn btn btn-small btn-danger"><i class="icon-pencil icon-white"></i>&nbsp;&nbsp;avoid areas</button>
 								                <button class="btn btn btn-small btn-danger dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 								            
 								                <ul class="dropdown-menu" id="dropdown_avoid_areas">
@@ -307,7 +307,7 @@
 							</div>
 						</div>
 						<div class="panel panelLight">
-							<button id="resetRoute" class="btn" type="button">Reset Whole Route</button>
+							<button id="resetRoute" class="btn btn-small" type="button">Reset Whole Route</button>
 					
 							<div class="guiComponent waypoint unset" draggable="draggable" id="Draft" style="display: none">
 								<span class="clickable removeWaypoint" title="Remove waypoint"> </span>
@@ -355,7 +355,7 @@
 								</div>
 							</div>
 							<div class="addWaypoint clickable" id="addWaypoint">
-								Add waypoint
+								add waypoint
 							</div>
 						</div>
 						<div id="routeCalculate" style="display:none" class="alert alert-info searchingBlue"></div>
@@ -381,9 +381,9 @@
 								<!--<div id="zoomToRouteButton" class="zoomToRoute clickable" style="display:none">
 									Whole Route
 								</div>-->
-								<btn class="btn" id="zoomToRouteButton" style="display:none">Whole Route</btn>
+								<btn class="btn btn-small" id="zoomToRouteButton" style="display:none">Zoom to route</btn>
 								<div class="collapsibleBody" style="display: none;">
-									<div id="routeFromTo"></div>
+									<span id ="routeFromTo" class="label label"></span>
 									<table></table>
 								</div>
 							</div>
@@ -418,11 +418,11 @@
 										</select>
 										<span id ="accessibilityAnalysisMethod" class="label label-info">Select Isochrone method</span>
 										<br/>
-										<btn class="btn" id="analyzeAccessibility"><i class="icon-eye-open"></i>&nbsp;&nbsp;Analyze</btn>
+										<btn class="btn btn-small" id="analyzeAccessibility"><i class="icon-eye-open"></i>&nbsp;&nbsp;Analyze</btn>
 										<br/>
 										<span id ="accessibilityAnalysisLabel1" class="label label-inverse"><i class="icon-picture icon-white"></i>&nbsp;&nbsp;Accessibility analysis</span>	
 										<br/>
-										<btn class="btn" id="removeAccessibility" style="display:none">
+										<btn class="btn btn-small" id="removeAccessibility" style="display:none">
 											Remove
 										</btn>
 										<div class="alert alert-info searchingBlue" id="accessibilityCalculation" style="display: none;">
@@ -435,7 +435,8 @@
 									<div id="exportImport">
 										<label id="imExportLabel"><b>Import/ Export</b></label>
 										<div class="panel panelMedium">
-											<a id="export-gpx" class="btn" download="map.gpx"><i class="icon-download"></i>&nbsp;Export GPX</a>
+											<a id="export-gpx" class="btn btn-small" download="map.gpx"><i class="icon-download"></i>&nbsp;Export GPX</a>
+											<br/>
 											<span id ="exportInfoLabel" class="label label-info">Download of current route in GPX format</span>
 
 											<div class="alert alert-error" style="display:none" id="exportGpxError">
@@ -445,7 +446,7 @@
 										<div class="panel panelMedium">
 											<form class="fileUploadForm">
 												<div id="gpxUploadFiles" class="fileupload fileupload-new" data-provides="fileupload">
-													<span class="btn btn-file"><i class="icon-upload"></i></a><span class="fileupload-new fileUploadNewLabel">&nbsp;Select file</span><span class="fileupload-exists fileUploadExistsLabel">Change</span>
+													<span class="btn btn-small btn-file"><i class="icon-upload"></i></a><span class="fileupload-new fileUploadNewLabel">&nbsp;Select file</span><span class="fileupload-exists fileUploadExistsLabel">Change</span>
 														<input type="file">
 													</span>
 													<span class="fileupload-preview"></span><a href="#" id="gpxUploadFilesDelete" class="close fileupload-exists" data-dismiss="fileupload" style="float:none">x</a>
@@ -456,7 +457,7 @@
 										<div class="panel panelMedium">
 											<form class="fileUploadForm">
 												<div id="gpxUploadTrack" class="fileupload fileupload-new" data-provides="fileupload">
-													<span class="btn btn-file"><i class="icon-upload"></i><span class="fileupload-new fileUploadNewLabel">&nbsp;Select file</span><span class="fileupload-exists fileUploadExistsLabel">Change</span>
+													<span class="btn btn-small btn-file"><i class="icon-upload"></i><span class="fileupload-new fileUploadNewLabel">&nbsp;Select file</span><span class="fileupload-exists fileUploadExistsLabel">Change</span>
 														<input type="file">
 													</span><span class="fileupload-preview"></span><a href="#" id="gpxUploadTrackDelete" class="close fileupload-exists" data-dismiss="fileupload" style="float:none">x</a>
 												</div>

@@ -135,12 +135,14 @@ util = ( function() {'use strict';
 				if (Building) {
 					var buildingNumber = Building.getAttribute('number');
 					if (buildingNumber != null) {
+
 						element.appendChild(new Element('span').update(buildingNumber));
 						streetline++;
 					}
 				}
 
 				if (streetline > 0) {
+
 					element.appendChild(new Element('br'));
 				}
 
@@ -156,10 +158,12 @@ util = ( function() {'use strict';
 						if (place.getAttribute('type') === type) {
 							//Chrome, Firefox: place.textContent; IE: place.text
 							var content = place.textContent || place.text;
-							element.appendChild(new Element('span', {
-								'class' : 'addressElement'
-							}).update(separator + content));
-							separator = ', ';
+							if (content != undefined || content != null) {
+								element.appendChild(new Element('span', {
+									'class' : 'addressElement'
+								}).update(separator + content));
+								separator = ', ';
+							}
 						}
 					})
 				});
@@ -167,6 +171,7 @@ util = ( function() {'use strict';
 				if (countryCode != null) {
 					element.appendChild(new Element('span').update(', ' + countryCode.toUpperCase()));
 				}
+				
 				return element;
 			},
 
@@ -178,6 +183,7 @@ util = ( function() {'use strict';
 			parseAddressShort : function(address) {
 				var element = "";
 				if (address) {
+					
 					var streetAddress = util.getElementsByTagNameNS(address, namespaces.xls, 'StreetAddress')[0];
 					var streets = util.getElementsByTagNameNS(streetAddress, namespaces.xls, 'Street');
 					var building = util.getElementsByTagNameNS(streetAddress, namespaces.xls, 'Building')[0];

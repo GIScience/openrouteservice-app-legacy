@@ -28,7 +28,7 @@ var lang_en = {
 	'resetRoute' : '<i class="icon-remove-sign"></i>&nbsp;Reset whole route',
 	'TotalTime' : 'Total time',
 	'TotalDistance' : 'Total distance',
-	'zoomToRoute' : 'Whole Route',
+	'zoomToRoute' : 'Zoom to route',
 	'routeSummary' : 'Summary',
 	'routeInstructions' : 'Route instructions',
 	'routeLinkText' : 'Permalink for current route',
@@ -68,7 +68,7 @@ var lang_en = {
 	'useAsEndPoint' : 'use as destination',
 
 	//Waypoint options
-	'addWaypoint' : 'Add waypoint',
+	'addWaypoint' : 'add waypoint',
 	'moveUpWaypoint' : 'Move waypoint up',
 	'moveDownWaypoint' : 'Move Waypoint down',
 	'removeWaypoint' : 'Remove waypoint',
