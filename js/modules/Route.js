@@ -63,30 +63,30 @@ var Route = ( function(w) {"use strict";
 
 					if (extendedRoutePreferencesType != null ) {
 
-						writer.writeElementString('xls:vehicleType', extendedRoutePreferencesType);
+						writer.writeElementString('xls:VehicleType', extendedRoutePreferencesType);
 
 					}
 
 					//truck width
 					 if (extendedRoutePreferencesParams[3] != null) {
-						 writer.writeElementString('xls:width', extendedRoutePreferencesParams[3]);
+						 writer.writeElementString('xls:Width', extendedRoutePreferencesParams[3]);
 					 }
 					 //truck heigth
 					 if (extendedRoutePreferencesParams[1] != null) {
-						 writer.writeElementString('xls:height', extendedRoutePreferencesParams[1]);
+						 writer.writeElementString('xls:Height', extendedRoutePreferencesParams[1]);
 					 }
 					 //truck weigth
 					 if (extendedRoutePreferencesParams[2] != null) {
-						 writer.writeElementString('xls:weight', extendedRoutePreferencesParams[2]);
+						 writer.writeElementString('xls:Weight', extendedRoutePreferencesParams[2]);
 					 }
 					 //truck length
 					if (extendedRoutePreferencesParams[0] != null) {
-						writer.writeElementString('xls:length', extendedRoutePreferencesParams[0]);
+						writer.writeElementString('xls:Length', extendedRoutePreferencesParams[0]);
 					}
 					//truck hazardous
 					if (extendedRoutePreferencesParams[4] != null) {
-						writer.writeStartElement('xls:loadCharacteristics');
-							writer.writeElementString('xls:loadCharacteristic', extendedRoutePreferencesParams[4]);
+						writer.writeStartElement('xls:LoadCharacteristics');
+							writer.writeElementString('xls:LoadCharacteristic', extendedRoutePreferencesParams[4]);
 						writer.writeEndElement();
 					}
 
@@ -246,7 +246,7 @@ var Route = ( function(w) {"use strict";
 				processData: false,
 				type: "POST",
 				dataType: "xml",
-				crossDomain: true,
+				crossDomain: false,
 				data: xmlRequest, 
 				success: function(response){
 					successCallback(response,calcRouteID)
