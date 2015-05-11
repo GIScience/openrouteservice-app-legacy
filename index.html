@@ -72,103 +72,118 @@
 										</button>
 										<button id="truck" class="btn routeOptionsButton"><img src="img/picto-truck.png">
 										</button>
-										</div>
+									</div>
+									<div class="btn-group" id="weightingDropdown">
+						                <button class="btn btn-small" id="weightOptions">route options</button>
+						                <button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+						                <ul class="dropdown-menu" id="dropdown_weighting">
+							                  	<div class="radio">
+													<input type="radio" id="Fastest" name="weighting" checked="checked">
+													<label id="FastestLabel">fastest route</label>
+												</div>										
+												<div class="radio">
+													<input type="radio" id="Shortest" name="weighting">
+													<label id="ShortestLabel">shortest route</label>
+												</div>
+							            </ul>
+								    </div>
 									<div class="panel panelMedium" id="carOptions" style="">
-										<div class="radio">
-											<input type="radio" id="Fastest" name="car" checked="checked" value="fastest">
-											<span class="label " id="fastestLabel">fastest route</span>
-										</div>
-										<div class="radio">
-											<input type="radio" id="Shortest" name="car" value="shortest">
-											<span class="label " id="shortestLabel">shortest route</span>
-
-										</div>
+										<table class="optionsTable" style="width:100%">
+										 	<tr>
+											    <td>
+													<div class="radioContainer">
+														<div class="radio">
+															<input type="radio" id="Car" name="car"  value="car" checked="checked">
+															<span class="label" id="carLabel">car</span>
+														</div>
+													</div>
+												</td>
+											</tr>
+										</table>
 									</div>
 									<div class="panel panelMedium" id="bicycleOptions" style="display: none;">
-										<div class="radio">
-											<input type="radio" id="Bicycle" name="bicycle"  value="shortest" checked="checked">
-											<span class="label" id="BicycleLabel">shortest route</span>
+										<table class="optionsTable" style="width:100%">
+										 	<tr>
+											    <td>
+											    	<div class="radioContainer">
+														<div class="radio">
+															<input type="radio" id="Bicycle" name="bicycle"  value="shortest" checked="checked">
+															<span class="label" id="BicycleLabel">normal</span>
 
-										</div>
-										<div class="radio">
-											<input type="radio" id="BicycleSafety" name="bicycle"  value="safest">
-											<span class="label" id="BicycleSafetyLabel">safest route</span>
+														</div>
+														<div class="radio">
+															<input type="radio" id="BicycleSafety" name="bicycle"  value="safest">
+															<span class="label" id="BicycleSafetyLabel">safest route</span>
 
-										</div>
-										<!-- <div class="radio">
-											<input type="radio" id="BicycleRoute" name="bicycle" value="preferredcycle">
-											<label id="BicycleRouteLabel">preferred bicycle lane</label>
-										</div> -->
-										<div class="radio">
-											<input type="radio" id="BicycleMTB" name="bicycle" value="mountain">
-											<span class="label" id="BicycleMtbLabel">mountain bike</span>
+														</div>
+														<!-- <div class="radio">
+															<input type="radio" id="BicycleRoute" name="bicycle" value="preferredcycle">
+															<label id="BicycleRouteLabel">preferred bicycle lane</label>
+														</div> -->
+														<div class="radio">
+															<input type="radio" id="BicycleMTB" name="bicycle" value="mountain">
+															<span class="label" id="BicycleMtbLabel">mountain bike</span>
 
-										</div>
-										<div class="radio">
-											<input type="radio" id="BicycleRacer" name="bicycle" value="racing">
-											<span class="label" id="BicycleRacerLabel">racing bike</span>
-										</div>
+														</div>
+														<div class="radio">
+															<input type="radio" id="BicycleRacer" name="bicycle" value="racing">
+															<span class="label" id="BicycleRacerLabel">racing bike</span>
+														</div>
+													</div>
+											    </td>
+											</tr>
+										</table>
 									</div>
 									<div class="panel panelMedium" id="pedestrianOptions" style="display: none;">
-										<div class="radio">
-											<input type="radio" id="Pedestrian" name="pedestrian"  value="pedestrian" checked="checked">
-											<span class="label" id="PedestrianLabel">pedestrian</span>
-										</div>
+										<table class="optionsTable" style="width:100%">
+										 	<tr>
+											    <td>
+													<div class="radioContainer">
+														<div class="radio">
+															<input type="radio" id="Pedestrian" name="pedestrian"  value="pedestrian" checked="checked">
+															<span class="label" id="PedestrianLabel">pedestrian</span>
+														</div>
+													</div>
+												</td>
+											</tr>
+										</table>
 									</div>
 									<div class="panel panelMedium" id="truckOptions" style="display: none;">
-										<table style="margin-left: 0px; width: 70%" border="0" cellpadding="0" cellspacing="0">
-												<tr>
-													<td>
+										<table class="optionsTable" style="width: 100%">
+											<tr>
+												<td>
+													<div class="radioContainer">
 														<div class="radio">
 															<input type="radio" id="HeavyTruck" name="truck" value="goods" checked="checked">
 															<span class="label" id="goodsHeavyTruckLabel">goods</span>
 														</div>
-													</td>
-												</tr>
-												<tr>
-													<td>
 														<div class="radio">
 															<input type="radio" id="HeavyTruck" name="truck" value="hgv">
 															<span class="label" id="hgvHeavyTruckLabel">HGV</span>
 														</div>
-													</td>
-												</tr>
-												<tr>
-													<td>
 														<div class="radio">
 															<input type="radio" id="HeavyTruck" name="truck" value="bus">
 															<span class="label" id="busHeavyTruckLabel">Bus</span>
 														</div>
-													</td>
-												</tr>
-												<tr>
-													<td>
 														<div class="radio">
 															<input type="radio" id="HeavyTruck" name="truck" value="agricultural">
 															<span class="label" id="agriculturalHeavyTruckLabel">Agricultural Vehicle</span>
 														</div>
-													</td>
-												</tr>
-												<tr>
-													<td>
 														<div class="radio">
 															<input type="radio" id="HeavyTruck" name="truck" value="forestry">
 															<span class="label" id="forestryHeavyTruckLabel">Forestry</span>
 														</div>
-													</td>
-												</tr>
-												<tr>
-													<td>
 														<div class="radio">
 															<input type="radio" id="HeavyTruck" name="truck" value="delivery">
 															<span class="label" id="deliveryHeavyTruckLabel">Delivery</span>
 														</div>
-													</td>
-												</tr>
+													</div>
+												</td>
+											</tr>
 										</table>
 										<div class="panel panelMedium" id="hazardOptions">
 											<label class="checkbox">
-													<input type="checkbox" id="Hazardous">
+													<input type="checkbox" id="Hazardous" value="hazardous">
 													<span id="hazardous" class="label label-warning"><i class="icon-tint icon-white"></i>&nbsp;Hazardous Materials</span>
 											</label>
 										</div>
@@ -212,14 +227,19 @@
 										    </div>
 										    <span id="truckLabelMain" class="label label-inverse"><i class="icon-resize-full icon-white"></i>&nbsp;&nbsp;Truck Parameters (in meters/tons)</span>	
 									</div>
-									
 									<div class="panel panelMedium" id="wheelchairOptions" style="display: none;">
-										<label class="radio">
-											<div>
-												<input type="radio" id="Wheelchair" name="wheelchair" checked="checked">
-												<span class="label" id="WheelchairLabel">wheelchair</span>
-											</div>
-										</label>
+										<table class="optionsTable" style="width:100%">
+										 	<tr>
+											    <td>
+											    	<div class="radioContainer">
+														<div class="radio">
+																<input type="radio" id="Wheelchair" name="wheelchair" checked="checked">
+																<span class="label" id="WheelchairLabel">wheelchair</span>
+														</div>
+													</div>
+												</td>
+											</tr>
+										</table>
 									</div>
 									<div class="panel panelMedium" id="wheelchairParameters" style="display: none;">
 										<select id="Surface" class="wheelchairSelect">
@@ -263,7 +283,7 @@
 									<div class="panel panelMedium" id="avoidables" style="">
 
 										<div class="btn-group" id="myDropdown">
-							                <button class="btn btn-small btn-danger"><i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types</button>
+							                <button class="btn btn-small btn-danger" id="avoidRoadsBtn"><i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types</button>
 							                <button class="btn btn-small btn-danger dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 							            
 							                <ul class="dropdown-menu" id="dropdown_avoid_roads">
@@ -288,7 +308,7 @@
 							        </div>								
 									<div class="panel panelMedium" id="avoidAreas">
 										<div class="btn-group" id="myDropdownAreas">
-								                <button class="btn btn btn-small btn-danger"><i class="icon-pencil icon-white"></i>&nbsp;&nbsp;avoid areas</button>
+								                <button class="btn btn btn-small btn-danger" id="avoidAreasBtn"><i class="icon-pencil icon-white"></i>&nbsp;&nbsp;avoid areas</button>
 								                <button class="btn btn btn-small btn-danger dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 								            
 								                <ul class="dropdown-menu" id="dropdown_avoid_areas">

@@ -222,6 +222,18 @@ div.olControlPermalink {
 	width: 50px;
 }
 
+.radioContainer {
+	padding: 0 0 0 5px;
+}
+
+.optionsTable td:nth-child(2) {
+	border-left: 1px solid #c8c8c8;
+}
+
+.optionsTable td {
+	vertical-align: top;
+}
+
 
 .clickable {
 	cursor: pointer;
@@ -273,8 +285,6 @@ div.olControlPermalink {
 #routeFromTo {
 	margin-bottom: 4px;
 	margin-top: 15px;
-	font-weight: bold;
-	font-size: 13px;
 }
 .collapsibleHead {
 	padding-left: 15px;
@@ -333,7 +343,7 @@ div.olControlPermalink {
 	border: 1px solid;
 	border-color: rgb(100,100,100);
 	border-radius: 6px;
-	padding: 3px;
+	padding: 7px 7px 7px 7px;
 	max-height: 105px;
 	-min-width: 220px;
 }
@@ -342,26 +352,17 @@ div.olControlPermalink {
 }
 
 .useAsStartPoint {
-	padding-left: 32px;
 	min-height: 35px;
-	background-image: url('../img/marker-start.png');
-	background-repeat: no-repeat;
 	white-space: nowrap;
 	cursor: pointer;
 }
 .useAsViaPoint {
-	padding-left: 32px;
 	min-height: 35px;
-	background-image: url('../img/marker-via.png');
-	background-repeat: no-repeat;
 	white-space: nowrap;
 	cursor: pointer;
 }
 .useAsEndPoint {
-	padding-left: 32px;
 	min-height: 35px;
-	background-image: url('../img/marker-end.png');
-	background-repeat: no-repeat;
 	white-space: nowrap;
 	cursor: pointer;
 }
@@ -737,7 +738,7 @@ button.routeOptionsButton > img {
 	padding: 7px;
 	/*margin-left: 10px;
 	 margin-right: 10px;*/
-	margin-bottom: 7px;
+	margin-bottom:7px;
 	border: 1px solid #eee;
 	border: 1px solid rgba(0, 0, 0, 0.05);
 	-webkit-border-radius: 4px;
@@ -815,6 +816,7 @@ button.routeOptionsButton > img {
 	margin-bottom: 20px;
 }
 #hazardOptions {
+	margin-top: 10px;
 	background-color: #d8d8d8;
 }
 #routingPanel {
@@ -862,13 +864,19 @@ button.routeOptionsButton > img {
 	padding-top: 5px;
 }
 
+#dropdown_weighting {
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 5px;
+}
+
 #dropdown_avoid_areas {
 	padding-left: 10px;
 	
 }
 
-#dropdown_avoid_roads label{
-	font-size: 0.9em;
+#dropdown_avoid_roads label, #dropdown_weighting label{
+	font-size: 11px;
 }
 
 
@@ -898,6 +906,7 @@ img {
 .fileUploadForm > div {
 	margin: 0px;
 }
+
 
 /*problems with the OpenLayers2.12 lib. Layerswitcher-Panel looks strange, we have to fix that here:*/
 #layerSwitcherPanel_layersDiv > .baseLayersDiv > input, .dataLayersDiv > input {

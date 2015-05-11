@@ -9,7 +9,7 @@ var Ui = ( function(w) {'use strict';
 		//search POI options: searchNearRoute, maxDist to route, distance Unit for maxDist, search query
 		searchPoiAtts = ['false', '100', 'm', ''],
 		//routing options for car, bike, pedestrian, truck and wheelchair
-		routeOptions = [list.routePreferences.get('car')[0], [null, null, null], [null, null, null,null], 'car', [null, null, null, null, null], ],
+		routeOptions = [list.routePreferences.get('car')[0], [null, null, null], [null, null, null,null,null], 'car', [null, null, null, null, null], null , 'Fastest'],
 		//is a route available?
 		routeIsPresent = false,
 		//timeout to wait before sending a request after the user finished typing
@@ -350,7 +350,6 @@ var Ui = ( function(w) {'use strict';
 		 * @param e: the event
 		 */
 		function handleSearchWaypointResultClick(e) {
-			console.log('clickui')
 			var rootElement = $(e.currentTarget).parent().parent().parent().parent();
 			
 			// var selectedDiv = $(e.currentTarget).parent().parent().parent().parent()[0];
@@ -363,8 +362,7 @@ var Ui = ( function(w) {'use strict';
 			var component = rootElement.querySelector('.guiComponent');
 			
 			if (!component.hasClassName('routeOptions')) {
-				console.log('hi')
-				console.log(component);
+				
 				component.hide();
 				var waypointResultElement = rootElement.querySelector('.waypointResult');
 				//remove older entries:
@@ -1776,11 +1774,7 @@ var Ui = ( function(w) {'use strict';
 		 * when the user wants to switch between route options for cars/bikes/pedestrians and clicks the button to switch views
 		 * @param e: the event
 		 */
-		 
-		 
-		 
 		function switchRouteOptionsPane(e) {
-
 
 			var parent = $('.routePreferenceBtns').get(0);
 			var optionType = e.currentTarget.id;
@@ -1790,15 +1784,19 @@ var Ui = ( function(w) {'use strict';
 			for (var i = 0; i < allBtn.length; i++) {
 				var btn = allBtn[i];
 				if (btn == e.currentTarget) {
+
+
 					btn.addClassName('active');
 					//adapt image
 					var imgElement = btn.querySelector('img');
+
 					imgElement.setAttribute('src', list.routePreferencesImages.get(btn.id)[1]);
 
+					//if (btn.id != 'car') {
+
 					//set the selected entry as currently selected route option
-
 					var options = $('#' + btn.id + 'Options').get(0).querySelector('input[checked="checked"]');
-
+					
 					routeOptions[0] = options.id; 
 					routeOptions[3] = options.name;
 
@@ -1886,12 +1884,14 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
-
-
-
-		
-
-		
+	
+		/** 
+		 * sets truckParameters
+		 * @params truck_length: the truck length
+		 * @params truck_height: the truck heigth
+		 * @params truck_weight: the truck weight
+		 * @params truck_width: the truck width
+		 */
 		function setTruckParameters(truck_length, truck_height, truck_weight,truck_width) {
 
 			routeOptions[2][0] = truck_length;
@@ -1899,6 +1899,14 @@ var Ui = ( function(w) {'use strict';
 			routeOptions[2][2] = truck_weight;
 			routeOptions[2][3] = truck_width;
 
+		}
+
+		/** 
+		 * sets hazardousParamter
+		 * @params hazardous: is either 'hazmat' or null
+		 */
+		function setHazardousParameter(hazardous) {
+			routeOptions[2][4] = hazardous;
 		}
 
 		/**
@@ -1933,7 +1941,7 @@ var Ui = ( function(w) {'use strict';
 		 * @param e: the event
 		 */
 		function handleOptionsChanged(e) {
-
+			
 			e = e || window.event;
 		    var target = e.target || e.srcElement;
 			var itemId = target.id;
@@ -1981,11 +1989,19 @@ var Ui = ( function(w) {'use strict';
 			// do nothing if truck options in sliders are changed
 			else if ($.inArray(itemId, list.truckParams) >= 0) {
 
-				// do nothing 
+				//TODO: add emit function for sliders!
 
 			}
-			
-			else if ($.inArray(itemId, list.wheelchairParameters.keys()) >= 0) {
+			// if route weight settings are modified
+			else if ($.inArray(itemId, list.routeWeightSettings) >= 0) {
+				
+				routeOptions[6] = itemId;
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.weightIdx,
+					value : routeOptions[6]
+				});
+
+			} else if ($.inArray(itemId, list.wheelchairParameters.keys()) >= 0) {
 				//is a wheelchair parameter
 				//Surface, Tracktype, Smoothness
 				if (itemId == 'Surface') {
@@ -2026,8 +2042,15 @@ var Ui = ( function(w) {'use strict';
 					});
 				}
 			}
-			 
-			else {
+
+			else if (itemId == 'Hazardous') {
+				routeOptions[2][4] = itemValue;
+				theInterface.emit('ui:prefsChanged', {
+						key : preferences.hazardousIdx,
+						value : routeOptions[2][4]
+					});
+			
+			} else {
 
 				//is a regular route option
 				routeOptions[0] = itemId;
@@ -2042,7 +2065,7 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * used to activate and show the given route option on startup if necessary
-		 * @paran routeOption: one of 'Fastest', 'Shortest', 'BicycleLane',...
+		 * @param routeOption: one of 'Fastest', 'Shortest', 'BicycleLane',...
 		 */
 		function setRouteOption(routeOption) {
 			//set radioButton with $('#' + routeOption) active
@@ -2629,15 +2652,12 @@ var Ui = ( function(w) {'use strict';
 			});
 
 			//keep dropdowns open
-			$('#myDropdown .dropdown-menu').on({
+			$('.dropdown-menu').on({
 				"click":function(e){
 
 			      	e.stopPropagation();
 			    }
 			});
-
-
-			
 
 
 		}
@@ -2708,6 +2728,7 @@ var Ui = ( function(w) {'use strict';
 
 		Ui.prototype.setTruckParameters = setTruckParameters;
 		
+		Ui.prototype.setHazardousParameter = setHazardousParameter;
 
 
 		theInterface = new Ui();

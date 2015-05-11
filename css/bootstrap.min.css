@@ -19,3 +19,7 @@ select {
 input {
   font-family: 'Roboto', sans-serif;
 }
+
+.dropdown-menu {
+	min-width: 140px;
+}

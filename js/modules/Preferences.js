@@ -34,6 +34,8 @@ var Preferences = ( function(w) {'use strict';
 		this.surfaceIdx = 18;
 		this.inclineIdx = 19;
 		this.slopedCurbIdx = 20;
+		this.hazardousIdx = 21;
+		this.weightIdx = 22;
 
 		//define variables
 		this.language = 'en';
@@ -317,10 +319,9 @@ var Preferences = ( function(w) {'use strict';
 
 	
 	/**
-	* determines route option wheelchair parameters by GET variable
-	* @param surface, incline, slopedCurb: extracted from the GET variables in readGetVars()
-	* @return the wheelchair parameters
-	*/
+	 * determines route option truck parameters width height length weight
+	 * @return the truck parameters
+	 */
 	function loadtruckParameters() {
 	
 		var truckParameters = [null, null, null,null];
@@ -338,6 +339,22 @@ var Preferences = ( function(w) {'use strict';
 		return truckParameters;
 	}
 	
+	/**
+	 * determines route option hazardous
+	 * @return the hazardous parameter
+	 */
+	function loadHazardous() {
+
+		var hazardous = null;
+
+		if (document.getElementById('Hazardous').checked) {
+            hazardous = 'hazmat'
+        } 
+      
+		return hazardous
+
+	}
+
 	/**
 	* fetches extended route type option
 	* @param surface, incline, slopedCurb: extracted from the GET variables in readGetVars()
@@ -631,6 +648,7 @@ var Preferences = ( function(w) {'use strict';
 	Preferences.prototype.loadAvoidAreas = loadAvoidAreas;
 	Preferences.prototype.loadtruckParameters = loadtruckParameters;
 	Preferences.prototype.loadWheelParameters = loadWheelParameters;
+	Preferences.prototype.loadHazardous = loadHazardous;
 
 	Preferences.prototype.writeMapCookies = writeMapCookies;
 	Preferences.prototype.writePrefsCookies = writePrefsCookies;

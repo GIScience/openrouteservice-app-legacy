@@ -74,6 +74,7 @@ var lang_de = {
 		'useAsWaypoint' :  'als Wegpunkt &uuml;bernehmen',
 
 	//Route Preferences
+		'RouteWeight' : 'Einstellungen',
 		'Shortest':  'K&uuml;rzester Weg',
 		'Fastest':  'Schnellster Weg',
 		'Pedestrian':  'Fußg&auml;nger',
@@ -93,6 +94,8 @@ var lang_de = {
 		'agriculturalHeavyTruck' : 'Agrarfahrzeug',
 		'forestryHeavyTruck' : 'Forstfahrzeug',
 
+		'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Stra&szlig;entypen vermeiden',
+		'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Gebiete vermeiden',
 		'avoidMotorways':  'Autobahnen vermeiden',
 		'avoidTollways':  'Mautstra&szlig;en vermeiden',
 		'avoidunpavedRoads':  'Unbefestigte Straßen vermeiden',

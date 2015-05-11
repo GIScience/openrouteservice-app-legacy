@@ -75,11 +75,12 @@ var lang_en = {
 	'useAsWaypoint' : 'use as waypoint',
 
 	//Route Preferences
+	'RouteWeight' : 'route settings',
 	'Shortest' : 'shortest route',
 	'Fastest' : 'fastest route',
 	'Pedestrian' : 'pedestrian',
 	'Wheelchair' : 'accessible route',
-	'Bicycle' : 'shortest route',
+	'Bicycle' : 'normal',
 	'BicycleSafety' : 'safest route',
 	'BicycleRoute' : 'prefer bicycle lane',
 	'BicycleMTB' : 'mountain bike',
@@ -94,10 +95,12 @@ var lang_en = {
 	'agriculturalHeavyTruck' : 'Agricultural vehicle',
 	'forestryHeavyTruck' : 'Forestry vehicly',
 
-	'avoidMotorways' : 'Avoid highways',
-	'avoidTollways' : 'Avoid toll roads',
-	'avoidunpavedRoads':  'Avoid unpaved roads',
-	'avoidFerry':  'Avoid ferry connections',
+	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;avoid areas',
+	'avoidMotorways' : 'highways',
+	'avoidTollways' : 'toll roads',
+	'avoidunpavedRoads':  'unpaved roads',
+	'avoidFerry':  'ferry connections',
 	
 	//Surfaces:
 	'surface': 'Surface',

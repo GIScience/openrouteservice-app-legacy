@@ -31,6 +31,7 @@ var Languages = (function(w) {'use strict';
 		$('#BicycleMtbLabel').html(p.translate('BicycleMTB'));
 		$('#BicycleRacerLabel').html(p.translate('BicycleRacer'));
 		$('#PedestrianLabel').html(p.translate('Pedestrian'));
+		$('#weightOptions').html(p.translate('RouteWeight'));
 		
 		//truck profile
 		$('#fastestLabelTruck').html(p.translate('Fastest'));
@@ -47,6 +48,8 @@ var Languages = (function(w) {'use strict';
 		
 		$('#WheelchairLabel').html(p.translate('Wheelchair'));
 		
+		$('#avoidRoadsBtn').html(p.translate('avoidRoadMain'));
+		$('#avoidAreasBtn').html(p.translate('avoidAreasMain'));
 		$('#avoidMotorLabel').html(p.translate('avoidMotorways'));
 		$('#avoidTollLabel').html(p.translate('avoidTollways'));
 		$('#avoidAreasTitle').html(p.translate('avoidAreas'));
