@@ -622,7 +622,7 @@ button.routeOptionsButton > img {
 }
 #infoPanel {
 	position: fixed;
-	height: 120px;
+	height: 75px;
 	width: 400px;
 	background-color: rgba(255, 255, 255, 0.7);
 	background-image: url("../img/unihd.png");
@@ -635,8 +635,9 @@ button.routeOptionsButton > img {
 	bottom: 13px;
 	overflow: auto;
 	display: none;
-	padding: 5px 10px 5px 5px;
+	padding: 10px 150px 5px 5px;
 } 
+
 
 /* uncomment for height pofile */
 /*.heightContent {
