@@ -71,7 +71,7 @@ div.olControlPermalink {
 
 
 .olControlLayerSwitcher .layersDiv {
-    background-color: rgba(255,255,255,0.5) !important;
+    background-color: rgba(255,255,255,0.8) !important;
     border-radius: 5px;
     color: black;
     font-family: 'Roboto', sans-serif;
@@ -610,6 +610,7 @@ button.routeOptionsButton > img {
 	bottom: 0px;
 }
 
+/* info buttons in map */
 #infoButton {
 	position: fixed;
 	background: url('../img/info-32.png') no-repeat center;
@@ -618,14 +619,12 @@ button.routeOptionsButton > img {
 	z-index: 999;
 	width: 32px;
 	height: 32px;
-
 }
-
 #infoPanel {
 	position: fixed;
 	-width: 200px;
 	-height: 200px;
-	background-color: rgba(255, 255, 255, 0.5);
+	background-color: rgba(255, 255, 255, 0.7);
 	border-radius: 5px;
 	z-index: 999;
 	right: 5px;
@@ -775,7 +774,6 @@ button.routeOptionsButton > img {
 	font-size: 13px;
 
 }
-
 .mySlider input[type="range"]  {
 	margin-top: -6px;
 	width: 130px; 
@@ -783,7 +781,6 @@ button.routeOptionsButton > img {
 	color: #6392C2; 
 	font-weight: bold;
 }
-
 .mySlider img  {
 	margin-top: -5px;
 }
@@ -844,30 +841,34 @@ button.routeOptionsButton > img {
 	/* in body tag */
 }
 
+/* address result list */
 .resultList {
 	margin-bottom: 1em;
 }
-
 .resultList li {
 	padding: 3px;
 	border-bottom: 1px dashed #c8c8c8;
 }
-
 .resultList li:hover {
 	cursor: pointer;
 }
 
-
+/* dropdown of road types to avoid */
 #dropdown_avoid_roads {
 	padding-left: 5px;
 	padding-right: 5px;
 	padding-top: 5px;
 }
 
-#dropdown_weighting {
+/* dropdown of route settings weighting */
+#dropdown_weighting  {
 	padding-left: 5px;
-	padding-right: 5px;
-	padding-top: 5px;
+	min-width: 120px;
+}
+
+#dropdown_weighting label {
+	font-size: 11px;
+	margin-bottom: 0px;
 }
 
 #dropdown_avoid_areas {
@@ -878,7 +879,6 @@ button.routeOptionsButton > img {
 #dropdown_avoid_roads label, #dropdown_weighting label{
 	font-size: 11px;
 }
-
 
 
 /*fixes broken map tiles with OpenLayer 2.12*/

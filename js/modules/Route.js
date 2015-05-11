@@ -246,7 +246,7 @@ var Route = ( function(w) {"use strict";
 				processData: false,
 				type: "POST",
 				dataType: "xml",
-				crossDomain: false,
+				crossDomain: true,
 				data: xmlRequest, 
 				success: function(response){
 					successCallback(response,calcRouteID)

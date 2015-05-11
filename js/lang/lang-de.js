@@ -74,7 +74,7 @@ var lang_de = {
 		'useAsWaypoint' :  'als Wegpunkt &uuml;bernehmen',
 
 	//Route Preferences
-		'RouteWeight' : 'Einstellungen',
+		'RouteWeight' : 'Einstellungen&nbsp;<span class="caret">',
 		'Shortest':  'K&uuml;rzester Weg',
 		'Fastest':  'Schnellster Weg',
 		'Pedestrian':  'Fußg&auml;nger',

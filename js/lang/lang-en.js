@@ -75,7 +75,7 @@ var lang_en = {
 	'useAsWaypoint' : 'use as waypoint',
 
 	//Route Preferences
-	'RouteWeight' : 'route settings',
+	'RouteWeight' : 'route settings&nbsp;<span class="caret">',
 	'Shortest' : 'shortest route',
 	'Fastest' : 'fastest route',
 	'Pedestrian' : 'pedestrian',

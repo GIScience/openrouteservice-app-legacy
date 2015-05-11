@@ -6,8 +6,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<link rel="stylesheet" type="text/css" href="lib/rickshaw/rickshaw.min.css">
 		<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-		<link rel="stylesheet" type="text/css" href="css/bootstrap-ext.min.css">
-		<!-- for file upload -->
+		<link rel="stylesheet" type="text/css" href="css/bootstrap-ext.min.css"><!-- for file upload -->
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"> 
  		<link rel="stylesheet" type="text/css" href="css/default.css">
  	</head>
@@ -74,19 +73,32 @@
 										</button>
 									</div>
 									<div class="btn-group" id="weightingDropdown">
+								        <button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" aria-expanded="false" id="weightOptions">route options&nbsp;<span class="caret"></span></button>
+								          	<ul class="dropdown-menu" id="dropdown_weighting">
+												<label class="radio">
+													<input type="radio" id="Fastest" name="weighting" checked="checked">
+													<label id="FastestLabel">fastest route</label>
+													</label>										
+												<label class="radio">
+													<input type="radio" id="Shortest" name="weighting">
+													<label id="ShortestLabel">shortest route</label>
+												</label>
+											</ul>
+								    </div>
+									<!--<div class="btn-group" id="weightingDropdown">
 						                <button class="btn btn-small" id="weightOptions">route options</button>
 						                <button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 						                <ul class="dropdown-menu" id="dropdown_weighting">
-							                  	<div class="radio">
+							                  	<label class="radio">
 													<input type="radio" id="Fastest" name="weighting" checked="checked">
 													<label id="FastestLabel">fastest route</label>
-												</div>										
-												<div class="radio">
+												</label>										
+												<label class="radio">
 													<input type="radio" id="Shortest" name="weighting">
 													<label id="ShortestLabel">shortest route</label>
-												</div>
+												</label>
 							            </ul>
-								    </div>
+								    </div>-->
 									<div class="panel panelMedium" id="carOptions" style="">
 										<table class="optionsTable" style="width:100%">
 										 	<tr>
@@ -283,8 +295,8 @@
 									<div class="panel panelMedium" id="avoidables" style="">
 
 										<div class="btn-group" id="myDropdown">
-							                <button class="btn btn-small btn-danger" id="avoidRoadsBtn"><i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types</button>
-							                <button class="btn btn-small btn-danger dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+							                <button class="btn btn-small btn-danger" id="avoidRoadsBtn" data-hover="dropdown"><i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types</button>
+							                <button class="btn btn-small btn-danger dropdown-toggle" data-hover="dropdown"><span class="caret"></span></button>
 							            
 							                <ul class="dropdown-menu" id="dropdown_avoid_roads">
 							                  	<label class="checkbox">
@@ -308,8 +320,8 @@
 							        </div>								
 									<div class="panel panelMedium" id="avoidAreas">
 										<div class="btn-group" id="myDropdownAreas">
-								                <button class="btn btn btn-small btn-danger" id="avoidAreasBtn"><i class="icon-pencil icon-white"></i>&nbsp;&nbsp;avoid areas</button>
-								                <button class="btn btn btn-small btn-danger dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+								                <button class="btn btn btn-small btn-danger" id="avoidAreasBtn" data-hover="dropdown"><i class="icon-pencil icon-white"></i>&nbsp;&nbsp;avoid areas</button>
+								                <button class="btn btn btn-small btn-danger dropdown-toggle" data-hover="dropdown"><span class="caret"></span></button>
 								            
 								                <ul class="dropdown-menu" id="dropdown_avoid_areas">
 								                	<div class="btn-group" id="avoidAreasToolbar">
@@ -628,6 +640,7 @@
 		<script type="text/javascript" src="lib/bootstrap/bootstrap.min.js"></script>
 		<script type="text/javascript" src="lib/bootstrap/bootstrap-typeahead.js"></script>
 		<script type="text/javascript" src="lib/bootstrap/bootstrap-ext.min.js"></script><!-- for file upload -->
+		<script type="text/javascript" src="lib/bootstrap/bootstrap-hover-dropdown.js"></script><!-- for hover dropdowns -->
 		<script type="text/javascript" src="lib/prototype.1.7.minified.js"></script>
 		<script type="text/javascript" src="lib/OpenLayers2.13.1.js"></script>
 		<script type="text/javascript" src="lib/XMLWriter-1.0.0-min.js"></script>
