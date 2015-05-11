@@ -378,8 +378,8 @@ div.olControlPermalink {
 	padding-right: 5px;
 }
 .links {
-	height: 36px;
-	padding-top: 2px;
+	height: 40px;
+	padding-top: 0px;
 	padding-bottom: 2px;
 }
 .inlineLink {
@@ -622,16 +622,20 @@ button.routeOptionsButton > img {
 }
 #infoPanel {
 	position: fixed;
-	-width: 200px;
-	-height: 200px;
+	height: 120px;
+	width: 400px;
 	background-color: rgba(255, 255, 255, 0.7);
+	background-image: url("../img/unihd.png");
+	background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: right 10px bottom 20px; 
 	border-radius: 5px;
 	z-index: 999;
 	right: 5px;
 	bottom: 13px;
 	overflow: auto;
 	display: none;
-	padding: 5px 5px 5px 5px;
+	padding: 5px 10px 5px 5px;
 } 
 
 /* uncomment for height pofile */
