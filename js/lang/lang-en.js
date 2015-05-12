@@ -95,8 +95,8 @@ var lang_en = {
 	'agriculturalHeavyTruck' : 'Agricultural vehicle',
 	'forestryHeavyTruck' : 'Forestry vehicly',
 
-	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types',
-	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;avoid areas',
+	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types&nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;avoid areas&nbsp;&nbsp;<span class="caret">',
 	'avoidMotorways' : 'highways',
 	'avoidTollways' : 'toll roads',
 	'avoidunpavedRoads':  'unpaved roads',
