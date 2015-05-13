@@ -1829,11 +1829,13 @@ var Ui = ( function(w) {'use strict';
 			var truckparameter = $('#truckOptions_restrict');
 			var truck = $('#truckOptions');
 			var avoidables = $('#avoidables');
+			var avoidablesBike = $('#avoidablesBike')
 			var wheel = $('#wheelchairOptions');
 			var wheelParameters = $('#wheelchairParameters');
 			if (optionType === 'car') {
 				car.show();
 				avoidables.show();
+				avoidablesBike.hide();
 				bike.hide();
 				ped.hide();
 				truck.hide();
@@ -1845,6 +1847,7 @@ var Ui = ( function(w) {'use strict';
 				car.hide();
 				avoidables.hide();
 				bike.show();
+				avoidablesBike.show();
 				ped.hide();
 				truck.hide();
 				truckparameter.hide();
@@ -1853,6 +1856,7 @@ var Ui = ( function(w) {'use strict';
 				$('#accessibilityAnalysis').show();
 			} else if (optionType === 'truck') {
 				car.hide();
+				avoidablesBike.hide();
 				avoidables.show();
 				bike.hide();
 				ped.hide();
@@ -1865,6 +1869,7 @@ var Ui = ( function(w) {'use strict';
 			else if (optionType === 'pedestrian') {
 				car.hide();
 				avoidables.hide();
+				avoidablesBike.hide();
 				bike.hide();
 				ped.show();
 				truck.hide();
@@ -1875,6 +1880,7 @@ var Ui = ( function(w) {'use strict';
 			else {
 				car.hide();
 				avoidables.hide();
+				avoidablesBike.hide();
 				bike.hide();
 				ped.hide();
 				truck.hide();
@@ -2659,6 +2665,8 @@ var Ui = ( function(w) {'use strict';
 			    }
 			});
 
+
+			$('.btn-group').button();
 
 		}
 

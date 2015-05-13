@@ -340,29 +340,27 @@ div.olControlPermalink {
 	background-color: rgba(255,255,245,0.85);
 	box-shadow: 3px 3px 10px rgb(180,180,215);
 	box-shadow: 5px 5px 10px rgba(180,180,215,0.7);
-	border: 1px solid;
 	border-color: rgb(100,100,100);
-	border-radius: 6px;
-	padding: 7px 7px 7px 7px;
-	max-height: 105px;
-	-min-width: 220px;
 }
 .contextMenu span {
-	vertical-align: -10px;
+	vertical-align: -5px;
 }
 
 .useAsStartPoint {
-	min-height: 35px;
+	padding: 7px 7px 7px 7px;
+	min-height: 25px;
 	white-space: nowrap;
 	cursor: pointer;
 }
 .useAsViaPoint {
-	min-height: 35px;
+	padding: 7px 7px 7px 7px;
+	min-height: 25px;
 	white-space: nowrap;
 	cursor: pointer;
 }
 .useAsEndPoint {
-	min-height: 35px;
+	padding: 7px 7px 7px 7px;
+	min-height: 25px;
 	white-space: nowrap;
 	cursor: pointer;
 }
@@ -455,7 +453,7 @@ a.options.active {
 	list-style-type: none;
 }
 
-button.routeOptionsButton {
+button.routeOptionsButton, {
 	height: 30px;
 	width: 44px;
 	padding: 2px 2px 2px 2px;
@@ -464,6 +462,23 @@ button.routeOptionsButton > img {
 	width: 25px;
 	height: 20px;
 }
+
+button.routeOptionsButton > img {
+	width: 25px;
+	height: 20px;
+}
+
+button.weightOptions {
+	height: 30px;
+	width: 44px;
+	padding: 2px 2px 2px 2px;
+}
+
+#weightingDropdown {
+	margin-bottom: 3px;
+}
+
+
 #extendedRouteOptions {
 	margin-top: 4px;
 }
@@ -868,7 +883,7 @@ button.routeOptionsButton > img {
 /* dropdown of route settings weighting */
 #dropdown_weighting  {
 	padding-left: 5px;
-	min-width: 120px;
+	min-width: 100px;
 }
 
 #dropdown_weighting label {

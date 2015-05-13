@@ -443,13 +443,10 @@ var Map = ( function() {"use strict";
 						};
 						options[0].onmouseover = function(e) {
 							//click on start point
-							document.getElementById("contextStart").style.color = 'black';
-							//document.getElementsByClassName("useAsStartPoint")[0].style.backgroundImage = "url('img/marker-start_focus.png')";
+							document.getElementsByClassName("useAsStartPoint")[0].style.backgroundColor = '#e6e6e6';
 						};
 						options[0].onmouseout = function(e) { 
-						    document.getElementById("contextStart").style.color = '#444';
-						    //document.getElementsByClassName("useAsStartPoint")[0].style.backgroundImage = "url('img/marker-start.png')";
-
+							document.getElementsByClassName("useAsStartPoint")[0].style.backgroundColor = 'transparent';
 						}
 
 						options[1].onclick = function(e) {
@@ -461,14 +458,10 @@ var Map = ( function() {"use strict";
 						};
 						options[1].onmouseover = function(e) {
 							//click on start point
-							document.getElementById("contextVia").style.color = 'black';
-							//document.getElementsByClassName("useAsViaPoint")[0].style.backgroundImage = "url('img/marker-via_focus.png')";
-
+							document.getElementsByClassName("useAsViaPoint")[0].style.backgroundColor = '#e6e6e6';
 						};
 						options[1].onmouseout = function(e) { 
-						    document.getElementById("contextVia").style.color = '#444';
-						    //document.getElementsByClassName("useAsViaPoint")[0].style.backgroundImage = "url('img/marker-via.png')";
-
+							document.getElementsByClassName("useAsViaPoint")[0].style.backgroundColor = 'transparent';
 						}
 						options[2].onclick = function(e) {
 							//click on end point
@@ -479,13 +472,10 @@ var Map = ( function() {"use strict";
 						}
 						options[2].onmouseover = function(e) {
 							//click on start point
-							document.getElementById("contextEnd").style.color = 'black';
-							//document.getElementsByClassName("useAsEndPoint")[0].style.backgroundImage = "url('img/marker-end_focus.png')";
+							document.getElementsByClassName("useAsEndPoint")[0].style.backgroundColor = '#e6e6e6';
 						};
 						options[2].onmouseout = function(e) { 
-						    document.getElementById("contextEnd").style.color = '#444';
-						    //document.getElementsByClassName("useAsEndPoint")[0].style.backgroundImage = "url('img/marker-end.png')";
-
+							document.getElementsByClassName("useAsEndPoint")[0].style.backgroundColor = 'transparent';
 						}
 						//place context menu in a popup on the map
 						self.popup = new OpenLayers.Popup('menu', pos, null, menuObject.html(), false, null);

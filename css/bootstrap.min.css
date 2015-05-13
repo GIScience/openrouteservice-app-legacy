@@ -27,3 +27,12 @@ input {
 	-min-width: 120px;
 }
 
+
+.label.label-descrip {
+	background-color: transparent;
+	border: 1px solid rgba(0, 0, 0, 0.05);
+	color: rgba(0, 0, 0, 0.4);
+	text-shadow: none;
+
+}
+
