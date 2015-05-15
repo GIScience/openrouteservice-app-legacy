@@ -170,9 +170,7 @@ div.olControlPermalink {
 	background: url(../img/ajax-loader-blue.gif) no-repeat 95% 50%;
 	background-color: #D9EDF7;
 }
-.highlight {
-	background-color: #eaeaea;
-}
+
 .waypoint {
 	padding-left: 32px;
 	padding-top: 0;
@@ -209,18 +207,63 @@ div.olControlPermalink {
 	background-position: 8px 3px;
 }
 
-#routeInstructionsContainer table {
-	border: 1px solid #c8c8c8;
+
+#routeInstructionsContainer .directions-main {
+	margin-top: 5px;
 }
 
-#routeInstructionsContainer table td {
-	vertical-align: top;
-	padding: 5px;
+#routeInstructionsContainer .directions-container {
+	padding: 19px 0;
 }
 
-#routeInstructionsContainer table td:nth-child(3) {
-	width: 50px;
+#routeInstructionsContainer .directions-text {
+	padding: 3px 5px 0 40px;
+	line-height: 16px;
+	vertical-align: middle;
 }
+
+#routeInstructionsContainer .directions-img {
+	margin-left: 3px;
+	position: absolute;
+
+}
+
+#routeInstructionsContainer .directions-mode-distance {
+	top: 8px;
+	right: 15px;
+	padding-left: .5em;
+	padding-right: .5em;
+	z-index: 1;
+	position: absolute;
+	background-color: #f8f8f8;
+	color: #a0a0a0;  
+	font-size: 12px;
+}
+
+#routeInstructionsContainer .directions-mode-container {
+	padding: 0 0 0 40px;
+	position: absolute;
+	left: 0px;
+	right: 0;
+	-bottom: -14px;
+	height: 30px;
+	line-height: normal;
+	font-weight: normal;
+}
+
+#routeInstructionsContainer .directions-mode-line {
+	border-bottom: 1px solid #e6e6e6;
+	padding-top: 16px;
+	margin: 0 2em 0 0;
+}
+
+#routeInstructionsContainer .directions-notice {
+	padding: 0 0 0 40px;
+	margin-top: 5px;
+	color: #FF6961;
+}
+
+
 
 .radioContainer {
 	padding: 0 0 0 5px;
@@ -274,17 +317,17 @@ div.olControlPermalink {
 /*for displaying route instructions in the panel*/
 #zoomToRouteButton {
 	float: right;
-	width: 30%;
-	margin: 0;
-	padding: 0;
+	-width: 20px;
+	-margin: 0;
+	-padding: 0;
 }
 #routeInstructionHead {
 	float: left;
 	width: 60%;
 }
 #routeFromTo {
-	margin-bottom: 4px;
 	margin-top: 15px;
+	font-weight: bold;
 }
 .collapsibleHead {
 	padding-left: 15px;

@@ -36,6 +36,7 @@ var Preferences = ( function(w) {'use strict';
 		this.slopedCurbIdx = 20;
 		this.hazardousIdx = 21;
 		this.weightIdx = 22;
+		this.avoidStepsIdx = 23;
 
 		//define variables
 		this.language = 'en';

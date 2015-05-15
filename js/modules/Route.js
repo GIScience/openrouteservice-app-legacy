@@ -21,9 +21,9 @@ var Route = ( function(w) {"use strict";
 		 * @param avoidFerry: flag set to true if ferrys should be avoided in the route; else: false
 		 * @param avoidAreas: array of avoid areas represented by OL.Geometry.Polygons
 		 */
-		function calculate(routePoints, successCallback, failureCallback, language, routePref,extendedRoutePreferencesParams, extendedRoutePreferencesType, avoidMotorways, avoidTollways,avoidunpavedRoads,avoidFerry, avoidAreas, extendedRoutePreferencesWeight, calcRouteID) {
+		function calculate(routePoints, successCallback, failureCallback, language, routePref,extendedRoutePreferencesParams, extendedRoutePreferencesType, avoidMotorways, avoidTollways,avoidunpavedRoads,avoidFerry, avoidSteps, avoidAreas, extendedRoutePreferencesWeight, calcRouteID) {
 
-			console.log('calc')
+
 			var writer = new XMLWriter('UTF-8', '1.0');
 			writer.writeStartDocument();
 			//<xls:XLS>
@@ -201,6 +201,9 @@ var Route = ( function(w) {"use strict";
 			}
 			if (avoidFerry) {
 				writer.writeElementString('xls:AvoidFeature', 'Ferry');
+			}
+			if (avoidSteps) {
+				writer.writeElementString('xls:AvoidFeature', 'Steps');
 			}
 			//</xls:AvoidList>
 			writer.writeEndElement();

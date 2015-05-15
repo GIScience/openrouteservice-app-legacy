@@ -9,7 +9,7 @@ var Ui = ( function(w) {'use strict';
 		//search POI options: searchNearRoute, maxDist to route, distance Unit for maxDist, search query
 		searchPoiAtts = ['false', '100', 'm', ''],
 		//routing options for car, bike, pedestrian, truck and wheelchair
-		routeOptions = [list.routePreferences.get('car')[0], [null, null, null], [null, null, null,null,null], 'car', [null, null, null, null, null], null , 'Fastest'],
+		routeOptions = [list.routePreferences.get('car')[0], [null, null, null, null, null], [null, null, null,null,null], 'car', [null, null, null, null, null], null , 'Fastest'],
 		//is a route available?
 		routeIsPresent = false,
 		//timeout to wait before sending a request after the user finished typing
@@ -150,19 +150,16 @@ var Ui = ( function(w) {'use strict';
 		 */
 		function emphElement(elementId) {
 			var element = $('#' + elementId);
-
 			//if parent has class even or odd (== belongs to route instructions), only use class active, no highlight!
 			var parentClass = element.parent().attr('class');
 			var isRouteInstruction = false;
 			if (parentClass) {
-				isRouteInstruction = (parentClass.indexOf('even') >= 0) || (parentClass.indexOf('odd') >= 0);
+				isRouteInstruction = (parentClass.indexOf('directions-container') >= 0);
 			}
 
 			if (isRouteInstruction) {
 				element.get(0).addClassName('active');
-			} else {
-				element.get(0).addClassName('highlight');
-			}
+			} 
 		}
 
 		/**
@@ -170,7 +167,6 @@ var Ui = ( function(w) {'use strict';
 		 * @param elementId: id of the element to deemphasize
 		 */
 		function deEmphElement(elementId) {
-			$('#' + elementId).get(0).removeClassName('highlight');
 			$('#' + elementId).get(0).removeClassName('active');
 		}
 
@@ -179,7 +175,7 @@ var Ui = ( function(w) {'use strict';
 		 * @param e: the event
 		 */
 		function handleMouseOverElement(e) {
-			e.currentTarget.addClassName('highlight');
+			
 			theInterface.emit('ui:emphElement', {
 				id : e.currentTarget.getAttribute('id'),
 				layer : e.currentTarget.getAttribute('data-layer')
@@ -191,7 +187,7 @@ var Ui = ( function(w) {'use strict';
 		 * @param e: the event
 		 */
 		function handleMouseOutElement(e) {
-			e.currentTarget.removeClassName('highlight');
+			
 			theInterface.emit('ui:deEmphElement', {
 				id : e.currentTarget.getAttribute('id'),
 				layer : e.currentTarget.getAttribute('data-layer')
@@ -1566,18 +1562,23 @@ var Ui = ( function(w) {'use strict';
 				var destination = getRouteDestination();		
 
 				$('#routeFromTo').html(preferences.translate('routeFromTo') + destination);
-
+				
 				var container = $('#routeInstructionsContainer').get(0);
 				container.show();
-				var table = container.querySelector('table');
-				//remove old route instructions if the user has searched before
-				while (table.firstChild) {
-					table.removeChild(table.firstChild);
+
+				var directionsMain = container.querySelector('.directions-main')
+				// remove old instructions
+				while (directionsMain.firstChild) {
+					directionsMain.removeChild(directionsMain.firstChild);
 				}
+				
 				var numInstructions = 0;
 
 				var instructionsList = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstructionsList')[0];
 				instructionsList = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstruction');
+				
+				// container for all direction instructions
+
 				$A(instructionsList).each(function(instruction) {
 					//process each routing instruction
 					var text = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Instruction')[0];
@@ -1605,6 +1606,9 @@ var Ui = ( function(w) {'use strict';
 					var halfRight = text.indexOf(preferences.translate('half-right'));
 					var straight = text.indexOf(preferences.translate('straight'));
 					var direction;
+					// will be used for traffic jam info etc
+					var notice;
+
 					if (left > 0 && (left < halfLeft || halfLeft < 0)) {
 						direction = new Element('img', {
 							'src' : './img/left.png'
@@ -1630,48 +1634,68 @@ var Ui = ( function(w) {'use strict';
 					numInstructions++;
 
 					//add DOM elements
-					var trElement = new Element('tr', {
-						'class' : (numInstructions % 2 == 0) ? 'even' : 'odd',
-						'data-layer' : mapLayer
-					});
-					table.appendChild(trElement);
 
-					var tdElementImg = new Element('td');
+					//add DOM elements
+					var directionsContainer = new Element('div', {
+						'class' : 'directions-container clickable',
+						'data-layer' : mapLayer,
+					});
+
+					var directionsImgDiv = new Element('div', {
+						'class': 'directions-img'
+					});
+
 					if (direction) {
-						tdElementImg.appendChild(direction);
+						directionsImgDiv.appendChild(direction);
 					}
 
-					var tdElementText = new Element('td', {
-						'class' : 'clickable routeInstructions',
+					var directionTextDiv = new Element('div', {
+						'class' : 'directions-text clickable routeInstructions',
 						'id' : mapFeatureIds[2 * (numInstructions - 1) + 1]
 					}).update(text);
 
-					var tdElementDist = new Element('td', {
-						'class' : 'clickable',
-						'id' : mapFeatureIds[2 * (numInstructions - 1)]
+											
+					// modeContainer
+					var directionsModeContainer = new Element('div', {
+						'class': 'directions-mode-container'
 					})
 
+					var directionsBorder = new Element('div', {
+						'class': 'directions-mode-line'
+					})
 
-					var spanElementDist = new Element('span', {
-						'class' : 'label label-warning',
+					var distanceDiv = new Element('div', {
+						'class' : 'directions-mode-distance clickable',
+						'id' : mapFeatureIds[2 * (numInstructions - 1)],
 					}).update(distArr[0] + ' ' + distArr[1]);
 
-					tdElementDist.appendChild(spanElementDist);
 
+					directionsContainer.appendChild(directionsImgDiv);
+					directionsContainer.appendChild(directionTextDiv);
 
+					// for traffic jams etc..
+					if (notice) {
+						var noticeDiv = new Element('div', {
+							'class': 'directions-notice',
+						}).update('Vorsicht Stau auf der B31');
 
-					trElement.appendChild(tdElementImg);
-					trElement.appendChild(tdElementText);
-					trElement.appendChild(tdElementDist);
+						directionsContainer.appendChild(noticeDiv);
+					}
+
+					directionsModeContainer.appendChild(directionsBorder);
+					directionsModeContainer.appendChild(distanceDiv);
+					directionsContainer.appendChild(directionsModeContainer);
+					directionsMain.appendChild(directionsContainer);
 
 					//mouseover for points and lines
-					$(tdElementDist).mouseover(handleMouseOverDist);
-					$(tdElementDist).mouseout(handleMouseOutDist);
-					$(tdElementText).mouseover(handleMouseOverText);
-					$(tdElementText).mouseout(handleMouseOutText);
-					$(tdElementDist).click(handleClickRouteInstr);
-					$(tdElementText).click(handleClickRouteInstr);
+					$(distanceDiv).mouseover(handleMouseOverDist);
+					$(distanceDiv).mouseout(handleMouseOutDist);
+					$(directionTextDiv).mouseover(handleMouseOverText);
+					$(directionTextDiv).mouseout(handleMouseOutText);
+					$(distanceDiv).click(handleClickRouteInstr);
+					$(directionTextDiv).click(handleClickRouteInstr);
 				});
+	
 			}
 
 			/**
@@ -1679,7 +1703,7 @@ var Ui = ( function(w) {'use strict';
 			 */
 			function handleMouseOverDist(e) {
 				e.currentTarget.addClassName('active');
-				var parent = $(e.currentTarget).parent().get(0);
+				var parent = $(e.currentTarget).parent().parent().get(0);
 
 				theInterface.emit('ui:emphElement', {
 					id : e.currentTarget.getAttribute('id'),
@@ -1693,7 +1717,7 @@ var Ui = ( function(w) {'use strict';
 			 */
 			function handleMouseOutDist(e) {
 				e.currentTarget.removeClassName('active');
-				var parent = $(e.currentTarget).parent().get(0);
+				var parent = $(e.currentTarget).parent().parent().get(0);
 
 				theInterface.emit('ui:deEmphElement', {
 					id : e.currentTarget.getAttribute('id'),
@@ -1959,7 +1983,6 @@ var Ui = ( function(w) {'use strict';
 				//is a route avoidable
 				if (itemId === list.routeAvoidables[0]) {
 					//if the avoidable is set, remove it (and vice versa)
-
 					routeOptions[1][0] = routeOptions[1][0] ? null : itemId;
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.avoidHighwayIdx,
@@ -1983,11 +2006,18 @@ var Ui = ( function(w) {'use strict';
 						value : routeOptions[1][2] != null
 					});
 				} 
-				else if (itemId === list.routeAvoidables[3]) {
+				if (itemId === list.routeAvoidables[3]) {
 					routeOptions[1][3] = routeOptions[1][3] ? null : itemId;
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.avoidFerryIdx,
 						value : routeOptions[1][3] != null
+					});
+				}
+				else if (itemId === list.routeAvoidables[4]) {
+					routeOptions[1][4] = routeOptions[1][4] ? null : itemId;
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.avoidStepsIdx,
+						value : routeOptions[1][4] != null
 					});
 				}
 			} 
@@ -2157,7 +2187,7 @@ var Ui = ( function(w) {'use strict';
 			// $('#Smoothness option')[surfaceParamIndex].selected = true;
 			// $('#Tracktype option')[surfaceParamIndex].selected = true;
 			$('#Incline option')[inclineParamIndex].selected = true;
-			$('#SlopedCurb option')[slopedCurbParamIndex].selected = true;
+			//$('#SlopedCurb option')[slopedCurbParamIndex].selected = true;
 		}
 		
 		

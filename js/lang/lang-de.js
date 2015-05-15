@@ -27,7 +27,6 @@ var lang_de = {
 		'resetRoute' :  'Gesamte Route l&ouml;schen ',
 		'TotalTime':  'Gesamte Reisezeit',
 		'TotalDistance':  'Gesamte Wegstrecke',
-		'zoomToRoute':  'Ganze Route',
 		'routeSummary':  'Zusammenfassung',
 		'routeInstructions':  'Wegbeschreibung',
 		'routeLinkText' :  'Permalink zur aktuellen Route',
@@ -74,7 +73,6 @@ var lang_de = {
 		'useAsWaypoint' :  'als Wegpunkt &uuml;bernehmen',
 
 	//Route Preferences
-		'RouteWeight' : 'Einstellungen&nbsp;<span class="caret">',
 		'Shortest':  'K&uuml;rzester Weg',
 		'Fastest':  'Schnellster Weg',
 		'Pedestrian':  'Fußg&auml;nger',
@@ -94,8 +92,10 @@ var lang_de = {
 		'agriculturalHeavyTruck' : 'Agrarfahrzeug',
 		'forestryHeavyTruck' : 'Forstfahrzeug',
 
-		'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Stra&szlig;entypen vermeiden',
-		'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Gebiete vermeiden',
+		'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Stra&szlig;en vermeiden &nbsp;&nbsp;<span class="caret">',
+		'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Stra&szlig;en vermeiden &nbsp;&nbsp;<span class="caret">',
+		'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Gebiete vermeiden &nbsp;&nbsp;<span class="caret">',
+		
 		'avoidMotorways':  'Autobahnen vermeiden',
 		'avoidTollways':  'Mautstra&szlig;en vermeiden',
 		'avoidunpavedRoads':  'Unbefestigte Straßen vermeiden',

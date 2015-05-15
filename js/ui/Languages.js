@@ -13,6 +13,7 @@ var Languages = (function(w) {'use strict';
 	 * Load labels in appropriate language
 	 */
 	function applyLanguage() {
+		
 		//nav bar on top
 		$('#menuLinkSitePrefs').html(p.translate('sitePreferences'));
 		$('#menuLinkInfo').html(p.translate('contact'));
@@ -31,7 +32,6 @@ var Languages = (function(w) {'use strict';
 		$('#BicycleMtbLabel').html(p.translate('BicycleMTB'));
 		$('#BicycleRacerLabel').html(p.translate('BicycleRacer'));
 		$('#PedestrianLabel').html(p.translate('Pedestrian'));
-		$('#weightOptions').html(p.translate('RouteWeight'));
 		
 		//truck profile
 		$('#fastestLabelTruck').html(p.translate('Fastest'));
@@ -50,6 +50,9 @@ var Languages = (function(w) {'use strict';
 		
 		$('#avoidRoadsBtn').html(p.translate('avoidRoadMain'));
 		$('#avoidAreasBtn').html(p.translate('avoidAreasMain'));
+		$('#avoidBikesBtn').html(p.translate('avoidBikeMain'));
+
+
 		$('#avoidMotorLabel').html(p.translate('avoidMotorways'));
 		$('#avoidTollLabel').html(p.translate('avoidTollways'));
 		$('#avoidAreasTitle').html(p.translate('avoidAreas'));
@@ -92,7 +95,6 @@ var Languages = (function(w) {'use strict';
 		$('#addWaypoint').html(p.translate('addWaypoint'));
 		$('#routeSummaryHead').html(p.translate('routeSummary') + ':');
 		$('#routeInstructionHead').html(p.translate('routeInstructions') + ':');
-		$('#zoomToRouteButton').html(p.translate('zoomToRoute'));
 
 		//route extras
 		$('#routeExtrasHead').html(p.translate('routeExtras') + ':');
@@ -184,6 +186,7 @@ var Languages = (function(w) {'use strict';
 	 * select dropdowns in the preference popup window for language, distance unit, etc. 
 	 */
 	function loadPreferencePopupData() {
+
 		//versions
 		var container = $('#extendedVersionPrefs');
 		for (var i = 0; i < list.version.length; i++) {

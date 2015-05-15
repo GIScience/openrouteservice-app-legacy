@@ -761,6 +761,8 @@ var Controller = ( function(w) {'use strict';
                 var avoidTollway = prefs[1][1];
                 var avoidUnpavedRoads = prefs[1][2];
                 var avoidFerry = prefs[1][3];
+                var avoidSteps = prefs[1][4];
+
                 var avoidAreas = map.getAvoidAreas();
 
                 
@@ -775,13 +777,10 @@ var Controller = ( function(w) {'use strict';
 
                 ui.setTruckParameters(truck_length, truck_height, truck_weight, truck_width);
 
-
                 /* get and set hazardous */
                 var truckHazardous = preferences.loadHazardous();
                 ui.setHazardousParameter(truckHazardous); 
 
-                //var extendedRoutePreferences = prefs[2];
-                //console.log(extendedRoutePreferences);
                 //check whether truck button is active and send extendedRoutePreferences, otherwise don't 
                 if(prefs[3] == 'truck') {
                     var extendedRoutePreferencesParams = prefs[2];
@@ -797,7 +796,7 @@ var Controller = ( function(w) {'use strict';
                 }
 
 
-                route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferencesParams, extendedRoutePreferencesType, avoidHighway, avoidTollway,avoidUnpavedRoads,avoidFerry, avoidAreas, extendedRoutePreferencesWeight, calcRouteID);
+                route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferencesParams, extendedRoutePreferencesType, avoidHighway, avoidTollway,avoidUnpavedRoads,avoidFerry, avoidSteps, avoidAreas, extendedRoutePreferencesWeight, calcRouteID);
                 //try to read a variable that is set after the service response was received. If this variable is not set after a while -> timeout.
                 clearTimeout(timerRoute);
 
@@ -1040,7 +1039,6 @@ var Controller = ( function(w) {'use strict';
                     ui.showExportRouteError(false);
                     window.open('data:text/gpx+xml;base64,' + newRouteString);
                 } else {
-                    console.log('hi')
                     ui.showExportRouteError(false);
                     var exportGPXElement = document.getElementById('export-gpx');
                     exportGPXElement.href = 'data:text/gpx+xml;base64,' + newRouteString;
@@ -1454,12 +1452,14 @@ var Controller = ( function(w) {'use strict';
             if (!preferences.areCookiesAVailable()) {
                 ui.showNewToOrsPopup();
             }
+
         }
 
         /**
          * apply selected site language, load dynamic menus, etc.
          */
         function loadDynamicUiData() {
+        
             //load Ui elements with selected language
             uiLanguages.applyLanguage();
 
@@ -1564,6 +1564,7 @@ var Controller = ( function(w) {'use strict';
 
             initializeOrs();
             loadDynamicUiData();
+
         }
 
 

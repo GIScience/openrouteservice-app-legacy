@@ -28,7 +28,6 @@ var lang_en = {
 	'resetRoute' : '<i class="icon-remove-sign"></i>&nbsp;Reset whole route',
 	'TotalTime' : 'Total time',
 	'TotalDistance' : 'Total distance',
-	'zoomToRoute' : 'Zoom to route',
 	'routeSummary' : 'Summary',
 	'routeInstructions' : 'Route instructions',
 	'routeLinkText' : 'Permalink for current route',
@@ -75,7 +74,6 @@ var lang_en = {
 	'useAsWaypoint' : 'use as waypoint',
 
 	//Route Preferences
-	'RouteWeight' : 'route settings&nbsp;<span class="caret">',
 	'Shortest' : 'shortest route',
 	'Fastest' : 'fastest route',
 	'Pedestrian' : 'pedestrian',
@@ -95,8 +93,11 @@ var lang_en = {
 	'agriculturalHeavyTruck' : 'Agricultural vehicle',
 	'forestryHeavyTruck' : 'Forestry vehicly',
 
-	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types&nbsp;&nbsp;<span class="caret">',
+
+	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types &nbsp;&nbsp;<span class="caret">',
+	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types &nbsp;&nbsp;<span class="caret">',
 	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;avoid areas&nbsp;&nbsp;<span class="caret">',
+	
 	'avoidMotorways' : 'highways',
 	'avoidTollways' : 'toll roads',
 	'avoidunpavedRoads':  'unpaved roads',
