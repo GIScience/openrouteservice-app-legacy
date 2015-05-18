@@ -41,6 +41,7 @@ namespaces.services = {
 	routing: 'http://openls.geog.uni-heidelberg.de/osm/routing-test',
 	directory : 'http://openls.geog.uni-heidelberg.de/testing2015/directory', //for POI search requests
 	analyse : 'http://openls.geog.uni-heidelberg.de/testing2015/analysis',
+	shorten: 'http://openls.geog.uni-heidelberg.de/osm/shortenlink-test',
 	wps : '' //for calculation of polygon around route for POI search
 	//profile: '' 			//for height profile of route
 };

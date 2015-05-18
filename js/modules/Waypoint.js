@@ -228,7 +228,7 @@ var Waypoint = (function(w) {'use strict';
 	function getNextUnsetWaypoint(startingAt) {
 
 		var start = startingAt ? startingAt : 0;
-		console.log(waypointsSet.length)
+		
 		for (var i = start; i < waypointsSet.length; i++) {
 			if (!waypointsSet[i]) {
 				return i;

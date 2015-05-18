@@ -602,7 +602,7 @@ var Preferences = ( function(w) {'use strict';
 	 */
 	function openPermalink() {
 		
-		var query = '?';
+		var query = 'www.openrouteservice.org?';
 		for (var i = 0; i < prefNames.length; i++) {
 			query += prefNames[i] + '=' + permaInfo[i] + '&';
 		}
@@ -610,9 +610,33 @@ var Preferences = ( function(w) {'use strict';
 		query = query.substring(0, query.length - 1);
 
 		// convert to bitly
+		var shortenLink = namespaces.services.shorten;
 
+		jQuery.ajaxPrefilter(function( options ) {
+				if ( options.crossDomain ) {
+					options.url = "http://localhost/cgi-bin/proxy.cgi?url=" + encodeURIComponent( options.url );
+					options.crossDomain = false;
+				}
+		});
+		console.log(query)
 
-		window.open(query);
+		// for localhost testing, set crossDomain to true
+		jQuery.ajax({
+			url: shortenLink,
+			processData: false,
+			type: "POST",
+			crossDomain: false,
+			data: query, 
+			success: function(response){
+				console.log(response);
+				window.open(response)
+			},
+			error: function(response) {
+				console.log(response);
+			}
+		});
+
+	
 	}
 	
 	/**

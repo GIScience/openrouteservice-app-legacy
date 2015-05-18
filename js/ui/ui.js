@@ -1437,7 +1437,7 @@ var Ui = ( function(w) {'use strict';
 
 			var allRoutePoints = [];
 			var numWaypoints = $('.waypoint').length - 1;
-		
+
 			for (var i = 0; i < numWaypoints; i++) {
 				var element = $('#' + i).get(0);
 
@@ -2519,7 +2519,7 @@ var Ui = ( function(w) {'use strict';
 			var thisTarget = e.currentTarget;
 			var iterator = thisTarget.getAttribute('data');	
 			var gpxFile = fileInput[iterator];
-			console.log(gpxFile);
+			
 			theInterface.emit('ui:uploadRoute', gpxFile);
 	
 		}
@@ -2528,13 +2528,13 @@ var Ui = ( function(w) {'use strict';
 		 * removes it from map
 		 */
 		function handleDeleteFromMapGpx(e) {
-			//remove the track from the map
-			
+			//remove the track from the map and clicked
 			var thisTarget = e.currentTarget;
-			
 			var olFeature = thisTarget.getAttribute('olFeatureName');	
-			//console.log(JSON.stringify(olFeature));
 			theInterface.emit('ui:removeTrack', olFeature);
+
+			$(thisTarget).parent().fadeOut(300, function() { $(this).remove(); });
+
 
 		}
 		
