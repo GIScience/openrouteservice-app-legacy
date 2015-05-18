@@ -80,6 +80,12 @@ var Waypoint = (function(w) {'use strict';
 		});
 	}
 
+	function resetWaypointSet() {
+
+	 	waypointsSet = [false, false];
+
+	}
+
 	/**
 	 *extract points to use for markers on map
 	 * @param {Object} results the (xml) results from the service
@@ -220,7 +226,9 @@ var Waypoint = (function(w) {'use strict';
 	 * @return index of the empty waypoint or -1 if none exists
 	 */
 	function getNextUnsetWaypoint(startingAt) {
+
 		var start = startingAt ? startingAt : 0;
+		console.log(waypointsSet.length)
 		for (var i = start; i < waypointsSet.length; i++) {
 			if (!waypointsSet[i]) {
 				return i;
@@ -263,6 +271,7 @@ var Waypoint = (function(w) {'use strict';
 	Waypoint.prototype.getNextUnsetWaypoint = getNextUnsetWaypoint;
 	Waypoint.prototype.getNumWaypointsSet = getNumWaypointsSet;
 	Waypoint.prototype.getDebugInfo = getDebugInfo;
+	Waypoint.prototype.resetWaypointSet = resetWaypointSet;
 
 	return new Waypoint();
 })(window);

@@ -352,7 +352,7 @@ var Map = ( function() {"use strict";
 				// update map attributions in infoPanel
 				document.getElementById("infoPanel").innerHTML = self.theMap.baseLayer.attribution;
 
-				var graphInfo = "http://openls.geog.uni-heidelberg.de/osm/routing?info";
+				var graphInfo = "http://openls.geog.uni-heidelberg.de/osm/routing-test?info";
 				jQuery.ajaxPrefilter(function( options ) {
 					if ( options.crossDomain ) {
 						options.url = "http://localhost/cgi-bin/proxy.cgi?url=" + encodeURIComponent( options.url );
@@ -371,7 +371,10 @@ var Map = ( function() {"use strict";
 				});
 
 				function updateInfoPanel(results) {
+					console.log(results)
 					var lastUpdate = new Date(results.profiles['profile 1'].import_date);
+
+					// TODO: add nextUpdate from results when live
 					lastUpdate =  lastUpdate.getUTCDate() + '.' + (parseInt(lastUpdate.getMonth())+parseInt(1)) + '.' + lastUpdate.getFullYear();
 					document.getElementById("infoPanel").innerHTML += '<br/><br/>';
 					document.getElementById("infoPanel").innerHTML += '<b>Last Update:</b> ' + lastUpdate;
@@ -656,13 +659,17 @@ var Map = ( function() {"use strict";
 		 *  @param waypointIndex: index of the waypoint where to remove objects from
 		 */
 		function clearMarkers(layerName, featureIds) {
+			
+			
 			var layer = this.theMap.getLayersByName(layerName);
+			console.log(layer)
 			if (layer && layer.length > 0) {
 				layer = layer[0];
 			}
 			if (featureIds && featureIds.length > 0) {
 				var toRemove = [];
 				for (var i = 0; i < featureIds.length; i++) {
+					console.log(featureIds[i]);
 					if (featureIds[i]) {
 						var ft = layer.getFeatureById(featureIds[i]);
 						toRemove.push(ft);
@@ -1322,12 +1329,20 @@ var Map = ( function() {"use strict";
 		 * @param {Object} trackFeatures: array of OL.FeatureVectors (usually only one) with track points
 		 */
 		function addTrackToMap(trackFeatures) {
+			
+
+			//fill up data field in html with openlayers id
+
 			var layer = this.theMap.getLayersByName(this.TRACK)[0];
 			layer.addFeatures(trackFeatures);
 
 			//zoom to track
 			var resultBounds = layer.getDataExtent();
 			this.theMap.zoomToExtent(resultBounds);
+
+			var featureName = trackFeatures[0].id;
+			return featureName;
+
 		}
 
 		/*

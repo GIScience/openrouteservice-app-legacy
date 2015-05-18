@@ -178,8 +178,7 @@ var lang_de = {
 		'gpxUploadError': 'Beim Upload der Route ist leider ein Fehler aufgetreten.',
 		'gpxDownloadText' :  'Aktuelle Route im GPX-Format herunterladen',
 		'gpxDownloadButton' : 'GPX herunterladen',
-		'gpxUploadRouteText' :  'GPX-Route aus Datei anzeigen und neuberechnen',
-		'gpxUploadTrackText' :  'GPX-Track aus Datei anzeigen',
+		'gpxUploadRouteText' :  'GPX-Routen hochladen',
 		'selectFile' : 'Datei ausw&auml;hlen',
 		'changeFile' : '&Auml;ndern',
 

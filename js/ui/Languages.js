@@ -115,7 +115,6 @@ var Languages = (function(w) {'use strict';
 		$('#exportRouteGpx').html(p.translate('gpxDownloadButton'));
 		$('#exportGpxError').html(p.translate('gpxDownloadError'));
 		$('#importRouteInfoLabel').html(p.translate('gpxUploadRouteText'));
-		$('#importTrackInfoLabel').html(p.translate('gpxUploadTrackText'));
 		$('#importGpxError').html(p.translate('gpxUploadError'));
 		$('.fileUploadNewLabel').html(p.translate('selectFile'));
 		$('.fileUploadExistsLabel').html(p.translate('changeFile'));

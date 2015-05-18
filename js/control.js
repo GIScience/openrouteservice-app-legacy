@@ -173,8 +173,11 @@ var Controller = ( function(w) {'use strict';
          * @param atts: pos: position of the new waypoint, type: type of the waypoint
          */
         function handleAddWaypointByRightclick(atts) {
+            console.log(atts)
             var pos = atts.pos;
             var wpType = atts.type;
+            console.log(wpType == Waypoint.type.END);
+            console.log(waypoint.getNumWaypoints());
             var featureId;
 
             //index of the waypoint to set (start at the beginning, end at the end, via in the middle)
@@ -183,6 +186,8 @@ var Controller = ( function(w) {'use strict';
             wpIndex = wpType == Waypoint.type.END ? waypoint.getNumWaypoints() - 1 : wpIndex;
             //if VIA: use index of prior to last waypoint, insert the new via point after this element
             wpIndex = wpType == Waypoint.type.VIA ? waypoint.getNumWaypoints() - 2 : wpIndex;
+
+            console.log(wpIndex)
 
             //in case of a newly added VIA, the additional waypoint is added in ui.addWaypintAfter(...)
             if (wpType == Waypoint.type.VIA) {
@@ -196,6 +201,8 @@ var Controller = ( function(w) {'use strict';
             //remove old waypoint marker (if exists)
             featureId = ui.getFeatureIdOfWaypoint(wpIndex);
             if (featureId) {
+                console.log(featureId)
+                console.log('removed')
                 //address has been set yet
                 map.clearMarkers(map.ROUTE_POINTS, [featureId]);
             }
@@ -379,15 +386,28 @@ var Controller = ( function(w) {'use strict';
          * the whole route and its waypoints are removed. Internal variables are updated
          */
         function handleResetRoute() {
-            //remove all waypoint markers
-            map.clearMarkers(map.ROUTE_POINTS);
 
-            for (var i = 0; i < waypoint.getNumWaypoints(); i++) {
-                waypoint.removeWaypoint(i);
+            var isRoutePresent = waypoint.getNumWaypointsSet() >= 2;
+
+            if (isRoutePresent) {
+
+                console.log('present')
+
+                //remove all waypoint markers
+                map.clearMarkers(map.ROUTE_POINTS);
+                waypoint.resetWaypointSet();
+                console.log(waypoint.getDebugInfo());
+                // for (var i = 0; i < waypoint.getNumWaypoints(); i++) {
+                    
+                //     if (waypoint.getNumWaypoints() > 2) {
+                //         waypoint.removeWaypoint(i);
+                //     }
+                // }
+
+                //update preferences
+                handleWaypointChanged(null);
+
             }
-
-            //update preferences
-            handleWaypointChanged(null);
         }
 
         /**
@@ -397,13 +417,13 @@ var Controller = ( function(w) {'use strict';
          */
         function handleWaypointChanged(waypointStringList, doNotCalculateRoute) {
 
-
             handlePrefsChanged({
                 key : preferences.waypointIdx,
                 value : waypointStringList,
             });
 
             if (!doNotCalculateRoute) {
+
                 handleRoutePresent();
             }
         }
@@ -683,9 +703,10 @@ var Controller = ( function(w) {'use strict';
                 position = util.convertPositionStringToLonLat(position);
             }
 
+            console.log(waypoint.getDebugInfo())
             //use the next unset waypoint for the new waypoint (append one if no unset wp exists) (some lines below)
             var index = waypoint.getNextUnsetWaypoint();
-
+            console.log('handleUseAsWaypointindex ', index);
             var type;
             if (index == 0) {
                 type = waypoint.type.START;
@@ -1052,13 +1073,26 @@ var Controller = ( function(w) {'use strict';
             } 
         }
 
+        /** 
+         * clear map from all tracks and routes
+         */
+        function clearGpxRoutesTracks() {
+            //remove route or track and markers etc.
+            console.log('clearing..')
+            map.clearMarkers(map.TRACK);   
+        }
+
         /**
          * uploads start and end point from a GPX file and calculates the route between these points
          * required HTML5 file api
          * @param file: the GPX file to upload
          */
+
         var wp2;
-        function handleUuploadRoute(file) {
+        function handleGpxRoute(file) {
+            //remove old routes
+            handleResetRoute();
+
             ui.showImportRouteError(false);
             if (file) {
                 if (!window.FileReader) {
@@ -1103,19 +1137,20 @@ var Controller = ( function(w) {'use strict';
         /**
          * uploads the track GPX file and displays it on the map. NO route re-calculation!
          * required HTML5 file api
-         * @param file: the GPX file to upload
+         * @param fileTarget: array: the GPX file to upload and the html remove target
          */
-        function handleUploadTrack(file) {
+        function handleGpxTrack(fileTarget) {
+            console.log(fileTarget[1])
             ui.showImportRouteError(false);
             //clean old track from map (at the moment only one track is supported)
-            map.clearMarkers(map.TRACK);
-            if (file) {
+            //map.clearMarkers(map.TRACK);
+            if (fileTarget[0]) {
                 if (!window.FileReader) {
                     // File APIs are not supported, e.g. IE
                     ui.showImportRouteError(true);
                 } else {
                     var r = new FileReader();
-                    r.readAsText(file);
+                    r.readAsText(fileTarget[0]);
 
                     r.onload = function(e) {
                         var data = e.target.result;
@@ -1127,8 +1162,11 @@ var Controller = ( function(w) {'use strict';
                             ui.showImportRouteError(true);
                         } else {
                             //add features to map
-                            map.addTrackToMap(track);
+                            var newFeature = map.addTrackToMap(track);
+                            // adds custom attribute to html element in order to remove it later on
+                            fileTarget[1].writeAttribute("olFeatureName", newFeature );
                         }
+
                     };
                 }
             } else {
@@ -1138,9 +1176,15 @@ var Controller = ( function(w) {'use strict';
 
         /**
          * removes an uploaded track from the map
+         * @param olFeatureName: is the name of the openlayers feature which has to be removed
          */
-        function handleRemoveTrack() {
-            map.clearMarkers(map.TRACK);
+        function handleRemoveTrack(olFeatureName) {
+            //console.log(JSON.stringify(olFeatureName));
+            handleResetRoute();
+            map.clearMarkers(map.TRACK, [olFeatureName]);
+
+            // remove div..
+            
         }
 
         /* *********************************************************************
@@ -1260,6 +1304,7 @@ var Controller = ( function(w) {'use strict';
          * @param wpIndex: indicates position of waypoint
          */
         function handlePrefsChanged(atts) {
+
             var key = atts.key;
             var value = atts.value;
             preferences.updatePreferences(key, value);
@@ -1550,9 +1595,9 @@ var Controller = ( function(w) {'use strict';
             ui.register('ui:removeAccessibility', handleRemoveAccessibility);
 
             ui.register('ui:exportRouteGpx', handleExportRoute);
-            ui.register('ui:uploadRoute', handleUuploadRoute);
+            ui.register('ui:uploadRoute', handleGpxRoute);
             ui.register('control:reverseGeocodeCompleted', uploadRouteTrigger2ndWaypoint);
-            ui.register('ui:uploadTrack', handleUploadTrack);
+            ui.register('ui:uploadTrack', handleGpxTrack);
             ui.register('ui:removeTrack', handleRemoveTrack);
 
             ui.register('ui:uploadHeightProfile', handleUploadHeightProfile);
@@ -1561,6 +1606,8 @@ var Controller = ( function(w) {'use strict';
 
             ui.register('ui:saveUserPreferences', updateUserPreferences);
             ui.register('ui:openPermalinkRequest', handlePermalinkRequest);
+
+            ui.register('ui:clearFromGpx', clearGpxRoutesTracks);
 
             initializeOrs();
             loadDynamicUiData();

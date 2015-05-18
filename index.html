@@ -491,25 +491,11 @@
 												Unfortunately an error occured while downlodng the route.
 											</div>
 											<br/>
-											<form class="fileUploadForm">
-												<div id="gpxUploadFiles" class="fileupload fileupload-new" data-provides="fileupload">
-													<span class="btn btn-small btn-file"><i class="icon-upload"></i></a><span class="fileupload-new fileUploadNewLabel">&nbsp;Select file</span><span class="fileupload-exists fileUploadExistsLabel">Change</span>
-														<input type="file">
-													</span>
-													<span class="fileupload-preview"></span><a href="#" id="gpxUploadFilesDelete" class="close fileupload-exists" data-dismiss="fileupload" style="float:none">x</a>
-												</div>
-												<span id ="importRouteInfoLabel" class="label label-descrip">Upload a route from a GPX-file with re-calculation</span>
-											</form>
-											<br/>
-											<form class="fileUploadForm">
-												<div id="gpxUploadTrack" class="fileupload fileupload-new" data-provides="fileupload">
-													<span class="btn btn-small btn-file"><i class="icon-upload"></i><span class="fileupload-new fileUploadNewLabel">&nbsp;Select file</span><span class="fileupload-exists fileUploadExistsLabel">Change</span>
-														<input type="file">
-													</span><span class="fileupload-preview"></span><a href="#" id="gpxUploadTrackDelete" class="close fileupload-exists" data-dismiss="fileupload" style="float:none">x</a>
-												</div>
-												<!-- <div id="trackList"></div> -->
-											</form>
-											<span id ="importTrackInfoLabel" class="label label-descrip">Upload of GPX-track for display on the map</span>
+											<div id="GPXcontainer">
+												<span class="btn btn-file" id="import-gpx"><i class="icon-upload"></i>&nbsp;&nbsp;Upload GPX files<input type="file" id="files" multiple /></span>	
+													<div id="fileContainerMain" style="display: none;"></div>		
+											</div>
+											<span id ="importRouteInfoLabel" class="label label-descrip">Upload multiple tracks from a GPX-files</span>
 										</div>
 										<div id="importGpxError" class="alert alert-error" style="display:none">
 											Unfortunately an error occured while uploading the route.

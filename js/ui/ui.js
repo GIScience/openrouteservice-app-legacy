@@ -18,6 +18,7 @@ var Ui = ( function(w) {'use strict';
 		typingTimerSearchAddress, typingTimerSearchPoi, typingTimerSearchPoiDistance,
 		//timers for user input (waypoints)
 		timer0, timer1, typingTimerWaypoints = [timer0, timer1];
+	
 
 		/* *********************************************************************
 		* GENERAL
@@ -1433,16 +1434,21 @@ var Ui = ( function(w) {'use strict';
 		 * @return array of strings containing the coordinates
 		 */
 		function getRoutePoints() {
+
 			var allRoutePoints = [];
 			var numWaypoints = $('.waypoint').length - 1;
+		
 			for (var i = 0; i < numWaypoints; i++) {
 				var element = $('#' + i).get(0);
+
 				element = element.querySelector('.address');
 				if (element) {
 					allRoutePoints.push(element.getAttribute('data-position'))
 				}
 			}
 			return allRoutePoints;
+
+
 		}
 
 		/**
@@ -2408,6 +2414,131 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+		var fileInput;
+		function handleGpxFiles(event) {
+			
+			// clear old gpx tracks from map
+			theInterface.emit('ui:clearFromGpx');
+
+			fileInput = event.target.files;
+			if (fileInput) {
+				fillGpxMenu(fileInput)
+			}
+		}
+
+		function fillGpxMenu(files) {
+
+			var container = document.querySelector('#GPXcontainer');
+		   	var fileContainerMain = container.querySelector('#fileContainerMain')
+		   	fileContainerMain.show();
+			// remove old files..
+			while (fileContainerMain.firstChild) {
+				fileContainerMain.removeChild(fileContainerMain.firstChild);
+			}
+
+		    for (var i = 0; i < files.length; i++) {
+
+		    	var fileContainer = new Element('div', {
+		      		'id' : 'fileContainer',
+		      	});
+
+		      	var filename = files[i].name;
+		      	var fileName = new Element('div', {
+		      		'class' : 'myfile',
+		      	}).update(filename);
+
+		      	var showGpx = new Element('div', {
+		      		'class' : 'show',
+		      		'data': i
+		      	});
+
+		      	var calcGpx = new Element('div', {
+		      		'class': 'calc',
+		      		'data': i
+		      	});
+
+		      	var deleteGpx = new Element('div', {
+		      		'class': 'delete',
+		      		'data': i
+		      	});
+
+		      	var show = new Element('img', {
+					'src' : 'img/addBtn.png',
+				});
+				
+				var calc = new Element('img', {
+					'src' : 'img/reload.png',
+				});
+
+				var del = new Element('img', {
+					'src' : 'img/cancel.png',
+				});
+			
+				showGpx.appendChild(show);
+				calcGpx.appendChild(calc);
+				deleteGpx.appendChild(del);
+
+				fileContainer.appendChild(fileName);
+				fileContainer.appendChild(showGpx);
+				fileContainer.appendChild(calcGpx);
+				fileContainer.appendChild(deleteGpx);
+
+				fileContainerMain.appendChild(fileContainer)
+
+				$(showGpx).click(handleShowGpx);
+				$(calcGpx).click(handleRecalcGpx);
+				$(deleteGpx).click(handleDeleteFromMapGpx);
+				
+		    }
+
+		    container.appendChild(fileContainerMain);
+		  
+		};
+
+		/**
+		 * handles the clicked gpx file and shows it on map
+		 */
+		function handleShowGpx(e) {
+			
+			var thisTarget = e.currentTarget;
+			
+			var iterator = thisTarget.getAttribute('data');
+			
+			var gpxFile = fileInput[iterator];
+			// get sibling remove element
+			var thisTarget = $(e.currentTarget).siblings(".delete")[0];
+
+			theInterface.emit('ui:uploadTrack', [gpxFile,thisTarget]);
+
+		}
+
+		/**
+		 * handles the clicked gpx file and recalculates route
+		 */
+		function handleRecalcGpx(e) {
+			var thisTarget = e.currentTarget;
+			var iterator = thisTarget.getAttribute('data');	
+			var gpxFile = fileInput[iterator];
+			console.log(gpxFile);
+			theInterface.emit('ui:uploadRoute', gpxFile);
+	
+		}
+
+		/**
+		 * removes it from map
+		 */
+		function handleDeleteFromMapGpx(e) {
+			//remove the track from the map
+			
+			var thisTarget = e.currentTarget;
+			
+			var olFeature = thisTarget.getAttribute('olFeatureName');	
+			//console.log(JSON.stringify(olFeature));
+			theInterface.emit('ui:removeTrack', olFeature);
+
+		}
+		
+
 		/**
 		 * removes the file from the import track dialogue and triggers the deletion of the track on the map
 		 */
@@ -2671,6 +2802,10 @@ var Ui = ( function(w) {'use strict';
 			$('#gpxUploadTrack').change(handleImportTrackSelection);
 			$('#gpxUploadTrackDelete').click(handleImportTrackRemove);
 
+			//multiple file uploader listener
+			$('#files').change(handleGpxFiles);
+
+
 			//height profile
 			$('#uploadHeightProfileFiles').change(handleUploadHeightProfileSelection);
 			$('#heightProfileFilesDelete').click(handleHeightProfileRemove);
@@ -2695,9 +2830,9 @@ var Ui = ( function(w) {'use strict';
 			    }
 			});
 
-
 			$('.btn-group').button();
 
+			
 		}
 
 
@@ -2768,7 +2903,8 @@ var Ui = ( function(w) {'use strict';
 		
 		Ui.prototype.setHazardousParameter = setHazardousParameter;
 
-
+		Ui.prototype.handleGpxFiles = handleGpxFiles;
+			
 		theInterface = new Ui();
 
 		return theInterface;

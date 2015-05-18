@@ -207,7 +207,7 @@ div.olControlPermalink {
 	background-position: 8px 3px;
 }
 
-
+/* route instructions styles */
 #routeInstructionsContainer .directions-main {
 	margin-top: 5px;
 }
@@ -263,6 +263,31 @@ div.olControlPermalink {
 	color: #FF6961;
 }
 
+/* gpx upload styles */
+#fileContainerMain {
+	margin-top: 10px; 
+	width: 200px;
+}
+
+#fileContainer {
+	height: 32px; 
+	border-bottom: 
+	1px solid #e6e6e6;	
+	margin: 1em 2em 0 0.5em;
+}
+
+.myfile { 
+	float: left; padding-left: 10px; pointer-events: none;
+}
+.show { 
+	float: left;padding-left: 10px; cursor: pointer;
+}
+.calc { 
+	float: left;padding-left: 10px; cursor: pointer;
+}
+.delete { 
+	float: left;padding-left: 10px; cursor: pointer;
+}
 
 
 .radioContainer {
@@ -862,7 +887,7 @@ button.weightOptions {
   background-position: -96px -118px;
 }
 
-#exportInfoLabel, #importRouteInfoLabel, #importTrackInfoLabel {
+#exportInfoLabel, #importRouteInfoLabel {
 	margin-top: 5px;
 }
 

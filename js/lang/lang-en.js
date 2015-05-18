@@ -139,8 +139,7 @@ var lang_en = {
 	'gpxUploadError' : 'Unfortunately an error occured while uploading the route.',
 	'gpxDownloadText' : 'Download of current route in GPX format',
 	'gpxDownloadButton' : 'Download GPX',
-	'gpxUploadRouteText' : 'Upload a route from a GPX-file with re-calculation',
-	'gpxUploadTrackText' : 'Upload of GPX-track for display on the map',
+	'gpxUploadRouteText' : 'Upload tracks from GPX-files',
 	'selectFile' : '&nbsp;Select file',
 	'changeFile' : '&nbsp;Change',
 
