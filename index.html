@@ -485,22 +485,21 @@
 									<div id="exportImport">
 										<label id="imExportLabel"><b>Import/ Export</b></label>
 										<div class="panel panelMedium">
-											<a id="export-gpx" class="btn btn-small" download="map.gpx"><i class="icon-download"></i>&nbsp;Export GPX</a>
-											<br/>
-											<span id ="exportInfoLabel" class="label label-descrip">Download of current route in GPX format</span>
+											<a id="export-gpx" class="btn btn-small" download="map.gpx" title="Download of current route in GPX format"><i class="icon-download"></i>&nbsp;&nbsp;Export GPX</a>
 											<br/>
 											<div class="alert alert-error" style="display:none" id="exportGpxError">
-												Unfortunately an error occured while downlodng the route.
+												Unfortunately an error occured while downloading the route.
 											</div>
 											<br/>
 											<div id="GPXcontainer">
-												<span class="btn btn-file" id="import-gpx"><i class="icon-upload"></i>&nbsp;&nbsp;Upload GPX files<input type="file" id="files" multiple /></span>	
+												<span class="btn btn-file" id="import-gpx" title="Upload multiple tracks from a GPX-files"><i class="icon-upload"></i>&nbsp;&nbsp;Upload GPX files<input type="file" id="files" multiple /></span>	
 													<div id="fileContainerMain" style="display: none;"></div>		
 											</div>
-											<span id ="importRouteInfoLabel" class="label label-descrip">Upload multiple tracks from a GPX-files</span>
-										</div>
-										<div id="importGpxError" class="alert alert-error" style="display:none">
-											Unfortunately an error occured while uploading the route.
+											<br/>
+											<span id ="importRouteInfoLabel" class="label label-descrip">GPX Features</span>
+											<div id="importGpxError" class="alert alert-error" style="display:none">
+												Unfortunately an error occured while uploading the route.
+											</div>
 										</div>
 									</div>
 								</div>
