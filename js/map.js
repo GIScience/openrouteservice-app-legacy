@@ -89,8 +89,6 @@ var Map = ( function() {"use strict";
 			graphicOpacity : 0.7
 		};
 
-		var colors = ["red", "orange", "yellow", "green", "blue", "purple"]; 
-
 		/* *********************************************************************
 		 * LAYER NAMES
 		 * *********************************************************************/
@@ -1321,7 +1319,7 @@ var Map = ( function() {"use strict";
 				strokeOpacity : 0.7,
 				strokeWidth : 4,
 				cursor : "pointer"
-				}
+			}
 
 			if (!trackFeatures || trackFeatures.length == 0) {
 				return null;
@@ -1346,9 +1344,7 @@ var Map = ( function() {"use strict";
 			//fill up data field in html with openlayers id
 			var layer = this.theMap.getLayersByName(this.TRACK)[0];
 			
-
 			layer.addFeatures(trackFeatures);
-
 
 			//zoom to track
 			var resultBounds = layer.getDataExtent();
@@ -1362,7 +1358,7 @@ var Map = ( function() {"use strict";
 
 		function randomColors() {
 
-			var randomColor = colors[Math.round((colors.length - 1) * Math.random())]; 
+			var randomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
 			return randomColor;
 
 		}

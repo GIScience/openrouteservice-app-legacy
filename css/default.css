@@ -277,16 +277,16 @@ div.olControlPermalink {
 }
 
 .myfile { 
-	float: left; padding-left: 10px; pointer-events: none;
+	float: left; padding-left: 13px; pointer-events: none;
 }
 .show { 
-	float: left;padding-left: 10px; cursor: pointer;
+	float: left;padding-left: 13px; cursor: pointer;
 }
 .calc { 
-	float: left;padding-left: 10px; cursor: pointer;
+	float: left;padding-left: 13px; cursor: pointer;
 }
 .delete { 
-	float: left;padding-left: 10px; cursor: pointer;
+	float: left;padding-left: 13px; cursor: pointer;
 }
 
 
@@ -658,15 +658,26 @@ button.weightOptions {
  margin-right: 0px;
  }*/
 
-#topMenu > li > a, #title {
-	color: #888;
+#topMenu > li > a, #title, #info {
 	padding-top: 15px;
 	font-weight: normal;
 }
+
 #navbar a.brand {
-	color: #000;
 	padding-right: 10px;
 	font-weight: bold;
+}
+
+#title {
+	color: #000;
+}
+
+#info {
+	margin-left: 112px;
+	height: 13px;
+	font-weight: normal;
+	text-align: center; 
+	line-height: 11px;
 }
 
 #topMenu > li > a:hover, #title:hover {
@@ -1032,7 +1043,7 @@ img {
 	line-height: 1.1;
 }
 
-#accessibilityDistance,#accessibilityAnalysisIsochronesIntervall,#accessibilityAnalysisMethodList {
+#accessibilityDistance,#accessibilityAnalysisIsochronesIntervall {
 	width: 30px;
 	/*overwrite settings from bootstrap for input fields*/
 	padding: 2px 2px 0px 2px;
@@ -1042,13 +1053,9 @@ img {
 	font-size: 13px;
 }
 
-select {
-		font-size: 13px;
-
+#accessibilityAnalysisMethodList {
+	width: 120px;
 }
-
-
-
 
 #exportGpxError {
 	margin-top: 5px;

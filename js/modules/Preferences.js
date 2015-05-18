@@ -612,6 +612,7 @@ var Preferences = ( function(w) {'use strict';
 		// convert to bitly
 		var shortenLink = namespaces.services.shorten;
 
+
 		jQuery.ajaxPrefilter(function( options ) {
 				if ( options.crossDomain ) {
 					options.url = "http://localhost/cgi-bin/proxy.cgi?url=" + encodeURIComponent( options.url );
@@ -623,8 +624,8 @@ var Preferences = ( function(w) {'use strict';
 		// for localhost testing, set crossDomain to true
 		jQuery.ajax({
 			url: shortenLink,
-			processData: false,
 			type: "POST",
+			dataType: "json",
 			crossDomain: false,
 			data: query, 
 			success: function(response){

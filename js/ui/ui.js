@@ -2463,15 +2463,18 @@ var Ui = ( function(w) {'use strict';
 		      	});
 
 		      	var show = new Element('img', {
-					'src' : 'img/addBtn.png',
+					'src' : 'img/menuSearch.png',
+					'title': 'show track'
 				});
 				
 				var calc = new Element('img', {
-					'src' : 'img/reload.png',
+					'src' : 'img/marker-small.png',
+					'title': 'recalculate track to route'
 				});
 
 				var del = new Element('img', {
 					'src' : 'img/cancel.png',
+					'title': 'remove track or route'
 				});
 			
 				showGpx.appendChild(show);
