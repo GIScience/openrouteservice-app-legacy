@@ -2356,23 +2356,6 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
-		/**
-		 * forwards the selected GPX file and triggers the waypoint extraction to upload a route from the file
-		 */
-		function handleImportRouteSelection() {
-			var file;
-			var fileInput = $$('#gpxUploadFiles input[type="file"]')[0];
-			if (fileInput && fileInput.files && fileInput.files.length > 0) {
-				file = fileInput.files[0];
-			} else if (fileInput && fileInput.value) {
-				//IE doesn't know x.files
-				file = fileInput.value;
-			}
-
-			if (file) {
-				theInterface.emit('ui:uploadRoute', file);
-			}
-		}
 
 		/**
 		 * removes the file from the import route dialogue
@@ -2388,6 +2371,7 @@ var Ui = ( function(w) {'use strict';
 		 * @param showError: if true, the error is displayed; hidden otherwise
 		 */
 		function showImportRouteError(showError) {
+
 			if (showError) {
 				$('#importGpxError').show();
 			} else {
@@ -2396,24 +2380,8 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/**
-		 * forwards the selected GPX file and triggers the coordinate extraction to upload a track from the file
+		 * forwards the selected GPX files and fills the gpx menu
 		 */
-		function handleImportTrackSelection() {
-			var file;
-			var fileInput = $$('#gpxUploadTrack input[type="file"]')[0];
-			if (fileInput && fileInput.files && fileInput.files.length > 0) {
-				file = fileInput.files[0];
-			} else if (fileInput && fileInput.value) {
-				//IE doesn't know x.files
-				file = fileInput.value;
-			}
-
-			if (file) {
-				theInterface.emit('ui:uploadTrack', file);
-				//TODO to support multiple GPX tracks, use data-attributes containing the OL-Feature-Id of the element (see search/waypoints)
-			}
-		}
-
 		var fileInput;
 		function handleGpxFiles(event) {
 			
@@ -2421,6 +2389,7 @@ var Ui = ( function(w) {'use strict';
 			theInterface.emit('ui:clearFromGpx');
 
 			fileInput = event.target.files;
+			// TODO show error if any of the files are not gpx showImportRouteError(true)
 			if (fileInput) {
 				fillGpxMenu(fileInput)
 			}
@@ -2800,9 +2769,7 @@ var Ui = ( function(w) {'use strict';
 
 			//export/ import
 			$('#export-gpx').click(handleExportRouteClick);
-			$('#gpxUploadFiles').change(handleImportRouteSelection);
 			$('#gpxUploadFilesDelete').click(handleImportRouteRemove);
-			$('#gpxUploadTrack').change(handleImportTrackSelection);
 			$('#gpxUploadTrackDelete').click(handleImportTrackRemove);
 
 			//multiple file uploader listener
