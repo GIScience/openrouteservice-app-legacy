@@ -73,15 +73,17 @@ util = ( function() {'use strict';
 			 * @param element: XML element to retrieve the information from
 			 * @param ns: Namespace to operate in
 			 * @param tagName: attribute name of the child elements to return
+			 * @param collection: if a collection of features is to be returned
 			 * @return suitable elements of the given input element that match the tagName
 			 */
-			getElementsByTagNameNS : function(element, ns, tagName) {
+			getElementsByTagNameNS : function(element, ns, tagName, collection) {
 				if (element.getElementsByTagNameNS) {
 					//Firefox, Chrome
-					if (tagName == 'Polygon') {
-						var polyArr = [];
-						polyArr.push(element.getElementsByTagNameNS(ns, tagName));
-						return polyArr;
+					if (collection) {
+						var collectionArr = [];
+						collectionArr.push(element.getElementsByTagNameNS(ns, tagName));	
+
+						return collectionArr;
 					}
 					return element.getElementsByTagNameNS(ns, tagName);
 				} else {

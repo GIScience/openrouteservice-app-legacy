@@ -995,6 +995,7 @@ var Controller = ( function(w) {'use strict';
                 if (bounds) {
                     map.theMap.zoomToExtent(bounds, true);
                     var polygonArr = analyse.parseResultsToPolygon(result);
+                    
                     map.addAccessiblityPolygon(polygonArr);
 
                     ui.showSearchingAtAccessibility(false);

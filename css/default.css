@@ -445,7 +445,14 @@ div.olControlPermalink {
 	top: 270px;
 	background-image: url('../img/marker-blue.png');
 }
-#accessibilityButton {
+#removeAccessibility {
+	margin-top: 10px;
+}
+#accessibilityCalculation {
+	margin-top: 5px;
+}
+#accessibilityError {
+	margin-top: 5px;
 }
 #layersButton {
 }

@@ -1259,14 +1259,20 @@ var Map = ( function() {"use strict";
 		 *  @param polygon: OL.Feature.Vector, the polygon to add
 		 */
 		function addAccessiblityPolygon(polygonArray) {
+			
+			var colorRange = rangeColors(polygonArray.length-1);
+			
 			for (var i=0; i<polygonArray.length; i++) {
 				var layer = this.theMap.getLayersByName(this.ACCESSIBILITY)[0];
-				var newFeature = new OpenLayers.Feature.Vector(polygonArray[i]);
+				var newFeature = new OpenLayers.Feature.Vector(polygonArray[i].geometry);
+
+
 				newFeature.style = {
-					'strokeWidth' : '0.2',
-					'strokeColor' : '#0000ff',
-					'fillColor' : '#0000ff',
-					'fillOpacity' : 0.03
+					'strokeWidth' : 0.3,
+					'strokeOpacity' : 0.7,
+					'strokeColor' : '#000',
+					'fillColor' : colorRange[i],
+					'fillOpacity' : 0.5
 				};
 				layer.addFeatures([newFeature]);
 			}
@@ -1380,13 +1386,82 @@ var Map = ( function() {"use strict";
 
 		}
 
-
+		/** 
+		 * generates a random hex color
+		 */
 		function randomColors() {
 
 			var randomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
 			return randomColor;
 
 		}
+
+		/** 
+		 * Generates a green to red color range
+		 * source: http://stackoverflow.com/questions/11849308/generate-colors-between-red-and-green-for-an-input-range
+		 */
+		function rangeColors(rangeNumber) {
+			
+			var colorArr = [];
+
+			var red = new Color(232, 9, 26),
+				white = new Color(255, 255, 255),
+			 	green = new Color(6, 170, 60),
+				start = red,
+				end = green;
+
+			// if (rangeNumber > 50) {
+			//     start = white,
+			//     end = red;
+			//     rangeNumber = rangeNumber % 51;
+			// }
+
+			var startColors = start.getColors(),
+			    endColors = end.getColors();
+
+			for (var i=0; i<=rangeNumber;i++) {
+
+				var r = Interpolate(startColors.r, endColors.r, rangeNumber, i);
+				var g = Interpolate(startColors.g, endColors.g, rangeNumber, i);
+				var b = Interpolate(startColors.b, endColors.b, rangeNumber, i);
+				        
+				var color = "rgb(" + r + "," + g + "," + b + ")";
+				
+				colorArr.push(color);
+
+			}
+
+			function Interpolate(start, end, steps, count) {
+			    
+			    var s = start,
+			        e = end,
+			        final = s + (((e - s) / steps) * count);
+			    return Math.floor(final);
+			}
+
+			function Color(_r, _g, _b) {
+			    var r, g, b;
+			    var setColors = function(_r, _g, _b) {
+			        r = _r;
+			        g = _g;
+			        b = _b;
+			    };
+
+			    setColors(_r, _g, _b);
+			    this.getColors = function() {
+			        var colors = {
+			            r: r,
+			            g: g,
+			            b: b
+			        };
+			        return colors;
+			    };
+			}
+
+			return colorArr;
+
+		}
+
 
 		/*
 		* HEIGHT PROFILE

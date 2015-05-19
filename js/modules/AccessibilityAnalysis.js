@@ -129,23 +129,105 @@ var AccessibilityAnalysis = ( function(w) {"use strict";
 			var poly;
 			if (area) {
 				//use first polygon only
-				var polygonArr = util.getElementsByTagNameNS(area[0], namespaces.gml, 'Polygon')[0];
-				var olPolyArr = [];
-				for (var i = 0; i < polygonArr.length; i++) {
-					var linRingPoints = [];
-					$A(util.getElementsByTagNameNS(polygonArr[i], namespaces.gml, 'pos')).each(function(polygonPos) {
-						polygonPos = util.convertPositionStringToLonLat(polygonPos.firstChild.nodeValue);
-						polygonPos = util.convertPointForMap(polygonPos);
-						polygonPos = new OpenLayers.Geometry.Point(polygonPos.lon, polygonPos.lat);
-						linRingPoints.push(polygonPos);
-					});
-					var ring = new OpenLayers.Geometry.LinearRing(linRingPoints);
-					poly = new OpenLayers.Geometry.Polygon([ring]);
-					olPolyArr.push(poly);
+				var collectionArr = util.getElementsByTagNameNS(area[0], namespaces.gml, 'Polygon', true)[0];
+				
+				var collectionArrGeom = [];
+				for (var i=0; i<collectionArr.length; i++) {
+					
+					if (collectionArr[i].getElementsByTagNameNS) {
+
+						var exteriorRing = collectionArr[i].getElementsByTagNameNS(namespaces.gml,'exterior')[0];
+						var interiorRing = collectionArr[i].getElementsByTagNameNS(namespaces.gml,'interior')[0];
+						
+						var extIntArr = [];
+						if (exteriorRing) {
+							extIntArr.push(exteriorRing);
+						}
+						if (interiorRing) {
+							console.log('interior!');
+							extIntArr.push(interiorRing);
+						}
+
+						if (extIntArr.length == 1) {
+							// create polygon geometry
+							var poly = fetchPolygonGeometry(extIntArr[0], namespaces.gml, 'pos');
+
+						// if interior ring in exterior ring present
+						} else {
+							console.log('interior!');
+							var polyExt = fetchPolygonGeometry(extIntArr[0], namespaces.gml, 'pos');
+							var polyInt = fetchPolygonGeometry(extIntArr[1], namespaces.gml, 'pos');
+
+							var collectionArrGeomSmall = [polyExt,polyInt];
+							// substract ext from int if array length 2 here
+							var poly = substractPolygons(collectionArrGeomSmall);
+
+						}
+
+						collectionArrGeom.push(poly);
+
+					}
 				}
 			}
 			
-			return olPolyArr;
+			var collectionArrGeomSubstr = substractPolygons(collectionArrGeom);
+			// substract now
+			return collectionArrGeomSubstr;
+		}
+
+		/**
+		 * returns a polygon geometry from gml
+		 * @param element: gml element
+		 * @param ns: namespace
+		 * @param tag: tag to look for
+		 * @return OL.Feature.Vector
+		 */
+		function fetchPolygonGeometry(element,ns,tag) {
+
+			var linRingPoints = [];
+			$A(util.getElementsByTagNameNS(element, ns, tag)).each(function(polygonPos) {
+				polygonPos = util.convertPositionStringToLonLat(polygonPos.firstChild.nodeValue);
+				polygonPos = util.convertPointForMap(polygonPos);
+				polygonPos = new OpenLayers.Geometry.Point(polygonPos.lon, polygonPos.lat);
+				linRingPoints.push(polygonPos);
+			});
+
+			var ring = new OpenLayers.Geometry.LinearRing(linRingPoints);
+			var polyGeom = new OpenLayers.Geometry.Polygon([ring]);
+			var poly = new OpenLayers.Feature.Vector(polyGeom);
+
+			return poly;
+
+		}
+
+		/**
+		 * substracts to polygons from each other
+		 * @param geomCollection: a collection of polygon geometries, at least two
+		 * @return [OL.Geometry.Polygon] representing an array of difference polygons
+		 */
+		function substractPolygons(geomCollection) {
+			
+			var collectionArrGeomSubstr = [];
+			var parser = new jsts.io.OpenLayersParser();
+
+			for (var i=geomCollection.length-1; i>=1; i--) {
+
+				var newFeature = new OpenLayers.Feature.Vector(
+			        parser.write(
+			            parser.read(geomCollection[i].geometry).difference(
+			                parser.read(geomCollection[i-1].geometry)
+			            )
+			        )
+			    );
+    			
+    			collectionArrGeomSubstr.push(newFeature);
+
+			}
+			// push first poly also
+			collectionArrGeomSubstr.push(geomCollection[0]);
+
+			return collectionArrGeomSubstr;
+
 		}
 
 
