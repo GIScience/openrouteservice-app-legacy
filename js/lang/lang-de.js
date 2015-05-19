@@ -73,6 +73,7 @@ var lang_de = {
 		'useAsWaypoint' :  'als Wegpunkt &uuml;bernehmen',
 
 	//Route Preferences
+		'Car' : 'Auto',
 		'Shortest':  'K&uuml;rzester Weg',
 		'Fastest':  'Schnellster Weg',
 		'Pedestrian':  'Fußg&auml;nger',
@@ -89,6 +90,9 @@ var lang_de = {
 		'goodsHeavyTruck' : 'Fahrzeuge bis 3.5t',
 		'busHeavyTruck' : 'Bus',
 		'hgvHeavyTruck' : 'Schwerlasttransport',
+		'deliveryHeavyTruck' : 'Lieferverkehr',
+		'hazardMaterial' : 'Gefahrguttransport',
+		'truckMain' : 'Truck Einstellungen (in meter/tonnen)',
 		'agriculturalHeavyTruck' : 'Agrarfahrzeug',
 		'forestryHeavyTruck' : 'Forstfahrzeug',
 
@@ -100,6 +104,10 @@ var lang_de = {
 		'avoidTollways':  'Mautstra&szlig;en vermeiden',
 		'avoidunpavedRoads':  'Unbefestigte Straßen vermeiden',
 		'avoidFerry':  'F&aumlhrverbindungen vermeiden',
+		
+		'avoidFerryBike' : 'F&aumlhrverbindungen vermeiden' ,
+		'avoidunpavedRoadsBike' : 'Unbefestigte Straßen vermeiden',
+		'avoidStepsBike' : 'Stufen/Treppen vermeiden',
 		
 	//Surfaces:
 		'surface': 'Oberfläche',

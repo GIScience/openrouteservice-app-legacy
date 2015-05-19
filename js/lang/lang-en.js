@@ -74,15 +74,16 @@ var lang_en = {
 	'useAsWaypoint' : 'use as waypoint',
 
 	//Route Preferences
+	'Car' : 'Car',
 	'Shortest' : 'shortest route',
 	'Fastest' : 'fastest route',
-	'Pedestrian' : 'pedestrian',
-	'Wheelchair' : 'accessible route',
-	'Bicycle' : 'normal',
-	'BicycleSafety' : 'safest route',
+	'Pedestrian' : 'Pedestrian',
+	'Wheelchair' : 'Accessible route',
+	'Bicycle' : 'Normal',
+	'BicycleSafety' : 'Safest route',
 	'BicycleRoute' : 'prefer bicycle lane',
-	'BicycleMTB' : 'mountain bike',
-	'BicycleRacer' : 'racing bike',
+	'BicycleMTB' : 'Mountain bike',
+	'BicycleRacer' : 'Racing bike',
 	'TruckLength' : 'length',
 	'TruckHeight' : 'height',
 	'TruckWeight' : 'weight',
@@ -90,6 +91,9 @@ var lang_en = {
 	'goodsHeavyTruck' : 'Vehicle up to 3.5t',
 	'busHeavyTruck' : 'Bus',
 	'hgvHeavyTruck' : 'HGV',
+	'deliveryHeavyTruck' : 'Delivery',
+	'hazardMaterial' : 'Hazardous Materials',
+	'truckMain' : 'Truck Parameters (in meters/tons)',
 	'agriculturalHeavyTruck' : 'Agricultural vehicle',
 	'forestryHeavyTruck' : 'Forestry vehicly',
 
@@ -102,6 +106,10 @@ var lang_en = {
 	'avoidTollways' : 'toll roads',
 	'avoidunpavedRoads':  'unpaved roads',
 	'avoidFerry':  'ferry connections',
+	
+	'avoidFerryBike' : 'ferry connections' ,
+	'avoidunpavedRoadsBike' : 'unpaved roads',
+	'avoidStepsBike' : 'steps',
 	
 	//Surfaces:
 	'surface': 'Surface',

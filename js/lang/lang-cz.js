@@ -70,6 +70,7 @@ var lang_cz = {
     'useAsWaypoint':'pou&#382;&iacute;t jako bod',
     
 	//Route Preferences
+	'Car' : 'Auto',
     'Shortest':'nejkrats&iacute;trasa',
     'Fastest':'Nejrychlejs&iacute;cesta',
     'Pedestrian':'chodec',
@@ -84,6 +85,11 @@ var lang_cz = {
     'avoidTollways':'Vyhnout se placen&yacute;m komunikac&iacute;m ',
 	'avoidunpavedRoads':  'Vyhnete se nezpevnen&yacute;ch cest&aacute;ch',
 	'avoidFerry':  'Vyhnete trajektov&eacute;ho spojen&iacute;',
+	
+	'avoidFerryBike' : 'Vyhnete trajektov&eacute;ho spojen&iacute;' ,
+	'avoidunpavedRoadsBike' : 'Vyhnete se nezpevnen&yacute;ch cest&aacute;ch',
+	'avoidStepsBike' : 'Vyhnete kroky',
+	
 	'TruckLength' : 'maxim&aacute;ln&iacute;d&eacute;lka',
 	'TruckHeight' : 'maxim&aacute;ln&iacute;v&yacute;ska',
 	'TruckWeight' : 'maxim&aacute;ln&iacute;v&aacute;ha',
@@ -91,6 +97,9 @@ var lang_cz = {
 	'goodsHeavyTruck' : 'Vozidla do 3.5t',
 	'busHeavyTruck' : 'Autobus',
 	'hgvHeavyTruck' : 'T&#283;&#382;k&eacute;n&aacute;kladn&iacute;vozidlo',
+	'deliveryHeavyTruck' : 'Dod&aacute;vka',
+	'hazardMaterial' : 'Nebezpe&#269;né materi&aacute;ly',
+	'truckMain' : 'Parametry Truck (v metrech/tuny)',
 	'agriculturalHeavyTruck' : 'zem&#283;d&#283;lsk&yacute;v&#367;z',
 	'forestryHeavyTruck' : 'Forestal vozidlo',
 	

@@ -24,8 +24,9 @@ var Languages = (function(w) {'use strict';
 
 		//route options
 		$('#routeOptions').html(p.translate('routeOptions') + ':' + '<br/>');
-		$('#fastestLabel').html(p.translate('Fastest'));
-		$('#shortestLabel').html(p.translate('Shortest'));
+		$('#carLabel').html(p.translate('Car'));
+		$('#FastestLabel').html(p.translate('Fastest'));
+		$('#ShortestLabel').html(p.translate('Shortest'));
 		$('#BicycleLabel').html(p.translate('Bicycle'));
 		$('#BicycleSafetyLabel').html(p.translate('BicycleSafety'));
 		$('#BicycleRouteLabel').html(p.translate('BicycleRoute'));
@@ -42,11 +43,18 @@ var Languages = (function(w) {'use strict';
 		$('#truckwidthLabel').html(p.translate('TruckWidth'));
 		$('#goodsHeavyTruckLabel').html(p.translate('goodsHeavyTruck'));
 		$('#busHeavyTruckLabel').html(p.translate('busHeavyTruck'));
-		$('#hgvHeavyTruckLabel').html(p.translate('hgvHeavyTruck'));
+		$('#busHeavyTruckLabel').html(p.translate('busHeavyTruck'));
+		$('#deliveryHeavyTruckLabel').html(p.translate('deliveryHeavyTruck'));
 		$('#agriculturalHeavyTruckLabel').html(p.translate('agriculturalHeavyTruck'));
 		$('#forestryHeavyTruckLabel').html(p.translate('forestryHeavyTruck'));
-		
+		$('#hazardous').html(p.translate('hazardMaterial'));
+		$('#truckLabelMain').html(p.translate('truckMain'));
 		$('#WheelchairLabel').html(p.translate('Wheelchair'));
+		
+		//avoidables
+		$('#avoidFerryLabelBike').html(p.translate('avoidFerryBike'));
+		$('#avoidunpavedRoadsLabelBike').html(p.translate('avoidunpavedRoadsBike'));
+		$('#avoidStepsLabelBike').html(p.translate('avoidStepsBike'));
 		
 		$('#avoidRoadsBtn').html(p.translate('avoidRoadMain'));
 		$('#avoidAreasBtn').html(p.translate('avoidAreasMain'));
@@ -101,6 +109,7 @@ var Languages = (function(w) {'use strict';
 		//permalink
 		$('#permalinkLabel').html(p.translate('routeLinkText'));
 		$('#fnct_permalink').html(p.translate('permalinkButton'));
+		
 		//accessibility
 		$('#accessibilityAnalysisLabel').html(p.translate('accessibilityAnalysis'));
 		$('#accessibilityAnalysisMinutes').html(p.translate('setAccessibilityMinutes'));

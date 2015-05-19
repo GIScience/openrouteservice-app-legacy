@@ -70,6 +70,7 @@ var lang_hu = {
     'useAsWaypoint':'haszn&aacute;lni mint &uacute;tpont',
     
 	//Route Preferences
+	'Car' : 'aut&oacute;',
     'Shortest':'legr&ouml;videbb &uacute;t',
     'Fastest':'leggyorsabb &uacute;tvonal',
     'Pedestrian':'gyalogos',
@@ -84,6 +85,11 @@ var lang_hu = {
     'avoidTollways':'Ker&uuml;lje a fizetos utak',
 	'avoidunpavedRoads':  'Ker&uuml;lje a f&ouml;ldutakat',
 	'avoidFerry':  'Ker&uuml;lje a kompj&aacute;rat',
+	
+	'avoidFerryBike' : 'Ker&uuml;lje a kompj&aacute;rat' ,
+	'avoidunpavedRoadsBike' : 'Ker&uuml;lje a f&ouml;ldutakat',
+	'avoidStepsBike' : 'Elker&uuml;l&eacute;se l&eacute;p&eacute;sek',
+	
 	'TruckLength' : 'maxim&aacute;lis hossza',
 	'TruckHeight' : 'maxim&aacute;lis magass&aacute;g',
 	'TruckWeight' : 'maxim&aacute;lis t&ouml;meg',
@@ -91,6 +97,9 @@ var lang_hu = {
 	'goodsHeavyTruck' : 'J&aacute;rm&#369;vek 3.5t',
 	'busHeavyTruck' : 'Busz',
 	'hgvHeavyTruck' : 'Neh&eacute;zg&eacute;pj&aacute;rm&#369;',
+	'deliveryHeavyTruck' : 'K&eacute;zbesít&eacute;s',
+	'hazardMaterial' : 'Vesz&eacute;lyes anyagok',
+	'truckMain' : 'Param&eacute;terek (m&eacute;terben/tonna )',
 	'agriculturalHeavyTruck' : 'Mez&#337;gazdas&aacute;gi j&aacute;rm&#369;',
 	'forestryHeavyTruck' : 'Erdei j&aacute;rm&#369;',
 	

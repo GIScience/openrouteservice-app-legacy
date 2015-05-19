@@ -75,6 +75,7 @@ var lang_cn = {
 	'useAsWaypoint' : '使用路徑節點',
 
 	//Route Preferences
+	'Car' : '汽車',
 	'Shortest' : '最短路徑',
 	'Fastest' : '最快路徑',
 	'Pedestrian' : '步行模式',
@@ -91,6 +92,9 @@ var lang_cn = {
 	'goodsHeavyTruck' : '車重達3.5噸',
 	'busHeavyTruck' : '公共汽車',
 	'hgvHeavyTruck' : '重型貨車',
+	'deliveryHeavyTruck' : '交貨',
+	'hazardMaterial' : '有害物質',
+	'truckMain' : '卡車參數（米/噸）',
 	'agriculturalHeavyTruck' : '農用車',
 	'forestryHeavyTruck' : '森林車',
 	
@@ -98,6 +102,11 @@ var lang_cn = {
 	'avoidTollways' : '避開收费站',
 	'avoidunpavedRoads':  '避開未鋪砌道路',
 	'avoidFerry':  '避開渡船',
+	
+	'avoidFerryBike' : '避開渡船' ,
+	'avoidunpavedRoadsBike' : '避開未鋪砌道路',
+	'avoidStepsBike' : '步驟',
+	
 	//Surfaces:
 	'surface': '路面品質',
     'asphalt': '水泥, 柏油',

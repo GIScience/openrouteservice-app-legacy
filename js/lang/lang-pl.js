@@ -75,6 +75,7 @@ var lang_pl = {
 	'useAsWaypoint' : 'u&#x017C;yj jako punkt na trasie',
 
 	//Route Preferences
+	'Car': 'Samoch&oacute;d',
 	'Shortest' : 'najkr&oacute;tsza trasa',
 	'Fastest' : 'najszybsza trasa',
 	'Pedestrian' : 'pieszo',
@@ -89,6 +90,11 @@ var lang_pl = {
 	'avoidTollways' : 'unikaj dr&oacute;g p&#x0142;atnych',
 	'avoidunpavedRoads':  'Unika&#263; drogi gruntowe',
 	'avoidFerry':  'Unika&#263; po&#322;&#261;czenia promowe',
+	
+	'avoidFerryBike' : 'Unika&#263; po&#322;&#261;czenia promowe' ,
+	'avoidunpavedRoadsBike' : 'Unika&#263; drogi gruntowe',
+	'avoidStepsBike' : 'Kroki',
+	
 	'TruckLength' : 'maksymalna d&#322;ugo&#347;&#263;',
 	'TruckHeight' : 'wysoko&#347;ci&#261; maksymalnej',
 	'TruckWeight' : 'maksymalna waga',
@@ -96,6 +102,9 @@ var lang_pl = {
 	'goodsHeavyTruck' : 'Pojazd&oacute;w do 3.5t',
 	'busHeavyTruck' : 'Autobus',
 	'hgvHeavyTruck' : 'Pojazdy ci&#281;żarowe',
+	'deliveryHeavyTruck' : 'Dostawa',
+	'hazardMaterial' : 'Materia&#322;y niebezpieczne',
+	'truckMain' : 'Truck Parametry (w metrach/ton)',
 	'agriculturalHeavyTruck' : 'Pojazd rolniczy',
 	'forestryHeavyTruck' : 'Forestal pojazdu',
 

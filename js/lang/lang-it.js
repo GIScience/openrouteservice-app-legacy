@@ -61,7 +61,9 @@ var lang_it = {
     'moveDownWaypoint':'Sposta Waypoint down',
     'removeWaypoint':'Rimuovi waypoint',
     'useAsWaypoint':'utilizzare come waypoint',
+	
     //Route Preferences
+	'Car' : 'auto',
     'Shortest':'percorso pi&ugrave; breve',
     'Fastest':'percorso pi&ugrave; veloce',
     'Pedestrian':'pedonale',
@@ -75,6 +77,11 @@ var lang_it = {
     'avoidTollways':'Evitare strade a pedaggio',
 	'avoidunpavedRoads':  'Evita strade non asfaltate',
 	'avoidFerry':  'Evitare i collegamenti marittimi',
+	
+	'avoidFerryBike' : 'Evitare i collegamenti marittimi' ,
+	'avoidunpavedRoadsBike' : 'Evita strade non asfaltate',
+	'avoidStepsBike' : 'Evitare passi',
+	
 	'TruckLength' : 'lunghezza massima',
 	'TruckHeight' : 'altezza massima',
 	'TruckWeight' : 'peso massimo',
@@ -82,6 +89,9 @@ var lang_it = {
 	'goodsHeavyTruck' : 'Veicolo a 3.5t',
 	'busHeavyTruck' : 'Autobus',
 	'hgvHeavyTruck' : 'Autocarro',
+	'deliveryHeavyTruck' : 'Consegna',
+	'hazardMaterial' : 'Sostanze pericolose',
+	'truckMain' : 'Truck parametri (in metri/tonnellate)',
 	'agriculturalHeavyTruck' : 'Veicolo agricolo',
 	'forestryHeavyTruck' : 'Veicolo Forestal',
 	
