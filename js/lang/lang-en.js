@@ -92,11 +92,10 @@ var lang_en = {
 	'busHeavyTruck' : 'Bus',
 	'hgvHeavyTruck' : 'HGV',
 	'deliveryHeavyTruck' : 'Delivery',
-	'hazardMaterial' : 'Hazardous Materials',
+	'hazardMaterial' : '<i class="icon-tint icon-white"></i>&nbsp;Hazardous Materials',
 	'truckMain' : 'Truck Parameters (in meters/tons)',
 	'agriculturalHeavyTruck' : 'Agricultural vehicle',
 	'forestryHeavyTruck' : 'Forestry vehicly',
-
 
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types &nbsp;&nbsp;<span class="caret">',

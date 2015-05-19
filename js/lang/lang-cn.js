@@ -103,6 +103,10 @@ var lang_cn = {
 	'avoidunpavedRoads':  '避開未鋪砌道路',
 	'avoidFerry':  '避開渡船',
 	
+	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;避免道路類型 &nbsp;&nbsp;<span class="caret">',
+	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;避免道路類型 &nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;避免地區&nbsp;&nbsp;<span class="caret">',
+	
 	'avoidFerryBike' : '避開渡船' ,
 	'avoidunpavedRoadsBike' : '避開未鋪砌道路',
 	'avoidStepsBike' : '步驟',

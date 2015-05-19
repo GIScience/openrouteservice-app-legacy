@@ -86,6 +86,10 @@ var lang_es = {
 	'avoidunpavedRoads':  'Evitar carreteras sin pavimentar',
 	'avoidFerry':  'Evitar las conexiones mar&iacute;timas',
 	
+	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;evitar tipos de carretera &nbsp;&nbsp;<span class="caret">',
+	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;evitar tipos de carretera &nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;evitar las zonas&nbsp;&nbsp;<span class="caret">',
+	
 	'avoidFerryBike' : 'Evitar las conexiones mar&iacute;timas' ,
 	'avoidunpavedRoadsBike' : 'Evitar carreteras sin pavimentar',
 	'avoidStepsBike' : 'Evitar pasos',
@@ -98,7 +102,7 @@ var lang_es = {
 	'busHeavyTruck' : 'Autob&uacute;s',
 	'hgvHeavyTruck' : 'Veh&iacute;culo pesado',
 	'deliveryHeavyTruck' : 'Entrega',
-	'hazardMaterial' : 'Materiales Peligrosos',
+	'hazardMaterial' : '<i class="icon-tint icon-white"></i>&nbsp;Materiales Peligrosos',
 	'truckMain' : 'Par&aacute;metros de camiones (en metros/toneladas)',
 	'agriculturalHeavyTruck' : 'Veh&iacute;culo agr&iacute;cola',
 	'forestryHeavyTruck' : 'Veh&iacute;culo Forestal',

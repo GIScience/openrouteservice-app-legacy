@@ -86,6 +86,10 @@ var lang_hu = {
 	'avoidunpavedRoads':  'Ker&uuml;lje a f&ouml;ldutakat',
 	'avoidFerry':  'Ker&uuml;lje a kompj&aacute;rat',
 	
+	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Elker&uuml;l&eacute;se road t&iacute;pusok &nbsp;&nbsp;<span class="caret">',
+	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Elker&uuml;l&eacute;se road t&iacute;pusok &nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Elker&uuml;l&eacute;se ter&uuml;letek&nbsp;&nbsp;<span class="caret">',
+	
 	'avoidFerryBike' : 'Ker&uuml;lje a kompj&aacute;rat' ,
 	'avoidunpavedRoadsBike' : 'Ker&uuml;lje a f&ouml;ldutakat',
 	'avoidStepsBike' : 'Elker&uuml;l&eacute;se l&eacute;p&eacute;sek',
@@ -98,7 +102,7 @@ var lang_hu = {
 	'busHeavyTruck' : 'Busz',
 	'hgvHeavyTruck' : 'Neh&eacute;zg&eacute;pj&aacute;rm&#369;',
 	'deliveryHeavyTruck' : 'K&eacute;zbesít&eacute;s',
-	'hazardMaterial' : 'Vesz&eacute;lyes anyagok',
+	'hazardMaterial' : '<i class="icon-tint icon-white"></i>&nbsp;Vesz&eacute;lyes anyagok',
 	'truckMain' : 'Param&eacute;terek (m&eacute;terben/tonna )',
 	'agriculturalHeavyTruck' : 'Mez&#337;gazdas&aacute;gi j&aacute;rm&#369;',
 	'forestryHeavyTruck' : 'Erdei j&aacute;rm&#369;',

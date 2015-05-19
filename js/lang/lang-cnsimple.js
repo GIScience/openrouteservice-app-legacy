@@ -93,7 +93,7 @@ var lang_cnsimple = {
 	'busHeavyTruck' : '公共汽车',
 	'hgvHeavyTruck' : '重型货车',
 	'deliveryHeavyTruck' : '交货',
-	'hazardMaterial' : '有害物质',
+	'hazardMaterial' : '<i class="icon-tint icon-white"></i>&nbsp;有害物质',
 	'truckMain' : '卡车参数（米/吨）',
 	'agriculturalHeavyTruck' : '农用车',
 	'forestryHeavyTruck' : '山货车',
@@ -102,6 +102,10 @@ var lang_cnsimple = {
 	'avoidTollways' : '避开收费站',
 	'avoidunpavedRoads':  '避开未铺砌道路',
 	'avoidFerry':  '避开渡船',
+	
+	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;避免道路类型 &nbsp;&nbsp;<span class="caret">',
+	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;避免道路类型 &nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;避免地区&nbsp;&nbsp;<span class="caret">',
 	
 	'avoidFerryBike' : '避开渡船' ,
 	'avoidunpavedRoadsBike' : '避开未铺砌道路',

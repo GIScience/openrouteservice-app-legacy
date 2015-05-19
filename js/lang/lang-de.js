@@ -91,7 +91,7 @@ var lang_de = {
 		'busHeavyTruck' : 'Bus',
 		'hgvHeavyTruck' : 'Schwerlasttransport',
 		'deliveryHeavyTruck' : 'Lieferverkehr',
-		'hazardMaterial' : 'Gefahrguttransport',
+		'hazardMaterial' : '<i class="icon-tint icon-white"></i>&nbsp;Gefahrguttransport',
 		'truckMain' : 'Truck Einstellungen (in meter/tonnen)',
 		'agriculturalHeavyTruck' : 'Agrarfahrzeug',
 		'forestryHeavyTruck' : 'Forstfahrzeug',

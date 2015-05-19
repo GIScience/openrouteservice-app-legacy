@@ -86,6 +86,10 @@ var lang_nl = {
 	'avoidunpavedRoads':  'Vermijd onverharde wegen',
 	'avoidFerry':  'Vermijd veerverbindingen',
 	
+	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Vermijden wegtypen &nbsp;&nbsp;<span class="caret">',
+	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Vermijden wegtypen &nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Vermijden gebieden&nbsp;&nbsp;<span class="caret">',
+	
 	'avoidFerryBike' : 'Vermijd veerverbindingen' ,
 	'avoidunpavedRoadsBike' : 'Vermijd onverharde wegen',
 	'avoidStepsBike' : 'Vermijd stappen',
@@ -98,7 +102,7 @@ var lang_nl = {
 	'busHeavyTruck' : 'Bus',
 	'hgvHeavyTruck' : 'Vrachtwagen',
 	'deliveryHeavyTruck' : 'Levering',
-	'hazardMaterial' : 'Gevaarlijke stoffen',
+	'hazardMaterial' : '<i class="icon-tint icon-white"></i>&nbsp;Gevaarlijke stoffen',
 	'truckMain' : 'Truck Parameters (in meters/ton)',
 	'agriculturalHeavyTruck' : 'Landbouwvoertuig',
 	'forestryHeavyTruck' : 'Forestal voertuig',

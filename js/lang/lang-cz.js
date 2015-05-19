@@ -86,6 +86,10 @@ var lang_cz = {
 	'avoidunpavedRoads':  'Vyhnete se nezpevnen&yacute;ch cest&aacute;ch',
 	'avoidFerry':  'Vyhnete trajektov&eacute;ho spojen&iacute;',
 	
+	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;vyhnout typům silnic &nbsp;&nbsp;<span class="caret">',
+	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;vyhnout typům  &nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;vyhnout oblastí&nbsp;&nbsp;<span class="caret">',
+	
 	'avoidFerryBike' : 'Vyhnete trajektov&eacute;ho spojen&iacute;' ,
 	'avoidunpavedRoadsBike' : 'Vyhnete se nezpevnen&yacute;ch cest&aacute;ch',
 	'avoidStepsBike' : 'Vyhnete kroky',
@@ -98,7 +102,7 @@ var lang_cz = {
 	'busHeavyTruck' : 'Autobus',
 	'hgvHeavyTruck' : 'T&#283;&#382;k&eacute;n&aacute;kladn&iacute;vozidlo',
 	'deliveryHeavyTruck' : 'Dod&aacute;vka',
-	'hazardMaterial' : 'Nebezpe&#269;né materi&aacute;ly',
+	'hazardMaterial' : '<i class="icon-tint icon-white"></i>&nbsp;Nebezpe&#269;né materi&aacute;ly',
 	'truckMain' : 'Parametry Truck (v metrech/tuny)',
 	'agriculturalHeavyTruck' : 'zem&#283;d&#283;lsk&yacute;v&#367;z',
 	'forestryHeavyTruck' : 'Forestal vozidlo',

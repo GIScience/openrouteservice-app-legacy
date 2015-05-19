@@ -73,10 +73,15 @@ var lang_it = {
     'BicycleMTB':'mountain bike',
     'BicycleRacer':'bici da corsa',
 	'Wheelchair' : 'percorso accessibile',
-    'avoidMotorways':'Evitare autostrade',
+    
+	'avoidMotorways':'Evitare autostrade',
     'avoidTollways':'Evitare strade a pedaggio',
 	'avoidunpavedRoads':  'Evita strade non asfaltate',
 	'avoidFerry':  'Evitare i collegamenti marittimi',
+	
+	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Evitare tipi di strade &nbsp;&nbsp;<span class="caret">',
+	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Evitare tipi di strade &nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Evitare le zone&nbsp;&nbsp;<span class="caret">',
 	
 	'avoidFerryBike' : 'Evitare i collegamenti marittimi' ,
 	'avoidunpavedRoadsBike' : 'Evita strade non asfaltate',
@@ -90,7 +95,7 @@ var lang_it = {
 	'busHeavyTruck' : 'Autobus',
 	'hgvHeavyTruck' : 'Autocarro',
 	'deliveryHeavyTruck' : 'Consegna',
-	'hazardMaterial' : 'Sostanze pericolose',
+	'hazardMaterial' : '<i class="icon-tint icon-white"></i>&nbsp;Sostanze pericolose',
 	'truckMain' : 'Truck parametri (in metri/tonnellate)',
 	'agriculturalHeavyTruck' : 'Veicolo agricolo',
 	'forestryHeavyTruck' : 'Veicolo Forestal',

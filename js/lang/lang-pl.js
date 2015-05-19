@@ -91,6 +91,10 @@ var lang_pl = {
 	'avoidunpavedRoads':  'Unika&#263; drogi gruntowe',
 	'avoidFerry':  'Unika&#263; po&#322;&#261;czenia promowe',
 	
+	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;unikn&#261;&#263; typy dr&oacute;g &nbsp;&nbsp;<span class="caret">',
+	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;unikn&#261;&#263; typy dr&oacute;g &nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;unika&#263; obszar&oacute;w&nbsp;&nbsp;<span class="caret">',
+	
 	'avoidFerryBike' : 'Unika&#263; po&#322;&#261;czenia promowe' ,
 	'avoidunpavedRoadsBike' : 'Unika&#263; drogi gruntowe',
 	'avoidStepsBike' : 'Kroki',
@@ -103,7 +107,7 @@ var lang_pl = {
 	'busHeavyTruck' : 'Autobus',
 	'hgvHeavyTruck' : 'Pojazdy ci&#281;żarowe',
 	'deliveryHeavyTruck' : 'Dostawa',
-	'hazardMaterial' : 'Materia&#322;y niebezpieczne',
+	'hazardMaterial' : '<i class="icon-tint icon-white"></i>&nbsp;Materia&#322;y niebezpieczne',
 	'truckMain' : 'Truck Parametry (w metrach/ton)',
 	'agriculturalHeavyTruck' : 'Pojazd rolniczy',
 	'forestryHeavyTruck' : 'Forestal pojazdu',
