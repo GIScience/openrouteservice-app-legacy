@@ -2303,12 +2303,12 @@ var Ui = ( function(w) {'use strict';
 		 * triggers the calculation of the accessibility analsyis with the current distance value
 		 */
 		function handleAnalyzeAccessibility() {
+
 			var distance = $('#accessibilityDistance').val();
-			var position = null;
-			var element = $('#0').get(0);
-			element = element.querySelector('.address');
-			if (element) {
-				position = element.getAttribute('data-position');
+			var position = $('.guiComponent.waypoint.start .address').attr('data-position');
+			
+			if (!position) {
+				var position = $('.guiComponent.waypoint.end .address').attr('data-position');
 			}
 
 			theInterface.emit('ui:analyzeAccessibility', {
