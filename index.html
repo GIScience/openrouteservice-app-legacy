@@ -75,7 +75,7 @@
 										</button>
 									</div>
 									<div class="btn-group" id="weightingDropdown">
-								        <button class="btn btn-mini weightOptions dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" aria-expanded="false" id="weightOptions"><img src="img/picto-speed.png"></button>
+								        <button class="btn btn-mini btn-inverse weightOptions dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" aria-expanded="false" id="weightOptions"><img src="img/reload-white.png"></button>
 								          	<ul class="dropdown-menu" id="dropdown_weighting">
 												<label class="radio">
 													<input type="radio" id="Fastest" name="weighting" checked="checked">
@@ -87,20 +87,6 @@
 												</label>
 											</ul>
 								    </div>
-									<!--<div class="btn-group" id="weightingDropdown">
-						                <button class="btn btn-small" id="weightOptions">route options</button>
-						                <button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-						                <ul class="dropdown-menu" id="dropdown_weighting">
-							                  	<label class="radio">
-													<input type="radio" id="Fastest" name="weighting" checked="checked">
-													<label id="FastestLabel">fastest route</label>
-												</label>										
-												<label class="radio">
-													<input type="radio" id="Shortest" name="weighting">
-													<label id="ShortestLabel">shortest route</label>
-												</label>
-							            </ul>
-								    </div>-->
 									<div class="panel panelMedium" id="carOptions" style="">
 										<table class="optionsTable" style="width:100%">
 										 	<tr>
@@ -330,15 +316,15 @@
 											<ul class="dropdown-menu" id="dropdown_avoid_roads">
 							                  	<label class="checkbox">
 													<input type="checkbox" id="Ferry">
-													<label id="avoidFerryLabel">ferries</label>
+													<label id="avoidFerryLabelBike">ferries</label>
 												</label>										
 												<label class="checkbox">
 													<input type="checkbox" id="Unpavedroads">
-													<label id="avoidunpavedRoadsLabel">unpaved roads</label>
+													<label id="avoidunpavedRoadsLabelBike">unpaved roads</label>
 												</label>
 												<label class="checkbox">
 													<input type="checkbox" id="Steps">
-													<label id="avoidStepsLabel">steps</label>
+													<label id="avoidStepsLabelBike">steps</label>
 												</label>
 											</ul>
 								    	</div>
@@ -447,18 +433,10 @@
 								</div>
 								<div class="collapsibleBody" style="display: none;">
 									<div class="alert alert-error" style="display: none;"></div>
-									<!-- <div class="panel panelMedium">
-										<p id="permalinkLabel">
-											Permalink for current route
-										</p>
-										<btn class="btn" id="fnct_permalink">
-											Permalink
-										</btn>
-									</div>-->
 									<div class="panel panelMedium" style="position: relative;">	
 										<select id="accessibilityAnalysisMethodList">
-											<option id="Default">Recursive Grid</option>
-											<option id="Default2">TIN</option>
+											<option id="Default" value="recursivegrid">Recursive Grid</option>
+											<option id="Default2" value="tin">TIN</option>
 										</select>
 										<span id ="accessibilityAnalysisMethod" class="label">Select Isochrone method</span>
 										<br/>
@@ -470,7 +448,7 @@
 										<br/>	
 										<btn class="btn btn-small" id="analyzeAccessibility"><i class="icon-picture"></i>&nbsp;&nbsp;Analyze</btn>
 										<br/>
-										<span id ="accessibilityAnalysisLabel1" class="label label-descrip">Accessibility analysis</span>	
+										<span id ="accessibilityAnalysisLabel" class="label label-descrip">Accessibility analysis</span>	
 										<br/>
 										<btn class="btn btn-small" id="removeAccessibility" style="display:none">
 											Remove
@@ -495,8 +473,7 @@
 												<span class="btn btn-file" id="import-gpx" title="Upload multiple tracks from a GPX-files"><i class="icon-upload"></i>&nbsp;&nbsp;Upload GPX files<input type="file" id="files" multiple /></span>	
 													<div id="fileContainerMain" style="display: none;"></div>		
 											</div>
-											<br/>
-											<span id ="importRouteInfoLabel" class="label label-descrip">GPX Features</span>
+											<span id ="importRouteInfoLabel" class="label label-descrip">GPX-Features</span>
 											<div id="importGpxError" class="alert alert-error" style="display:none">
 												Unfortunately an error occured while uploading the route.
 											</div>
@@ -550,6 +527,12 @@
 			<div id="infoButton"></div>
 			<div id="infoPanel"></div>
 			<div id="infoPermalink">Permalink</div>
+			<div id="bubble">
+				<div id="permaText">
+					<div id="copy">copy</div>
+					<div id="open">open</div>
+				</div>
+			</div>
 
 		</div>
 

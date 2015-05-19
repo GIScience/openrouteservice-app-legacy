@@ -144,7 +144,7 @@ var lang_en = {
 	'changeFile' : '&nbsp;Change',
 
 	//Accessibility Analysis
-	'accessibilityAnalysisLabel1' : '<i class="icon-picture icon-white"></i>&nbsp;&nbsp;Accessibility analysis',
+	'accessibilityAnalysis' : 'Accessibility analysis',
 	'setAccessibilityMinutes' : 'Select minutes',
 	'analyze' : '<i class="icon-eye-open"></i>&nbsp;&nbsp;Analyze',
 	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',

@@ -952,17 +952,17 @@ var Controller = ( function(w) {'use strict';
                 pos = util.convertPositionStringToLonLat(pos);
                 pos = util.convertPointForDisplay(pos);
                 var dist = atts.distance;
-                
+
                 var prefs = ui.getRoutePreferences();
-                
+
                 //aas setting route type
                 var aasRoutePref = prefs[0];
-                
+
                 //aas setting intervall in meters
                 var aasIntervall= $('#accessibilityAnalysisIsochronesIntervall').val();
                 //aas setting isochrone method
-                var aasMethod= document.getElementById('#accessibilityAnalysisMethodList');
-                            
+                var aasMethod= $('#accessibilityAnalysisMethodList :selected').val();
+
                 ui.showAccessibilityError(false);
                 ui.showSearchingAtAccessibility(true);
 
@@ -1305,9 +1305,15 @@ var Controller = ( function(w) {'use strict';
             }
         }
 
+
         function handlePermalinkRequest() {
 
             preferences.openPermalink();
+        }
+
+        function handleCopyPermalinkRequest() {
+
+            preferences.copyPermalink();
         }
 
         /**
@@ -1583,6 +1589,8 @@ var Controller = ( function(w) {'use strict';
 
             ui.register('ui:saveUserPreferences', updateUserPreferences);
             ui.register('ui:openPermalinkRequest', handlePermalinkRequest);
+
+            ui.register('ui:copyPermalinkRequest', handleCopyPermalinkRequest);
 
             ui.register('ui:clearFromGpx', handleRemoveTrack);
 

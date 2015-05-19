@@ -2270,12 +2270,30 @@ var Ui = ( function(w) {'use strict';
 		* PERMALINK
 		* *********************************************************************/
 
+		/** 
+		 * shows Perma Options box
+		 */
+
+		function handleOpenPermaOptions() {
+			$('#bubble').toggle();
+		}
+
 		/**
 		 * triggers opening a new window with the permalink
 		 */
 		function handleOpenPerma() {
+			$('#bubble').hide();
 			theInterface.emit('ui:openPermalinkRequest');
 		}
+
+		/**
+		 * triggers copying permalink
+		 */
+		function handleCopyPerma() {
+			$('#bubble').hide();
+			theInterface.emit('ui:copyPermalinkRequest');
+		}
+
 
 		/* *********************************************************************
 		* ACCESSIBILITY ANALSYIS
@@ -2759,9 +2777,9 @@ var Ui = ( function(w) {'use strict';
 			$('#avoidAreasToolbar').click(avoidAreasToolClicked);
 
 			//permalink
-			$('#fnct_permalink').click(handleOpenPerma);
-
-			$('#infoPermalink').click(handleOpenPerma);
+			$('#infoPermalink').click(handleOpenPermaOptions);
+			$('#open').click(handleOpenPerma);
+			$('#copy').click(handleCopyPerma);
 
 			//accessibility analysis
 			$('#analyzeAccessibility').click(handleAnalyzeAccessibility);

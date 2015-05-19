@@ -602,7 +602,7 @@ var Preferences = ( function(w) {'use strict';
 	 */
 	function openPermalink() {
 		
-		var query = 'www.openrouteservice.org?';
+		var query = 'http://www.openrouteservice.org?';
 		for (var i = 0; i < prefNames.length; i++) {
 			query += prefNames[i] + '=' + permaInfo[i] + '&';
 		}
@@ -619,25 +619,62 @@ var Preferences = ( function(w) {'use strict';
 					options.crossDomain = false;
 				}
 		});
-		console.log(query)
 
 		// for localhost testing, set crossDomain to true
 		jQuery.ajax({
 			url: shortenLink,
 			type: "POST",
-			dataType: "json",
-			crossDomain: false,
+			crossDomain: true,
 			data: query, 
 			success: function(response){
-				console.log(response);
 				window.open(response)
 			},
-			error: function(response) {
-				console.log(response);
+			error: function(XMLHttpRequest, textStatus, errorThrown) { 
+				alert("Status: " + textStatus); 
+				alert("Error: " + errorThrown); 
 			}
 		});
 
-	
+	}
+
+
+		/**
+	 * open new window with the permalink
+	 */
+	function copyPermalink() {
+		
+		var query = 'http://www.openrouteservice.org?';
+		for (var i = 0; i < prefNames.length; i++) {
+			query += prefNames[i] + '=' + permaInfo[i] + '&';
+		}
+		//slice away last '&'
+		query = query.substring(0, query.length - 1);
+
+		// convert to bitly
+		var shortenLink = namespaces.services.shorten;
+
+		jQuery.ajaxPrefilter(function( options ) {
+				if ( options.crossDomain ) {
+					options.url = "http://localhost/cgi-bin/proxy.cgi?url=" + encodeURIComponent( options.url );
+					options.crossDomain = false;
+				}
+		});
+
+		// for localhost testing, set crossDomain to true
+		jQuery.ajax({
+			url: shortenLink,
+			type: "POST",
+			crossDomain: true,
+			data: query, 
+			success: function(response){
+				window.prompt("Copy to clipboard: Ctrl+C or Cmd+C, Enter", response);
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) { 
+				alert("Status: " + textStatus); 
+				alert("Error: " + errorThrown); 
+			}
+		});
+
 	}
 	
 	/**
@@ -685,6 +722,7 @@ var Preferences = ( function(w) {'use strict';
 	Preferences.prototype.areCookiesAVailable = areCookiesAVailable;
 
 	Preferences.prototype.openPermalink = openPermalink;
+	Preferences.prototype.copyPermalink = copyPermalink;
 	Preferences.prototype.reloadWithPerma = reloadWithPerma;
 	
 	return new Preferences();

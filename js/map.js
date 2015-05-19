@@ -114,7 +114,6 @@ var Map = ( function() {"use strict";
 			this.HEIGHTS = 'Height Profile';
 
 			var self = this;
-
 			/* *********************************************************************
 			 * MAP INIT
 			 * *********************************************************************/
@@ -129,8 +128,8 @@ var Map = ( function() {"use strict";
 				maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34),
 				restrictedExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34),
 				eventListeners: {
-			         "changebaselayer": mapBaseLayerChanged
-			    }
+					"changebaselayer": mapBaseLayerChanged,
+				}
 			});
 
 
@@ -162,6 +161,7 @@ var Map = ( function() {"use strict";
 				this.theMap.addLayer(mapSurfer_new);
 			}
 
+
 			//layer 2 - mapnik
 			var osmLayer = new OpenLayers.Layer.OSM();
 			this.theMap.addLayer(osmLayer);
@@ -188,18 +188,24 @@ var Map = ( function() {"use strict";
 			this.theMap.addLayer(layerCycle);
 
 			//overlay - hillshade
+			var attribDEMData = '<a href="http://srtm.csi.cgiar.org/">SRTM</a>; ASTER GDEM is a product of <a href="http://www.meti.go.jp/english/press/data/20090626_03.html">METI</a> and <a href="https://lpdaac.usgs.gov/products/aster_policies">NASA</a>';
 			if (namespaces.layerHs.length) {
-				var hs_options = {
-					layers : 'europe_wms:hs_srtm_europa',
-					srs : 'EPSG:900913',
-					format : 'image/jpeg',
-					transparent : 'true'
-				};
-				var hs2 = new OpenLayers.Layer.WMS("Hillshade", namespaces.layerHs, hs_options);
-				hs2.setOpacity(0.2);
-				hs2.visibility = false;
-				this.theMap.addLayer(hs2);
+				var layMSNAsterHillshade = new OpenLayers.Layer.TMS(
+					"Hillshade",
+					"http://korona.geog.uni-heidelberg.de/tiles/asterh/",
+					{
+						type: 'png', 
+						getURL: getTileURL,
+						displayOutsideMaxExtent: true,
+						isBaseLayer: false,
+						numZoomLevels: 19,
+						attribution: attribDEMData
+					}
+				);  
+				this.theMap.addLayer(layMSNAsterHillshade);
 			}
+
+			layMSNAsterHillshade.setOpacity(0.6);
 
 			//TODO too many requests sent
 			//overlay - traffic
@@ -233,6 +239,23 @@ var Map = ( function() {"use strict";
 					layerTMC_lines.setVisibility(layerTMC.getVisibility());
 				});
 			}
+
+
+			function getTileURL(bounds) {
+				var res = this.map.getResolution();
+				var x = Math.round((bounds.left - this.maxExtent.left) / (res * this.tileSize.w));
+				var y = Math.round((this.maxExtent.top - bounds.top) / (res * this.tileSize.h));
+				var z = this.map.getZoom();
+				var limit = Math.pow(2, z);
+
+				if (y < 0 || y >= limit) {
+				    return OpenLayers.Util.getImagesLocation() + "404.png";
+				} else {
+				    x = ((x % limit) + limit) % limit;
+				    return this.url + "x=" + x + "&y=" + y + "&z=" + z;    //+ "&ss=" + x + "-" + y + "-" + z
+				}
+			}
+
 
 			//layrers required for routing, etc.
 			//route points
@@ -345,44 +368,6 @@ var Map = ( function() {"use strict";
 				roundedCornerColor : 'black',
 				id : 'layerSwitcherPanel'
 			}));
-
-
-			// this function is needed to update panelInformation when Layers are changed
-			function mapBaseLayerChanged() {
-				// update map attributions in infoPanel
-				document.getElementById("infoPanel").innerHTML = self.theMap.baseLayer.attribution;
-
-				var graphInfo = namespaces.services.routing + "?info";
-				jQuery.ajaxPrefilter(function( options ) {
-					if ( options.crossDomain ) {
-						options.url = "http://localhost/cgi-bin/proxy.cgi?url=" + encodeURIComponent( options.url );
-						options.crossDomain = false;
-					}	
-				});
-
-				// set crossDomain to true if on localhost
-				jQuery.ajax({
-				  url: graphInfo,
-				  dataType: 'json',
-				  type: 'GET', 
-				  crossDomain: false,
-				  success: updateInfoPanel,
-				  error: updateInfoPanel
-				});
-
-				function updateInfoPanel(results) {
-					
-					var lastUpdate = new Date(results.profiles['profile 1'].import_date);
-
-					// TODO: add nextUpdate from results when live
-					lastUpdate =  lastUpdate.getUTCDate() + '.' + (parseInt(lastUpdate.getMonth())+parseInt(1)) + '.' + lastUpdate.getFullYear();
-					document.getElementById("infoPanel").innerHTML += '<br/><br/>';
-					document.getElementById("infoPanel").innerHTML += '<b>Last Update:</b> ' + lastUpdate;
-					document.getElementById("infoPanel").innerHTML += '<br/>';
-					document.getElementById("infoPanel").innerHTML += '<b>Next Update:</b> ' + results.next_update;
-				}
-
-			}
 
 			this.theMap.addControl(new OpenLayers.Control.ScaleLine());
 			this.theMap.addControl(new OpenLayers.Control.MousePosition());
@@ -503,6 +488,44 @@ var Map = ( function() {"use strict";
 			});
 			this.theMap.addControl(clickControl);
 			clickControl.activate();
+
+			// this function is needed to update panelInformation when Layers are changed
+			function mapBaseLayerChanged() {
+				// update map attributions in infoPanel
+				document.getElementById("infoPanel").innerHTML = self.theMap.baseLayer.attribution;
+			
+
+				var graphInfo = namespaces.services.routing + "?info";
+				jQuery.ajaxPrefilter(function( options ) {
+					if ( options.crossDomain ) {
+						options.url = "http://localhost/cgi-bin/proxy.cgi?url=" + encodeURIComponent( options.url );
+						options.crossDomain = false;
+					}	
+				});
+
+				// set crossDomain to true if on localhost
+				jQuery.ajax({
+				  url: graphInfo,
+				  dataType: 'json',
+				  type: 'GET', 
+				  crossDomain: false,
+				  success: updateInfoPanel,
+				  error: updateInfoPanel
+				});
+
+				function updateInfoPanel(results) {
+					
+					var lastUpdate = new Date(results.profiles['profile 1'].import_date);
+
+					// TODO: add nextUpdate from results when live
+					lastUpdate =  lastUpdate.getUTCDate() + '.' + (parseInt(lastUpdate.getMonth())+parseInt(1)) + '.' + lastUpdate.getFullYear();
+					document.getElementById("infoPanel").innerHTML += '<br/><br/>';
+					document.getElementById("infoPanel").innerHTML += '<b>Last Update:</b> ' + lastUpdate;
+					document.getElementById("infoPanel").innerHTML += '<br/>';
+					document.getElementById("infoPanel").innerHTML += '<b>Next Update:</b> ' + results.next_update;
+				}
+
+			}
 
 			// external code source: http://spatialnotes.blogspot.com/2010/11/capturing-right-click-events-in.html
 			// Get control of the right-click event:
@@ -659,7 +682,6 @@ var Map = ( function() {"use strict";
 		 *  @param waypointIndex: index of the waypoint where to remove objects from
 		 */
 		function clearMarkers(layerName, featureIds) {
-			
 			
 			var layer = this.theMap.getLayersByName(layerName);
 

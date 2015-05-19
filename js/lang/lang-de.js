@@ -77,7 +77,7 @@ var lang_de = {
 		'Fastest':  'Schnellster Weg',
 		'Pedestrian':  'Fußg&auml;nger',
 		'Wheelchair':  'Barrierefrei',
-		'Bicycle':  'K&uuml;rzester Weg',
+		'Bicycle':  'Normal',
 		'BicycleSafety':  'Sicherster Weg',
 		'BicycleRoute':  'Bevorzuge Fahrradweg',
 		'BicycleMTB':  'Mountainbike',
