@@ -123,22 +123,29 @@ var AccessibilityAnalysis = ( function(w) {"use strict";
 		 * @return OL.Geometry.Polygon representing the accessible area
 		 */
 		function parseResultsToPolygon(result) {
+			
 			var area = util.getElementsByTagNameNS(result, namespaces.aas, 'AccessibilityGeometry');
+			
 			var poly;
 			if (area) {
 				//use first polygon only
-				var polygon = util.getElementsByTagNameNS(area[0], namespaces.gml, 'Polygon')[0];
-				var linRingPoints = [];
-				$A(util.getElementsByTagNameNS(polygon, namespaces.gml, 'pos')).each(function(polygonPos) {
-					polygonPos = util.convertPositionStringToLonLat(polygonPos.firstChild.nodeValue);
-					polygonPos = util.convertPointForMap(polygonPos);
-					polygonPos = new OpenLayers.Geometry.Point(polygonPos.lon, polygonPos.lat);
-					linRingPoints.push(polygonPos);
-				});
-				var ring = new OpenLayers.Geometry.LinearRing(linRingPoints);
-				poly = new OpenLayers.Geometry.Polygon([ring]);
+				var polygonArr = util.getElementsByTagNameNS(area[0], namespaces.gml, 'Polygon')[0];
+				var olPolyArr = [];
+				for (var i = 0; i < polygonArr.length; i++) {
+					var linRingPoints = [];
+					$A(util.getElementsByTagNameNS(polygonArr[i], namespaces.gml, 'pos')).each(function(polygonPos) {
+						polygonPos = util.convertPositionStringToLonLat(polygonPos.firstChild.nodeValue);
+						polygonPos = util.convertPointForMap(polygonPos);
+						polygonPos = new OpenLayers.Geometry.Point(polygonPos.lon, polygonPos.lat);
+						linRingPoints.push(polygonPos);
+					});
+					var ring = new OpenLayers.Geometry.LinearRing(linRingPoints);
+					poly = new OpenLayers.Geometry.Polygon([ring]);
+					olPolyArr.push(poly);
+				}
 			}
-			return poly;
+			
+			return olPolyArr;
 		}
 
 

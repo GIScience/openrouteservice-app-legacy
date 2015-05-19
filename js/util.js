@@ -78,6 +78,11 @@ util = ( function() {'use strict';
 			getElementsByTagNameNS : function(element, ns, tagName) {
 				if (element.getElementsByTagNameNS) {
 					//Firefox, Chrome
+					if (tagName == 'Polygon') {
+						var polyArr = [];
+						polyArr.push(element.getElementsByTagNameNS(ns, tagName));
+						return polyArr;
+					}
 					return element.getElementsByTagNameNS(ns, tagName);
 				} else {
 					//IE 9 doesn't support getElementsByTagNameNS function for XML documents

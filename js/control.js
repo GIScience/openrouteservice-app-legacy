@@ -961,7 +961,9 @@ var Controller = ( function(w) {'use strict';
                 //aas setting intervall in meters
                 var aasIntervall= $('#accessibilityAnalysisIsochronesIntervall').val();
                 //aas setting isochrone method
-                var aasMethod= $('#accessibilityAnalysisMethodList :selected').val();
+                //var aasMethod= $('#accessibilityAnalysisMethodList :selected').val();
+
+                var aasMethod = 'Default';
 
                 ui.showAccessibilityError(false);
                 ui.showSearchingAtAccessibility(true);
@@ -992,8 +994,8 @@ var Controller = ( function(w) {'use strict';
                 var bounds = analyse.parseResultsToBounds(result);
                 if (bounds) {
                     map.theMap.zoomToExtent(bounds, true);
-                    var polygon = analyse.parseResultsToPolygon(result);
-                    map.addAccessiblityPolygon(polygon);
+                    var polygonArr = analyse.parseResultsToPolygon(result);
+                    map.addAccessiblityPolygon(polygonArr);
 
                     ui.showSearchingAtAccessibility(false);
                 } else {

@@ -1258,15 +1258,18 @@ var Map = ( function() {"use strict";
 		 * adds the given polygon as avoid area polygon to the map layer
 		 *  @param polygon: OL.Feature.Vector, the polygon to add
 		 */
-		function addAccessiblityPolygon(polygon) {
-			var layer = this.theMap.getLayersByName(this.ACCESSIBILITY)[0];
-			var newFeature = new OpenLayers.Feature.Vector(polygon);
-			newFeature.style = {
-				'strokeColor' : '#0000ff',
-				'fillColor' : '#0000ff',
-				'fillOpacity' : 0.4
-			};
-			layer.addFeatures([newFeature]);
+		function addAccessiblityPolygon(polygonArray) {
+			for (var i=0; i<polygonArray.length; i++) {
+				var layer = this.theMap.getLayersByName(this.ACCESSIBILITY)[0];
+				var newFeature = new OpenLayers.Feature.Vector(polygonArray[i]);
+				newFeature.style = {
+					'strokeWidth' : '0.2',
+					'strokeColor' : '#0000ff',
+					'fillColor' : '#0000ff',
+					'fillOpacity' : 0.03
+				};
+				layer.addFeatures([newFeature]);
+			}
 		}
 
 		/**
