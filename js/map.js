@@ -199,7 +199,8 @@ var Map = ( function() {"use strict";
 						displayOutsideMaxExtent: true,
 						isBaseLayer: false,
 						numZoomLevels: 19,
-						attribution: attribDEMData
+						attribution: attribDEMData,
+						visibility: false
 					}
 				);  
 				this.theMap.addLayer(layMSNAsterHillshade);
@@ -338,8 +339,9 @@ var Map = ( function() {"use strict";
 
 			//accessibility
 			var layerAccessibility = new OpenLayers.Layer.Vector(this.ACCESSIBILITY, {
-				displayInLayerSwitcher : false
+				displayInLayerSwitcher : false,
 			});
+			layerAccessibility.setOpacity(0.7);
 			layerAccessibility.redraw(true);
 
 			//height profile
@@ -1262,17 +1264,17 @@ var Map = ( function() {"use strict";
 			
 			var colorRange = rangeColors(polygonArray.length-1);
 			
-			for (var i=0; i<polygonArray.length; i++) {
+			for (var i=polygonArray.length-1; i>=0; i--) {
+
 				var layer = this.theMap.getLayersByName(this.ACCESSIBILITY)[0];
 				var newFeature = new OpenLayers.Feature.Vector(polygonArray[i].geometry);
 
-
 				newFeature.style = {
-					'strokeWidth' : 0.3,
-					'strokeOpacity' : 0.7,
+					'strokeWidth' : 1,
+					'strokeOpacity' : 1,
 					'strokeColor' : '#000',
 					'fillColor' : colorRange[i],
-					'fillOpacity' : 0.5
+					'fillOpacity' : 1
 				};
 				layer.addFeatures([newFeature]);
 			}
@@ -1407,8 +1409,8 @@ var Map = ( function() {"use strict";
 			var red = new Color(232, 9, 26),
 				white = new Color(255, 255, 255),
 			 	green = new Color(6, 170, 60),
-				start = red,
-				end = green;
+				start = green,
+				end = red;
 
 			// if (rangeNumber > 50) {
 			//     start = white,

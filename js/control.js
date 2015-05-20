@@ -350,6 +350,8 @@ var Controller = ( function(w) {'use strict';
                 handleWaypointChanged(map.getWaypointsString(endPoint));
             }
 
+            //TODO: update route string..
+
         }
 
         /**
@@ -958,19 +960,19 @@ var Controller = ( function(w) {'use strict';
                 //aas setting route type
                 var aasRoutePref = prefs[0];
 
-                //aas setting intervall in meters
+                //aas setting intervall in minutes
                 var aasIntervall= $('#accessibilityAnalysisIsochronesIntervall').val();
+                var aasIntervallSeconds = (parseInt(aasIntervall)*60).toString();
+               
                 //aas setting isochrone method
-                //var aasMethod= $('#accessibilityAnalysisMethodList :selected').val();
-
-                var aasMethod = 'Default';
+                var aasMethod= $('#accessibilityAnalysisMethodList :selected').val();
 
                 ui.showAccessibilityError(false);
                 ui.showSearchingAtAccessibility(true);
 
                 map.eraseAccessibilityFeatures();
 
-                analyse.analyze(pos, dist, aasRoutePref, aasMethod, aasIntervall, accessibilitySuccessCallback, accessibilityFailureCallback);
+                analyse.analyze(pos, dist, aasRoutePref, aasMethod, aasIntervallSeconds, accessibilitySuccessCallback, accessibilityFailureCallback);
             } else {
                 //no position, no analyse!
                 ui.showAccessibilityError(true);
@@ -995,7 +997,7 @@ var Controller = ( function(w) {'use strict';
                 if (bounds) {
                     map.theMap.zoomToExtent(bounds, true);
                     var polygonArr = analyse.parseResultsToPolygon(result);
-                    
+
                     map.addAccessiblityPolygon(polygonArr);
 
                     ui.showSearchingAtAccessibility(false);
@@ -1069,7 +1071,8 @@ var Controller = ( function(w) {'use strict';
         var wp2;
         function handleGpxRoute(file) {
             //remove old routes
-            handleResetRoute();
+            
+            ui.handleResetRoute();
 
             ui.showImportRouteError(false);
             if (file) {
@@ -1159,7 +1162,7 @@ var Controller = ( function(w) {'use strict';
         function handleRemoveTrack(olFeatureName) {
             //console.log(JSON.stringify(olFeatureName));
 
-            handleResetRoute();
+            ui.handleResetRoute();
             map.clearMarkers(map.TRACK, [olFeatureName]);
 
             // remove div..

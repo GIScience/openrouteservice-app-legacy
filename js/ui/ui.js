@@ -924,7 +924,13 @@ var Ui = ( function(w) {'use strict';
 				}
 
 				//add event handling
-				$('.searchWaypoint').keyup(handleSearchWaypointInput);
+				newWp = newWp.get(0);
+				newWp.querySelector('.searchWaypoint').addEventListener('keyup', handleSearchWaypointInput);
+				newWp.querySelector('.moveUpWaypoint').addEventListener('click', handleMoveUpWaypointClick);
+				newWp.querySelector('.moveDownWaypoint').addEventListener('click', handleMoveDownWaypointClick);
+				newWp.querySelector('.removeWaypoint').addEventListener('click', handleRemoveWaypointClick);
+				newWp.querySelector('.searchAgainButton').addEventListener('click', handleSearchAgainWaypointClick);
+			
 			}
 		}
 
@@ -2892,6 +2898,7 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.setHazardousParameter = setHazardousParameter;
 
 		Ui.prototype.handleGpxFiles = handleGpxFiles;
+		Ui.prototype.handleResetRoute = handleResetRoute;
 			
 		theInterface = new Ui();
 

@@ -624,7 +624,7 @@ var Preferences = ( function(w) {'use strict';
 		jQuery.ajax({
 			url: shortenLink,
 			type: "POST",
-			crossDomain: true,
+			crossDomain: false,
 			data: query, 
 			success: function(response){
 				window.open(response)

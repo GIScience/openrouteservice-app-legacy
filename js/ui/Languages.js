@@ -98,7 +98,6 @@ var Languages = (function(w) {'use strict';
 		$('#allSlopedCurbesOption').html(p.translate('all_sloped_curbs'));
 		
 		//routing
-		$('#resetRoute').html(p.translate('resetRoute'));
 		$('.searchWaypoint').attr('placeholder', p.translate('enterAddress'));
 		$('#addWaypoint').html(p.translate('addWaypoint'));
 		$('#routeSummaryHead').html(p.translate('routeSummary') + ':');

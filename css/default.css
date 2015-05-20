@@ -368,9 +368,7 @@ div.olControlPermalink {
 
 
 }
-#resetRoute {
-	margin-left: 10px;
-}
+
 /* container for "zoom to route" or "calculate route" when appropriate*/
 #routeCalculate {
 	display: none;
@@ -595,10 +593,12 @@ button.weightOptions {
 	height: 30px;
 	width: 44px;
 	padding: 2px 2px 2px 2px;
+
 }
 
 #weightingDropdown {
 	margin-bottom: 3px;
+	float: right;
 }
 
 
@@ -956,9 +956,14 @@ button.weightOptions {
 	margin-top: 5px ;
 }
 
+.buttonHolder {
+	height: 50px;
+}
+
 #resetRoute {
 	margin-top: 10px;
-	margin-bottom: 20px;
+	margin-right: 0px;
+	float: right;
 }
 #hazardOptions {
 	margin-top: 10px;
@@ -1011,7 +1016,11 @@ button.weightOptions {
 /* dropdown of route settings weighting */
 #dropdown_weighting  {
 	padding-left: 5px;
+	margin-left: -55px;
 	min-width: 100px;
+	overflow: auto;
+	overflow-x: auto;
+	overflow-y: auto;
 }
 
 #dropdown_weighting label {

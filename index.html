@@ -346,8 +346,9 @@
 							</div>
 						</div>
 						<div class="panel panelLight">
-							<button id="resetRoute" class="btn btn-small" type="button">Reset Whole Route</button>
-					
+							<div class="buttonHolder">
+								<button id="resetRoute" class="btn btn-small" type="button"><i class="icon-trash"></i></button>
+							</div>
 							<div class="guiComponent waypoint unset" draggable="draggable" id="Draft" style="display: none">
 								<span class="clickable removeWaypoint" title="Remove waypoint"> </span>
 								<span class="clickable moveUpWaypoint" href="#" title="Move waypoint up"> </span>
@@ -441,10 +442,10 @@
 										<span id ="accessibilityAnalysisMethod" class="label">Select Isochrone method</span>
 										<br/>
 										<input type="text" id="accessibilityDistance" class="textfield" value="15">
-										<span id ="accessibilityAnalysisMinutes" class="label">Select minutes</span>
+										<span id ="accessibilityAnalysisMinutes" class="label">Select Minutes</span>
 										<br/>						
-										<input type="text" id="accessibilityAnalysisIsochronesIntervall" class="textfield" value="10">
-										<span id ="accessibilityAnalysisIsochrones" class="label">Select Isochrone intervall</span>
+										<input type="text" id="accessibilityAnalysisIsochronesIntervall" class="textfield" value="3">
+										<span id ="accessibilityAnalysisIsochrones" class="label">Select Isochrone Interval</span>
 										<br/>	
 										<btn class="btn btn-small" id="analyzeAccessibility"><i class="icon-picture"></i>&nbsp;&nbsp;Analyze</btn>	
 										<br/>
