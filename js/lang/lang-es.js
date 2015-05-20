@@ -149,7 +149,7 @@ var lang_es = {
     'changeFile':'Change',
     
 	//Accessibility Analysis
-	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',
+	'accessibilityAnalysisIsochrones' : 'Isochrone intervall en minutos',
 	'accessibilityAnalysisMethod' : 'Isochrone method',
     'accessibilityAnalysis':'An&aacute;lisis de accesibilidad',
     'setAccessibilityMinutes':'Seleccione minutos',

@@ -194,7 +194,7 @@ var lang_de = {
 		'accessibilityAnalysis' : 'Erreichbarkeits-Analyse',
 		'setAccessibilityMinutes' : 'Minuten ausw&auml;hlen',
 		'analyze' : 'Analysieren',
-		'accessibilityAnalysisIsochrones' : 'Isochronenintervall ausw&auml;hlen',
+		'accessibilityAnalysisIsochrones' : 'Isochronenintervall in Minuten ausw&auml;hlen',
 		'accessibilityAnalysisMethod' : 'Isochronenmethode ausw&auml;hlen',
 		'calculatingAccessibility' : 'Die Erreichbarkeit wird analysiert...',
 		'accessibilityError' : 'W&auml;hrend der Erreichbarkeits-Analyse ist leider ein Fehler aufgetreten. Haben Sie vergessen einen Startpunkt zu setzen?',

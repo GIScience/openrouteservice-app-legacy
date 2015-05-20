@@ -154,7 +154,7 @@ var lang_pl = {
 	'changeFile' : '',
 
 	//Accessibility Analysis
-	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',
+	'accessibilityAnalysisIsochrones' : 'Isochrone intervall w minutach',
 	'accessibilityAnalysisMethod' : 'Isochrone method',
 	'accessibilityAnalysis' : 'Analiza dost&#x0119;pno&#x015B;ci',
 	'setAccessibilityMinutes' : 'Dost&#x0119;pno&#x015B;&#x0107; w minutach: ',

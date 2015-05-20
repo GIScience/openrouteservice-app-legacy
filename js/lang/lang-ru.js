@@ -150,7 +150,7 @@ var lang_ru = {
     'changeFile': 'Изменить',
  
     //Accessibility Analysis
-	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',
+	'accessibilityAnalysisIsochrones' : 'Isochrone intervall в минутах',
 	'accessibilityAnalysisMethod' : 'Isochrone method',
     'accessibilityAnalysis': 'Анализ досягаемости',
     'setAccessibilityMinutes': 'Количество минут: ',

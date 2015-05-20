@@ -157,7 +157,7 @@ var lang_cn = {
 	'accessibilityAnalysis' : '可視分析',
 	'setAccessibilityMinutes' : '選擇可視分鐘數: ',
 	'analyze' : '分析',
-	'accessibilityAnalysisIsochrones' : '等時距分析',
+	'accessibilityAnalysisIsochrones' : '等時距分析在幾分鐘內',
 	'accessibilityAnalysisMethod' : '可視分析方法',
 	'calculatingAccessibility' : '正在進行可視分析...',
 	'accessibilityError' : '可視分析過程發生錯誤。請檢查是否設定起始點。',

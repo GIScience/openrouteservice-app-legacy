@@ -149,7 +149,7 @@ var lang_nl = {
     'changeFile':'Change',
     
 	//Accessibility Analysis
-	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',
+	'accessibilityAnalysisIsochrones' : 'Isochrone intervall in minuten',
 	'accessibilityAnalysisMethod' : 'Isochrone method',
     'accessibilityAnalysis':'Toegankelijkheid analyse',
     'setAccessibilityMinutes':'Selecteer minuten',

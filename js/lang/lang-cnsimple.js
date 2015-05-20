@@ -157,7 +157,7 @@ var lang_cnsimple = {
 	'accessibilityAnalysis' : '可视分析',
 	'setAccessibilityMinutes' : '可视时间（分钟）: ',
 	'analyze' : '分析',
-	'accessibilityAnalysisIsochrones' : '等时线间距',
+	'accessibilityAnalysisIsochrones' : '等时线间距在几分钟内',
 	'accessibilityAnalysisMethod' : '等时间方法',
 	'calculatingAccessibility' : '正在进行可视分析...',
 	'accessibilityError' : '可视分析过程发生错误。请检查是否设定起始点。',
