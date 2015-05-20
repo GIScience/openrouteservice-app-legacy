@@ -43,7 +43,8 @@ var Preferences = ( function(w) {'use strict';
 		this.routingLanguage = 'en';
 		this.distanceUnit = 'm';
 		this.version = list.version['extendedVersion'];
-		this.dictionary = window['lang_' + this.language];
+		this.dictionaryLang = window['lang_' + this.language];
+		this.dictionaryInstruct = window['lang_' + this.language];
 
 		//set permalink links
 		permaInfo[this.languageIdx] = this.language;
@@ -71,7 +72,15 @@ var Preferences = ( function(w) {'use strict';
 	 * @param {Object} term: the key to translate to the given language based on the language files (dictionary)
 	 */
 	function translate(term) {
-		return this.dictionary[term] || '';
+		return this.dictionaryLang[term] || '';
+	}
+
+	/**
+	 * translates a given term to the selected language instruction of the application
+	 * @param {Object} term: the key to translate to the given language based on the language files (dictionary)
+	 */
+	function translateInstructions(term) {
+		return this.dictionaryInstruct[term] || '';
 	}
 
 	/**
@@ -80,9 +89,9 @@ var Preferences = ( function(w) {'use strict';
 	 * @return the term or empty string if there exists no term for the translation
 	 */
 	function reverseTranslate(translation) {
-		for (var term in this.dictionary ) {
-			if (this.dictionary.hasOwnProperty(term)) {
-				var dictEntry = new Element('text').insert(this.dictionary[term]).innerHTML;
+		for (var term in this.dictionaryLang ) {
+			if (this.dictionaryLang.hasOwnProperty(term)) {
+				var dictEntry = new Element('text').insert(this.dictionaryLang[term]).innerHTML;
 				if (dictEntry === translation)
 					return term;
 			}
@@ -101,8 +110,11 @@ var Preferences = ( function(w) {'use strict';
 	 */
 	function loadPreferencesOnStartup() {
 		this.language = this.setLanguage();
-		this.dictionary = window['lang_' + this.language];
+		this.dictionaryLang = window['lang_' + this.language];
+
 		this.routingLanguage = this.setRoutingLanguage();
+		this.dictionaryInstruct = window['lang_' + this.routingLanguage];
+
 		this.distanceUnit = this.setDistanceUnit();
 		this.version = this.setVersion();
 
@@ -168,6 +180,7 @@ var Preferences = ( function(w) {'use strict';
 			//this language doesn't exist in ORS, use default
 			lang = 'en';
 		}
+
 		return lang;
 	}
 
@@ -582,7 +595,8 @@ var Preferences = ( function(w) {'use strict';
 			this.distanceUnit = key == this.distanceUnitIdx ? value : this.distanceUnit;
 			this.version = key == this.versionIdx ? value : this.version;
 			
-			this.dictionary = window['lang_' + this.language];
+			this.dictionaryLang = window['lang_' + this.language];
+			this.dictionaryInstruct = window['lang_' + this.routingLanguage];
 		}
 	}
 
@@ -693,6 +707,7 @@ var Preferences = ( function(w) {'use strict';
 	Preferences.prototype.getPrefName = getPrefName;
 
 	Preferences.prototype.translate = translate;
+	Preferences.prototype.translateInstructions = translateInstructions;
 	Preferences.prototype.reverseTranslate = reverseTranslate;
 
 	Preferences.prototype.loadPreferencesOnStartup = loadPreferencesOnStartup;

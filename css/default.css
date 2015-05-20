@@ -957,6 +957,7 @@ button.weightOptions {
 }
 
 .buttonHolder {
+	margin-top: -25px;
 	height: 50px;
 }
 

@@ -1612,11 +1612,14 @@ var Ui = ( function(w) {'use strict';
 					}
 
 					//arrow direction
-					var left = text.indexOf(preferences.translate('left'));
-					var halfLeft = text.indexOf(preferences.translate('half-left'));
-					var right = text.indexOf(preferences.translate('right'));
-					var halfRight = text.indexOf(preferences.translate('half-right'));
-					var straight = text.indexOf(preferences.translate('straight'));
+					console.log(preferences.translateInstructions('left'));
+					var left = text.indexOf(preferences.translateInstructions('left'));
+
+					console.log(left);
+					var halfLeft = text.indexOf(preferences.translateInstructions('half-left'));
+					var right = text.indexOf(preferences.translateInstructions('right'));
+					var halfRight = text.indexOf(preferences.translateInstructions('half-right'));
+					var straight = text.indexOf(preferences.translateInstructions('straight'));
 					var direction;
 					// will be used for traffic jam info etc
 					var notice;
@@ -2408,19 +2411,23 @@ var Ui = ( function(w) {'use strict';
 		 */
 		var fileInput;
 		function handleGpxFiles(event) {
-			
+
 			// clear old gpx tracks from map
 			theInterface.emit('ui:clearFromGpx');
 
 			fileInput = event.target.files;
+			$(fileInput).attr("value", '');
 			// TODO show error if any of the files are not gpx showImportRouteError(true)
 			if (fileInput) {
 				fillGpxMenu(fileInput)
+
+
 			}
+
 		}
 
 		function fillGpxMenu(files) {
-
+			
 			var container = document.querySelector('#GPXcontainer');
 		   	var fileContainerMain = container.querySelector('#fileContainerMain')
 		   	fileContainerMain.show();
@@ -2798,7 +2805,6 @@ var Ui = ( function(w) {'use strict';
 
 			//multiple file uploader listener
 			$('#files').change(handleGpxFiles);
-
 
 			//height profile
 			$('#uploadHeightProfileFiles').change(handleUploadHeightProfileSelection);

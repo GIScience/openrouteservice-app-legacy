@@ -381,9 +381,9 @@ var Controller = ( function(w) {'use strict';
          */
         function handleResetRoute() {
 
-            var isRoutePresent = waypoint.getNumWaypointsSet() >= 2;
+            var isWaypointPresent = waypoint.getNumWaypointsSet() >= 1;
 
-            if (isRoutePresent) {
+            if (isWaypointPresent) {
 
                 //remove all waypoint markers
                 map.clearMarkers(map.ROUTE_POINTS);
