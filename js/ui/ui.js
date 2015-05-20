@@ -1612,10 +1612,7 @@ var Ui = ( function(w) {'use strict';
 					}
 
 					//arrow direction
-					console.log(preferences.translateInstructions('left'));
 					var left = text.indexOf(preferences.translateInstructions('left'));
-
-					console.log(left);
 					var halfLeft = text.indexOf(preferences.translateInstructions('half-left'));
 					var right = text.indexOf(preferences.translateInstructions('right'));
 					var halfRight = text.indexOf(preferences.translateInstructions('half-right'));
@@ -2420,7 +2417,6 @@ var Ui = ( function(w) {'use strict';
 			// TODO show error if any of the files are not gpx showImportRouteError(true)
 			if (fileInput) {
 				fillGpxMenu(fileInput)
-
 
 			}
 

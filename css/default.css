@@ -958,12 +958,8 @@ button.weightOptions {
 
 .buttonHolder {
 	margin-top: -25px;
-	height: 50px;
 }
-
 #resetRoute {
-	margin-top: 10px;
-	margin-right: 0px;
 	float: right;
 }
 #hazardOptions {

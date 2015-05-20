@@ -678,7 +678,7 @@ var Preferences = ( function(w) {'use strict';
 		jQuery.ajax({
 			url: shortenLink,
 			type: "POST",
-			crossDomain: true,
+			crossDomain: false,
 			data: query, 
 			success: function(response){
 				window.prompt("Copy to clipboard: Ctrl+C or Cmd+C, Enter", response);
