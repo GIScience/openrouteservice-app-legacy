@@ -149,7 +149,7 @@ var lang_hu = {
     'changeFile':'Change',
     
 	//Accessibility Analysis
-	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',
+	'accessibilityAnalysisIsochrones' : 'Isochrone intervall percben',
 	'accessibilityAnalysisMethod' : 'Isochrone method',
     'accessibilityAnalysis':'Hozz&aacute;f&eacute;rhetos&eacute;g elemz&eacute;s',
     'setAccessibilityMinutes':'V&aacute;lassza perc',

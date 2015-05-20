@@ -149,7 +149,7 @@ var lang_cz = {
     'changeFile':'Zmena',
 	
     //Accessibility Analysis
-	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',
+	'accessibilityAnalysisIsochrones' : 'Isochrone intervall v minut&agrave;ch',
 	'accessibilityAnalysisMethod' : 'Isochrone method',
     'accessibilityAnalysis':'Anal&yacute;za pr&iacute;stupnosti',
     'setAccessibilityMinutes':'Vyberte minut',

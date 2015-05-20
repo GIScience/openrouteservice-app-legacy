@@ -148,7 +148,7 @@ var lang_fr = {
     'changeFile':'Changer',
 	
     //Accessibility Analysis
-	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',
+	'accessibilityAnalysisIsochrones' : 'Isochrone intervall en minutes',
 	'accessibilityAnalysisMethod' : 'Isochrone method',
     'accessibilityAnalysis':'Analyse de l\'accessibilit&eacute;',
     'setAccessibilityMinutes':'S&eacute;lectionnez les minutes : ',
