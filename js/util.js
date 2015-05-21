@@ -112,15 +112,17 @@ util = ( function() {'use strict';
 					'class' : 'address'
 				});
 
-				var StreetAddress = util.getElementsByTagNameNS(xmlAddress, namespaces.xls, 'StreetAddress')[0];
 
-				if (StreetAddress) {
-					var Streets = util.getElementsByTagNameNS(StreetAddress, namespaces.xls, 'Street');
-					var Building = util.getElementsByTagNameNS(StreetAddress, namespaces.xls, 'Building')[0];
-				}
-
-				var places = util.getElementsByTagNameNS(xmlAddress, namespaces.xls, 'Place');
-				var postalCode = util.getElementsByTagNameNS(xmlAddress, namespaces.xls, 'PostalCode');
+				var v1 = util.getElementsByTagNameNS(xmlAddress, namespaces.xls, 'StreetAddress');
+				var StreetAddress = null;
+				
+				if (v1 != null) {
+				   StreetAddress = v1 [0]};
+				if (StreetAddress != null){
+				var Streets = util.getElementsByTagNameNS(StreetAddress, namespaces.xls, 'Street');
+				var Building = util.getElementsByTagNameNS(StreetAddress, namespaces.xls, 'Building')[0];
+				
+				
 
 				//Building line
 				if (Building) {
@@ -159,6 +161,10 @@ util = ( function() {'use strict';
 
 					element.appendChild(new Element('br'));
 				}
+				}
+				
+				var places = util.getElementsByTagNameNS(xmlAddress, namespaces.xls, 'Place');
+				var postalCode = util.getElementsByTagNameNS(xmlAddress, namespaces.xls, 'PostalCode');
 
 				//Place line
 				var separator = '';
@@ -196,16 +202,19 @@ util = ( function() {'use strict';
 			 */
 			parseAddressShort : function(address) {
 				var element = "";
+				
 				if (address) {
+
+					var v1 = util.getElementsByTagNameNS(address, namespaces.xls, 'StreetAddress');
+					var streetAddress = null;
+					if (v1 != null) {
+					   streetAddress = v1 [0]};
+					if (streetAddress != null){
 					
-					var streetAddress = util.getElementsByTagNameNS(address, namespaces.xls, 'StreetAddress')[0];
+					var streets = util.getElementsByTagNameNS(streetAddress, namespaces.xls, 'Street');
+					var building = util.getElementsByTagNameNS(streetAddress, namespaces.xls, 'Building')[0];
 					
-					if (streetAddress) {
-						var streets = util.getElementsByTagNameNS(streetAddress, namespaces.xls, 'Street');
-						var building = util.getElementsByTagNameNS(streetAddress, namespaces.xls, 'Building')[0];
-					}
 					
-					var places = util.getElementsByTagNameNS(address, namespaces.xls, 'Place');
 
 					//Building line
 					if (building) {
@@ -225,6 +234,10 @@ util = ( function() {'use strict';
 							element += officialName + ' ';
 						}
 					});
+					
+					}
+					
+					var places = util.getElementsByTagNameNS(address, namespaces.xls, 'Place');
 					//add city name
 					$A(places).each(function(place) {
 						if (place.getAttribute('type') === 'Municipality') {
@@ -232,6 +245,7 @@ util = ( function() {'use strict';
 							element += place.textContent || place.text;
 						}
 					});
+					
 				}
 				return element;
 			},
