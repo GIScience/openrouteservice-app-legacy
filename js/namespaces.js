@@ -40,7 +40,7 @@ namespaces.services = {
 	geocoding : 'http://openls.geog.uni-heidelberg.de/osm/geocoding-test', //for address search requests
 	//routing : 'http://openls.geog.uni-heidelberg.de/testing2015/routing', //for routing requests
 	routing: 'http://openls.geog.uni-heidelberg.de/osm/routing-test',
-	directory : 'http://openls.geog.uni-heidelberg.de/testing2015/directory', //for POI search requests
+	directory : 'http://openls.geog.uni-heidelberg.de/osm/directory-test', //for POI search requests
 	analyse : 'http://openls.geog.uni-heidelberg.de/testing2015/analysis-test',
 	shorten: 'http://openls.geog.uni-heidelberg.de/osm/shortenlink-test',
 	wps : '' //for calculation of polygon around route for POI search
