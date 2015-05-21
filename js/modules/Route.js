@@ -21,7 +21,8 @@ var Route = ( function(w) {"use strict";
 		 * @param avoidFerry: flag set to true if ferrys should be avoided in the route; else: false
 		 * @param avoidAreas: array of avoid areas represented by OL.Geometry.Polygons
 		 */
-		function calculate(routePoints, successCallback, failureCallback, language, routePref,extendedRoutePreferences, extendedRoutePreferencesType, avoidMotorways, avoidTollways,avoidunpavedRoads,avoidFerry, avoidAreas, calcRouteID) {
+		function calculate(routePoints, successCallback, failureCallback, language, routePref,extendedRoutePreferencesParams, extendedRoutePreferencesType, avoidMotorways, avoidTollways,avoidunpavedRoads,avoidFerry, avoidSteps, avoidAreas, extendedRoutePreferencesWeight, calcRouteID) {
+
 
 			var writer = new XMLWriter('UTF-8', '1.0');
 			writer.writeStartDocument();
@@ -49,72 +50,80 @@ var Route = ( function(w) {"use strict";
 			//<xls:RoutePlan>
 			writer.writeStartElement('xls:RoutePlan');
 			//<xls:RoutePreference />
-			writer.writeElementString('xls:RoutePreference', routePref || 'Fastest');
+			writer.writeElementString('xls:RoutePreference', routePref || 'Car');
 			
+			writer.writeStartElement('xls:ExtendedRoutePreference');
 
-			if (extendedRoutePreferences != null ) {
+			writer.writeElementString('xls:WeightingMethod', extendedRoutePreferencesWeight || 'Fastest');
+
+			if (extendedRoutePreferencesParams != null ) {
 				//<xls:ExtendedRoutePreference>
-				writer.writeStartElement('xls:ExtendedRoutePreference');
 				
-				if (routePref == 'HeavyTruck') {
+				if (routePref == 'HeavyVehicle') {
 
 					if (extendedRoutePreferencesType != null ) {
 
-						writer.writeElementString('xls:vehicleType', extendedRoutePreferencesType);
+						writer.writeElementString('xls:VehicleType', extendedRoutePreferencesType);
 
 					}
 
 					//truck width
-					 if (extendedRoutePreferences[3] != null) {
-						 writer.writeElementString('xls:width', extendedRoutePreferences[3]);
+					 if (extendedRoutePreferencesParams[3] != null) {
+						 writer.writeElementString('xls:Width', extendedRoutePreferencesParams[3]);
 					 }
 					 //truck heigth
-					 if (extendedRoutePreferences[1] != null) {
-						 writer.writeElementString('xls:height', extendedRoutePreferences[1]);
+					 if (extendedRoutePreferencesParams[1] != null) {
+						 writer.writeElementString('xls:Height', extendedRoutePreferencesParams[1]);
 					 }
 					 //truck weigth
-					 if (extendedRoutePreferences[2] != null) {
-						 writer.writeElementString('xls:weight', extendedRoutePreferences[2]);
+					 if (extendedRoutePreferencesParams[2] != null) {
+						 writer.writeElementString('xls:Weight', extendedRoutePreferencesParams[2]);
 					 }
 					 //truck length
-					if (extendedRoutePreferences[0] != null) {
-						writer.writeElementString('xls:length', extendedRoutePreferences[0]);
+					if (extendedRoutePreferencesParams[0] != null) {
+						writer.writeElementString('xls:Length', extendedRoutePreferencesParams[0]);
 					}
-
+					//truck hazardous
+					if (extendedRoutePreferencesParams[4] != null) {
+						writer.writeStartElement('xls:LoadCharacteristics');
+							writer.writeElementString('xls:LoadCharacteristic', extendedRoutePreferencesParams[4]);
+						writer.writeEndElement();
+					}
 
 				}
 				
 				if (routePref === 'Wheelchair') {
 					//tracktype
-					if (extendedRoutePreferences[2] != null) {
+					if (extendedRoutePreferencesParams[2] != null) {
 						writer.writeStartElement('xls:trackTypes');
-						writer.writeElementString('xls:trackType', extendedRoutePreferences[2]);
+						writer.writeElementString('xls:trackType', extendedRoutePreferencesParams[2]);
 						writer.writeEndElement();
 					}
 					//surface
-					if (extendedRoutePreferences[0] != null) {
+					if (extendedRoutePreferencesParams[0] != null) {
 						writer.writeStartElement('xls:surfaceTypes');
-						writer.writeElementString('xls:surfaceType', extendedRoutePreferences[0]);
+						writer.writeElementString('xls:surfaceType', extendedRoutePreferencesParams[0]);
 						writer.writeEndElement();
 					}
 					//smoothness
-					if (extendedRoutePreferences[1] != null) {
+					if (extendedRoutePreferencesParams[1] != null) {
 						writer.writeStartElement('xls:smoothnessTypes');
-						writer.writeElementString('xls:smoothnessType', extendedRoutePreferences[1]);
+						writer.writeElementString('xls:smoothnessType', extendedRoutePreferencesParams[1]);
 						writer.writeEndElement();
 					}
 					//incline
-					if (extendedRoutePreferences[3] != null) {
-						writer.writeElementString('xls:incline', extendedRoutePreferences[3]);
+					if (extendedRoutePreferencesParams[3] != null) {
+						writer.writeElementString('xls:incline', extendedRoutePreferencesParams[3]);
 					}
 					//sloped curb
-					if (extendedRoutePreferences[4] != null) {
-						writer.writeElementString('xls:slopedCurb', extendedRoutePreferences[4]);
+					if (extendedRoutePreferencesParams[4] != null) {
+						writer.writeElementString('xls:slopedCurb', extendedRoutePreferencesParams[4]);
 					}
 				}
 				//</xls:ExtendedRoutePreference>
-				writer.writeEndElement();
 			}
+
+			writer.writeEndElement();
 
 
 
@@ -193,6 +202,9 @@ var Route = ( function(w) {"use strict";
 			if (avoidFerry) {
 				writer.writeElementString('xls:AvoidFeature', 'Ferry');
 			}
+			if (avoidSteps) {
+				writer.writeElementString('xls:AvoidFeature', 'Steps');
+			}
 			//</xls:AvoidList>
 			writer.writeEndElement();
 			//</xls:RoutePlan>
@@ -213,27 +225,19 @@ var Route = ( function(w) {"use strict";
 
 			var xmlRequest = writer.flush();
 			writer.close();
-
-
-			// var request = OpenLayers.Request.POST({
-			// 	url : namespaces.services.routing,
-			// 	data : xmlRequest,
-			// 	success : successCallback,
-			// 	failure : failureCallback
+			
+			
+			var url = "cgi-bin/proxy.cgi?url=" + namespaces.services.routing;
+			
+			// jQuery.ajaxPrefilter(function( options ) {
+			// 	if ( options.crossDomain ) {
+			// 		options.url = "http://localhost/cgi-bin/proxy.cgi?url=" + encodeURIComponent( options.url );
+			// 		options.crossDomain = true;
+			// 	}
 			// });
 
-			
-
-			jQuery.ajaxPrefilter(function( options ) {
-				if ( options.crossDomain ) {
-					options.url = "http://localhost/cgi-bin/proxy.cgi?url=" + encodeURIComponent( options.url );
-					options.crossDomain = false;
-				}
-			});
-
-			// for localhost testing, set crossDomain to true
 			jQuery.ajax({
-				url: namespaces.services.routing,
+				url: url,
 				processData: false,
 				type: "POST",
 				dataType: "xml",

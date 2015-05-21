@@ -44,14 +44,101 @@ div.olControlMousePosition {
 	font-family: Verdana;
 	font-size: 2em;
 	right: 2px;
-	background-color: rgba(255,255,255,0.75);
-	padding: 2px;
-	bottom: 2px;
+	background-color: rgba(255,255,255,0.5);
+	padding: 4px;
+	top: 2px;
+	max-width: 120px;
+	max-height: 14px;
+	font-weight: bold;
+	border-radius: 5px
 }
 div.olControlScaleLine {
 	background-color: rgba(255,255,255,0.5);
 	padding: 4px;
+	left: 0px;
+	bottom: 25px;
+	border-radius: 5px;
 }
+
+div.olControlPermalink {
+	background-color: rgba(255,255,255,0.5);
+	padding: 4px;
+	left: 2px;
+	bottom: 59px;
+	max-width: 80px;
+}
+
+
+
+.olControlLayerSwitcher .layersDiv {
+    background-color: rgba(255,255,255,0.8) !important;
+    border-radius: 5px;
+    color: black;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Permalink CSS */
+#infoPermalink {
+	position: fixed;
+	bottom: 5px;
+	cursor: pointer;
+	width: 80px;
+	font-weight: bold;
+	text-align: center;
+	background-color: rgba(255, 255, 255, 0.5);
+	border-radius: 5px;
+	color: black;
+	z-index: 999;
+	-padding-left: 5px;
+	-margin-left: 5px;
+}
+
+#bubble {
+	display: none;
+	position: fixed;
+	width: 70px;
+	margin-left: 100px;
+	height: 50px;
+	padding: 0px;
+	-left: 200px;
+	bottom: 5px;
+	background: rgba(255, 255, 255, 0.5);
+	z-index: 999;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+#bubble:after {
+	content: '';
+	position: relative;
+	border-style: solid;
+	border-width: 7px 7px 7px 0;
+	border-color: transparent rgba(255, 255, 255, 0.5);
+	display: block;
+	width: 0;
+	z-index: 1;
+	left: -7px;
+	top: 27px;
+}
+
+#bubble #permaText {
+	position: absolute;
+	padding: 5px 2px 2px 20px;
+}
+
+#bubble #permaText #copy {
+	font-weight: bold;
+	cursor: pointer;
+	
+}
+
+#bubble #permaText #open {
+	margin-top: 5px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
 
 /**
  * CSS for non-map elements
@@ -73,6 +160,7 @@ div.olControlScaleLine {
 /* for removing waypoints */
 .guiComponent > input {
 	margin-bottom: 0px;
+	font-size: 13px;
 }
 .waypointResult {
 	margin-bottom: 10px;
@@ -110,7 +198,7 @@ div.olControlScaleLine {
 	width: 16px;
 	height: 16px;
 	text-indent: -9999em;
-	background: url(../img/marker-small.png) no-repeat 50% 50%;
+	background: url(../img/marker-reload.png) no-repeat 50% 50%;
 	padding-left: 3px;
 }
 .useAsWaypoint {
@@ -129,37 +217,139 @@ div.olControlScaleLine {
 	background: url(../img/ajax-loader-blue.gif) no-repeat 95% 50%;
 	background-color: #D9EDF7;
 }
-.highlight {
-	background-color: #eaeaea;
-}
+
 .waypoint {
 	padding-left: 32px;
-	padding-top: 5px;
+	padding-top: 0;
 	min-height: 25px;
 	margin-bottom: 10px !important;
 }
 .waypoint.start {
 	background-image: url('../img/marker-start.png');
 	background-repeat: no-repeat;
+	background-size: 16px;
+	background-position: 8px 3px;
+
 }
 .waypoint.via {
 	background-image: url('../img/marker-via.png');
 	background-repeat: no-repeat;
+	background-size: 16px;
+	background-position: 8px 3px;
+
 }
 .waypoint.end {
 	background-image: url('../img/marker-end.png');
 	background-repeat: no-repeat;
+	background-size: 16px;
+	background-position: 8px 3px;
+
 }
 .waypoint.unset {
 	background-image: url('../img/marker.png');
 	background-repeat: no-repeat;
 	padding-top: 0;
 	margin-bottom: 0 !important;
+	background-size: 16px;
+	background-position: 8px 3px;
 }
-#routeInstructionsContainer table td {
+
+/* route instructions styles */
+#routeInstructionsContainer .directions-main {
+	margin-top: 5px;
+}
+
+#routeInstructionsContainer .directions-container {
+	padding: 13px 0;
+}
+
+#routeInstructionsContainer .directions-text {
+	padding: 3px 5px 0 40px;
+	line-height: 16px;
+	vertical-align: middle;
+}
+
+#routeInstructionsContainer .directions-img {
+	margin-left: 3px;
+	position: absolute;
+
+}
+
+#routeInstructionsContainer .directions-mode-distance {
+	top: 8px;
+	right: 15px;
+	padding-left: .5em;
+	padding-right: .5em;
+	z-index: 1;
+	position: absolute;
+	background-color: #f8f8f8;
+	color: #a0a0a0;  
+	font-size: 12px;
+}
+
+#routeInstructionsContainer .directions-mode-container {
+	padding: 0 0 0 40px;
+	position: absolute;
+	left: 0px;
+	right: 0;
+	-bottom: -14px;
+	height: 30px;
+	line-height: normal;
+	font-weight: normal;
+}
+
+#routeInstructionsContainer .directions-mode-line {
+	border-bottom: 1px solid #e6e6e6;
+	padding-top: 16px;
+	margin: 0 2em 0 0;
+}
+
+#routeInstructionsContainer .directions-notice {
+	padding: 0 0 0 40px;
+	margin-top: 5px;
+	color: #FF6961;
+}
+
+/* gpx upload styles */
+#fileContainerMain {
+	margin-top: 10px; 
+	width: 200px;
+}
+
+#fileContainer {
+	height: 32px; 
+	border-bottom: 
+	1px solid #e6e6e6;	
+	margin: 1em 2em 0 0.5em;
+}
+
+.myfile { 
+	float: left; padding-left: 13px; pointer-events: none;
+}
+.show { 
+	float: left;padding-left: 13px; cursor: pointer;
+}
+.calc { 
+	float: left;padding-left: 13px; cursor: pointer;
+}
+.delete { 
+	float: left;padding-left: 13px; cursor: pointer;
+}
+
+
+.radioContainer {
+	padding: 0 0 0 5px;
+}
+
+.optionsTable td:nth-child(2) {
+	border-left: 1px solid #c8c8c8;
+}
+
+.optionsTable td {
 	vertical-align: top;
-	padding: 5px;
 }
+
+
 .clickable {
 	cursor: pointer;
 }
@@ -173,10 +363,12 @@ div.olControlScaleLine {
 	min-height: 30px;
 	background-image: url('../img/marker-plus.png');
 	background-repeat: no-repeat;
+	background-size: 16px;
+	background-position: 8px 3px;
+
+
 }
-#resetRoute {
-	margin-left: 10px;
-}
+
 /* container for "zoom to route" or "calculate route" when appropriate*/
 #routeCalculate {
 	display: none;
@@ -195,17 +387,16 @@ div.olControlScaleLine {
 /*for displaying route instructions in the panel*/
 #zoomToRouteButton {
 	float: right;
-	width: 30%;
-	margin: 0;
-	padding: 0;
+	-width: 20px;
+	-margin: 0;
+	-padding: 0;
 }
 #routeInstructionHead {
 	float: left;
 	width: 60%;
 }
 #routeFromTo {
-	margin-bottom: 4px;
-	margin-top: 4px;
+	margin-top: 15px;
 	font-weight: bold;
 }
 .collapsibleHead {
@@ -222,7 +413,9 @@ div.olControlScaleLine {
 }
 .collapsibleBody > table {
 	width: 100%;
+	font-size: 13px;
 }
+
 .odd {
 	background-color: rgb(245,245,235);	/* fallback for unsupported rgba*/
 	background-color: rgba(235,235,225,0.65);
@@ -250,7 +443,14 @@ div.olControlScaleLine {
 	top: 270px;
 	background-image: url('../img/marker-blue.png');
 }
-#accessibilityButton {
+#removeAccessibility {
+	margin-top: 10px;
+}
+#accessibilityCalculation {
+	margin-top: 5px;
+}
+#accessibilityError {
+	margin-top: 5px;
 }
 #layersButton {
 }
@@ -260,34 +460,30 @@ div.olControlScaleLine {
 	background-color: rgba(255,255,245,0.85);
 	box-shadow: 3px 3px 10px rgb(180,180,215);
 	box-shadow: 5px 5px 10px rgba(180,180,215,0.7);
-	border: 1px solid;
 	border-color: rgb(100,100,100);
-	border-radius: 6px;
-	padding: 3px;
+	max-height: 120px;
 }
 .contextMenu span {
-	vertical-align: -10px;
+	vertical-align: -5px;
 }
+
 .useAsStartPoint {
-	padding-left: 32px;
-	min-height: 35px;
-	background-image: url('../img/marker-start.png');
-	background-repeat: no-repeat;
+	padding: 7px 7px 7px 7px;
+	min-height: 25px;
 	white-space: nowrap;
+	cursor: pointer;
 }
 .useAsViaPoint {
-	padding-left: 32px;
-	min-height: 35px;
-	background-image: url('../img/marker-via.png');
-	background-repeat: no-repeat;
+	padding: 7px 7px 7px 7px;
+	min-height: 25px;
 	white-space: nowrap;
+	cursor: pointer;
 }
 .useAsEndPoint {
-	padding-left: 32px;
-	min-height: 35px;
-	background-image: url('../img/marker-end.png');
-	background-repeat: no-repeat;
+	padding: 7px 7px 7px 7px;
+	min-height: 25px;
 	white-space: nowrap;
+	cursor: pointer;
 }
 /*preferences popup*/
 #sitePrefsModal label {
@@ -295,13 +491,14 @@ div.olControlScaleLine {
 }
 
 .logo {
-	height: 30px;
-	width: 30px;
-	padding-right: 10px;
+	height: 45px;
+	width: 45px;
+	margin-top: -5px;
+	padding-right: 5px;
 }
 .links {
-	height: 36px;
-	padding-top: 2px;
+	height: 40px;
+	padding-top: 0px;
 	padding-bottom: 2px;
 }
 .inlineLink {
@@ -321,16 +518,17 @@ a img {
 body {
 	font-size: 90%;
 	line-height: 1.3;
-	font-family: Helvetica, Arial, Geneva, sans-serif;
+  	-font-size: 1em;
+  	color: rgba(0, 0, 0, 0.8);
 	background-color: #fff;
 	color: #444;
 	margin: 0;
 	padding: 0;
+	font-family: 'Roboto', sans-serif;
 }
 input, textarea {
 	font-size: 100%;
 	line-height: 1.3;
-	font-family: Helvetica, Arial, Geneva, sans-serif;
 	color: #444;
 }
 div.options {
@@ -368,13 +566,15 @@ a.options.active {
 
 .address {
 	list-style-type: none;
+	font-size: 13px;
+
 }
 
 .poi {
 	list-style-type: none;
 }
 
-button.routeOptionsButton {
+button.routeOptionsButton, {
 	height: 30px;
 	width: 44px;
 	padding: 2px 2px 2px 2px;
@@ -383,6 +583,25 @@ button.routeOptionsButton > img {
 	width: 25px;
 	height: 20px;
 }
+
+button.routeOptionsButton > img {
+	width: 25px;
+	height: 20px;
+}
+
+button.weightOptions {
+	height: 30px;
+	width: 44px;
+	padding: 2px 2px 2px 2px;
+
+}
+
+#weightingDropdown {
+	margin-bottom: 3px;
+	float: right;
+}
+
+
 #extendedRouteOptions {
 	margin-top: 4px;
 }
@@ -449,7 +668,7 @@ button.routeOptionsButton > img {
 	height: 50px;
 	padding: 0px 10px 0px 20px;
 	background-color: #FFFFFF; /*#f0f0f0;*/
-	border-bottom: 1px solid black;
+	-border-bottom: 1px solid #888;
 }
 #topMenu {
 	/* contains link to Uni Heidelberg, etc. */
@@ -493,12 +712,26 @@ button.routeOptionsButton > img {
  margin-right: 0px;
  }*/
 
-#topMenu > li > a, #title {
-	color: #000000;
+#topMenu > li > a, #title, #info {
 	padding-top: 15px;
+	font-weight: normal;
 }
+
 #navbar a.brand {
 	padding-right: 10px;
+	font-weight: bold;
+}
+
+#title {
+	color: #000;
+}
+
+#info {
+	margin-left: 112px;
+	height: 13px;
+	font-weight: normal;
+	text-align: center; 
+	line-height: 11px;
 }
 
 #topMenu > li > a:hover, #title:hover {
@@ -525,6 +758,35 @@ button.routeOptionsButton > img {
 	/*bottom: 25px;   uncomment for height pofile */
 	bottom: 0px;
 }
+
+/* info buttons in map */
+#infoButton {
+	position: fixed;
+	background: url('../img/info-32.png') no-repeat center;
+	bottom: 10px;
+	right: 5px;
+	z-index: 999;
+	width: 32px;
+	height: 32px;
+}
+#infoPanel {
+	position: fixed;
+	width: 400px;
+	background-color: rgba(255, 255, 255, 0.7);
+	background-image: url("../img/unihd.png");
+	background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: right 10px bottom 20px; 
+	border-radius: 5px;
+	z-index: 999;
+	right: 5px;
+	bottom: 13px;
+	overflow: auto;
+	display: none;
+	padding: 10px 150px 5px 5px;
+} 
+
+
 /* uncomment for height pofile */
 /*.heightContent {
 	float: left;
@@ -628,7 +890,7 @@ button.routeOptionsButton > img {
 	padding: 7px;
 	/*margin-left: 10px;
 	 margin-right: 10px;*/
-	margin-bottom: 7px;
+	margin-bottom:7px;
 	border: 1px solid #eee;
 	border: 1px solid rgba(0, 0, 0, 0.05);
 	-webkit-border-radius: 4px;
@@ -637,6 +899,73 @@ button.routeOptionsButton > img {
 	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 	-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+	font-size: 13px;
+}
+
+.label{
+	line-height: 16px;
+	font-weight: normal;
+}
+
+.radio {
+	padding-bottom: 5px;
+}
+
+#TruckTabs>li>a{
+	font-size: 90%;
+	font-weight: normal;
+	background-color: #f8f8f8;
+	padding-bottom: 4px;
+	padding-top: 4px;
+}
+
+/* bootstrap sliders */
+.mySlider input[type="text"]  {
+	width: 30px;  
+	font-weight:bold;
+	margin-left: 10px;
+	font-size: 13px;
+
+}
+.mySlider input[type="range"]  {
+	margin-top: -6px;
+	width: 130px; 
+	border: 0; 
+	color: #6392C2; 
+	font-weight: bold;
+}
+.mySlider img  {
+	margin-top: -5px;
+}
+
+.wheelchairSelect {
+	width: 170px;
+	margin-top: 8px;
+}
+
+.icon-eye-open {
+  background-position: -96px -118px;
+}
+
+#importRouteInfoLabel, #accessibilityAnalysisLabel {
+	margin-top: 15px;
+}
+
+
+#route_totalDistance {
+	margin-top: 5px ;
+}
+
+.buttonHolder {
+	margin-top: -25px;
+	height: 25px;
+}
+#resetRoute {
+	float: right;
+}
+#hazardOptions {
+	margin-top: 10px;
+	background-color: #d8d8d8;
 }
 #routingPanel {
 	border: 0;
@@ -663,17 +992,49 @@ button.routeOptionsButton > img {
 	/* in body tag */
 }
 
+/* address result list */
 .resultList {
 	margin-bottom: 1em;
 }
-
 .resultList li {
 	padding: 3px;
+	border-bottom: 1px dashed #c8c8c8;
 }
-
 .resultList li:hover {
 	cursor: pointer;
 }
+
+/* dropdown of road types to avoid */
+#dropdown_avoid_roads {
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 5px;
+}
+
+/* dropdown of route settings weighting */
+#dropdown_weighting  {
+	padding-left: 5px;
+	margin-left: -55px;
+	min-width: 100px;
+	overflow: auto;
+	overflow-x: auto;
+	overflow-y: auto;
+}
+
+#dropdown_weighting label {
+	font-size: 11px;
+	margin-bottom: 0px;
+}
+
+#dropdown_avoid_areas {
+	padding-left: 10px;
+	
+}
+
+#dropdown_avoid_roads label, #dropdown_weighting label{
+	font-size: 11px;
+}
+
 
 /*fixes broken map tiles with OpenLayer 2.12*/
 img {
@@ -701,14 +1062,17 @@ img {
 	margin: 0px;
 }
 
+
 /*problems with the OpenLayers2.12 lib. Layerswitcher-Panel looks strange, we have to fix that here:*/
 #layerSwitcherPanel_layersDiv > .baseLayersDiv > input, .dataLayersDiv > input {
 	float: left;
 	margin-right: 5px;
+
 }
 #layerSwitcherPanel_layersDiv > .baseLayersDiv > label, .dataLayersDiv > label {
 	display: inline;
 }
+
 
 .routePreferenceBtns {
 	margin-bottom: 3px;
@@ -735,13 +1099,18 @@ img {
 	line-height: 1.1;
 }
 
-#accessibilityDistance {
+#accessibilityDistance,#accessibilityAnalysisIsochronesIntervall {
 	width: 30px;
 	/*overwrite settings from bootstrap for input fields*/
 	padding: 2px 2px 0px 2px;
 	margin-right: 10px;
 	vertical-align: baseline;
 	text-align: center;
+	font-size: 13px;
+}
+
+#accessibilityAnalysisMethodList {
+	width: 140px;
 }
 
 #exportGpxError {

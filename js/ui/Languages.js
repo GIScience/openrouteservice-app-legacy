@@ -13,6 +13,7 @@ var Languages = (function(w) {'use strict';
 	 * Load labels in appropriate language
 	 */
 	function applyLanguage() {
+		
 		//nav bar on top
 		$('#menuLinkSitePrefs').html(p.translate('sitePreferences'));
 		$('#menuLinkInfo').html(p.translate('contact'));
@@ -23,6 +24,7 @@ var Languages = (function(w) {'use strict';
 
 		//route options
 		$('#routeOptions').html(p.translate('routeOptions') + ':' + '<br/>');
+		$('#carLabel').html(p.translate('Car'));
 		$('#fastestLabel').html(p.translate('Fastest'));
 		$('#shortestLabel').html(p.translate('Shortest'));
 		$('#BicycleLabel').html(p.translate('Bicycle'));
@@ -41,12 +43,24 @@ var Languages = (function(w) {'use strict';
 		$('#truckwidthLabel').html(p.translate('TruckWidth'));
 		$('#goodsHeavyTruckLabel').html(p.translate('goodsHeavyTruck'));
 		$('#busHeavyTruckLabel').html(p.translate('busHeavyTruck'));
-		$('#hgvHeavyTruckLabel').html(p.translate('hgvHeavyTruck'));
+		$('#busHeavyTruckLabel').html(p.translate('busHeavyTruck'));
+		$('#deliveryHeavyTruckLabel').html(p.translate('deliveryHeavyTruck'));
 		$('#agriculturalHeavyTruckLabel').html(p.translate('agriculturalHeavyTruck'));
 		$('#forestryHeavyTruckLabel').html(p.translate('forestryHeavyTruck'));
-		
+		$('#hazardous').html(p.translate('hazardMaterial'));
+		$('#truckLabelMain').html(p.translate('truckMain'));
 		$('#WheelchairLabel').html(p.translate('Wheelchair'));
 		
+		//avoidables
+		$('#avoidFerryLabelBike').html(p.translate('avoidFerryBike'));
+		$('#avoidunpavedRoadsLabelBike').html(p.translate('avoidunpavedRoadsBike'));
+		$('#avoidStepsLabelBike').html(p.translate('avoidStepsBike'));
+		
+		$('#avoidRoadsBtn').html(p.translate('avoidRoadMain'));
+		$('#avoidAreasBtn').html(p.translate('avoidAreasMain'));
+		$('#avoidBikesBtn').html(p.translate('avoidBikeMain'));
+
+
 		$('#avoidMotorLabel').html(p.translate('avoidMotorways'));
 		$('#avoidTollLabel').html(p.translate('avoidTollways'));
 		$('#avoidAreasTitle').html(p.translate('avoidAreas'));
@@ -84,18 +98,17 @@ var Languages = (function(w) {'use strict';
 		$('#allSlopedCurbesOption').html(p.translate('all_sloped_curbs'));
 		
 		//routing
-		$('#resetRoute').html(p.translate('resetRoute'));
 		$('.searchWaypoint').attr('placeholder', p.translate('enterAddress'));
 		$('#addWaypoint').html(p.translate('addWaypoint'));
 		$('#routeSummaryHead').html(p.translate('routeSummary') + ':');
 		$('#routeInstructionHead').html(p.translate('routeInstructions') + ':');
-		$('#zoomToRouteButton').html(p.translate('zoomToRoute'));
 
 		//route extras
 		$('#routeExtrasHead').html(p.translate('routeExtras') + ':');
 		//permalink
 		$('#permalinkLabel').html(p.translate('routeLinkText'));
 		$('#fnct_permalink').html(p.translate('permalinkButton'));
+		
 		//accessibility
 		$('#accessibilityAnalysisLabel').html(p.translate('accessibilityAnalysis'));
 		$('#accessibilityAnalysisMinutes').html(p.translate('setAccessibilityMinutes'));
@@ -110,7 +123,6 @@ var Languages = (function(w) {'use strict';
 		$('#exportRouteGpx').html(p.translate('gpxDownloadButton'));
 		$('#exportGpxError').html(p.translate('gpxDownloadError'));
 		$('#importRouteInfoLabel').html(p.translate('gpxUploadRouteText'));
-		$('#importTrackInfoLabel').html(p.translate('gpxUploadTrackText'));
 		$('#importGpxError').html(p.translate('gpxUploadError'));
 		$('.fileUploadNewLabel').html(p.translate('selectFile'));
 		$('.fileUploadExistsLabel').html(p.translate('changeFile'));
@@ -181,6 +193,7 @@ var Languages = (function(w) {'use strict';
 	 * select dropdowns in the preference popup window for language, distance unit, etc. 
 	 */
 	function loadPreferencePopupData() {
+
 		//versions
 		var container = $('#extendedVersionPrefs');
 		for (var i = 0; i < list.version.length; i++) {

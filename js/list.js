@@ -34,18 +34,18 @@ list = {
 
 	//please make sure that each category contains at least one element. all names in the hash have to be unique.
 	routePreferences: new Hash({
-		'car': ['Fastest', 'Shortest'],
+		'car': ['Car'],
 		'bicycle': ['Bicycle', 'BicycleSafety', 'BicycleRoute', 'BicycleMTB', 'BicycleRacer'],
 		'pedestrian': ['Pedestrian'],
-		'truck': [['HeavyTruck'],['goods', 'hgv', 'bus', 'agricultural', 'forestry']],
+		'truck': [['HeavyTruck'],['goods', 'hgv', 'bus', 'agricultural', 'forestry', 'delivery']],
 		'wheelchair': ['Wheelchair']
 	}),
 
 	
 		
-
+	routeWeightSettings : ['Fastest', 'Shortest'],
 	
-	routeAvoidables : ['Highway', 'Tollway', 'Unpavedroads', 'Ferry'],
+	routeAvoidables : ['Highway', 'Tollway', 'Unpavedroads', 'Ferry', 'Steps'],
 
 	truckParams : ['value_length_slide', 'value_height_slide', 'value_weigth_slide',, 'value_width_slide'],
 	

@@ -9,7 +9,7 @@ var Ui = ( function(w) {'use strict';
 		//search POI options: searchNearRoute, maxDist to route, distance Unit for maxDist, search query
 		searchPoiAtts = ['false', '100', 'm', ''],
 		//routing options for car, bike, pedestrian, truck and wheelchair
-		routeOptions = [list.routePreferences.get('car')[0], [null, null, null], [null, null, null,null], 'car', [null, null, null, null, null], ],
+		routeOptions = [list.routePreferences.get('car')[0], [null, null, null, null, null], [null, null, null,null,null], 'car', [null, null, null, null, null], null , 'Fastest'],
 		//is a route available?
 		routeIsPresent = false,
 		//timeout to wait before sending a request after the user finished typing
@@ -18,6 +18,7 @@ var Ui = ( function(w) {'use strict';
 		typingTimerSearchAddress, typingTimerSearchPoi, typingTimerSearchPoiDistance,
 		//timers for user input (waypoints)
 		timer0, timer1, typingTimerWaypoints = [timer0, timer1];
+	
 
 		/* *********************************************************************
 		* GENERAL
@@ -150,19 +151,16 @@ var Ui = ( function(w) {'use strict';
 		 */
 		function emphElement(elementId) {
 			var element = $('#' + elementId);
-
 			//if parent has class even or odd (== belongs to route instructions), only use class active, no highlight!
 			var parentClass = element.parent().attr('class');
 			var isRouteInstruction = false;
 			if (parentClass) {
-				isRouteInstruction = (parentClass.indexOf('even') >= 0) || (parentClass.indexOf('odd') >= 0);
+				isRouteInstruction = (parentClass.indexOf('directions-container') >= 0);
 			}
 
 			if (isRouteInstruction) {
 				element.get(0).addClassName('active');
-			} else {
-				element.get(0).addClassName('highlight');
-			}
+			} 
 		}
 
 		/**
@@ -170,7 +168,6 @@ var Ui = ( function(w) {'use strict';
 		 * @param elementId: id of the element to deemphasize
 		 */
 		function deEmphElement(elementId) {
-			$('#' + elementId).get(0).removeClassName('highlight');
 			$('#' + elementId).get(0).removeClassName('active');
 		}
 
@@ -179,7 +176,7 @@ var Ui = ( function(w) {'use strict';
 		 * @param e: the event
 		 */
 		function handleMouseOverElement(e) {
-			e.currentTarget.addClassName('highlight');
+			
 			theInterface.emit('ui:emphElement', {
 				id : e.currentTarget.getAttribute('id'),
 				layer : e.currentTarget.getAttribute('data-layer')
@@ -191,7 +188,7 @@ var Ui = ( function(w) {'use strict';
 		 * @param e: the event
 		 */
 		function handleMouseOutElement(e) {
-			e.currentTarget.removeClassName('highlight');
+			
 			theInterface.emit('ui:deEmphElement', {
 				id : e.currentTarget.getAttribute('id'),
 				layer : e.currentTarget.getAttribute('data-layer')
@@ -294,25 +291,26 @@ var Ui = ( function(w) {'use strict';
 			var numResults = $('#zoomToWaypointResults_' + wpIndex);
 			numResults.html(preferences.translate('numPoiResults1') + allAddress.length + preferences.translate('numPoiResults2') + '<br/>' + preferences.translate('selectResult'));
 
-			// if one result is found then select it
+			$('.address').mouseover(handleMouseOverElement);
+			$('.address').mouseout(handleMouseOutElement);
+			$('.address').click(handleSearchWaypointResultClick);
+
+			// if one result is found then select it automatically
+			// if (listOfFeatures.length == 1) {
+			// 	var featureID = listOfFeatures[0].id
+
+			// 	$(".address").click( function (event, a) {
+			// 		// for a trigger like below a refers to featureID
+			// 		handleSearchWaypointResultClickHelper(event, a)
+			// 	} ).trigger("click", featureID);
 
 
-
-			if (listOfFeatures.length == 1) {
-				var featureID = listOfFeatures[0].id
-
-				$(".address").click( function (event, a) {
-					// for a trigger like below a refers to featureID
-					handleSearchWaypointResultClickHelper(event, a)
-				} ).trigger("click", featureID);
-
-
-			} else {
-				//event handling
-				$('.address').mouseover(handleMouseOverElement);
-				$('.address').mouseout(handleMouseOutElement);
-				$('.address').click(handleSearchWaypointResultClickHelper);
-			}
+			// } else {
+			// 	//event handling
+			// 	$('.address').mouseover(handleMouseOverElement);
+			// 	$('.address').mouseout(handleMouseOutElement);
+			// 	$('.address').click(handleSearchWaypointResultClickHelper);
+			// }
 
 		}
 
@@ -333,26 +331,25 @@ var Ui = ( function(w) {'use strict';
 		 * @param e: click event
 		 * @param featureID: id of address, is optional as it is only passed when one result is returned
 		 */
-		function handleSearchWaypointResultClickHelper(e, featureID) {
+		// function handleSearchWaypointResultClickHelper(e, featureID) {
 
-			if (featureID != undefined) {
-				if (featureID == e.target.id) {
-					handleSearchWaypointResultClick(e)
-				}
-			} else {
-					handleSearchWaypointResultClick(e)
-			}
-		}
+		// 	if (featureID != undefined) {
+		// 		if (featureID == e.target.id) {
+		// 			handleSearchWaypointResultClick(e)
+		// 		}
+		// 	} else {
+		// 			handleSearchWaypointResultClick(e)
+		// 	}
+		// }
 
 		/**
 		 * when the user clicks on a waypoint search result, it is used as waypoint. The search results vanish and only the selected address is shown.
 		 * @param e: the event
 		 */
 		function handleSearchWaypointResultClick(e) {
-			
 			var rootElement = $(e.currentTarget).parent().parent().parent().parent();
 			
-			var selectedDiv = $(e.currentTarget).parent().parent().parent().parent()[0];
+			// var selectedDiv = $(e.currentTarget).parent().parent().parent().parent()[0];
 		
 			var index = rootElement.attr('id');
 			rootElement.removeClass('unset');
@@ -360,7 +357,9 @@ var Ui = ( function(w) {'use strict';
 
 			rootElement.querySelector('.searchAgainButton').show();
 			var component = rootElement.querySelector('.guiComponent');
-			if (!component.hasClassName('route')) {
+			
+			if (!component.hasClassName('routeOptions')) {
+				
 				component.hide();
 				var waypointResultElement = rootElement.querySelector('.waypointResult');
 				//remove older entries:
@@ -377,25 +376,23 @@ var Ui = ( function(w) {'use strict';
 					searchIds : rootElement.getAttribute('data-search')
 				});
 			} else {
+				//console.log('else')
 				handleSearchAgainWaypointClick({
 					currentTarget: e.currentTarget.up('.waypointResult')
 				})
 			}
 
 			// make input field not selectable
-			var thisDiv = selectedDiv.className
-			var myDiv = thisDiv.replace(/ /g,".");
-			$('.'+myDiv).css('pointer-events', 'none');
-			$('.removeWaypoint').css('pointer-events', 'auto');
-			$('.moveUpWaypoint').css('pointer-events', 'auto');
-			$('.moveDownWaypoint').css('pointer-events', 'auto');
-			$('.searchAgainButton').css('pointer-events', 'auto');
+			// var thisDiv = selectedDiv.className
+			// var myDiv = thisDiv.replace(/ /g,".");
+			// $('.'+myDiv).css('pointer-events', 'none');
+			// $('.'+myDiv).css('cursor', 'auto');
+			// $('.removeWaypoint').css('pointer-events', 'auto');
+			// $('.moveUpWaypoint').css('pointer-events', 'auto');
+			// $('.moveDownWaypoint').css('pointer-events', 'auto');
+			// $('.searchAgainButton').css('pointer-events', 'auto');
 
-
-
-			
-
-			
+			//$('.address').unbind( "click", handleSearchWaypointResultClick );
 			
 		}
 
@@ -684,8 +681,10 @@ var Ui = ( function(w) {'use strict';
 				theInterface.emit('ui:selectWaypointType', index - 1);
 			}
 
+
 			return index;
 		}
+
 
 		/**
 		 * When the user added a waypoint using the standard waypoint search and then e.g. moves the waypoint feature on the map, former search results must be invalidated because they do not match the new position.
@@ -810,11 +809,12 @@ var Ui = ( function(w) {'use strict';
 			var wpElement = $(e.currentTarget).parent();
 			
 			// make input field selectable
-			var selectedDiv = $(e.currentTarget).parent()[0];
-			var thisDiv = selectedDiv.className
+			//var selectedDiv = $(e.currentTarget).parent()[0];
+			//var thisDiv = selectedDiv.className
 
-			var myDiv = thisDiv.replace(/ /g,".");
-			$('.'+myDiv).css('pointer-events', 'auto');
+			//var myDiv = thisDiv.replace(/ /g,".");
+			//$('.'+myDiv).css('cursor', 'default');
+			//$('.'+myDiv).css('pointer-events', 'auto');
 
 			var index = wpElement.attr('id');
 
@@ -924,7 +924,13 @@ var Ui = ( function(w) {'use strict';
 				}
 
 				//add event handling
-				$('.searchWaypoint').keyup(handleSearchWaypointInput);
+				newWp = newWp.get(0);
+				newWp.querySelector('.searchWaypoint').addEventListener('keyup', handleSearchWaypointInput);
+				newWp.querySelector('.moveUpWaypoint').addEventListener('click', handleMoveUpWaypointClick);
+				newWp.querySelector('.moveDownWaypoint').addEventListener('click', handleMoveDownWaypointClick);
+				newWp.querySelector('.removeWaypoint').addEventListener('click', handleRemoveWaypointClick);
+				newWp.querySelector('.searchAgainButton').addEventListener('click', handleSearchAgainWaypointClick);
+			
 			}
 		}
 
@@ -1434,16 +1440,21 @@ var Ui = ( function(w) {'use strict';
 		 * @return array of strings containing the coordinates
 		 */
 		function getRoutePoints() {
+
 			var allRoutePoints = [];
 			var numWaypoints = $('.waypoint').length - 1;
+
 			for (var i = 0; i < numWaypoints; i++) {
 				var element = $('#' + i).get(0);
+
 				element = element.querySelector('.address');
 				if (element) {
 					allRoutePoints.push(element.getAttribute('data-position'))
 				}
 			}
 			return allRoutePoints;
+
+
 		}
 
 		/**
@@ -1464,7 +1475,16 @@ var Ui = ( function(w) {'use strict';
 				var address = $('#' + lastSetWaypoint).get(0);
 				address = address.querySelector('.address');
 				address = address.getAttribute('data-shortAddress');
-				return address;
+				address = address.split(' ');
+				// removed undefined entries
+				var addressFormatted = '';
+				for (var i = 0; i < address.length; i++) {
+					if (address[i] != 'undefined') {
+						addressFormatted += address[i];
+						addressFormatted += ' ';
+					}
+				}
+				return addressFormatted;
 			} else {
 				return null;
 			}
@@ -1551,20 +1571,26 @@ var Ui = ( function(w) {'use strict';
 			} else {
 				//parse results and show them in the container
 
-				var destination = getRouteDestination();
-				$('#routeFromTo').html(preferences.translate('routeFromTo') + destination);
+				var destination = getRouteDestination();		
 
+				$('#routeFromTo').html(preferences.translate('routeFromTo') + destination);
+				
 				var container = $('#routeInstructionsContainer').get(0);
 				container.show();
-				var table = container.querySelector('table');
-				//remove old route instructions if the user has searched before
-				while (table.firstChild) {
-					table.removeChild(table.firstChild);
+
+				var directionsMain = container.querySelector('.directions-main')
+				// remove old instructions
+				while (directionsMain.firstChild) {
+					directionsMain.removeChild(directionsMain.firstChild);
 				}
+				
 				var numInstructions = 0;
 
 				var instructionsList = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstructionsList')[0];
 				instructionsList = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstruction');
+				
+				// container for all direction instructions
+
 				$A(instructionsList).each(function(instruction) {
 					//process each routing instruction
 					var text = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Instruction')[0];
@@ -1586,12 +1612,15 @@ var Ui = ( function(w) {'use strict';
 					}
 
 					//arrow direction
-					var left = text.indexOf(preferences.translate('left'));
-					var halfLeft = text.indexOf(preferences.translate('half-left'));
-					var right = text.indexOf(preferences.translate('right'));
-					var halfRight = text.indexOf(preferences.translate('half-right'));
-					var straight = text.indexOf(preferences.translate('straight'));
+					var left = text.indexOf(preferences.translateInstructions('left'));
+					var halfLeft = text.indexOf(preferences.translateInstructions('half-left'));
+					var right = text.indexOf(preferences.translateInstructions('right'));
+					var halfRight = text.indexOf(preferences.translateInstructions('half-right'));
+					var straight = text.indexOf(preferences.translateInstructions('straight'));
 					var direction;
+					// will be used for traffic jam info etc
+					var notice;
+
 					if (left > 0 && (left < halfLeft || halfLeft < 0)) {
 						direction = new Element('img', {
 							'src' : './img/left.png'
@@ -1617,39 +1646,68 @@ var Ui = ( function(w) {'use strict';
 					numInstructions++;
 
 					//add DOM elements
-					var trElement = new Element('tr', {
-						'class' : (numInstructions % 2 == 0) ? 'even' : 'odd',
-						'data-layer' : mapLayer
-					});
-					table.appendChild(trElement);
 
-					var tdElementImg = new Element('td');
+					//add DOM elements
+					var directionsContainer = new Element('div', {
+						'class' : 'directions-container clickable',
+						'data-layer' : mapLayer,
+					});
+
+					var directionsImgDiv = new Element('div', {
+						'class': 'directions-img'
+					});
+
 					if (direction) {
-						tdElementImg.appendChild(direction);
+						directionsImgDiv.appendChild(direction);
 					}
 
-					var tdElementText = new Element('td', {
-						'class' : 'clickable routeInstructions',
+					var directionTextDiv = new Element('div', {
+						'class' : 'directions-text clickable routeInstructions',
 						'id' : mapFeatureIds[2 * (numInstructions - 1) + 1]
 					}).update(text);
 
-					var tdElementDist = new Element('td', {
-						'class' : 'clickable',
-						'id' : mapFeatureIds[2 * (numInstructions - 1)]
+											
+					// modeContainer
+					var directionsModeContainer = new Element('div', {
+						'class': 'directions-mode-container'
+					})
+
+					var directionsBorder = new Element('div', {
+						'class': 'directions-mode-line'
+					})
+
+					var distanceDiv = new Element('div', {
+						'class' : 'directions-mode-distance clickable',
+						'id' : mapFeatureIds[2 * (numInstructions - 1)],
 					}).update(distArr[0] + ' ' + distArr[1]);
 
-					trElement.appendChild(tdElementImg);
-					trElement.appendChild(tdElementText);
-					trElement.appendChild(tdElementDist);
+
+					directionsContainer.appendChild(directionsImgDiv);
+					directionsContainer.appendChild(directionTextDiv);
+
+					// for traffic jams etc..
+					if (notice) {
+						var noticeDiv = new Element('div', {
+							'class': 'directions-notice',
+						}).update('Vorsicht Stau auf der B31');
+
+						directionsContainer.appendChild(noticeDiv);
+					}
+
+					directionsModeContainer.appendChild(directionsBorder);
+					directionsModeContainer.appendChild(distanceDiv);
+					directionsContainer.appendChild(directionsModeContainer);
+					directionsMain.appendChild(directionsContainer);
 
 					//mouseover for points and lines
-					$(tdElementDist).mouseover(handleMouseOverDist);
-					$(tdElementDist).mouseout(handleMouseOutDist);
-					$(tdElementText).mouseover(handleMouseOverText);
-					$(tdElementText).mouseout(handleMouseOutText);
-					$(tdElementDist).click(handleClickRouteInstr);
-					$(tdElementText).click(handleClickRouteInstr);
+					$(distanceDiv).mouseover(handleMouseOverDist);
+					$(distanceDiv).mouseout(handleMouseOutDist);
+					$(directionTextDiv).mouseover(handleMouseOverText);
+					$(directionTextDiv).mouseout(handleMouseOutText);
+					$(distanceDiv).click(handleClickRouteInstr);
+					$(directionTextDiv).click(handleClickRouteInstr);
 				});
+	
 			}
 
 			/**
@@ -1657,7 +1715,7 @@ var Ui = ( function(w) {'use strict';
 			 */
 			function handleMouseOverDist(e) {
 				e.currentTarget.addClassName('active');
-				var parent = $(e.currentTarget).parent().get(0);
+				var parent = $(e.currentTarget).parent().parent().get(0);
 
 				theInterface.emit('ui:emphElement', {
 					id : e.currentTarget.getAttribute('id'),
@@ -1671,7 +1729,7 @@ var Ui = ( function(w) {'use strict';
 			 */
 			function handleMouseOutDist(e) {
 				e.currentTarget.removeClassName('active');
-				var parent = $(e.currentTarget).parent().get(0);
+				var parent = $(e.currentTarget).parent().parent().get(0);
 
 				theInterface.emit('ui:deEmphElement', {
 					id : e.currentTarget.getAttribute('id'),
@@ -1752,11 +1810,7 @@ var Ui = ( function(w) {'use strict';
 		 * when the user wants to switch between route options for cars/bikes/pedestrians and clicks the button to switch views
 		 * @param e: the event
 		 */
-		 
-		 
-		 
 		function switchRouteOptionsPane(e) {
-
 
 			var parent = $('.routePreferenceBtns').get(0);
 			var optionType = e.currentTarget.id;
@@ -1766,15 +1820,19 @@ var Ui = ( function(w) {'use strict';
 			for (var i = 0; i < allBtn.length; i++) {
 				var btn = allBtn[i];
 				if (btn == e.currentTarget) {
+
+
 					btn.addClassName('active');
 					//adapt image
 					var imgElement = btn.querySelector('img');
+
 					imgElement.setAttribute('src', list.routePreferencesImages.get(btn.id)[1]);
 
+					//if (btn.id != 'car') {
+
 					//set the selected entry as currently selected route option
-
 					var options = $('#' + btn.id + 'Options').get(0).querySelector('input[checked="checked"]');
-
+					
 					routeOptions[0] = options.id; 
 					routeOptions[3] = options.name;
 
@@ -1807,11 +1865,13 @@ var Ui = ( function(w) {'use strict';
 			var truckparameter = $('#truckOptions_restrict');
 			var truck = $('#truckOptions');
 			var avoidables = $('#avoidables');
+			var avoidablesBike = $('#avoidablesBike')
 			var wheel = $('#wheelchairOptions');
 			var wheelParameters = $('#wheelchairParameters');
 			if (optionType === 'car') {
 				car.show();
 				avoidables.show();
+				avoidablesBike.hide();
 				bike.hide();
 				ped.hide();
 				truck.hide();
@@ -1823,6 +1883,7 @@ var Ui = ( function(w) {'use strict';
 				car.hide();
 				avoidables.hide();
 				bike.show();
+				avoidablesBike.show();
 				ped.hide();
 				truck.hide();
 				truckparameter.hide();
@@ -1831,6 +1892,7 @@ var Ui = ( function(w) {'use strict';
 				$('#accessibilityAnalysis').show();
 			} else if (optionType === 'truck') {
 				car.hide();
+				avoidablesBike.hide();
 				avoidables.show();
 				bike.hide();
 				ped.hide();
@@ -1843,6 +1905,7 @@ var Ui = ( function(w) {'use strict';
 			else if (optionType === 'pedestrian') {
 				car.hide();
 				avoidables.hide();
+				avoidablesBike.hide();
 				bike.hide();
 				ped.show();
 				truck.hide();
@@ -1853,6 +1916,7 @@ var Ui = ( function(w) {'use strict';
 			else {
 				car.hide();
 				avoidables.hide();
+				avoidablesBike.hide();
 				bike.hide();
 				ped.hide();
 				truck.hide();
@@ -1862,12 +1926,14 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
-
-
-
-		
-
-		
+	
+		/** 
+		 * sets truckParameters
+		 * @params truck_length: the truck length
+		 * @params truck_height: the truck heigth
+		 * @params truck_weight: the truck weight
+		 * @params truck_width: the truck width
+		 */
 		function setTruckParameters(truck_length, truck_height, truck_weight,truck_width) {
 
 			routeOptions[2][0] = truck_length;
@@ -1875,6 +1941,14 @@ var Ui = ( function(w) {'use strict';
 			routeOptions[2][2] = truck_weight;
 			routeOptions[2][3] = truck_width;
 
+		}
+
+		/** 
+		 * sets hazardousParamter
+		 * @params hazardous: is either 'hazmat' or null
+		 */
+		function setHazardousParameter(hazardous) {
+			routeOptions[2][4] = hazardous;
 		}
 
 		/**
@@ -1909,7 +1983,7 @@ var Ui = ( function(w) {'use strict';
 		 * @param e: the event
 		 */
 		function handleOptionsChanged(e) {
-
+			
 			e = e || window.event;
 		    var target = e.target || e.srcElement;
 			var itemId = target.id;
@@ -1921,7 +1995,6 @@ var Ui = ( function(w) {'use strict';
 				//is a route avoidable
 				if (itemId === list.routeAvoidables[0]) {
 					//if the avoidable is set, remove it (and vice versa)
-
 					routeOptions[1][0] = routeOptions[1][0] ? null : itemId;
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.avoidHighwayIdx,
@@ -1945,11 +2018,18 @@ var Ui = ( function(w) {'use strict';
 						value : routeOptions[1][2] != null
 					});
 				} 
-				else if (itemId === list.routeAvoidables[3]) {
+				if (itemId === list.routeAvoidables[3]) {
 					routeOptions[1][3] = routeOptions[1][3] ? null : itemId;
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.avoidFerryIdx,
 						value : routeOptions[1][3] != null
+					});
+				}
+				else if (itemId === list.routeAvoidables[4]) {
+					routeOptions[1][4] = routeOptions[1][4] ? null : itemId;
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.avoidStepsIdx,
+						value : routeOptions[1][4] != null
 					});
 				}
 			} 
@@ -1957,11 +2037,19 @@ var Ui = ( function(w) {'use strict';
 			// do nothing if truck options in sliders are changed
 			else if ($.inArray(itemId, list.truckParams) >= 0) {
 
-				// do nothing 
+				//TODO: add emit function for sliders!
 
 			}
-			
-			else if ($.inArray(itemId, list.wheelchairParameters.keys()) >= 0) {
+			// if route weight settings are modified
+			else if ($.inArray(itemId, list.routeWeightSettings) >= 0) {
+				
+				routeOptions[6] = itemId;
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.weightIdx,
+					value : routeOptions[6]
+				});
+
+			} else if ($.inArray(itemId, list.wheelchairParameters.keys()) >= 0) {
 				//is a wheelchair parameter
 				//Surface, Tracktype, Smoothness
 				if (itemId == 'Surface') {
@@ -2002,8 +2090,15 @@ var Ui = ( function(w) {'use strict';
 					});
 				}
 			}
-			 
-			else {
+
+			else if (itemId == 'Hazardous') {
+				routeOptions[2][4] = itemValue;
+				theInterface.emit('ui:prefsChanged', {
+						key : preferences.hazardousIdx,
+						value : routeOptions[2][4]
+					});
+			
+			} else {
 
 				//is a regular route option
 				routeOptions[0] = itemId;
@@ -2018,7 +2113,7 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * used to activate and show the given route option on startup if necessary
-		 * @paran routeOption: one of 'Fastest', 'Shortest', 'BicycleLane',...
+		 * @param routeOption: one of 'Fastest', 'Shortest', 'BicycleLane',...
 		 */
 		function setRouteOption(routeOption) {
 			//set radioButton with $('#' + routeOption) active
@@ -2104,7 +2199,7 @@ var Ui = ( function(w) {'use strict';
 			// $('#Smoothness option')[surfaceParamIndex].selected = true;
 			// $('#Tracktype option')[surfaceParamIndex].selected = true;
 			$('#Incline option')[inclineParamIndex].selected = true;
-			$('#SlopedCurb option')[slopedCurbParamIndex].selected = true;
+			//$('#SlopedCurb option')[slopedCurbParamIndex].selected = true;
 		}
 		
 		
@@ -2181,12 +2276,30 @@ var Ui = ( function(w) {'use strict';
 		* PERMALINK
 		* *********************************************************************/
 
+		/** 
+		 * shows Perma Options box
+		 */
+
+		function handleOpenPermaOptions() {
+			$('#bubble').toggle();
+		}
+
 		/**
 		 * triggers opening a new window with the permalink
 		 */
 		function handleOpenPerma() {
+			$('#bubble').hide();
 			theInterface.emit('ui:openPermalinkRequest');
 		}
+
+		/**
+		 * triggers copying permalink
+		 */
+		function handleCopyPerma() {
+			$('#bubble').hide();
+			theInterface.emit('ui:copyPermalinkRequest');
+		}
+
 
 		/* *********************************************************************
 		* ACCESSIBILITY ANALSYIS
@@ -2196,12 +2309,12 @@ var Ui = ( function(w) {'use strict';
 		 * triggers the calculation of the accessibility analsyis with the current distance value
 		 */
 		function handleAnalyzeAccessibility() {
+
 			var distance = $('#accessibilityDistance').val();
-			var position = null;
-			var element = $('#0').get(0);
-			element = element.querySelector('.address');
-			if (element) {
-				position = element.getAttribute('data-position');
+			var position = $('.guiComponent.waypoint.start .address').attr('data-position');
+			
+			if (!position) {
+				var position = $('.guiComponent.waypoint.end .address').attr('data-position');
 			}
 
 			theInterface.emit('ui:analyzeAccessibility', {
@@ -2267,23 +2380,6 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
-		/**
-		 * forwards the selected GPX file and triggers the waypoint extraction to upload a route from the file
-		 */
-		function handleImportRouteSelection() {
-			var file;
-			var fileInput = $$('#gpxUploadFiles input[type="file"]')[0];
-			if (fileInput && fileInput.files && fileInput.files.length > 0) {
-				file = fileInput.files[0];
-			} else if (fileInput && fileInput.value) {
-				//IE doesn't know x.files
-				file = fileInput.value;
-			}
-
-			if (file) {
-				theInterface.emit('ui:uploadRoute', file);
-			}
-		}
 
 		/**
 		 * removes the file from the import route dialogue
@@ -2299,6 +2395,7 @@ var Ui = ( function(w) {'use strict';
 		 * @param showError: if true, the error is displayed; hidden otherwise
 		 */
 		function showImportRouteError(showError) {
+
 			if (showError) {
 				$('#importGpxError').show();
 			} else {
@@ -2307,23 +2404,139 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/**
-		 * forwards the selected GPX file and triggers the coordinate extraction to upload a track from the file
+		 * forwards the selected GPX files and fills the gpx menu
 		 */
-		function handleImportTrackSelection() {
-			var file;
-			var fileInput = $$('#gpxUploadTrack input[type="file"]')[0];
-			if (fileInput && fileInput.files && fileInput.files.length > 0) {
-				file = fileInput.files[0];
-			} else if (fileInput && fileInput.value) {
-				//IE doesn't know x.files
-				file = fileInput.value;
+		var fileInput;
+		function handleGpxFiles(event) {
+
+			// clear old gpx tracks from map
+			theInterface.emit('ui:clearFromGpx');
+
+			fileInput = event.target.files;
+			$(fileInput).attr("value", '');
+			// TODO show error if any of the files are not gpx showImportRouteError(true)
+			if (fileInput) {
+				fillGpxMenu(fileInput)
+
 			}
 
-			if (file) {
-				theInterface.emit('ui:uploadTrack', file);
-				//TODO to support multiple GPX tracks, use data-attributes containing the OL-Feature-Id of the element (see search/waypoints)
-			}
 		}
+
+		function fillGpxMenu(files) {
+			
+			var container = document.querySelector('#GPXcontainer');
+		   	var fileContainerMain = container.querySelector('#fileContainerMain')
+		   	fileContainerMain.show();
+			// remove old files..
+			while (fileContainerMain.firstChild) {
+				fileContainerMain.removeChild(fileContainerMain.firstChild);
+			}
+
+		    for (var i = 0; i < files.length; i++) {
+
+		    	var fileContainer = new Element('div', {
+		      		'id' : 'fileContainer',
+		      	});
+
+		      	var filename = files[i].name;
+		      	var fileName = new Element('div', {
+		      		'class' : 'myfile',
+		      	}).update(filename);
+
+		      	var showGpx = new Element('div', {
+		      		'class' : 'show',
+		      		'data': i
+		      	});
+
+		      	var calcGpx = new Element('div', {
+		      		'class': 'calc',
+		      		'data': i
+		      	});
+
+		      	var deleteGpx = new Element('div', {
+		      		'class': 'delete',
+		      		'data': i
+		      	});
+
+		      	var show = new Element('img', {
+					'src' : 'img/menuSearch.png',
+					'title': 'show track'
+				});
+				
+				var calc = new Element('img', {
+					'src' : 'img/marker-small.png',
+					'title': 'recalculate track to route'
+				});
+
+				var del = new Element('img', {
+					'src' : 'img/cancel.png',
+					'title': 'remove track or route'
+				});
+			
+				showGpx.appendChild(show);
+				calcGpx.appendChild(calc);
+				deleteGpx.appendChild(del);
+
+				fileContainer.appendChild(fileName);
+				fileContainer.appendChild(showGpx);
+				fileContainer.appendChild(calcGpx);
+				fileContainer.appendChild(deleteGpx);
+
+				fileContainerMain.appendChild(fileContainer)
+
+				$(showGpx).click(handleShowGpx);
+				$(calcGpx).click(handleRecalcGpx);
+				$(deleteGpx).click(handleDeleteFromMapGpx);
+				
+		    }
+
+		    container.appendChild(fileContainerMain);
+		  
+		};
+
+		/**
+		 * handles the clicked gpx file and shows it on map
+		 */
+		function handleShowGpx(e) {
+			
+			var thisTarget = e.currentTarget;
+			
+			var iterator = thisTarget.getAttribute('data');
+			
+			var gpxFile = fileInput[iterator];
+			// get sibling remove element
+			var thisTarget = $(e.currentTarget).siblings(".delete")[0];
+
+			theInterface.emit('ui:uploadTrack', [gpxFile,thisTarget]);
+
+		}
+
+		/**
+		 * handles the clicked gpx file and recalculates route
+		 */
+		function handleRecalcGpx(e) {
+			var thisTarget = e.currentTarget;
+			var iterator = thisTarget.getAttribute('data');	
+			var gpxFile = fileInput[iterator];
+			
+			theInterface.emit('ui:uploadRoute', gpxFile);
+	
+		}
+
+		/**
+		 * removes it from map
+		 */
+		function handleDeleteFromMapGpx(e) {
+			//remove the track from the map and clicked
+			var thisTarget = e.currentTarget;
+			var olFeature = thisTarget.getAttribute('olFeatureName');	
+			theInterface.emit('ui:removeTrack', olFeature);
+
+			$(thisTarget).parent().fadeOut(300, function() { $(this).remove(); });
+
+
+		}
+		
 
 		/**
 		 * removes the file from the import track dialogue and triggers the deletion of the track on the map
@@ -2573,7 +2786,9 @@ var Ui = ( function(w) {'use strict';
 			$('#avoidAreasToolbar').click(avoidAreasToolClicked);
 
 			//permalink
-			$('#fnct_permalink').click(handleOpenPerma);
+			$('#infoPermalink').click(handleOpenPermaOptions);
+			$('#open').click(handleOpenPerma);
+			$('#copy').click(handleCopyPerma);
 
 			//accessibility analysis
 			$('#analyzeAccessibility').click(handleAnalyzeAccessibility);
@@ -2581,10 +2796,11 @@ var Ui = ( function(w) {'use strict';
 
 			//export/ import
 			$('#export-gpx').click(handleExportRouteClick);
-			$('#gpxUploadFiles').change(handleImportRouteSelection);
 			$('#gpxUploadFilesDelete').click(handleImportRouteRemove);
-			$('#gpxUploadTrack').change(handleImportTrackSelection);
 			$('#gpxUploadTrackDelete').click(handleImportTrackRemove);
+
+			//multiple file uploader listener
+			$('#files').change(handleGpxFiles);
 
 			//height profile
 			$('#uploadHeightProfileFiles').change(handleUploadHeightProfileSelection);
@@ -2592,6 +2808,27 @@ var Ui = ( function(w) {'use strict';
 
 			//user preferences
 			$('#savePrefsBtn').click(handleSaveUserPreferences);
+
+			//show info 
+			$('#infoButton,#infoPanel').hover(function() {
+			      $('#infoPanel').show();
+			      $('#infoButton').hide();
+			}, function() {
+			      $('#infoPanel').hide();
+			      $('#infoButton').show();
+			});
+
+			//keep dropdowns open
+			$('.dropdown-menu').on({
+				"click":function(e){
+
+			      	e.stopPropagation();
+			    }
+			});
+
+			$('.btn-group').button();
+
+			
 		}
 
 
@@ -2660,8 +2897,11 @@ var Ui = ( function(w) {'use strict';
 
 		Ui.prototype.setTruckParameters = setTruckParameters;
 		
+		Ui.prototype.setHazardousParameter = setHazardousParameter;
 
-
+		Ui.prototype.handleGpxFiles = handleGpxFiles;
+		Ui.prototype.handleResetRoute = handleResetRoute;
+			
 		theInterface = new Ui();
 
 		return theInterface;

@@ -70,6 +70,7 @@ var lang_nl = {
     'useAsWaypoint':'gebruiken als tussenstop,',
     
 	//Route Preferences
+	'Car' : 'auto',
     'Shortest':'kortste route',
     'Fastest':'snelste route',
     'Pedestrian':'voetganger',
@@ -84,6 +85,15 @@ var lang_nl = {
     'avoidTollways':'Vermijd tolwegen',
 	'avoidunpavedRoads':  'Vermijd onverharde wegen',
 	'avoidFerry':  'Vermijd veerverbindingen',
+	
+	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Vermijden wegtypen &nbsp;&nbsp;<span class="caret">',
+	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Vermijden wegtypen &nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Vermijden gebieden&nbsp;&nbsp;<span class="caret">',
+	
+	'avoidFerryBike' : 'Vermijd veerverbindingen' ,
+	'avoidunpavedRoadsBike' : 'Vermijd onverharde wegen',
+	'avoidStepsBike' : 'Vermijd stappen',
+	
 	'TruckLength' : 'maximumlengte',
 	'TruckHeight' : 'maximale hoogte',
 	'TruckWeight' : 'maximum gewicht',
@@ -91,6 +101,9 @@ var lang_nl = {
 	'goodsHeavyTruck' : 'Voertuigen tot 3.5t',
 	'busHeavyTruck' : 'Bus',
 	'hgvHeavyTruck' : 'Vrachtwagen',
+	'deliveryHeavyTruck' : 'Levering',
+	'hazardMaterial' : '<i class="icon-tint icon-white"></i>&nbsp;Gevaarlijke stoffen',
+	'truckMain' : 'Truck Parameters (in meters/ton)',
 	'agriculturalHeavyTruck' : 'Landbouwvoertuig',
 	'forestryHeavyTruck' : 'Forestal voertuig',
 
@@ -136,7 +149,7 @@ var lang_nl = {
     'changeFile':'Change',
     
 	//Accessibility Analysis
-	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',
+	'accessibilityAnalysisIsochrones' : 'Isochrone intervall in minuten',
 	'accessibilityAnalysisMethod' : 'Isochrone method',
     'accessibilityAnalysis':'Toegankelijkheid analyse',
     'setAccessibilityMinutes':'Selecteer minuten',

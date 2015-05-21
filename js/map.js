@@ -114,7 +114,6 @@ var Map = ( function() {"use strict";
 			this.HEIGHTS = 'Height Profile';
 
 			var self = this;
-
 			/* *********************************************************************
 			 * MAP INIT
 			 * *********************************************************************/
@@ -127,8 +126,12 @@ var Map = ( function() {"use strict";
 				displayProjection : new OpenLayers.Projection('EPSG:4326'),
 				theme : "lib/OpenLayersTheme.css",
 				maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34),
-				restrictedExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34)
+				restrictedExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34),
+				eventListeners: {
+					"changebaselayer": mapBaseLayerChanged,
+				}
 			});
+
 
 			/* *********************************************************************
 			* MAP LAYERS
@@ -144,6 +147,7 @@ var Map = ( function() {"use strict";
 			});
 
 
+
 			//layer 1 - open map surfer
 			if (namespaces.layerMapSurfer.length) {
 				var mapSurfer_options = {
@@ -156,6 +160,7 @@ var Map = ( function() {"use strict";
 				var mapSurfer_new = new OpenLayers.Layer.XYZ("OpenMapSurfer", namespaces.layerMapSurfer, mapSurfer_options);
 				this.theMap.addLayer(mapSurfer_new);
 			}
+
 
 			//layer 2 - mapnik
 			var osmLayer = new OpenLayers.Layer.OSM();
@@ -183,18 +188,25 @@ var Map = ( function() {"use strict";
 			this.theMap.addLayer(layerCycle);
 
 			//overlay - hillshade
+			var attribDEMData = '<a href="http://srtm.csi.cgiar.org/">SRTM</a>; ASTER GDEM is a product of <a href="http://www.meti.go.jp/english/press/data/20090626_03.html">METI</a> and <a href="https://lpdaac.usgs.gov/products/aster_policies">NASA</a>';
 			if (namespaces.layerHs.length) {
-				var hs_options = {
-					layers : 'europe_wms:hs_srtm_europa',
-					srs : 'EPSG:900913',
-					format : 'image/jpeg',
-					transparent : 'true'
-				};
-				var hs2 = new OpenLayers.Layer.WMS("Hillshade", namespaces.layerHs, hs_options);
-				hs2.setOpacity(0.2);
-				hs2.visibility = false;
-				this.theMap.addLayer(hs2);
+				var layMSNAsterHillshade = new OpenLayers.Layer.TMS(
+					"Hillshade",
+					"http://korona.geog.uni-heidelberg.de/tiles/asterh/",
+					{
+						type: 'png', 
+						getURL: getTileURL,
+						displayOutsideMaxExtent: true,
+						isBaseLayer: false,
+						numZoomLevels: 19,
+						attribution: attribDEMData,
+						visibility: false
+					}
+				);  
+				this.theMap.addLayer(layMSNAsterHillshade);
 			}
+
+			layMSNAsterHillshade.setOpacity(0.6);
 
 			//TODO too many requests sent
 			//overlay - traffic
@@ -228,6 +240,23 @@ var Map = ( function() {"use strict";
 					layerTMC_lines.setVisibility(layerTMC.getVisibility());
 				});
 			}
+
+
+			function getTileURL(bounds) {
+				var res = this.map.getResolution();
+				var x = Math.round((bounds.left - this.maxExtent.left) / (res * this.tileSize.w));
+				var y = Math.round((this.maxExtent.top - bounds.top) / (res * this.tileSize.h));
+				var z = this.map.getZoom();
+				var limit = Math.pow(2, z);
+
+				if (y < 0 || y >= limit) {
+				    return OpenLayers.Util.getImagesLocation() + "404.png";
+				} else {
+				    x = ((x % limit) + limit) % limit;
+				    return this.url + "x=" + x + "&y=" + y + "&z=" + z;    //+ "&ss=" + x + "-" + y + "-" + z
+				}
+			}
+
 
 			//layrers required for routing, etc.
 			//route points
@@ -300,18 +329,19 @@ var Map = ( function() {"use strict";
 			//track lines
 			var layerTrack = new OpenLayers.Layer.Vector(this.TRACK, {
 				displayInLayerSwitcher : false,
-				'style' : {
-					strokeColor : "#2c596b",
-					strokeOpacity : 1,
-					strokeWidth : 4,
-					cursor : "pointer"
-				}
+				// 'style' : {
+				// 	//strokeColor : "#2c596b",
+				// 	strokeOpacity : 1,
+				// 	strokeWidth : 4,
+				// 	cursor : "pointer"
+				// }
 			});
 
 			//accessibility
 			var layerAccessibility = new OpenLayers.Layer.Vector(this.ACCESSIBILITY, {
-				displayInLayerSwitcher : false
+				displayInLayerSwitcher : false,
 			});
+			layerAccessibility.setOpacity(0.7);
 			layerAccessibility.redraw(true);
 
 			//height profile
@@ -343,8 +373,8 @@ var Map = ( function() {"use strict";
 
 			this.theMap.addControl(new OpenLayers.Control.ScaleLine());
 			this.theMap.addControl(new OpenLayers.Control.MousePosition());
-			this.theMap.addControl(new OpenLayers.Control.Permalink());
-			this.theMap.addControl(new OpenLayers.Control.Attribution());
+			//this.theMap.addControl(new OpenLayers.Control.Permalink());
+			//this.theMap.addControl(new OpenLayers.Control.Attribution());
 
 			this.selectMarker = new OpenLayers.Control.SelectFeature([layerSearch, layerGeolocation, layerRoutePoints, layerPoi, layerRouteLines], {
 				hover : true
@@ -401,6 +431,14 @@ var Map = ( function() {"use strict";
 								type : Waypoint.type.START
 							});
 						};
+						options[0].onmouseover = function(e) {
+							//click on start point
+							document.getElementsByClassName("useAsStartPoint")[0].style.backgroundColor = '#e6e6e6';
+						};
+						options[0].onmouseout = function(e) { 
+							document.getElementsByClassName("useAsStartPoint")[0].style.backgroundColor = 'transparent';
+						}
+
 						options[1].onclick = function(e) {
 							//click on via point
 							self.emit('map:addWaypoint', {
@@ -408,12 +446,26 @@ var Map = ( function() {"use strict";
 								type : Waypoint.type.VIA
 							});
 						};
+						options[1].onmouseover = function(e) {
+							//click on start point
+							document.getElementsByClassName("useAsViaPoint")[0].style.backgroundColor = '#e6e6e6';
+						};
+						options[1].onmouseout = function(e) { 
+							document.getElementsByClassName("useAsViaPoint")[0].style.backgroundColor = 'transparent';
+						}
 						options[2].onclick = function(e) {
 							//click on end point
 							self.emit('map:addWaypoint', {
 								pos : displayPos,
 								type : Waypoint.type.END
 							});
+						}
+						options[2].onmouseover = function(e) {
+							//click on start point
+							document.getElementsByClassName("useAsEndPoint")[0].style.backgroundColor = '#e6e6e6';
+						};
+						options[2].onmouseout = function(e) { 
+							document.getElementsByClassName("useAsEndPoint")[0].style.backgroundColor = 'transparent';
 						}
 						//place context menu in a popup on the map
 						self.popup = new OpenLayers.Popup('menu', pos, null, menuObject.html(), false, null);
@@ -438,6 +490,38 @@ var Map = ( function() {"use strict";
 			});
 			this.theMap.addControl(clickControl);
 			clickControl.activate();
+
+			// this function is needed to update panelInformation when Layers are changed
+			function mapBaseLayerChanged() {
+				// update map attributions in infoPanel
+				document.getElementById("infoPanel").innerHTML = self.theMap.baseLayer.attribution;
+			
+			
+				var url = "cgi-bin/proxy.cgi?url=" + namespaces.services.routing + "?info";
+
+				// set crossDomain to true if on localhost
+				jQuery.ajax({
+				  url: url,
+				  dataType: 'json',
+				  type: 'GET', 
+				  crossDomain: false,
+				  success: updateInfoPanel,
+				  error: updateInfoPanel
+				});
+
+				function updateInfoPanel(results) {
+					
+					var lastUpdate = new Date(results.profiles['profile 1'].import_date);
+
+					// TODO: add nextUpdate from results when live
+					lastUpdate =  lastUpdate.getUTCDate() + '.' + (parseInt(lastUpdate.getMonth())+parseInt(1)) + '.' + lastUpdate.getFullYear();
+					document.getElementById("infoPanel").innerHTML += '<br/><br/>';
+					document.getElementById("infoPanel").innerHTML += '<b>Last Update:</b> ' + lastUpdate;
+					document.getElementById("infoPanel").innerHTML += '<br/>';
+					document.getElementById("infoPanel").innerHTML += '<b>Next Update:</b> ' + results.next_update;
+				}
+
+			}
 
 			// external code source: http://spatialnotes.blogspot.com/2010/11/capturing-right-click-events-in.html
 			// Get control of the right-click event:
@@ -514,7 +598,8 @@ var Map = ( function() {"use strict";
 			/* *********************************************************************
 			 * MAP EVENTS
 			 * *********************************************************************/
-			function emitMapChangedEvent(e) {
+			function emitMapChangedEvent(e) {			
+
 				var centerTransformed = util.convertPointForDisplay(self.theMap.getCenter());
 				self.emit('map:changed', {
 					layer : self.serializeLayers(),
@@ -593,7 +678,9 @@ var Map = ( function() {"use strict";
 		 *  @param waypointIndex: index of the waypoint where to remove objects from
 		 */
 		function clearMarkers(layerName, featureIds) {
+			
 			var layer = this.theMap.getLayersByName(layerName);
+
 			if (layer && layer.length > 0) {
 				layer = layer[0];
 			}
@@ -1167,15 +1254,24 @@ var Map = ( function() {"use strict";
 		 * adds the given polygon as avoid area polygon to the map layer
 		 *  @param polygon: OL.Feature.Vector, the polygon to add
 		 */
-		function addAccessiblityPolygon(polygon) {
-			var layer = this.theMap.getLayersByName(this.ACCESSIBILITY)[0];
-			var newFeature = new OpenLayers.Feature.Vector(polygon);
-			newFeature.style = {
-				'strokeColor' : '#0000ff',
-				'fillColor' : '#0000ff',
-				'fillOpacity' : 0.4
-			};
-			layer.addFeatures([newFeature]);
+		function addAccessiblityPolygon(polygonArray) {
+			
+			var colorRange = rangeColors(polygonArray.length-1);
+			
+			for (var i=polygonArray.length-1; i>=0; i--) {
+
+				var layer = this.theMap.getLayersByName(this.ACCESSIBILITY)[0];
+				var newFeature = new OpenLayers.Feature.Vector(polygonArray[i].geometry);
+
+				newFeature.style = {
+					'strokeWidth' : 1,
+					'strokeOpacity' : 1,
+					'strokeColor' : '#000',
+					'fillColor' : colorRange[i],
+					'fillOpacity' : 1
+				};
+				layer.addFeatures([newFeature]);
+			}
 		}
 
 		/**
@@ -1240,7 +1336,18 @@ var Map = ( function() {"use strict";
 		 */
 		function parseStringToTrack(trackString) {
 			var formatter = new OpenLayers.Format.GPX();
+			
 			var trackFeatures = formatter.read(trackString);
+			
+            trackFeatures[0].style = {
+            	fillColor: randomColors(), 
+            	strokeColor: randomColors(), 
+            	pointRadius: 5,
+				strokeOpacity : 0.7,
+				strokeWidth : 4,
+				cursor : "pointer"
+			}
+
 			if (!trackFeatures || trackFeatures.length == 0) {
 				return null;
 			}
@@ -1254,18 +1361,103 @@ var Map = ( function() {"use strict";
 			return trackFeatures;
 		}
 
+
 		/**
 		 * add the given track features to the map and zoom to all tracks
 		 * @param {Object} trackFeatures: array of OL.FeatureVectors (usually only one) with track points
 		 */
 		function addTrackToMap(trackFeatures) {
+			
+			//fill up data field in html with openlayers id
 			var layer = this.theMap.getLayersByName(this.TRACK)[0];
+			
 			layer.addFeatures(trackFeatures);
 
 			//zoom to track
 			var resultBounds = layer.getDataExtent();
 			this.theMap.zoomToExtent(resultBounds);
+
+			var featureName = trackFeatures[0].id;
+			return featureName;
+
 		}
+
+		/** 
+		 * generates a random hex color
+		 */
+		function randomColors() {
+
+			var randomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
+			return randomColor;
+
+		}
+
+		/** 
+		 * Generates a green to red color range
+		 * source: http://stackoverflow.com/questions/11849308/generate-colors-between-red-and-green-for-an-input-range
+		 */
+		function rangeColors(rangeNumber) {
+			
+			var colorArr = [];
+
+			var red = new Color(232, 9, 26),
+				white = new Color(255, 255, 255),
+			 	green = new Color(6, 170, 60),
+				start = green,
+				end = red;
+
+			// if (rangeNumber > 50) {
+			//     start = white,
+			//     end = red;
+			//     rangeNumber = rangeNumber % 51;
+			// }
+
+			var startColors = start.getColors(),
+			    endColors = end.getColors();
+
+			for (var i=0; i<=rangeNumber;i++) {
+
+				var r = Interpolate(startColors.r, endColors.r, rangeNumber, i);
+				var g = Interpolate(startColors.g, endColors.g, rangeNumber, i);
+				var b = Interpolate(startColors.b, endColors.b, rangeNumber, i);
+				        
+				var color = "rgb(" + r + "," + g + "," + b + ")";
+				
+				colorArr.push(color);
+
+			}
+
+			function Interpolate(start, end, steps, count) {
+			    
+			    var s = start,
+			        e = end,
+			        final = s + (((e - s) / steps) * count);
+			    return Math.floor(final);
+			}
+
+			function Color(_r, _g, _b) {
+			    var r, g, b;
+			    var setColors = function(_r, _g, _b) {
+			        r = _r;
+			        g = _g;
+			        b = _b;
+			    };
+
+			    setColors(_r, _g, _b);
+			    this.getColors = function() {
+			        var colors = {
+			            r: r,
+			            g: g,
+			            b: b
+			        };
+			        return colors;
+			    };
+			}
+
+			return colorArr;
+
+		}
+
 
 		/*
 		* HEIGHT PROFILE

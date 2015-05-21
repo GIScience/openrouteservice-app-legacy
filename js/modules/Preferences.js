@@ -34,13 +34,17 @@ var Preferences = ( function(w) {'use strict';
 		this.surfaceIdx = 18;
 		this.inclineIdx = 19;
 		this.slopedCurbIdx = 20;
+		this.hazardousIdx = 21;
+		this.weightIdx = 22;
+		this.avoidStepsIdx = 23;
 
 		//define variables
 		this.language = 'en';
 		this.routingLanguage = 'en';
 		this.distanceUnit = 'm';
 		this.version = list.version['extendedVersion'];
-		this.dictionary = window['lang_' + this.language];
+		this.dictionaryLang = window['lang_' + this.language];
+		this.dictionaryInstruct = window['lang_' + this.language];
 
 		//set permalink links
 		permaInfo[this.languageIdx] = this.language;
@@ -68,7 +72,15 @@ var Preferences = ( function(w) {'use strict';
 	 * @param {Object} term: the key to translate to the given language based on the language files (dictionary)
 	 */
 	function translate(term) {
-		return this.dictionary[term] || '';
+		return this.dictionaryLang[term] || '';
+	}
+
+	/**
+	 * translates a given term to the selected language instruction of the application
+	 * @param {Object} term: the key to translate to the given language based on the language files (dictionary)
+	 */
+	function translateInstructions(term) {
+		return this.dictionaryInstruct[term] || '';
 	}
 
 	/**
@@ -77,9 +89,9 @@ var Preferences = ( function(w) {'use strict';
 	 * @return the term or empty string if there exists no term for the translation
 	 */
 	function reverseTranslate(translation) {
-		for (var term in this.dictionary ) {
-			if (this.dictionary.hasOwnProperty(term)) {
-				var dictEntry = new Element('text').insert(this.dictionary[term]).innerHTML;
+		for (var term in this.dictionaryLang ) {
+			if (this.dictionaryLang.hasOwnProperty(term)) {
+				var dictEntry = new Element('text').insert(this.dictionaryLang[term]).innerHTML;
 				if (dictEntry === translation)
 					return term;
 			}
@@ -98,8 +110,11 @@ var Preferences = ( function(w) {'use strict';
 	 */
 	function loadPreferencesOnStartup() {
 		this.language = this.setLanguage();
-		this.dictionary = window['lang_' + this.language];
+		this.dictionaryLang = window['lang_' + this.language];
+
 		this.routingLanguage = this.setRoutingLanguage();
+		this.dictionaryInstruct = window['lang_' + this.routingLanguage];
+
 		this.distanceUnit = this.setDistanceUnit();
 		this.version = this.setVersion();
 
@@ -165,6 +180,7 @@ var Preferences = ( function(w) {'use strict';
 			//this language doesn't exist in ORS, use default
 			lang = 'en';
 		}
+
 		return lang;
 	}
 
@@ -317,10 +333,9 @@ var Preferences = ( function(w) {'use strict';
 
 	
 	/**
-	* determines route option wheelchair parameters by GET variable
-	* @param surface, incline, slopedCurb: extracted from the GET variables in readGetVars()
-	* @return the wheelchair parameters
-	*/
+	 * determines route option truck parameters width height length weight
+	 * @return the truck parameters
+	 */
 	function loadtruckParameters() {
 	
 		var truckParameters = [null, null, null,null];
@@ -338,6 +353,22 @@ var Preferences = ( function(w) {'use strict';
 		return truckParameters;
 	}
 	
+	/**
+	 * determines route option hazardous
+	 * @return the hazardous parameter
+	 */
+	function loadHazardous() {
+
+		var hazardous = null;
+
+		if (document.getElementById('Hazardous').checked) {
+            hazardous = 'hazmat'
+        } 
+      
+		return hazardous
+
+	}
+
 	/**
 	* fetches extended route type option
 	* @param surface, incline, slopedCurb: extracted from the GET variables in readGetVars()
@@ -564,7 +595,8 @@ var Preferences = ( function(w) {'use strict';
 			this.distanceUnit = key == this.distanceUnitIdx ? value : this.distanceUnit;
 			this.version = key == this.versionIdx ? value : this.version;
 			
-			this.dictionary = window['lang_' + this.language];
+			this.dictionaryLang = window['lang_' + this.language];
+			this.dictionaryInstruct = window['lang_' + this.routingLanguage];
 		}
 	}
 
@@ -582,15 +614,61 @@ var Preferences = ( function(w) {'use strict';
 	/**
 	 * open new window with the permalink
 	 */
+			
+	var url = "cgi-bin/proxy.cgi?url=" + namespaces.services.shorten;
+
 	function openPermalink() {
 		
-		var query = '?';
+		var query = 'http://www.openrouteservice.org?';
 		for (var i = 0; i < prefNames.length; i++) {
 			query += prefNames[i] + '=' + permaInfo[i] + '&';
 		}
 		//slice away last '&'
 		query = query.substring(0, query.length - 1);
-		window.open(query);
+
+		jQuery.ajax({
+			url: url,
+			type: "POST",
+			crossDomain: false,
+			data: query, 
+			success: function(response){
+				window.open(response)
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) { 
+				alert("Status: " + textStatus); 
+				alert("Error: " + errorThrown); 
+			}
+		});
+
+	}
+
+
+	/**
+	 * open new window with the permalink
+	 */
+	function copyPermalink() {
+		
+		var query = 'http://www.openrouteservice.org?';
+		for (var i = 0; i < prefNames.length; i++) {
+			query += prefNames[i] + '=' + permaInfo[i] + '&';
+		}
+		//slice away last '&'
+		query = query.substring(0, query.length - 1);
+
+		jQuery.ajax({
+			url: url,
+			type: "POST",
+			crossDomain: false,
+			data: query, 
+			success: function(response){
+				window.prompt("Copy to clipboard: Ctrl+C or Cmd+C, Enter", response);
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) { 
+				alert("Status: " + textStatus); 
+				alert("Error: " + errorThrown); 
+			}
+		});
+
 	}
 	
 	/**
@@ -609,6 +687,7 @@ var Preferences = ( function(w) {'use strict';
 	Preferences.prototype.getPrefName = getPrefName;
 
 	Preferences.prototype.translate = translate;
+	Preferences.prototype.translateInstructions = translateInstructions;
 	Preferences.prototype.reverseTranslate = reverseTranslate;
 
 	Preferences.prototype.loadPreferencesOnStartup = loadPreferencesOnStartup;
@@ -627,6 +706,7 @@ var Preferences = ( function(w) {'use strict';
 	Preferences.prototype.loadAvoidAreas = loadAvoidAreas;
 	Preferences.prototype.loadtruckParameters = loadtruckParameters;
 	Preferences.prototype.loadWheelParameters = loadWheelParameters;
+	Preferences.prototype.loadHazardous = loadHazardous;
 
 	Preferences.prototype.writeMapCookies = writeMapCookies;
 	Preferences.prototype.writePrefsCookies = writePrefsCookies;
@@ -637,6 +717,7 @@ var Preferences = ( function(w) {'use strict';
 	Preferences.prototype.areCookiesAVailable = areCookiesAVailable;
 
 	Preferences.prototype.openPermalink = openPermalink;
+	Preferences.prototype.copyPermalink = copyPermalink;
 	Preferences.prototype.reloadWithPerma = reloadWithPerma;
 	
 	return new Preferences();

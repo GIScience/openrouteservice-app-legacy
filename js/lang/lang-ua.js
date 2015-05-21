@@ -75,6 +75,7 @@ var lang_ua = {
     'useAsWaypoint': 'використовувати як шляхову точку',
  
     //Route Preferences
+	'Car': 'автомобіль',
     'Shortest': 'короткий маршрут',
     'Fastest': 'швидкий маршрут',
     'Pedestrian': 'пішохідний',
@@ -85,8 +86,6 @@ var lang_ua = {
     'BicycleRacer': 'швидкісний велосипед',
 	'Wheelchair' : 'доступний маршрут',
 	
-	'avoidunpavedRoads':  'Уникайте грунтові дороги',
-	'avoidFerry':  'Уникайте пороми',
 	'TruckLength' : 'Максимальна довжина',
 	'TruckHeight' : 'Максимальна висота системи',
 	'TruckWeight' : 'Максимальна вага',
@@ -94,6 +93,9 @@ var lang_ua = {
 	'goodsHeavyTruck' : 'Транспорт до 3.5t',
 	'busHeavyTruck' : 'автобус',
 	'hgvHeavyTruck' : 'Вантажний автомобіль',
+	'deliveryHeavyTruck' : 'Доставка',
+	'hazardMaterial' : 'Небезпечні матеріали',
+	'truckMain' : 'Вантажівка Параметри (в метрах/т)',
 	'agriculturalHeavyTruck' : 'Вантажний автомобіль',
 	'forestryHeavyTruck' : 'лісовий трактор',
 	
@@ -122,6 +124,12 @@ var lang_ua = {
  
     'avoidMotorways': 'Уникати автодоріг',
     'avoidTollways': 'Уникати платних доріг',
+	'avoidunpavedRoads':  'Уникайте грунтові дороги',
+	'avoidFerry':  'Уникайте пороми',
+	
+	'avoidFerryBike' : 'Уникайте пороми' ,
+	'avoidunpavedRoadsBike' : 'Уникайте грунтові дороги',
+	'avoidStepsBike' : 'заходи',
  
     //Avoid areas
     'avoidAreas': 'Зони уникнення',
@@ -142,7 +150,7 @@ var lang_ua = {
     'changeFile': 'Змінити',
  
     //Accessibility Analysis
-	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',
+	'accessibilityAnalysisIsochrones' : 'Isochrone intervall у хвилинах',
 	'accessibilityAnalysisMethod' : 'Isochrone method',
     'accessibilityAnalysis': 'Аналіз досяжності',
     'setAccessibilityMinutes': 'Кількість хвилин: ',

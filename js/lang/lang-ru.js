@@ -75,6 +75,7 @@ var lang_ru = {
     'useAsWaypoint': 'использовать как путевую точку',
  
     //Route Preferences
+	'Car':'автомобиль',
     'Shortest': 'короткий маршрут',
     'Fastest': 'быстрый маршрут',
     'Pedestrian': 'пешеходный',
@@ -89,6 +90,11 @@ var lang_ru = {
     'avoidTollways': 'Избегать платных дорог',
 	'avoidunpavedRoads':  'Избегайте грунтовые дороги',
 	'avoidFerry':  'Избегайте паромы',
+	
+	'avoidFerryBike' : 'Избегайте паромы' ,
+	'avoidunpavedRoadsBike' : 'Избегайте грунтовые дороги',
+	'avoidStepsBike' : 'меры',
+	
 	'TruckLength' : 'максимальная длина',
 	'TruckHeight' : 'максимальная высота',
 	'TruckWeight' : 'максимальный вес',
@@ -96,6 +102,9 @@ var lang_ru = {
 	'goodsHeavyTruck' : 'Транспорт до 3.5t',
 	'busHeavyTruck' : 'автобус',
 	'hgvHeavyTruck' : 'Грузовой автомобиль',
+	'deliveryHeavyTruck' : 'Доставка',
+	'hazardMaterial' : 'Опасные материалы',
+	'truckMain' : 'Грузовик Параметры (в метрах /т)',
 	'agriculturalHeavyTruck' : 'Сельскохозяйственная машина',
 	'forestryHeavyTruck' : 'Лесной трактор',
 		
@@ -141,7 +150,7 @@ var lang_ru = {
     'changeFile': 'Изменить',
  
     //Accessibility Analysis
-	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',
+	'accessibilityAnalysisIsochrones' : 'Isochrone intervall в минутах',
 	'accessibilityAnalysisMethod' : 'Isochrone method',
     'accessibilityAnalysis': 'Анализ досягаемости',
     'setAccessibilityMinutes': 'Количество минут: ',

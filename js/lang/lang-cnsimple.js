@@ -75,6 +75,7 @@ var lang_cnsimple = {
 	'useAsWaypoint' : '使用路径节点',
 
 	//Route Preferences
+	'Car' : '汽车',
 	'Shortest' : '最短路径',
 	'Fastest' : '最快路径',
 	'Pedestrian' : '行人模式',
@@ -91,6 +92,9 @@ var lang_cnsimple = {
 	'goodsHeavyTruck' : '车辆达3.5万吨',
 	'busHeavyTruck' : '公共汽车',
 	'hgvHeavyTruck' : '重型货车',
+	'deliveryHeavyTruck' : '交货',
+	'hazardMaterial' : '<i class="icon-tint icon-white"></i>&nbsp;有害物质',
+	'truckMain' : '卡车参数（米/吨）',
 	'agriculturalHeavyTruck' : '农用车',
 	'forestryHeavyTruck' : '山货车',
 
@@ -98,6 +102,14 @@ var lang_cnsimple = {
 	'avoidTollways' : '避开收费站',
 	'avoidunpavedRoads':  '避开未铺砌道路',
 	'avoidFerry':  '避开渡船',
+	
+	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;避免道路类型 &nbsp;&nbsp;<span class="caret">',
+	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;避免道路类型 &nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;避免地区&nbsp;&nbsp;<span class="caret">',
+	
+	'avoidFerryBike' : '避开渡船' ,
+	'avoidunpavedRoadsBike' : '避开未铺砌道路',
+	'avoidStepsBike' : '步骤',
 	
 	//Surfaces:
 	'surface': '表面',
@@ -145,7 +157,7 @@ var lang_cnsimple = {
 	'accessibilityAnalysis' : '可视分析',
 	'setAccessibilityMinutes' : '可视时间（分钟）: ',
 	'analyze' : '分析',
-	'accessibilityAnalysisIsochrones' : '等时线间距',
+	'accessibilityAnalysisIsochrones' : '等时线间距在几分钟内',
 	'accessibilityAnalysisMethod' : '等时间方法',
 	'calculatingAccessibility' : '正在进行可视分析...',
 	'accessibilityError' : '可视分析过程发生错误。请检查是否设定起始点。',

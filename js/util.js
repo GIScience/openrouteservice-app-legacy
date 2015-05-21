@@ -73,11 +73,18 @@ util = ( function() {'use strict';
 			 * @param element: XML element to retrieve the information from
 			 * @param ns: Namespace to operate in
 			 * @param tagName: attribute name of the child elements to return
+			 * @param collection: if a collection of features is to be returned
 			 * @return suitable elements of the given input element that match the tagName
 			 */
-			getElementsByTagNameNS : function(element, ns, tagName) {
+			getElementsByTagNameNS : function(element, ns, tagName, collection) {
 				if (element.getElementsByTagNameNS) {
 					//Firefox, Chrome
+					if (collection) {
+						var collectionArr = [];
+						collectionArr.push(element.getElementsByTagNameNS(ns, tagName));	
+
+						return collectionArr;
+					}
 					return element.getElementsByTagNameNS(ns, tagName);
 				} else {
 					//IE 9 doesn't support getElementsByTagNameNS function for XML documents
@@ -105,6 +112,7 @@ util = ( function() {'use strict';
 					'class' : 'address'
 				});
 
+
 				var v1 = util.getElementsByTagNameNS(xmlAddress, namespaces.xls, 'StreetAddress');
 				var StreetAddress = null;
 				
@@ -115,6 +123,7 @@ util = ( function() {'use strict';
 				var Building = util.getElementsByTagNameNS(StreetAddress, namespaces.xls, 'Building')[0];
 				
 				
+
 				//Building line
 				if (Building) {
 					var buildingName = Building.getAttribute('buildingName');
@@ -128,23 +137,28 @@ util = ( function() {'use strict';
 				}
 
 				//Street line
-				var streetline = 0;
-				$A(Streets).each(function(street) {
-					var officialName = street.getAttribute('officialName');
-					if (officialName != null) {
-						element.appendChild(new Element('span').update(officialName + ' '));
-						streetline++;
-					}
-				});
+				if (Streets) {
+					var streetline = 0;
+					$A(Streets).each(function(street) {
+						var officialName = street.getAttribute('officialName');
+						if (officialName != null) {
+							element.appendChild(new Element('span').update(officialName + ' '));
+							streetline++;
+						}
+					});
+				}
+
 				if (Building) {
 					var buildingNumber = Building.getAttribute('number');
 					if (buildingNumber != null) {
+
 						element.appendChild(new Element('span').update(buildingNumber));
 						streetline++;
 					}
 				}
 
 				if (streetline > 0) {
+
 					element.appendChild(new Element('br'));
 				}
 				}
@@ -164,10 +178,12 @@ util = ( function() {'use strict';
 						if (place.getAttribute('type') === type) {
 							//Chrome, Firefox: place.textContent; IE: place.text
 							var content = place.textContent || place.text;
-							element.appendChild(new Element('span', {
-								'class' : 'addressElement'
-							}).update(separator + content));
-							separator = ', ';
+							if (content != undefined || content != null) {
+								element.appendChild(new Element('span', {
+									'class' : 'addressElement'
+								}).update(separator + content));
+								separator = ', ';
+							}
 						}
 					})
 				});
@@ -175,6 +191,7 @@ util = ( function() {'use strict';
 				if (countryCode != null) {
 					element.appendChild(new Element('span').update(', ' + countryCode.toUpperCase()));
 				}
+				
 				return element;
 			},
 
@@ -187,6 +204,7 @@ util = ( function() {'use strict';
 				var element = "";
 				
 				if (address) {
+
 					var v1 = util.getElementsByTagNameNS(address, namespaces.xls, 'StreetAddress');
 					var streetAddress = null;
 					if (v1 != null) {
@@ -197,6 +215,7 @@ util = ( function() {'use strict';
 					var building = util.getElementsByTagNameNS(streetAddress, namespaces.xls, 'Building')[0];
 					
 					
+
 					//Building line
 					if (building) {
 						var buildingName = building.getAttribute('buildingName');

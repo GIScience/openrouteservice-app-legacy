@@ -123,22 +123,105 @@ var AccessibilityAnalysis = ( function(w) {"use strict";
 		 * @return OL.Geometry.Polygon representing the accessible area
 		 */
 		function parseResultsToPolygon(result) {
+			
 			var area = util.getElementsByTagNameNS(result, namespaces.aas, 'AccessibilityGeometry');
+			
 			var poly;
 			if (area) {
-				//use first polygon only
-				var polygon = util.getElementsByTagNameNS(area[0], namespaces.gml, 'Polygon')[0];
+				
+				var collectionArr = util.getElementsByTagNameNS(area[0], namespaces.gml, 'Polygon', true)[0];
+				
+				var collectionArrGeom = [];
+
+				for (var i=0; i<collectionArr.length; i++) {
+					
+					if (collectionArr[i].getElementsByTagNameNS) {
+
+						var exteriorRing = collectionArr[i].getElementsByTagNameNS(namespaces.gml,'exterior')[0];
+						var interiorRingArr = util.getElementsByTagNameNS(collectionArr[i], namespaces.gml, 'interior', true)[0];
+						var extIntArr = [];
+						if (exteriorRing) {
+							extIntArr.push(exteriorRing);
+						}
+						if (interiorRingArr) {
+							
+							for (var j=0; j<interiorRingArr.length; j++) {
+								extIntArr.push(interiorRingArr[j]);
+							}
+						}
+						
+						var poly = fetchPolygonGeometry(extIntArr, namespaces.gml, 'pos');
+
+						collectionArrGeom.push(poly);
+
+					}
+				}
+			}
+			// substract now?
+			//var collectionArrGeomSubstr = substractPolygons(collectionArrGeom);
+		
+			return collectionArrGeom;
+		}
+
+		/**
+		 * returns a polygon geometry from gml
+		 * @param element: gml element
+		 * @param ns: namespace
+		 * @param tag: tag to look for
+		 * @return OL.Feature.Vector
+		 */
+		function fetchPolygonGeometry(elements,ns,tag) {
+
+			var rings = [];
+			
+			for (var i=0; i<elements.length; i++) {
 				var linRingPoints = [];
-				$A(util.getElementsByTagNameNS(polygon, namespaces.gml, 'pos')).each(function(polygonPos) {
+				$A(util.getElementsByTagNameNS(elements[i], ns, tag)).each(function(polygonPos) {
 					polygonPos = util.convertPositionStringToLonLat(polygonPos.firstChild.nodeValue);
 					polygonPos = util.convertPointForMap(polygonPos);
 					polygonPos = new OpenLayers.Geometry.Point(polygonPos.lon, polygonPos.lat);
 					linRingPoints.push(polygonPos);
 				});
-				var ring = new OpenLayers.Geometry.LinearRing(linRingPoints);
-				poly = new OpenLayers.Geometry.Polygon([ring]);
+
+				rings.push(new OpenLayers.Geometry.LinearRing(linRingPoints));
+				
 			}
+			// construct polygon with holes
+			var polyGeom = new OpenLayers.Geometry.Polygon(rings);
+			var poly = new OpenLayers.Feature.Vector(polyGeom);
+
 			return poly;
+
+		}
+
+		/**
+		 * substracts to polygons from each other
+		 * @param geomCollection: a collection of polygon geometries, at least two
+		 * @return [OL.Geometry.Polygon] representing an array of difference polygons
+		 */
+		function substractPolygons(geomCollection) {
+			
+			var collectionArrGeomSubstr = [];
+			var parser = new jsts.io.OpenLayersParser();
+
+			for (var i=geomCollection.length-1; i>=1; i--) {
+
+				var newFeature = new OpenLayers.Feature.Vector(
+			        parser.write(
+			            parser.read(geomCollection[i].geometry).difference(
+			                parser.read(geomCollection[i-1].geometry)
+			            )
+			        )
+			    );
+    			
+    			collectionArrGeomSubstr.push(newFeature);
+
+			}
+			// push first poly also
+			collectionArrGeomSubstr.push(geomCollection[0]);
+
+			return collectionArrGeomSubstr;
+
 		}
 
 

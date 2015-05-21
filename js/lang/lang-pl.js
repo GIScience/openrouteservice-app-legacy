@@ -75,6 +75,7 @@ var lang_pl = {
 	'useAsWaypoint' : 'u&#x017C;yj jako punkt na trasie',
 
 	//Route Preferences
+	'Car': 'Samoch&oacute;d',
 	'Shortest' : 'najkr&oacute;tsza trasa',
 	'Fastest' : 'najszybsza trasa',
 	'Pedestrian' : 'pieszo',
@@ -89,6 +90,15 @@ var lang_pl = {
 	'avoidTollways' : 'unikaj dr&oacute;g p&#x0142;atnych',
 	'avoidunpavedRoads':  'Unika&#263; drogi gruntowe',
 	'avoidFerry':  'Unika&#263; po&#322;&#261;czenia promowe',
+	
+	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;unikn&#261;&#263; typy dr&oacute;g &nbsp;&nbsp;<span class="caret">',
+	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;unikn&#261;&#263; typy dr&oacute;g &nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;unika&#263; obszar&oacute;w&nbsp;&nbsp;<span class="caret">',
+	
+	'avoidFerryBike' : 'Unika&#263; po&#322;&#261;czenia promowe' ,
+	'avoidunpavedRoadsBike' : 'Unika&#263; drogi gruntowe',
+	'avoidStepsBike' : 'Kroki',
+	
 	'TruckLength' : 'maksymalna d&#322;ugo&#347;&#263;',
 	'TruckHeight' : 'wysoko&#347;ci&#261; maksymalnej',
 	'TruckWeight' : 'maksymalna waga',
@@ -96,6 +106,9 @@ var lang_pl = {
 	'goodsHeavyTruck' : 'Pojazd&oacute;w do 3.5t',
 	'busHeavyTruck' : 'Autobus',
 	'hgvHeavyTruck' : 'Pojazdy ci&#281;żarowe',
+	'deliveryHeavyTruck' : 'Dostawa',
+	'hazardMaterial' : '<i class="icon-tint icon-white"></i>&nbsp;Materia&#322;y niebezpieczne',
+	'truckMain' : 'Truck Parametry (w metrach/ton)',
 	'agriculturalHeavyTruck' : 'Pojazd rolniczy',
 	'forestryHeavyTruck' : 'Forestal pojazdu',
 
@@ -141,7 +154,7 @@ var lang_pl = {
 	'changeFile' : '',
 
 	//Accessibility Analysis
-	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',
+	'accessibilityAnalysisIsochrones' : 'Isochrone intervall w minutach',
 	'accessibilityAnalysisMethod' : 'Isochrone method',
 	'accessibilityAnalysis' : 'Analiza dost&#x0119;pno&#x015B;ci',
 	'setAccessibilityMinutes' : 'Dost&#x0119;pno&#x015B;&#x0107; w minutach: ',

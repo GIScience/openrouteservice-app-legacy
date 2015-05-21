@@ -5,6 +5,7 @@
 /**
  * namespaces and schemata e.g. for XML requests to services
  */
+
 namespaces = {
 	xls : 'http://www.opengis.net/xls',
 	sch : 'http://www.ascc.net/xml/schematron',
@@ -36,11 +37,12 @@ namespaces.schemata = {
  */
 namespaces.services = {
 	// see latest ORS API documentation http://wiki.openstreetmap.org/wiki/OpenRouteService
-	geocoding : 'http://openls.geog.uni-heidelberg.de/testing2015/geocoding', //for address search requests
-	routing : 'http://openls.geog.uni-heidelberg.de/testing2015/routing', //for routing requests
-	//routing: 'http://openls.geog.uni-heidelberg.de/osm/routing-test',
-	directory : 'http://openls.geog.uni-heidelberg.de/testing2015/directory', //for POI search requests
-	analyse : 'http://openls.geog.uni-heidelberg.de/testing2015/analysis',
+	geocoding : 'http://openls.geog.uni-heidelberg.de/osm/geocoding-test', //for address search requests
+	//routing : 'http://openls.geog.uni-heidelberg.de/testing2015/routing', //for routing requests
+	routing: 'http://openls.geog.uni-heidelberg.de/osm/routing-test',
+	directory : 'http://openls.geog.uni-heidelberg.de/osm/directory-test', //for POI search requests
+	analyse : 'http://openls.geog.uni-heidelberg.de/testing2015/analysis-test',
+	shorten: 'http://openls.geog.uni-heidelberg.de/osm/shortenlink-test',
 	wps : '' //for calculation of polygon around route for POI search
 	//profile: '' 			//for height profile of route
 };
@@ -53,7 +55,8 @@ namespaces.layerWms = 'http://129.206.228.72/cached/osm?';
 //url to Open Map Surfer layer
 namespaces.layerMapSurfer = 'http://korona.geog.uni-heidelberg.de/tiles/roads/x=${x}&y=${y}&z=${z}';
 //url to hillshade overlay
-namespaces.layerHs = 'http://129.206.228.72/cached/hillshade?';
+namespaces.layerHs = 'http://korona.geog.uni-heidelberg.de/tiles/asterh/';
 //urls to TMC overlay
 namespaces.overlayTmc = '';
-namespaces.overlayTmcLines = '';
+namespaces.overlayTmcLines = ''
+;

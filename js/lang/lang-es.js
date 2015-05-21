@@ -70,6 +70,7 @@ var lang_es = {
     'useAsWaypoint':'utilizar como punto de referencia',
     
 	//Route Preferences
+	'Car' : 'Coche',
     'Shortest':'ruta m&aacute;s corta',
     'Fastest':'ruta m&aacute;s r&aacute;pida',
     'Pedestrian':'peatones',
@@ -84,6 +85,15 @@ var lang_es = {
     'avoidTollways':'Evitar carreteras de peaje',
 	'avoidunpavedRoads':  'Evitar carreteras sin pavimentar',
 	'avoidFerry':  'Evitar las conexiones mar&iacute;timas',
+	
+	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;evitar tipos de carretera &nbsp;&nbsp;<span class="caret">',
+	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;evitar tipos de carretera &nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;evitar las zonas&nbsp;&nbsp;<span class="caret">',
+	
+	'avoidFerryBike' : 'Evitar las conexiones mar&iacute;timas' ,
+	'avoidunpavedRoadsBike' : 'Evitar carreteras sin pavimentar',
+	'avoidStepsBike' : 'Evitar pasos',
+	
 	'TruckLength' : 'longitud m&aacute;xima',
 	'TruckHeight' : 'altura m&aacute;xima',
 	'TruckWeight' : 'peso m&aacute;ximo',
@@ -91,6 +101,9 @@ var lang_es = {
 	'goodsHeavyTruck' : 'Veh&iacute;culos de hasta 3.5t',
 	'busHeavyTruck' : 'Autob&uacute;s',
 	'hgvHeavyTruck' : 'Veh&iacute;culo pesado',
+	'deliveryHeavyTruck' : 'Entrega',
+	'hazardMaterial' : '<i class="icon-tint icon-white"></i>&nbsp;Materiales Peligrosos',
+	'truckMain' : 'Par&aacute;metros de camiones (en metros/toneladas)',
 	'agriculturalHeavyTruck' : 'Veh&iacute;culo agr&iacute;cola',
 	'forestryHeavyTruck' : 'Veh&iacute;culo Forestal',
 	
@@ -136,7 +149,7 @@ var lang_es = {
     'changeFile':'Change',
     
 	//Accessibility Analysis
-	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',
+	'accessibilityAnalysisIsochrones' : 'Isochrone intervall en minutos',
 	'accessibilityAnalysisMethod' : 'Isochrone method',
     'accessibilityAnalysis':'An&aacute;lisis de accesibilidad',
     'setAccessibilityMinutes':'Seleccione minutos',

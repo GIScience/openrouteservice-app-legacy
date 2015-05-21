@@ -70,6 +70,7 @@ var lang_cz = {
     'useAsWaypoint':'pou&#382;&iacute;t jako bod',
     
 	//Route Preferences
+	'Car' : 'Auto',
     'Shortest':'nejkrats&iacute;trasa',
     'Fastest':'Nejrychlejs&iacute;cesta',
     'Pedestrian':'chodec',
@@ -84,6 +85,15 @@ var lang_cz = {
     'avoidTollways':'Vyhnout se placen&yacute;m komunikac&iacute;m ',
 	'avoidunpavedRoads':  'Vyhnete se nezpevnen&yacute;ch cest&aacute;ch',
 	'avoidFerry':  'Vyhnete trajektov&eacute;ho spojen&iacute;',
+	
+	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;vyhnout typům silnic &nbsp;&nbsp;<span class="caret">',
+	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;vyhnout typům  &nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;vyhnout oblastí&nbsp;&nbsp;<span class="caret">',
+	
+	'avoidFerryBike' : 'Vyhnete trajektov&eacute;ho spojen&iacute;' ,
+	'avoidunpavedRoadsBike' : 'Vyhnete se nezpevnen&yacute;ch cest&aacute;ch',
+	'avoidStepsBike' : 'Vyhnete kroky',
+	
 	'TruckLength' : 'maxim&aacute;ln&iacute;d&eacute;lka',
 	'TruckHeight' : 'maxim&aacute;ln&iacute;v&yacute;ska',
 	'TruckWeight' : 'maxim&aacute;ln&iacute;v&aacute;ha',
@@ -91,6 +101,9 @@ var lang_cz = {
 	'goodsHeavyTruck' : 'Vozidla do 3.5t',
 	'busHeavyTruck' : 'Autobus',
 	'hgvHeavyTruck' : 'T&#283;&#382;k&eacute;n&aacute;kladn&iacute;vozidlo',
+	'deliveryHeavyTruck' : 'Dod&aacute;vka',
+	'hazardMaterial' : '<i class="icon-tint icon-white"></i>&nbsp;Nebezpe&#269;né materi&aacute;ly',
+	'truckMain' : 'Parametry Truck (v metrech/tuny)',
 	'agriculturalHeavyTruck' : 'zem&#283;d&#283;lsk&yacute;v&#367;z',
 	'forestryHeavyTruck' : 'Forestal vozidlo',
 	
@@ -136,7 +149,7 @@ var lang_cz = {
     'changeFile':'Zmena',
 	
     //Accessibility Analysis
-	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',
+	'accessibilityAnalysisIsochrones' : 'Isochrone intervall v minut&agrave;ch',
 	'accessibilityAnalysisMethod' : 'Isochrone method',
     'accessibilityAnalysis':'Anal&yacute;za pr&iacute;stupnosti',
     'setAccessibilityMinutes':'Vyberte minut',

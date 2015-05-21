@@ -61,7 +61,9 @@ var lang_it = {
     'moveDownWaypoint':'Sposta Waypoint down',
     'removeWaypoint':'Rimuovi waypoint',
     'useAsWaypoint':'utilizzare come waypoint',
+	
     //Route Preferences
+	'Car' : 'auto',
     'Shortest':'percorso pi&ugrave; breve',
     'Fastest':'percorso pi&ugrave; veloce',
     'Pedestrian':'pedonale',
@@ -71,10 +73,20 @@ var lang_it = {
     'BicycleMTB':'mountain bike',
     'BicycleRacer':'bici da corsa',
 	'Wheelchair' : 'percorso accessibile',
-    'avoidMotorways':'Evitare autostrade',
+    
+	'avoidMotorways':'Evitare autostrade',
     'avoidTollways':'Evitare strade a pedaggio',
 	'avoidunpavedRoads':  'Evita strade non asfaltate',
 	'avoidFerry':  'Evitare i collegamenti marittimi',
+	
+	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Evitare tipi di strade &nbsp;&nbsp;<span class="caret">',
+	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Evitare tipi di strade &nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Evitare le zone&nbsp;&nbsp;<span class="caret">',
+	
+	'avoidFerryBike' : 'Evitare i collegamenti marittimi' ,
+	'avoidunpavedRoadsBike' : 'Evita strade non asfaltate',
+	'avoidStepsBike' : 'Evitare passi',
+	
 	'TruckLength' : 'lunghezza massima',
 	'TruckHeight' : 'altezza massima',
 	'TruckWeight' : 'peso massimo',
@@ -82,6 +94,9 @@ var lang_it = {
 	'goodsHeavyTruck' : 'Veicolo a 3.5t',
 	'busHeavyTruck' : 'Autobus',
 	'hgvHeavyTruck' : 'Autocarro',
+	'deliveryHeavyTruck' : 'Consegna',
+	'hazardMaterial' : '<i class="icon-tint icon-white"></i>&nbsp;Sostanze pericolose',
+	'truckMain' : 'Truck parametri (in metri/tonnellate)',
 	'agriculturalHeavyTruck' : 'Veicolo agricolo',
 	'forestryHeavyTruck' : 'Veicolo Forestal',
 	
@@ -127,7 +142,7 @@ var lang_it = {
     'changeFile':'Change',
    
    //Accessibility Analysis
-	'accessibilityAnalysisIsochrones' : 'Isochrone intervall',
+	'accessibilityAnalysisIsochrones' : 'Isochrone intervall in minuti',
 	'accessibilityAnalysisMethod' : 'Isochrone method',
     'accessibilityAnalysis':'Analisi di accessibilit&agrave; ',
     'setAccessibilityMinutes':'Seleziona minuti',
