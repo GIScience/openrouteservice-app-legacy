@@ -519,6 +519,10 @@ var Map = ( function() {"use strict";
 					document.getElementById("infoPanel").innerHTML += '<b>Last Update:</b> ' + lastUpdate;
 					document.getElementById("infoPanel").innerHTML += '<br/>';
 					document.getElementById("infoPanel").innerHTML += '<b>Next Update:</b> ' + results.next_update;
+					document.getElementById("infoPanel").innerHTML += '<br/>';
+					document.getElementById("infoPanel").innerHTML += '<br/>';
+					document.getElementById("infoPanel").innerHTML += '<a href="https://github.com/GIScience/openrouteservice/tree/master/release_notes" style="color:#779ECB" target="_blank">ORS release notes</a>';
+					
 				}
 
 			}
@@ -886,13 +890,9 @@ var Map = ( function() {"use strict";
 		 * @return: string of LonLat positions; style: 'lon1,lat1,lon2,lat2,...lonk,latk'
 		 */
 		function getWaypointsString(endPoint) {
-			// if endPoint is true add (0,0) to beginning of string
-			// this is then caught 
-			if (endPoint == true) {
-				var wpString = "0%2C0%2C";
-			} else {
-				var wpString = "";
-			}
+			
+			var wpString = "";
+			
 
 			var layer = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
 
