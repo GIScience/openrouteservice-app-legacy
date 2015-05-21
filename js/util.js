@@ -212,11 +212,10 @@ util = ( function() {'use strict';
 					}
 
 					if (streetAddress != null){
-						console.log(streetAddress)
+						
 						var streets = util.getElementsByTagNameNS(streetAddress, namespaces.xls, 'Street');
 						var building = util.getElementsByTagNameNS(streetAddress, namespaces.xls, 'Building')[0];
-						console.log(building)
-
+						
 						//Building line
 						if (building) {
 							var buildingName = building.getAttribute('buildingName');

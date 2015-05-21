@@ -847,7 +847,10 @@ var Map = ( function() {"use strict";
 			var newFeature = new OpenLayers.Feature.Vector(newMarker, {
 				icon : Ui.markerIcons[type][0],
 				iconEm : Ui.markerIcons[type][1],
+				type: type
 			});
+			//console.log(newFeature)
+			//console.log(layerWaypoints.features)
 			layerWaypoints.addFeatures([newFeature]);
 			return newFeature.id;
 		}
@@ -893,7 +896,6 @@ var Map = ( function() {"use strict";
 			
 			var wpString = "";
 			
-
 			var layer = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
 
 			//serialize these features to string

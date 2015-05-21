@@ -99,7 +99,8 @@ var lang_de = {
 		'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Stra&szlig;en vermeiden &nbsp;&nbsp;<span class="caret">',
 		'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Stra&szlig;en vermeiden &nbsp;&nbsp;<span class="caret">',
 		'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Gebiete vermeiden &nbsp;&nbsp;<span class="caret">',
-		
+		'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;avoid road types &nbsp;&nbsp;<span class="caret">',
+
 		'avoidMotorways':  'Autobahnen vermeiden',
 		'avoidTollways':  'Mautstra&szlig;en vermeiden',
 		'avoidunpavedRoads':  'Unbefestigte Straßen vermeiden',

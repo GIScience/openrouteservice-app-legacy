@@ -391,7 +391,7 @@ var Preferences = ( function(w) {'use strict';
 	 * @param highway, tollway: extracted from the GET variables in readGetVars()
 	 * @return the avoidables
 	 */
-	function loadAvoidables(highway, tollway, unpaved, ferry) {
+	function loadAvoidables(highway, tollway, unpaved, ferry, steps) {
 		var avoidables = [false, false, false, false];
 		//highway
 		if (unescape(highway) === 'true') {
@@ -420,6 +420,13 @@ var Preferences = ( function(w) {'use strict';
 			permaInfo[this.avoidFerryIdx] = true;
 		} else {
 			permaInfo[this.avoidFerryIdx] = false;
+		}
+		//steps
+		if (unescape(steps) === 'true') {
+			avoidables[4] = true;
+			permaInfo[this.avoidStepsIdx] = true;
+		} else {
+			permaInfo[this.avoidStepsIdx] = false;
 		}
 		return avoidables;
 	}

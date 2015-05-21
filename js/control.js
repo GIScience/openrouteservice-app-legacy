@@ -1365,6 +1365,7 @@ var Controller = ( function(w) {'use strict';
             var tollways = getVars[preferences.getPrefName(preferences.avoidTollwayIdx)];
             var unpaved = getVars[preferences.getPrefName(preferences.avoidUnpavedIdx)];
             var ferry = getVars[preferences.getPrefName(preferences.avoidFerryIdx)];
+            var steps = getVars[preferences.getPrefName(preferences.avoidStepsIdx)];
             var avoidAreas = getVars[preferences.getPrefName(preferences.avoidAreasIdx)];
             
             var truck_length = getVars[preferences.getPrefName(preferences.truck_lengthIdx)];
@@ -1429,12 +1430,13 @@ var Controller = ( function(w) {'use strict';
 
             routeOpt = preferences.loadRouteOptions(routeOpt);
             ui.setRouteOption(routeOpt);
-            var res = preferences.loadAvoidables(motorways, tollways, unpaved, ferry);
-            motorways = res[1];
-            tollways = res[2];
-            unpaved = res[3];
-            ferry = res[4];
-            ui.setAvoidables(motorways, tollways, unpaved, ferry);
+            var res = preferences.loadAvoidables(motorways, tollways, unpaved, ferry, steps);
+            motorways = res[0];
+            tollways = res[1];
+            unpaved = res[2];
+            ferry = res[3];
+            steps = res[4];
+            ui.setAvoidables(motorways, tollways, unpaved, ferry, steps);
             
             var wheelParameters = preferences.loadWheelParameters(surface, incline, slopedCurb);
             surface = wheelParameters[0];
