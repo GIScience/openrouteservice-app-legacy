@@ -3,7 +3,7 @@
 
 ## Current Stable Release ##
 
-[2.2](/release_notes/v2.2.md)
+* [2.2](/release_notes/v2.2.md)
 
 
 ## Version 2.x ## - new OpenRouteService Client
