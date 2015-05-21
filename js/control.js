@@ -127,14 +127,8 @@ var Controller = ( function(w) {'use strict';
             map.zoomToMarker(util.convertPositionStringToLonLat(position), 14);
             ui.setWaypointFeatureId(wpIndex, waypointResultId, position, map.ROUTE_POINTS);
 
-            // check if EndPoint is set only. If true set Permalink accordingly
-            if (map.getWaypointsAmount() == 1 && wpIndex == 1) {
-                    var endPoint = true;
-                    handleWaypointChanged(map.getWaypointsString(endPoint));
-                } else {
-                    var endPoint = false;
-                    handleWaypointChanged(map.getWaypointsString(endPoint));
-            }
+            handleWaypointChanged(map.getWaypointsString());
+            
 
         }
 
@@ -241,14 +235,8 @@ var Controller = ( function(w) {'use strict';
                 ui.setWaypointFeatureId(newIndex, featureId, position, map.ROUTE_POINTS);
 
                 //update preferences
-                //check if EndPoint is set only. If true set Permalink accordingly
-                if (map.getWaypointsAmount() == 1 && wpIndex == 1) {
-                    var endPoint = true;
-                    handleWaypointChanged(map.getWaypointsString(endPoint));
-                } else {
-                    var endPoint = false;
-                    handleWaypointChanged(map.getWaypointsString(endPoint));
-                }
+                handleWaypointChanged(map.getWaypointsString());
+                
 
                 //cannot be emmited by 'this', so let's use sth that is known inside the callback...
                 ui.emit('control:reverseGeocodeCompleted');
@@ -342,14 +330,8 @@ var Controller = ( function(w) {'use strict';
 
 
             //update preferences
-            //check if EndPoint is set only. If true set Permalink accordingly
-            if (map.getWaypointsAmount() == 1 && idx == 0) {
-                var endPoint = true;
-                handleWaypointChanged(map.getWaypointsString(endPoint));
-            } else {
-                var endPoint = false;
-                handleWaypointChanged(map.getWaypointsString(endPoint));
-            }
+            handleWaypointChanged(map.getWaypointsString());
+            
 
             //TODO: update route string..
 

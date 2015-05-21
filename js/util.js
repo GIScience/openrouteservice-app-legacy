@@ -208,32 +208,33 @@ util = ( function() {'use strict';
 					var v1 = util.getElementsByTagNameNS(address, namespaces.xls, 'StreetAddress');
 					var streetAddress = null;
 					if (v1 != null) {
-					   streetAddress = v1 [0]};
-					if (streetAddress != null){
-					
-					var streets = util.getElementsByTagNameNS(streetAddress, namespaces.xls, 'Street');
-					var building = util.getElementsByTagNameNS(streetAddress, namespaces.xls, 'Building')[0];
-					
-					
-
-					//Building line
-					if (building) {
-						var buildingName = building.getAttribute('buildingName');
-						var buildingSubdivision = building.getAttribute('subdivision');
-						if (buildingName != null) {
-							element += buildingName + ' ';
-						}
-						if (buildingSubdivision != null) {
-							element += buildingSubdivision + ' ';
-						}
+					   streetAddress = v1 [0];
 					}
-					//Street line
-					$A(streets).each(function(street) {
-						var officialName = street.getAttribute('officialName');
-						if (officialName != null) {
-							element += officialName + ' ';
+
+					if (streetAddress != null){
+						console.log(streetAddress)
+						var streets = util.getElementsByTagNameNS(streetAddress, namespaces.xls, 'Street');
+						var building = util.getElementsByTagNameNS(streetAddress, namespaces.xls, 'Building')[0];
+						console.log(building)
+
+						//Building line
+						if (building) {
+							var buildingName = building.getAttribute('buildingName');
+							var buildingSubdivision = building.getAttribute('subdivision');
+							if (buildingName != null) {
+								element += buildingName + ' ';
+							}
+							if (buildingSubdivision != null) {
+								element += buildingSubdivision + ' ';
+							}
 						}
-					});
+						//Street line
+						$A(streets).each(function(street) {
+							var officialName = street.getAttribute('officialName');
+							if (officialName != null) {
+								element += officialName + ' ';
+							}
+						});
 					
 					}
 					
