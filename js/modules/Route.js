@@ -225,27 +225,19 @@ var Route = ( function(w) {"use strict";
 
 			var xmlRequest = writer.flush();
 			writer.close();
-
-
-			// var request = OpenLayers.Request.POST({
-			// 	url : namespaces.services.routing,
-			// 	data : xmlRequest,
-			// 	success : successCallback,
-			// 	failure : failureCallback
+			
+			
+			var url = "cgi-bin/proxy.cgi?url=" + namespaces.services.routing;
+			
+			// jQuery.ajaxPrefilter(function( options ) {
+			// 	if ( options.crossDomain ) {
+			// 		options.url = "http://localhost/cgi-bin/proxy.cgi?url=" + encodeURIComponent( options.url );
+			// 		options.crossDomain = true;
+			// 	}
 			// });
 
-			
-
-			jQuery.ajaxPrefilter(function( options ) {
-				if ( options.crossDomain ) {
-					options.url = "http://localhost/cgi-bin/proxy.cgi?url=" + encodeURIComponent( options.url );
-					options.crossDomain = false;
-				}
-			});
-
-			// for localhost testing, set crossDomain to true
 			jQuery.ajax({
-				url: namespaces.services.routing,
+				url: url,
 				processData: false,
 				type: "POST",
 				dataType: "xml",

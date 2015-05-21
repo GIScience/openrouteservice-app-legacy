@@ -113,8 +113,12 @@ util = ( function() {'use strict';
 				});
 
 				var StreetAddress = util.getElementsByTagNameNS(xmlAddress, namespaces.xls, 'StreetAddress')[0];
-				var Streets = util.getElementsByTagNameNS(StreetAddress, namespaces.xls, 'Street');
-				var Building = util.getElementsByTagNameNS(StreetAddress, namespaces.xls, 'Building')[0];
+
+				if (StreetAddress) {
+					var Streets = util.getElementsByTagNameNS(StreetAddress, namespaces.xls, 'Street');
+					var Building = util.getElementsByTagNameNS(StreetAddress, namespaces.xls, 'Building')[0];
+				}
+
 				var places = util.getElementsByTagNameNS(xmlAddress, namespaces.xls, 'Place');
 				var postalCode = util.getElementsByTagNameNS(xmlAddress, namespaces.xls, 'PostalCode');
 
@@ -131,14 +135,17 @@ util = ( function() {'use strict';
 				}
 
 				//Street line
-				var streetline = 0;
-				$A(Streets).each(function(street) {
-					var officialName = street.getAttribute('officialName');
-					if (officialName != null) {
-						element.appendChild(new Element('span').update(officialName + ' '));
-						streetline++;
-					}
-				});
+				if (Streets) {
+					var streetline = 0;
+					$A(Streets).each(function(street) {
+						var officialName = street.getAttribute('officialName');
+						if (officialName != null) {
+							element.appendChild(new Element('span').update(officialName + ' '));
+							streetline++;
+						}
+					});
+				}
+
 				if (Building) {
 					var buildingNumber = Building.getAttribute('number');
 					if (buildingNumber != null) {
@@ -192,8 +199,12 @@ util = ( function() {'use strict';
 				if (address) {
 					
 					var streetAddress = util.getElementsByTagNameNS(address, namespaces.xls, 'StreetAddress')[0];
-					var streets = util.getElementsByTagNameNS(streetAddress, namespaces.xls, 'Street');
-					var building = util.getElementsByTagNameNS(streetAddress, namespaces.xls, 'Building')[0];
+					
+					if (streetAddress) {
+						var streets = util.getElementsByTagNameNS(streetAddress, namespaces.xls, 'Street');
+						var building = util.getElementsByTagNameNS(streetAddress, namespaces.xls, 'Building')[0];
+					}
+					
 					var places = util.getElementsByTagNameNS(address, namespaces.xls, 'Place');
 
 					//Building line

@@ -1,3 +1,4 @@
+
 var Controller = ( function(w) {'use strict';
 
         var $ = w.jQuery, ui = w.Ui, uiVersions = w.Versions, uiLanguages = w.Languages, waypoint = w.Waypoint, geolocator = w.Geolocator, searchAddress = w.SearchAddress, searchPoi = w.SearchPoi, route = w.Route, analyse = w.AccessibilityAnalysis, preferences = w.Preferences, openRouteService = w.OpenRouteService, Map = w.Map,

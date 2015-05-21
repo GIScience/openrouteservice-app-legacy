@@ -496,18 +496,12 @@ var Map = ( function() {"use strict";
 				// update map attributions in infoPanel
 				document.getElementById("infoPanel").innerHTML = self.theMap.baseLayer.attribution;
 			
-
-				var graphInfo = namespaces.services.routing + "?info";
-				jQuery.ajaxPrefilter(function( options ) {
-					if ( options.crossDomain ) {
-						options.url = "http://localhost/cgi-bin/proxy.cgi?url=" + encodeURIComponent( options.url );
-						options.crossDomain = false;
-					}	
-				});
+			
+				var url = "cgi-bin/proxy.cgi?url=" + namespaces.services.routing + "?info";
 
 				// set crossDomain to true if on localhost
 				jQuery.ajax({
-				  url: graphInfo,
+				  url: url,
 				  dataType: 'json',
 				  type: 'GET', 
 				  crossDomain: false,

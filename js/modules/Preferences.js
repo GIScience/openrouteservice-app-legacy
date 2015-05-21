@@ -614,6 +614,9 @@ var Preferences = ( function(w) {'use strict';
 	/**
 	 * open new window with the permalink
 	 */
+			
+	var url = "cgi-bin/proxy.cgi?url=" + namespaces.services.shorten;
+
 	function openPermalink() {
 		
 		var query = 'http://www.openrouteservice.org?';
@@ -623,20 +626,8 @@ var Preferences = ( function(w) {'use strict';
 		//slice away last '&'
 		query = query.substring(0, query.length - 1);
 
-		// convert to bitly
-		var shortenLink = namespaces.services.shorten;
-
-
-		jQuery.ajaxPrefilter(function( options ) {
-				if ( options.crossDomain ) {
-					options.url = "http://localhost/cgi-bin/proxy.cgi?url=" + encodeURIComponent( options.url );
-					options.crossDomain = false;
-				}
-		});
-
-		// for localhost testing, set crossDomain to true
 		jQuery.ajax({
-			url: shortenLink,
+			url: url,
 			type: "POST",
 			crossDomain: false,
 			data: query, 
@@ -652,7 +643,7 @@ var Preferences = ( function(w) {'use strict';
 	}
 
 
-		/**
+	/**
 	 * open new window with the permalink
 	 */
 	function copyPermalink() {
@@ -664,19 +655,8 @@ var Preferences = ( function(w) {'use strict';
 		//slice away last '&'
 		query = query.substring(0, query.length - 1);
 
-		// convert to bitly
-		var shortenLink = namespaces.services.shorten;
-
-		jQuery.ajaxPrefilter(function( options ) {
-				if ( options.crossDomain ) {
-					options.url = "http://localhost/cgi-bin/proxy.cgi?url=" + encodeURIComponent( options.url );
-					options.crossDomain = false;
-				}
-		});
-
-		// for localhost testing, set crossDomain to true
 		jQuery.ajax({
-			url: shortenLink,
+			url: url,
 			type: "POST",
 			crossDomain: false,
 			data: query, 

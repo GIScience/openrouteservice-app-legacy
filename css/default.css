@@ -958,6 +958,7 @@ button.weightOptions {
 
 .buttonHolder {
 	margin-top: -25px;
+	height: 25px;
 }
 #resetRoute {
 	float: right;
