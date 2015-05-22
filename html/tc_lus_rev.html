@@ -2,7 +2,7 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>OSM AAS | Testclient</title>
+<title>OSM OpenLS Route Service | Testclient</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <link rel="SHORTCUT ICON" href="../favicon.ico">
 
@@ -27,46 +27,31 @@ body {
 <form name="form1" method="post" action="">
   <table width="700" border="1" align="center" cellpadding="5" cellspacing="0">
     <tr>
-      <td colspan="3" nowrap><div align="left"><span class="Stil1">OSM AAS - Testclient by 
+      <td colspan="3" nowrap><div align="left"><span class="Stil1">OSM OpenLS Reverse Geocoding Service - Testclient by 
         <a href="http://www.openrouteservice.org/">www.OpenRouteService.org </a> </span>
       </div></td>
     </tr>
     <tr>
       <td nowrap>URL : </td>
-      <td colspan="2"><input id="url" value="http://openls.geog.uni-heidelberg.de/testing2015/analysis" size="80"></td>
+      <td colspan="2"><input id="url" value="http://openls.geog.uni-heidelberg.de/testing2015/geocoding" size="80"></td>
     </tr>
     <tr>
       <td align="left" valign="top" nowrap>Request : </td>
       <td colspan="2"><textarea name="REQUEST" cols="70" rows="20">
 <?xml version="1.0" encoding="UTF-8" ?>
-<aas:AAS version="1.0" xmlns:aas="http://www.geoinform.fh-mainz.de/aas" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.geoinform.fh-mainz.de/aas">
-	<aas:RequestHeader>
-	</aas:RequestHeader>
-	<aas:Request methodName="AccessibilityRequest" version="1.0" requestID="00">
-		<aas:DetermineAccessibilityRequest>
-			<aas:Accessibility>
-				<aas:AccessibilityPreference>
-					<aas:Time Duration="PT0H15M00S" />
-				</aas:AccessibilityPreference>
-				<aas:AccessibilitySettings>
-					<aas:RoutePreference>Car</aas:RoutePreference>
-					<aas:Method>RecursiveGrid</aas:Method>
-					<aas:Interval>180</aas:Interval>
-				</aas:AccessibilitySettings>
-				<aas:LocationPoint>
-					<aas:Position>
-						<gml:Point xmlns:gml="http://www.opengis.net/gml" srsName="EPSG:4326">
-							<gml:pos>8.676780149999997 49.418723600000135</gml:pos>
-						</gml:Point>
-					</aas:Position>
-				</aas:LocationPoint>
-			</aas:Accessibility>
-			<aas:AccessibilityGeometryRequest>
-				<aas:PolygonPreference>Detailed</aas:PolygonPreference>
-			</aas:AccessibilityGeometryRequest>
-		</aas:DetermineAccessibilityRequest>
-	</aas:Request>
-</aas:AAS>
+<xls:XLS xmlns:xls="http://www.opengis.net/xls" xsi:schemaLocation="http://www.opengis.net/xls http://schemas.opengis.net/ols/1.1.0/LocationUtilityService.xsd" xmlns:sch="http://www.ascc.net/xml/schematron" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xls:lang="de">
+	<xls:RequestHeader>
+	</xls:RequestHeader>
+	<xls:Request methodName="ReverseGeocodeRequest" version="1.1" requestID="00" maximumResponses="15">
+		<xls:ReverseGeocodeRequest>
+			<xls:Position>
+				<gml:Point xmlns:gml="http://www.opengis.net/gml">
+					<gml:pos srsName="EPSG:4326">8.682015821997037 49.41503834505945</gml:pos>
+				</gml:Point>
+			</xls:Position>
+		</xls:ReverseGeocodeRequest>
+	</xls:Request>
+</xls:XLS>
       </textarea></td>
     </tr>
     <tr align="right" valign="bottom">
