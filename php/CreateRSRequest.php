@@ -21,7 +21,7 @@
 ///////////////////////////////////////////////////
 //Function die XML Request an OpenLS RS erstellt
 
-function createRequest($startcoord, $endcoord, $viaPoints_XML, $language, $distanceunit, $routepref,$routeprofile, $avoidAreas, $avoidFeatures, $instructions) {
+function createRequest($startcoord, $endcoord, $viaPoints_XML, $language, $distanceunit, $routepref, $avoidAreas, $avoidFeatures, $instructions) {
 
 	$request = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 					<xls:XLS xmlns:xls=\"http://www.opengis.net/xls\" xmlns:sch=\"http://www.ascc.net/xml/schematron\" xmlns:gml=\"http://www.opengis.net/gml\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/xls
@@ -30,11 +30,8 @@ function createRequest($startcoord, $endcoord, $viaPoints_XML, $language, $dista
 					<xls:Request methodName=\"RouteRequest\" requestID=\"123456789\" version=\"1.1\">
 					<xls:DetermineRouteRequest distanceUnit=\"$distanceunit\">
 						<xls:RoutePlan>
-						<xls:RoutePreference>$routepref</xls:RoutePreference>
-							<xls:ExtendedRoutePreference>
-									<xls:WeightingMethod>$routeprofile</xls:WeightingMethod>
-							</xls:ExtendedRoutePreference>
-								<xls:WayPointList>
+							<xls:RoutePreference>$routepref</xls:RoutePreference>
+							<xls:WayPointList>
 								<xls:StartPoint>
 									<xls:Position>
 										<gml:Point srsName=\"EPSG:4326\">
