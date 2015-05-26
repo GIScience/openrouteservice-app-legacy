@@ -744,46 +744,32 @@ var Controller = ( function(w) {'use strict';
                     }
                 }
 
-                var prefs = ui.getRoutePreferences();
-                var routePref = prefs[0];
-                var extendedRoutePreferencesWeight = prefs[6];
-                var avoidHighway = prefs[1][0];
-                var avoidTollway = prefs[1][1];
-                var avoidUnpavedRoads = prefs[1][2];
-                var avoidFerry = prefs[1][3];
-                var avoidSteps = prefs[1][4];
+                
+                var routePref = permaInfo[preferences.routeOptionsIdx];
+                var extendedRoutePreferencesWeight = permaInfo[preferences.weightIdx];
+                var avoidHighway = permaInfo[preferences.avoidHighwayIdx];
+                var avoidTollway = permaInfo[preferences.avoidTollwayIdx]; 
+                var avoidUnpavedRoads = permaInfo[preferences.avoidUnpavedIdx]; 
+                var avoidFerry = permaInfo[preferences.avoidFerryIdx]; 
+                var avoidSteps = permaInfo[preferences.avoidStepsIdx]; 
 
                 var avoidAreas = map.getAvoidAreas();
 
-                
-                // get extendedType for HeavyTruck here..
-                //preferences.loadExtendedRouteOption();
+                var truck_length = permaInfo[preferences.value_lengthIdx];
+                var truck_height = permaInfo[preferences.value_heightIdx];
+                var truck_weight = permaInfo[preferences.value_weightIdx];
+                var truck_width = permaInfo[preferences.value_widthIdx];
 
-                var truckParameters = preferences.loadtruckParameters();
-                var truck_length = truckParameters[0];
-                var truck_height = truckParameters[1];
-                var truck_weight = truckParameters[2];
-                var truck_width = truckParameters[3];
+                var truckHazardous = permaInfo[preferences.hazardousIdx];
 
-                ui.setTruckParameters(truck_length, truck_height, truck_weight, truck_width);
-
-                /* get and set hazardous */
-                var truckHazardous = preferences.loadHazardous();
-                ui.setHazardousParameter(truckHazardous); 
+                var wheelchairSurface = permaInfo[preferences.surfaceIdx]; 
+                var wheelchairIncline = permaInfo[preferences.inclineIdx]; 
+                var wheelchairSloped = permaInfo[preferences.slopedCurbIdx];
 
                 //check whether truck button is active and send extendedRoutePreferences, otherwise don't 
-                if(prefs[3] == 'truck') {
-                    var extendedRoutePreferencesParams = prefs[2];
-                    var extendedRoutePreferencesType = prefs[5];
-                } 
-                // check whether wheelchair button is active and send extendedRoutePreferences, otherwise don't
-                else  if (prefs[3] == 'wheelchair') {
-                    var extendedRoutePreferencesParams = prefs[4];
-                }
-                else {
-                    var extendedRoutePreferencesParams = null;
-                    var extendedRoutePreferencesType = null;
-                }
+                var extendedRoutePreferencesType = permaInfo[preferences.routeOptionsTypesIdx];
+                var extendedRoutePreferencesParams = permaInfo[preferences.routeOptionsTypesIdx];
+                
 
 
                 route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferencesParams, extendedRoutePreferencesType, avoidHighway, avoidTollway,avoidUnpavedRoads,avoidFerry, avoidSteps, avoidAreas, extendedRoutePreferencesWeight, calcRouteID);
@@ -837,10 +823,11 @@ var Controller = ( function(w) {'use strict';
                     var routeLineString = route.writeRouteToSingleLineString(results);
                     var routeString = map.writeRouteToString(routeLineString);
                     route.routeString = routeString;
-
+                    
                     // each route instruction has a part of this lineString as geometry for this instruction
                     var routeLines = route.parseResultsToLineStrings(results, util.convertPointForMap);
                     var routePoints = route.parseResultsToCornerPoints(results, util.convertPointForMap);
+
                     var featureIds = map.updateRoute(routeLines, routePoints);
 
                     var errors = route.hasRoutingErrors(results);
@@ -1263,7 +1250,6 @@ var Controller = ( function(w) {'use strict';
         /* *********************************************************************
         * PREFERENCES, PERMALINK AND COOKIES
         * *********************************************************************/
-
         /**
          * updates internal preferences (language, distance unit, ...)
          * @param atts: key: id of the variable name; value: value that should be assigned to that variable
@@ -1355,27 +1341,28 @@ var Controller = ( function(w) {'use strict';
 
             //apply GET variables and/or cookies and set the user's language,...
             var getVars = preferences.loadPreferencesOnStartup();
-
+            console.log(getVars)
             var pos = getVars[preferences.getPrefName(preferences.positionIdx)];
             var zoom = getVars[preferences.getPrefName(preferences.zoomIdx)];
             var layer = getVars[preferences.getPrefName(preferences.layerIdx)];
             var waypoints = getVars[preferences.getPrefName(preferences.waypointIdx)];
             var routeOpt = getVars[preferences.getPrefName(preferences.routeOptionsIdx)];
+            var routeOptType = getVars[preferences.getPrefName(preferences.routeOptionsTypesIdx)];
             var motorways = getVars[preferences.getPrefName(preferences.avoidHighwayIdx)];
             var tollways = getVars[preferences.getPrefName(preferences.avoidTollwayIdx)];
             var unpaved = getVars[preferences.getPrefName(preferences.avoidUnpavedIdx)];
             var ferry = getVars[preferences.getPrefName(preferences.avoidFerryIdx)];
             var steps = getVars[preferences.getPrefName(preferences.avoidStepsIdx)];
             var avoidAreas = getVars[preferences.getPrefName(preferences.avoidAreasIdx)];
-            
             var truck_length = getVars[preferences.getPrefName(preferences.truck_lengthIdx)];
             var truck_height = getVars[preferences.getPrefName(preferences.truck_heightIdx)];
             var truck_weight = getVars[preferences.getPrefName(preferences.truck_weightIdx)];
-            var truck_width = getVars[preferences.getPrefName(preferences.truck_widthIdx)];
-                        
+            var truck_width = getVars[preferences.getPrefName(preferences.truck_widthIdx)];  
             var surface = getVars[preferences.getPrefName(preferences.surfaceIdx)];
             var incline = getVars[preferences.getPrefName(preferences.inclineIdx)];
             var slopedCurb = getVars[preferences.getPrefName(preferences.slopedCurbIdx)];
+            var routeWeight = getVars[preferences.getPrefName(preferences.weightIdx)];
+            var hazardous = getVars[preferences.getPrefName(preferences.hazardousIdx)];
 
             pos = preferences.loadMapPosition(pos);
             if (pos && pos != 'null') {
@@ -1401,9 +1388,7 @@ var Controller = ( function(w) {'use strict';
             //waypoints: array of OL.LonLat representing one wayoint each
             waypoints = preferences.loadWaypoints(waypoints);
 
-
             if (waypoints && waypoints.length > 0) {
-
 
                 for (var i = 0; i < waypoints.length; i++) {
 
@@ -1428,49 +1413,62 @@ var Controller = ( function(w) {'use strict';
                 }
             }
 
+            // if routeOpt is not in getVars then use Car for init
             routeOpt = preferences.loadRouteOptions(routeOpt);
-            ui.setRouteOption(routeOpt);
-            var res = preferences.loadAvoidables(motorways, tollways, unpaved, ferry, steps);
-            motorways = res[0];
-            tollways = res[1];
-            unpaved = res[2];
-            ferry = res[3];
-            steps = res[4];
+            
+            if (routeOpt == undefined || routeOpt == null || routeOpt == 'undefined') {
+                ui.setRouteOption(list.routePreferences.get('car'));
+            } else {
+                ui.setRouteOption(routeOpt); 
+            }
+
+            routeOptType = preferences.loadRouteOptionsType(routeOptType);
+            ui.setRouteOptionType(routeOptType);
+
+            routeWeight = preferences.loadRouteWeight(routeWeight);
+            ui.setRouteWeight(routeWeight);
+
+            var avSettings = preferences.loadAvoidables(motorways, tollways, unpaved, ferry, steps);
+            motorways = avSettings[0];
+            tollways = avSettings[1];
+            unpaved = avSettings[2];
+            ferry = avSettings[3];
+            steps = avSettings[4];
             ui.setAvoidables(motorways, tollways, unpaved, ferry, steps);
             
+            // only set wheel parameters wheelchair if in getVars
             var wheelParameters = preferences.loadWheelParameters(surface, incline, slopedCurb);
-            surface = wheelParameters[0];
-            incline = wheelParameters[1];
-            slopedCurb = wheelParameters[2];
-            ui.setWheelParameters(surface, incline, slopedCurb);
-            
-            // if (routeOpt == 'Wheelchair') {
-                // $("#routeOptions").removeClass('collapsed');
-                // $("#routeOptions").parent().get(0).querySelector('.collapsibleBody').show();
-            // }
+            if (wheelParameters.length > 0 ) {
+                surface = wheelParameters[0];
+                incline = wheelParameters[1];
+                slopedCurb = wheelParameters[2];
+                ui.setWheelParameters(surface, incline, slopedCurb);
+            }
 
-
-            //var avoidables = preferences.loadAvoidables(motorways, tollways, unpaved, ferry);
             //avoidAreas: array of OL.Polygon representing one avoid area each
             avoidAreas = preferences.loadAvoidAreas(avoidAreas);
             //apply avoid areas
             map.addAvoidAreas(avoidAreas);
 
             /* get and set truck parameters */
-            var truckParameters = preferences.loadtruckParameters();
-            truck_length = truckParameters[0];
-            truck_height = truckParameters[1];
-            truck_weight = truckParameters[2];
-            truck_width = truckParameters[3];
-            ui.setTruckParameters(truck_length, truck_height, truck_weight,truck_width);
+            var truckParameters = preferences.loadtruckParameters(truck_length, truck_height, truck_width, truck_weight);
+            if (truckParameters.length > 0) {
+                truck_length = truckParameters[0];
+                truck_height = truckParameters[1];
+                truck_weight = truckParameters[2];
+                truck_width = truckParameters[3];
+                ui.setTruckParameters(truck_length, truck_height, truck_weight, truck_width);
+            }
 
             /* get and set hazardous */
-            var truckHazardous = preferences.loadHazardous();
-            ui.setHazardousParameter(truckHazardous); 
+            hazardous = preferences.loadHazardous(hazardous);
+            ui.setHazardousParameter(hazardous); 
 
             if (!preferences.areCookiesAVailable()) {
                 ui.showNewToOrsPopup();
             }
+
+            console.log(permaInfo)
 
         }
 

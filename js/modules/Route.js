@@ -226,15 +226,13 @@ var Route = ( function(w) {"use strict";
 			var xmlRequest = writer.flush();
 			writer.close();
 			
-			
-			var url = "cgi-bin/proxy.cgi?url=" + namespaces.services.routing;
-			
-			// jQuery.ajaxPrefilter(function( options ) {
-			// 	if ( options.crossDomain ) {
-			// 		options.url = "http://localhost/cgi-bin/proxy.cgi?url=" + encodeURIComponent( options.url );
-			// 		options.crossDomain = true;
-			// 	}
-			// });
+			var url;
+			if ( location.hostname.match('openrouteservice') || location.hostname.match('localhost') ) {
+				 url = "cgi-bin/proxy.cgi?url=" + namespaces.services.routing;
+			} else {
+				 url = namespaces.services.routing;
+			}
+
 
 			jQuery.ajax({
 				url: url,

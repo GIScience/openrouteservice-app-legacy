@@ -35,14 +35,19 @@ list = {
 	//please make sure that each category contains at least one element. all names in the hash have to be unique.
 	routePreferences: new Hash({
 		'car': ['Car'],
-		'bicycle': ['Bicycle', 'BicycleSafety', 'BicycleRoute', 'BicycleMTB', 'BicycleRacer'],
-		'pedestrian': ['Pedestrian'],
-		'truck': [['HeavyTruck'],['goods', 'hgv', 'bus', 'agricultural', 'forestry', 'delivery']],
-		'wheelchair': ['Wheelchair']
+		'bicycle': ['bicycle', 'Bicycle', 'BicycleSafety', 'BicycleRoute', 'BicycleMTB', 'BicycleRacer'],
+		'pedestrian': ['pedestrian', 'Pedestrian'],
+		'heavyvehicle': ['HeavyVehicle'],
+		'wheelchair': ['wheelchair', 'Wheelchair']
 	}),
 
-	
-		
+	//please make sure that each category contains at least one element. all names in the hash have to be unique.
+	routePreferencesTypes: new Hash({
+		'heavyvehicle': ['goods', 'hgv', 'bus', 'agricultural', 'forestry', 'delivery'],
+	}),
+
+	routeDangerousGoods : ['hazardous'],
+
 	routeWeightSettings : ['Fastest', 'Shortest'],
 	
 	routeAvoidables : ['Highway', 'Tollway', 'Unpavedroads', 'Ferry', 'Steps'],
@@ -53,7 +58,7 @@ list = {
 		'car': ['img/picto-car.png', 'img/picto-car-high.png'],
 		'bicycle': ['img/picto-bike.png', 'img/picto-bike-high.png'],
 		'pedestrian' : ['img/picto-dude.png', 'img/picto-dude-high.png'],
-		'truck' : ['img/picto-truck.png', 'img/picto-truck-high.png'],
+		'heavyvehicle' : ['img/picto-truck.png', 'img/picto-truck-high.png'],
 		'wheelchair' : ['img/picto-wheelchair.png', 'img/picto-wheelchair-high.png']
 	}),
 	
