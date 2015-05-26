@@ -46,7 +46,7 @@ list = {
 		'heavyvehicle': ['goods', 'hgv', 'bus', 'agricultural', 'forestry', 'delivery'],
 	}),
 
-	routeDangerousGoods : ['hazardous'],
+	routeDangerousGoods : ['hazmat'],
 
 	routeWeightSettings : ['Fastest', 'Shortest'],
 	

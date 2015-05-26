@@ -2153,7 +2153,7 @@ var Ui = ( function(w) {'use strict';
 		 * @params truck_width: the truck width
 		 */
 		function setTruckParameters(truck_length, truck_height, truck_weight,truck_width) {
-
+			console.log('setting Params ', truck_length, truck_height, truck_weight,truck_width)
 			$("#value_length").val(truck_length);
 			$("#value_height").val(truck_height);
 			$("#value_weight").val(truck_weight);
@@ -2220,35 +2220,61 @@ var Ui = ( function(w) {'use strict';
 				//is a route avoidable
 				if (itemId === list.routeAvoidables[0]) {
 					//if the avoidable is set, remove it (and vice versa)
+					if (permaInfo[preferences.avoidHighwayIdx] == "true") {
+						var boolVar = false;
+					} else {
+						var boolVar = true;
+					}
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.avoidHighwayIdx,
-						value : itemId != null
+						value : boolVar
 					});
+
 				}
 				if (itemId === list.routeAvoidables[1]) {
 					//if the avoidable is set, remove it (and vice versa)
+					if (permaInfo[preferences.avoidTollwayIdx] == "true") {
+						var boolVar = false;
+					} else {
+						var boolVar = true;
+					}
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.avoidTollwayIdx,
-						value : itemId != null
+						value : boolVar
 					});
 				}
 				if (itemId === list.routeAvoidables[2]) {
 					//if the avoidable is set, remove it (and vice versa)
+					if (permaInfo[preferences.avoidUnpavedIdx] == "true") {
+						var boolVar = false;
+					} else {
+						var boolVar = true;
+					}
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.avoidUnpavedIdx,
-						value : itemId != null
+						value : boolVar
 					});
 				} 
 				if (itemId === list.routeAvoidables[3]) {
+					if (permaInfo[preferences.avoidFerryIdx] == "true") {
+						var boolVar = false;
+					} else {
+						var boolVar = true;
+					}
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.avoidFerryIdx,
-						value : itemId != null
+						value : boolVar
 					});
 				}
 				else if (itemId === list.routeAvoidables[4]) {
+					if (permaInfo[preferences.avoidStepsIdx] == "true") {
+						var boolVar = false;
+					} else {
+						var boolVar = true;
+					}
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.avoidStepsIdx,
-						value : itemId
+						value : boolVar
 					});
 				}
 
@@ -2317,29 +2343,33 @@ var Ui = ( function(w) {'use strict';
 			// }
 
 			else if (itemId == 'Hazardous') {
-				
+				if (permaInfo[preferences.hazardousIdx] == "hazmat") {
+					var boolVar = null;
+				} else {
+					var boolVar = "hazmat";
+				}
 				theInterface.emit('ui:prefsChanged', {
 						key : preferences.hazardousIdx,
-						value : itemId != null
+						value : boolVar
 				});
 			
 			} else {
 
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.routeOptionsIdx,
-					value : itemId != null
+					value : itemId
 				});
 
 			}
 
-
+console.log(permaInfo)
 			theInterface.emit('ui:routingParamsChanged');
 		}
 
 
 
 		/**
-		 * sets route weight
+		 * used to activate route weight on startup if necessary
 		 * @param routeWeight: 'Fastest' or 'Shortest'
 		 */
 		function setRouteWeight(routeWeight) {
@@ -2388,38 +2418,38 @@ var Ui = ( function(w) {'use strict';
 					$('#' + parentOptions[i]).addClass('active');
 					//show avoidables for car, bike or pedestrian
 					console.log(parentOptions[i]);
-					if (parentOptions[i] == 'car' || parentOptions[i] == 'heavyvehicle') {
+					if (parentOptions[i] == 'car' ) {
 						avoidables.show();
-						truckParameters.show();
+						truckParameters.hide();
 						avoidablesBike.hide();
 						avoidablesPed.hide();
+						wheelParameters.hide();
 					} else if (parentOptions[i] == 'bicycle') {
 						avoidablesBike.show();
 						avoidables.hide();
 						avoidablesPed.hide();
 						truckParameters.hide();
+						wheelParameters.hide();
 					}  else if (parentOptions[i] == 'pedestrian') {
 						avoidablesPed.show();
 						avoidables.hide();
 						avoidablesBike.hide();
 						truckParameters.hide();
-					} 
-					//hide avoidables otherwise
-					else {
+						wheelParameters.hide();
+					} else if (parentOptions[i] == 'heavyvehicle') {
+						avoidables.show();
+						truckParameters.show();
+						avoidablesBike.hide();
+						avoidablesPed.hide();
+						wheelParameters.hide();
+					} else if (parentOptions[i] == 'wheelchair') {
 						avoidables.hide();
 						avoidablesBike.hide();
 						avoidablesPed.hide();
 						truckParameters.hide();
-					}
-					//show parameters for wheelchair if wheelchair option is active
-					if (parentOptions[i] == 'wheelchair') {
 						wheelParameters.show();
 					}
-
-					//hide parameters for wheelchair otherwise
-					else {
-						wheelParameters.hide();
-					}
+					
 					//switch button
 					switchRouteOptionsButton(parentOptions[i])
 					
@@ -2441,15 +2471,7 @@ var Ui = ( function(w) {'use strict';
 		function setRouteOptionType(routeOptType) {
 			//set route option type
 			if (list.routePreferencesTypes.get('heavyvehicle').indexOf(routeOptType) > -1) {
-
 				jQuery("input[name=heavyvehicle][value=" + routeOptType + "]").attr('checked', 'checked');
-				
-
-				theInterface.emit('ui:prefsChanged', {
-						key : preferences.routeOptionsTypesIdx,
-						value : routeOptType != null
-				});
-
 			}
 
 		}
@@ -2460,10 +2482,14 @@ var Ui = ( function(w) {'use strict';
 		 * @param incline
 		 * @param slopedCurb
 		 */
-		function setWheelParameters(surface, incline, slopedCurb) {
+		function setWheelParameters(surface, incline, slopedCurb, tracktype, smoothness) {
 			var surfaceParamIndex = 0;
 			var inclineParamIndex = 0;
 			var slopedCurbParamIndex = 0;
+			var trackTypeParamIndex = 0;
+			var smoothnessParamIndex = 0;
+
+			//TODO add trackType, smoothness
 			for (var i = 0; i < list.wheelchairParameters.get('Surface').length; i++) {
 				if(list.wheelchairParameters.get('Surface')[i] == surface) {
 					surfaceParamIndex = i;

@@ -5,10 +5,10 @@ var Preferences = ( function(w) {'use strict';
 	//are there any cookies of thie page yet?
 	var cookiesAvailable = false;
 
-	var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version','avUnpaved', 'avFerry','value_length','value_height','value_weight','value_width','surface','incline','slopedCurb', 'hazardous', 'routeWeight', 'avSteps', 'routeOptType'];
+	var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version','avUnpaved', 'avFerry','value_length','value_height','value_weight','value_width','surface','incline','slopedCurb', 'hazardous', 'routeWeight', 'avSteps', 'routeOptType', 'trackType', 'smoothness'];
 
 	//store information that can be used for the permalink
-	permaInfo = Array.apply(null, new Array(27)).map(String.prototype.valueOf,"null")
+	permaInfo = Array.apply(null, new Array(27)).map(String.prototype.valueOf,'null')
 
 	/**
 	 * Constructor
@@ -63,7 +63,6 @@ var Preferences = ( function(w) {'use strict';
 
 		cookiesAvailable = false;
 	}
-
 
 	function getPrefName(idx) {
 		return prefNames[idx];
@@ -403,19 +402,14 @@ var Preferences = ( function(w) {'use strict';
 
 		var truckParameters = new Array();
 
-		truck_length = unescape(truck_length);
-		truck_height = unescape(truck_height);
-		truck_width = unescape(truck_width);
-		truck_weight = unescape(truck_weight);
-
-		if (truck_length == undefined || truck_length == null || truck_length == 'undefined') {
+		if (truck_length == undefined || truck_length == null || truck_length == 'undefined' || truck_length == 'null') {
 			permaInfo[this.value_lengthIdx] = null;
 		} else {
 			permaInfo[this.value_lengthIdx] = truck_length;
 			truckParameters[0] = truck_length;
 		}
 
-		if (truck_height == undefined || truck_height == null || truck_height == 'undefined') {
+		if (truck_height == undefined || truck_height == null || truck_height == 'undefined' || truck_height == 'null') {
 			permaInfo[this.value_heightIdx] = null;
 		} else {
 			permaInfo[this.value_heightIdx] = truck_height;
@@ -423,20 +417,20 @@ var Preferences = ( function(w) {'use strict';
 
 		}
 
-		if (truck_width == undefined || truck_width == null || truck_width == 'undefined') {
+		if (truck_width == undefined || truck_width == null || truck_width == 'undefined' || truck_width == 'null') {
 			permaInfo[this.value_widthIdx] = null;
 		} else {
 			permaInfo[this.value_widthIdx] = truck_width;
 			truckParameters[2] = truck_width;
 		}
 
-		if (truck_weight == undefined || truck_weight == null || truck_weight == 'undefined') {
+		if (truck_weight == undefined || truck_weight == null || truck_weight == 'undefined' || truck_weight == 'null') {
 			permaInfo[this.value_weightIdx] = null;
 		} else {
 			permaInfo[this.value_weightIdx] = truck_weight;
 			truckParameters[3] = truck_weight;
 		}
-		
+		console.log(truckParameters)
 		return truckParameters;
 
 	}
@@ -448,7 +442,7 @@ var Preferences = ( function(w) {'use strict';
 	function loadHazardous(hazardous) {
 		
 		if (hazardous == undefined || hazardous == null || hazardous == 'undefined') {
-			permaInfo[this.hazardousIdx] = null;
+			permaInfo[this.hazardousIdx] = escape("null");
 		} else {
 			permaInfo[this.hazardousIdx] = hazardous;
 		}
@@ -468,21 +462,16 @@ var Preferences = ( function(w) {'use strict';
 		
 		var avoidables = [false, false, false, false, false];
 		
-		highway = unescape(highway);
-		tollway = unescape(tollway);
-		unpaved = unescape(unpaved);
-		ferry = unescape(ferry);
-		steps = unescape(steps);
 
 		// highway
-		if (highway == 'true') {
+		if (highway == true) {
 			permaInfo[this.avoidHighwayIdx] = true;
 			avoidables[0] = true;
 		} else {
 			permaInfo[this.avoidHighwayIdx] = false;
 		}
 		// tollway
-		if (tollway == 'true') {
+		if (tollway == true) {
 			permaInfo[this.avoidTollwayIdx] = true;
 			avoidables[1] = true;
 		} else {
@@ -490,14 +479,14 @@ var Preferences = ( function(w) {'use strict';
 			
 		}
 		// tollway
-		if (unpaved == 'true') {
+		if (unpaved == true) {
 			permaInfo[this.avoidUnpavedIdx] = true;
 			avoidables[2] = true;
 		} else {
 			permaInfo[this.avoidUnpavedIdx] = false;
 		}
 		// ferry
-		if (ferry == 'true') {
+		if (ferry == true) {
 			permaInfo[this.avoidFerryIdx] = true;
 			avoidables[3] = true;
 		} else {
@@ -505,7 +494,7 @@ var Preferences = ( function(w) {'use strict';
 			
 		}
 		// ferry
-		if (steps == 'true') {
+		if (steps == true) {
 			permaInfo[this.avoidStepsIdx] = true;
 			avoidables[4] = true;
 		} else {
@@ -521,35 +510,43 @@ var Preferences = ( function(w) {'use strict';
 	 * @param surface, incline, slopedCurb: extracted from the GET variables in readGetVars()
 	 * @return the wheelchair parameters
 	 */
-	function loadWheelParameters(surface, incline, slopedCurb) {
+	function loadWheelParameters(surface, incline, slopedCurb, tracktype, smoothness) {
+
 		var wheelParameters = new Array();
 		
-		//surface
-		surface = unescape(surface);
-		//incline
-		incline = unescape(incline);
-		//slopedCurb
-		slopedCurb = unescape(slopedCurb);
-
-		if (surface == undefined || surface == null || surface == 'undefined') {
+		if (surface == undefined || surface == null || surface == 'undefined' || surface == 'null') {
 			permaInfo[this.surfaceIdx] = null;
 		} else {
 			permaInfo[this.surfaceIdx] = surface;
 			wheelParameters[0] = surface;
 		}
 
-		if (incline == undefined || incline == null || incline == 'undefined') {
+		if (incline == undefined || incline == null || incline == 'undefined' || incline == 'null') {
 			permaInfo[this.inclineIdx] = null;
 		} else {
 			permaInfo[this.inclineIdx] = incline;
 			wheelParameters[1] = incline;
 		}
 
-		if (slopedCurb == undefined || slopedCurb == null || slopedCurb == 'undefined') {
+		if (slopedCurb == undefined || slopedCurb == null || slopedCurb == 'undefined' || slopedCurb == 'null') {
 			permaInfo[this.slopedCurbIdx] = null;
 		} else {
 			permaInfo[this.slopedCurbIdx] = slopedCurb;
 			wheelParameters[2] = slopedCurb;
+		}
+
+		if (tracktype == undefined || tracktype == null || tracktype == 'undefined' ||  tracktype == 'null') {
+			permaInfo[this.trackTypeIdx] = null;
+		} else {
+			permaInfo[this.trackTypeIdx] = tracktype;
+			wheelParameters[3] = tracktype;
+		}
+
+		if (smoothness == undefined || smoothness == null || smoothness == 'undefined' || smoothness == 'null') {
+			permaInfo[this.smoothnessIdx] = null;
+		} else {
+			permaInfo[this.smoothnessIdx] = smoothness;
+			wheelParameters[4] = smoothness;
 		}
 		
 		return wheelParameters;
@@ -589,7 +586,7 @@ var Preferences = ( function(w) {'use strict';
 	 */
 	function updatePreferences(key, value) {
 
-		permaInfo[key] = escape(value);
+		permaInfo[key] = value;
 		
 	}
 
