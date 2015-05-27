@@ -367,8 +367,6 @@ var Preferences = ( function(w) {'use strict';
 	 */
 	function loadRouteOptions(routeOpt) {
 		routeOpt = unescape(routeOpt);
-		console.log(routeOpt)
-
 		//set a default in the permaInfo Array if routeOpt == null, undef, etc.
 		if (routeOpt == undefined || routeOpt == null || routeOpt == 'undefined') {
 			routeOpt = list.routePreferences.get('car')[0];
@@ -430,7 +428,6 @@ var Preferences = ( function(w) {'use strict';
 			permaInfo[this.value_weightIdx] = truck_weight;
 			truckParameters[3] = truck_weight;
 		}
-		console.log(truckParameters)
 		return truckParameters;
 
 	}
@@ -713,11 +710,14 @@ var Preferences = ( function(w) {'use strict';
 		 url = namespaces.services.shorten;
 	}
 	
-	function openPermalink() {
-		
+	function generatePermalink(option) {
+
 		var query = 'http://www.openrouteservice.org?';
 		for (var i = 0; i < prefNames.length; i++) {
-			query += prefNames[i] + '=' + permaInfo[i] + '&';
+			if (permaInfo[i] != null && permaInfo[i] != 'null' ) {
+				query += prefNames[i] + '=' + permaInfo[i] + '&';
+			}
+			
 		}
 		//slice away last '&'
 		query = query.substring(0, query.length - 1);
@@ -728,7 +728,11 @@ var Preferences = ( function(w) {'use strict';
 			crossDomain: false,
 			data: query, 
 			success: function(response){
-				window.open(response)
+				if (option == 'copy') {
+					window.prompt("Copy to clipboard: Ctrl+C or Cmd+C, Enter", response);
+				} else if (option == 'open') {
+					window.open(response)
+				}
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) { 
 				alert("Status: " + textStatus); 
@@ -738,36 +742,6 @@ var Preferences = ( function(w) {'use strict';
 
 	}
 
-
-	/**
-	 * open new window with the permalink
-	 */
-	function copyPermalink() {
-		
-		var query = 'http://www.openrouteservice.org?';
-		for (var i = 0; i < prefNames.length; i++) {
-			query += prefNames[i] + '=' + permaInfo[i] + '&';
-		}
-		console.log(query);
-		//slice away last '&'
-		query = query.substring(0, query.length - 1);
-
-		jQuery.ajax({
-			url: url,
-			type: "POST",
-			crossDomain: false,
-			data: query, 
-			success: function(response){
-				window.prompt("Copy to clipboard: Ctrl+C or Cmd+C, Enter", response);
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) { 
-				alert("Status: " + textStatus); 
-				alert("Error: " + errorThrown); 
-			}
-		});
-
-	}
-	
 	/**
 	 * the site is reloaded with the permalink (used after preferences have been changed) 
 	 */
@@ -815,8 +789,7 @@ var Preferences = ( function(w) {'use strict';
 
 	Preferences.prototype.areCookiesAVailable = areCookiesAVailable;
 
-	Preferences.prototype.openPermalink = openPermalink;
-	Preferences.prototype.copyPermalink = copyPermalink;
+	Preferences.prototype.generatePermalink = generatePermalink;
 	Preferences.prototype.reloadWithPerma = reloadWithPerma;
 	
 	return new Preferences();

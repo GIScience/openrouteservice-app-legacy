@@ -725,8 +725,6 @@ var Controller = ( function(w) {'use strict';
          * else: hides route information
          */
         function handleRoutePresent() {
-
-            console.log('hrp')
             
             var isRoutePresent = waypoint.getNumWaypointsSet() >= 2;
 
@@ -1302,14 +1300,9 @@ var Controller = ( function(w) {'use strict';
         }
 
 
-        function handlePermalinkRequest() {
+        function handlePermalinkRequest(tgt) {
 
-            preferences.openPermalink();
-        }
-
-        function handleCopyPermalinkRequest() {
-
-            preferences.copyPermalink();
+            preferences.generatePermalink(tgt);
         }
 
         /**
@@ -1362,7 +1355,7 @@ var Controller = ( function(w) {'use strict';
 
             //apply GET variables and/or cookies and set the user's language,...
             var getVars = preferences.loadPreferencesOnStartup();
-            console.log(getVars)
+            
             var pos = getVars[preferences.getPrefName(preferences.positionIdx)];
             var zoom = getVars[preferences.getPrefName(preferences.zoomIdx)];
             var layer = getVars[preferences.getPrefName(preferences.layerIdx)];
@@ -1421,7 +1414,6 @@ var Controller = ( function(w) {'use strict';
 
             routeOptType = preferences.loadRouteOptionsType(routeOptType);
             ui.setRouteOptionType(routeOptType);
-            console.log(routeOptType)
 
             routeWeight = preferences.loadRouteWeight(routeWeight);
             ui.setRouteWeight(routeWeight);
@@ -1437,7 +1429,6 @@ var Controller = ( function(w) {'use strict';
             // only set wheel parameters wheelchair if in getVars
             var wheelParameters = preferences.loadWheelParameters(surface, incline, slopedCurb, trackType, smoothness);
             if (wheelParameters.length > 0 ) {
-                console.log(wheelParameters)
                 surface = wheelParameters[0];
                 incline = wheelParameters[1];
                 slopedCurb = wheelParameters[2];
@@ -1454,7 +1445,6 @@ var Controller = ( function(w) {'use strict';
             /* get and set truck parameters */
             var truckParameters = preferences.loadtruckParameters(truck_length, truck_height, truck_width, truck_weight);
             if (truckParameters.length > 0) {
-                console.log('truckparams')
                 truck_length = truckParameters[0];
                 truck_height = truckParameters[1];
                 truck_weight = truckParameters[2];
@@ -1500,7 +1490,7 @@ var Controller = ( function(w) {'use strict';
                 ui.showNewToOrsPopup();
             }
 
-            console.log(permaInfo)
+           
 
         }
 
@@ -1609,9 +1599,8 @@ var Controller = ( function(w) {'use strict';
             ui.register('ui:removeHeightProfileTrack', handleRemoveHeightProfile);
 
             ui.register('ui:saveUserPreferences', updateUserPreferences);
-            ui.register('ui:openPermalinkRequest', handlePermalinkRequest);
+            ui.register('ui:generatePermalinkRequest', handlePermalinkRequest);
 
-            ui.register('ui:copyPermalinkRequest', handleCopyPermalinkRequest);
 
             ui.register('ui:clearFromGpx', handleRemoveTrack);
 

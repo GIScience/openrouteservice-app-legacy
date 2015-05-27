@@ -1812,7 +1812,6 @@ var Ui = ( function(w) {'use strict';
 
 			var parent = $('.routePreferenceBtns').get(0);
 			var optionType = e.currentTarget.id;
-			console.log(optionType);
 			//switch the buttons above
 			var allBtn = parent.querySelectorAll('button');
 			for (var i = 0; i < allBtn.length; i++) {
@@ -1827,12 +1826,10 @@ var Ui = ( function(w) {'use strict';
 
 					//set the selected entry as currently selected route option
 					var options = $('#' + btn.id + 'Options').get(0).querySelector('input[checked="checked"]');
-					console.log(options)
-					
+
 					/* adapt global settings information */
 					updateGlobalSettings(optionType,options.id);
 
-					console.log(permaInfo)
 					theInterface.emit('ui:routingParamsChanged');
 
 
@@ -2153,12 +2150,10 @@ var Ui = ( function(w) {'use strict';
 		 * @params truck_width: the truck width
 		 */
 		function setTruckParameters(truck_length, truck_height, truck_weight,truck_width) {
-			console.log('setting Params ', truck_length, truck_height, truck_weight,truck_width)
 			$("#value_length").val(truck_length);
 			$("#value_height").val(truck_height);
 			$("#value_weight").val(truck_weight);
 			$("#value_width").val(truck_width);
-
 		}
 
 		/** 
@@ -2213,8 +2208,6 @@ var Ui = ( function(w) {'use strict';
 
 			//for extended route options
 			var itemValue = target.value;
-			console.log(itemId);
-			console.log(itemValue)
 			
 			if ($.inArray(itemId, list.routeAvoidables) >= 0) {
 				//is a route avoidable
@@ -2362,7 +2355,6 @@ var Ui = ( function(w) {'use strict';
 
 			}
 
-console.log(permaInfo)
 			theInterface.emit('ui:routingParamsChanged');
 		}
 
@@ -2391,12 +2383,11 @@ console.log(permaInfo)
 		function setRouteOption(routeOption) {
 			//set radioButton with $('#' + routeOption) active
 			
-			console.log(routeOption)
  			var el = $('#' + routeOption);
 			if (el) {
 				el.attr('checked', true)
 			}
-			console.log(el)
+			
 
 			// set parent div (with all available options for car/bike/pedestrian/truck/wheelchair visible
 			var parentOptions = list.routePreferences.keys();
@@ -2407,17 +2398,13 @@ console.log(permaInfo)
 			var wheelParameters = $('#wheelchairParameters');
 			var truckParameters = $('#truckOptions_restrict');
 			for (var i = 0; i < parentOptions.length; i++) {
-				console.log(routeOption);
 
 				if (list.routePreferences.get(parentOptions[i]).indexOf(routeOption) != -1) {
 					//show div
-					console.log(parentOptions[i])
 					$('#' + parentOptions[i] + 'Options').show();
-					console.log($('#' + parentOptions[i] + 'Options'));
 					//activate corresponding option panel
 					$('#' + parentOptions[i]).addClass('active');
 					//show avoidables for car, bike or pedestrian
-					console.log(parentOptions[i]);
 					if (parentOptions[i] == 'car' ) {
 						avoidables.show();
 						truckParameters.hide();
@@ -2597,18 +2584,13 @@ console.log(permaInfo)
 		/**
 		 * triggers opening a new window with the permalink
 		 */
-		function handleOpenPerma() {
+		function handleGeneratePerma(event) {
 			$('#bubble').hide();
-			theInterface.emit('ui:openPermalinkRequest');
+			var tgt = event.target.id;
+			theInterface.emit('ui:generatePermalinkRequest', tgt);
 		}
 
-		/**
-		 * triggers copying permalink
-		 */
-		function handleCopyPerma() {
-			$('#bubble').hide();
-			theInterface.emit('ui:copyPermalinkRequest');
-		}
+		
 
 
 		/* *********************************************************************
@@ -3097,8 +3079,8 @@ console.log(permaInfo)
 
 			//permalink
 			$('#infoPermalink').click(handleOpenPermaOptions);
-			$('#open').click(handleOpenPerma);
-			$('#copy').click(handleCopyPerma);
+			$('#open').click(handleGeneratePerma);
+			$('#copy').click(handleGeneratePerma);
 
 			//accessibility analysis
 			$('#analyzeAccessibility').click(handleAnalyzeAccessibility);
