@@ -1427,13 +1427,6 @@ var Ui = ( function(w) {'use strict';
 		* *********************************************************************/
 
 		/**
-		 * returns the Ui variable routeOptions
-		 */
-		function getRoutePreferences() {
-			return routeOptions;
-		}
-
-		/**
 		 * gets a list of route points, i.e. waypoint coordinates
 		 * @return array of strings containing the coordinates
 		 */
@@ -2213,7 +2206,7 @@ var Ui = ( function(w) {'use strict';
 				//is a route avoidable
 				if (itemId === list.routeAvoidables[0]) {
 					//if the avoidable is set, remove it (and vice versa)
-					if (permaInfo[preferences.avoidHighwayIdx] == "true") {
+					if (permaInfo[preferences.avoidHighwayIdx] == "true" || permaInfo[preferences.avoidHighwayIdx] == true) {
 						var boolVar = false;
 					} else {
 						var boolVar = true;
@@ -2226,7 +2219,7 @@ var Ui = ( function(w) {'use strict';
 				}
 				if (itemId === list.routeAvoidables[1]) {
 					//if the avoidable is set, remove it (and vice versa)
-					if (permaInfo[preferences.avoidTollwayIdx] == "true") {
+					if (permaInfo[preferences.avoidTollwayIdx] == "true" || permaInfo[preferences.avoidTollwayIdx] == true) {
 						var boolVar = false;
 					} else {
 						var boolVar = true;
@@ -2238,7 +2231,7 @@ var Ui = ( function(w) {'use strict';
 				}
 				if (itemId === list.routeAvoidables[2]) {
 					//if the avoidable is set, remove it (and vice versa)
-					if (permaInfo[preferences.avoidUnpavedIdx] == "true") {
+					if (permaInfo[preferences.avoidUnpavedIdx] == "true" || permaInfo[preferences.avoidUnpavedIdx] == true ) {
 						var boolVar = false;
 					} else {
 						var boolVar = true;
@@ -2249,7 +2242,7 @@ var Ui = ( function(w) {'use strict';
 					});
 				} 
 				if (itemId === list.routeAvoidables[3]) {
-					if (permaInfo[preferences.avoidFerryIdx] == "true") {
+					if (permaInfo[preferences.avoidFerryIdx] == "true" || permaInfo[preferences.avoidFerryIdx] == true) {
 						var boolVar = false;
 					} else {
 						var boolVar = true;
@@ -2260,7 +2253,7 @@ var Ui = ( function(w) {'use strict';
 					});
 				}
 				else if (itemId === list.routeAvoidables[4]) {
-					if (permaInfo[preferences.avoidStepsIdx] == "true") {
+					if (permaInfo[preferences.avoidStepsIdx] == "true" || permaInfo[preferences.avoidStepsIdx] == true) {
 						var boolVar = false;
 					} else {
 						var boolVar = true;
@@ -2278,12 +2271,29 @@ var Ui = ( function(w) {'use strict';
 						value : itemValue
 					});
 			} 
-			
-			// do nothing if truck options in sliders are changed
+			// if truck options sliders are changed
 			else if ($.inArray(itemId, list.truckParams) >= 0) {
-
-				//TODO: add emit function for sliders!
-
+				if (itemId == 'value_length_slide') {
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.value_lengthIdx,
+						value : $("#value_length").val()
+					});
+				} else if (itemId == 'value_width_slide') {
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.value_widthIdx,
+						value : $("#value_width").val()
+					});
+				} else if (itemId == 'value_weight_slide') {
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.value_weightIdx,
+						value : $("#value_weight").val()
+					});
+				} else if (itemId == 'value_height_slide') {
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.value_heightIdx,
+						value : $("#value_height").val()
+					});
+				}
 			}
 			// if route weight settings are modified
 			else if ($.inArray(itemId, list.routeWeightSettings) >= 0) {
@@ -2291,7 +2301,6 @@ var Ui = ( function(w) {'use strict';
 					key : preferences.weightIdx,
 					value : itemId
 				});
-
 			} 
 			// else if ($.inArray(itemId, list.wheelchairParameters.keys()) >= 0) {
 			// 	//is a wheelchair parameter
@@ -2507,6 +2516,7 @@ var Ui = ( function(w) {'use strict';
 		 * @param tollway: accordingly.
 		 */
 		function setAvoidables(highway, tollway,unpaved,ferry,steps) {
+
 			var highwayTrue = (highway === 'true') || highway == true;
 			var tollwayTrue = (tollway === 'true') || tollway == true;
 			var unpavedTrue = (unpaved === 'true') || unpaved == true;
@@ -3155,7 +3165,6 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.showGeolocationSearching = showGeolocationSearching;
 		Ui.prototype.showGeolocationError = showGeolocationError;
 
-		Ui.prototype.getRoutePreferences = getRoutePreferences;
 		Ui.prototype.setRouteIsPresent = setRouteIsPresent;
 		Ui.prototype.searchPoiChangeToSearchingState = searchPoiChangeToSearchingState;
 		Ui.prototype.updateSearchPoiResultList = updateSearchPoiResultList;

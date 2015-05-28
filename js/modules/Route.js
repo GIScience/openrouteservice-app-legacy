@@ -182,19 +182,19 @@ var Route = ( function(w) {"use strict";
 			}
 
 			
-			if (avoidableParams[0] == 'true') {
+			if (avoidableParams[0] == 'true' || avoidableParams[0] == true) {
 				writer.writeElementString('xls:AvoidFeature', 'Highway');
 			}
-			if (avoidableParams[1] == 'true') {
+			if (avoidableParams[1] == 'true' || avoidableParams[1] == true) {
 				writer.writeElementString('xls:AvoidFeature', 'Tollway');
 			}
-			if (avoidableParams[2] == 'true') {
+			if (avoidableParams[2] == 'true' || avoidableParams[2] == true) {
 				writer.writeElementString('xls:AvoidFeature', 'Unpavedroads');
 			}
-			if (avoidableParams[3] == 'true') {
+			if (avoidableParams[3] == 'true' || avoidableParams[3] == true) {
 				writer.writeElementString('xls:AvoidFeature', 'Ferry');
 			}
-			if (avoidableParams[4] == 'true') {
+			if (avoidableParams[4] == 'true' || avoidableParams[4] == true) {
 				writer.writeElementString('xls:AvoidFeature', 'Steps');
 			}
 			

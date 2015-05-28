@@ -412,7 +412,6 @@ var Preferences = ( function(w) {'use strict';
 		} else {
 			permaInfo[this.value_heightIdx] = truck_height;
 			truckParameters[1] = truck_height;
-
 		}
 
 		if (truck_width == undefined || truck_width == null || truck_width == 'undefined' || truck_width == 'null') {
@@ -455,20 +454,19 @@ var Preferences = ( function(w) {'use strict';
 	 * @return the avoidables
 	 */
 	function loadAvoidables(highway, tollway, unpaved, ferry, steps) {
-
 		
 		var avoidables = [false, false, false, false, false];
 		
 
 		// highway
-		if (highway == true) {
+		if (highway == true || highway == 'true') {
 			permaInfo[this.avoidHighwayIdx] = true;
 			avoidables[0] = true;
 		} else {
 			permaInfo[this.avoidHighwayIdx] = false;
 		}
 		// tollway
-		if (tollway == true) {
+		if (tollway == true || tollway == 'true') {
 			permaInfo[this.avoidTollwayIdx] = true;
 			avoidables[1] = true;
 		} else {
@@ -476,14 +474,14 @@ var Preferences = ( function(w) {'use strict';
 			
 		}
 		// tollway
-		if (unpaved == true) {
+		if (unpaved == true || unpaved == 'true') {
 			permaInfo[this.avoidUnpavedIdx] = true;
 			avoidables[2] = true;
 		} else {
 			permaInfo[this.avoidUnpavedIdx] = false;
 		}
 		// ferry
-		if (ferry == true) {
+		if (ferry == true || ferry == 'true') {
 			permaInfo[this.avoidFerryIdx] = true;
 			avoidables[3] = true;
 		} else {
@@ -491,7 +489,7 @@ var Preferences = ( function(w) {'use strict';
 			
 		}
 		// ferry
-		if (steps == true) {
+		if (steps == true || steps == 'true') {
 			permaInfo[this.avoidStepsIdx] = true;
 			avoidables[4] = true;
 		} else {
@@ -714,7 +712,7 @@ var Preferences = ( function(w) {'use strict';
 
 		var query = 'http://www.openrouteservice.org?';
 		for (var i = 0; i < prefNames.length; i++) {
-			if (permaInfo[i] != null && permaInfo[i] != 'null' ) {
+			if (permaInfo[i] != null && permaInfo[i] != 'null' && permaInfo[i] != false && permaInfo[i] != 'false' ) {
 				query += prefNames[i] + '=' + permaInfo[i] + '&';
 			}
 			
@@ -727,6 +725,8 @@ var Preferences = ( function(w) {'use strict';
 			type: "POST",
 			crossDomain: false,
 			data: query, 
+			dataType: "text",
+			contentType: "text/xml; charset=utf-8",
 			success: function(response){
 				if (option == 'copy') {
 					window.prompt("Copy to clipboard: Ctrl+C or Cmd+C, Enter", response);

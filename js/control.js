@@ -944,10 +944,8 @@ var Controller = ( function(w) {'use strict';
                 pos = util.convertPointForDisplay(pos);
                 var dist = atts.distance;
 
-                var prefs = ui.getRoutePreferences();
-
                 //aas setting route type
-                var aasRoutePref = prefs[0];
+                var aasRoutePref = permaInfo[preferences.routeOptionsIdx];
 
                 //aas setting intervall in minutes
                 var aasIntervall= $('#accessibilityAnalysisIsochronesIntervall').val();
