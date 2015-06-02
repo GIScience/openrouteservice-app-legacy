@@ -25,16 +25,15 @@
 	//*** Request erstellen POST ***
 	//?Start=8.001551792162187,52.267593720674526&End=8.068890507570062,52.29003995914382
 	// Start=7.040837,50.723612&End=7.040036,50.72591&Via=7.026576,50.720379
-	// &routepref=Shortest&routeprofile=Car&lang=de&noMotorways=true&noTollways=true&distunit=M&instructions=true
+	// &routepref=Shortest&lang=de&noMotorways=true&noTollways=true&distunit=M&instructions=true
 	if(isset($_GET["Start"]) && isset($_GET["End"]) && isset($_GET["Via"])&& isset($_GET["lang"]) && isset($_GET["distunit"]) 
-			&& isset($_GET["routepref"]) && isset($_GET["routeprofile"]) && isset($_GET["noMotorways"]) && isset($_GET["noTollways"]) && isset($_GET["instructions"])){
+			&& isset($_GET["routepref"]) && isset($_GET["noMotorways"]) && isset($_GET["noTollways"]) && isset($_GET["instructions"])){
 		$startcoordinate = $_GET["Start"];
 		$endcoordinate = $_GET["End"];
 		$viaPoints_xml = $_GET["Via"];
 		$language = $_GET["lang"];
 		$distanceunit = $_GET["distunit"];
 		$routepref = $_GET["routepref"];
-		$routeprofile = $_GET["routeprofile"];
 		$avoidAreas = '';
 		$noMotorways = $_GET["noMotorways"];
 		$noTollways = $_GET["noTollways"];
@@ -72,7 +71,7 @@
 
 		///////////////////////////////////////////////////
 		//*** Sende Request an Web Service ***
-		$request = createRequest($startcoordinate, $endcoordinate, $viaPoints_xml, $language, $distanceunit, $routepref, $routeprofile,
+		$request = createRequest($startcoordinate, $endcoordinate, $viaPoints_xml, $language, $distanceunit, $routepref, 
 				$avoidAreas, $avoidFeatures, $instructions);
 
 		//Server
@@ -97,5 +96,5 @@
 
 	}
 	else
-		echo "Nothing via php GET! please check if your query is correct -> otherwise please contact openrouteservice at geog.uni-heidelberg.de";
+		echo "Nothing via php GET! -> please contact pascal!";
 ?>

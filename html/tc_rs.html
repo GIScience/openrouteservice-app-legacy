@@ -38,38 +38,35 @@ body {
     <tr>
       <td align="left" valign="top" nowrap>Request : </td>
       <td colspan="2"><textarea name="REQUEST" cols="70" rows="20">
-<?xml version="1.0" encoding="UTF-8" ?>
-<xls:XLS xmlns:xls="http://www.opengis.net/xls" xsi:schemaLocation="http://www.opengis.net/xls http://schemas.opengis.net/ols/1.1.0/RouteService.xsd" xmlns:sch="http://www.ascc.net/xml/schematron" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xls:lang="it">
-	<xls:RequestHeader>
-	</xls:RequestHeader>
-	<xls:Request methodName="RouteRequest" version="1.1" requestID="00" maximumResponses="15">
-		<xls:DetermineRouteRequest>
+<?xml version="1.0" encoding="UTF-8"?>
+<xls:XLS xmlns:xls="http://www.opengis.net/xls" xmlns:sch="http://www.ascc.net/xml/schematron" 
+xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/xls 
+http://schemas.opengis.net/ols/1.1.0/RouteService.xsd" version="1.1" xls:lang="en">
+	<xls:RequestHeader/>
+	<xls:Request methodName="RouteRequest" requestID="123456789" version="1.1">
+		<xls:DetermineRouteRequest distanceUnit="KM">
 			<xls:RoutePlan>
-				<xls:RoutePreference>Car</xls:RoutePreference>
-				<xls:ExtendedRoutePreference>
-					<xls:WeightingMethod>Fastest</xls:WeightingMethod>
-				</xls:ExtendedRoutePreference>
+				<xls:RoutePreference>Fastest</xls:RoutePreference>
 				<xls:WayPointList>
 					<xls:StartPoint>
 						<xls:Position>
-							<gml:Point xmlns:gml="http://www.opengis.net/gml">
-								<gml:pos srsName="EPSG:4326">8.676780149999997 49.418723600000135</gml:pos>
+							<gml:Point srsName="EPSG:4326">
+								<gml:pos>7.092284405229747 50.741860376360336</gml:pos>
 							</gml:Point>
 						</xls:Position>
 					</xls:StartPoint>
 					<xls:EndPoint>
 						<xls:Position>
-							<gml:Point xmlns:gml="http://www.opengis.net/gml">
-								<gml:pos srsName="EPSG:4326">8.682015821997037 49.41503834505884</gml:pos>
+							<gml:Point srsName="EPSG:4326">
+								<gml:pos>7.092355256197099 50.73950812424425</gml:pos>
 							</gml:Point>
 						</xls:Position>
 					</xls:EndPoint>
 				</xls:WayPointList>
-				<xls:AvoidList />
 			</xls:RoutePlan>
-			<xls:RouteInstructionsRequest provideGeometry="true" />
-			<xls:RouteGeometryRequest>
-			</xls:RouteGeometryRequest>
+			<xls:RouteInstructionsRequest/>
+			<xls:RouteGeometryRequest/>
 		</xls:DetermineRouteRequest>
 	</xls:Request>
 </xls:XLS>
