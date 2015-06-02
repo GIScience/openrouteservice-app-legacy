@@ -497,8 +497,13 @@ var Map = ( function() {"use strict";
 				document.getElementById("infoPanel").innerHTML = self.theMap.baseLayer.attribution;
 			
 			
-				var url = "cgi-bin/proxy.cgi?url=" + namespaces.services.routing + "?info";
-
+				var url;
+				if ( location.hostname.match('openrouteservice') || location.hostname.match('localhost') ) {
+					 url = "cgi-bin/proxy.cgi?url=" + namespaces.services.routing + "?info";
+				} else {
+					 url = namespaces.services.routing + "?info";
+				}
+				
 				// set crossDomain to true if on localhost
 				jQuery.ajax({
 				  url: url,

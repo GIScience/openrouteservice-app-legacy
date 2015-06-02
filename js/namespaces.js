@@ -37,11 +37,11 @@ namespaces.schemata = {
  */
 namespaces.services = {
 	// see latest ORS API documentation http://wiki.openstreetmap.org/wiki/OpenRouteService
-	geocoding : 'http://openls.geog.uni-heidelberg.de/osm/geocoding-test', //for address search requests
-	//routing : 'http://openls.geog.uni-heidelberg.de/testing2015/routing', //for routing requests
-	routing: 'http://openls.geog.uni-heidelberg.de/osm/routing-test',
+	
+	geocoding : 'http://openls.geog.uni-heidelberg.de/testing2015/geocoding', //for address search requests
+	routing : 'http://openls.geog.uni-heidelberg.de/testing2015/routing', //for routing requests
 	directory : 'http://openls.geog.uni-heidelberg.de/osm/directory-test', //for POI search requests
-	analyse : 'http://openls.geog.uni-heidelberg.de/testing2015/analysis-test',
+	analyse : 'http://openls.geog.uni-heidelberg.de/testing2015/analysis',
 	shorten: 'http://openls.geog.uni-heidelberg.de/osm/shortenlink-test',
 	wps : '' //for calculation of polygon around route for POI search
 	//profile: '' 			//for height profile of route

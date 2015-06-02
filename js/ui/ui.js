@@ -8,8 +8,6 @@ var Ui = ( function(w) {'use strict';
 		orsTabs = ['route', 'search', 'geolocation'],
 		//search POI options: searchNearRoute, maxDist to route, distance Unit for maxDist, search query
 		searchPoiAtts = ['false', '100', 'm', ''],
-		//routing options for car, bike, pedestrian, truck and wheelchair
-		routeOptions = [list.routePreferences.get('car')[0], [null, null, null, null, null], [null, null, null,null,null], 'car', [null, null, null, null, null], null , 'Fastest'],
 		//is a route available?
 		routeIsPresent = false,
 		//timeout to wait before sending a request after the user finished typing
@@ -1429,13 +1427,6 @@ var Ui = ( function(w) {'use strict';
 		* *********************************************************************/
 
 		/**
-		 * returns the Ui variable routeOptions
-		 */
-		function getRoutePreferences() {
-			return routeOptions;
-		}
-
-		/**
 		 * gets a list of route points, i.e. waypoint coordinates
 		 * @return array of strings containing the coordinates
 		 */
@@ -1814,13 +1805,11 @@ var Ui = ( function(w) {'use strict';
 
 			var parent = $('.routePreferenceBtns').get(0);
 			var optionType = e.currentTarget.id;
-
 			//switch the buttons above
 			var allBtn = parent.querySelectorAll('button');
 			for (var i = 0; i < allBtn.length; i++) {
 				var btn = allBtn[i];
 				if (btn == e.currentTarget) {
-
 
 					btn.addClassName('active');
 					//adapt image
@@ -1828,27 +1817,15 @@ var Ui = ( function(w) {'use strict';
 
 					imgElement.setAttribute('src', list.routePreferencesImages.get(btn.id)[1]);
 
-					//if (btn.id != 'car') {
-
 					//set the selected entry as currently selected route option
 					var options = $('#' + btn.id + 'Options').get(0).querySelector('input[checked="checked"]');
-					
-					routeOptions[0] = options.id; 
-					routeOptions[3] = options.name;
 
-					// extended route type options is saved in routeOptions[5], check if HeavyTruck is selected and
-					// fill accordingly
-					if (optionType == 'truck') {
-						routeOptions[5] = list.routePreferences.get('truck')[1][0];
-					} else {
-						routeOptions[5] = null;
-					}
+					/* adapt global settings information */
+					updateGlobalSettings(optionType,options.id);
 
 					theInterface.emit('ui:routingParamsChanged');
-					theInterface.emit('ui:prefsChanged', {
-						key : preferences.routeOptionsIdx,
-						value : routeOptions[0]
-					});
+
+
 				} else {
 					btn.removeClassName('active');
 					//adapt image
@@ -1856,14 +1833,13 @@ var Ui = ( function(w) {'use strict';
 					imgElement.setAttribute('src', list.routePreferencesImages.get(btn.id)[0]);
 				}
 			}
-			
-			
+
 			//switch the content
 			var car = $('#carOptions');
 			var bike = $('#bicycleOptions');
 			var ped = $('#pedestrianOptions');
 			var truckparameter = $('#truckOptions_restrict');
-			var truck = $('#truckOptions');
+			var truck = $('#heavyvehicleOptions');
 			var avoidables = $('#avoidables');
 			var avoidablesBike = $('#avoidablesBike');
 			var avoidablesPedestrian = $('#avoidablesPedestrian');
@@ -1893,7 +1869,7 @@ var Ui = ( function(w) {'use strict';
 				wheel.hide();
 				wheelParameters.hide();
 				$('#accessibilityAnalysis').show();
-			} else if (optionType === 'truck') {
+			} else if (optionType === 'heavyvehicle') {
 				avoidablesPedestrian.hide();
 				car.hide();
 				avoidablesBike.hide();
@@ -1931,21 +1907,246 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+		/**
+		 * when the user switches route options, global settings will be updated
+		 * @param optionType: the route profile clicked
+		 * @param optionType: the route profile clicked
+		 */
+		function updateGlobalSettings(optionType, optionID) {
+
+			// change routing profile
+			theInterface.emit('ui:routingParamsChanged');
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.routeOptionsIdx,
+						value : optionID
+			});
+
+			// reset all checkboxes and avoidable settings each time a new profile is clicked
+			$('input:checkbox').removeAttr('checked');
+
+			theInterface.emit('ui:prefsChanged', {
+				key : preferences.avoidHighwayIdx,
+				value : false
+			});
+
+			theInterface.emit('ui:prefsChanged', {
+				key : preferences.avoidTollwayIdx,
+				value : false
+				});
+
+			theInterface.emit('ui:prefsChanged', {
+				key : preferences.avoidUnpavedIdx,
+				value : false
+			});
+
+			theInterface.emit('ui:prefsChanged', {
+				key : preferences.avoidFerryIdx,
+				value : false
+			});
+
+			theInterface.emit('ui:prefsChanged', {
+				key : preferences.avoidStepsIdx,
+				value : false
+			});
+
+			// reset all truck and wheelchair settings to null if these profiles are clicked
+			if (optionType === 'car' || optionType === 'bicycle' || optionType === 'pedestrian') {
+				
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.routeOptionsTypesIdx,
+					value : null
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_lengthIdx,
+					value : null
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_heightIdx,
+					value : null
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_weightIdx,
+					value : null
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_widthIdx,
+					value : null
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.hazardousIdx,
+					value : false
+				});
+
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.surfaceIdx,
+					value : null
+				});
+				
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.smoothnessIdx,
+					value : null
+				});
+				
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.trackTypeIdx,
+					value : null
+				});
+				
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.inclineIdx,
+					value : null
+				});
+				
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.slopedCurbIdx,
+					value : null
+				});
+
+			}
+
+			// if wheelchair is clicked reset truck settings and add wheelchair initial settings
+			if (optionType === 'wheelchair') {
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.routeOptionsTypesIdx,
+					value : null
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_lengthIdx,
+					value : null
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_heightIdx,
+					value : null
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_weightIdx,
+					value : null
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_widthIdx,
+					value : null
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.hazardousIdx,
+					value : false
+				});
+				
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.surfaceIdx,
+					value : list.wheelchairParameters.get('Surface')[0]
+				});
+				
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.smoothnessIdx,
+					value : list.wheelchairParameters.get('Smoothness')[0]
+				});
+				
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.trackTypeIdx,
+					value : list.wheelchairParameters.get('Tracktype')[0]
+				});
+				
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.inclineIdx,
+					value : list.wheelchairParameters.get('Incline')[0]
+				});
+				
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.slopedCurbIdx,
+					value : list.wheelchairParameters.get('SlopedCurb')[0]
+				});
+				
+			}
+
+			// if truck is clicked reset wheelchair settings and add truck initial settings
+			if (optionType === 'heavyvehicle') {
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.routeOptionsTypesIdx,
+					value : list.routePreferencesTypes.get('heavyvehicle')[0]
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_lengthIdx,
+					value : $("#value_length").val()
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_heightIdx,
+					value : $("#value_height").val()
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_weightIdx,
+					value : $("#value_weight").val()
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_widthIdx,
+					value : $("#value_width").val()
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.surfaceIdx,
+					value : null
+				});
+				
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.smoothnessIdx,
+					value : null
+				});
+				
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.trackTypeIdx,
+					value : null
+				});
+				
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.inclineIdx,
+					value : null
+				});
+				
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.slopedCurbIdx,
+					value : null
+				});
+			}
+		}
 	
 		/** 
-		 * sets truckParameters
+		 * sets truckParameters in UI
 		 * @params truck_length: the truck length
 		 * @params truck_height: the truck heigth
 		 * @params truck_weight: the truck weight
 		 * @params truck_width: the truck width
 		 */
 		function setTruckParameters(truck_length, truck_height, truck_weight,truck_width) {
-
-			routeOptions[2][0] = truck_length;
-			routeOptions[2][1] = truck_height;
-			routeOptions[2][2] = truck_weight;
-			routeOptions[2][3] = truck_width;
-
+			$("#value_length").val(truck_length);
+			$("#value_height").val(truck_height);
+			$("#value_weight").val(truck_weight);
+			$("#value_width").val(truck_width);
 		}
 
 		/** 
@@ -1953,7 +2154,11 @@ var Ui = ( function(w) {'use strict';
 		 * @params hazardous: is either 'hazmat' or null
 		 */
 		function setHazardousParameter(hazardous) {
-			routeOptions[2][4] = hazardous;
+			
+			if (list.routeDangerousGoods.indexOf(hazardous) > -1) {
+				jQuery("input[id=Hazardous][value=" + hazardous + "]").attr('checked', 'checked');
+			}
+			
 		}
 
 		/**
@@ -1961,6 +2166,7 @@ var Ui = ( function(w) {'use strict';
 		 * @param activeRouteOption: the active route option, i.e. one of car,bicycle,pedestrian,wheelchair
 		 */
 		function switchRouteOptionsButton(activeRouteOption) {
+
 
 			var parent = $('.routePreferenceBtns').get(0);
 			//switch the buttons above
@@ -1988,135 +2194,196 @@ var Ui = ( function(w) {'use strict';
 		 * @param e: the event
 		 */
 		function handleOptionsChanged(e) {
-			
+
 			e = e || window.event;
-		    var target = e.target || e.srcElement;
+			var target = e.target || e.srcElement;
 			var itemId = target.id;
 
 			//for extended route options
 			var itemValue = target.value;
-
-			console.log(itemId);
-
-			if ($.inArray(itemId, list.routeAvoidables) >= 0 || $.inArray(itemValue, list.routeAvoidables) >= 0) {
+			
+			if ($.inArray(itemId, list.routeAvoidables) >= 0) {
 				//is a route avoidable
 				if (itemId === list.routeAvoidables[0]) {
 					//if the avoidable is set, remove it (and vice versa)
-					routeOptions[1][0] = routeOptions[1][0] ? null : itemId;
+					if (permaInfo[preferences.avoidHighwayIdx] == "true" || permaInfo[preferences.avoidHighwayIdx] == true) {
+						var boolVar = false;
+					} else {
+						var boolVar = true;
+					}
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.avoidHighwayIdx,
-
-						value : routeOptions[1][0] != null
+						value : boolVar
 					});
+
 				}
 				if (itemId === list.routeAvoidables[1]) {
 					//if the avoidable is set, remove it (and vice versa)
-					routeOptions[1][1] = routeOptions[1][1] ? null : itemId;
+					if (permaInfo[preferences.avoidTollwayIdx] == "true" || permaInfo[preferences.avoidTollwayIdx] == true) {
+						var boolVar = false;
+					} else {
+						var boolVar = true;
+					}
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.avoidTollwayIdx,
-						value : routeOptions[1][1] != null
+						value : boolVar
 					});
 				}
 				if (itemId === list.routeAvoidables[2]) {
 					//if the avoidable is set, remove it (and vice versa)
-					routeOptions[1][2] = routeOptions[1][2] ? null : itemId;
+					if (permaInfo[preferences.avoidUnpavedIdx] == "true" || permaInfo[preferences.avoidUnpavedIdx] == true ) {
+						var boolVar = false;
+					} else {
+						var boolVar = true;
+					}
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.avoidUnpavedIdx,
-						value : routeOptions[1][2] != null
+						value : boolVar
 					});
 				} 
 				if (itemId === list.routeAvoidables[3]) {
-					routeOptions[1][3] = routeOptions[1][3] ? null : itemId;
+					if (permaInfo[preferences.avoidFerryIdx] == "true" || permaInfo[preferences.avoidFerryIdx] == true) {
+						var boolVar = false;
+					} else {
+						var boolVar = true;
+					}
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.avoidFerryIdx,
-						value : routeOptions[1][3] != null
+						value : boolVar
 					});
 				}
 				else if (itemId === list.routeAvoidables[4]) {
-					routeOptions[1][4] = routeOptions[1][4] ? null : itemId;
+					if (permaInfo[preferences.avoidStepsIdx] == "true" || permaInfo[preferences.avoidStepsIdx] == true) {
+						var boolVar = false;
+					} else {
+						var boolVar = true;
+					}
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.avoidStepsIdx,
-						value : routeOptions[1][4] != null
+						value : boolVar
 					});
 				}
+
+			// if heavy vehicle type
+			} else if ($.inArray(itemValue, list.routePreferencesTypes.get('heavyvehicle')) >= 0) {
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.routeOptionsTypesIdx,
+						value : itemValue
+					});
 			} 
-			
-			// do nothing if truck options in sliders are changed
+			// if truck options sliders are changed
 			else if ($.inArray(itemId, list.truckParams) >= 0) {
-
-				//TODO: add emit function for sliders!
-
+				if (itemId == 'value_length_slide') {
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.value_lengthIdx,
+						value : $("#value_length").val()
+					});
+				} else if (itemId == 'value_width_slide') {
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.value_widthIdx,
+						value : $("#value_width").val()
+					});
+				} else if (itemId == 'value_weight_slide') {
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.value_weightIdx,
+						value : $("#value_weight").val()
+					});
+				} else if (itemId == 'value_height_slide') {
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.value_heightIdx,
+						value : $("#value_height").val()
+					});
+				}
 			}
 			// if route weight settings are modified
 			else if ($.inArray(itemId, list.routeWeightSettings) >= 0) {
-				
-				routeOptions[6] = itemId;
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.weightIdx,
-					value : routeOptions[6]
+					value : itemId
 				});
-
-			} else if ($.inArray(itemId, list.wheelchairParameters.keys()) >= 0) {
-				//is a wheelchair parameter
-				//Surface, Tracktype, Smoothness
-				if (itemId == 'Surface') {
-					routeOptions[4][0] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Surface')[target.selectedIndex] : null;
-					// set also smoothness here in order to simplify user interface
-					routeOptions[4][1] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Smoothness')[target.selectedIndex] : null;
-					// set also tracktype here in order to simplify user interface
-					routeOptions[4][2] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Tracktype')[target.selectedIndex] : null;
-					theInterface.emit('ui:prefsChanged', {
-						key : preferences.surfaceIdx,
-						value : routeOptions[4][0]
-					});
-				}
-				//Smoothness
-				else if (itemId == 'Smoothness') {
-					// done in conjunction with surface to simplify user interface
-					// routeOptions[4][1] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Smoothness')[target.selectedIndex] : null;
-				}
-				//Tracktype
-				else if (itemId == 'Tracktype') {
-					// done in conjunction with surface to simplify user interface
-					// routeOptions[4][2] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Tracktype')[target.selectedIndex] : null;
-				}
-				//Incline
-				else if (itemId == 'Incline') {
-					routeOptions[4][3] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Incline')[target.selectedIndex] : null;
-					theInterface.emit('ui:prefsChanged', {
-						key : preferences.inclineIdx,
-						value : routeOptions[4][3]
-					});
-				}
-				//Sloped Curb
-				else if (itemId == 'SlopedCurb') {
-					routeOptions[4][4] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('SlopedCurb')[target.selectedIndex] : null;
-					theInterface.emit('ui:prefsChanged', {
-						key : preferences.slopedCurbIdx,
-						value : routeOptions[4][4]
-					});
-				}
-			}
+			} 
+			// else if ($.inArray(itemId, list.wheelchairParameters.keys()) >= 0) {
+			// 	//is a wheelchair parameter
+			// 	//Surface, Tracktype, Smoothness
+			// 	if (itemId == 'Surface') {
+			// 		routeOptions[4][0] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Surface')[target.selectedIndex] : null;
+			// 		// set also smoothness here in order to simplify user interface
+			// 		routeOptions[4][1] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Smoothness')[target.selectedIndex] : null;
+			// 		// set also tracktype here in order to simplify user interface
+			// 		routeOptions[4][2] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Tracktype')[target.selectedIndex] : null;
+			// 		theInterface.emit('ui:prefsChanged', {
+			// 			key : preferences.surfaceIdx,
+			// 			value : routeOptions[4][0]
+			// 		});
+			// 	}
+			// 	//Smoothness
+			// 	else if (itemId == 'Smoothness') {
+			// 		// done in conjunction with surface to simplify user interface
+			// 		// routeOptions[4][1] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Smoothness')[target.selectedIndex] : null;
+			// 	}
+			// 	//Tracktype
+			// 	else if (itemId == 'Tracktype') {
+			// 		// done in conjunction with surface to simplify user interface
+			// 		// routeOptions[4][2] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Tracktype')[target.selectedIndex] : null;
+			// 	}
+			// 	//Incline
+			// 	else if (itemId == 'Incline') {
+			// 		routeOptions[4][3] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Incline')[target.selectedIndex] : null;
+			// 		theInterface.emit('ui:prefsChanged', {
+			// 			key : preferences.inclineIdx,
+			// 			value : routeOptions[4][3]
+			// 		});
+			// 	}
+			// 	//Sloped Curb
+			// 	else if (itemId == 'SlopedCurb') {
+			// 		routeOptions[4][4] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('SlopedCurb')[target.selectedIndex] : null;
+			// 		theInterface.emit('ui:prefsChanged', {
+			// 			key : preferences.slopedCurbIdx,
+			// 			value : routeOptions[4][4]
+			// 		});
+			// 	}
+			// }
 
 			else if (itemId == 'Hazardous') {
-				routeOptions[2][4] = itemValue;
+				if (permaInfo[preferences.hazardousIdx] == "hazmat") {
+					var boolVar = null;
+				} else {
+					var boolVar = "hazmat";
+				}
 				theInterface.emit('ui:prefsChanged', {
 						key : preferences.hazardousIdx,
-						value : routeOptions[2][4]
-					});
+						value : boolVar
+				});
 			
 			} else {
 
-				//is a regular route option
-				routeOptions[0] = itemId;
-				routeOptions[5] = itemValue;
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.routeOptionsIdx,
-					value : routeOptions[0]
+					value : itemId
 				});
+
 			}
+
 			theInterface.emit('ui:routingParamsChanged');
 		}
+
+
+
+		/**
+		 * used to activate route weight on startup if necessary
+		 * @param routeWeight: 'Fastest' or 'Shortest'
+		 */
+		function setRouteWeight(routeWeight) {
+
+			if (routeWeight == 'Fastest') {
+				$('#Fastest').attr('checked', 'checked');
+			
+			} else if (routeWeight = 'Shortest') {
+				$('#Shortest').attr('checked', 'checked');
+			}
+		
+		}
+
 
 		/**
 		 * used to activate and show the given route option on startup if necessary
@@ -2124,11 +2391,12 @@ var Ui = ( function(w) {'use strict';
 		 */
 		function setRouteOption(routeOption) {
 			//set radioButton with $('#' + routeOption) active
-
-			var el = $('#' + routeOption);
+			
+ 			var el = $('#' + routeOption);
 			if (el) {
 				el.attr('checked', true)
 			}
+			
 
 			// set parent div (with all available options for car/bike/pedestrian/truck/wheelchair visible
 			var parentOptions = list.routePreferences.keys();
@@ -2137,39 +2405,51 @@ var Ui = ( function(w) {'use strict';
 			var avoidablesPed = $('#avoidablesPedestrian');
 			var avoidablesBike = $('#avoidablesBike');
 			var wheelParameters = $('#wheelchairParameters');
+			var truckParameters = $('#truckOptions_restrict');
 			for (var i = 0; i < parentOptions.length; i++) {
+
 				if (list.routePreferences.get(parentOptions[i]).indexOf(routeOption) != -1) {
 					//show div
 					$('#' + parentOptions[i] + 'Options').show();
 					//activate corresponding option panel
 					$('#' + parentOptions[i]).addClass('active');
 					//show avoidables for car, bike or pedestrian
-					if (parentOptions[i] == 'car') {
+					if (parentOptions[i] == 'car' ) {
 						avoidables.show();
-					} else if (parentOptions[i] == 'bike') {
+						truckParameters.hide();
+						avoidablesBike.hide();
+						avoidablesPed.hide();
+						wheelParameters.hide();
+					} else if (parentOptions[i] == 'bicycle') {
 						avoidablesBike.show();
-					} else if (parentOptions[i] == 'pedestrian') {
+						avoidables.hide();
+						avoidablesPed.hide();
+						truckParameters.hide();
+						wheelParameters.hide();
+					}  else if (parentOptions[i] == 'pedestrian') {
 						avoidablesPed.show();
-					}
-					//hide avoidables otherwise
-					else {
+						avoidables.hide();
+						avoidablesBike.hide();
+						truckParameters.hide();
+						wheelParameters.hide();
+					} else if (parentOptions[i] == 'heavyvehicle') {
+						avoidables.show();
+						truckParameters.show();
+						avoidablesBike.hide();
+						avoidablesPed.hide();
+						wheelParameters.hide();
+					} else if (parentOptions[i] == 'wheelchair') {
 						avoidables.hide();
 						avoidablesBike.hide();
 						avoidablesPed.hide();
-					}
-					//show parameters for wheelchair if wheelchair option is active
-					if (parentOptions[i] == 'wheelchair') {
+						truckParameters.hide();
 						wheelParameters.show();
 					}
-					//hide parameters for wheelchair otherwise
-					else {
-						wheelParameters.hide();
-					}
+					
 					//switch button
 					switchRouteOptionsButton(parentOptions[i])
 					
-					//set route option
-					routeOptions[0] = routeOption;
+
 				} 
 				else {
 					//deactivate/ hide others
@@ -2179,37 +2459,49 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+
+		/**
+		 * used to set the routeOptionType if set
+		 * @param routeOptionType: one of 'goods', 'hgv', etc..
+		 */
+		function setRouteOptionType(routeOptType) {
+			//set route option type
+			if (list.routePreferencesTypes.get('heavyvehicle').indexOf(routeOptType) > -1) {
+				jQuery("input[name=heavyvehicle][value=" + routeOptType + "]").attr('checked', 'checked');
+			}
+
+		}
+
 		/**
 		 * Used to set the wheelchair parameters to pre-defined values, if necessary
 		 * @param surface
 		 * @param incline
 		 * @param slopedCurb
 		 */
-		
-		function setWheelParameters(surface, incline, slopedCurb) {
+		function setWheelParameters(surface, incline, slopedCurb, tracktype, smoothness) {
 			var surfaceParamIndex = 0;
 			var inclineParamIndex = 0;
 			var slopedCurbParamIndex = 0;
-			for (var int = 0; int < list.wheelchairParameters.get('Surface').length; int++) {
-				if(list.wheelchairParameters.get('Surface')[int] == surface) {
-					surfaceParamIndex = int;
+			var trackTypeParamIndex = 0;
+			var smoothnessParamIndex = 0;
+
+			//TODO add trackType, smoothness
+			for (var i = 0; i < list.wheelchairParameters.get('Surface').length; i++) {
+				if(list.wheelchairParameters.get('Surface')[i] == surface) {
+					surfaceParamIndex = i;
 				}
 			}
-			for (var int = 0; int < list.wheelchairParameters.get('Incline').length; int++) {
-				if(list.wheelchairParameters.get('Incline')[int] == incline) {
-					inclineParamIndex = int;
+			for (var i = 0; i < list.wheelchairParameters.get('Incline').length; i++) {
+				if(list.wheelchairParameters.get('Incline')[i] == incline) {
+					inclineParamIndex = i;
 				}
 			}
-			for (var int = 0; int < list.wheelchairParameters.get('SlopedCurb').length; int++) {
-				if(list.wheelchairParameters.get('SlopedCurb')[int] == slopedCurb) {
-					slopedCurbParamIndex = int;
+			for (var i = 0; i < list.wheelchairParameters.get('SlopedCurb').length; i++) {
+				if(list.wheelchairParameters.get('SlopedCurb')[i] == slopedCurb) {
+					slopedCurbParamIndex = i;
 				}
 			}
-			routeOptions[4][0] = surface;
-			routeOptions[4][1] = list.wheelchairParameters.get('Smoothness')[surfaceParamIndex];
-			routeOptions[4][2] = list.wheelchairParameters.get('Tracktype')[surfaceParamIndex];
-			routeOptions[4][3] = incline;
-			routeOptions[4][4] = slopedCurb;
+
 			$('#Surface option')[surfaceParamIndex].selected = true;
 			// $('#Smoothness option')[surfaceParamIndex].selected = true;
 			// $('#Tracktype option')[surfaceParamIndex].selected = true;
@@ -2224,16 +2516,13 @@ var Ui = ( function(w) {'use strict';
 		 * @param tollway: accordingly.
 		 */
 		function setAvoidables(highway, tollway,unpaved,ferry,steps) {
+
 			var highwayTrue = (highway === 'true') || highway == true;
 			var tollwayTrue = (tollway === 'true') || tollway == true;
 			var unpavedTrue = (unpaved === 'true') || unpaved == true;
 			var ferryTrue = (ferry === 'true') || ferry == true;
 			var stepsTrue = (steps === 'true') || steps == true;
-			routeOptions[1][0] = highwayTrue;
-			routeOptions[1][1] = tollwayTrue;
-			routeOptions[1][2] = unpavedTrue;
-			routeOptions[1][3] = ferryTrue;
-			routeOptions[1][4] = stepsTrue;
+
 			$('#Highway').attr('checked', highwayTrue);
 			$('#Tollway').attr('checked', tollwayTrue);
 			$('#Unpavedroads').attr('checked', unpavedTrue);
@@ -2305,18 +2594,13 @@ var Ui = ( function(w) {'use strict';
 		/**
 		 * triggers opening a new window with the permalink
 		 */
-		function handleOpenPerma() {
+		function handleGeneratePerma(event) {
 			$('#bubble').hide();
-			theInterface.emit('ui:openPermalinkRequest');
+			var tgt = event.target.id;
+			theInterface.emit('ui:generatePermalinkRequest', tgt);
 		}
 
-		/**
-		 * triggers copying permalink
-		 */
-		function handleCopyPerma() {
-			$('#bubble').hide();
-			theInterface.emit('ui:copyPermalinkRequest');
-		}
+		
 
 
 		/* *********************************************************************
@@ -2798,15 +3082,15 @@ var Ui = ( function(w) {'use strict';
 			$('#car').click(switchRouteOptionsPane);
 			$('#bicycle').click(switchRouteOptionsPane);
 			$('#pedestrian').click(switchRouteOptionsPane);
-			$('#truck').click(switchRouteOptionsPane);
+			$('#heavyvehicle').click(switchRouteOptionsPane);
 			$('#wheelchair').click(switchRouteOptionsPane);
 			$('.routeOptions').change(handleOptionsChanged);
 			$('#avoidAreasToolbar').click(avoidAreasToolClicked);
 
 			//permalink
 			$('#infoPermalink').click(handleOpenPermaOptions);
-			$('#open').click(handleOpenPerma);
-			$('#copy').click(handleCopyPerma);
+			$('#open').click(handleGeneratePerma);
+			$('#copy').click(handleGeneratePerma);
 
 			//accessibility analysis
 			$('#analyzeAccessibility').click(handleAnalyzeAccessibility);
@@ -2881,7 +3165,6 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.showGeolocationSearching = showGeolocationSearching;
 		Ui.prototype.showGeolocationError = showGeolocationError;
 
-		Ui.prototype.getRoutePreferences = getRoutePreferences;
 		Ui.prototype.setRouteIsPresent = setRouteIsPresent;
 		Ui.prototype.searchPoiChangeToSearchingState = searchPoiChangeToSearchingState;
 		Ui.prototype.updateSearchPoiResultList = updateSearchPoiResultList;
@@ -2898,6 +3181,9 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.showRoutingError = showRoutingError;
 
 		Ui.prototype.setRouteOption = setRouteOption;
+		Ui.prototype.setRouteWeight = setRouteWeight;
+		Ui.prototype.setRouteOptionType = setRouteOptionType;
+
 		Ui.prototype.setAvoidables = setAvoidables;
 		Ui.prototype.setWheelParameters = setWheelParameters;
 		Ui.prototype.showAvoidAreasError = showAvoidAreasError;

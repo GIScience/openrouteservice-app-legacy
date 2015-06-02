@@ -1,12 +1,14 @@
+var permaInfo;
+
 var Preferences = ( function(w) {'use strict';
 
 	//are there any cookies of thie page yet?
 	var cookiesAvailable = false;
 
-	var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version','avUnpaved', 'avFerry','value_length','value_height','value_weight','value_width','surface','incline','slopedCurb'];
+	var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version','avUnpaved', 'avFerry','value_length','value_height','value_weight','value_width','surface','incline','slopedCurb', 'hazardous', 'routeWeight', 'avSteps', 'routeOptType', 'trackType', 'smoothness'];
 
 	//store information that can be used for the permalink
-	var permaInfo = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,null,null,null,null];
+	permaInfo = Array.apply(null, new Array(27)).map(String.prototype.valueOf,'null')
 
 	/**
 	 * Constructor
@@ -37,6 +39,9 @@ var Preferences = ( function(w) {'use strict';
 		this.hazardousIdx = 21;
 		this.weightIdx = 22;
 		this.avoidStepsIdx = 23;
+		this.routeOptionsTypesIdx = 24;
+		this.trackTypeIdx = 25;
+		this.smoothnessIdx = 26;
 
 		//define variables
 		this.language = 'en';
@@ -299,6 +304,62 @@ var Preferences = ( function(w) {'use strict';
 		return waypoints;
 	}
 
+
+	/**
+	 * determines route options by GET variable
+	 * @param routeWeight: extracted from the GET variables in readGetVars()
+	 * @return the route weight option
+	 */
+	function loadRouteWeight(routeWeight) {
+		routeWeight = unescape(routeWeight);
+
+		//set a default in the permaInfo Array if routeOpt == null, undef, etc.
+		if (routeWeight == undefined || routeWeight == null || routeWeight == 'undefined') {
+			routeWeight = 'Fastest'
+		}
+		permaInfo[this.weightIdx] = routeWeight;
+
+		return routeWeight;
+	}
+
+
+	/**
+	 * determines route option types by GET variable
+	 * @param routeOptType: extracted from the GET variables in readGetVars()
+	 * @return the route options
+	 */
+	function loadRouteOptionsType(routeOptType) {
+		routeOptType = unescape(routeOptType);
+	
+		//set a default in the permaInfo Array if routeOptType == null, undef, etc.
+		if ( routeOptType == null || routeOptType == 'undefined') {
+			routeOptType = null;
+		}
+		permaInfo[this.routeOptionsTypesIdx] = routeOptType;
+
+		//check if the routeOptType parameter is a valid routeOption.
+		var mainObjects = list.routePreferencesTypes.keys();
+		var isValid = false;
+		for (var i = 0; i < mainObjects.length; i++) {
+			
+			isValid = list.routePreferencesTypes.get(mainObjects[i]).indexOf(routeOptType) != -1;
+			
+			//list.routePreferencesTypes.get(mainObjects[i]).indexOf(routeOptType))
+			if (isValid) {
+				break;
+			}
+		}
+
+		if (!isValid) {
+			//we found a parameter to parse, but this wasn't a valid route option. Use the default instead
+			routeOptType = permaInfo[this.routeOptionsTypesIdx];
+		}
+		
+		return routeOptType;
+	}
+
+
+
 	/**
 	 * determines route options by GET variable
 	 * @param routeOpt: extracted from the GET variables in readGetVars()
@@ -306,7 +367,6 @@ var Preferences = ( function(w) {'use strict';
 	 */
 	function loadRouteOptions(routeOpt) {
 		routeOpt = unescape(routeOpt);
-
 		//set a default in the permaInfo Array if routeOpt == null, undef, etc.
 		if (routeOpt == undefined || routeOpt == null || routeOpt == 'undefined') {
 			routeOpt = list.routePreferences.get('car')[0];
@@ -333,57 +393,59 @@ var Preferences = ( function(w) {'use strict';
 
 	
 	/**
-	 * determines route option truck parameters width height length weight
+	 * checks truck parameters from get variable, fills perma settings
 	 * @return the truck parameters
 	 */
-	function loadtruckParameters() {
-	
-		var truckParameters = [null, null, null,null];
+	function loadtruckParameters(truck_length, truck_height, truck_width, truck_weight) {
 
-		truckParameters[0] = document.getElementById("value_length").value;
-		truckParameters[1] = document.getElementById("value_height").value;
-		truckParameters[2] = document.getElementById("value_weight").value;
-		truckParameters[3] = document.getElementById("value_width").value;
-		
-		permaInfo[this.value_lengthIdx] = unescape(truckParameters[0]);
-		permaInfo[this.value_heightIdx] = unescape(truckParameters[1]);
-		permaInfo[this.value_weightIdx] = unescape(truckParameters[2]);
-		permaInfo[this.value_widthIdx] = unescape(truckParameters[3]);
+		var truckParameters = new Array();
 
+		if (truck_length == undefined || truck_length == null || truck_length == 'undefined' || truck_length == 'null') {
+			permaInfo[this.value_lengthIdx] = null;
+		} else {
+			permaInfo[this.value_lengthIdx] = truck_length;
+			truckParameters[0] = truck_length;
+		}
+
+		if (truck_height == undefined || truck_height == null || truck_height == 'undefined' || truck_height == 'null') {
+			permaInfo[this.value_heightIdx] = null;
+		} else {
+			permaInfo[this.value_heightIdx] = truck_height;
+			truckParameters[1] = truck_height;
+		}
+
+		if (truck_width == undefined || truck_width == null || truck_width == 'undefined' || truck_width == 'null') {
+			permaInfo[this.value_widthIdx] = null;
+		} else {
+			permaInfo[this.value_widthIdx] = truck_width;
+			truckParameters[2] = truck_width;
+		}
+
+		if (truck_weight == undefined || truck_weight == null || truck_weight == 'undefined' || truck_weight == 'null') {
+			permaInfo[this.value_weightIdx] = null;
+		} else {
+			permaInfo[this.value_weightIdx] = truck_weight;
+			truckParameters[3] = truck_weight;
+		}
 		return truckParameters;
+
 	}
 	
 	/**
-	 * determines route option hazardous
+	 * checks if hazardous from GET variables is declared
 	 * @return the hazardous parameter
 	 */
-	function loadHazardous() {
-
-		var hazardous = null;
-
-		if (document.getElementById('Hazardous').checked) {
-            hazardous = 'hazmat'
-        } 
-      
-		return hazardous
-
-	}
-
-	/**
-	* fetches extended route type option
-	* @param surface, incline, slopedCurb: extracted from the GET variables in readGetVars()
-	* @return the wheelchair parameters
-	*/
-	function loadExtendedRouteOption() {
-	
-		//extendedRouteParameter = document.getElementById("value_length").value;
+	function loadHazardous(hazardous) {
 		
-		// to do fix permalink
-		//permaInfo[this.value_lengthIdx] = unescape(truckParameters[0]);
+		if (hazardous == undefined || hazardous == null || hazardous == 'undefined') {
+			permaInfo[this.hazardousIdx] = escape("null");
+		} else {
+			permaInfo[this.hazardousIdx] = hazardous;
+		}
 
-		//return truckParameters;
+		return hazardous;
 	}
-	
+
 
 
 	/**
@@ -392,42 +454,49 @@ var Preferences = ( function(w) {'use strict';
 	 * @return the avoidables
 	 */
 	function loadAvoidables(highway, tollway, unpaved, ferry, steps) {
-		var avoidables = [false, false, false, false];
-		//highway
-		if (unescape(highway) === 'true') {
-			avoidables[0] = true;
+		
+		var avoidables = [false, false, false, false, false];
+		
+
+		// highway
+		if (highway == true || highway == 'true') {
 			permaInfo[this.avoidHighwayIdx] = true;
+			avoidables[0] = true;
 		} else {
 			permaInfo[this.avoidHighwayIdx] = false;
 		}
-		//tollway
-		if (unescape(tollway) === 'true') {
-			avoidables[1] = true;
+		// tollway
+		if (tollway == true || tollway == 'true') {
 			permaInfo[this.avoidTollwayIdx] = true;
+			avoidables[1] = true;
 		} else {
 			permaInfo[this.avoidTollwayIdx] = false;
+			
 		}
-		//unpaved
-		if (unescape(unpaved) === 'true') {
-			avoidables[2] = true;
+		// tollway
+		if (unpaved == true || unpaved == 'true') {
 			permaInfo[this.avoidUnpavedIdx] = true;
+			avoidables[2] = true;
 		} else {
 			permaInfo[this.avoidUnpavedIdx] = false;
 		}
-		//ferry
-		if (unescape(ferry) === 'true') {
-			avoidables[3] = true;
+		// ferry
+		if (ferry == true || ferry == 'true') {
 			permaInfo[this.avoidFerryIdx] = true;
+			avoidables[3] = true;
 		} else {
 			permaInfo[this.avoidFerryIdx] = false;
+			
 		}
-		//steps
-		if (unescape(steps) === 'true') {
-			avoidables[4] = true;
+		// ferry
+		if (steps == true || steps == 'true') {
 			permaInfo[this.avoidStepsIdx] = true;
+			avoidables[4] = true;
 		} else {
 			permaInfo[this.avoidStepsIdx] = false;
+			
 		}
+
 		return avoidables;
 	}
 	
@@ -436,33 +505,44 @@ var Preferences = ( function(w) {'use strict';
 	 * @param surface, incline, slopedCurb: extracted from the GET variables in readGetVars()
 	 * @return the wheelchair parameters
 	 */
-	function loadWheelParameters(surface, incline, slopedCurb) {
-		var wheelParameters = [null, null, null];
+	function loadWheelParameters(surface, incline, slopedCurb, tracktype, smoothness) {
+
+		var wheelParameters = new Array();
 		
-		//surface
-		surface = unescape(surface);
-		//incline
-		incline = unescape(incline);
-		//slopedCurb
-		slopedCurb = unescape(slopedCurb);
-		
-		if (surface == undefined || surface == null || surface == 'undefined') {
-			surface = list.wheelchairParameters.get('Surface')[1];
+		if (surface == undefined || surface == null || surface == 'undefined' || surface == 'null') {
+			permaInfo[this.surfaceIdx] = null;
+		} else {
+			permaInfo[this.surfaceIdx] = surface;
+			wheelParameters[0] = surface;
 		}
-		if (incline == undefined || incline == null || incline == 'undefined') {
-			incline = list.wheelchairParameters.get('Incline')[1];
+
+		if (incline == undefined || incline == null || incline == 'undefined' || incline == 'null') {
+			permaInfo[this.inclineIdx] = null;
+		} else {
+			permaInfo[this.inclineIdx] = incline;
+			wheelParameters[1] = incline;
 		}
-		if (slopedCurb == undefined || slopedCurb == null || slopedCurb == 'undefined') {
-			slopedCurb = list.wheelchairParameters.get('SlopedCurb')[1];
+
+		if (slopedCurb == undefined || slopedCurb == null || slopedCurb == 'undefined' || slopedCurb == 'null') {
+			permaInfo[this.slopedCurbIdx] = null;
+		} else {
+			permaInfo[this.slopedCurbIdx] = slopedCurb;
+			wheelParameters[2] = slopedCurb;
 		}
-		
-		wheelParameters[0] = surface;
-		wheelParameters[1] = incline;
-		wheelParameters[2] = slopedCurb;
-		
-		permaInfo[this.surfaceIdx] = unescape(surface);
-		permaInfo[this.inclineIdx] = unescape(incline);
-		permaInfo[this.slopedCurbIdx] = unescape(slopedCurb);
+
+		if (tracktype == undefined || tracktype == null || tracktype == 'undefined' ||  tracktype == 'null') {
+			permaInfo[this.trackTypeIdx] = null;
+		} else {
+			permaInfo[this.trackTypeIdx] = tracktype;
+			wheelParameters[3] = tracktype;
+		}
+
+		if (smoothness == undefined || smoothness == null || smoothness == 'undefined' || smoothness == 'null') {
+			permaInfo[this.smoothnessIdx] = null;
+		} else {
+			permaInfo[this.smoothnessIdx] = smoothness;
+			wheelParameters[4] = smoothness;
+		}
 		
 		return wheelParameters;
 	}
@@ -501,7 +581,7 @@ var Preferences = ( function(w) {'use strict';
 	 */
 	function updatePreferences(key, value) {
 
-		permaInfo[key] = escape(value);
+		permaInfo[key] = value;
 		
 	}
 
@@ -620,64 +700,48 @@ var Preferences = ( function(w) {'use strict';
 
 	/**
 	 * open new window with the permalink
-	 */
-			
-	var url = "cgi-bin/proxy.cgi?url=" + namespaces.services.shorten;
-
-	function openPermalink() {
-		
-		var query = 'http://www.openrouteservice.org?';
-		for (var i = 0; i < prefNames.length; i++) {
-			query += prefNames[i] + '=' + permaInfo[i] + '&';
-		}
-		//slice away last '&'
-		query = query.substring(0, query.length - 1);
-
-		jQuery.ajax({
-			url: url,
-			type: "POST",
-			crossDomain: false,
-			data: query, 
-			success: function(response){
-				window.open(response)
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) { 
-				alert("Status: " + textStatus); 
-				alert("Error: " + errorThrown); 
-			}
-		});
-
-	}
-
-
-	/**
-	 * open new window with the permalink
-	 */
-	function copyPermalink() {
-		
-		var query = 'http://www.openrouteservice.org?';
-		for (var i = 0; i < prefNames.length; i++) {
-			query += prefNames[i] + '=' + permaInfo[i] + '&';
-		}
-		//slice away last '&'
-		query = query.substring(0, query.length - 1);
-
-		jQuery.ajax({
-			url: url,
-			type: "POST",
-			crossDomain: false,
-			data: query, 
-			success: function(response){
-				window.prompt("Copy to clipboard: Ctrl+C or Cmd+C, Enter", response);
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) { 
-				alert("Status: " + textStatus); 
-				alert("Error: " + errorThrown); 
-			}
-		});
-
+	 */	
+	var url;
+	if ( location.hostname.match('openrouteservice') || location.hostname.match('localhost') ) {
+		 url = "cgi-bin/proxy.cgi?url=" + namespaces.services.shorten;
+	} else {
+		 url = namespaces.services.shorten;
 	}
 	
+	function generatePermalink(option) {
+
+		var query = 'http://www.openrouteservice.org?';
+		for (var i = 0; i < prefNames.length; i++) {
+			if (permaInfo[i] != null && permaInfo[i] != 'null' && permaInfo[i] != false && permaInfo[i] != 'false' ) {
+				query += prefNames[i] + '=' + permaInfo[i] + '&';
+			}
+			
+		}
+		//slice away last '&'
+		query = query.substring(0, query.length - 1);
+
+		jQuery.ajax({
+			url: url,
+			type: "POST",
+			crossDomain: false,
+			data: query, 
+			dataType: "text",
+			contentType: "text/xml; charset=utf-8",
+			success: function(response){
+				if (option == 'copy') {
+					window.prompt("Copy to clipboard: Ctrl+C or Cmd+C, Enter", response);
+				} else if (option == 'open') {
+					window.open(response)
+				}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) { 
+				alert("Status: " + textStatus); 
+				alert("Error: " + errorThrown); 
+			}
+		});
+
+	}
+
 	/**
 	 * the site is reloaded with the permalink (used after preferences have been changed) 
 	 */
@@ -709,6 +773,8 @@ var Preferences = ( function(w) {'use strict';
 	Preferences.prototype.loadMapLayer = loadMapLayer;
 	Preferences.prototype.loadWaypoints = loadWaypoints;
 	Preferences.prototype.loadRouteOptions = loadRouteOptions;
+	Preferences.prototype.loadRouteWeight = loadRouteWeight;
+	Preferences.prototype.loadRouteOptionsType = loadRouteOptionsType;
 	Preferences.prototype.loadAvoidables = loadAvoidables;
 	Preferences.prototype.loadAvoidAreas = loadAvoidAreas;
 	Preferences.prototype.loadtruckParameters = loadtruckParameters;
@@ -723,8 +789,7 @@ var Preferences = ( function(w) {'use strict';
 
 	Preferences.prototype.areCookiesAVailable = areCookiesAVailable;
 
-	Preferences.prototype.openPermalink = openPermalink;
-	Preferences.prototype.copyPermalink = copyPermalink;
+	Preferences.prototype.generatePermalink = generatePermalink;
 	Preferences.prototype.reloadWithPerma = reloadWithPerma;
 	
 	return new Preferences();

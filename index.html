@@ -15,7 +15,7 @@
 		<div class="navbar navbar-fixed-top" id="navbar">
 			<a class="brand" href="http://www.openrouteservice.org"> <img src="img/logo.png" class="logo" alt="ORS"></a>
 			<a class="brand" id="title" href="http://www.openrouteservice.org">OpenRouteService.org</a>
-			<a href="#" id="info" class="btn btn-large btn-danger disabled">Coverage Germany only until 22.05.2015</a>
+			<!--<a href="#" id="info" class="btn btn-large btn-danger disabled">Coverage Germany only until 22.05.2015</a>-->
 
 			<ul id="topMenu">
 				<li>
@@ -69,9 +69,9 @@
 										</button>
 										<button id="pedestrian" class="btn routeOptionsButton"><img src="img/picto-dude.png">
 										</button>
-										<!-- <button id="wheelchair" class="btn routeOptionsButton"><img src="img/picto-wheelchair.png">
-										</button> -->
-										<button id="truck" class="btn routeOptionsButton"><img src="img/picto-truck.png">
+										<button id="wheelchair" class="btn routeOptionsButton"><img src="img/picto-wheelchair.png">
+										</button>
+										<button id="heavyvehicle" class="btn routeOptionsButton"><img src="img/picto-truck.png">
 										</button>
 									</div>
 									<div class="btn-group" id="weightingDropdown">
@@ -125,7 +125,7 @@
 															<label id="BicycleRouteLabel">preferred bicycle lane</label>
 														</div> -->
 														<div class="radio">
-															<input type="radio"  name="bicycle" value="mountain">
+															<input type="radio" id="BicycleMTB" name="bicycle" value="mountain">
 															<span class="label" id="BicycleMtbLabel">mountain bike</span>
 
 														</div>
@@ -152,21 +152,21 @@
 											</tr>
 										</table>
 									</div>
-									<div class="panel panelMedium" id="truckOptions" style="display: none;">
+									<div class="panel panelMedium" id="heavyvehicleOptions" style="display: none;">
 										<table class="optionsTable" style="width: 100%">
 											<tr>
 												<td>
 													<div class="radioContainer">
 														<div class="radio">
-															<input type="radio" id="HeavyVehicle" name="truck" value="goods" checked="checked">
+															<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="goods" checked="checked">
 															<span class="label" id="goodsHeavyTruckLabel">goods</span>
 														</div>
 														<div class="radio">
-															<input type="radio" id="HeavyVehicle" name="truck" value="hgv">
+															<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="hgv">
 															<span class="label" id="hgvHeavyTruckLabel">HGV</span>
 														</div>
 														<div class="radio">
-															<input type="radio" id="HeavyVehicle" name="truck" value="bus">
+															<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="bus">
 															<span class="label" id="busHeavyTruckLabel">Bus</span>
 														</div>
 													</div>
@@ -174,15 +174,15 @@
 												<td>
 													<div class="radioContainer">
 														<div class="radio">
-															<input type="radio" id="HeavyVehicle" name="truck" value="agricultural">
+															<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="agricultural">
 															<span class="label" id="agriculturalHeavyTruckLabel">Agricultural Vehicle</span>
 														</div>
 														<div class="radio">
-															<input type="radio" id="HeavyVehicle" name="truck" value="forestry">
+															<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="forestry">
 															<span class="label" id="forestryHeavyTruckLabel">Forestry</span>
 														</div>
 														<div class="radio">
-															<input type="radio" id="HeavyVehicle" name="truck" value="delivery">
+															<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="delivery">
 															<span class="label" id="deliveryHeavyTruckLabel">Delivery</span>
 														</div>
 													</div>
@@ -191,7 +191,7 @@
 										</table>
 										<div class="panel panelMedium" id="hazardOptions">
 											<label class="checkbox">
-													<input type="checkbox" id="Hazardous" value="hazardous">
+													<input type="checkbox" id="Hazardous" value="hazmat">
 													<span id="hazardous" class="label label-warning"><i class="icon-tint icon-white"></i>&nbsp;Hazardous Materials</span>
 											</label>
 										</div>
