@@ -843,7 +843,10 @@ var Map = ( function() {"use strict";
 			var newFeature = new OpenLayers.Feature.Vector(newMarker, {
 				icon : Ui.markerIcons[type][0],
 				iconEm : Ui.markerIcons[type][1],
+				type: type
 			});
+			//console.log(newFeature)
+			//console.log(layerWaypoints.features)
 			layerWaypoints.addFeatures([newFeature]);
 			return newFeature.id;
 		}
@@ -886,14 +889,8 @@ var Map = ( function() {"use strict";
 		 * @return: string of LonLat positions; style: 'lon1,lat1,lon2,lat2,...lonk,latk'
 		 */
 		function getWaypointsString(endPoint) {
-			// if endPoint is true add (0,0) to beginning of string
-			// this is then caught 
-			if (endPoint == true) {
-				var wpString = "0%2C0%2C";
-			} else {
-				var wpString = "";
-			}
 
+			
 			var layer = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
 
 			//serialize these features to string

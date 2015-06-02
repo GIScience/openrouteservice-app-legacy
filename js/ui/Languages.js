@@ -59,6 +59,7 @@ var Languages = (function(w) {'use strict';
 		$('#avoidRoadsBtn').html(p.translate('avoidRoadMain'));
 		$('#avoidAreasBtn').html(p.translate('avoidAreasMain'));
 		$('#avoidBikesBtn').html(p.translate('avoidBikeMain'));
+		$('#avoidPedesBtn').html(p.translate('avoidPedesMain'));
 
 
 		$('#avoidMotorLabel').html(p.translate('avoidMotorways'));

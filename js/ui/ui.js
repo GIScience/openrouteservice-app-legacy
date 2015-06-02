@@ -1865,10 +1865,12 @@ var Ui = ( function(w) {'use strict';
 			var truckparameter = $('#truckOptions_restrict');
 			var truck = $('#truckOptions');
 			var avoidables = $('#avoidables');
-			var avoidablesBike = $('#avoidablesBike')
+			var avoidablesBike = $('#avoidablesBike');
+			var avoidablesPedestrian = $('#avoidablesPedestrian');
 			var wheel = $('#wheelchairOptions');
 			var wheelParameters = $('#wheelchairParameters');
 			if (optionType === 'car') {
+				avoidablesPedestrian.hide();
 				car.show();
 				avoidables.show();
 				avoidablesBike.hide();
@@ -1880,6 +1882,7 @@ var Ui = ( function(w) {'use strict';
 				wheelParameters.hide();
 				$('#accessibilityAnalysis').show();
 			} else if (optionType === 'bicycle') {
+				avoidablesPedestrian.hide();
 				car.hide();
 				avoidables.hide();
 				bike.show();
@@ -1891,6 +1894,7 @@ var Ui = ( function(w) {'use strict';
 				wheelParameters.hide();
 				$('#accessibilityAnalysis').show();
 			} else if (optionType === 'truck') {
+				avoidablesPedestrian.hide();
 				car.hide();
 				avoidablesBike.hide();
 				avoidables.show();
@@ -1903,6 +1907,7 @@ var Ui = ( function(w) {'use strict';
 				$('#accessibilityAnalysis').show();
 			}
 			else if (optionType === 'pedestrian') {
+				avoidablesPedestrian.show();
 				car.hide();
 				avoidables.hide();
 				avoidablesBike.hide();
@@ -1991,7 +1996,9 @@ var Ui = ( function(w) {'use strict';
 			//for extended route options
 			var itemValue = target.value;
 
-			if ($.inArray(itemId, list.routeAvoidables) >= 0) {
+			console.log(itemId);
+
+			if ($.inArray(itemId, list.routeAvoidables) >= 0 || $.inArray(itemValue, list.routeAvoidables) >= 0) {
 				//is a route avoidable
 				if (itemId === list.routeAvoidables[0]) {
 					//if the avoidable is set, remove it (and vice versa)
@@ -2127,6 +2134,8 @@ var Ui = ( function(w) {'use strict';
 			var parentOptions = list.routePreferences.keys();
 			var parent;
 			var avoidables = $('#avoidables');
+			var avoidablesPed = $('#avoidablesPedestrian');
+			var avoidablesBike = $('#avoidablesBike');
 			var wheelParameters = $('#wheelchairParameters');
 			for (var i = 0; i < parentOptions.length; i++) {
 				if (list.routePreferences.get(parentOptions[i]).indexOf(routeOption) != -1) {
@@ -2134,13 +2143,19 @@ var Ui = ( function(w) {'use strict';
 					$('#' + parentOptions[i] + 'Options').show();
 					//activate corresponding option panel
 					$('#' + parentOptions[i]).addClass('active');
-					//show avoidables for car
+					//show avoidables for car, bike or pedestrian
 					if (parentOptions[i] == 'car') {
 						avoidables.show();
+					} else if (parentOptions[i] == 'bike') {
+						avoidablesBike.show();
+					} else if (parentOptions[i] == 'pedestrian') {
+						avoidablesPed.show();
 					}
 					//hide avoidables otherwise
 					else {
 						avoidables.hide();
+						avoidablesBike.hide();
+						avoidablesPed.hide();
 					}
 					//show parameters for wheelchair if wheelchair option is active
 					if (parentOptions[i] == 'wheelchair') {
@@ -2208,19 +2223,22 @@ var Ui = ( function(w) {'use strict';
 		 * @param highway: true, if highway checkbox is to be checked
 		 * @param tollway: accordingly.
 		 */
-		function setAvoidables(highway, tollway,unpaved,ferry) {
+		function setAvoidables(highway, tollway,unpaved,ferry,steps) {
 			var highwayTrue = (highway === 'true') || highway == true;
 			var tollwayTrue = (tollway === 'true') || tollway == true;
 			var unpavedTrue = (unpaved === 'true') || unpaved == true;
 			var ferryTrue = (ferry === 'true') || ferry == true;
+			var stepsTrue = (steps === 'true') || steps == true;
 			routeOptions[1][0] = highwayTrue;
 			routeOptions[1][1] = tollwayTrue;
 			routeOptions[1][2] = unpavedTrue;
 			routeOptions[1][3] = ferryTrue;
+			routeOptions[1][4] = stepsTrue;
 			$('#Highway').attr('checked', highwayTrue);
 			$('#Tollway').attr('checked', tollwayTrue);
 			$('#Unpavedroads').attr('checked', unpavedTrue);
 			$('#Ferry').attr('checked', ferryTrue);
+			$('#Steps').attr('checked', stepsTrue);
 		}
 
 		/**

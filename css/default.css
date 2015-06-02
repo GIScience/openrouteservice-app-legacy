@@ -1005,10 +1005,11 @@ button.weightOptions {
 }
 
 /* dropdown of road types to avoid */
-#dropdown_avoid_roads {
+.dropdown_avoid {
 	padding-left: 5px;
 	padding-right: 5px;
 	padding-top: 5px;
+	font-size: 11px;
 }
 
 /* dropdown of route settings weighting */

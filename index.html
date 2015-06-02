@@ -292,7 +292,7 @@
 									<div class="panel panelMedium">
 										<div class="btn-group" id="avoidables">
 								        	<button class="btn btn-small btn-danger dropdown-toggle" id="avoidRoadsBtn" data-hover="dropdown" aria-expanded="false"><i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types<span class="caret"></span></button>
-											<ul class="dropdown-menu" id="dropdown_avoid_roads">
+											<ul class="dropdown-menu dropdown_avoid">
 							                  	<label class="checkbox">
 													<input type="checkbox" id="Highway">
 													<label id="avoidMotorLabel">highways</label>
@@ -311,9 +311,18 @@
 												</label>
 											</ul>
 								    	</div>
+								    	<div class="btn-group" id="avoidablesPedestrian" style="display: none;">
+								        	<button class="btn btn-small btn-danger dropdown-toggle" id="avoidPedesBtn" data-hover="dropdown" aria-expanded="false"><i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;avoid road types<span class="caret"></span></button>
+											<ul class="dropdown-menu dropdown_avoid">
+							                  	<label class="checkbox">
+													<input type="checkbox" id="Ferry">
+													<label id="avoidFerryLabelPedestrian">ferries</label>
+												</label>										
+											</ul>
+								    	</div>
 								    	<div class="btn-group" id="avoidablesBike" style="display: none;">
-								        	<button class="btn btn-small btn-danger dropdown-toggle" id="avoidBikesBtn" data-hover="dropdown" aria-expanded="false"><i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types<span class="caret"></span></button>
-											<ul class="dropdown-menu" id="dropdown_avoid_roads">
+								        	<button class="btn btn-small btn-danger dropdown-toggle" id="avoidBikesBtn" data-hover="dropdown" aria-expanded="false"><i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;avoid road types<span class="caret"></span></button>
+											<ul class="dropdown-menu dropdown_avoid">
 							                  	<label class="checkbox">
 													<input type="checkbox" id="Ferry">
 													<label id="avoidFerryLabelBike">ferries</label>
@@ -329,7 +338,7 @@
 											</ul>
 								    	</div>
 										<div class="btn-group" id="avoidAreas">
-								                <button class="btn btn-small btn-danger dropdown-toggle" id="avoidAreasBtn" data-hover="dropdown" data-hover="dropdown" aria-expanded="false"><i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid areas<span class="caret"></span></button>
+								                <button class="btn btn-small btn-danger dropdown-toggle" id="avoidAreasBtn" data-hover="dropdown" data-hover="dropdown" aria-expanded="false"><i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;avoid areas<span class="caret"></span></button>
 								                <ul class="dropdown-menu" id="dropdown_avoid_areas">
 								                	<div class="btn-group" id="avoidAreasToolbar">
 														<button class="btn" id="avoidCreate" title="draw avoid area"><img src="img/avoid-plus.png">

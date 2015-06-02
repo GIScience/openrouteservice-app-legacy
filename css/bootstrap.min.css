@@ -36,3 +36,7 @@ input {
 
 }
 
+.btn-group>.btn label, 
+.btn-group>.dropdown-menu label, 
+.btn-group>.popover label {
+  font-size: 11px;
