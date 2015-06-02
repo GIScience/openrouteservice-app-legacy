@@ -226,7 +226,7 @@ util = ( function() {'use strict';
 
 						}
 						
-					}
+					
 					//Street line
 					$A(streets).each(function(street) {
 						var officialName = street.getAttribute('officialName');
