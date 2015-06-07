@@ -127,7 +127,7 @@ var Controller = ( function(w) {'use strict';
             map.zoomToMarker(util.convertPositionStringToLonLat(position), 14);
             ui.setWaypointFeatureId(wpIndex, waypointResultId, position, map.ROUTE_POINTS);
 
-            handleWaypointChanged(map.getWaypointsString());
+            handleWaypointChanged();
             
 
         }
@@ -235,7 +235,7 @@ var Controller = ( function(w) {'use strict';
                 ui.setWaypointFeatureId(newIndex, featureId, position, map.ROUTE_POINTS);
 
                 //update preferences
-                handleWaypointChanged(map.getWaypointsString());
+                handleWaypointChanged();
                 
 
                 //cannot be emmited by 'this', so let's use sth that is known inside the callback...
@@ -279,7 +279,7 @@ var Controller = ( function(w) {'use strict';
             ui.setWaypointFeatureId(index2, newFtId, position, map.ROUTE_POINTS);
 
             //update preferences
-            handleWaypointChanged(map.getWaypointsString(), true);
+            handleWaypointChanged(true);
         }
 
         /**
@@ -330,7 +330,7 @@ var Controller = ( function(w) {'use strict';
 
 
             //update preferences
-            handleWaypointChanged(map.getWaypointsString());
+            handleWaypointChanged();
             
 
             //TODO: update route string..
@@ -356,7 +356,7 @@ var Controller = ( function(w) {'use strict';
             waypoint.setWaypoint(wpIndex, false);
 
             //update preferences
-            handleWaypointChanged(map.getWaypointsString());
+            handleWaypointChanged();
         }
 
         /**
@@ -385,11 +385,25 @@ var Controller = ( function(w) {'use strict';
          * check whether point is start or end point, preferences have to be updated accordingly that permalink still works correctly
          * @param waypointStringList: string containing all waypoints
          */
-        function handleWaypointChanged(waypointStringList, doNotCalculateRoute) {
+        function handleWaypointChanged(doNotCalculateRoute) {
+
+            var routePoints = ui.getRoutePoints();
+            var wpString = "";
+
+            for (var i = 0; i < routePoints.length; i++) {
+                routePoints[i] = routePoints[i].split(' ');
+                if (routePoints[i].length == 2) {
+                    routePoints[i] = new OpenLayers.LonLat(routePoints[i][0], routePoints[i][1]);
+                    routePoints[i] = util.convertPointForDisplay(routePoints[i]);
+                    wpString = wpString + routePoints[i].lon + ',' + routePoints[i].lat + ',';
+                }
+            }
+            //slice away the last separator ','
+            wpString = wpString.substring(0, wpString.length - 3);
 
             handlePrefsChanged({
                 key : preferences.waypointIdx,
-                value : waypointStringList,
+                value : wpString,
             });
 
             if (!doNotCalculateRoute) {
@@ -712,7 +726,7 @@ var Controller = ( function(w) {'use strict';
             ui.invalidateWaypointSearch(index);
 
             //update preferences
-            handleWaypointChanged(map.getWaypointsString(), true);
+            handleWaypointChanged(true);
         }
 
         /* *********************************************************************
@@ -742,7 +756,7 @@ var Controller = ( function(w) {'use strict';
                         routePoints[i] = util.convertPointForDisplay(routePoints[i]);
                     }
                 }
-
+            
                 
                 var routePref = permaInfo[preferences.routeOptionsIdx];
                 

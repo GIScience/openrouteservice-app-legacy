@@ -893,14 +893,9 @@ var Map = ( function() {"use strict";
 		 * encode all waypoints by their position in a string; used e.g. for permalink
 		 * @return: string of LonLat positions; style: 'lon1,lat1,lon2,lat2,...lonk,latk'
 		 */
-		function getWaypointsString(endPoint) {
-			// if endPoint is true add (0,0) to beginning of string
-			// this is then caught 
-			if (endPoint == true) {
-				var wpString = "0%2C0%2C";
-			} else {
-				var wpString = "";
-			}
+		function getWaypointsString() {
+			
+			var wpString = "";
 		
 			var layer = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
 
@@ -914,7 +909,7 @@ var Map = ( function() {"use strict";
 			}
 			//slice away the last separator ','
 			wpString = wpString.substring(0, wpString.length - 3);
-
+			console.log(wpString)
 			return wpString;
 		}
 
