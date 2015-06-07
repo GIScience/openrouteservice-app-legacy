@@ -415,21 +415,35 @@ var Map = ( function() {"use strict";
 						//if we have any other popup menus, remove them
 						closeContextMenu();
 
+						var menuObject = createMapContextMenu();
+						$$('body')[0].insert(menuObject);
+
 						//build new popup menu
 						var pos = self.theMap.getLonLatFromViewPortPx(e.xy);
 						var displayPos = util.convertPointForDisplay(pos);
+					
+						//place context menu in a popup on the map
+						self.popup = new OpenLayers.Popup('mapContextMenu', pos, null, menuObject.innerHTML, false, null );
+						self.popup.autoSize = true;
+						self.popup.panMapIfOutOfView = true;
+						//self.popup.keepInMap = false;
+						self.popup.closeOnMove = false;
+						self.popup.opacity = 0.9;
+						
 
-						var menuObject = $('#mapContextMenu').clone();
-						menuObject.attr('id', 'menu');
+						self.theMap.addPopup(self.popup);
 
 						//event handling for context menu
-						var options = menuObject.children();
+						var options = $(self.popup.div);
+						options = options[0].childNodes[0].childNodes[0].children;
+	
 						options[0].onclick = function(e) {
 							//click on start point
 							self.emit('map:addWaypoint', {
 								pos : displayPos,
 								type : Waypoint.type.START
 							});
+							closeContextMenu();
 						};
 						options[0].onmouseover = function(e) {
 							//click on start point
@@ -445,6 +459,7 @@ var Map = ( function() {"use strict";
 								pos : displayPos,
 								type : Waypoint.type.VIA
 							});
+							closeContextMenu();
 						};
 						options[1].onmouseover = function(e) {
 							//click on start point
@@ -459,6 +474,7 @@ var Map = ( function() {"use strict";
 								pos : displayPos,
 								type : Waypoint.type.END
 							});
+							closeContextMenu();
 						}
 						options[2].onmouseover = function(e) {
 							//click on start point
@@ -467,15 +483,8 @@ var Map = ( function() {"use strict";
 						options[2].onmouseout = function(e) { 
 							document.getElementsByClassName("useAsEndPoint")[0].style.backgroundColor = 'transparent';
 						}
-						//place context menu in a popup on the map
-						self.popup = new OpenLayers.Popup('menu', pos, null, menuObject.html(), false, null);
-						self.popup.autoSize = true;
-						self.popup.div = menuObject.get(0);
-						self.popup.opacity = 0.9;
-						//TODO all this will not work properly with any stable version of OL; it is only included in DEV version so far... :/
-						self.popup.border = '1px';
 
-						self.theMap.addPopup(self.popup);
+	
 					},
 					'click' : function(e) {
 						closeContextMenu();
@@ -543,8 +552,49 @@ var Map = ( function() {"use strict";
 
 			//close the context menu when zooming or panning,...
 			function closeContextMenu() {
-				$('#menu').remove();
+				$('#mapContextMenu').remove();
 			};
+
+			function createMapContextMenu() {
+
+
+				var mapContextMenuContainer = new Element('div', {
+					'id' : 'mapContextMenu',
+					'style' : 'display:none',
+				});
+
+				var useAsStartPointContainer = new Element('div', {
+					'class': 'useAsStartPoint'
+				});	
+				var startSpan = new Element('span', {
+					'id' : 'contextStart',
+				}).update('use as start point');
+				useAsStartPointContainer.appendChild(startSpan);
+
+				var useAsViaPointContainer = new Element('div', {
+					'class': 'useAsViaPoint'
+				});	
+				var viaSpan = new Element('span', {
+					'id' : 'contextVia',
+				}).update('use as via point');
+				useAsViaPointContainer.appendChild(viaSpan);
+
+				var useAsEndPointContainer = new Element('div', {
+					'class': 'useAsEndPoint'
+				});	
+				var endSpan = new Element('span', {
+					'id' : 'contextEnd',
+				}).update('use as end point');
+				useAsEndPointContainer.appendChild(endSpan);
+
+				mapContextMenuContainer.appendChild(useAsStartPointContainer);
+				mapContextMenuContainer.appendChild(useAsViaPointContainer);
+				mapContextMenuContainer.appendChild(useAsEndPointContainer);
+		
+
+				return mapContextMenuContainer
+
+			}
 
 			//make route waypoints draggable
 			var dragWaypoints = new OpenLayers.Control.DragFeature(layerRoutePoints);
@@ -623,7 +673,7 @@ var Map = ( function() {"use strict";
 
 			//when zooming or moving the map -> close the context menu
 			this.theMap.events.register("zoomend", this.map, closeContextMenu);
-			this.theMap.events.register("movestart", this.map, closeContextMenu);
+			//this.theMap.events.register("movestart", this.map, closeContextMenu);
 		}
 
 		/* *********************************************************************
@@ -909,7 +959,6 @@ var Map = ( function() {"use strict";
 			}
 			//slice away the last separator ','
 			wpString = wpString.substring(0, wpString.length - 3);
-			console.log(wpString)
 			return wpString;
 		}
 
