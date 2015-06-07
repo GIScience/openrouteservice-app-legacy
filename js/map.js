@@ -416,7 +416,7 @@ var Map = ( function() {"use strict";
 						closeContextMenu();
 
 						var menuObject = createMapContextMenu();
-						$$('body')[0].insert(menuObject);
+						//$$('body')[0].insert(menuObject);
 
 						//build new popup menu
 						var pos = self.theMap.getLonLatFromViewPortPx(e.xy);
@@ -484,7 +484,6 @@ var Map = ( function() {"use strict";
 							document.getElementsByClassName("useAsEndPoint")[0].style.backgroundColor = 'transparent';
 						}
 
-	
 					},
 					'click' : function(e) {
 						closeContextMenu();
@@ -537,26 +536,20 @@ var Map = ( function() {"use strict";
 
 			}
 
-			// external code source: http://spatialnotes.blogspot.com/2010/11/capturing-right-click-events-in.html
-			// Get control of the right-click event:
-			// document.getElementById(container).oncontextmenu = function(e) {
-			// e = e ? e : window.event;
-			// if (e.preventDefault)
-			// e.preventDefault();
-			// // For non-IE browsers.
-			// else
-			// return false;
-			// // For IE browsers.
-			// };
-			//
 
 			//close the context menu when zooming or panning,...
 			function closeContextMenu() {
-				$('#mapContextMenu').remove();
+				
+				var popup = document.getElementById('mapContextMenu');
+
+				if (popup != null) {
+					popup.remove();
+
+				}
 			};
 
+			// create a new contextMenu
 			function createMapContextMenu() {
-
 
 				var mapContextMenuContainer = new Element('div', {
 					'id' : 'mapContextMenu',
@@ -591,7 +584,6 @@ var Map = ( function() {"use strict";
 				mapContextMenuContainer.appendChild(useAsViaPointContainer);
 				mapContextMenuContainer.appendChild(useAsEndPointContainer);
 		
-
 				return mapContextMenuContainer
 
 			}
