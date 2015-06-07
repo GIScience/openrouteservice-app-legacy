@@ -1556,6 +1556,7 @@ var Ui = ( function(w) {'use strict';
 		 * @param mapLayer: map layer containing these features
 		 */
 		function updateRouteInstructions(results, mapFeatureIds, mapLayer) {
+
 			if (!results) {
 				var container = $('#routeInstructionsContainer').get(0);
 				container.hide();
@@ -1583,9 +1584,19 @@ var Ui = ( function(w) {'use strict';
 				// container for all direction instructions
 
 				$A(instructionsList).each(function(instruction) {
+
+					var directionCode = util.getElementsByTagNameNS(instruction, namespaces.xls, 'DirectionCode')[0];
+					directionCode = directionCode.textContent;
+
+					//skip directionCode 100 for now
+					if (directionCode == '100') {
+						return;
+					}
+
 					//process each routing instruction
 					var text = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Instruction')[0];
 					text = text.text || text.textContent;
+
 
 					var distance = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Distance')[0];
 					var distanceValue = distance.getAttribute('value');
@@ -1603,35 +1614,41 @@ var Ui = ( function(w) {'use strict';
 					}
 
 					//arrow direction
-					var left = text.indexOf(preferences.translateInstructions('left'));
-					var halfLeft = text.indexOf(preferences.translateInstructions('half-left'));
-					var right = text.indexOf(preferences.translateInstructions('right'));
-					var halfRight = text.indexOf(preferences.translateInstructions('half-right'));
-					var straight = text.indexOf(preferences.translateInstructions('straight'));
 					var direction;
 					// will be used for traffic jam info etc
 					var notice;
 
-					if (left > 0 && (left < halfLeft || halfLeft < 0)) {
+					if (directionCode == '-2') {
 						direction = new Element('img', {
 							'src' : './img/left.png'
 						});
-					} else if (right > 0 && (right < halfRight || halfRight < 0)) {
+					} else if (directionCode == '2') {
 						direction = new Element('img', {
 							'src' : './img/right.png'
 						});
-					} else if (halfRight > 0) {
+					} else if (directionCode == '1') {
 						direction = new Element('img', {
 							'src' : './img/half-right.png'
 						});
-					} else if (halfLeft > 0) {
+					} else if (directionCode == '-1') {
 						direction = new Element('img', {
 							'src' : './img/half-left.png'
 						});
-					} else if (straight > 0) {
+					} else if (directionCode == '0') {
 						direction = new Element('img', {
 							'src' : './img/straight.png'
 						});
+					} else if (directionCode == '-3') {
+						direction = new Element('img', {
+							'src' : './img/left.png'
+						});
+					} else if (directionCode == '3') {
+						direction = new Element('img', {
+							'src' : './img/right.png'
+						});
+					// directionCode == '100'
+					} else  {
+						
 					}
 
 					numInstructions++;

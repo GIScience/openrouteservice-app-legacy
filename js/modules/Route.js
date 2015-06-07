@@ -276,6 +276,14 @@ var Route = ( function(w) {"use strict";
 			if (routeInstructions) {
 				routeInstructions = util.getElementsByTagNameNS(routeInstructions, namespaces.xls, 'RouteInstruction');
 				$A(routeInstructions).each(function(instructionElement) {
+
+					var directionCode = util.getElementsByTagNameNS(instructionElement, namespaces.xls, 'DirectionCode')[0];
+					directionCode = directionCode.textContent;
+					//skip directionCode 100 for now
+					if (directionCode == '100') {
+						return;
+					}
+
 					var segment = [];
 					$A(util.getElementsByTagNameNS(instructionElement, namespaces.gml, 'pos')).each(function(point) {
 						point = point.text || point.textContent;
@@ -304,6 +312,14 @@ var Route = ( function(w) {"use strict";
 			if (routeInstructions) {
 				routeInstructions = util.getElementsByTagNameNS(routeInstructions, namespaces.xls, 'RouteInstruction');
 				$A(routeInstructions).each(function(instructionElement) {
+
+					var directionCode = util.getElementsByTagNameNS(instructionElement, namespaces.xls, 'DirectionCode')[0];
+					directionCode = directionCode.textContent;
+					//skip directionCode 100 for now
+					if (directionCode == '100') {
+						return;
+					}
+
 					var point = util.getElementsByTagNameNS(instructionElement, namespaces.gml, 'pos')[0];
 					point = point.text || point.textContent;
 					point = point.split(' ');

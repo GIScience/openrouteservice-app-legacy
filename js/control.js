@@ -848,10 +848,13 @@ var Controller = ( function(w) {'use strict';
 
                 //when the service gives response but contains an error the response is handeled as success, not error. We have to check for an error tag here:
                 var responseError = util.getElementsByTagNameNS(results, namespaces.xls, 'ErrorList').length;
+
                 if (parseInt(responseError) > 0) {
                     //service response contains an error, switch to error handling function
                     routeCalculationError();
                 } else {
+
+
                     //use all-in-one-LineString to save the whole route in a single string
                     var routeLineString = route.writeRouteToSingleLineString(results);
                     var routeString = map.writeRouteToString(routeLineString);
@@ -864,6 +867,8 @@ var Controller = ( function(w) {'use strict';
                     var featureIds = map.updateRoute(routeLines, routePoints);
 
                     var errors = route.hasRoutingErrors(results);
+
+                    
 
                     if (!errors) {
                         ui.updateRouteSummary(results);

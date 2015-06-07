@@ -468,6 +468,7 @@ var Map = ( function() {"use strict";
 						options[1].onmouseout = function(e) { 
 							document.getElementsByClassName("useAsViaPoint")[0].style.backgroundColor = 'transparent';
 						}
+						
 						options[2].onclick = function(e) {
 							//click on end point
 							self.emit('map:addWaypoint', {
