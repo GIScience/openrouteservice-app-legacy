@@ -1970,13 +1970,8 @@ var Ui = ( function(w) {'use strict';
 		 * @param optionType: the route profile clicked
 		 */
 		function updateGlobalSettings(optionType, optionID) {
-
 			// change routing profile
 			theInterface.emit('ui:routingParamsChanged');
-					theInterface.emit('ui:prefsChanged', {
-						key : preferences.routeOptionsIdx,
-						value : optionID
-			});
 
 			// reset all checkboxes and avoidable settings each time a new profile is clicked
 			$('input:checkbox').removeAttr('checked');
@@ -2007,8 +2002,13 @@ var Ui = ( function(w) {'use strict';
 			});
 
 			// reset all truck and wheelchair settings to null if these profiles are clicked
-			if (optionType === 'car' || optionType === 'bicycle' || optionType === 'pedestrian') {
+			if (optionType === 'car' ||  optionType === 'pedestrian') {
 				
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.routeOptionsIdx,
+					value : optionID
+				});
+
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.routeOptionsTypesIdx,
 					value : null
@@ -2074,6 +2074,11 @@ var Ui = ( function(w) {'use strict';
 			if (optionType === 'wheelchair') {
 
 				theInterface.emit('ui:prefsChanged', {
+					key : preferences.routeOptionsIdx,
+					value : optionID
+				});
+
+				theInterface.emit('ui:prefsChanged', {
 					key : preferences.routeOptionsTypesIdx,
 					value : null
 				});
@@ -2134,8 +2139,83 @@ var Ui = ( function(w) {'use strict';
 				
 			}
 
-			// if truck is clicked reset wheelchair settings and add truck initial settings
+			// if bicycle is clicked reset wheelchair settings and add bicycle settings
+			if (optionType === 'bicycle') {
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.routeOptionsIdx,
+					value : $("#bicycleOptions input[type='radio']:checked").attr('id')
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.routeOptionsTypesIdx,
+					value : null
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_lengthIdx,
+					value : null
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_heightIdx,
+					value : null
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_weightIdx,
+					value : null
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_widthIdx,
+					value : null
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.hazardousIdx,
+					value : false
+				});
+
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.surfaceIdx,
+					value : null
+				});
+				
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.smoothnessIdx,
+					value : null
+				});
+				
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.trackTypeIdx,
+					value : null
+				});
+				
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.inclineIdx,
+					value : null
+				});
+				
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.slopedCurbIdx,
+					value : null
+				});
+
+
+			}
+
+			// if truck is clicked reset wheelchair settings and add truck  settings
 			if (optionType === 'heavyvehicle') {
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.routeOptionsIdx,
+					value : optionID
+				});
 				
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.routeOptionsTypesIdx,
