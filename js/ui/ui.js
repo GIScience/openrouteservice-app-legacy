@@ -1577,6 +1577,7 @@ var Ui = ( function(w) {'use strict';
 				}
 				
 				var numInstructions = 0;
+				var numStopovers = 0;
 
 				var instructionsList = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstructionsList')[0];
 				instructionsList = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstruction');
@@ -1590,131 +1591,170 @@ var Ui = ( function(w) {'use strict';
 
 					//skip directionCode 100 for now
 					if (directionCode == '100') {
-						return;
-					}
-
-					//process each routing instruction
-					var text = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Instruction')[0];
-					text = text.text || text.textContent;
-
-
-					var distance = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Distance')[0];
-					var distanceValue = distance.getAttribute('value');
-					var distanceUnit = distance.getAttribute('uom');
-					var distArr = [];
-
-					if (preferences.distanceUnit == list.distanceUnitsPreferences[0]) {
-						//use mixture of km and m
-						distArr = util.convertDistanceFormat(distanceValue, preferences.distanceUnit);
-					} else {
-						//use mixture of miles and yards
-						var yardsUnit = 'yd';
-						var distMeasure = util.convertDistToDist(distanceValue, distanceUnit, yardsUnit);
-						distArr = util.convertDistanceFormat(distMeasure, preferences.distanceUnit);
-					}
-
-					//arrow direction
-					var direction;
-					// will be used for traffic jam info etc
-					var notice;
-
-					if (directionCode == '-2') {
-						direction = new Element('img', {
-							'src' : './img/left.png'
-						});
-					} else if (directionCode == '2') {
-						direction = new Element('img', {
-							'src' : './img/right.png'
-						});
-					} else if (directionCode == '1') {
-						direction = new Element('img', {
-							'src' : './img/half-right.png'
-						});
-					} else if (directionCode == '-1') {
-						direction = new Element('img', {
-							'src' : './img/half-left.png'
-						});
-					} else if (directionCode == '0') {
-						direction = new Element('img', {
-							'src' : './img/straight.png'
-						});
-					} else if (directionCode == '-3') {
-						direction = new Element('img', {
-							'src' : './img/left.png'
-						});
-					} else if (directionCode == '3') {
-						direction = new Element('img', {
-							'src' : './img/right.png'
-						});
-					// directionCode == '100'
-					} else  {
 						
+						numStopovers++;
+
+						//add DOM elements
+						var directionsContainer = new Element('div', {
+							'class' : 'directions-container clickable',
+							'data-layer' : mapLayer,
+						});
+
+						var directionTextDiv = new Element('div', {
+							'class' : 'directions-text clickable routeInstructions',
+							'id' : mapFeatureIds[2 * (numInstructions - 1) + 1]
+						}).update('Stopover #'+numStopovers);
+					
+						// modeContainer
+						var directionsModeContainer = new Element('div', {
+							'class': 'directions-mode-container'
+						})
+
+						var directionsBorder = new Element('div', {
+							'class': 'directions-mode-line'
+						})
+
+						var distanceDiv = new Element('div', {
+							'class' : 'directions-mode-distance clickable',
+							'id' : mapFeatureIds[2 * (numInstructions - 1)],
+						})
+
+						directionsContainer.appendChild(directionTextDiv);
+
+						directionsModeContainer.appendChild(directionsBorder);
+						directionsModeContainer.appendChild(distanceDiv);
+						directionsContainer.appendChild(directionsModeContainer);
+						directionsMain.appendChild(directionsContainer);
+
+
+						
+					} else {
+
+						//process each routing instruction
+						var text = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Instruction')[0];
+						text = text.text || text.textContent;
+
+
+						var distance = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Distance')[0];
+						var distanceValue = distance.getAttribute('value');
+						var distanceUnit = distance.getAttribute('uom');
+						var distArr = [];
+
+						if (preferences.distanceUnit == list.distanceUnitsPreferences[0]) {
+							//use mixture of km and m
+							distArr = util.convertDistanceFormat(distanceValue, preferences.distanceUnit);
+						} else {
+							//use mixture of miles and yards
+							var yardsUnit = 'yd';
+							var distMeasure = util.convertDistToDist(distanceValue, distanceUnit, yardsUnit);
+							distArr = util.convertDistanceFormat(distMeasure, preferences.distanceUnit);
+						}
+
+						//arrow direction
+						var direction;
+						// will be used for traffic jam info etc
+						var notice;
+
+						if (directionCode == '-2') {
+							direction = new Element('img', {
+								'src' : './img/left.png'
+							});
+						} else if (directionCode == '2') {
+							direction = new Element('img', {
+								'src' : './img/right.png'
+							});
+						} else if (directionCode == '1') {
+							direction = new Element('img', {
+								'src' : './img/half-right.png'
+							});
+						} else if (directionCode == '-1') {
+							direction = new Element('img', {
+								'src' : './img/half-left.png'
+							});
+						} else if (directionCode == '0') {
+							direction = new Element('img', {
+								'src' : './img/straight.png'
+							});
+						} else if (directionCode == '-3') {
+							direction = new Element('img', {
+								'src' : './img/sharp_left.png'
+							});
+						} else if (directionCode == '3') {
+							direction = new Element('img', {
+								'src' : './img/sharp_right.png'
+							});
+						// directionCode == '100'
+						} else  {
+							
+						}
+
+						numInstructions++;
+
+						//add DOM elements
+
+						//add DOM elements
+						var directionsContainer = new Element('div', {
+							'class' : 'directions-container clickable',
+							'data-layer' : mapLayer,
+						});
+
+						var directionsImgDiv = new Element('div', {
+							'class': 'directions-img'
+						});
+
+						if (direction) {
+							directionsImgDiv.appendChild(direction);
+						}
+
+						var directionTextDiv = new Element('div', {
+							'class' : 'directions-text clickable routeInstructions',
+							'id' : mapFeatureIds[2 * (numInstructions - 1) + 1]
+						}).update(text);
+
+												
+						// modeContainer
+						var directionsModeContainer = new Element('div', {
+							'class': 'directions-mode-container'
+						})
+
+						var directionsBorder = new Element('div', {
+							'class': 'directions-mode-line'
+						})
+
+						var distanceDiv = new Element('div', {
+							'class' : 'directions-mode-distance clickable',
+							'id' : mapFeatureIds[2 * (numInstructions - 1)],
+						}).update(distArr[0] + ' ' + distArr[1]);
+
+
+						directionsContainer.appendChild(directionsImgDiv);
+						directionsContainer.appendChild(directionTextDiv);
+
+						// for traffic jams etc..
+						if (notice) {
+							var noticeDiv = new Element('div', {
+								'class': 'directions-notice',
+							}).update('Vorsicht Stau auf der B31');
+
+							directionsContainer.appendChild(noticeDiv);
+						}
+
+						directionsModeContainer.appendChild(directionsBorder);
+						directionsModeContainer.appendChild(distanceDiv);
+						directionsContainer.appendChild(directionsModeContainer);
+						directionsMain.appendChild(directionsContainer);
+
+						//mouseover for points and lines
+						$(distanceDiv).mouseover(handleMouseOverDist);
+						$(distanceDiv).mouseout(handleMouseOutDist);
+						$(directionTextDiv).mouseover(handleMouseOverText);
+						$(directionTextDiv).mouseout(handleMouseOutText);
+						$(distanceDiv).click(handleClickRouteInstr);
+						$(directionTextDiv).click(handleClickRouteInstr);
+
 					}
-
-					numInstructions++;
-
-					//add DOM elements
-
-					//add DOM elements
-					var directionsContainer = new Element('div', {
-						'class' : 'directions-container clickable',
-						'data-layer' : mapLayer,
 					});
-
-					var directionsImgDiv = new Element('div', {
-						'class': 'directions-img'
-					});
-
-					if (direction) {
-						directionsImgDiv.appendChild(direction);
-					}
-
-					var directionTextDiv = new Element('div', {
-						'class' : 'directions-text clickable routeInstructions',
-						'id' : mapFeatureIds[2 * (numInstructions - 1) + 1]
-					}).update(text);
-
-											
-					// modeContainer
-					var directionsModeContainer = new Element('div', {
-						'class': 'directions-mode-container'
-					})
-
-					var directionsBorder = new Element('div', {
-						'class': 'directions-mode-line'
-					})
-
-					var distanceDiv = new Element('div', {
-						'class' : 'directions-mode-distance clickable',
-						'id' : mapFeatureIds[2 * (numInstructions - 1)],
-					}).update(distArr[0] + ' ' + distArr[1]);
-
-
-					directionsContainer.appendChild(directionsImgDiv);
-					directionsContainer.appendChild(directionTextDiv);
-
-					// for traffic jams etc..
-					if (notice) {
-						var noticeDiv = new Element('div', {
-							'class': 'directions-notice',
-						}).update('Vorsicht Stau auf der B31');
-
-						directionsContainer.appendChild(noticeDiv);
-					}
-
-					directionsModeContainer.appendChild(directionsBorder);
-					directionsModeContainer.appendChild(distanceDiv);
-					directionsContainer.appendChild(directionsModeContainer);
-					directionsMain.appendChild(directionsContainer);
-
-					//mouseover for points and lines
-					$(distanceDiv).mouseover(handleMouseOverDist);
-					$(distanceDiv).mouseout(handleMouseOutDist);
-					$(directionTextDiv).mouseover(handleMouseOverText);
-					$(directionTextDiv).mouseout(handleMouseOutText);
-					$(distanceDiv).click(handleClickRouteInstr);
-					$(directionTextDiv).click(handleClickRouteInstr);
-				});
+				
 	
 			}
 
@@ -2096,10 +2136,10 @@ var Ui = ( function(w) {'use strict';
 
 			// if truck is clicked reset wheelchair settings and add truck initial settings
 			if (optionType === 'heavyvehicle') {
-
+				
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.routeOptionsTypesIdx,
-					value : list.routePreferencesTypes.get('heavyvehicle')[0]
+					value : $("#heavyvehicleOptions input[type='radio']:checked").val()
 				});
 
 				theInterface.emit('ui:prefsChanged', {

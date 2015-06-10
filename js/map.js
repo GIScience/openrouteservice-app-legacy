@@ -414,7 +414,7 @@ var Map = ( function() {"use strict";
 					'rightclick' : function(e) {
 						//if we have any other popup menus, remove them
 						closeContextMenu();
-
+						
 						var menuObject = createMapContextMenu();
 						//$$('body')[0].insert(menuObject);
 
