@@ -2070,7 +2070,7 @@ var Ui = ( function(w) {'use strict';
 
 			}
 
-			// if wheelchair is clicked reset truck settings and add wheelchair initial settings
+			// if wheelchair is clicked reset truck settings and add wheelchair settings
 			if (optionType === 'wheelchair') {
 
 				theInterface.emit('ui:prefsChanged', {
@@ -2110,31 +2110,33 @@ var Ui = ( function(w) {'use strict';
 				
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.surfaceIdx,
-					value : list.wheelchairParameters.get('Surface')[0]
+					value : list.wheelchairParameters.get('Surface')[$('#SlopedCurb option:selected').index()]
 				});
 				
 
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.smoothnessIdx,
-					value : list.wheelchairParameters.get('Smoothness')[0]
+					// set to the same index as surface
+					value : list.wheelchairParameters.get('Smoothness')[$('#SlopedCurb option:selected').index()]
 				});
 				
 
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.trackTypeIdx,
-					value : list.wheelchairParameters.get('Tracktype')[0]
+					// set to the same index as surface
+					value : list.wheelchairParameters.get('Tracktype')[$('#SlopedCurb option:selected').index()]
 				});
 				
 
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.inclineIdx,
-					value : list.wheelchairParameters.get('Incline')[0]
+					value : list.wheelchairParameters.get('Incline')[$('#Incline option:selected').index()]
 				});
 				
 
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.slopedCurbIdx,
-					value : list.wheelchairParameters.get('SlopedCurb')[0]
+					value : list.wheelchairParameters.get('SlopedCurb')[$('#SlopedCurb option:selected').index()]
 				});
 				
 			}
@@ -2439,47 +2441,50 @@ var Ui = ( function(w) {'use strict';
 					value : itemId
 				});
 			} 
-			// else if ($.inArray(itemId, list.wheelchairParameters.keys()) >= 0) {
-			// 	//is a wheelchair parameter
-			// 	//Surface, Tracktype, Smoothness
-			// 	if (itemId == 'Surface') {
-			// 		routeOptions[4][0] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Surface')[target.selectedIndex] : null;
-			// 		// set also smoothness here in order to simplify user interface
-			// 		routeOptions[4][1] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Smoothness')[target.selectedIndex] : null;
-			// 		// set also tracktype here in order to simplify user interface
-			// 		routeOptions[4][2] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Tracktype')[target.selectedIndex] : null;
-			// 		theInterface.emit('ui:prefsChanged', {
-			// 			key : preferences.surfaceIdx,
-			// 			value : routeOptions[4][0]
-			// 		});
-			// 	}
-			// 	//Smoothness
-			// 	else if (itemId == 'Smoothness') {
-			// 		// done in conjunction with surface to simplify user interface
-			// 		// routeOptions[4][1] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Smoothness')[target.selectedIndex] : null;
-			// 	}
-			// 	//Tracktype
-			// 	else if (itemId == 'Tracktype') {
-			// 		// done in conjunction with surface to simplify user interface
-			// 		// routeOptions[4][2] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Tracktype')[target.selectedIndex] : null;
-			// 	}
-			// 	//Incline
-			// 	else if (itemId == 'Incline') {
-			// 		routeOptions[4][3] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Incline')[target.selectedIndex] : null;
-			// 		theInterface.emit('ui:prefsChanged', {
-			// 			key : preferences.inclineIdx,
-			// 			value : routeOptions[4][3]
-			// 		});
-			// 	}
-			// 	//Sloped Curb
-			// 	else if (itemId == 'SlopedCurb') {
-			// 		routeOptions[4][4] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('SlopedCurb')[target.selectedIndex] : null;
-			// 		theInterface.emit('ui:prefsChanged', {
-			// 			key : preferences.slopedCurbIdx,
-			// 			value : routeOptions[4][4]
-			// 		});
-			// 	}
-			// }
+			// if wheelchair settings are modified
+			else if ($.inArray(itemId, list.wheelchairParameters.keys()) >= 0) {
+				
+				//is a wheelchair parameter
+			 	//Surface, Tracktype, Smoothness
+			 	if (itemId == 'Surface') {
+			 		
+			 		var surface = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Surface')[target.selectedIndex] : null; 
+			 		theInterface.emit('ui:prefsChanged', {
+						key : preferences.surfaceIdx,
+						value : surface
+					});
+					
+			 		// set also smoothness here in order to simplify user interface
+			 		var smoothness = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Smoothness')[target.selectedIndex] : null;
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.smoothnessIdx,
+						value : smoothness
+					});
+					
+			 		// set also tracktype here in order to simplify user interface
+					var tracktype = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Tracktype')[target.selectedIndex] : null;
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.trackTypeIdx,
+						value : tracktype
+					});
+			 	}
+
+			 	if (itemId == 'Incline') {
+			 		var incline = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Incline')[target.selectedIndex] : null;
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.inclineIdx,
+						value : incline
+					});
+			 	}
+			 	
+			 	if (itemId == 'SlopedCurb') {
+			 		var slopedCurb = (target.selectedIndex != -1) ? list.wheelchairParameters.get('SlopedCurb')[target.selectedIndex] : null;
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.slopedCurbIdx,
+						value : slopedCurb
+					});
+			 	}
+			 }
 
 			else if (itemId == 'Hazardous') {
 				if (permaInfo[preferences.hazardousIdx] == "hazmat") {
@@ -2622,10 +2627,11 @@ var Ui = ( function(w) {'use strict';
 			var trackTypeParamIndex = 0;
 			var smoothnessParamIndex = 0;
 
-			//TODO add trackType, smoothness
 			for (var i = 0; i < list.wheelchairParameters.get('Surface').length; i++) {
 				if(list.wheelchairParameters.get('Surface')[i] == surface) {
 					surfaceParamIndex = i;
+					trackTypeParamIndex = i;
+					smoothnessParamIndex = i;
 				}
 			}
 			for (var i = 0; i < list.wheelchairParameters.get('Incline').length; i++) {
@@ -2643,7 +2649,7 @@ var Ui = ( function(w) {'use strict';
 			// $('#Smoothness option')[surfaceParamIndex].selected = true;
 			// $('#Tracktype option')[surfaceParamIndex].selected = true;
 			$('#Incline option')[inclineParamIndex].selected = true;
-			//$('#SlopedCurb option')[slopedCurbParamIndex].selected = true;
+			$('#SlopedCurb option')[slopedCurbParamIndex].selected = true;
 		}
 		
 		
