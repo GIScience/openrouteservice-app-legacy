@@ -53,7 +53,7 @@ var Route = ( function(w) {"use strict";
 			
 			writer.writeStartElement('xls:ExtendedRoutePreference');
 
-			// writer.writeElementString('xls:WeightingMethod', extendedRoutePreferencesWeight || 'Fastest');
+			writer.writeElementString('xls:WeightingMethod', extendedRoutePreferencesWeight || 'Fastest');
 
 			if (routePref == 'HeavyVehicle') {
 
@@ -82,14 +82,14 @@ var Route = ( function(w) {"use strict";
 							writer.writeElementString('xls:LoadCharacteristic', truckParams[4]);
 						writer.writeEndElement();
 					}
+
 			}
-			
-			// Please note: do change order of params without also changing them in respective RouteService.xsd!
+				
 			if (routePref === 'Wheelchair') {
 				//tracktype
-				if (wheelChairParams[3] != 'null') {
+				if (wheelChairParams[2] != 'null') {
 					writer.writeStartElement('xls:trackTypes');
-					writer.writeElementString('xls:trackType', wheelChairParams[3]);
+					writer.writeElementString('xls:trackType', wheelChairParams[2]);
 					writer.writeEndElement();
 				}
 				//surface
@@ -99,22 +99,22 @@ var Route = ( function(w) {"use strict";
 					writer.writeEndElement();
 				}
 				//smoothness
-				if (wheelChairParams[4] != 'null') {
+				if (wheelChairParams[1] != 'null') {
 					writer.writeStartElement('xls:smoothnessTypes');
-					writer.writeElementString('xls:smoothnessType', wheelChairParams[4]);
+					writer.writeElementString('xls:smoothnessType', wheelChairParams[1]);
 					writer.writeEndElement();
 				}
 				//incline
-				if (wheelChairParams[1] != 'null') {
-					writer.writeElementString('xls:incline', wheelChairParams[1]);
+				if (wheelChairParams[3] != 'null') {
+					writer.writeElementString('xls:incline', wheelChairParams[3]);
 				}
 				//sloped curb
-				if (wheelChairParams[2] != 'null') {
-					writer.writeElementString('xls:slopedCurb', wheelChairParams[2]);
+				if (wheelChairParams[4] != 'null') {
+					writer.writeElementString('xls:slopedCurb', wheelChairParams[4]);
 				}
 			}
+				//</xls:ExtendedRoutePreference>
 			
-			//</xls:ExtendedRoutePreference>			
 			writer.writeEndElement();
 
 
