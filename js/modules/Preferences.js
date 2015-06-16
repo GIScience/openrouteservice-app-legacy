@@ -8,7 +8,7 @@ var Preferences = ( function(w) {'use strict';
 	var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version','avUnpaved', 'avFerry','value_length','value_height','value_weight','value_width','value_axleload','surface','incline','slopedCurb', 'hazardous', 'routeWeight', 'avSteps', 'routeOptType', 'trackType', 'smoothness'];
 
 	//store information that can be used for the permalink
-	permaInfo = Array.apply(null, new Array(27)).map(String.prototype.valueOf,'null')
+	permaInfo = Array.apply(null, new Array(28)).map(String.prototype.valueOf,'null')
 
 	/**
 	 * Constructor
@@ -33,16 +33,16 @@ var Preferences = ( function(w) {'use strict';
 		this.value_heightIdx = 15;
 		this.value_weightIdx = 16;
 		this.value_widthIdx = 17;
-		this.value_axleloadIdx = 27;
-		this.surfaceIdx = 18;
-		this.inclineIdx = 19;
-		this.slopedCurbIdx = 20;
-		this.hazardousIdx = 21;
-		this.weightIdx = 22;
-		this.avoidStepsIdx = 23;
-		this.routeOptionsTypesIdx = 24;
-		this.trackTypeIdx = 25;
-		this.smoothnessIdx = 26;
+		this.value_axleloadIdx = 18;
+		this.surfaceIdx = 19;
+		this.inclineIdx = 20;
+		this.slopedCurbIdx = 21;
+		this.hazardousIdx = 22;
+		this.weightIdx = 23;
+		this.avoidStepsIdx = 24;
+		this.routeOptionsTypesIdx = 25;
+		this.trackTypeIdx = 26;
+		this.smoothnessIdx = 27;
 
 		//define variables
 		this.language = 'en';

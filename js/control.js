@@ -1390,7 +1390,8 @@ var Controller = ( function(w) {'use strict';
             var truck_length = getVars[preferences.getPrefName(preferences.value_lengthIdx)];
             var truck_height = getVars[preferences.getPrefName(preferences.value_heightIdx)];
             var truck_weight = getVars[preferences.getPrefName(preferences.value_weightIdx)];
-            var truck_width = getVars[preferences.getPrefName(preferences.value_widthIdx)];  
+            var truck_width = getVars[preferences.getPrefName(preferences.value_widthIdx)]; 
+			var truck_axleload = getVars[preferences.getPrefName(preferences.value_axleloadIdx)];  			
             var surface = getVars[preferences.getPrefName(preferences.surfaceIdx)];
             var incline = getVars[preferences.getPrefName(preferences.inclineIdx)];
             var slopedCurb = getVars[preferences.getPrefName(preferences.slopedCurbIdx)];
@@ -1462,13 +1463,14 @@ var Controller = ( function(w) {'use strict';
             map.addAvoidAreas(avoidAreas);
 
             /* get and set truck parameters */
-            var truckParameters = preferences.loadtruckParameters(truck_length, truck_height, truck_width, truck_weight);
+            var truckParameters = preferences.loadtruckParameters(truck_length, truck_height, truck_width, truck_weight,truck_axleload);
             if (truckParameters.length > 0) {
                 truck_length = truckParameters[0];
                 truck_height = truckParameters[1];
                 truck_weight = truckParameters[2];
                 truck_width = truckParameters[3];
-                ui.setTruckParameters(truck_length, truck_height, truck_weight, truck_width);
+				truck_axleload = truckParameters[4];
+                ui.setTruckParameters(truck_length, truck_height, truck_weight, truck_width, truck_axleload);
             }
 
             /* get and set hazardous */

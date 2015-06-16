@@ -76,7 +76,7 @@ var Route = ( function(w) {"use strict";
 					if (truckParams[0] != null) {
 						writer.writeElementString('xls:Length', truckParams[0]);
 					}
-					 //truck length
+					 //truck axle load
 					if (truckParams[4] != null) {
 						writer.writeElementString('xls:AxleLoad', truckParams[4]);
 					}
