@@ -90,6 +90,7 @@ var lang_cnsimple = {
 	'TruckHeight' : '最大高度',
 	'TruckWeight' : '最大重量',
 	'TruckWidth' : '最大宽度',
+	'TruckAxleLoad' : '轴重',
 	'goodsHeavyTruck' : '车辆达3.5万吨',
 	'busHeavyTruck' : '公共汽车',
 	'hgvHeavyTruck' : '重型货车',

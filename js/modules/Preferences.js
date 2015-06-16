@@ -5,7 +5,7 @@ var Preferences = ( function(w) {'use strict';
 	//are there any cookies of thie page yet?
 	var cookiesAvailable = false;
 
-	var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version','avUnpaved', 'avFerry','value_length','value_height','value_weight','value_width','surface','incline','slopedCurb', 'hazardous', 'routeWeight', 'avSteps', 'routeOptType', 'trackType', 'smoothness'];
+	var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version','avUnpaved', 'avFerry','value_length','value_height','value_weight','value_width','value_axleload','surface','incline','slopedCurb', 'hazardous', 'routeWeight', 'avSteps', 'routeOptType', 'trackType', 'smoothness'];
 
 	//store information that can be used for the permalink
 	permaInfo = Array.apply(null, new Array(27)).map(String.prototype.valueOf,'null')
@@ -33,6 +33,7 @@ var Preferences = ( function(w) {'use strict';
 		this.value_heightIdx = 15;
 		this.value_weightIdx = 16;
 		this.value_widthIdx = 17;
+		this.value_axleloadIdx = 27;
 		this.surfaceIdx = 18;
 		this.inclineIdx = 19;
 		this.slopedCurbIdx = 20;
@@ -396,7 +397,7 @@ var Preferences = ( function(w) {'use strict';
 	 * checks truck parameters from get variable, fills perma settings
 	 * @return the truck parameters
 	 */
-	function loadtruckParameters(truck_length, truck_height, truck_width, truck_weight) {
+	function loadtruckParameters(truck_length, truck_height, truck_width, truck_weight,truck_axleload) {
 
 		var truckParameters = new Array();
 
@@ -426,6 +427,12 @@ var Preferences = ( function(w) {'use strict';
 		} else {
 			permaInfo[this.value_weightIdx] = truck_weight;
 			truckParameters[3] = truck_weight;
+		}
+		if (truck_axleload == undefined || truck_axleload == null || truck_axleload == 'undefined' || truck_axleload == 'null') {
+			permaInfo[this.value_axleloadIdx] = null;
+		} else {
+			permaInfo[this.value_axleloadIdx] = truck_axleload;
+			truckParameters[4] = truck_axleload;
 		}
 		return truckParameters;
 

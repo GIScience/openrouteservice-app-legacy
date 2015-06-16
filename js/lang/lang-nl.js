@@ -101,6 +101,7 @@ var lang_nl = {
 	'TruckHeight' : 'maximale hoogte',
 	'TruckWeight' : 'maximum gewicht',
 	'TruckWidth' : 'maximale breedte',
+	'TruckAxleLoad' : 'asbelasting',
 	'goodsHeavyTruck' : 'Voertuigen tot 3.5t',
 	'busHeavyTruck' : 'Bus',
 	'hgvHeavyTruck' : 'Vrachtwagen',

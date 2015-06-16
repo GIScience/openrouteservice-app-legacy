@@ -42,6 +42,7 @@ var Languages = (function(w) {'use strict';
 		$('#truckheightLabel').html(p.translate('TruckHeight'));
 		$('#truckweightLabel').html(p.translate('TruckWeight'));
 		$('#truckwidthLabel').html(p.translate('TruckWidth'));
+		$('#truckaxleloadLabel').html(p.translate('TruckAxleLoad'));
 		$('#goodsHeavyTruckLabel').html(p.translate('goodsHeavyTruck'));
 		$('#busHeavyTruckLabel').html(p.translate('busHeavyTruck'));
 		$('#busHeavyTruckLabel').html(p.translate('busHeavyTruck'));

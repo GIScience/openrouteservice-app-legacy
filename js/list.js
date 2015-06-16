@@ -52,7 +52,7 @@ list = {
 	
 	routeAvoidables : ['Highway', 'Tollway', 'Unpavedroads', 'Ferry', 'Steps'],
 
-	truckParams : ['value_length_slide', 'value_height_slide', 'value_weigth_slide',, 'value_width_slide'],
+	truckParams : ['value_length_slide', 'value_height_slide', 'value_weigth_slide',,'value_axleload_slide', 'value_width_slide'],
 	
 	routePreferencesImages: new Hash({
 		'car': ['img/picto-car.png', 'img/picto-car-high.png'],

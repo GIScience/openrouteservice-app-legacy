@@ -101,6 +101,7 @@ var lang_hu = {
 	'TruckHeight' : 'maxim&aacute;lis magass&aacute;g',
 	'TruckWeight' : 'maxim&aacute;lis t&ouml;meg',
 	'TruckWidth' : 'maxim&aacute;lis sz&eacute;less&eacute;g',
+	'TruckAxleLoad' : 'tengelyterhel&eacute;s',
 	'goodsHeavyTruck' : 'J&aacute;rm&#369;vek 3.5t',
 	'busHeavyTruck' : 'Busz',
 	'hgvHeavyTruck' : 'Neh&eacute;zg&eacute;pj&aacute;rm&#369;',

@@ -91,6 +91,7 @@ var lang_ua = {
 	'TruckHeight' : 'Максимальна висота системи',
 	'TruckWeight' : 'Максимальна вага',
 	'TruckWidth' : 'максимальна ширина',
+	'TruckAxleLoad' : 'навантаження на вісь',
 	'goodsHeavyTruck' : 'Транспорт до 3.5t',
 	'busHeavyTruck' : 'автобус',
 	'hgvHeavyTruck' : 'Вантажний автомобіль',

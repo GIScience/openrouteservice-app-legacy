@@ -101,6 +101,7 @@ var lang_cz = {
 	'TruckHeight' : 'maxim&aacute;ln&iacute;v&yacute;ska',
 	'TruckWeight' : 'maxim&aacute;ln&iacute;v&aacute;ha',
 	'TruckWidth' : 'maxim&aacute;ln&iacute;s&iacute;rka',
+	'TruckAxleLoad' : 'zat&iacute;&#382;en&iacute; n&aacute;pravy',
 	'goodsHeavyTruck' : 'Vozidla do 3.5t',
 	'busHeavyTruck' : 'Autobus',
 	'hgvHeavyTruck' : 'T&#283;&#382;k&eacute;n&aacute;kladn&iacute;vozidlo',

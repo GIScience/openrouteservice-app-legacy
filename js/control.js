@@ -782,12 +782,14 @@ var Controller = ( function(w) {'use strict';
                 var truck_height = permaInfo[preferences.value_heightIdx];
                 var truck_weight = permaInfo[preferences.value_weightIdx];
                 var truck_width = permaInfo[preferences.value_widthIdx];
+				var truck_axleload = permaInfo[preferences.value_axleloadIdx];
                 var truckHazardous = permaInfo[preferences.hazardousIdx];
                 truckParams[0] = truck_length;
                 truckParams[1] = truck_height;
                 truckParams[2] = truck_weight;
                 truckParams[3] = truck_width;
-                truckParams[4] = truckHazardous;
+				truckParams[4] = truck_axleload;
+                truckParams[5] = truckHazardous;
 
                 //check whether truck button is active and send extendedRoutePreferences, otherwise don't 
                 var extendedRoutePreferencesType = permaInfo[preferences.routeOptionsTypesIdx];

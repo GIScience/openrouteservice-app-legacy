@@ -101,6 +101,7 @@ var lang_es = {
 	'TruckHeight' : 'altura m&aacute;xima',
 	'TruckWeight' : 'peso m&aacute;ximo',
 	'TruckWidth' : 'ancho m&aacute;ximo',
+	'TruckAxleLoad' : 'carga del eje',
 	'goodsHeavyTruck' : 'Veh&iacute;culos de hasta 3.5t',
 	'busHeavyTruck' : 'Autob&uacute;s',
 	'hgvHeavyTruck' : 'Veh&iacute;culo pesado',

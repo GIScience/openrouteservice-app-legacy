@@ -106,6 +106,7 @@ var lang_ru = {
 	'TruckHeight' : 'максимальная высота',
 	'TruckWeight' : 'максимальный вес',
 	'TruckWidth' : 'mмаксимальная ширина',
+	'TruckAxleLoad' : 'нагрузка на ось',
 	'goodsHeavyTruck' : 'Транспорт до 3.5t',
 	'busHeavyTruck' : 'автобус',
 	'hgvHeavyTruck' : 'Грузовой автомобиль',

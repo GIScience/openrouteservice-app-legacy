@@ -205,6 +205,7 @@
 										        <li><a href="#width" data-toggle="tab" id="truckwidthLabel">width</a></li>
 										        <li><a href="#height" data-toggle="tab" id="truckheightLabel">height</a></li>
 										        <li><a href="#weight" data-toggle="tab" id="truckweightLabel">weight</a></li>
+												<li><a href="#axleload" data-toggle="tab" id="truckaxleloadLabel">axleload</a></li>
 										    </ul>
 										    <div id="my-tab-content" class="tab-content">
 										        <div class="tab-pane active" id="length">
@@ -230,9 +231,16 @@
 										        </div>
 										        <div class="tab-pane" id="weight">
 										            <form class="mySlider">
-														<input type="text" value="7" autocomplete="off" id="value_weight" oninput="this.form.value_weight.value=this.value">
+														<input type="text" value="7" autocomplete="off" id="value_weight" oninput="this.form.value_weight_slide.value=this.value">
 														<input type="range" min="0" max="50" value="4" step="0.5" id="value_weigth_slide"  oninput="this.form.value_weight.value=this.value"  />
 														<img src="img/picto-truck-weight.png"></td>
+													</form>
+										        </div>
+												<div class="tab-pane" id="axleload">
+										            <form class="mySlider">
+														<input type="text" value="2" autocomplete="off" id="value_axleload" oninput="this.form.value_axleload_slide.value=this.value">
+														<input type="range" min="0" max="20" value="4" step="0.5" id="value_axleload_slide"  oninput="this.form.value_axleload.value=this.value"  />
+														<img src="img/picto-truck-axleload.png"></td>
 													</form>
 										        </div>
 										    </div>

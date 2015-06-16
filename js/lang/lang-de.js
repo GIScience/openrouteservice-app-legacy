@@ -88,6 +88,7 @@ var lang_de = {
 		'TruckHeight' : 'H&ouml;he',
 		'TruckWeight' : 'Gewicht',
 		'TruckWidth' : 'Breite',
+		'TruckAxleLoad' : 'Achslast',
 		'goodsHeavyTruck' : 'Fahrzeuge bis 3.5t',
 		'busHeavyTruck' : 'Bus',
 		'hgvHeavyTruck' : 'Schwerlasttransport',

@@ -100,6 +100,7 @@ var lang_fr = {
 	'TruckHeight' : 'hauteur maximale',
 	'TruckWeight' : 'poids maximal',
 	'TruckWidth' : 'largeur maximale',
+	'TruckAxleLoad' : 'charge de l\'essieu',
 	'goodsHeavyTruck' : 'V&eacute;hicules jusqu\'&agrave; 3,5t',
 	'busHeavyTruck' : 'Bus',
 	'hgvHeavyTruck' : 'Poids lourds',

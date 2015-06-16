@@ -90,6 +90,7 @@ var lang_cn = {
 	'TruckHeight' : '限高',
 	'TruckWeight' : '限重',
 	'TruckWidth' : '限寬',
+	'TruckAxleLoad' : '軸重',
 	'goodsHeavyTruck' : '車重達3.5噸',
 	'busHeavyTruck' : '公共汽車',
 	'hgvHeavyTruck' : '重型貨車',

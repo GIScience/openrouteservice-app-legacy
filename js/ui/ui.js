@@ -2033,6 +2033,10 @@ var Ui = ( function(w) {'use strict';
 					key : preferences.value_widthIdx,
 					value : null
 				});
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_axleloadIdx,
+					value : null
+				});
 
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.hazardousIdx,
@@ -2102,6 +2106,10 @@ var Ui = ( function(w) {'use strict';
 					key : preferences.value_widthIdx,
 					value : null
 				});
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_axleloadIdx,
+					value : null
+				});
 
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.hazardousIdx,
@@ -2169,6 +2177,10 @@ var Ui = ( function(w) {'use strict';
 
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.value_widthIdx,
+					value : null
+				});
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_axleloadIdx,
 					value : null
 				});
 
@@ -2241,6 +2253,11 @@ var Ui = ( function(w) {'use strict';
 					key : preferences.value_widthIdx,
 					value : $("#value_width").val()
 				});
+				
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_axleloadIdx,
+					value : $("#value_axleload").val()
+				});
 
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.surfaceIdx,
@@ -2278,12 +2295,14 @@ var Ui = ( function(w) {'use strict';
 		 * @params truck_height: the truck heigth
 		 * @params truck_weight: the truck weight
 		 * @params truck_width: the truck width
+		 * @params truck_axleload: the truck axle load
 		 */
-		function setTruckParameters(truck_length, truck_height, truck_weight,truck_width) {
+		function setTruckParameters(truck_length, truck_height, truck_weight,truck_width,truck_axleload) {
 			$("#value_length").val(truck_length);
 			$("#value_height").val(truck_height);
 			$("#value_weight").val(truck_weight);
 			$("#value_width").val(truck_width);
+			$("#value_axleload").val(truck_axleload);
 		}
 
 		/** 
@@ -2429,6 +2448,11 @@ var Ui = ( function(w) {'use strict';
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.value_heightIdx,
 						value : $("#value_height").val()
+					});
+				} else if (itemId == 'value_axleload_slide') {
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.value_axleloadIdx,
+						value : $("#value_axleload").val()
 					});
 				}
 			}

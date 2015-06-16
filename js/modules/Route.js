@@ -76,10 +76,14 @@ var Route = ( function(w) {"use strict";
 					if (truckParams[0] != null) {
 						writer.writeElementString('xls:Length', truckParams[0]);
 					}
-					//truck hazardous
+					 //truck length
 					if (truckParams[4] != null) {
+						writer.writeElementString('xls:AxleLoad', truckParams[4]);
+					}
+					//truck hazardous
+					if (truckParams[5] != null) {
 						writer.writeStartElement('xls:LoadCharacteristics');
-							writer.writeElementString('xls:LoadCharacteristic', truckParams[4]);
+							writer.writeElementString('xls:LoadCharacteristic', truckParams[5]);
 						writer.writeEndElement();
 					}
 
