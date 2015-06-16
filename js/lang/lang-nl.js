@@ -77,6 +77,7 @@ var lang_nl = {
     'Bicycle':'kortste route',
     'BicycleSafety':'veiligste route',
     'BicycleRoute':'liever fietspad',
+	'BicycleTour':  'fietstocht',
     'BicycleMTB':'mountainbike',
     'BicycleRacer':'racefiets',
 	'Wheelchair' : 'toegankelijke route',
@@ -88,8 +89,10 @@ var lang_nl = {
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Vermijden wegtypen &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Vermijden wegtypen &nbsp;&nbsp;<span class="caret">',
-	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Vermijden gebieden&nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Vermijden gebieden &nbsp;&nbsp;<span class="caret">',
+	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;Vermijden wegtypen  &nbsp;&nbsp;<span class="caret">',
 	
+	'avoidFerryPedes' : 'Vermijd veerverbindingen' ,
 	'avoidFerryBike' : 'Vermijd veerverbindingen' ,
 	'avoidunpavedRoadsBike' : 'Vermijd onverharde wegen',
 	'avoidStepsBike' : 'Vermijd stappen',

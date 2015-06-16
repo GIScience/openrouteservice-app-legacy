@@ -82,6 +82,7 @@ var lang_ua = {
     'Bicycle': 'короткий маршрут',
     'BicycleSafety': 'безпечний маршрут',
     'BicycleRoute': 'віддавати перевагу виділеним доріжкам',
+	'BicycleTour':  'тур цикл',
     'BicycleMTB': 'гірський велосипед',
     'BicycleRacer': 'швидкісний велосипед',
 	'Wheelchair' : 'доступний маршрут',
@@ -126,10 +127,15 @@ var lang_ua = {
     'avoidTollways': 'Уникати платних доріг',
 	'avoidunpavedRoads':  'Уникайте грунтові дороги',
 	'avoidFerry':  'Уникайте пороми',
-	
+	'avoidFerryPedes' : 'Уникайте пороми' ,
 	'avoidFerryBike' : 'Уникайте пороми' ,
 	'avoidunpavedRoadsBike' : 'Уникайте грунтові дороги',
 	'avoidStepsBike' : 'заходи',
+	
+	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;уникнути типи доріг &nbsp;&nbsp;<span class="caret">',
+	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;уникнути типи доріг &nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;уникати районів &nbsp;&nbsp;<span class="caret">',
+	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;уникнути типи доріг  &nbsp;&nbsp;<span class="caret">',
  
     //Avoid areas
     'avoidAreas': 'Зони уникнення',

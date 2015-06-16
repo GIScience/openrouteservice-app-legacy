@@ -77,6 +77,7 @@ var lang_cz = {
     'Bicycle':'nejkrats&iacute;trasa',
     'BicycleSafety':'Nejbezpecnejs&iacute;cesta',
     'BicycleRoute':'radeji kol j&iacute;zdn&iacute;ho pruhu',
+	'BicycleTour':  'tour cyklus',
     'BicycleMTB':'horsk&eacute;kolo',
     'BicycleRacer':'z&aacute;vodn&iacute;motocykl',
 	'Wheelchair' : 'pr&iacute;stupn&aacute;cesta',
@@ -87,9 +88,11 @@ var lang_cz = {
 	'avoidFerry':  'Vyhnete trajektov&eacute;ho spojen&iacute;',
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;vyhnout typům silnic &nbsp;&nbsp;<span class="caret">',
-	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;vyhnout typům  &nbsp;&nbsp;<span class="caret">',
-	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;vyhnout oblastí&nbsp;&nbsp;<span class="caret">',
+	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;vyhnout typům silnic &nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;vyhnout oblastí &nbsp;&nbsp;<span class="caret">',
+	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;vyhnout typům silnic  &nbsp;&nbsp;<span class="caret">',
 	
+	'avoidFerryPedes' : 'Vyhnete trajektov&eacute;ho spojen&iacute;' ,	
 	'avoidFerryBike' : 'Vyhnete trajektov&eacute;ho spojen&iacute;' ,
 	'avoidunpavedRoadsBike' : 'Vyhnete se nezpevnen&yacute;ch cest&aacute;ch',
 	'avoidStepsBike' : 'Vyhnete kroky',

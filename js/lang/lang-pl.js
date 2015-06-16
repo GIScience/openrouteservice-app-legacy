@@ -82,6 +82,7 @@ var lang_pl = {
 	'Bicycle' : 'najkr&oacute;tsza trasa',
 	'BicycleSafety' : 'trasa bezpieczna',
 	'BicycleRoute' : 'preferuj &#x015B;cie&#x017C;ki rowerowe',
+	'BicycleTour':  'Wycieczka rowerowa',
 	'BicycleMTB' : 'rowery terenowy',
 	'BicycleRacer' : 'rower wy&#x015B;cigowy',
 	'Wheelchair' : 'dost&#281;pne trasy',
@@ -93,8 +94,10 @@ var lang_pl = {
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;unikn&#261;&#263; typy dr&oacute;g &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;unikn&#261;&#263; typy dr&oacute;g &nbsp;&nbsp;<span class="caret">',
-	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;unika&#263; obszar&oacute;w&nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;unika&#263; obszar&oacute;w &nbsp;&nbsp;<span class="caret">',
+	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;unikn&#261;&#263; typy dr&oacute;g  &nbsp;&nbsp;<span class="caret">',
 	
+	'avoidFerryPedes' : 'Unika&#263; po&#322;&#261;czenia promowe' ,
 	'avoidFerryBike' : 'Unika&#263; po&#322;&#261;czenia promowe' ,
 	'avoidunpavedRoadsBike' : 'Unika&#263; drogi gruntowe',
 	'avoidStepsBike' : 'Kroki',

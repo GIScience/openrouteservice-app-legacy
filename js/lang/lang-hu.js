@@ -77,6 +77,7 @@ var lang_hu = {
     'Bicycle':'legr&ouml;videbb &uacute;t',
     'BicycleSafety':'legbiztons&aacute;gosabb &uacute;t',
     'BicycleRoute':'ink&aacute;bb a ker&eacute;kp&aacute;r&uacute;t',
+	'BicycleTour':  'ker&eacute;kp&aacute;rt&uacute;ra',
     'BicycleMTB':'mountain bike',
     'BicycleRacer':'versenyker&eacute;kp&aacute;r',
 	'Wheelchair' : 'megk&ouml;zel&iacute;thet&#337 &#250;tvonalon',
@@ -88,8 +89,10 @@ var lang_hu = {
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Elker&uuml;l&eacute;se road t&iacute;pusok &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Elker&uuml;l&eacute;se road t&iacute;pusok &nbsp;&nbsp;<span class="caret">',
-	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Elker&uuml;l&eacute;se ter&uuml;letek&nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Elker&uuml;l&eacute;se ter&uuml;letek &nbsp;&nbsp;<span class="caret">',
+	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;Elker&uuml;l&eacute;se road t&iacute;pusok  &nbsp;&nbsp;<span class="caret">',
 	
+	'avoidFerryPedes' : 'Ker&uuml;lje a kompj&aacute;rat' ,	
 	'avoidFerryBike' : 'Ker&uuml;lje a kompj&aacute;rat' ,
 	'avoidunpavedRoadsBike' : 'Ker&uuml;lje a f&ouml;ldutakat',
 	'avoidStepsBike' : 'Elker&uuml;l&eacute;se l&eacute;p&eacute;sek',

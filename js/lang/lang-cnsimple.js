@@ -83,6 +83,7 @@ var lang_cnsimple = {
 	'Bicycle' : '最短路径',
 	'BicycleSafety' : '最安全路径',
 	'BicycleRoute' : '自行车道优先',
+	'BicycleTour':  '循环之旅',
 	'BicycleMTB' : '山地自行车',
 	'BicycleRacer' : '公路自行车',
 	'TruckLength' : '最大长度',
@@ -105,8 +106,10 @@ var lang_cnsimple = {
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;避免道路类型 &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;避免道路类型 &nbsp;&nbsp;<span class="caret">',
-	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;避免地区&nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;避免地区 &nbsp;&nbsp;<span class="caret">',
+	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;避免道路类型  &nbsp;&nbsp;<span class="caret">',
 	
+	'avoidFerryPedes' : '避开渡船' ,
 	'avoidFerryBike' : '避开渡船' ,
 	'avoidunpavedRoadsBike' : '避开未铺砌道路',
 	'avoidStepsBike' : '步骤',

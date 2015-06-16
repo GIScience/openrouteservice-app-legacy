@@ -76,6 +76,7 @@ var lang_fr = {
     'Bicycle':'itin&eacute;raire le plus court',
     'BicycleSafety':'itin&eacute;raire le plus sûr',
     'BicycleRoute':'pr&eacute;f&eacute;rer les pistes cyclables',
+	'BicycleTour':  'balade &agrave; v&eacute;lo',
     'BicycleMTB':'VTT',
     'BicycleRacer':'v&eacute;lo de course',
 	'Wheelchair' : 'voie accessible',
@@ -87,8 +88,10 @@ var lang_fr = {
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Eviter les types de route &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Eviter les types de route &nbsp;&nbsp;<span class="caret">',
-	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Eviter les zones&nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Eviter les zones &nbsp;&nbsp;<span class="caret">',
+	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;Eviter les types de route  &nbsp;&nbsp;<span class="caret">',
 	
+	'avoidFerryPedes' : 'Eviter les liaisons maritimes' ,
 	'avoidFerryBike' : 'Eviter les liaisons maritimes' ,
 	'avoidunpavedRoadsBike' : 'Eviter les routes non rev&ecirc;tues',
 	'avoidStepsBike' : 'Eviter les &eacute;tapes',

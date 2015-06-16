@@ -84,6 +84,7 @@ var lang_cn = {
 	'BicycleSafety' : '自行車最安全路徑',
 	'BicycleRoute' : '自行車道優先',
 	'BicycleMTB' : '山路自行車',
+	'BicycleTour':  '循環之旅',
 	'BicycleRacer' : '公路自行車',
 	'TruckLength' : '限長',
 	'TruckHeight' : '限高',
@@ -106,7 +107,9 @@ var lang_cn = {
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;避免道路類型 &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;避免道路類型 &nbsp;&nbsp;<span class="caret">',
 	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;避免地區&nbsp;&nbsp;<span class="caret">',
+	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;避免道路類型 &nbsp;&nbsp;<span class="caret">',
 	
+	'avoidFerryPedes' : '避開渡船' ,
 	'avoidFerryBike' : '避開渡船' ,
 	'avoidunpavedRoadsBike' : '避開未鋪砌道路',
 	'avoidStepsBike' : '步驟',
