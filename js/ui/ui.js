@@ -2110,21 +2110,21 @@ var Ui = ( function(w) {'use strict';
 				
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.surfaceIdx,
-					value : list.wheelchairParameters.get('Surface')[$('#SlopedCurb option:selected').index()]
+					value : list.wheelchairParameters.get('Surface')[$('#Surface option:selected').index()]
 				});
 				
 
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.smoothnessIdx,
 					// set to the same index as surface
-					value : list.wheelchairParameters.get('Smoothness')[$('#SlopedCurb option:selected').index()]
+					value : list.wheelchairParameters.get('Smoothness')[$('#Surface option:selected').index()]
 				});
 				
 
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.trackTypeIdx,
 					// set to the same index as surface
-					value : list.wheelchairParameters.get('Tracktype')[$('#SlopedCurb option:selected').index()]
+					value : list.wheelchairParameters.get('Tracktype')[$('#Surface option:selected').index()]
 				});
 				
 
