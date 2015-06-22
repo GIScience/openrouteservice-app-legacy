@@ -2455,14 +2455,14 @@ var Ui = ( function(w) {'use strict';
 					});
 					
 			 		// set also smoothness here in order to simplify user interface
-			 		var smoothness = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Smoothness')[target.selectedIndex] : null;
+			 		var smoothness = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Surface')[target.selectedIndex] : null;
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.smoothnessIdx,
 						value : smoothness
 					});
 					
 			 		// set also tracktype here in order to simplify user interface
-					var tracktype = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Tracktype')[target.selectedIndex] : null;
+					var tracktype = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Surface')[target.selectedIndex] : null;
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.trackTypeIdx,
 						value : tracktype
