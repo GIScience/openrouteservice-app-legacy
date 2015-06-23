@@ -1443,7 +1443,7 @@ var Controller = ( function(w) {'use strict';
             steps = avSettings[4];
             ui.setAvoidables(motorways, tollways, unpaved, ferry, steps);
             
-            // only set wheel parameters wheelchair if in getVars
+            // get wheelchair parameters from getVars
             var wheelParameters = preferences.loadWheelParameters(surface, incline, slopedCurb, trackType, smoothness);
             if (wheelParameters.length > 0 ) {
                 surface = wheelParameters[0];
