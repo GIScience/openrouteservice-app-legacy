@@ -2116,15 +2116,13 @@ var Ui = ( function(w) {'use strict';
 
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.smoothnessIdx,
-					// set to the same index as surface
-					value : list.wheelchairParameters.get('Smoothness')[$('#Surface option:selected').index()]
+					value : list.wheelchairParameters.get('Smoothness')[getSmoothnessIndex($('#Surface option:selected').index())]
 				});
 				
 
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.trackTypeIdx,
-					// set to the same index as surface
-					value : list.wheelchairParameters.get('Tracktype')[$('#Surface option:selected').index()]
+					value : list.wheelchairParameters.get('Tracktype')[getTracktypeIndex($('#Surface option:selected').index())]
 				});
 				
 
@@ -2272,6 +2270,42 @@ var Ui = ( function(w) {'use strict';
 					value : null
 				});
 			}
+		}
+		
+		/**
+		 * gets the matching smoothness index for given surface index
+		 * 
+		 * @param surfaceIndex
+		 */
+		function getSmoothnessIndex(surfaceIndex) {
+			if (surfaceIndex == 0 || surfaceIndex == 1) {
+				return 1;
+			}
+			else if (surfaceIndex == 2) {
+				return 2;
+			}
+			else if (surfaceIndex == 3 || surfaceIndex == 4) {
+				return 3;
+			}
+			return 3;
+		}
+		
+		/**
+		 * gets the matching tracktype index for given surface index
+		 * 
+		 * @param surfaceIndex
+		 */
+		function getTracktypeIndex(surfaceIndex) {
+			if (surfaceIndex == 0 || surfaceIndex == 1 || surfaceIndex == 2) {
+				return 0;
+			}
+			else if (surfaceIndex == 3) {
+				return 1;
+			}
+			else if (surfaceIndex == 4) {
+				return 3;
+			}
+			return 3;
 		}
 	
 		/** 
@@ -2455,14 +2489,14 @@ var Ui = ( function(w) {'use strict';
 					});
 					
 			 		// set also smoothness here in order to simplify user interface
-			 		var smoothness = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Smoothness')[target.selectedIndex] : null;
+			 		var smoothness = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Smoothness')[getSmoothnessIndex(target.selectedIndex)] : null;
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.smoothnessIdx,
 						value : smoothness
 					});
 					
 			 		// set also tracktype here in order to simplify user interface
-					var tracktype = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Tracktype')[target.selectedIndex] : null;
+					var tracktype = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Tracktype')[getTracktypeIndex(target.selectedIndex)] : null;
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.trackTypeIdx,
 						value : tracktype
@@ -2630,8 +2664,8 @@ var Ui = ( function(w) {'use strict';
 			for (var i = 0; i < list.wheelchairParameters.get('Surface').length; i++) {
 				if(list.wheelchairParameters.get('Surface')[i] == surface) {
 					surfaceParamIndex = i;
-					trackTypeParamIndex = i;
-					smoothnessParamIndex = i;
+					trackTypeParamIndex = getTracktypeIndex(i);
+					smoothnessParamIndex = getSmoothnessIndex(i);
 				}
 			}
 			for (var i = 0; i < list.wheelchairParameters.get('Incline').length; i++) {
@@ -2644,7 +2678,7 @@ var Ui = ( function(w) {'use strict';
 					slopedCurbParamIndex = i;
 				}
 			}
-
+			
 			$('#Surface option')[surfaceParamIndex].selected = true;
 			// $('#Smoothness option')[surfaceParamIndex].selected = true;
 			// $('#Tracktype option')[surfaceParamIndex].selected = true;
