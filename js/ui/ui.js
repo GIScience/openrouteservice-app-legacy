@@ -2683,18 +2683,21 @@ var Ui = ( function(w) {'use strict';
 		 * @param tollway: accordingly.
 		 */
 		function setAvoidables(highway, tollway,unpaved,ferry,steps) {
-
+			console.log(highway, tollway,unpaved,ferry,steps)
 			var highwayTrue = (highway === 'true') || highway == true;
 			var tollwayTrue = (tollway === 'true') || tollway == true;
 			var unpavedTrue = (unpaved === 'true') || unpaved == true;
 			var ferryTrue = (ferry === 'true') || ferry == true;
 			var stepsTrue = (steps === 'true') || steps == true;
 
-			$('#Highway').attr('checked', highwayTrue);
-			$('#Tollway').attr('checked', tollwayTrue);
-			$('#Unpavedroads').attr('checked', unpavedTrue);
-			$('#Ferry').attr('checked', ferryTrue);
-			$('#Steps').attr('checked', stepsTrue);
+			$('[type="checkbox"]').filter('#Highway').prop('checked', highwayTrue);
+			$('[type="checkbox"]').filter('#Tollway').prop('checked', tollwayTrue);
+			$('[type="checkbox"]').filter('#Unpavedroads').prop('checked', unpavedTrue);
+			$('[type="checkbox"]').filter('#Ferry').prop('checked', ferryTrue);		
+			$('[type="checkbox"]').filter('#Steps').prop('checked', stepsTrue);
+
+
+
 		}
 
 		/**
