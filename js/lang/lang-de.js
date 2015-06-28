@@ -27,6 +27,7 @@ var lang_de = {
 		'resetRoute' :  'Gesamte Route l&ouml;schen ',
 		'TotalTime':  'Gesamte Reisezeit',
 		'TotalDistance':  'Gesamte Wegstrecke',
+		'ActualDistance' : 'Effektive Wegstrecke',
 		'routeSummary':  'Zusammenfassung',
 		'routeInstructions':  'Wegbeschreibung',
 		'routeLinkText' :  'Permalink zur aktuellen Route',

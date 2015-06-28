@@ -1448,6 +1448,27 @@ var Ui = ( function(w) {'use strict';
 
 		}
 
+		/** 
+		 * returns the addresses of all waypoints
+		 */
+		 function getStopoverPoints() {
+		 	var stopovers = new Array();
+		 	
+			 for (var i = 1; i < $('.waypoint').length-2; i++) {
+				var address = $('#' + i).get(0);
+
+				if (address.querySelector('.address')) {
+					address = address.innerText.match(/[^,]*/).toString();
+					address = address.replace(/(\r\n|\n|\r)/gm,", ");
+					stopovers.push(address);
+				}
+
+			}
+
+			return stopovers;
+		 }
+
+
 		/**
 		 * gets a short description of the route destination
 		 * @return string of the destination in short form or null if the last waypoint is not set
@@ -1524,6 +1545,8 @@ var Ui = ( function(w) {'use strict';
 				totalTime = totalTime + (' ' + preferences.translate('seconds') + ' ');
 				//totalTime = totalTime.replace('S', ' ' + preferences.translate('seconds') + ' ');
 			
+
+				// total distance
 				var distance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'TotalDistance')[0];
 				var distanceValue = distance.getAttribute('value');
 				var distanceUnit = distance.getAttribute('uom');
@@ -1537,15 +1560,43 @@ var Ui = ( function(w) {'use strict';
 					var yardsUnit = 'yd';
 					var distMeasure = util.convertDistToDist(distanceValue, distanceUnit, yardsUnit);
 					distArr = util.convertDistanceFormat(distMeasure, preferences.distanceUnit);
-				}
+				}		
 
 				var container = $('#routeSummaryContainer').get(0);
 				container.show();
 				var timeDiv = container.querySelector('#route_totalTime');
 				var distanceDiv = container.querySelector('#route_totalDistance');
+				var actualDistanceDiv = container.querySelector('#route_actualDistance');
+				$(actualDistanceDiv).hide();
+
+				// actual distance
+				var actualDistance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'ActualDistance')[0];
+				if (actualDistance != undefined) {
+	
+					var actualDistanceValue = actualDistance.getAttribute('value');
+					var actualDistanceUnit = actualDistance.getAttribute('uom');
+					var actualdistArr = [];
+
+					if (preferences.distanceUnit == list.distanceUnitsPreferences[0]) {
+					//use mixture of km and m
+						actualdistArr = util.convertDistanceFormat(actualDistanceValue, preferences.distanceUnit);
+					} else {
+						//use mixture of miles and yards
+						var yardsUnit = 'yd';
+						var actualDistMeasure = util.convertDistToDist(actualDistanceValue, distanceUnit, yardsUnit);
+						actualdistArr = util.convertDistanceFormat(actualDistMeasure, preferences.distanceUnit);
+					}	
+
+					var actualDistanceDiv = container.querySelector('#route_actualDistance');
+					$(actualDistanceDiv)[0].update(preferences.translate('ActualDistance') + ': ' + actualdistArr[0] + ' ' + actualdistArr[1]);
+					$(actualDistanceDiv).show();
+				}
+
 
 				$(timeDiv)[0].update(preferences.translate('TotalTime') + ': ' + totalTime);
 				$(distanceDiv)[0].update(preferences.translate('TotalDistance') + ': ' + distArr[0] + ' ' + distArr[1]);
+
+
 			}
 		}
 
@@ -1577,34 +1628,64 @@ var Ui = ( function(w) {'use strict';
 				}
 				
 				var numInstructions = 0;
-				var numStopovers = 0;
+				
+
 
 				var instructionsList = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstructionsList')[0];
 				instructionsList = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstruction');
 				
-				// container for all direction instructions
+				// variable for distance until stopover is reached
+				var numStopovers = 0;
+				var stopoverDistance = 0;
+				var distArr; 
+				var stopoverTime = 0;
+				// get stopovers which are viapoints
+				if ($('.waypoint').length > 2) {
+					var stopoverPoints = getStopoverPoints();
+				}
 
+				// container for all direction instructions
 				$A(instructionsList).each(function(instruction) {
 
 					var directionCode = util.getElementsByTagNameNS(instruction, namespaces.xls, 'DirectionCode')[0];
 					directionCode = directionCode.textContent;
-
+					
 					//skip directionCode 100 for now
 					if (directionCode == '100') {
 						
-						numStopovers++;
-
 						//add DOM elements
 						var directionsContainer = new Element('div', {
 							'class' : 'directions-container clickable',
 							'data-layer' : mapLayer,
 						});
 
-						var directionTextDiv = new Element('div', {
-							'class' : 'directions-text clickable routeInstructions',
-							'id' : mapFeatureIds[2 * (numInstructions - 1) + 1]
-						}).update('Stopover #'+numStopovers);
+						var stopoverSpan = new Element('span', {
+							'class' : 'badge badge-inverse'
+						}).update(numStopovers+1);
+
+
+						var stopoverCounter = new Element('div', {
+							'class' : 'directions-stopover'
+						})
 					
+						stopoverCounter.appendChild(stopoverSpan);
+						
+						var stopoverAddress = new Element('div', {
+							'class' : 'directions-stopover-address'
+						}).update(stopoverPoints[numStopovers])
+
+						if (distArr[1] == 'km') {
+							stopoverDistance = Number(stopoverDistance/1000).toFixed(1);
+						}
+
+						var stopoverInfo = new Element('div', {
+							'class' : 'directions-stopover-info'
+						}).update(stopoverDistance + ' ' + distArr[1] + ' (' + Number(stopoverTime/60).toFixed() + ' min.)');
+					
+						stopoverDistance = 0;
+						stopoverTime = 0;
+
+
 						// modeContainer
 						var directionsModeContainer = new Element('div', {
 							'class': 'directions-mode-container'
@@ -1614,19 +1695,16 @@ var Ui = ( function(w) {'use strict';
 							'class': 'directions-mode-line'
 						})
 
-						var distanceDiv = new Element('div', {
-							'class' : 'directions-mode-distance clickable',
-							'id' : mapFeatureIds[2 * (numInstructions - 1)],
-						})
 
-						directionsContainer.appendChild(directionTextDiv);
+						directionsContainer.appendChild(stopoverCounter);
+						directionsContainer.appendChild(stopoverAddress);
+						directionsContainer.appendChild(stopoverInfo);
 
 						directionsModeContainer.appendChild(directionsBorder);
-						directionsModeContainer.appendChild(distanceDiv);
 						directionsContainer.appendChild(directionsModeContainer);
 						directionsMain.appendChild(directionsContainer);
 
-
+						numStopovers++;
 						
 					} else {
 
@@ -1634,11 +1712,36 @@ var Ui = ( function(w) {'use strict';
 						var text = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Instruction')[0];
 						text = text.text || text.textContent;
 
+						// add up durations for stopovers as seconds
+						var duration = instruction.getAttribute('duration');
+						duration = duration.replace('P', '');
+						duration = duration.replace('T', '');
+						duration = duration.match(/\d+\D+/g);
+
+						var myduration = 0;
+						var sec;
+						for (var c=0; c < duration.length; c++) {
+							if (duration[c].slice(-1) == "D") {
+								sec = parseInt(duration[c].match( /\d+/g )*60*60);
+								myduration += sec
+							}
+							if (duration[c].slice(-1) == "M") {
+								sec = parseInt(duration[c].match( /\d+/g )*60);
+								myduration += sec;
+							}
+							if (duration[c].slice(-1) == "S") {
+								sec = parseInt(duration[c].match( /\d+/g ));
+								myduration += sec;
+							}
+						}
+						
+						// add to stopoverTime
+						stopoverTime += myduration;
 
 						var distance = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Distance')[0];
 						var distanceValue = distance.getAttribute('value');
 						var distanceUnit = distance.getAttribute('uom');
-						var distArr = [];
+						distArr = [];
 
 						if (preferences.distanceUnit == list.distanceUnitsPreferences[0]) {
 							//use mixture of km and m
@@ -1649,6 +1752,9 @@ var Ui = ( function(w) {'use strict';
 							var distMeasure = util.convertDistToDist(distanceValue, distanceUnit, yardsUnit);
 							distArr = util.convertDistanceFormat(distMeasure, preferences.distanceUnit);
 						}
+
+						// add to stopoverDistance
+						stopoverDistance += distArr[0];
 
 						//arrow direction
 						var direction;
@@ -2683,7 +2789,7 @@ var Ui = ( function(w) {'use strict';
 		 * @param tollway: accordingly.
 		 */
 		function setAvoidables(highway, tollway,unpaved,ferry,steps) {
-			console.log(highway, tollway,unpaved,ferry,steps)
+
 			var highwayTrue = (highway === 'true') || highway == true;
 			var tollwayTrue = (tollway === 'true') || tollway == true;
 			var unpavedTrue = (unpaved === 'true') || unpaved == true;
@@ -2930,6 +3036,7 @@ var Ui = ( function(w) {'use strict';
 		      		'data': i
 		      	});
 
+
 		      	var show = new Element('img', {
 					'src' : 'img/menuSearch.png',
 					'title': 'show track'
@@ -2944,6 +3051,16 @@ var Ui = ( function(w) {'use strict';
 					'src' : 'img/cancel.png',
 					'title': 'remove track or route'
 				});
+
+				var calcGranularity = new Element('select', {
+					'class' : 'form-control calcGranularity',
+					'title': 'route calculation from gpx detail'
+				});
+
+				calcGranularity.insert(new Element('option', {value: '100'}).update('100m'));
+				calcGranularity.insert(new Element('option', {value: '200'}).update('200m'));
+				calcGranularity.insert(new Element('option', {value: '500'}).update('500m'));
+
 			
 				showGpx.appendChild(show);
 				calcGpx.appendChild(calc);
@@ -2953,6 +3070,7 @@ var Ui = ( function(w) {'use strict';
 				fileContainer.appendChild(showGpx);
 				fileContainer.appendChild(calcGpx);
 				fileContainer.appendChild(deleteGpx);
+				fileContainer.appendChild(calcGranularity);
 
 				fileContainerMain.appendChild(fileContainer)
 
@@ -2988,10 +3106,13 @@ var Ui = ( function(w) {'use strict';
 		 */
 		function handleRecalcGpx(e) {
 			var thisTarget = e.currentTarget;
+			var parentTarget = $(thisTarget).parent();
+			var granularity = $(parentTarget.children()[4]).find(":selected").val();
+			
 			var iterator = thisTarget.getAttribute('data');	
 			var gpxFile = fileInput[iterator];
-			
-			theInterface.emit('ui:uploadRoute', gpxFile);
+			console.log(gpxFile)
+			theInterface.emit('ui:uploadRoute', [gpxFile,granularity]);
 	
 		}
 
@@ -3342,6 +3463,7 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.showSearchPoiDistUnitError = showSearchPoiDistUnitError;
 
 		Ui.prototype.getRoutePoints = getRoutePoints;
+		Ui.prototype.getStopoverPoints = getStopoverPoints;
 		Ui.prototype.updateRouteSummary = updateRouteSummary;
 		Ui.prototype.startRouteCalculation = startRouteCalculation;
 		Ui.prototype.endRouteCalculation = endRouteCalculation;

@@ -268,6 +268,26 @@ div.olControlPermalink {
 	vertical-align: middle;
 }
 
+#routeInstructionsContainer .directions-stopover {
+	padding: 3px 5px 0 40px;
+	line-height: 16px;
+	position: absolute;
+}
+
+#routeInstructionsContainer .directions-stopover-address {
+	padding: 3px 5px 0 75px;
+	line-height: 16px;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+#routeInstructionsContainer .directions-stopover-info {
+	padding: 12px 5px 0 75px;
+	line-height: 16px;
+	font-size: 12px;
+	color: #777777;
+}
+
 #routeInstructionsContainer .directions-img {
 	margin-left: 3px;
 	position: absolute;
@@ -316,7 +336,7 @@ div.olControlPermalink {
 }
 
 #fileContainer {
-	height: 32px; 
+	height: 60px; 
 	border-bottom: 
 	1px solid #e6e6e6;	
 	margin: 1em 2em 0 0.5em;
@@ -333,6 +353,10 @@ div.olControlPermalink {
 }
 .delete { 
 	float: left;padding-left: 13px; cursor: pointer;
+}
+
+.calcGranularity {
+	margin-top: 5px; width: 100px;
 }
 
 
@@ -956,8 +980,11 @@ button.weightOptions {
 	margin-top: 15px;
 }
 
-
 #route_totalDistance {
+	margin-top: 5px ;
+}
+
+#route_actualDistance {
 	margin-top: 5px ;
 }
 

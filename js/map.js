@@ -1351,11 +1351,14 @@ var Map = ( function() {"use strict";
 		}
 
 		/**
-		 * Based on the String with GPX information two waypoints - the start and end of the GPX track - are extracted
+		 * Based on the String with GPX information multiple waypoints - depending on the granularity input of the user - are extracted
 		 * @param {Object} routeString: String with GPX track
+		 * @param {Number} granularity: Value picked in dropdown list
 		 * @return: array of two waypoints of OL.LonLat or null if no adequate data available
 		 */
-		function parseStringToWaypoints(routeString) {
+		function parseStringToWaypoints(routeString,granularity) {
+			console.log(granularity)
+
 			var formatter = new OpenLayers.Format.GPX();
 			var featureVectors = formatter.read(routeString);
 			if (!featureVectors || featureVectors.length == 0) {
@@ -1363,17 +1366,60 @@ var Map = ( function() {"use strict";
 			}
 			var linePoints = featureVectors[0].geometry.components;
 			if (linePoints && linePoints.length >= 2) {
+
+				//var positions = getWaypointsByGranularity(linePoints,granularity);
+				//return positions;
+
+
 				//only proceed if the route contains at least 2 points (which can be interpreted as start and end)
 				var startPos = new OpenLayers.LonLat(linePoints[0].x, linePoints[0].y);
 				startPos = util.convertPointForMap(startPos);
 				var endPos = new OpenLayers.LonLat(linePoints[linePoints.length - 1].x, linePoints[linePoints.length - 1].y);
 				endPos = util.convertPointForMap(endPos);
 				return [startPos, endPos];
+
+				
+
 			} else {
 				return null;
 			}
 		}
 
+		/**
+		 * getWaypointsByGranularity
+		 * @param {Object} linePoints: All GPX points
+		 * @param {Number} granularity: Value picked in dropdown list
+		 * @return array of Points with flight distance given in granularity
+		 */
+		function getWaypointsByGranularity(linePoints, granularity) {
+
+			var routepointList = new Array();
+
+			var keepPoint =  new OpenLayers.LonLat(linePoints[0].x, linePoints[0].y);
+			var startPoint = util.convertPointForMap(keepPoint);
+			routepointList.push(startPoint);
+			
+			for (var i = 1; i < linePoints.length; i++) {
+
+				var mypoint =  new OpenLayers.LonLat(linePoints[i].x, linePoints[i].y);
+			
+				if (util.calcFlightDistance(keepPoint,mypoint) > Number(granularity)) {
+					var newPoint = util.convertPointForMap(mypoint);
+					routepointList.push(newPoint);
+					keepPoint = mypoint;
+				}
+				
+			}
+
+			var endPoint = new OpenLayers.LonLat(linePoints[linePoints.length - 1].x, linePoints[linePoints.length - 1].y);
+			endPoint = util.convertPointForMap(endPoint);
+			routepointList.push(endPoint);	
+
+			return routepointList;
+
+		}
+
+	
 		/**
 		 * Based on the String with GPX information a track (an OL.Geometry.LineString object) is extracted
 		 * @param {Object} trackString: String with GPX track
@@ -1598,6 +1644,7 @@ var Map = ( function() {"use strict";
 		map.prototype.parseStringToWaypoints = parseStringToWaypoints;
 		map.prototype.parseStringToTrack = parseStringToTrack;
 		map.prototype.addTrackToMap = addTrackToMap;
+		map.prototype.getWaypointsByGranularity = getWaypointsByGranularity;
 
 		map.prototype.parseStringToElevationPoints = parseStringToElevationPoints;
 		map.prototype.hoverPosition = hoverPosition;

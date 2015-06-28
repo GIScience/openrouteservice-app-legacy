@@ -237,7 +237,6 @@ var Controller = ( function(w) {'use strict';
                 //update preferences
                 handleWaypointChanged();
                 
-
                 //cannot be emmited by 'this', so let's use sth that is known inside the callback...
                 ui.emit('control:reverseGeocodeCompleted');
             }
@@ -1077,38 +1076,69 @@ var Controller = ( function(w) {'use strict';
          */
 
         var wp2;
-        function handleGpxRoute(file) {
+        function handleGpxRoute(fileArray) {
             //remove old routes
-            
+            console.log(fileArray);
+            var gpxFile = fileArray[0];
+            var granularity = fileArray[1];
+
+            // use granularity and pass 
             ui.handleResetRoute();
 
             ui.showImportRouteError(false);
-            if (file) {
+            if (gpxFile) {
                 if (!window.FileReader) {
                     // File APIs are not supported, e.g. IE
                     ui.showImportRouteError(true);
                 } else {
                     var r = new FileReader();
-                    r.readAsText(file);
+                    r.readAsText(gpxFile);
 
                     r.onload = function(e) {
                         var data = e.target.result;
                         //remove gpx: tags; Firefox cannot cope with that.
                         data = data.replace(/gpx:/g, '');
-                        var wps = map.parseStringToWaypoints(data);
+                        var wps = map.parseStringToWaypoints(data,granularity);
 
                         //add waypoints to route
                         if (wps && wps.length == 2) {
+
+                            // var x = 0;
+                            // var loopWpsArray = function(arr) {
+
+                            //     console.log('hi')
+                            //     addWp(arr[x],function(){
+                            //         console.log('callback')
+                            //         // set x to next item
+                            //         x++;
+                            //         // any more items in array? continue loop
+                            //         if(x < arr.length) {
+                            //             loopWpsArray(arr);   
+                            //         }
+                            //     }); 
+                            // }
+
+                            // function addWp(wps,callback) {
+                            //     // code to show your custom alert
+                            //     // in this case its just a console log
+                            //     handleUseAsWaypoint(wps);
+
+                            //     // do callback when ready
+                            //     callback();
+                            // }
+
+                            // loopWpsArray(wps);
+
+                            //add waypoints to route
+                            
                             handleUseAsWaypoint(wps[0]);
                             wp2 = wps[1];
-                            //the 2nd point cannot be appended immediately. we have to wait for the reverse geocoding request to be finished (and all other stuff executed in the callback function)
+                                //the 2nd point cannot be appended immediately. we have to wait for the reverse geocoding request to be finished (and all other stuff executed in the callback function)
                         } else {
                             ui.showImportRouteError(true);
                         }
                     };
                 }
-            } else {
-                ui.showImportRouteError(true);
             }
         }
 
@@ -1122,6 +1152,8 @@ var Controller = ( function(w) {'use strict';
                 wp2 = null;
             }
         }
+
+
 
         /**
          * uploads the track GPX file and displays it on the map. NO route re-calculation!

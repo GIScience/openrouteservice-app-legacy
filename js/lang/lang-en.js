@@ -28,6 +28,7 @@ var lang_en = {
 	'resetRoute' : '<i class="icon-remove-sign"></i>&nbsp;Reset whole route',
 	'TotalTime' : 'Total time',
 	'TotalDistance' : 'Total distance',
+	'ActualDistance' : 'Actual distance',
 	'routeSummary' : 'Summary',
 	'routeInstructions' : 'Route instructions',
 	'routeLinkText' : 'Permalink for current route',
