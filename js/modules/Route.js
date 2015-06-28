@@ -88,36 +88,36 @@ var Route = ( function(w) {"use strict";
 					}
 			}
 			
-			// Please note: do change order of params without also changing them in respective RouteService.xsd!
+			// Important: do change order or names of params without also changing them in respective RouteService.xsd!
 			if (routePref === 'Wheelchair') {
 				//tracktype
 				if (wheelChairParams[3] != 'null') {
-					writer.writeStartElement('xls:trackTypes');
-					writer.writeElementString('xls:trackType', wheelChairParams[3]);
+					writer.writeStartElement('xls:TrackTypes');
+					writer.writeElementString('xls:TrackType', wheelChairParams[3]);
 					writer.writeEndElement();
 				}
 				//surface
 				if (wheelChairParams[0] != 'null') {
-					writer.writeStartElement('xls:surfaceTypes');
-					writer.writeElementString('xls:surfaceType', wheelChairParams[0]);
+					writer.writeStartElement('xls:SurfaceTypes');
+					writer.writeElementString('xls:SurfaceType', wheelChairParams[0]);
 					writer.writeEndElement();
 				}
 				//smoothness
 				if (wheelChairParams[4] != 'null') {
-					writer.writeStartElement('xls:smoothnessTypes');
-					writer.writeElementString('xls:smoothnessType', wheelChairParams[4]);
+					writer.writeStartElement('xls:SmoothnessTypes');
+					writer.writeElementString('xls:SmoothnessType', wheelChairParams[4]);
 					writer.writeEndElement();
 				}
 				//incline
 				if (wheelChairParams[1] != 'null') {
-					writer.writeElementString('xls:incline', wheelChairParams[1]);
+					writer.writeElementString('xls:Incline', wheelChairParams[1]);
 				}
 				//sloped curb
 				if (wheelChairParams[2] != 'null') {
-					writer.writeElementString('xls:slopedCurb', wheelChairParams[2]);
+					writer.writeElementString('xls:SlopedCurb', wheelChairParams[2]);
 				}
 			}
-			
+						
 			//</xls:ExtendedRoutePreference>			
 			writer.writeEndElement();
 

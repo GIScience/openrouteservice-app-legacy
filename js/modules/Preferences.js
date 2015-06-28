@@ -517,39 +517,34 @@ var Preferences = ( function(w) {'use strict';
 		var wheelParameters = new Array();
 		
 		if (surface == undefined || surface == null || surface == 'undefined' || surface == 'null') {
-			permaInfo[this.surfaceIdx] = null;
-		} else {
-			permaInfo[this.surfaceIdx] = surface;
-			wheelParameters[0] = surface;
-		}
+			surface = list.wheelchairParameters.get('Surface')[1];
+		} 
+		wheelParameters[0] = surface;
+		permaInfo[this.surfaceIdx] = surface;
 
 		if (incline == undefined || incline == null || incline == 'undefined' || incline == 'null') {
-			permaInfo[this.inclineIdx] = null;
-		} else {
-			permaInfo[this.inclineIdx] = incline;
-			wheelParameters[1] = incline;
+			incline = list.wheelchairParameters.get('Incline')[1];
 		}
-
+		wheelParameters[1] = incline;
+		permaInfo[this.inclineIdx] = incline;
+		
 		if (slopedCurb == undefined || slopedCurb == null || slopedCurb == 'undefined' || slopedCurb == 'null') {
-			permaInfo[this.slopedCurbIdx] = null;
-		} else {
-			permaInfo[this.slopedCurbIdx] = slopedCurb;
-			wheelParameters[2] = slopedCurb;
+			slopedCurb = list.wheelchairParameters.get('SlopedCurb')[1];
 		}
+		wheelParameters[2] = slopedCurb;
+		permaInfo[this.slopedCurbIdx] = slopedCurb;
 
 		if (tracktype == undefined || tracktype == null || tracktype == 'undefined' ||  tracktype == 'null') {
-			permaInfo[this.trackTypeIdx] = null;
-		} else {
-			permaInfo[this.trackTypeIdx] = tracktype;
-			wheelParameters[3] = tracktype;
-		}
-
+			tracktype = list.wheelchairParameters.get('Tracktype')[1];
+		} 
+		permaInfo[this.trackTypeIdx] = tracktype;
+		wheelParameters[3] = tracktype;
+		
 		if (smoothness == undefined || smoothness == null || smoothness == 'undefined' || smoothness == 'null') {
-			permaInfo[this.smoothnessIdx] = null;
-		} else {
-			permaInfo[this.smoothnessIdx] = smoothness;
-			wheelParameters[4] = smoothness;
-		}
+			tracktype = list.wheelchairParameters.get('Smoothness')[1];
+		} 
+		permaInfo[this.smoothnessIdx] = smoothness;
+		wheelParameters[4] = smoothness;
 		
 		return wheelParameters;
 	}
