@@ -268,20 +268,20 @@ div.olControlPermalink {
 	vertical-align: middle;
 }
 
-#routeInstructionsContainer .directions-stopover {
+#routeInstructionsContainer .directions-waypoint {
 	padding: 3px 5px 0 40px;
 	line-height: 16px;
 	position: absolute;
 }
 
-#routeInstructionsContainer .directions-stopover-address {
+#routeInstructionsContainer .directions-waypoint-address {
 	padding: 3px 5px 0 75px;
 	line-height: 16px;
 	font-size: 14px;
 	font-weight: bold;
 }
 
-#routeInstructionsContainer .directions-stopover-info {
+#routeInstructionsContainer .directions-waypoint-info {
 	padding: 12px 5px 0 75px;
 	line-height: 16px;
 	font-size: 12px;

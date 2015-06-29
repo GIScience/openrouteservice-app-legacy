@@ -1451,24 +1451,24 @@ var Ui = ( function(w) {'use strict';
 		/** 
 		 * returns the addresses of all waypoints
 		 */
-		 function getStopoverPoints() {
-		 	var stopovers = new Array();
+		 function getWaypoints() {
+		 	var waypoints = new Array();
 		 	
-			 for (var i = 1; i < $('.waypoint').length-2; i++) {
+			 for (var i = 0; i < $('.waypoint').length-1; i++) {
 				var address = $('#' + i).get(0);
-
+				
 				if (address.querySelector('.address')) {
 					address = $(address).children(".waypointResult");
 					address = $(address).find("li").attr("data-shortaddress");
 					
 					address = address.match(/[^,]*/).toString();
 					address = address.replace(/(\r\n|\n|\r)/gm,", ");
-					stopovers.push(address);
+					waypoints.push(address);
 				}
 
 			}
 
-			return stopovers;
+			return waypoints;
 		 }
 
 
@@ -1633,7 +1633,6 @@ var Ui = ( function(w) {'use strict';
 				var numInstructions = 0;
 				
 
-
 				var instructionsList = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstructionsList')[0];
 				instructionsList = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstruction');
 				
@@ -1644,8 +1643,16 @@ var Ui = ( function(w) {'use strict';
 				var stopoverTime = 0;
 				// get stopovers which are viapoints
 				if ($('.waypoint').length > 2) {
-					var stopoverPoints = getStopoverPoints();
+					var waypoints = getWaypoints();
 				}
+
+				var startpoint = waypoints.splice(0, 1);
+				var endpoint = waypoints.splice(-1, 1);
+
+				//add startpoint
+				var directionsContainer = buildWaypoint(mapLayer,'start',startpoint,null);
+
+				directionsMain.appendChild(directionsContainer);
 
 				// container for all direction instructions
 				$A(instructionsList).each(function(instruction) {
@@ -1656,55 +1663,13 @@ var Ui = ( function(w) {'use strict';
 					//skip directionCode 100 for now
 					if (directionCode == '100') {
 						
-						//add DOM elements
-						var directionsContainer = new Element('div', {
-							'class' : 'directions-container clickable',
-							'data-layer' : mapLayer,
-						});
 
-						var stopoverSpan = new Element('span', {
-							'class' : 'badge badge-inverse'
-						}).update(numStopovers+1);
-
-
-						var stopoverCounter = new Element('div', {
-							'class' : 'directions-stopover'
-						})
-					
-						stopoverCounter.appendChild(stopoverSpan);
-						
-						var stopoverAddress = new Element('div', {
-							'class' : 'directions-stopover-address'
-						}).update(stopoverPoints[numStopovers])
-
-						if (distArr[1] == 'km') {
-							stopoverDistance = Number(stopoverDistance/1000).toFixed(1);
-						}
-
-						var stopoverInfo = new Element('div', {
-							'class' : 'directions-stopover-info'
-						}).update(stopoverDistance + ' ' + distArr[1] + ' (' + Number(stopoverTime/60).toFixed() + ' min.)');
+						var directionsContainer = buildWaypoint(mapLayer,'via',waypoints[numStopovers],numStopovers,stopoverDistance,stopoverTime);
+						directionsMain.appendChild(directionsContainer);
 					
 						stopoverDistance = 0;
 						stopoverTime = 0;
 
-
-						// modeContainer
-						var directionsModeContainer = new Element('div', {
-							'class': 'directions-mode-container'
-						})
-
-						var directionsBorder = new Element('div', {
-							'class': 'directions-mode-line'
-						})
-
-
-						directionsContainer.appendChild(stopoverCounter);
-						directionsContainer.appendChild(stopoverAddress);
-						directionsContainer.appendChild(stopoverInfo);
-
-						directionsModeContainer.appendChild(directionsBorder);
-						directionsContainer.appendChild(directionsModeContainer);
 						directionsMain.appendChild(directionsContainer);
 
 						numStopovers++;
@@ -1863,9 +1828,90 @@ var Ui = ( function(w) {'use strict';
 
 					}
 					});
+
+					//add endpoint
+					var directionsContainer = buildWaypoint(mapLayer,'end',endpoint,null,stopoverDistance,stopoverTime);
+					directionsMain.appendChild(directionsContainer);
 				
 	
 			}
+
+			/** 
+			 * builds Waypoint for start, via and end points in instructionlist
+			 * @param mapLayer: map layer containing these features
+			 * @param wpType: the type of point to be created
+			 * @param point: short-address of point
+			 * @param viaCounter: optional argument for via point counter
+			 * @param distance: optional argument for distance
+			 * @param duration: optional argument for duration
+			 * @return directionContainer: html container of the waypoint for instructionlist
+			 */
+			function buildWaypoint(mapLayer,wpType,address,viaCounter,distance,duration) {
+
+				var directionsContainer = new Element('div', {
+					'class' : 'directions-container clickable',
+					'data-layer' : mapLayer,
+				});
+
+				if (wpType == 'start') {
+					var icon = new Element('img', {
+					'src' : './img/startWaypoint.png'
+					});
+				} else if (wpType == 'via') {
+					
+					var icon = new Element('span', {
+							'class' : 'badge badge-inverse'
+					}).update(numStopovers+1);
+
+				} else {
+					var icon = new Element('img', {
+						'src' : './img/endWaypoint.png'
+					});
+
+				}
+				
+				var wayPoint = new Element('div', {
+					'class' : 'directions-waypoint'
+				})
+			
+				wayPoint.appendChild(icon);
+				
+				var shortAddress = new Element('div', {
+					'class' : 'directions-waypoint-address'
+				}).update(address)
+
+
+				// modeContainer
+				var directionsModeContainer = new Element('div', {
+					'class': 'directions-mode-container'
+				})
+
+				var directionsBorder = new Element('div', {
+					'class': 'directions-mode-line'
+				})
+
+				directionsContainer.appendChild(wayPoint);
+				directionsContainer.appendChild(shortAddress);
+
+				// add info if via or endpoint
+				if (wpType == 'end' || wpType =='via') {
+					
+					var pointInfo = new Element('div', {
+						'class' : 'directions-waypoint-info'
+					}).update(Number(distance/1000).toFixed(2) + ' km' + ' (' + Number(duration/60).toFixed() + ' min.)');
+			
+					directionsContainer.appendChild(pointInfo);
+
+				}
+
+				directionsModeContainer.appendChild(directionsBorder);
+				directionsContainer.appendChild(directionsModeContainer);
+
+				return directionsContainer;
+
+			}
+	
+
 
 			/**
 			 * called when the user moves over the distance part of a route instruction. Triggers highlighting the corresponding route part
@@ -3500,7 +3546,7 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.showSearchPoiDistUnitError = showSearchPoiDistUnitError;
 
 		Ui.prototype.getRoutePoints = getRoutePoints;
-		Ui.prototype.getStopoverPoints = getStopoverPoints;
+		Ui.prototype.getWaypoints = getWaypoints;
 		Ui.prototype.updateRouteSummary = updateRouteSummary;
 		Ui.prototype.startRouteCalculation = startRouteCalculation;
 		Ui.prototype.endRouteCalculation = endRouteCalculation;
