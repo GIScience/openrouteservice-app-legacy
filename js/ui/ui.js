@@ -1458,7 +1458,10 @@ var Ui = ( function(w) {'use strict';
 				var address = $('#' + i).get(0);
 
 				if (address.querySelector('.address')) {
-					address = address.innerText.match(/[^,]*/).toString();
+					address = $(address).children(".waypointResult");
+					address = $(address).find("li").attr("data-shortaddress");
+					
+					address = address.match(/[^,]*/).toString();
 					address = address.replace(/(\r\n|\n|\r)/gm,", ");
 					stopovers.push(address);
 				}
