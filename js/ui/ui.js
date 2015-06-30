@@ -1722,8 +1722,12 @@ var Ui = ( function(w) {'use strict';
 						}
 
 						// add to stopoverDistance
-						stopoverDistance += distArr[0];
-
+						if (distArr[1] == 'km') {
+							stopoverDistance += Number(distArr[0])*1000;
+						} else {
+							stopoverDistance += Number(distArr[0]);
+						}
+						
 						//arrow direction
 						var direction;
 						// will be used for traffic jam info etc
@@ -1891,11 +1895,10 @@ var Ui = ( function(w) {'use strict';
 				})
 
 				directionsContainer.appendChild(wayPoint);
-				directionsContainer.appendChild(shortAddress);
+				
 
 				// add info if via or endpoint
 				if (wpType == 'end' || wpType =='via') {
-					
 					var pointInfo = new Element('div', {
 						'class' : 'directions-waypoint-info'
 					}).update(Number(distance/1000).toFixed(2) + ' km' + ' (' + Number(duration/60).toFixed() + ' min.)');
@@ -1903,6 +1906,8 @@ var Ui = ( function(w) {'use strict';
 					directionsContainer.appendChild(pointInfo);
 
 				}
+
+				directionsContainer.appendChild(shortAddress);
 
 				directionsModeContainer.appendChild(directionsBorder);
 				directionsContainer.appendChild(directionsModeContainer);
@@ -3580,7 +3585,7 @@ var Ui = ( function(w) {'use strict';
 
 		Ui.prototype.handleGpxFiles = handleGpxFiles;
 		Ui.prototype.handleResetRoute = handleResetRoute;
-			
+
 		theInterface = new Ui();
 
 		return theInterface;
