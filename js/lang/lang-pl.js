@@ -1,10 +1,4 @@
 var lang_pl = {
-	'left' : '',
-	'right' : '',
-	'half-left' : '',
-	'half-right' : '',
-	'straight' : '',
-	
 	'serverError' : 'Przepraszamy, podczas wylicze&#x0144; na serwerze pojawi&#x0142; si&#x0119; b&#x0142;&#x0105;d. Prosz&#x0119; spr&oacute;bowa&#x0107; p&oacute;&#x017A;niej.',
 	
 	'contact' : 'Informacje&nbsp;i&nbsp;kontakt',
