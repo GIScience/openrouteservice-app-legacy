@@ -1,10 +1,4 @@
 var lang_cn = {
-	'left' : '左',
-	'right' : '右',
-	'half-left' : '偏左',
-	'half-right' : '偏右',
-	'straight' : '直走',
-
 	'serverError' : '很抱歉，伺服器端發生計算錯誤。請稍候再試。',
 
 	'contact' : '連絡我們',
