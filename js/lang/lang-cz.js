@@ -1,9 +1,4 @@
 var lang_cz = {			
-    'left'	:'vlevo',
-    'right':'pr&aacute;vo',
-    'half-left':'napul vlevo',
-    'half-right':'napul pravdu',
-    'straight':'rovn&yacute;',
     'serverError':'Je n&aacute;m l&iacute;to.Doslo k chybe pri v&yacute;poctu na serveru. Zkuste to pros&iacute;m znovu pozdeji. ',
     'contact':'Info & kontakt',
     'closeBtn':'Zavr&iacute;t',
