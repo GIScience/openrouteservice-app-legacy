@@ -1,9 +1,4 @@
 var lang_nl = {			
-    'left':'links',
-    'right':'rechts',
-    'half-left':'half links',
-    'half-right':'half gelijk',
-    'straight':'straight',
     'serverError':'Spijtig. Er is een fout opgetreden tijdens de berekening op de server. Probeer het later opnieuw. ',
     'contact':'Info & Contact',
     'closeBtn':'Sluit',

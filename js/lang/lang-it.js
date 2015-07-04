@@ -1,9 +1,4 @@
 var lang_it = {			
-    'left'	:'	sinistra',
-    'right':'destra',
-    'half-left':'met&agrave;  sinistra',
-    'half-right':'met&agrave;  di destra',
-    'straight':'dritto',
     'serverError':'Siamo spiacenti. Verificato un errore durante il calcolo sul server. Riprovare pi&ugrave; tardi. ',
     'contact':'Info & Contatti',
     'closeBtn':'Chiudere',

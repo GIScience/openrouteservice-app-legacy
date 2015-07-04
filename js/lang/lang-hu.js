@@ -1,9 +1,4 @@
 var lang_hu = {			
-    'left'	:'	balra',
-    'right':'helyes',
-    'half-left':'f&eacute;l balra',
-    'half-right':'fele igaz',
-    'straight':'egyenes',
     'serverError':'Sajn&aacute;ljuk. Hiba t&ouml;rt&eacute;nt a sz&aacute;m&iacute;t&aacute;s sor&aacute;n a szerveren. K&eacute;rj&uuml;k pr&oacute;b&aacute;lkozzon k&eacute;sobb. ',
     'contact':'Inform&aacute;ci&oacute;&eacute;s kapcsolat',
     'closeBtn':'Bez&aacute;r&aacute;s',

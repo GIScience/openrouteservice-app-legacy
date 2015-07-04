@@ -1,10 +1,4 @@
 var lang_cnsimple = {
-	'left' : '左',
-	'right' : '右',
-	'half-left' : '稍左',
-	'half-right' : '稍右',
-	'straight' : '直走',
-
 	'serverError' : '很抱歉，服务器端发生计算错误。请稍后再试。',
 
 	'contact' : '联系我们',

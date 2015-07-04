@@ -1,9 +1,4 @@
 var lang_fr = {			
-    'left':'gauche',
-    'right':'droite',
-    'half-left':'l&eacute;g&egrave;rement &agrave;  gauche',
-    'half-right':'l&eacute;g&egrave;rement &agrave;  droite',
-    'straight':'tout droit',
     'serverError':'Nous sommes d&eacute;sol&eacute;s. Une erreur est survenue lors du calcul sur le serveur. Merci de r&eacute;essayer ult&eacute;rieurement.',
     'contact':'Info & Contact',
     'closeBtn':'Fermer',
