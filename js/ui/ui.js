@@ -1901,7 +1901,7 @@ var Ui = ( function(w) {'use strict';
 				if (wpType == 'end' || wpType =='via') {
 					var pointInfo = new Element('div', {
 						'class' : 'directions-waypoint-info'
-					}).update(Number(distance/1000).toFixed(2) + ' km' + ' (' + Number(duration/60).toFixed() + ' min.)');
+					}).update(Number(duration/60).toFixed() + ' min' + ' / ' + Number(distance/1000).toFixed(2) + ' km');
 			
 					directionsContainer.appendChild(pointInfo);
 
@@ -3069,21 +3069,31 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+
+		/**
+		 * resets file menu value
+		 */
+		
+		function handleResetFileInput() {
+			this.value = null;
+		}
+
+
+
 		/**
 		 * forwards the selected GPX files and fills the gpx menu
 		 */
 		var fileInput;
 		function handleGpxFiles(event) {
-
+			
 			// clear old gpx tracks from map
 			theInterface.emit('ui:clearFromGpx');
 
 			fileInput = event.target.files;
-			$(fileInput).attr("value", '');
+			
 			// TODO show error if any of the files are not gpx showImportRouteError(true)
 			if (fileInput) {
 				fillGpxMenu(fileInput)
-
 			}
 
 		}
@@ -3145,9 +3155,9 @@ var Ui = ( function(w) {'use strict';
 					'title': 'route calculation from gpx detail'
 				});
 
-				calcGranularity.insert(new Element('option', {value: '100'}).update('100m'));
-				calcGranularity.insert(new Element('option', {value: '200'}).update('200m'));
-				calcGranularity.insert(new Element('option', {value: '500'}).update('500m'));
+				calcGranularity.insert(new Element('option', {value: '3000'}).update('3 km'));
+				calcGranularity.insert(new Element('option', {value: '5000'}).update('5 km'));
+				calcGranularity.insert(new Element('option', {value: '10000'}).update('10 km'));
 
 			
 				showGpx.appendChild(show);
@@ -3199,7 +3209,7 @@ var Ui = ( function(w) {'use strict';
 			
 			var iterator = thisTarget.getAttribute('data');	
 			var gpxFile = fileInput[iterator];
-			console.log(gpxFile)
+			
 			theInterface.emit('ui:uploadRoute', [gpxFile,granularity]);
 	
 		}
@@ -3480,7 +3490,9 @@ var Ui = ( function(w) {'use strict';
 			$('#gpxUploadFilesDelete').click(handleImportRouteRemove);
 			$('#gpxUploadTrackDelete').click(handleImportTrackRemove);
 
-			//multiple file uploader listener
+			//reset multiple file uploader
+			$('#files').click(handleResetFileInput);
+			//when gpx files are uploaded
 			$('#files').change(handleGpxFiles);
 
 			//height profile

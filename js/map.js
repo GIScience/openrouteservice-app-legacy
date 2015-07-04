@@ -1357,8 +1357,7 @@ var Map = ( function() {"use strict";
 		 * @return: array of two waypoints of OL.LonLat or null if no adequate data available
 		 */
 		function parseStringToWaypoints(routeString,granularity) {
-			console.log(granularity)
-
+		
 			var formatter = new OpenLayers.Format.GPX();
 			var featureVectors = formatter.read(routeString);
 			if (!featureVectors || featureVectors.length == 0) {
@@ -1367,16 +1366,15 @@ var Map = ( function() {"use strict";
 			var linePoints = featureVectors[0].geometry.components;
 			if (linePoints && linePoints.length >= 2) {
 
-				//var positions = getWaypointsByGranularity(linePoints,granularity);
-				//return positions;
-
+				var positions = getWaypointsByGranularity(linePoints,granularity);
+				return positions;
 
 				//only proceed if the route contains at least 2 points (which can be interpreted as start and end)
-				var startPos = new OpenLayers.LonLat(linePoints[0].x, linePoints[0].y);
-				startPos = util.convertPointForMap(startPos);
-				var endPos = new OpenLayers.LonLat(linePoints[linePoints.length - 1].x, linePoints[linePoints.length - 1].y);
-				endPos = util.convertPointForMap(endPos);
-				return [startPos, endPos];
+				// var startPos = new OpenLayers.LonLat(linePoints[0].x, linePoints[0].y);
+				// startPos = util.convertPointForMap(startPos);
+				// var endPos = new OpenLayers.LonLat(linePoints[linePoints.length - 1].x, linePoints[linePoints.length - 1].y);
+				// endPos = util.convertPointForMap(endPos);
+				// return [startPos, endPos];
 
 				
 
@@ -1395,24 +1393,24 @@ var Map = ( function() {"use strict";
 
 			var routepointList = new Array();
 
-			var keepPoint =  new OpenLayers.LonLat(linePoints[0].x, linePoints[0].y);
-			var startPoint = util.convertPointForMap(keepPoint);
+			var startPoint =  new OpenLayers.LonLat(linePoints[0].x, linePoints[0].y);
 			routepointList.push(startPoint);
 			
-			for (var i = 1; i < linePoints.length; i++) {
+			var sumDistance = 0;
+			for (var i = 1; i < linePoints.length-2; i++) {
 
-				var mypoint =  new OpenLayers.LonLat(linePoints[i].x, linePoints[i].y);
-			
-				if (util.calcFlightDistance(keepPoint,mypoint) > Number(granularity)) {
-					var newPoint = util.convertPointForMap(mypoint);
-					routepointList.push(newPoint);
-					keepPoint = mypoint;
+				var lastPoint = new OpenLayers.LonLat(linePoints[i-1].x, linePoints[i-1].y);
+				var thisPoint =  new OpenLayers.LonLat(linePoints[i].x, linePoints[i].y);
+				sumDistance += util.calcFlightDistance(lastPoint,thisPoint);
+
+				if (sumDistance > Number(granularity)) {
+					routepointList.push(thisPoint);
+					sumDistance = 0;
 				}
 				
 			}
 
 			var endPoint = new OpenLayers.LonLat(linePoints[linePoints.length - 1].x, linePoints[linePoints.length - 1].y);
-			endPoint = util.convertPointForMap(endPoint);
 			routepointList.push(endPoint);	
 
 			return routepointList;

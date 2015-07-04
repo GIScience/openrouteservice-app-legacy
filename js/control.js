@@ -827,6 +827,9 @@ var Controller = ( function(w) {'use strict';
                 //add DOM elements
                 ui.updateRouteSummary();
                 ui.updateRouteInstructions();
+
+                route.routeString = null;
+
             }
         }
 
@@ -854,7 +857,6 @@ var Controller = ( function(w) {'use strict';
                     //service response contains an error, switch to error handling function
                     routeCalculationError();
                 } else {
-
 
                     //use all-in-one-LineString to save the whole route in a single string
                     var routeLineString = route.writeRouteToSingleLineString(results);
@@ -1070,15 +1072,14 @@ var Controller = ( function(w) {'use strict';
         }
 
         /**
-         * uploads start and end point from a GPX file and calculates the route between these points
+         * uploads GPX file and calculates the route between these points
          * required HTML5 file api
          * @param file: the GPX file to upload
          */
 
-        var wp2;
         function handleGpxRoute(fileArray) {
             //remove old routes
-            console.log(fileArray);
+          
             var gpxFile = fileArray[0];
             var granularity = fileArray[1];
 
@@ -1100,56 +1101,36 @@ var Controller = ( function(w) {'use strict';
                         data = data.replace(/gpx:/g, '');
                         var wps = map.parseStringToWaypoints(data,granularity);
 
-                        //add waypoints to route
-                        if (wps && wps.length == 2) {
+                        if (wps) {
 
-                            // var x = 0;
-                            // var loopWpsArray = function(arr) {
+                            //waypoints: array of OL.LonLat representing one wayoint each
+                            for (var i = 0; i < wps.length; i++) {
 
-                            //     console.log('hi')
-                            //     addWp(arr[x],function(){
-                            //         console.log('callback')
-                            //         // set x to next item
-                            //         x++;
-                            //         // any more items in array? continue loop
-                            //         if(x < arr.length) {
-                            //             loopWpsArray(arr);   
-                            //         }
-                            //     }); 
-                            // }
-
-                            // function addWp(wps,callback) {
-                            //     // code to show your custom alert
-                            //     // in this case its just a console log
-                            //     handleUseAsWaypoint(wps);
-
-                            //     // do callback when ready
-                            //     callback();
-                            // }
-
-                            // loopWpsArray(wps);
-
-                            //add waypoints to route
-                            
-                            handleUseAsWaypoint(wps[0]);
-                            wp2 = wps[1];
-                                //the 2nd point cannot be appended immediately. we have to wait for the reverse geocoding request to be finished (and all other stuff executed in the callback function)
+                                var type;
+                                //console.log(wps[i])
+                                if (wps[i].lat == 0 & wps[i].lon == 0) {
+                                    continue
+                                } else if (i == 0) {
+                                    type = Waypoint.type.START;
+                                } else if (i == wps.length - 1) {
+                                    type = Waypoint.type.END;
+                                } else {
+                                    type = Waypoint.type.VIA;
+                                }
+                                handleAddWaypointByRightclick({
+                                    pos : wps[i],
+                                    type : type
+                                })
+                            }
+                            if (wps.length >= 2) {
+                                handleRoutePresent();
+                            }
+                        
                         } else {
                             ui.showImportRouteError(true);
                         }
                     };
                 }
-            }
-        }
-
-        /**
-         * extracts the 2nd waypoint from the GPX file
-         */
-        function uploadRouteTrigger2ndWaypoint() {
-            if (wp2 != null) {
-                handleUseAsWaypoint(wp2);
-                //prevent infinite loop
-                wp2 = null;
             }
         }
 
@@ -1643,7 +1624,6 @@ var Controller = ( function(w) {'use strict';
 
             ui.register('ui:exportRouteGpx', handleExportRoute);
             ui.register('ui:uploadRoute', handleGpxRoute);
-            ui.register('control:reverseGeocodeCompleted', uploadRouteTrigger2ndWaypoint);
             ui.register('ui:uploadTrack', handleGpxTrack);
             ui.register('ui:removeTrack', handleRemoveTrack);
 
