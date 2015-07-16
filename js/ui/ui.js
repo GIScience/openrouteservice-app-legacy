@@ -3520,7 +3520,11 @@ var Ui = ( function(w) {'use strict';
 			});
 
 			$('.btn-group').button();
-
+			
+			//feedback slide
+			$("#feedback_button").click(function(){
+			$('.form').slideToggle();   		
+		});
 			
 		}
 

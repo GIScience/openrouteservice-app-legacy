@@ -9,6 +9,8 @@
 		<link rel="stylesheet" type="text/css" href="css/bootstrap-ext.min.css"><!-- for file upload -->
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"> 
  		<link rel="stylesheet" type="text/css" href="css/default.css">
+		<link rel="stylesheet" type="text/css" href="css/contact_form.css">
+
  	</head>
 	<body id="main">
 		<!-- navigation bar on top -->
@@ -543,11 +545,11 @@
 				</div>
 			</div>
 		</div>
-
+<div id="infoButton"></div>
 		<div id="map" class="panel panelLight olMap">
 			<!-- Map goes here -->
-			<div id="infoButton"></div>
-			<div id="infoPanel"></div>
+				<div id="infoButton"></div>
+					<div id="infoPanel"></div>
 			<div id="infoPermalink">Permalink</div>
 			<div id="bubble">
 				<div id="permaText">
@@ -626,6 +628,21 @@
 				</button>
 			</div>
 		</div>
+		
+		<!-- popup for contact form -->
+		<div id="mainform" class="feedback">
+		<a id="feedback_button">Feedback</a>
+			<div class="form">
+			<p id="returnmessage"></p>
+				<label>Name: <span>*</span></label>
+				<input type="text" id="name" placeholder="Name"/>
+				<label>Email: <span>*</span></label>
+				<input type="text" id="email" placeholder="Email"/>
+				<label>Message:</label>
+				<textarea id="message" placeholder="Type your message here"></textarea>
+				<input type="button" id="submit_feedback" value="Send Message"/>
+			</div>
+		</div>
 
 
 
@@ -644,6 +661,8 @@
 		<script type="text/javascript" src="lib/rickshaw/d3.min.js"></script>
 		<script type="text/javascript" src="lib/rickshaw/d3.layout.min.js"></script>
 		<script type="text/javascript" src="lib/rickshaw/rickshaw.min.js"></script>
+
+
 
 		<!-- ORS single file -->
 		<!-- <script type="text/javascript" src="build/ORS.js"></script> -->
@@ -667,6 +686,7 @@
 		<script type="text/javascript" src="js/map.js"></script>
 		<script type="text/javascript" src="js/control.js"></script>
 		<script type="text/javascript" src="js/ORS.OpenLayers.js"></script>
+		<script type="text/javascript" src="js/contact_form.js"></script>
 
 		<!-- ORS language files alphabertically sorted -->
 		<script type="text/javascript" src="js/lang/lang-cz.js"></script>
