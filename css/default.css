@@ -563,6 +563,10 @@ input, textarea {
 	line-height: 1.3;
 	color: #444;
 }
+ input[type=text]{
+height:30px;
+}
+
 div.options {
 	padding: 0.5em;
 	border: 1px dashed #d1d1d1;
