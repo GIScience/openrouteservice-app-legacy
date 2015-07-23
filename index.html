@@ -10,13 +10,15 @@
 		<link rel="stylesheet" type="text/css" href="css/bootstrap-ext.min.css"><!-- for file upload -->
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"> 
  		<link rel="stylesheet" type="text/css" href="css/default.css">
+		<link rel="stylesheet" type="text/css" href="css/contact_form.css">
+
  	</head>
 	<body id="main">
 		<!-- navigation bar on top -->
 		<div class="navbar navbar-fixed-top" id="navbar">
 			<a class="brand" href="http://www.openrouteservice.org"> <img src="img/logo.png" class="logo" alt="ORS"></a>
 			<a class="brand" id="title" href="http://www.openrouteservice.org">OpenRouteService.org</a>
-			<!--<a href="#" id="info" class="btn btn-large btn-danger disabled">Coverage Germany only until 22.05.2015</a>-->
+			<a href="https://github.com/GIScience/openrouteservice/blob/bugfixes-2.2/release_notes/v2.2.md" style="cursor:pointer;" target="_blank" id="info" class="btn btn-large btn-success disabled">-= ORS succesfully updated!!! New cycle tour profile and turn restrictions for cars & bikes click here for release notes =-</a>
 
 			<ul id="topMenu">
 				<li>
@@ -70,8 +72,8 @@
 										</button>
 										<button id="pedestrian" class="btn routeOptionsButton"><img src="img/picto-dude.png">
 										</button>
-										<button id="wheelchair" class="btn routeOptionsButton"><img src="img/picto-wheelchair.png">
-										</button>
+										<!--<button id="wheelchair" class="btn routeOptionsButton"><img src="img/picto-wheelchair.png">
+										</button>-->
 										<button id="heavyvehicle" class="btn routeOptionsButton"><img src="img/picto-truck.png">
 										</button>
 									</div>
@@ -544,11 +546,11 @@
 				</div>
 			</div>
 		</div>
-
+<div id="infoButton"></div>
 		<div id="map" class="panel panelLight olMap">
 			<!-- Map goes here -->
-			<div id="infoButton"></div>
-			<div id="infoPanel"></div>
+				<div id="infoButton"></div>
+					<div id="infoPanel"></div>
 			<div id="infoPermalink">Permalink</div>
 			<div id="bubble">
 				<div id="permaText">
@@ -627,6 +629,21 @@
 				</button>
 			</div>
 		</div>
+		
+		<!-- popup for contact form -->
+		<div id="mainform" class="feedback">
+		<a id="feedback_button">Feedback</a>
+			<div class="form">
+			<p id="returnmessage"></p>
+				<label>Name: <span>*</span></label>
+				<input type="text" id="name" placeholder="Name"/>
+				<label>Email: <span>*</span></label>
+				<input type="text" id="email" placeholder="Email"/>
+				<label>Message:</label>
+				<textarea id="message" placeholder="Type your message here"></textarea>
+				<input type="button" id="submit_feedback" value="Send Message"/>
+			</div>
+		</div>
 
 
 
@@ -645,6 +662,8 @@
 		<script type="text/javascript" src="lib/rickshaw/d3.min.js"></script>
 		<script type="text/javascript" src="lib/rickshaw/d3.layout.min.js"></script>
 		<script type="text/javascript" src="lib/rickshaw/rickshaw.min.js"></script>
+
+
 
 		<!-- ORS single file -->
 		<!-- <script type="text/javascript" src="build/ORS.js"></script> -->
@@ -668,6 +687,7 @@
 		<script type="text/javascript" src="js/map.js"></script>
 		<script type="text/javascript" src="js/control.js"></script>
 		<script type="text/javascript" src="js/ORS.OpenLayers.js"></script>
+		<script type="text/javascript" src="js/contact_form.js"></script>
 
 		<!-- ORS language files alphabertically sorted -->
 		<script type="text/javascript" src="js/lang/lang-cz.js"></script>
