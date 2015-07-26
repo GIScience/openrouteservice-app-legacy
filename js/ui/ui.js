@@ -653,6 +653,10 @@ var Ui = ( function(w) {'use strict';
 				var shortAddress = util.parseAddressShort(addressResult);
 			}
 
+			//update stopover info from latlon to address
+            var stopover = $(".directions-main").find("[waypoint-id=" + index + "]");
+            stopover.text(shortAddress);
+
 			//insert information as waypoint
 			var rootElement = $('#' + index);
 			rootElement.removeClass('unset');
@@ -1626,9 +1630,6 @@ var Ui = ( function(w) {'use strict';
 			} else {
 				//parse results and show them in the container
 
-				var destination = getRouteDestination();		
-
-				$('#routeFromTo').html(preferences.translate('routeFromTo') + destination);
 				
 				var container = $('#routeInstructionsContainer').get(0);
 				container.show();
@@ -1646,7 +1647,7 @@ var Ui = ( function(w) {'use strict';
 				instructionsList = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstruction');
 				
 				// variable for distance until stopover is reached
-				var numStopovers = 0;
+				var numStopovers = 1;
 				var stopoverDistance = 0;
 				var distArr; 
 				var stopoverTime = 0;
@@ -1655,11 +1656,12 @@ var Ui = ( function(w) {'use strict';
 					var waypoints = getWaypoints();
 				}
 
-				var startpoint = waypoints.splice(0, 1);
-				var endpoint = waypoints.splice(-1, 1);
-
+				//var startpoint = waypoints.splice(0, 1);
+				//var endpoint = waypoints.splice(-1, 1);
+				var startpoint = waypoints[0];
+				var endpoint = waypoints[(waypoints.length)-1];
 				//add startpoint
-				var directionsContainer = buildWaypoint(mapLayer,'start',startpoint,null);
+				var directionsContainer = buildWaypoint(mapLayer,'start',startpoint,0);
 
 				directionsMain.appendChild(directionsContainer);
 
@@ -1843,7 +1845,7 @@ var Ui = ( function(w) {'use strict';
 					});
 
 					//add endpoint
-					var directionsContainer = buildWaypoint(mapLayer,'end',endpoint,null,stopoverDistance,stopoverTime);
+					var directionsContainer = buildWaypoint(mapLayer,'end',endpoint,getWaypoints().length-1,stopoverDistance,stopoverTime);
 					directionsMain.appendChild(directionsContainer);
 				
 	
@@ -1884,13 +1886,14 @@ var Ui = ( function(w) {'use strict';
 				}
 				
 				var wayPoint = new Element('div', {
-					'class' : 'directions-waypoint'
+					'class' : 'directions-waypoint',
 				})
 			
 				wayPoint.appendChild(icon);
 				
 				var shortAddress = new Element('div', {
-					'class' : 'directions-waypoint-address'
+					'class' : 'directions-waypoint-address',
+					'waypoint-id': viaCounter
 				}).update(address)
 
 

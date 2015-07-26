@@ -246,8 +246,8 @@ var Controller = ( function(w) {'use strict';
                 var newIndex = ui.addWaypointResultByRightclick(wpType, wpIndex, addressResult);
                 var position = map.convertFeatureIdToPositionString(featureId, map.ROUTE_POINTS);
                 ui.setWaypointFeatureId(newIndex, featureId, position, map.ROUTE_POINTS);
-                //update preferences
-                //handleWaypointChanged();
+                
+
 
                 //cannot be emmited by 'this', so let's use sth that is known inside the callback...
                 ui.emit('control:reverseGeocodeCompleted');
