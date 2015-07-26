@@ -164,9 +164,9 @@ var Controller = ( function(w) {'use strict';
         /**
          * the user sets a waypoint by clicking on the map saying "add waypoint...". The waypoint is displayed on Ui and on the map, internal variables are updated and the address of the waypoint is looked up.
          * @param atts: pos: position of the new waypoint, type: type of the waypoint
+         * @param noRouteRequest: if noRouteRequest is true, then no route request is fired
          */
-        function handleAddWaypointByRightclick(atts) {
-
+        function handleAddWaypointByRightclick(atts,noRouteRequest) {
             var pos = atts.pos;
             var wpType = atts.type;
             var featureId;
@@ -196,7 +196,19 @@ var Controller = ( function(w) {'use strict';
 
             //add the new marker
             var newFeatureId = map.addWaypointAtPos(util.convertPointForMap(pos), wpIndex, wpType);
+            
+            //add lat lon to input field 
+            
+            waypoint.setWaypoint(wpIndex, true);
+            var position = map.convertFeatureIdToPositionString(newFeatureId, map.ROUTE_POINTS);
+            var newIndex = ui.addWaypointResultByRightclick(wpType, wpIndex, position, true);
+            ui.setWaypointFeatureId(newIndex, newFeatureId, position, map.ROUTE_POINTS);
+            
+            if (!noRouteRequest) {
+                handleWaypointChanged();
+            }
 
+            //start geocoding process and replace lat lon in input if response
             geolocator.reverseGeolocate(pos, reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, wpType, wpIndex, newFeatureId);
         }
 
@@ -210,10 +222,9 @@ var Controller = ( function(w) {'use strict';
          */
         function reverseGeocodeSuccess(addressResult, wpType, wpIndex, featureId, addWaypointAt) {
             
-
             //IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
             var addressResult = addressResult.responseXML ? addressResult.responseXML : util.parseStringToDOM(addressResult.responseText);
-
+            
             //when the service gives response but contains an error the response is handeled as success, not error. We have to check for an error tag here:
             var responseError = util.getElementsByTagNameNS(addressResult, namespaces.xls, 'ErrorList').length;
             if (parseInt(responseError) > 0) {
@@ -223,20 +234,21 @@ var Controller = ( function(w) {'use strict';
 
                 //adapt the waypoint internals:
                 if (addWaypointAt && addWaypointAt >= 0) {
+
                     ui.addWaypointAfter(addWaypointAt - 1, waypoint.getNumWaypoints());
                     waypoint.setWaypoint(addWaypointAt, true);
 
                 }
-                waypoint.setWaypoint(wpIndex, true);
+                //waypoint.setWaypoint(wpIndex, true);
+
 
                 ui.showSearchingAtWaypoint(wpIndex, false);
-                var newIndex = ui.addWaypointResultByRightclick(addressResult, wpType, wpIndex);
+                var newIndex = ui.addWaypointResultByRightclick(wpType, wpIndex, addressResult);
                 var position = map.convertFeatureIdToPositionString(featureId, map.ROUTE_POINTS);
                 ui.setWaypointFeatureId(newIndex, featureId, position, map.ROUTE_POINTS);
-
                 //update preferences
-                handleWaypointChanged();
-                
+                //handleWaypointChanged();
+
                 //cannot be emmited by 'this', so let's use sth that is known inside the callback...
                 ui.emit('control:reverseGeocodeCompleted');
             }
@@ -290,6 +302,7 @@ var Controller = ( function(w) {'use strict';
             var idx = atts.wpIndex;
             var featureId = atts.featureId;
 
+
             //remove map feature of deleted wayoint
             map.clearMarkers(map.ROUTE_POINTS, [featureId]);
 
@@ -301,11 +314,15 @@ var Controller = ( function(w) {'use strict';
 
             //re-calculate the waypoint types
             for (var i = 0; i < waypoint.getNumWaypoints(); i++) {
-                var type = waypoint.determineWaypointType(i);
-                ui.setWaypointType(i, type);
 
+                var type = waypoint.determineWaypointType(i);
+                
+                ui.setWaypointType(i, type);
+                
                 featureId = ui.getFeatureIdOfWaypoint(i);
+                
                 var newId = map.setWaypointType(featureId, type);
+                
                 var position = map.convertFeatureIdToPositionString(newId, map.ROUTE_POINTS);
                 ui.setWaypointFeatureId(i, newId, position, map.ROUTE_POINTS);
             }
@@ -721,11 +738,23 @@ var Controller = ( function(w) {'use strict';
             var position = new OpenLayers.LonLat(featureMoved.geometry.x, featureMoved.geometry.y);
             var index = ui.getWaypiontIndexByFeatureId(featureMoved.id);
             var type = waypoint.determineWaypointType(index);
+
+            
+            //add lat lon to input field 
+            var newPosition = map.convertFeatureIdToPositionString(featureMoved.id, map.ROUTE_POINTS);
+            var newIndex = ui.addWaypointResultByRightclick(type, index, newPosition, true);
+
+            ui.setWaypointFeatureId(newIndex, featureMoved.id, newPosition, map.ROUTE_POINTS);
+            
+            //update preferences
+            handleWaypointChanged();
+
+            // request for geocoding which will replace lat lon in input field if returned
             geolocator.reverseGeolocate(util.convertPointForDisplay(position), reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, type, index, featureMoved.id, -1);
             ui.invalidateWaypointSearch(index);
 
-            //update preferences
-            handleWaypointChanged(true);
+            
+            
         }
 
         /* *********************************************************************
@@ -1120,7 +1149,7 @@ var Controller = ( function(w) {'use strict';
                                 handleAddWaypointByRightclick({
                                     pos : wps[i],
                                     type : type
-                                })
+                                },true)
                             }
                             if (wps.length >= 2) {
                                 handleRoutePresent();
@@ -1512,7 +1541,7 @@ var Controller = ( function(w) {'use strict';
                     handleAddWaypointByRightclick({
                         pos : waypoints[i],
                         type : type
-                    })
+                    }, true)
                 }
                 if (waypoints.length >= 2) {
                     handleRoutePresent();

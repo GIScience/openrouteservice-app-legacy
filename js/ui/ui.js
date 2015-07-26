@@ -628,28 +628,35 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/**
-		 * set a waypint with the service respponse after the user requested to set a waypoint by clicking on the map (right click).
-		 * @param results: the service response in XML format
+		 * set a waypoint with the service response after the user requested to set a waypoint by clicking on the map (right click).
+		 * @param resultsOrLatlon: the service response in XML format or a latlon position
 		 * @param typeOfWaypoint: one of START, VIA or END
 		 * @param index: index of the waypoint
 		 * @return: the index of the wayoint
 		 */
-		function addWaypointResultByRightclick(results, typeOfWaypoint, index) {
-			
+		function addWaypointResultByRightclick(typeOfWaypoint, index, results, latlon) {
+
 			var numWaypoints = $('.waypoint').length - 1;
 			while (index >= numWaypoints) {
 				addWaypointAfter(numWaypoints - 1);
 				numWaypoints++;
 			}
 
-			var addressResult = util.getElementsByTagNameNS(results, namespaces.xls, 'Address');
-			addressResult = addressResult ? addressResult[0] : null;
-			var address = util.parseAddress(addressResult);
-			var shortAddress = util.parseAddressShort(addressResult);
+			if (latlon == true) {
+				var address = util.parseLatlon(results);
+				var shortAddress = results;
+
+			} else {
+				var addressResult = util.getElementsByTagNameNS(results, namespaces.xls, 'Address');
+				addressResult = addressResult ? addressResult[0] : null;
+				var address = util.parseAddress(addressResult);
+				var shortAddress = util.parseAddressShort(addressResult);
+			}
 
 			//insert information as waypoint
 			var rootElement = $('#' + index);
 			rootElement.removeClass('unset');
+			//console.log(address);
 			address.setAttribute('data-shortAddress', shortAddress);
 
 			var children = rootElement.children();
@@ -938,7 +945,9 @@ var Ui = ( function(w) {'use strict';
 		 * @param showSearching: if true, the spinner is shown; hidden otherwise.
 		 */
 		function showSearchingAtWaypoint(wpIndex, showSearching) {
+
 			var wp = $('#' + wpIndex).get(0);
+
 			var inputElement = wp.querySelector('input');
 
 			if (showSearching) {

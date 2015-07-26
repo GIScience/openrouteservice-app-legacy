@@ -1,4 +1,3 @@
-@import url(http://fonts.googleapis.com/css?family=Fauna+One|Muli);
 #mainform{
 width:960px;
 margin:20px auto;
@@ -9,7 +8,7 @@ font-family: 'Fauna One', serif;
 .feedback .form{
 	clear:both;
 	box-shadow:0 0 15px;
-	height:400px;
+	height:360px;
 	width:350px;
 	border-radius:2px;
 	background:#fff;
@@ -35,8 +34,8 @@ height:30px;
 .feedback input[type=button]{
 background-color:#123456;
 border:0px solid white;
-font-family: 'Fauna One', serif;
-font-Weight:bold;
+font-family: 'Roboto', sans-serif;
+font-weight:bold;
 font-size:14px;
 opacity:0.8;
 color:white;

@@ -114,7 +114,23 @@ util = ( function() {'use strict';
 					return element.getElementsByTagName(nsTag + ':' + tagName);
 				}
 			},
-			
+
+			/**
+			 * parses the XML result for an address into HTML format
+			 * @param xmlAddress: XML encoded address result 
+			 * @return: address result wrapped in appropriate HTML tags
+			 */
+			parseLatlon : function(latlon) {
+				var element = new Element('li', {
+					'class' : 'address'
+				});
+
+				if (latlon) {
+					element.appendChild(new Element('span').update(latlon + ' '))
+				}
+
+				return element;
+			},
 			/**
 			 * parses the XML result for an address into HTML format
 			 * @param xmlAddress: XML encoded address result 
