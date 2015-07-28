@@ -198,10 +198,15 @@ var Controller = ( function(w) {'use strict';
             var newFeatureId = map.addWaypointAtPos(util.convertPointForMap(pos), wpIndex, wpType);
             
             //add lat lon to input field 
-            
             waypoint.setWaypoint(wpIndex, true);
             var position = map.convertFeatureIdToPositionString(newFeatureId, map.ROUTE_POINTS);
-            var newIndex = ui.addWaypointResultByRightclick(wpType, wpIndex, position, true);
+            
+            //convert position dis
+            var displayPosition = util.convertPositionStringToLonLat(position);
+            displayPosition = util.convertPointForDisplay(displayPosition);
+            displayPosition = displayPosition.lon + ', ' + displayPosition.lat;
+        
+            var newIndex = ui.addWaypointResultByRightclick(wpType, wpIndex, displayPosition, true);
             ui.setWaypointFeatureId(newIndex, newFeatureId, position, map.ROUTE_POINTS);
             
             if (!noRouteRequest) {
@@ -302,7 +307,6 @@ var Controller = ( function(w) {'use strict';
             var idx = atts.wpIndex;
             var featureId = atts.featureId;
 
-
             //remove map feature of deleted wayoint
             map.clearMarkers(map.ROUTE_POINTS, [featureId]);
 
@@ -316,7 +320,6 @@ var Controller = ( function(w) {'use strict';
             for (var i = 0; i < waypoint.getNumWaypoints(); i++) {
 
                 var type = waypoint.determineWaypointType(i);
-                
                 ui.setWaypointType(i, type);
                 
                 featureId = ui.getFeatureIdOfWaypoint(i);
@@ -739,10 +742,15 @@ var Controller = ( function(w) {'use strict';
             var index = ui.getWaypiontIndexByFeatureId(featureMoved.id);
             var type = waypoint.determineWaypointType(index);
 
-            
             //add lat lon to input field 
             var newPosition = map.convertFeatureIdToPositionString(featureMoved.id, map.ROUTE_POINTS);
-            var newIndex = ui.addWaypointResultByRightclick(type, index, newPosition, true);
+
+             //convert position dis
+            var displayPosition = util.convertPositionStringToLonLat(newPosition);
+            displayPosition = util.convertPointForDisplay(displayPosition);
+            displayPosition = displayPosition.lon + ', ' + displayPosition.lat;
+
+            var newIndex = ui.addWaypointResultByRightclick(type, index, displayPosition, true);
 
             ui.setWaypointFeatureId(newIndex, featureMoved.id, newPosition, map.ROUTE_POINTS);
             

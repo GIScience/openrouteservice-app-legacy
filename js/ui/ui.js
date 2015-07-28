@@ -642,6 +642,8 @@ var Ui = ( function(w) {'use strict';
 				numWaypoints++;
 			}
 
+			//checks whether latlon is passed in first call
+			//for geocoding shortaddress is updated in second call
 			if (latlon == true) {
 				var address = util.parseLatlon(results);
 				var shortAddress = results;
@@ -651,11 +653,11 @@ var Ui = ( function(w) {'use strict';
 				addressResult = addressResult ? addressResult[0] : null;
 				var address = util.parseAddress(addressResult);
 				var shortAddress = util.parseAddressShort(addressResult);
+				//update stopover info from latlon to address
+  		        var stopover = $(".directions-main").find("[waypoint-id=" + index + "]");
+            	stopover.text(shortAddress);
 			}
 
-			//update stopover info from latlon to address
-            var stopover = $(".directions-main").find("[waypoint-id=" + index + "]");
-            stopover.text(shortAddress);
 
 			//insert information as waypoint
 			var rootElement = $('#' + index);
@@ -1876,7 +1878,7 @@ var Ui = ( function(w) {'use strict';
 					
 					var icon = new Element('span', {
 							'class' : 'badge badge-inverse'
-					}).update(numStopovers+1);
+					}).update(numStopovers);
 
 				} else {
 					var icon = new Element('img', {
