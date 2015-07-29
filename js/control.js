@@ -204,7 +204,11 @@ var Controller = ( function(w) {'use strict';
             //convert position dis
             var displayPosition = util.convertPositionStringToLonLat(position);
             displayPosition = util.convertPointForDisplay(displayPosition);
-            displayPosition = displayPosition.lon + ', ' + displayPosition.lat;
+            var displayPositionLon = displayPosition.lon.toString().split('.');
+            displayPositionLon = displayPositionLon[0] + '.' + displayPositionLon[1].substring(0,6)
+            var displayPositionLat = displayPosition.lat.toString().split('.');
+            displayPositionLat = displayPositionLat[0] + '.' + displayPositionLat[1].substring(0,6)
+            displayPosition = displayPositionLon + ', ' + displayPositionLat
         
             var newIndex = ui.addWaypointResultByRightclick(wpType, wpIndex, displayPosition, true);
             ui.setWaypointFeatureId(newIndex, newFeatureId, position, map.ROUTE_POINTS);
@@ -745,10 +749,14 @@ var Controller = ( function(w) {'use strict';
             //add lat lon to input field 
             var newPosition = map.convertFeatureIdToPositionString(featureMoved.id, map.ROUTE_POINTS);
 
-             //convert position dis
+            //convert position dis
             var displayPosition = util.convertPositionStringToLonLat(newPosition);
             displayPosition = util.convertPointForDisplay(displayPosition);
-            displayPosition = displayPosition.lon + ', ' + displayPosition.lat;
+            var displayPositionLon = displayPosition.lon.toString().split('.');
+            displayPositionLon = displayPositionLon[0] + '.' + displayPositionLon[1].substring(0,6)
+            var displayPositionLat = displayPosition.lat.toString().split('.');
+            displayPositionLat = displayPositionLat[0] + '.' + displayPositionLat[1].substring(0,6)
+            displayPosition = displayPositionLon + ', ' + displayPositionLat
 
             var newIndex = ui.addWaypointResultByRightclick(type, index, displayPosition, true);
 

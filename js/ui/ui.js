@@ -646,7 +646,8 @@ var Ui = ( function(w) {'use strict';
 			//for geocoding shortaddress is updated in second call
 			if (latlon == true) {
 				var address = util.parseLatlon(results);
-				var shortAddress = results;
+				console.log(address)
+				var shortAddress = results.toString();
 
 			} else {
 				var addressResult = util.getElementsByTagNameNS(results, namespaces.xls, 'Address');
@@ -662,7 +663,6 @@ var Ui = ( function(w) {'use strict';
 			//insert information as waypoint
 			var rootElement = $('#' + index);
 			rootElement.removeClass('unset');
-			//console.log(address);
 			address.setAttribute('data-shortAddress', shortAddress);
 
 			var children = rootElement.children();

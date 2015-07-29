@@ -126,9 +126,13 @@ util = ( function() {'use strict';
 				});
 
 				if (latlon) {
-					element.appendChild(new Element('span').update(latlon + ' '))
+					console.log(latlon)
+					element.appendChild(new Element('span', {
+							'class' : 'addressElement'
+					}).update(latlon + ' '));
 				}
 
+				console.log(element)
 				return element;
 			},
 			/**
@@ -223,7 +227,7 @@ util = ( function() {'use strict';
 				if (countryCode != null) {
 					element.appendChild(new Element('span').update(', ' + countryCode.toUpperCase()));
 				}
-				
+				console.log(element)
 				return element;
 			},
 
