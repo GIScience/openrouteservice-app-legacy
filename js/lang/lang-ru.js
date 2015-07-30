@@ -1,10 +1,4 @@
 var lang_ru = {
-    'left': 'налево',
-    'right': 'направо',
-    'half-left': 'левее',
-    'half-right': 'правее',
-    'straight': 'прямо',
- 
     'serverError': 'Нам очень жаль, но на сервере во время расчёта произошла ошибка. Пожалуйста попробуйте позже.',
  
     'contact': 'Информация&nbsp;&amp;&nbsp;Контакты',
@@ -82,6 +76,7 @@ var lang_ru = {
     'Bicycle': 'короткий маршрут',
     'BicycleSafety': 'безопасный маршрут',
     'BicycleRoute': 'предпочитать выделенные дорожки',
+	'BicycleTour':  'тур цикл',
     'BicycleMTB': 'горный велосипед',
     'BicycleRacer': 'скоростной велосипед',
 	'Wheelchair' : 'доступный маршрут',
@@ -91,6 +86,12 @@ var lang_ru = {
 	'avoidunpavedRoads':  'Избегайте грунтовые дороги',
 	'avoidFerry':  'Избегайте паромы',
 	
+	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;избежать типы дорог &nbsp;&nbsp;<span class="caret">',
+	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;избежать типы дорог &nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;избегать районов &nbsp;&nbsp;<span class="caret">',
+	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;избежать типы дорог  &nbsp;&nbsp;<span class="caret">',
+	
+	'avoidFerryPedes' : 'Избегайте паромы' ,
 	'avoidFerryBike' : 'Избегайте паромы' ,
 	'avoidunpavedRoadsBike' : 'Избегайте грунтовые дороги',
 	'avoidStepsBike' : 'меры',
@@ -99,6 +100,7 @@ var lang_ru = {
 	'TruckHeight' : 'максимальная высота',
 	'TruckWeight' : 'максимальный вес',
 	'TruckWidth' : 'mмаксимальная ширина',
+	'TruckAxleLoad' : 'нагрузка на ось',
 	'goodsHeavyTruck' : 'Транспорт до 3.5t',
 	'busHeavyTruck' : 'автобус',
 	'hgvHeavyTruck' : 'Грузовой автомобиль',

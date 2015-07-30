@@ -5,10 +5,10 @@ var Preferences = ( function(w) {'use strict';
 	//are there any cookies of thie page yet?
 	var cookiesAvailable = false;
 
-	var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version','avUnpaved', 'avFerry','value_length','value_height','value_weight','value_width','surface','incline','slopedCurb', 'hazardous', 'routeWeight', 'avSteps', 'routeOptType', 'trackType', 'smoothness'];
+	var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version','avUnpaved', 'avFerry','value_length','value_height','value_weight','value_width','value_axleload','surface','incline','slopedCurb', 'hazardous', 'routeWeight', 'avSteps', 'routeOptType', 'trackType', 'smoothness'];
 
 	//store information that can be used for the permalink
-	permaInfo = Array.apply(null, new Array(27)).map(String.prototype.valueOf,'null')
+	permaInfo = Array.apply(null, new Array(28)).map(String.prototype.valueOf,'null')
 
 	/**
 	 * Constructor
@@ -33,15 +33,16 @@ var Preferences = ( function(w) {'use strict';
 		this.value_heightIdx = 15;
 		this.value_weightIdx = 16;
 		this.value_widthIdx = 17;
-		this.surfaceIdx = 18;
-		this.inclineIdx = 19;
-		this.slopedCurbIdx = 20;
-		this.hazardousIdx = 21;
-		this.weightIdx = 22;
-		this.avoidStepsIdx = 23;
-		this.routeOptionsTypesIdx = 24;
-		this.trackTypeIdx = 25;
-		this.smoothnessIdx = 26;
+		this.value_axleloadIdx = 18;
+		this.surfaceIdx = 19;
+		this.inclineIdx = 20;
+		this.slopedCurbIdx = 21;
+		this.hazardousIdx = 22;
+		this.weightIdx = 23;
+		this.avoidStepsIdx = 24;
+		this.routeOptionsTypesIdx = 25;
+		this.trackTypeIdx = 26;
+		this.smoothnessIdx = 27;
 
 		//define variables
 		this.language = 'en';
@@ -396,7 +397,7 @@ var Preferences = ( function(w) {'use strict';
 	 * checks truck parameters from get variable, fills perma settings
 	 * @return the truck parameters
 	 */
-	function loadtruckParameters(truck_length, truck_height, truck_width, truck_weight) {
+	function loadtruckParameters(truck_length, truck_height, truck_width, truck_weight,truck_axleload) {
 
 		var truckParameters = new Array();
 
@@ -426,6 +427,12 @@ var Preferences = ( function(w) {'use strict';
 		} else {
 			permaInfo[this.value_weightIdx] = truck_weight;
 			truckParameters[3] = truck_weight;
+		}
+		if (truck_axleload == undefined || truck_axleload == null || truck_axleload == 'undefined' || truck_axleload == 'null') {
+			permaInfo[this.value_axleloadIdx] = null;
+		} else {
+			permaInfo[this.value_axleloadIdx] = truck_axleload;
+			truckParameters[4] = truck_axleload;
 		}
 		return truckParameters;
 
@@ -510,39 +517,34 @@ var Preferences = ( function(w) {'use strict';
 		var wheelParameters = new Array();
 		
 		if (surface == undefined || surface == null || surface == 'undefined' || surface == 'null') {
-			permaInfo[this.surfaceIdx] = null;
-		} else {
-			permaInfo[this.surfaceIdx] = surface;
-			wheelParameters[0] = surface;
-		}
+			surface = list.wheelchairParameters.get('Surface')[1];
+		} 
+		wheelParameters[0] = surface;
+		permaInfo[this.surfaceIdx] = surface;
 
 		if (incline == undefined || incline == null || incline == 'undefined' || incline == 'null') {
-			permaInfo[this.inclineIdx] = null;
-		} else {
-			permaInfo[this.inclineIdx] = incline;
-			wheelParameters[1] = incline;
+			incline = list.wheelchairParameters.get('Incline')[1];
 		}
-
+		wheelParameters[1] = incline;
+		permaInfo[this.inclineIdx] = incline;
+		
 		if (slopedCurb == undefined || slopedCurb == null || slopedCurb == 'undefined' || slopedCurb == 'null') {
-			permaInfo[this.slopedCurbIdx] = null;
-		} else {
-			permaInfo[this.slopedCurbIdx] = slopedCurb;
-			wheelParameters[2] = slopedCurb;
+			slopedCurb = list.wheelchairParameters.get('SlopedCurb')[1];
 		}
+		wheelParameters[2] = slopedCurb;
+		permaInfo[this.slopedCurbIdx] = slopedCurb;
 
 		if (tracktype == undefined || tracktype == null || tracktype == 'undefined' ||  tracktype == 'null') {
-			permaInfo[this.trackTypeIdx] = null;
-		} else {
-			permaInfo[this.trackTypeIdx] = tracktype;
-			wheelParameters[3] = tracktype;
-		}
-
+			tracktype = list.wheelchairParameters.get('Tracktype')[1];
+		} 
+		permaInfo[this.trackTypeIdx] = tracktype;
+		wheelParameters[3] = tracktype;
+		
 		if (smoothness == undefined || smoothness == null || smoothness == 'undefined' || smoothness == 'null') {
-			permaInfo[this.smoothnessIdx] = null;
-		} else {
-			permaInfo[this.smoothnessIdx] = smoothness;
-			wheelParameters[4] = smoothness;
-		}
+			tracktype = list.wheelchairParameters.get('Smoothness')[1];
+		} 
+		permaInfo[this.smoothnessIdx] = smoothness;
+		wheelParameters[4] = smoothness;
 		
 		return wheelParameters;
 	}

@@ -414,22 +414,36 @@ var Map = ( function() {"use strict";
 					'rightclick' : function(e) {
 						//if we have any other popup menus, remove them
 						closeContextMenu();
+						
+						var menuObject = createMapContextMenu();
+						//$$('body')[0].insert(menuObject);
 
 						//build new popup menu
 						var pos = self.theMap.getLonLatFromViewPortPx(e.xy);
 						var displayPos = util.convertPointForDisplay(pos);
+					
+						//place context menu in a popup on the map
+						self.popup = new OpenLayers.Popup('mapContextMenu', pos, null, menuObject.innerHTML, false, null );
+						self.popup.autoSize = true;
+						self.popup.panMapIfOutOfView = true;
+						//self.popup.keepInMap = false;
+						self.popup.closeOnMove = false;
+						self.popup.opacity = 0.9;
+						
 
-						var menuObject = $('#mapContextMenu').clone();
-						menuObject.attr('id', 'menu');
+						self.theMap.addPopup(self.popup);
 
 						//event handling for context menu
-						var options = menuObject.children();
+						var options = $(self.popup.div);
+						options = options[0].childNodes[0].childNodes[0].children;
+	
 						options[0].onclick = function(e) {
 							//click on start point
 							self.emit('map:addWaypoint', {
 								pos : displayPos,
 								type : Waypoint.type.START
 							});
+							closeContextMenu();
 						};
 						options[0].onmouseover = function(e) {
 							//click on start point
@@ -445,6 +459,7 @@ var Map = ( function() {"use strict";
 								pos : displayPos,
 								type : Waypoint.type.VIA
 							});
+							closeContextMenu();
 						};
 						options[1].onmouseover = function(e) {
 							//click on start point
@@ -453,12 +468,14 @@ var Map = ( function() {"use strict";
 						options[1].onmouseout = function(e) { 
 							document.getElementsByClassName("useAsViaPoint")[0].style.backgroundColor = 'transparent';
 						}
+						
 						options[2].onclick = function(e) {
 							//click on end point
 							self.emit('map:addWaypoint', {
 								pos : displayPos,
 								type : Waypoint.type.END
 							});
+							closeContextMenu();
 						}
 						options[2].onmouseover = function(e) {
 							//click on start point
@@ -467,15 +484,7 @@ var Map = ( function() {"use strict";
 						options[2].onmouseout = function(e) { 
 							document.getElementsByClassName("useAsEndPoint")[0].style.backgroundColor = 'transparent';
 						}
-						//place context menu in a popup on the map
-						self.popup = new OpenLayers.Popup('menu', pos, null, menuObject.html(), false, null);
-						self.popup.autoSize = true;
-						self.popup.div = menuObject.get(0);
-						self.popup.opacity = 0.9;
-						//TODO all this will not work properly with any stable version of OL; it is only included in DEV version so far... :/
-						self.popup.border = '1px';
 
-						self.theMap.addPopup(self.popup);
 					},
 					'click' : function(e) {
 						closeContextMenu();
@@ -528,23 +537,57 @@ var Map = ( function() {"use strict";
 
 			}
 
-			// external code source: http://spatialnotes.blogspot.com/2010/11/capturing-right-click-events-in.html
-			// Get control of the right-click event:
-			// document.getElementById(container).oncontextmenu = function(e) {
-			// e = e ? e : window.event;
-			// if (e.preventDefault)
-			// e.preventDefault();
-			// // For non-IE browsers.
-			// else
-			// return false;
-			// // For IE browsers.
-			// };
-			//
 
 			//close the context menu when zooming or panning,...
 			function closeContextMenu() {
-				$('#menu').remove();
+				
+				var popup = document.getElementById('mapContextMenu');
+
+				if (popup != null) {
+					popup.remove();
+
+				}
 			};
+
+			// create a new contextMenu
+			function createMapContextMenu() {
+
+				var mapContextMenuContainer = new Element('div', {
+					'id' : 'mapContextMenu',
+					'style' : 'display:none',
+				});
+
+				var useAsStartPointContainer = new Element('div', {
+					'class': 'useAsStartPoint'
+				});	
+				var startSpan = new Element('span', {
+					'id' : 'contextStart',
+				}).update('use as start point');
+				useAsStartPointContainer.appendChild(startSpan);
+
+				var useAsViaPointContainer = new Element('div', {
+					'class': 'useAsViaPoint'
+				});	
+				var viaSpan = new Element('span', {
+					'id' : 'contextVia',
+				}).update('use as via point');
+				useAsViaPointContainer.appendChild(viaSpan);
+
+				var useAsEndPointContainer = new Element('div', {
+					'class': 'useAsEndPoint'
+				});	
+				var endSpan = new Element('span', {
+					'id' : 'contextEnd',
+				}).update('use as end point');
+				useAsEndPointContainer.appendChild(endSpan);
+
+				mapContextMenuContainer.appendChild(useAsStartPointContainer);
+				mapContextMenuContainer.appendChild(useAsViaPointContainer);
+				mapContextMenuContainer.appendChild(useAsEndPointContainer);
+		
+				return mapContextMenuContainer
+
+			}
 
 			//make route waypoints draggable
 			var dragWaypoints = new OpenLayers.Control.DragFeature(layerRoutePoints);
@@ -623,7 +666,7 @@ var Map = ( function() {"use strict";
 
 			//when zooming or moving the map -> close the context menu
 			this.theMap.events.register("zoomend", this.map, closeContextMenu);
-			this.theMap.events.register("movestart", this.map, closeContextMenu);
+			//this.theMap.events.register("movestart", this.map, closeContextMenu);
 		}
 
 		/* *********************************************************************
@@ -893,14 +936,9 @@ var Map = ( function() {"use strict";
 		 * encode all waypoints by their position in a string; used e.g. for permalink
 		 * @return: string of LonLat positions; style: 'lon1,lat1,lon2,lat2,...lonk,latk'
 		 */
-		function getWaypointsString(endPoint) {
-			// if endPoint is true add (0,0) to beginning of string
-			// this is then caught 
-			if (endPoint == true) {
-				var wpString = "0%2C0%2C";
-			} else {
-				var wpString = "";
-			}
+		function getWaypointsString() {
+			
+			var wpString = "";
 		
 			var layer = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
 
@@ -914,7 +952,6 @@ var Map = ( function() {"use strict";
 			}
 			//slice away the last separator ','
 			wpString = wpString.substring(0, wpString.length - 3);
-
 			return wpString;
 		}
 
@@ -1314,11 +1351,13 @@ var Map = ( function() {"use strict";
 		}
 
 		/**
-		 * Based on the String with GPX information two waypoints - the start and end of the GPX track - are extracted
+		 * Based on the String with GPX information multiple waypoints - depending on the granularity input of the user - are extracted
 		 * @param {Object} routeString: String with GPX track
+		 * @param {Number} granularity: Value picked in dropdown list
 		 * @return: array of two waypoints of OL.LonLat or null if no adequate data available
 		 */
-		function parseStringToWaypoints(routeString) {
+		function parseStringToWaypoints(routeString,granularity) {
+		
 			var formatter = new OpenLayers.Format.GPX();
 			var featureVectors = formatter.read(routeString);
 			if (!featureVectors || featureVectors.length == 0) {
@@ -1326,17 +1365,59 @@ var Map = ( function() {"use strict";
 			}
 			var linePoints = featureVectors[0].geometry.components;
 			if (linePoints && linePoints.length >= 2) {
+
+				var positions = getWaypointsByGranularity(linePoints,granularity);
+				return positions;
+
 				//only proceed if the route contains at least 2 points (which can be interpreted as start and end)
-				var startPos = new OpenLayers.LonLat(linePoints[0].x, linePoints[0].y);
-				startPos = util.convertPointForMap(startPos);
-				var endPos = new OpenLayers.LonLat(linePoints[linePoints.length - 1].x, linePoints[linePoints.length - 1].y);
-				endPos = util.convertPointForMap(endPos);
-				return [startPos, endPos];
+				// var startPos = new OpenLayers.LonLat(linePoints[0].x, linePoints[0].y);
+				// startPos = util.convertPointForMap(startPos);
+				// var endPos = new OpenLayers.LonLat(linePoints[linePoints.length - 1].x, linePoints[linePoints.length - 1].y);
+				// endPos = util.convertPointForMap(endPos);
+				// return [startPos, endPos];
+
+				
+
 			} else {
 				return null;
 			}
 		}
 
+		/**
+		 * getWaypointsByGranularity
+		 * @param {Object} linePoints: All GPX points
+		 * @param {Number} granularity: Value picked in dropdown list
+		 * @return array of Points with flight distance given in granularity
+		 */
+		function getWaypointsByGranularity(linePoints, granularity) {
+
+			var routepointList = new Array();
+
+			var startPoint =  new OpenLayers.LonLat(linePoints[0].x, linePoints[0].y);
+			routepointList.push(startPoint);
+			
+			var sumDistance = 0;
+			for (var i = 1; i < linePoints.length-2; i++) {
+
+				var lastPoint = new OpenLayers.LonLat(linePoints[i-1].x, linePoints[i-1].y);
+				var thisPoint =  new OpenLayers.LonLat(linePoints[i].x, linePoints[i].y);
+				sumDistance += util.calcFlightDistance(lastPoint,thisPoint);
+
+				if (sumDistance > Number(granularity)) {
+					routepointList.push(thisPoint);
+					sumDistance = 0;
+				}
+				
+			}
+
+			var endPoint = new OpenLayers.LonLat(linePoints[linePoints.length - 1].x, linePoints[linePoints.length - 1].y);
+			routepointList.push(endPoint);	
+
+			return routepointList;
+
+		}
+
+	
 		/**
 		 * Based on the String with GPX information a track (an OL.Geometry.LineString object) is extracted
 		 * @param {Object} trackString: String with GPX track
@@ -1561,6 +1642,7 @@ var Map = ( function() {"use strict";
 		map.prototype.parseStringToWaypoints = parseStringToWaypoints;
 		map.prototype.parseStringToTrack = parseStringToTrack;
 		map.prototype.addTrackToMap = addTrackToMap;
+		map.prototype.getWaypointsByGranularity = getWaypointsByGranularity;
 
 		map.prototype.parseStringToElevationPoints = parseStringToElevationPoints;
 		map.prototype.hoverPosition = hoverPosition;

@@ -34,6 +34,22 @@ util = ( function() {'use strict';
 			},
 
 			/**
+			 * calculates flight distance between two points
+			 * @param {Object} ptA: OpenLayers LonLat or Point coordinates
+			 * @param {Object} ptB: OpenLayers LonLat or Point coordinates
+			 */
+			calcFlightDistance : function(ptA, ptB) {
+				
+				var point1 = new OpenLayers.Geometry.Point(ptA.lon, ptA.lat);
+        		var point2 = new OpenLayers.Geometry.Point(ptB.lon, ptB.lat);
+
+        		var line = new OpenLayers.Geometry.LineString([point1, point2]);
+
+				return line.getGeodesicLength(new OpenLayers.Projection("EPSG:4326"));
+
+			},
+
+			/**
 			 * transforms a given point to the internal projection of the map
 			 * @param {Object} pt: OpenLayers LonLat or Point coordinates to transform
 			 */

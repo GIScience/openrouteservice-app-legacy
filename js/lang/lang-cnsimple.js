@@ -1,10 +1,4 @@
 var lang_cnsimple = {
-	'left' : '左',
-	'right' : '右',
-	'half-left' : '稍左',
-	'half-right' : '稍右',
-	'straight' : '直走',
-
 	'serverError' : '很抱歉，服务器端发生计算错误。请稍后再试。',
 
 	'contact' : '联系我们',
@@ -83,12 +77,14 @@ var lang_cnsimple = {
 	'Bicycle' : '最短路径',
 	'BicycleSafety' : '最安全路径',
 	'BicycleRoute' : '自行车道优先',
+	'BicycleTour':  '循环之旅',
 	'BicycleMTB' : '山地自行车',
 	'BicycleRacer' : '公路自行车',
 	'TruckLength' : '最大长度',
 	'TruckHeight' : '最大高度',
 	'TruckWeight' : '最大重量',
 	'TruckWidth' : '最大宽度',
+	'TruckAxleLoad' : '轴重',
 	'goodsHeavyTruck' : '车辆达3.5万吨',
 	'busHeavyTruck' : '公共汽车',
 	'hgvHeavyTruck' : '重型货车',
@@ -105,8 +101,10 @@ var lang_cnsimple = {
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;避免道路类型 &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;避免道路类型 &nbsp;&nbsp;<span class="caret">',
-	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;避免地区&nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;避免地区 &nbsp;&nbsp;<span class="caret">',
+	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;避免道路类型  &nbsp;&nbsp;<span class="caret">',
 	
+	'avoidFerryPedes' : '避开渡船' ,
 	'avoidFerryBike' : '避开渡船' ,
 	'avoidunpavedRoadsBike' : '避开未铺砌道路',
 	'avoidStepsBike' : '步骤',

@@ -32,6 +32,7 @@ var Languages = (function(w) {'use strict';
 		$('#BicycleRouteLabel').html(p.translate('BicycleRoute'));
 		$('#BicycleMtbLabel').html(p.translate('BicycleMTB'));
 		$('#BicycleRacerLabel').html(p.translate('BicycleRacer'));
+		$('#BicycleTourLabel').html(p.translate('BicycleTour'));
 		$('#PedestrianLabel').html(p.translate('Pedestrian'));
 		
 		//truck profile
@@ -41,6 +42,7 @@ var Languages = (function(w) {'use strict';
 		$('#truckheightLabel').html(p.translate('TruckHeight'));
 		$('#truckweightLabel').html(p.translate('TruckWeight'));
 		$('#truckwidthLabel').html(p.translate('TruckWidth'));
+		$('#truckaxleloadLabel').html(p.translate('TruckAxleLoad'));
 		$('#goodsHeavyTruckLabel').html(p.translate('goodsHeavyTruck'));
 		$('#busHeavyTruckLabel').html(p.translate('busHeavyTruck'));
 		$('#busHeavyTruckLabel').html(p.translate('busHeavyTruck'));
@@ -55,6 +57,8 @@ var Languages = (function(w) {'use strict';
 		$('#avoidFerryLabelBike').html(p.translate('avoidFerryBike'));
 		$('#avoidunpavedRoadsLabelBike').html(p.translate('avoidunpavedRoadsBike'));
 		$('#avoidStepsLabelBike').html(p.translate('avoidStepsBike'));
+		$('#avoidFerryLabelPedestrian').html(p.translate('avoidFerryPedes'));
+		
 		
 		$('#avoidRoadsBtn').html(p.translate('avoidRoadMain'));
 		$('#avoidAreasBtn').html(p.translate('avoidAreasMain'));

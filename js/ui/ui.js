@@ -1448,6 +1448,30 @@ var Ui = ( function(w) {'use strict';
 
 		}
 
+		/** 
+		 * returns the addresses of all waypoints
+		 */
+		 function getWaypoints() {
+		 	var waypoints = new Array();
+		 	
+			 for (var i = 0; i < $('.waypoint').length-1; i++) {
+				var address = $('#' + i).get(0);
+				
+				if (address.querySelector('.address')) {
+					address = $(address).children(".waypointResult");
+					address = $(address).find("li").attr("data-shortaddress");
+					
+					address = address.match(/[^,]*/).toString();
+					address = address.replace(/(\r\n|\n|\r)/gm,", ");
+					waypoints.push(address);
+				}
+
+			}
+
+			return waypoints;
+		 }
+
+
 		/**
 		 * gets a short description of the route destination
 		 * @return string of the destination in short form or null if the last waypoint is not set
@@ -1524,6 +1548,8 @@ var Ui = ( function(w) {'use strict';
 				totalTime = totalTime + (' ' + preferences.translate('seconds') + ' ');
 				//totalTime = totalTime.replace('S', ' ' + preferences.translate('seconds') + ' ');
 			
+
+				// total distance
 				var distance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'TotalDistance')[0];
 				var distanceValue = distance.getAttribute('value');
 				var distanceUnit = distance.getAttribute('uom');
@@ -1537,15 +1563,43 @@ var Ui = ( function(w) {'use strict';
 					var yardsUnit = 'yd';
 					var distMeasure = util.convertDistToDist(distanceValue, distanceUnit, yardsUnit);
 					distArr = util.convertDistanceFormat(distMeasure, preferences.distanceUnit);
-				}
+				}		
 
 				var container = $('#routeSummaryContainer').get(0);
 				container.show();
 				var timeDiv = container.querySelector('#route_totalTime');
 				var distanceDiv = container.querySelector('#route_totalDistance');
+				var actualDistanceDiv = container.querySelector('#route_actualDistance');
+				$(actualDistanceDiv).hide();
+
+				// actual distance
+				var actualDistance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'ActualDistance')[0];
+				if (actualDistance != undefined) {
+	
+					var actualDistanceValue = actualDistance.getAttribute('value');
+					var actualDistanceUnit = actualDistance.getAttribute('uom');
+					var actualdistArr = [];
+
+					if (preferences.distanceUnit == list.distanceUnitsPreferences[0]) {
+					//use mixture of km and m
+						actualdistArr = util.convertDistanceFormat(actualDistanceValue, preferences.distanceUnit);
+					} else {
+						//use mixture of miles and yards
+						var yardsUnit = 'yd';
+						var actualDistMeasure = util.convertDistToDist(actualDistanceValue, distanceUnit, yardsUnit);
+						actualdistArr = util.convertDistanceFormat(actualDistMeasure, preferences.distanceUnit);
+					}	
+
+					var actualDistanceDiv = container.querySelector('#route_actualDistance');
+					$(actualDistanceDiv)[0].update(preferences.translate('ActualDistance') + ': ' + actualdistArr[0] + ' ' + actualdistArr[1]);
+					$(actualDistanceDiv).show();
+				}
+
 
 				$(timeDiv)[0].update(preferences.translate('TotalTime') + ': ' + totalTime);
 				$(distanceDiv)[0].update(preferences.translate('TotalDistance') + ': ' + distArr[0] + ' ' + distArr[1]);
+
+
 			}
 		}
 
@@ -1556,6 +1610,7 @@ var Ui = ( function(w) {'use strict';
 		 * @param mapLayer: map layer containing these features
 		 */
 		function updateRouteInstructions(results, mapFeatureIds, mapLayer) {
+
 			if (!results) {
 				var container = $('#routeInstructionsContainer').get(0);
 				container.hide();
@@ -1576,130 +1631,292 @@ var Ui = ( function(w) {'use strict';
 				}
 				
 				var numInstructions = 0;
+				
 
 				var instructionsList = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstructionsList')[0];
 				instructionsList = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstruction');
 				
+				// variable for distance until stopover is reached
+				var numStopovers = 0;
+				var stopoverDistance = 0;
+				var distArr; 
+				var stopoverTime = 0;
+				// get stopovers which are viapoints
+				if ($('.waypoint').length > 2) {
+					var waypoints = getWaypoints();
+				}
+
+				var startpoint = waypoints.splice(0, 1);
+				var endpoint = waypoints.splice(-1, 1);
+
+				//add startpoint
+				var directionsContainer = buildWaypoint(mapLayer,'start',startpoint,null);
+
+				directionsMain.appendChild(directionsContainer);
+
 				// container for all direction instructions
-
 				$A(instructionsList).each(function(instruction) {
-					//process each routing instruction
-					var text = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Instruction')[0];
-					text = text.text || text.textContent;
 
-					var distance = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Distance')[0];
-					var distanceValue = distance.getAttribute('value');
-					var distanceUnit = distance.getAttribute('uom');
-					var distArr = [];
+					var directionCode = util.getElementsByTagNameNS(instruction, namespaces.xls, 'DirectionCode')[0];
+					directionCode = directionCode.textContent;
+					
+					//skip directionCode 100 for now
+					if (directionCode == '100') {
+						
 
-					if (preferences.distanceUnit == list.distanceUnitsPreferences[0]) {
-						//use mixture of km and m
-						distArr = util.convertDistanceFormat(distanceValue, preferences.distanceUnit);
+						var directionsContainer = buildWaypoint(mapLayer,'via',waypoints[numStopovers],numStopovers,stopoverDistance,stopoverTime);
+						directionsMain.appendChild(directionsContainer);
+					
+						stopoverDistance = 0;
+						stopoverTime = 0;
+
+						directionsMain.appendChild(directionsContainer);
+
+						numStopovers++;
+						
 					} else {
-						//use mixture of miles and yards
-						var yardsUnit = 'yd';
-						var distMeasure = util.convertDistToDist(distanceValue, distanceUnit, yardsUnit);
-						distArr = util.convertDistanceFormat(distMeasure, preferences.distanceUnit);
+
+						//process each routing instruction
+						var text = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Instruction')[0];
+						text = text.text || text.textContent;
+
+						// add up durations for stopovers as seconds
+						var duration = instruction.getAttribute('duration');
+						duration = duration.replace('P', '');
+						duration = duration.replace('T', '');
+						duration = duration.match(/\d+\D+/g);
+
+						var myduration = 0;
+						var sec;
+						for (var c=0; c < duration.length; c++) {
+							if (duration[c].slice(-1) == "D") {
+								sec = parseInt(duration[c].match( /\d+/g )*60*60);
+								myduration += sec
+							}
+							if (duration[c].slice(-1) == "M") {
+								sec = parseInt(duration[c].match( /\d+/g )*60);
+								myduration += sec;
+							}
+							if (duration[c].slice(-1) == "S") {
+								sec = parseInt(duration[c].match( /\d+/g ));
+								myduration += sec;
+							}
+						}
+						
+						// add to stopoverTime
+						stopoverTime += myduration;
+
+						var distance = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Distance')[0];
+						var distanceValue = distance.getAttribute('value');
+						var distanceUnit = distance.getAttribute('uom');
+						distArr = [];
+
+						if (preferences.distanceUnit == list.distanceUnitsPreferences[0]) {
+							//use mixture of km and m
+							distArr = util.convertDistanceFormat(distanceValue, preferences.distanceUnit);
+						} else {
+							//use mixture of miles and yards
+							var yardsUnit = 'yd';
+							var distMeasure = util.convertDistToDist(distanceValue, distanceUnit, yardsUnit);
+							distArr = util.convertDistanceFormat(distMeasure, preferences.distanceUnit);
+						}
+
+						// add to stopoverDistance
+						if (distArr[1] == 'km') {
+							stopoverDistance += Number(distArr[0])*1000;
+						} else {
+							stopoverDistance += Number(distArr[0]);
+						}
+						
+						//arrow direction
+						var direction;
+						// will be used for traffic jam info etc
+						var notice;
+
+						if (directionCode == '-2') {
+							direction = new Element('img', {
+								'src' : './img/left.png'
+							});
+						} else if (directionCode == '2') {
+							direction = new Element('img', {
+								'src' : './img/right.png'
+							});
+						} else if (directionCode == '1') {
+							direction = new Element('img', {
+								'src' : './img/half-right.png'
+							});
+						} else if (directionCode == '-1') {
+							direction = new Element('img', {
+								'src' : './img/half-left.png'
+							});
+						} else if (directionCode == '0') {
+							direction = new Element('img', {
+								'src' : './img/straight.png'
+							});
+						} else if (directionCode == '-3') {
+							direction = new Element('img', {
+								'src' : './img/sharp_left.png'
+							});
+						} else if (directionCode == '3') {
+							direction = new Element('img', {
+								'src' : './img/sharp_right.png'
+							});
+						// directionCode == '100'
+						} else  {
+							
+						}
+
+						numInstructions++;
+
+						//add DOM elements
+
+						//add DOM elements
+						var directionsContainer = new Element('div', {
+							'class' : 'directions-container clickable',
+							'data-layer' : mapLayer,
+						});
+
+						var directionsImgDiv = new Element('div', {
+							'class': 'directions-img'
+						});
+
+						if (direction) {
+							directionsImgDiv.appendChild(direction);
+						}
+
+						var directionTextDiv = new Element('div', {
+							'class' : 'directions-text clickable routeInstructions',
+							'id' : mapFeatureIds[2 * (numInstructions - 1) + 1]
+						}).update(text);
+
+												
+						// modeContainer
+						var directionsModeContainer = new Element('div', {
+							'class': 'directions-mode-container'
+						})
+
+						var directionsBorder = new Element('div', {
+							'class': 'directions-mode-line'
+						})
+
+						var distanceDiv = new Element('div', {
+							'class' : 'directions-mode-distance clickable',
+							'id' : mapFeatureIds[2 * (numInstructions - 1)],
+						}).update(distArr[0] + ' ' + distArr[1]);
+
+
+						directionsContainer.appendChild(directionsImgDiv);
+						directionsContainer.appendChild(directionTextDiv);
+
+						// for traffic jams etc..
+						if (notice) {
+							var noticeDiv = new Element('div', {
+								'class': 'directions-notice',
+							}).update('Vorsicht Stau auf der B31');
+
+							directionsContainer.appendChild(noticeDiv);
+						}
+
+						directionsModeContainer.appendChild(directionsBorder);
+						directionsModeContainer.appendChild(distanceDiv);
+						directionsContainer.appendChild(directionsModeContainer);
+						directionsMain.appendChild(directionsContainer);
+
+						//mouseover for points and lines
+						$(distanceDiv).mouseover(handleMouseOverDist);
+						$(distanceDiv).mouseout(handleMouseOutDist);
+						$(directionTextDiv).mouseover(handleMouseOverText);
+						$(directionTextDiv).mouseout(handleMouseOutText);
+						$(distanceDiv).click(handleClickRouteInstr);
+						$(directionTextDiv).click(handleClickRouteInstr);
+
 					}
-
-					//arrow direction
-					var left = text.indexOf(preferences.translateInstructions('left'));
-					var halfLeft = text.indexOf(preferences.translateInstructions('half-left'));
-					var right = text.indexOf(preferences.translateInstructions('right'));
-					var halfRight = text.indexOf(preferences.translateInstructions('half-right'));
-					var straight = text.indexOf(preferences.translateInstructions('straight'));
-					var direction;
-					// will be used for traffic jam info etc
-					var notice;
-
-					if (left > 0 && (left < halfLeft || halfLeft < 0)) {
-						direction = new Element('img', {
-							'src' : './img/left.png'
-						});
-					} else if (right > 0 && (right < halfRight || halfRight < 0)) {
-						direction = new Element('img', {
-							'src' : './img/right.png'
-						});
-					} else if (halfRight > 0) {
-						direction = new Element('img', {
-							'src' : './img/half-right.png'
-						});
-					} else if (halfLeft > 0) {
-						direction = new Element('img', {
-							'src' : './img/half-left.png'
-						});
-					} else if (straight > 0) {
-						direction = new Element('img', {
-							'src' : './img/straight.png'
-						});
-					}
-
-					numInstructions++;
-
-					//add DOM elements
-
-					//add DOM elements
-					var directionsContainer = new Element('div', {
-						'class' : 'directions-container clickable',
-						'data-layer' : mapLayer,
 					});
 
-					var directionsImgDiv = new Element('div', {
-						'class': 'directions-img'
-					});
-
-					if (direction) {
-						directionsImgDiv.appendChild(direction);
-					}
-
-					var directionTextDiv = new Element('div', {
-						'class' : 'directions-text clickable routeInstructions',
-						'id' : mapFeatureIds[2 * (numInstructions - 1) + 1]
-					}).update(text);
-
-											
-					// modeContainer
-					var directionsModeContainer = new Element('div', {
-						'class': 'directions-mode-container'
-					})
-
-					var directionsBorder = new Element('div', {
-						'class': 'directions-mode-line'
-					})
-
-					var distanceDiv = new Element('div', {
-						'class' : 'directions-mode-distance clickable',
-						'id' : mapFeatureIds[2 * (numInstructions - 1)],
-					}).update(distArr[0] + ' ' + distArr[1]);
-
-
-					directionsContainer.appendChild(directionsImgDiv);
-					directionsContainer.appendChild(directionTextDiv);
-
-					// for traffic jams etc..
-					if (notice) {
-						var noticeDiv = new Element('div', {
-							'class': 'directions-notice',
-						}).update('Vorsicht Stau auf der B31');
-
-						directionsContainer.appendChild(noticeDiv);
-					}
-
-					directionsModeContainer.appendChild(directionsBorder);
-					directionsModeContainer.appendChild(distanceDiv);
-					directionsContainer.appendChild(directionsModeContainer);
+					//add endpoint
+					var directionsContainer = buildWaypoint(mapLayer,'end',endpoint,null,stopoverDistance,stopoverTime);
 					directionsMain.appendChild(directionsContainer);
-
-					//mouseover for points and lines
-					$(distanceDiv).mouseover(handleMouseOverDist);
-					$(distanceDiv).mouseout(handleMouseOutDist);
-					$(directionTextDiv).mouseover(handleMouseOverText);
-					$(directionTextDiv).mouseout(handleMouseOutText);
-					$(distanceDiv).click(handleClickRouteInstr);
-					$(directionTextDiv).click(handleClickRouteInstr);
-				});
+				
 	
 			}
+
+			/** 
+			 * builds Waypoint for start, via and end points in instructionlist
+			 * @param mapLayer: map layer containing these features
+			 * @param wpType: the type of point to be created
+			 * @param point: short-address of point
+			 * @param viaCounter: optional argument for via point counter
+			 * @param distance: optional argument for distance
+			 * @param duration: optional argument for duration
+			 * @return directionContainer: html container of the waypoint for instructionlist
+			 */
+			function buildWaypoint(mapLayer,wpType,address,viaCounter,distance,duration) {
+
+				var directionsContainer = new Element('div', {
+					'class' : 'directions-container clickable',
+					'data-layer' : mapLayer,
+				});
+
+				if (wpType == 'start') {
+					var icon = new Element('img', {
+					'src' : './img/startWaypoint.png'
+					});
+				} else if (wpType == 'via') {
+					
+					var icon = new Element('span', {
+							'class' : 'badge badge-inverse'
+					}).update(numStopovers+1);
+
+				} else {
+					var icon = new Element('img', {
+						'src' : './img/endWaypoint.png'
+					});
+
+				}
+				
+				var wayPoint = new Element('div', {
+					'class' : 'directions-waypoint'
+				})
+			
+				wayPoint.appendChild(icon);
+				
+				var shortAddress = new Element('div', {
+					'class' : 'directions-waypoint-address'
+				}).update(address)
+
+
+				// modeContainer
+				var directionsModeContainer = new Element('div', {
+					'class': 'directions-mode-container'
+				})
+
+				var directionsBorder = new Element('div', {
+					'class': 'directions-mode-line'
+				})
+
+				directionsContainer.appendChild(wayPoint);
+				
+
+				// add info if via or endpoint
+				if (wpType == 'end' || wpType =='via') {
+					var pointInfo = new Element('div', {
+						'class' : 'directions-waypoint-info'
+					}).update(Number(duration/60).toFixed() + ' min' + ' / ' + Number(distance/1000).toFixed(2) + ' km');
+			
+					directionsContainer.appendChild(pointInfo);
+
+				}
+
+				directionsContainer.appendChild(shortAddress);
+
+				directionsModeContainer.appendChild(directionsBorder);
+				directionsContainer.appendChild(directionsModeContainer);
+
+				return directionsContainer;
+
+			}
+	
+
 
 			/**
 			 * called when the user moves over the distance part of a route instruction. Triggers highlighting the corresponding route part
@@ -1913,13 +2130,8 @@ var Ui = ( function(w) {'use strict';
 		 * @param optionType: the route profile clicked
 		 */
 		function updateGlobalSettings(optionType, optionID) {
-
 			// change routing profile
 			theInterface.emit('ui:routingParamsChanged');
-					theInterface.emit('ui:prefsChanged', {
-						key : preferences.routeOptionsIdx,
-						value : optionID
-			});
 
 			// reset all checkboxes and avoidable settings each time a new profile is clicked
 			$('input:checkbox').removeAttr('checked');
@@ -1950,8 +2162,13 @@ var Ui = ( function(w) {'use strict';
 			});
 
 			// reset all truck and wheelchair settings to null if these profiles are clicked
-			if (optionType === 'car' || optionType === 'bicycle' || optionType === 'pedestrian') {
+			if (optionType === 'car' ||  optionType === 'pedestrian') {
 				
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.routeOptionsIdx,
+					value : optionID
+				});
+
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.routeOptionsTypesIdx,
 					value : null
@@ -1974,6 +2191,10 @@ var Ui = ( function(w) {'use strict';
 
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.value_widthIdx,
+					value : null
+				});
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_axleloadIdx,
 					value : null
 				});
 
@@ -2013,10 +2234,15 @@ var Ui = ( function(w) {'use strict';
 
 			}
 
-			// if wheelchair is clicked reset truck settings and add wheelchair initial settings
+			// if wheelchair is clicked reset truck settings and add wheelchair settings
 			if (optionType === 'wheelchair') {
 
 				theInterface.emit('ui:prefsChanged', {
+					key : preferences.routeOptionsIdx,
+					value : optionID
+				});
+
+				theInterface.emit('ui:prefsChanged', {
 					key : preferences.routeOptionsTypesIdx,
 					value : null
 				});
@@ -2040,6 +2266,10 @@ var Ui = ( function(w) {'use strict';
 					key : preferences.value_widthIdx,
 					value : null
 				});
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_axleloadIdx,
+					value : null
+				});
 
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.hazardousIdx,
@@ -2048,41 +2278,120 @@ var Ui = ( function(w) {'use strict';
 				
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.surfaceIdx,
-					value : list.wheelchairParameters.get('Surface')[0]
+					value : list.wheelchairParameters.get('Surface')[$('#Surface option:selected').index()]
 				});
 				
 
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.smoothnessIdx,
-					value : list.wheelchairParameters.get('Smoothness')[0]
+					value : list.wheelchairParameters.get('Smoothness')[getSmoothnessIndex($('#Surface option:selected').index())]
 				});
 				
 
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.trackTypeIdx,
-					value : list.wheelchairParameters.get('Tracktype')[0]
+					value : list.wheelchairParameters.get('Tracktype')[getTracktypeIndex($('#Surface option:selected').index())]
 				});
 				
 
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.inclineIdx,
-					value : list.wheelchairParameters.get('Incline')[0]
+					value : list.wheelchairParameters.get('Incline')[$('#Incline option:selected').index()]
 				});
 				
 
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.slopedCurbIdx,
-					value : list.wheelchairParameters.get('SlopedCurb')[0]
+					value : list.wheelchairParameters.get('SlopedCurb')[$('#SlopedCurb option:selected').index()]
 				});
 				
 			}
 
-			// if truck is clicked reset wheelchair settings and add truck initial settings
-			if (optionType === 'heavyvehicle') {
+			// if bicycle is clicked reset wheelchair settings and add bicycle settings
+			if (optionType === 'bicycle') {
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.routeOptionsIdx,
+					value : $("#bicycleOptions input[type='radio']:checked").attr('id')
+				});
 
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.routeOptionsTypesIdx,
-					value : list.routePreferencesTypes.get('heavyvehicle')[0]
+					value : null
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_lengthIdx,
+					value : null
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_heightIdx,
+					value : null
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_weightIdx,
+					value : null
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_widthIdx,
+					value : null
+				});
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_axleloadIdx,
+					value : null
+				});
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.hazardousIdx,
+					value : false
+				});
+
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.surfaceIdx,
+					value : null
+				});
+				
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.smoothnessIdx,
+					value : null
+				});
+				
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.trackTypeIdx,
+					value : null
+				});
+				
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.inclineIdx,
+					value : null
+				});
+				
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.slopedCurbIdx,
+					value : null
+				});
+
+
+			}
+
+			// if truck is clicked reset wheelchair settings and add truck  settings
+			if (optionType === 'heavyvehicle') {
+
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.routeOptionsIdx,
+					value : optionID
+				});
+				
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.routeOptionsTypesIdx,
+					value : $("#heavyvehicleOptions input[type='radio']:checked").val()
 				});
 
 				theInterface.emit('ui:prefsChanged', {
@@ -2103,6 +2412,11 @@ var Ui = ( function(w) {'use strict';
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.value_widthIdx,
 					value : $("#value_width").val()
+				});
+				
+				theInterface.emit('ui:prefsChanged', {
+					key : preferences.value_axleloadIdx,
+					value : $("#value_axleload").val()
 				});
 
 				theInterface.emit('ui:prefsChanged', {
@@ -2134,6 +2448,42 @@ var Ui = ( function(w) {'use strict';
 				});
 			}
 		}
+		
+		/**
+		 * gets the matching smoothness index for given surface index
+		 * 
+		 * @param surfaceIndex
+		 */
+		function getSmoothnessIndex(surfaceIndex) {
+			if (surfaceIndex == 0 || surfaceIndex == 1) {
+				return 1;
+			}
+			else if (surfaceIndex == 2) {
+				return 2;
+			}
+			else if (surfaceIndex == 3 || surfaceIndex == 4) {
+				return 3;
+			}
+			return 3;
+		}
+		
+		/**
+		 * gets the matching tracktype index for given surface index
+		 * 
+		 * @param surfaceIndex
+		 */
+		function getTracktypeIndex(surfaceIndex) {
+			if (surfaceIndex == 0 || surfaceIndex == 1 || surfaceIndex == 2) {
+				return 0;
+			}
+			else if (surfaceIndex == 3) {
+				return 1;
+			}
+			else if (surfaceIndex == 4) {
+				return 3;
+			}
+			return 3;
+		}
 	
 		/** 
 		 * sets truckParameters in UI
@@ -2141,12 +2491,14 @@ var Ui = ( function(w) {'use strict';
 		 * @params truck_height: the truck heigth
 		 * @params truck_weight: the truck weight
 		 * @params truck_width: the truck width
+		 * @params truck_axleload: the truck axle load
 		 */
-		function setTruckParameters(truck_length, truck_height, truck_weight,truck_width) {
+		function setTruckParameters(truck_length, truck_height, truck_weight,truck_width,truck_axleload) {
 			$("#value_length").val(truck_length);
 			$("#value_height").val(truck_height);
 			$("#value_weight").val(truck_weight);
 			$("#value_width").val(truck_width);
+			$("#value_axleload").val(truck_axleload);
 		}
 
 		/** 
@@ -2293,6 +2645,11 @@ var Ui = ( function(w) {'use strict';
 						key : preferences.value_heightIdx,
 						value : $("#value_height").val()
 					});
+				} else if (itemId == 'value_axleload_slide') {
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.value_axleloadIdx,
+						value : $("#value_axleload").val()
+					});
 				}
 			}
 			// if route weight settings are modified
@@ -2302,47 +2659,50 @@ var Ui = ( function(w) {'use strict';
 					value : itemId
 				});
 			} 
-			// else if ($.inArray(itemId, list.wheelchairParameters.keys()) >= 0) {
-			// 	//is a wheelchair parameter
-			// 	//Surface, Tracktype, Smoothness
-			// 	if (itemId == 'Surface') {
-			// 		routeOptions[4][0] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Surface')[target.selectedIndex] : null;
-			// 		// set also smoothness here in order to simplify user interface
-			// 		routeOptions[4][1] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Smoothness')[target.selectedIndex] : null;
-			// 		// set also tracktype here in order to simplify user interface
-			// 		routeOptions[4][2] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Tracktype')[target.selectedIndex] : null;
-			// 		theInterface.emit('ui:prefsChanged', {
-			// 			key : preferences.surfaceIdx,
-			// 			value : routeOptions[4][0]
-			// 		});
-			// 	}
-			// 	//Smoothness
-			// 	else if (itemId == 'Smoothness') {
-			// 		// done in conjunction with surface to simplify user interface
-			// 		// routeOptions[4][1] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Smoothness')[target.selectedIndex] : null;
-			// 	}
-			// 	//Tracktype
-			// 	else if (itemId == 'Tracktype') {
-			// 		// done in conjunction with surface to simplify user interface
-			// 		// routeOptions[4][2] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Tracktype')[target.selectedIndex] : null;
-			// 	}
-			// 	//Incline
-			// 	else if (itemId == 'Incline') {
-			// 		routeOptions[4][3] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Incline')[target.selectedIndex] : null;
-			// 		theInterface.emit('ui:prefsChanged', {
-			// 			key : preferences.inclineIdx,
-			// 			value : routeOptions[4][3]
-			// 		});
-			// 	}
-			// 	//Sloped Curb
-			// 	else if (itemId == 'SlopedCurb') {
-			// 		routeOptions[4][4] = (target.selectedIndex != -1) ? list.wheelchairParameters.get('SlopedCurb')[target.selectedIndex] : null;
-			// 		theInterface.emit('ui:prefsChanged', {
-			// 			key : preferences.slopedCurbIdx,
-			// 			value : routeOptions[4][4]
-			// 		});
-			// 	}
-			// }
+			// if wheelchair settings are modified
+			else if ($.inArray(itemId, list.wheelchairParameters.keys()) >= 0) {
+				
+				//is a wheelchair parameter
+			 	//Surface, Tracktype, Smoothness
+			 	if (itemId == 'Surface') {
+			 		
+			 		var surface = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Surface')[target.selectedIndex] : null; 
+			 		theInterface.emit('ui:prefsChanged', {
+						key : preferences.surfaceIdx,
+						value : surface
+					});
+					
+			 		// set also smoothness here in order to simplify user interface
+			 		var smoothness = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Smoothness')[getSmoothnessIndex(target.selectedIndex)] : null;
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.smoothnessIdx,
+						value : smoothness
+					});
+					
+			 		// set also tracktype here in order to simplify user interface
+					var tracktype = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Tracktype')[getTracktypeIndex(target.selectedIndex)] : null;
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.trackTypeIdx,
+						value : tracktype
+					});
+			 	}
+
+			 	if (itemId == 'Incline') {
+			 		var incline = (target.selectedIndex != -1) ? list.wheelchairParameters.get('Incline')[target.selectedIndex] : null;
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.inclineIdx,
+						value : incline
+					});
+			 	}
+			 	
+			 	if (itemId == 'SlopedCurb') {
+			 		var slopedCurb = (target.selectedIndex != -1) ? list.wheelchairParameters.get('SlopedCurb')[target.selectedIndex] : null;
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.slopedCurbIdx,
+						value : slopedCurb
+					});
+			 	}
+			 }
 
 			else if (itemId == 'Hazardous') {
 				if (permaInfo[preferences.hazardousIdx] == "hazmat") {
@@ -2485,10 +2845,11 @@ var Ui = ( function(w) {'use strict';
 			var trackTypeParamIndex = 0;
 			var smoothnessParamIndex = 0;
 
-			//TODO add trackType, smoothness
 			for (var i = 0; i < list.wheelchairParameters.get('Surface').length; i++) {
 				if(list.wheelchairParameters.get('Surface')[i] == surface) {
 					surfaceParamIndex = i;
+					trackTypeParamIndex = getTracktypeIndex(i);
+					smoothnessParamIndex = getSmoothnessIndex(i);
 				}
 			}
 			for (var i = 0; i < list.wheelchairParameters.get('Incline').length; i++) {
@@ -2501,12 +2862,12 @@ var Ui = ( function(w) {'use strict';
 					slopedCurbParamIndex = i;
 				}
 			}
-
+			
 			$('#Surface option')[surfaceParamIndex].selected = true;
 			// $('#Smoothness option')[surfaceParamIndex].selected = true;
 			// $('#Tracktype option')[surfaceParamIndex].selected = true;
 			$('#Incline option')[inclineParamIndex].selected = true;
-			//$('#SlopedCurb option')[slopedCurbParamIndex].selected = true;
+			$('#SlopedCurb option')[slopedCurbParamIndex].selected = true;
 		}
 		
 		
@@ -2523,11 +2884,14 @@ var Ui = ( function(w) {'use strict';
 			var ferryTrue = (ferry === 'true') || ferry == true;
 			var stepsTrue = (steps === 'true') || steps == true;
 
-			$('#Highway').attr('checked', highwayTrue);
-			$('#Tollway').attr('checked', tollwayTrue);
-			$('#Unpavedroads').attr('checked', unpavedTrue);
-			$('#Ferry').attr('checked', ferryTrue);
-			$('#Steps').attr('checked', stepsTrue);
+			$('[type="checkbox"]').filter('#Highway').prop('checked', highwayTrue);
+			$('[type="checkbox"]').filter('#Tollway').prop('checked', tollwayTrue);
+			$('[type="checkbox"]').filter('#Unpavedroads').prop('checked', unpavedTrue);
+			$('[type="checkbox"]').filter('#Ferry').prop('checked', ferryTrue);		
+			$('[type="checkbox"]').filter('#Steps').prop('checked', stepsTrue);
+
+
+
 		}
 
 		/**
@@ -2705,21 +3069,31 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+
+		/**
+		 * resets file menu value
+		 */
+		
+		function handleResetFileInput() {
+			this.value = null;
+		}
+
+
+
 		/**
 		 * forwards the selected GPX files and fills the gpx menu
 		 */
 		var fileInput;
 		function handleGpxFiles(event) {
-
+			
 			// clear old gpx tracks from map
 			theInterface.emit('ui:clearFromGpx');
 
 			fileInput = event.target.files;
-			$(fileInput).attr("value", '');
+			
 			// TODO show error if any of the files are not gpx showImportRouteError(true)
 			if (fileInput) {
 				fillGpxMenu(fileInput)
-
 			}
 
 		}
@@ -2760,6 +3134,7 @@ var Ui = ( function(w) {'use strict';
 		      		'data': i
 		      	});
 
+
 		      	var show = new Element('img', {
 					'src' : 'img/menuSearch.png',
 					'title': 'show track'
@@ -2774,6 +3149,16 @@ var Ui = ( function(w) {'use strict';
 					'src' : 'img/cancel.png',
 					'title': 'remove track or route'
 				});
+
+				var calcGranularity = new Element('select', {
+					'class' : 'form-control calcGranularity',
+					'title': 'route calculation from gpx detail'
+				});
+
+				calcGranularity.insert(new Element('option', {value: '3000'}).update('3 km'));
+				calcGranularity.insert(new Element('option', {value: '5000'}).update('5 km'));
+				calcGranularity.insert(new Element('option', {value: '10000'}).update('10 km'));
+
 			
 				showGpx.appendChild(show);
 				calcGpx.appendChild(calc);
@@ -2783,6 +3168,7 @@ var Ui = ( function(w) {'use strict';
 				fileContainer.appendChild(showGpx);
 				fileContainer.appendChild(calcGpx);
 				fileContainer.appendChild(deleteGpx);
+				fileContainer.appendChild(calcGranularity);
 
 				fileContainerMain.appendChild(fileContainer)
 
@@ -2818,10 +3204,13 @@ var Ui = ( function(w) {'use strict';
 		 */
 		function handleRecalcGpx(e) {
 			var thisTarget = e.currentTarget;
+			var parentTarget = $(thisTarget).parent();
+			var granularity = $(parentTarget.children()[4]).find(":selected").val();
+			
 			var iterator = thisTarget.getAttribute('data');	
 			var gpxFile = fileInput[iterator];
 			
-			theInterface.emit('ui:uploadRoute', gpxFile);
+			theInterface.emit('ui:uploadRoute', [gpxFile,granularity]);
 	
 		}
 
@@ -3101,7 +3490,9 @@ var Ui = ( function(w) {'use strict';
 			$('#gpxUploadFilesDelete').click(handleImportRouteRemove);
 			$('#gpxUploadTrackDelete').click(handleImportTrackRemove);
 
-			//multiple file uploader listener
+			//reset multiple file uploader
+			$('#files').click(handleResetFileInput);
+			//when gpx files are uploaded
 			$('#files').change(handleGpxFiles);
 
 			//height profile
@@ -3129,7 +3520,11 @@ var Ui = ( function(w) {'use strict';
 			});
 
 			$('.btn-group').button();
-
+			
+			//feedback slide
+			$("#feedback_button").click(function(){
+			$('.form').slideToggle();   		
+		});
 			
 		}
 
@@ -3172,6 +3567,7 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.showSearchPoiDistUnitError = showSearchPoiDistUnitError;
 
 		Ui.prototype.getRoutePoints = getRoutePoints;
+		Ui.prototype.getWaypoints = getWaypoints;
 		Ui.prototype.updateRouteSummary = updateRouteSummary;
 		Ui.prototype.startRouteCalculation = startRouteCalculation;
 		Ui.prototype.endRouteCalculation = endRouteCalculation;
@@ -3205,7 +3601,7 @@ var Ui = ( function(w) {'use strict';
 
 		Ui.prototype.handleGpxFiles = handleGpxFiles;
 		Ui.prototype.handleResetRoute = handleResetRoute;
-			
+
 		theInterface = new Ui();
 
 		return theInterface;

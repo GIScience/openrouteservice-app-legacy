@@ -1,9 +1,4 @@
 var lang_nl = {			
-    'left':'links',
-    'right':'rechts',
-    'half-left':'half links',
-    'half-right':'half gelijk',
-    'straight':'straight',
     'serverError':'Spijtig. Er is een fout opgetreden tijdens de berekening op de server. Probeer het later opnieuw. ',
     'contact':'Info & Contact',
     'closeBtn':'Sluit',
@@ -77,6 +72,7 @@ var lang_nl = {
     'Bicycle':'kortste route',
     'BicycleSafety':'veiligste route',
     'BicycleRoute':'liever fietspad',
+	'BicycleTour':  'fietstocht',
     'BicycleMTB':'mountainbike',
     'BicycleRacer':'racefiets',
 	'Wheelchair' : 'toegankelijke route',
@@ -88,8 +84,10 @@ var lang_nl = {
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Vermijden wegtypen &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Vermijden wegtypen &nbsp;&nbsp;<span class="caret">',
-	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Vermijden gebieden&nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Vermijden gebieden &nbsp;&nbsp;<span class="caret">',
+	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;Vermijden wegtypen  &nbsp;&nbsp;<span class="caret">',
 	
+	'avoidFerryPedes' : 'Vermijd veerverbindingen' ,
 	'avoidFerryBike' : 'Vermijd veerverbindingen' ,
 	'avoidunpavedRoadsBike' : 'Vermijd onverharde wegen',
 	'avoidStepsBike' : 'Vermijd stappen',
@@ -98,6 +96,7 @@ var lang_nl = {
 	'TruckHeight' : 'maximale hoogte',
 	'TruckWeight' : 'maximum gewicht',
 	'TruckWidth' : 'maximale breedte',
+	'TruckAxleLoad' : 'asbelasting',
 	'goodsHeavyTruck' : 'Voertuigen tot 3.5t',
 	'busHeavyTruck' : 'Bus',
 	'hgvHeavyTruck' : 'Vrachtwagen',

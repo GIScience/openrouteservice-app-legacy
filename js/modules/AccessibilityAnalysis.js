@@ -125,11 +125,18 @@ var AccessibilityAnalysis = ( function(w) {"use strict";
 		function parseResultsToPolygon(result) {
 			
 			var area = util.getElementsByTagNameNS(result, namespaces.aas, 'AccessibilityGeometry');
-			
+
 			var poly;
 			if (area) {
-				
-				var collectionArr = util.getElementsByTagNameNS(area[0], namespaces.gml, 'Polygon', true)[0];
+
+				try {
+					var isoChroneTime = util.getElementsByTagNameNS(area[0], namespaces.gml, 'Isochrone', true)[0];
+					var isoChroneGeometry = util.getElementsByTagNameNS(isoChroneTime[0], namespaces.gml, 'IsochroneGeometry', true)[0];
+					var collectionArr = util.getElementsByTagNameNS(isoChroneGeometry[0], namespaces.gml, 'Polygon', true)[0];
+				} 
+				catch(err) {
+					var collectionArr = util.getElementsByTagNameNS(area[0], namespaces.gml, 'Polygon', true)[0];
+				}
 				
 				var collectionArrGeom = [];
 

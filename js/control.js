@@ -127,7 +127,7 @@ var Controller = ( function(w) {'use strict';
             map.zoomToMarker(util.convertPositionStringToLonLat(position), 14);
             ui.setWaypointFeatureId(wpIndex, waypointResultId, position, map.ROUTE_POINTS);
 
-            handleWaypointChanged(map.getWaypointsString());
+            handleWaypointChanged();
             
 
         }
@@ -235,9 +235,8 @@ var Controller = ( function(w) {'use strict';
                 ui.setWaypointFeatureId(newIndex, featureId, position, map.ROUTE_POINTS);
 
                 //update preferences
-                handleWaypointChanged(map.getWaypointsString());
+                handleWaypointChanged();
                 
-
                 //cannot be emmited by 'this', so let's use sth that is known inside the callback...
                 ui.emit('control:reverseGeocodeCompleted');
             }
@@ -279,7 +278,7 @@ var Controller = ( function(w) {'use strict';
             ui.setWaypointFeatureId(index2, newFtId, position, map.ROUTE_POINTS);
 
             //update preferences
-            handleWaypointChanged(map.getWaypointsString(), true);
+            handleWaypointChanged(true);
         }
 
         /**
@@ -330,7 +329,7 @@ var Controller = ( function(w) {'use strict';
 
 
             //update preferences
-            handleWaypointChanged(map.getWaypointsString());
+            handleWaypointChanged();
             
 
             //TODO: update route string..
@@ -356,7 +355,7 @@ var Controller = ( function(w) {'use strict';
             waypoint.setWaypoint(wpIndex, false);
 
             //update preferences
-            handleWaypointChanged(map.getWaypointsString());
+            handleWaypointChanged();
         }
 
         /**
@@ -385,11 +384,25 @@ var Controller = ( function(w) {'use strict';
          * check whether point is start or end point, preferences have to be updated accordingly that permalink still works correctly
          * @param waypointStringList: string containing all waypoints
          */
-        function handleWaypointChanged(waypointStringList, doNotCalculateRoute) {
+        function handleWaypointChanged(doNotCalculateRoute) {
+
+            var routePoints = ui.getRoutePoints();
+            var wpString = "";
+
+            for (var i = 0; i < routePoints.length; i++) {
+                routePoints[i] = routePoints[i].split(' ');
+                if (routePoints[i].length == 2) {
+                    routePoints[i] = new OpenLayers.LonLat(routePoints[i][0], routePoints[i][1]);
+                    routePoints[i] = util.convertPointForDisplay(routePoints[i]);
+                    wpString = wpString + routePoints[i].lon + ',' + routePoints[i].lat + ',';
+                }
+            }
+            //slice away the last separator ','
+            wpString = wpString.substring(0, wpString.length - 3);
 
             handlePrefsChanged({
                 key : preferences.waypointIdx,
-                value : waypointStringList,
+                value : wpString,
             });
 
             if (!doNotCalculateRoute) {
@@ -712,7 +725,7 @@ var Controller = ( function(w) {'use strict';
             ui.invalidateWaypointSearch(index);
 
             //update preferences
-            handleWaypointChanged(map.getWaypointsString(), true);
+            handleWaypointChanged(true);
         }
 
         /* *********************************************************************
@@ -742,7 +755,7 @@ var Controller = ( function(w) {'use strict';
                         routePoints[i] = util.convertPointForDisplay(routePoints[i]);
                     }
                 }
-
+            
                 
                 var routePref = permaInfo[preferences.routeOptionsIdx];
                 
@@ -768,12 +781,14 @@ var Controller = ( function(w) {'use strict';
                 var truck_height = permaInfo[preferences.value_heightIdx];
                 var truck_weight = permaInfo[preferences.value_weightIdx];
                 var truck_width = permaInfo[preferences.value_widthIdx];
+				var truck_axleload = permaInfo[preferences.value_axleloadIdx];
                 var truckHazardous = permaInfo[preferences.hazardousIdx];
                 truckParams[0] = truck_length;
                 truckParams[1] = truck_height;
                 truckParams[2] = truck_weight;
                 truckParams[3] = truck_width;
-                truckParams[4] = truckHazardous;
+				truckParams[4] = truck_axleload;
+                truckParams[5] = truckHazardous;
 
                 //check whether truck button is active and send extendedRoutePreferences, otherwise don't 
                 var extendedRoutePreferencesType = permaInfo[preferences.routeOptionsTypesIdx];
@@ -812,6 +827,9 @@ var Controller = ( function(w) {'use strict';
                 //add DOM elements
                 ui.updateRouteSummary();
                 ui.updateRouteInstructions();
+
+                route.routeString = null;
+
             }
         }
 
@@ -834,10 +852,12 @@ var Controller = ( function(w) {'use strict';
 
                 //when the service gives response but contains an error the response is handeled as success, not error. We have to check for an error tag here:
                 var responseError = util.getElementsByTagNameNS(results, namespaces.xls, 'ErrorList').length;
+
                 if (parseInt(responseError) > 0) {
                     //service response contains an error, switch to error handling function
                     routeCalculationError();
                 } else {
+
                     //use all-in-one-LineString to save the whole route in a single string
                     var routeLineString = route.writeRouteToSingleLineString(results);
                     var routeString = map.writeRouteToString(routeLineString);
@@ -850,6 +870,8 @@ var Controller = ( function(w) {'use strict';
                     var featureIds = map.updateRoute(routeLines, routePoints);
 
                     var errors = route.hasRoutingErrors(results);
+
+                    
 
                     if (!errors) {
                         ui.updateRouteSummary(results);
@@ -1050,57 +1072,69 @@ var Controller = ( function(w) {'use strict';
         }
 
         /**
-         * uploads start and end point from a GPX file and calculates the route between these points
+         * uploads GPX file and calculates the route between these points
          * required HTML5 file api
          * @param file: the GPX file to upload
          */
 
-        var wp2;
-        function handleGpxRoute(file) {
+        function handleGpxRoute(fileArray) {
             //remove old routes
-            
+          
+            var gpxFile = fileArray[0];
+            var granularity = fileArray[1];
+
+            // use granularity and pass 
             ui.handleResetRoute();
 
             ui.showImportRouteError(false);
-            if (file) {
+            if (gpxFile) {
                 if (!window.FileReader) {
                     // File APIs are not supported, e.g. IE
                     ui.showImportRouteError(true);
                 } else {
                     var r = new FileReader();
-                    r.readAsText(file);
+                    r.readAsText(gpxFile);
 
                     r.onload = function(e) {
                         var data = e.target.result;
                         //remove gpx: tags; Firefox cannot cope with that.
                         data = data.replace(/gpx:/g, '');
-                        var wps = map.parseStringToWaypoints(data);
+                        var wps = map.parseStringToWaypoints(data,granularity);
 
-                        //add waypoints to route
-                        if (wps && wps.length == 2) {
-                            handleUseAsWaypoint(wps[0]);
-                            wp2 = wps[1];
-                            //the 2nd point cannot be appended immediately. we have to wait for the reverse geocoding request to be finished (and all other stuff executed in the callback function)
+                        if (wps) {
+
+                            //waypoints: array of OL.LonLat representing one wayoint each
+                            for (var i = 0; i < wps.length; i++) {
+
+                                var type;
+                                //console.log(wps[i])
+                                if (wps[i].lat == 0 & wps[i].lon == 0) {
+                                    continue
+                                } else if (i == 0) {
+                                    type = Waypoint.type.START;
+                                } else if (i == wps.length - 1) {
+                                    type = Waypoint.type.END;
+                                } else {
+                                    type = Waypoint.type.VIA;
+                                }
+                                handleAddWaypointByRightclick({
+                                    pos : wps[i],
+                                    type : type
+                                })
+                            }
+                            if (wps.length >= 2) {
+                                handleRoutePresent();
+                            }
+                        
                         } else {
                             ui.showImportRouteError(true);
                         }
                     };
                 }
-            } else {
-                ui.showImportRouteError(true);
             }
         }
 
-        /**
-         * extracts the 2nd waypoint from the GPX file
-         */
-        function uploadRouteTrigger2ndWaypoint() {
-            if (wp2 != null) {
-                handleUseAsWaypoint(wp2);
-                //prevent infinite loop
-                wp2 = null;
-            }
-        }
+
 
         /**
          * uploads the track GPX file and displays it on the map. NO route re-calculation!
@@ -1369,7 +1403,8 @@ var Controller = ( function(w) {'use strict';
             var truck_length = getVars[preferences.getPrefName(preferences.value_lengthIdx)];
             var truck_height = getVars[preferences.getPrefName(preferences.value_heightIdx)];
             var truck_weight = getVars[preferences.getPrefName(preferences.value_weightIdx)];
-            var truck_width = getVars[preferences.getPrefName(preferences.value_widthIdx)];  
+            var truck_width = getVars[preferences.getPrefName(preferences.value_widthIdx)]; 
+			var truck_axleload = getVars[preferences.getPrefName(preferences.value_axleloadIdx)];  			
             var surface = getVars[preferences.getPrefName(preferences.surfaceIdx)];
             var incline = getVars[preferences.getPrefName(preferences.inclineIdx)];
             var slopedCurb = getVars[preferences.getPrefName(preferences.slopedCurbIdx)];
@@ -1424,7 +1459,7 @@ var Controller = ( function(w) {'use strict';
             steps = avSettings[4];
             ui.setAvoidables(motorways, tollways, unpaved, ferry, steps);
             
-            // only set wheel parameters wheelchair if in getVars
+            // get wheelchair parameters from getVars
             var wheelParameters = preferences.loadWheelParameters(surface, incline, slopedCurb, trackType, smoothness);
             if (wheelParameters.length > 0 ) {
                 surface = wheelParameters[0];
@@ -1441,13 +1476,14 @@ var Controller = ( function(w) {'use strict';
             map.addAvoidAreas(avoidAreas);
 
             /* get and set truck parameters */
-            var truckParameters = preferences.loadtruckParameters(truck_length, truck_height, truck_width, truck_weight);
+            var truckParameters = preferences.loadtruckParameters(truck_length, truck_height, truck_width, truck_weight,truck_axleload);
             if (truckParameters.length > 0) {
                 truck_length = truckParameters[0];
                 truck_height = truckParameters[1];
                 truck_weight = truckParameters[2];
                 truck_width = truckParameters[3];
-                ui.setTruckParameters(truck_length, truck_height, truck_weight, truck_width);
+				truck_axleload = truckParameters[4];
+                ui.setTruckParameters(truck_length, truck_height, truck_weight, truck_width, truck_axleload);
             }
 
             /* get and set hazardous */
@@ -1588,7 +1624,6 @@ var Controller = ( function(w) {'use strict';
 
             ui.register('ui:exportRouteGpx', handleExportRoute);
             ui.register('ui:uploadRoute', handleGpxRoute);
-            ui.register('control:reverseGeocodeCompleted', uploadRouteTrigger2ndWaypoint);
             ui.register('ui:uploadTrack', handleGpxTrack);
             ui.register('ui:removeTrack', handleRemoveTrack);
 

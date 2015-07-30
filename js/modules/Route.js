@@ -76,45 +76,49 @@ var Route = ( function(w) {"use strict";
 					if (truckParams[0] != null) {
 						writer.writeElementString('xls:Length', truckParams[0]);
 					}
-					//truck hazardous
+					 //truck axle load
 					if (truckParams[4] != null) {
+						writer.writeElementString('xls:AxleLoad', truckParams[4]);
+					}
+					//truck hazardous
+					if (truckParams[5] != null) {
 						writer.writeStartElement('xls:LoadCharacteristics');
-							writer.writeElementString('xls:LoadCharacteristic', truckParams[4]);
+							writer.writeElementString('xls:LoadCharacteristic', truckParams[5]);
 						writer.writeEndElement();
 					}
-
 			}
-				
+			
+			// Important: do change order or names of params without also changing them in respective RouteService.xsd!
 			if (routePref === 'Wheelchair') {
 				//tracktype
-				if (wheelChairParams[2] != 'null') {
-					writer.writeStartElement('xls:trackTypes');
-					writer.writeElementString('xls:trackType', wheelChairParams[2]);
+				if (wheelChairParams[3] != 'null') {
+					writer.writeStartElement('xls:TrackTypes');
+					writer.writeElementString('xls:TrackType', wheelChairParams[3]);
 					writer.writeEndElement();
 				}
 				//surface
 				if (wheelChairParams[0] != 'null') {
-					writer.writeStartElement('xls:surfaceTypes');
-					writer.writeElementString('xls:surfaceType', wheelChairParams[0]);
+					writer.writeStartElement('xls:SurfaceTypes');
+					writer.writeElementString('xls:SurfaceType', wheelChairParams[0]);
 					writer.writeEndElement();
 				}
 				//smoothness
-				if (wheelChairParams[1] != 'null') {
-					writer.writeStartElement('xls:smoothnessTypes');
-					writer.writeElementString('xls:smoothnessType', wheelChairParams[1]);
+				if (wheelChairParams[4] != 'null') {
+					writer.writeStartElement('xls:SmoothnessTypes');
+					writer.writeElementString('xls:SmoothnessType', wheelChairParams[4]);
 					writer.writeEndElement();
 				}
 				//incline
-				if (wheelChairParams[3] != 'null') {
-					writer.writeElementString('xls:incline', wheelChairParams[3]);
+				if (wheelChairParams[1] != 'null') {
+					writer.writeElementString('xls:Incline', wheelChairParams[1]);
 				}
 				//sloped curb
-				if (wheelChairParams[4] != 'null') {
-					writer.writeElementString('xls:slopedCurb', wheelChairParams[4]);
+				if (wheelChairParams[2] != 'null') {
+					writer.writeElementString('xls:SlopedCurb', wheelChairParams[2]);
 				}
 			}
-				//</xls:ExtendedRoutePreference>
-			
+						
+			//</xls:ExtendedRoutePreference>			
 			writer.writeEndElement();
 
 
@@ -276,6 +280,14 @@ var Route = ( function(w) {"use strict";
 			if (routeInstructions) {
 				routeInstructions = util.getElementsByTagNameNS(routeInstructions, namespaces.xls, 'RouteInstruction');
 				$A(routeInstructions).each(function(instructionElement) {
+
+					var directionCode = util.getElementsByTagNameNS(instructionElement, namespaces.xls, 'DirectionCode')[0];
+					directionCode = directionCode.textContent;
+					//skip directionCode 100 for now
+					if (directionCode == '100') {
+						return;
+					}
+
 					var segment = [];
 					$A(util.getElementsByTagNameNS(instructionElement, namespaces.gml, 'pos')).each(function(point) {
 						point = point.text || point.textContent;
@@ -304,6 +316,14 @@ var Route = ( function(w) {"use strict";
 			if (routeInstructions) {
 				routeInstructions = util.getElementsByTagNameNS(routeInstructions, namespaces.xls, 'RouteInstruction');
 				$A(routeInstructions).each(function(instructionElement) {
+
+					var directionCode = util.getElementsByTagNameNS(instructionElement, namespaces.xls, 'DirectionCode')[0];
+					directionCode = directionCode.textContent;
+					//skip directionCode 100 for now
+					if (directionCode == '100') {
+						return;
+					}
+
 					var point = util.getElementsByTagNameNS(instructionElement, namespaces.gml, 'pos')[0];
 					point = point.text || point.textContent;
 					point = point.split(' ');
