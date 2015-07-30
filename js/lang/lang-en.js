@@ -191,7 +191,7 @@ var lang_en = {
 	'ru' : 'Russian - Русский',
 	'se' : 'Swedish - Svenska',
 	'tr' : 'Turkish - T&uuml;rk',
-	'ua' : 'Ucranian - Український',
+	'ua' : 'Ukranian - Українська',
 	'vi' : 'Vietnamese - Ti&#7871;ng Vi&#7879;t',
 
 	// List distance units
