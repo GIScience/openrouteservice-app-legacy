@@ -646,7 +646,6 @@ var Ui = ( function(w) {'use strict';
 			//for geocoding shortaddress is updated in second call
 			if (latlon == true) {
 				var address = util.parseLatlon(results);
-				console.log(address)
 				var shortAddress = results.toString();
 
 			} else {
