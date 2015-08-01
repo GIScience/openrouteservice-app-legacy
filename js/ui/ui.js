@@ -647,6 +647,8 @@ var Ui = ( function(w) {'use strict';
 			if (latlon == true) {
 				var address = util.parseLatlon(results);
 				var shortAddress = results.toString();
+				var stopover = $(".directions-main").find("[waypoint-id=" + index + "]");
+            	stopover.html(shortAddress);
 
 			} else {
 				var addressResult = util.getElementsByTagNameNS(results, namespaces.xls, 'Address');
@@ -655,7 +657,7 @@ var Ui = ( function(w) {'use strict';
 				var shortAddress = util.parseAddressShort(addressResult);
 				//update stopover info from latlon to address
   		        var stopover = $(".directions-main").find("[waypoint-id=" + index + "]");
-            	stopover.text(shortAddress);
+            	stopover.html(shortAddress);
 			}
 
 
@@ -1475,8 +1477,8 @@ var Ui = ( function(w) {'use strict';
 					address = $(address).children(".waypointResult");
 					address = $(address).find("li").attr("data-shortaddress");
 					
-					address = address.match(/[^,]*/).toString();
-					address = address.replace(/(\r\n|\n|\r)/gm,", ");
+					//address = address.match(/[^,]*/).toString();
+					//address = address.replace(/(\r\n|\n|\r)/gm,", ");
 					waypoints.push(address);
 				}
 
@@ -1660,6 +1662,7 @@ var Ui = ( function(w) {'use strict';
 				//var startpoint = waypoints.splice(0, 1);
 				//var endpoint = waypoints.splice(-1, 1);
 				var startpoint = waypoints[0];
+
 				var endpoint = waypoints[(waypoints.length)-1];
 				//add startpoint
 				var directionsContainer = buildWaypoint(mapLayer,'start',startpoint,0);
