@@ -1126,4 +1126,37 @@
            <After>之后</After>
        </FillWord>
    </Language>
+     <Language Description="Ukrainian" Code="uk">
+       <MobilityBasedMovementInstruction>
+           <Vehicle>Їдьте</Vehicle>
+           <Pedestrian>Ідіть</Pedestrian>
+       </MobilityBasedMovementInstruction>
+       <Time>
+           <Appoximation>приблизно</Appoximation>
+           <Day>днів</Day>
+           <Hour>годин</Hour>
+           <Minute>хвилин</Minute>
+           <Second>секунд</Second>
+       </Time>
+       <Direction>
+           <Curve>Поверніть</Curve>
+           <SharpLeft>круто наліво</SharpLeft>
+           <Left>наліво</Left>
+           <HalfLeft>трохи наліво</HalfLeft>
+           <StraightForward>прямо</StraightForward>
+           <HalfRight>трохи направо</HalfRight>
+           <Right>вправо</Right>
+           <SharpRight>круто направо</SharpRight>
+           <UTurn>Розверніться</UTurn>
+       </Direction>
+       <ActionNumber>Actionno.</ActionNumber>
+       <FillWord>
+           <StartTag>Початок</StartTag>
+           <EndTag>Прибуття в пункт призначення!</EndTag>
+           <On>на</On>
+           <For>протягом</For>
+           <Before>перед</Before>
+           <After>після</After>
+       </FillWord>
+   </Language>
 </InstructionTags>
