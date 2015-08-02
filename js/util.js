@@ -259,6 +259,7 @@ util = (function() {
                     }
                     if (placesElement != null) {
                         element[1] = '';
+                        var prevContent;
                         //insert the value of each of the following attributes in order, if they are present
                         var regionList = ['MunicipalitySubdivision', 'Municipality', 'CountrySecondarySubdivision', 'CountrySubdivision'];
                         regionList.each(function(type, index) {
@@ -267,25 +268,45 @@ util = (function() {
                                     //Chrome, Firefox: place.textContent; IE: place.text
                                     var content = place.textContent || place.text;
                                     if (content != undefined || content != null) {
-                                        element[1] += place.textContent || place.text;
-                                        if (index < (regionList.length) - 1) {
+                                        // remove doubles, such as city states and cities
+                                        if (content != prevContent) {
+                                            prevContent = content
+                                            element[1] += place.textContent || place.text;
                                             element[1] += ', ';
                                         }
                                     }
                                 }
                             })
                         });
+                        // remove last comma
+                        element[1] = element[1].substring(0, element[1].length - 2);
                     }
                 } else if (placesElement != null) {
                     element[0] = '';
-                    $A(placesElement).each(function(place) {
-                        if (place.getAttribute('type') === 'Municipality') {
-                            //Chrome, Firefox: place.textContent; IE: place.text
-                            element[0] += place.textContent || place.text;
-                        }
+                    var prevContent;
+                    //insert the value of each of the following attributes in order, if they are present
+                    var regionList = ['MunicipalitySubdivision', 'Municipality', 'CountrySecondarySubdivision', 'CountrySubdivision'];
+                    regionList.each(function(type, index) {
+                        $A(placesElement).each(function(place) {
+                            if (place.getAttribute('type') === type) {
+                                //Chrome, Firefox: place.textContent; IE: place.text
+                                var content = place.textContent || place.text;
+                                if (content != undefined || content != null) {
+                                    // remove doubles, such as city states and cities
+                                    if (content != prevContent) {
+                                        prevContent = content
+                                        element[0] += place.textContent || place.text;
+                                        element[0] += ', ';
+                                    }
+                                }
+                            }
+                        })
                     });
+                    // remove last comma
+                    element[0] = element[0].substring(0, element[0].length - 2);
                 }
             }
+            
             // remove empty item from array
             if (element[0].length == 0) {
                 element.splice(0, 1);
