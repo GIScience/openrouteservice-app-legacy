@@ -319,7 +319,8 @@ div.olControlPermalink {
 }
 
 #routeInstructionsContainer .directions-waypoint-address .submain {
-    font-size: 12px;
+    font-size: 13px;
+    color: #A0A0A0;
 }
 
 #routeInstructionsContainer .directions-waypoint-info {
