@@ -1,553 +1,552 @@
-ƒ√<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 	<head>
 		<title>OpenRouteService</title>
-		<meta name="robots" content="index, follow">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="robots" content="index, follow">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 		<link rel="stylesheet" type="text/css" href="lib/rickshaw/rickshaw.min.css">
-		<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto">
 		<link rel="stylesheet" type="text/css" href="css/bootstrap-ext.min.css"><!-- for file upload -->
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"> 
  		<link rel="stylesheet" type="text/css" href="css/default.css">
 		<link rel="stylesheet" type="text/css" href="css/contact_form.css">
  	</head>
 	<body id="main">
-		<!-- navigation bar on top -->
-		<div class="navbar navbar-fixed-top" id="navbar">
-			<a class="brand" href="http://www.openrouteservice.org"> <img src="img/logo.png" class="logo" alt="ORS"></a>
-			<a class="brand" id="title" href="http://www.openrouteservice.org">OpenRouteService.org</a>
-			<!-- <a href="https://github.com/GIScience/openrouteservice/blob/bugfixes-2.2/release_notes/v2.2.md" style="cursor:pointer;" target="_blank" id="info" class="btn btn-large btn-success disabled">ORS succesfully updated!!! New cycle tour profile and turn restrictions for cars & bikes click here for release notes</a> -->
-			<ul id="topMenu">
-				<li>
-					<div class="alert alert-info" id="newToOrs">
-						<button type="button" class="close" data-dismiss="alert">
-							×
-						</button>
-					</div>
-				</li>
-				<li>
-					<a href="#sitePrefsModal" data-toggle="modal" id="menuLinkSitePrefs">Site Preferences</a>
-				</li>
-				<li>
-					<a href="contact.html#top" target="_blank" id="menuLinkInfo">Info&nbsp;&amp;&nbsp;Contact</a>
-				</li>
-				<li>
-					<a href="http://www.geog.uni-heidelberg.de/giscience.html" target="_blank"><img src="img/logo_giscience.png" alt="GIScience" class="links"></a>
-				</li>
-				<!-- <li>
-					<a href="http://www.geog.uni-heidelberg.de/giscience.html" target="_blank"><img src="img/unihd.png" alt="Uni HD" class="links"></a>
-				</li> -->
-			</ul>
-		</div>
-		<div id="sidebar">
-			<ul id="functionMenu" class="nav nav-tabs">
-				<li class="active">
-					<a class="fnct_switchTab" id="route" href="#"><img src="img/menuRoute.png" class="menuIcon"><label class="tabLabels" id="routeLabel">Plan Route</label></a>
-				</li>
-				<li class="">
-					<a class="fnct_switchTab" id="search" href="#"><img src="img/menuSearch.png" class="menuIcon"><label class="tabLabels" id="searchLabel">Search</label></a>
-				</li>
-				<li class="">
-					<a class="fnct_switchTab" id="geolocation" href="#"><img src="img/menuLocate.png" class="menuIcon"></a>
-				</li>
-			</ul>
-			<!-- sidebar content -->
-			<div id="routePanel" style="">
-				<div id="routingPanel" class="panel panelLight">
-					<div class="guiComponent route">
-						<div class="panel panelLight">
-							<div class="collapsible guiComponent routeOptions">
-								<div class="collapsibleHead clickable" id="routeOptions">
-									Route options:
-									<br>
-								</div>
-								<div class="collapsibleBody" >
-									<div class="btn-group routePreferenceBtns">
-										<button id="car" class="btn routeOptionsButton active"><img src="img/picto-car-high.png">
-										</button>
-										<button id="bicycle" class="btn routeOptionsButton"><img src="img/picto-bike.png">
-										</button>
-										<button id="pedestrian" class="btn routeOptionsButton"><img src="img/picto-dude.png">
-										</button>
-										<!--<button id="wheelchair" class="btn routeOptionsButton"><img src="img/picto-wheelchair.png">
-										</button>-->
-										<button id="heavyvehicle" class="btn routeOptionsButton"><img src="img/picto-truck.png">
-										</button>
-									</div>
-									<div class="btn-group" id="weightingDropdown">
-								        <button class="btn btn-mini btn-inverse weightOptions dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" aria-expanded="false" id="weightOptions"><img src="img/reload-white.png"></button>
-								          	<ul class="dropdown-menu" id="dropdown_weighting">
-												<label class="radio">
-													<input type="radio" id="Fastest" name="weighting" checked="checked">
-													<label id="fastestLabel">fastest</label>
-													</label>										
-												<label class="radio">
-													<input type="radio" id="Shortest" name="weighting">
-													<label id="shortestLabel">shortest</label>
-												</label>
-											</ul>
-								    </div>
-									<div class="panel panelMedium" id="carOptions" style="">
-										<table class="optionsTable" style="width:100%">
-										 	<tr>
-											    <td>
-													<div class="radioContainer">
-														<div class="radio"><label>
-															<input type="radio" id="Car" name="car"  value="car" checked="checked">
-															<span class="label" id="carLabel">car</span></label>
-														</div>
-													</div>
-												</td>
-											</tr>
-										</table>
-									</div>
-									<div class="panel panelMedium" id="bicycleOptions" style="display: none;">
-										<table class="optionsTable" style="width:100%">
-										 	<tr>
-											    <td>
-											    	<div class="radioContainer">
-														<div class="radio"><label>
-															<input type="radio" id="Bicycle" name="bicycle"  value="shortest" checked="checked">
-															<span class="label" id="BicycleLabel">normal</span></label>
-
-														</div>
-														<div class="radio"><label>
-															<input type="radio" id="BicycleSafety" name="bicycle"  value="safest">
-															<span class="label" id="BicycleSafetyLabel">safest route</span></label>
-														</div>
-														<div class="radio"><label>
-															<input type="radio" id="BicycleTour" name="bicycle"  value="tour">
-															<span class="label" id="BicycleTourLabel">cycle tour</span></label>
-														</div>
-													</div>
-												</td>
-												<td>
-													<div class="radioContainer">
-														<!-- <div class="radio">
-															<input type="radio" id="BicycleRoute" name="bicycle" value="preferredcycle">
-															<label id="BicycleRouteLabel">preferred bicycle lane</label>
-														</div> -->
-														<div class="radio"><label>
-															<input type="radio" id="BicycleMTB" name="bicycle" value="mountain">
-															<span class="label" id="BicycleMtbLabel">mountain bike</span></label>
-
-														</div>
-														<div class="radio"><label>
-															<input type="radio" id="BicycleRacer" name="bicycle" value="racing">
-															<span class="label" id="BicycleRacerLabel">racing bike</span></label>
-														</div>
-													</div>
-											    </td>
-											</tr>
-										</table>
-									</div>
-									<div class="panel panelMedium" id="pedestrianOptions" style="display: none;">
-										<table class="optionsTable" style="width:100%">
-										 	<tr>
-											    <td>
-													<div class="radioContainer">
-														<div class="radio"><label>
-															<input type="radio" id="Pedestrian" name="pedestrian"  value="pedestrian" checked="checked">
-															<span class="label" id="PedestrianLabel">pedestrian</span></label>
-														</div>
-													</div>
-												</td>
-											</tr>
-										</table>
-									</div>
-									<div class="panel panelMedium" id="heavyvehicleOptions" style="display: none;">
-										<table class="optionsTable" style="width: 100%">
-											<tr>
-												<td>
-													<div class="radioContainer">
-														<div class="radio"><label>
-															<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="goods" checked="checked">
-															<span class="label" id="goodsHeavyTruckLabel">goods</span></label>
-														</div>
-														<div class="radio"><label>
-															<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="hgv">
-															<span class="label" id="hgvHeavyTruckLabel">HGV</span></label>
-														</div>
-														<div class="radio"><label>
-															<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="bus">
-															<span class="label" id="busHeavyTruckLabel">Bus</span></label>
-														</div>
-													</div>
-												</td>
-												<td>
-													<div class="radioContainer">
-														<div class="radio"><label>
-															<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="agricultural">
-															<span class="label" id="agriculturalHeavyTruckLabel">Agricultural Vehicle</span></label>
-														</div>
-														<div class="radio"><label>
-															<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="forestry">
-															<span class="label" id="forestryHeavyTruckLabel">Forestry</span></label>
-														</div>
-														<div class="radio"><label>
-															<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="delivery">
-															<span class="label" id="deliveryHeavyTruckLabel">Delivery</span></label>
-														</div>
-													</div>
-												</td>
-											</tr>
-										</table>
-										<div class="panel panelMedium" id="hazardOptions">
-											<label class="checkbox">
-													<input type="checkbox" id="Hazardous" value="hazmat">
-													<span id="hazardous" class="label label-warning"><i class="icon-tint icon-white"></i>&nbsp;Hazardous Materials</span>
-											</label>
-										</div>
-									</div>
-									<div class="panel panelMedium" id="truckOptions_restrict" style="display: none;">
-											<ul id="TruckTabs" class="nav nav-tabs" data-tabs="tabs">
-										        <li class="active"><a href="#length" data-toggle="tab" id="trucklengthLabel">length</a></li>
-										        <li><a href="#width" data-toggle="tab" id="truckwidthLabel">width</a></li>
-										        <li><a href="#height" data-toggle="tab" id="truckheightLabel">height</a></li>
-										        <li><a href="#weight" data-toggle="tab" id="truckweightLabel">weight</a></li>
-												<li><a href="#axleload" data-toggle="tab" id="truckaxleloadLabel">axleload</a></li>
-										    </ul>
-										    <div id="my-tab-content" class="tab-content">
-										        <div class="tab-pane active" id="length">
-													<form class="mySlider">
-														<input type="text" value="15" min="0" max="50" autocomplete="off" id="value_length" oninput="this.form.value_length_slide.value=this.value","m">
-														<input type="range" min="0" max="50" value="15" step="0.5" id="value_length_slide" oninput="this.form.value_length.value=this.value" />
-														<img src="img/picto-truck-long.png">
-													</form>
-										        </div>
-										        <div class="tab-pane" id="width">
-										            <form class="mySlider">
-														<input type="text" value="4" min="0" max="20" autocomplete="off" id="value_width" oninput="this.form.value_width_slide.value=this.value">
-														<input type="range" min="0" max="20" value="4" step="0.5" id="value_width_slide"  oninput="this.form.value_width.value=this.value" />
-														<img src="img/picto-truck-width.png">
-													</form>
-										        </div>
-										        <div class="tab-pane" id="height">
-										        	<form class="mySlider">
-														<input type="text" value="4" autocomplete="off" id="value_height" oninput="this.form.value_height_slide.value=this.value">
-														<input type="range" min="0" max="15" value="4" step="0.5" id="value_height_slide" oninput="this.form.value_height.value=this.value"  />
-														<img src="img/picto-truck-height.png">
-													</form>
-										        </div>
-										        <div class="tab-pane" id="weight">
-										            <form class="mySlider">
-														<input type="text" value="7" autocomplete="off" id="value_weight" oninput="this.form.value_weight_slide.value=this.value">
-														<input type="range" min="0" max="50" value="4" step="0.5" id="value_weigth_slide"  oninput="this.form.value_weight.value=this.value"  />
-														<img src="img/picto-truck-weight.png"></td>
-													</form>
-										        </div>
-												<div class="tab-pane" id="axleload">
-										            <form class="mySlider">
-														<input type="text" value="2" autocomplete="off" id="value_axleload" oninput="this.form.value_axleload_slide.value=this.value">
-														<input type="range" min="0" max="20" value="4" step="0.5" id="value_axleload_slide"  oninput="this.form.value_axleload.value=this.value"  />
-														<img src="img/picto-truck-axleload.png"></td>
-													</form>
-										        </div>
-										    </div>
-										    <span id="truckLabelMain" class="label label-descrip">Truck Parameters (in meters/tons)</span>	
-									</div>
-									<div class="panel panelMedium" id="wheelchairOptions" style="display: none;">
-										<table class="optionsTable" style="width:100%">
-										 	<tr>
-											    <td>
-											    	<div class="radioContainer">
-														<div class="radio"><label>
-																<input type="radio" id="Wheelchair" name="wheelchair" checked="checked">
-																<span class="label" id="WheelchairLabel">wheelchair</span></label>
-														</div>
-													</div>
-												</td>
-											</tr>
-										</table>
-									</div>
-									<div class="panel panelMedium" id="wheelchairParameters" style="display: none;">
-										<select id="Surface" class="wheelchairSelect">
-											<option id="asphaltOption">Asphalt</option>
-											<option id="cobblestoneFlattenedOption">Flattened Cobblestone</option>
-											<option id="cobblestoneOption">Cobblestone</option>
-											<option id="compactedOption">Compacted</option>
-											<option id="allSurfacesOption">All Surfaces</option>
-										</select>
-										<span id="surfaceLabel" class="label label-info">Surface</span>	
-										<!-- 
-										<label id="smoothnessLabel">Smoothness</label>
-										<select id="Smoothness">
-											<option id="excellentOption">Excellent</option>
-											<option id="goodOption">Good</option>
-											<option id="intermediateOption">Intermediate</option>
-											<option id="badOption">Bad</option>
-											<option id="allSmoothnessesOption">All Smoothnesses</option>
-										</select> 
-										 -->
-										
-										<select id="Incline" class="wheelchairSelect">
-											<option id="threePercentOption">Up to 3%</option>
-											<option id="sixPercentOption">Up to 6%</option>
-											<option id="tenPercentOption">Up to 10%</option>
-											<option id="fifteenPercentOption">Up to 15%</option>
-											<option id="allInclinesOption">All Inclines</option>
-										</select>
-										<span id="inclineLabel" class="label label-info">Maximum Incline</span>	
-
-										<!-- hide option as proper data is missing in OSM? -->
-										
-										<select id="SlopedCurb" class="wheelchairSelect">
-											<option id="threeCmOption">Up to 3cm</option>
-											<option id="sixCmOption">Up to 6cm</option>
-											<option id="tenCmOption">Up to 10cm</option>
-											<option id="allSlopedCurbesOption">All Sloped Curbs</option>
-										</select>
-										<span id="slopedCurbLabel" class="label label-info">Maximum Sloped Curb</span>
-									</div>
-									<div class="panel panelMedium">
-										<div class="btn-group" id="avoidables">
-								        	<button class="btn btn-small btn-danger dropdown-toggle" id="avoidRoadsBtn" data-hover="dropdown" aria-expanded="false"><i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types<span class="caret"></span></button>
-											<ul class="dropdown-menu dropdown_avoid">
-							                  	<label class="checkbox">
-													<input type="checkbox" id="Highway">
-													<label id="avoidMotorLabel">highways</label>
-												</label>										
-												<label class="checkbox">
-													<input type="checkbox" id="Tollway">
-													<label id="avoidTollLabel">toll roads</label>
-												</label>
-												<label class="checkbox">
-													<input type="checkbox" id="Unpavedroads">
-													<label id="avoidunpavedRoadsLabel">unpaved roads</label>
-												</label>
-												<label class="checkbox">
-													<input type="checkbox" id="Ferry">
-													<label id="avoidFerryLabel">ferrys</label>
-												</label>
-											</ul>
-								    	</div>
-								    	<div class="btn-group" id="avoidablesPedestrian" style="display: none;">
-								        	<button class="btn btn-small btn-danger dropdown-toggle" id="avoidPedesBtn" data-hover="dropdown" aria-expanded="false"><i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;avoid road types<span class="caret"></span></button>
-											<ul class="dropdown-menu dropdown_avoid">
-							                  	<label class="checkbox">
-													<input type="checkbox" id="Ferry">
-													<label id="avoidFerryLabelPedestrian">ferries</label>
-												</label>										
-											</ul>
-								    	</div>
-								    	<div class="btn-group" id="avoidablesBike" style="display: none;">
-								        	<button class="btn btn-small btn-danger dropdown-toggle" id="avoidBikesBtn" data-hover="dropdown" aria-expanded="false"><i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;avoid road types<span class="caret"></span></button>
-											<ul class="dropdown-menu dropdown_avoid">
-							                  	<label class="checkbox">
-													<input type="checkbox" id="Ferry">
-													<label id="avoidFerryLabelBike">ferries</label>
-												</label>										
-												<label class="checkbox">
-													<input type="checkbox" id="Unpavedroads">
-													<label id="avoidunpavedRoadsLabelBike">unpaved roads</label>
-												</label>
-												<label class="checkbox">
-													<input type="checkbox" id="Steps">
-													<label id="avoidStepsLabelBike">steps</label>
-												</label>
-											</ul>
-								    	</div>
-										<div class="btn-group" id="avoidAreas">
-								                <button class="btn btn-small btn-danger dropdown-toggle" id="avoidAreasBtn" data-hover="dropdown" data-hover="dropdown" aria-expanded="false"><i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;avoid areas<span class="caret"></span></button>
-								                <ul class="dropdown-menu" id="dropdown_avoid_areas">
-								                	<div class="btn-group" id="avoidAreasToolbar">
-														<button class="btn" id="avoidCreate" title="draw avoid area"><img src="img/avoid-plus.png">
-														</button>
-														<button class="btn" id="avoidEdit" title="modify avoid area"><img src="img/avoid-edit.png">
-														</button>
-														<button class="btn" id="avoidRemove" title="remove avoid area"><img src="img/avoid-minus.png">
-														</button>
-													</div>	
-												</ul>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="panel panelLight">
-							<div class="guiComponent waypoint unset" draggable="draggable" id="Draft" style="display: none">
-								<span class="clickable removeWaypoint" title="Remove waypoint"> </span>
-								<span class="clickable moveUpWaypoint" href="#" title="Move waypoint up"> </span>
-								<span class="clickable moveDownWaypoint" href="#" title="Move Waypoint down"> </span>
-								<span class="clickable searchAgainButton" title="show previous search result" style="display: none;"> </span>
-								<div class="waypointResult" style="display:none;"></div>
-								<div class="guiComponent">
-									<input type="text" class="searchWaypoint" placeholder="enter an address">
-									<div class="alert alert-error searchWaypointError" style="display:none"></div>
-									<div class="responseContainer">
-										<div class="clickable zoomToSearchResults zoomToWaypointResults" title="Zoom to search results"></div>
-										<ul class="guiComponent resultList SearchAddress searchWaypointResults"></ul>
-									</div>
-								</div>
-							</div>
-							<div class="guiComponent waypoint unset" draggable="draggable" id="0">
-								<span class="clickable removeWaypoint" title="Remove waypoint"> </span>
-								<span class="clickable moveUpWaypoint" href="#" title="Move waypoint up" style="display: none;"> </span>
-								<span class="clickable moveDownWaypoint" href="#" title="Move Waypoint down" style=""> </span>
-								<span class="clickable searchAgainButton" title="search Again" style="display: none;"> </span>
-								<div class="waypointResult" style="display:none;"></div>
-								<div class="guiComponent">
-									<input type="text" class="searchWaypoint" placeholder="enter an address">
-									<div class="alert alert-error searchWaypointError" style="display:none"></div>
-									<div class="responseContainer">
-										<div class="clickable zoomToSearchResults zoomToWaypointResults" title="Zoom to search results"></div>
-										<ul class="guiComponent resultList SearchAddress searchWaypointResults"></ul>
-									</div>
-								</div>
-							</div>
-							<div class="guiComponent waypoint unset" draggable="draggable" id="1">
-								<span class="clickable removeWaypoint" title="Remove waypoint"> </span>
-								<span class="clickable moveUpWaypoint" href="#" title="Move waypoint up" style=""> </span>
-								<span class="clickable moveDownWaypoint" href="#" title="Move Waypoint down" style="display: none;"> </span>
-								<span class="clickable searchAgainButton" title="search Again" style="display: none;"> </span>
-								<div class="waypointResult" style="display:none;"></div>
-								<div class="guiComponent">
-									<input type="text" class="searchWaypoint" placeholder="enter an address">
-									<div class="alert alert-error searchWaypointError" style="display:none"></div>
-									<div class="responseContainer">
-										<div class="clickable zoomToSearchResults zoomToWaypointResults" title="Zoom to search results"></div>
-										<ul class="guiComponent resultList SearchAddress searchWaypointResults"></ul>
-									</div>
-								</div>
-							</div>
-							<div class="addWaypoint clickable" id="addWaypoint">
-								add waypoint
-							</div>
-							<div class="buttonHolder">
-								<button id="resetRoute" class="btn btn-small" type="button"><i class="icon-trash"></i></button>
-							</div>
-						</div>
-						<div id="routeCalculate" style="display:none" class="alert alert-info searchingBlue"></div>
-						<div id="routeError" style="display:none" class="alert alert-error"></div>
-						<div class="routeSummaryContainer panel panelLight" style="display: none;"></div><div class="routeInstructionsContainer panel panelLight" style="display: none;"></div>
-						<div class="panel panelLight" id="routeSummaryContainer" style="display:none">
-							<div class="collapsible guiComponent">
-								<div class="collapsibleHead clickable" id="routeSummaryHead">
-									Summary:
-								</div>
-								<div class="collapsibleBody">
-									<span id ="route_totalTime" class="label label-info"></span>
-									<br/>
-									<span id ="route_totalDistance" class="label label-info"></span>
-									<br/>
-									<span id ="route_actualDistance" class="label label-info"></span>
-								</div>
-							</div>
-						</div>
-						<div class="panel panelLight" id="routeInstructionsContainer" style="display:none">
-							<div class="collapsible guiComponent">
-								<div class="collapsibleHead clickable collapsed" id="routeInstructionHead">
-									Route instructions:
-								</div>
-								<btn class="btn" id="zoomToRouteButton" style="display:none"><i class="icon-resize-full"></i></btn>
-								<div class="collapsibleBody" style="display: none;">
-									<div class="directions-main"></div>
-								</div>
-							</div>
-							&nbsp;
-						</div>
-						<div class="routeExtrasContainer panel panelLight">
-							<div class="collapsible guiComponent">
-								<div class="collapsibleHead clickable collapsed" id="routeExtrasHead">
-									Route extras:
-									<br>
-								</div>
-								<div class="collapsibleBody" style="display: none;">
-									<div class="alert alert-error" style="display: none;"></div>
-									<div class="panel panelMedium" style="position: relative;">	
-										<select id="accessibilityAnalysisMethodList">
-											<option id="Default" value="RecursiveGrid">Recursive Grid</option>
-											<option id="Default2" value="TIN">TIN</option>
-										</select>
-										<span id ="accessibilityAnalysisMethod" class="label">Select Isochrone method</span>
-										<br/>
-										<input type="text" id="accessibilityDistance" class="textfield" value="15">
-										<span id ="accessibilityAnalysisMinutes" class="label">Select Minutes</span>
-										<br/>						
-										<input type="text" id="accessibilityAnalysisIsochronesIntervall" class="textfield" value="3">
-										<span id ="accessibilityAnalysisIsochrones" class="label">Select Isochrone Interval</span>
-										<br/>	
-										<btn class="btn btn-small" id="analyzeAccessibility"><i class="icon-picture"></i>&nbsp;&nbsp;Analyze</btn>	
-										<br/>
-										<btn class="btn btn-small" id="removeAccessibility" style="display:none">
-											Remove
-										</btn>
-										<div class="alert alert-info searchingBlue" id="accessibilityCalculation" style="display: none;">
-											The accessibility is being analyzed...
-										</div>
-										<div class="alert alert-error" id="accessibilityError" style="display: none;">
-											An error occured during the accessibility analysis. Did you forget to set a start point?
-										</div>
-										<br/>
-										<span id="accessibilityAnalysisLabel" class="label label-descrip">Accessibility analysis</span>
-									</div>
-									<div id="exportImport">
-										<label id="imExportLabel"><b>Import/ Export</b></label>
-										<div class="panel panelMedium">
-											<a id="export-gpx" class="btn btn-small" download="map.gpx" title="Download of current route in GPX format"><i class="icon-download"></i>&nbsp;&nbsp;Export GPX</a>
-											<br/>
-											<div class="alert alert-error" style="display:none" id="exportGpxError">
-												Unfortunately an error occured while downloading the route.
-											</div>
-											<br/>
-											<div id="GPXcontainer">
-												<span class="btn btn-file" id="import-gpx" title="Upload multiple tracks from a GPX-files"><i class="icon-upload"></i>&nbsp;&nbsp;Upload GPX files<input type="file" id="files" multiple /></span>	
-													<div id="fileContainerMain" style="display: none;"></div>		
-											</div>
-											<span id ="importRouteInfoLabel" class="label label-descrip">GPX-Features</span>
-											<div id="importGpxError" class="alert alert-error" style="display:none">
-												Unfortunately an error occured while uploading the route.
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div id="searchPanel" style="display: none;">
-				<div id="searchPoi" class="panel panelLight">
-					<div class="toolHeading" id="searchPoiHead">
-						Search for a POI
-					</div><span id="poiNearRoute">
-						<input type="checkbox" class="checkbox poisNearRoute" id="fnct_searchPoi_nearRoute">
-						<label id="searchPoiWithin1" class="poisNearRoute">&nbsp;find POIs within&nbsp;</label>
-						<input type="text" id="fnct_searchPoi_distance" class="textfield poisNearRoute" value="100">
-						<select class="distMeasurePoi poisNearRoute" id="fnct_searchPoi_distanceUnit"></select><label id="searchPoiWithin2" class="poisNearRoute">&nbsp; next to the route</label></span>
-					<div class="guiComponent">
-						<div id="inputWarn" class="alert alert-error" style="display: none;"></div><div id="checkboxWarn" class="alert alert-error" style="display: none;"></div>
-						<input type="text" class="searchField" id="fnct_searchPoi" placeholder="enter a POI" data-provide="typeahead" data-items="6">
-						<div class="clickable zoomToSearchResults" id="zoomToPoiResults" title="zoom to search results"></div>
-						<ul class="guiComponent resultList SearchPoi" id="fnct_searchPoiResults"></ul>
-						<div id="searchPoiError" class="alert alert-error" style="display:none"></div>
-					</div>
-					<div class="responseContainer panel panelMedium" id="poiResponseContainer" style="display: none;">
-						<div class="clickable zoomToSearchResults" id="zoomToPoiResults" title="Zoom to search results"></div>
-					</div>
-				</div>
-			</div>
-
-			<div id="geolocationPanel" style="display: none;">
-				<div id="geoloc" class="panel panelLight">
-					<div class="toolHeading" id="geolocationHead">
-						My current location
-					</div>
-					<div class="guiComponent">
-						<div class="alert alert-error" id="geolocationError" style="display: none;"></div>
-						<div id="geolocationResult"></div>
-
-					</div>
-				</div>
-			</div>
-		</div>
-<div id="infoButton"></div>
 		<div id="map" class="panel panelLight olMap">
 			<!-- Map goes here -->
-				<div id="infoButton"></div>
-					<div id="infoPanel"></div>
+			<!-- navigation bar on top -->
+			<div class="navbar navbar-fixed-top" id="navbar">
+				<a class="brand" href="http://www.openrouteservice.org"> <img src="img/logo.png" class="logo" alt="ORS"></a>
+				<a class="brand" id="title" href="http://www.openrouteservice.org">OpenRouteService.org</a>
+				<!-- <a href="https://github.com/GIScience/openrouteservice/blob/bugfixes-2.2/release_notes/v2.2.md" style="cursor:pointer;" target="_blank" id="info" class="btn btn-large btn-success disabled">ORS succesfully updated!!! New cycle tour profile and turn restrictions for cars & bikes click here for release notes</a> -->
+				<ul id="topMenu">
+					<li>
+						<div class="alert alert-info" id="newToOrs">
+							<button type="button" class="close" data-dismiss="alert">
+								×
+							</button>
+						</div>
+					</li>
+					<li>
+						<a href="#sitePrefsModal" data-toggle="modal" id="menuLinkSitePrefs">Site Preferences</a>
+					</li>
+					<li>
+						<a href="contact.html#top" target="_blank" id="menuLinkInfo">Info&nbsp;&amp;&nbsp;Contact</a>
+					</li>
+					<li>
+						<a href="http://www.geog.uni-heidelberg.de/giscience.html" target="_blank"><img src="img/logo_giscience.png" alt="GIScience" class="links"></a>
+					</li>
+					<!-- <li>
+						<a href="http://www.geog.uni-heidelberg.de/giscience.html" target="_blank"><img src="img/unihd.png" alt="Uni HD" class="links"></a>
+					</li> -->
+				</ul>
+			</div>
+			<div id="sidebar">
+				<ul id="functionMenu" class="nav nav-tabs">
+					<li class="active">
+						<a class="fnct_switchTab" id="route" href="#"><img src="img/menuRoute.png" class="menuIcon"><label class="tabLabels" id="routeLabel">Plan Route</label></a>
+					</li>
+					<li class="">
+						<a class="fnct_switchTab" id="search" href="#"><img src="img/menuSearch.png" class="menuIcon"><label class="tabLabels" id="searchLabel">Search</label></a>
+					</li>
+					<li class="">
+						<a class="fnct_switchTab" id="geolocation" href="#"><img src="img/menuLocate.png" class="menuIcon"></a>
+					</li>
+				</ul>
+				<!-- sidebar content -->
+				<div id="routePanel" style="">
+					<div id="routingPanel" class="panel panelLight">
+						<div class="guiComponent route">
+							<div class="panel panelLight">
+								<div class="collapsible guiComponent routeOptions">
+									<div class="collapsibleHead clickable" id="routeOptions">
+										Route options:
+										<br>
+									</div>
+									<div class="collapsibleBody" >
+										<div class="btn-group routePreferenceBtns">
+											<button id="car" class="btn routeOptionsButton active"><img src="img/picto-car-high.png">
+											</button>
+											<button id="bicycle" class="btn routeOptionsButton"><img src="img/picto-bike.png">
+											</button>
+											<button id="pedestrian" class="btn routeOptionsButton"><img src="img/picto-dude.png">
+											</button>
+											<!--<button id="wheelchair" class="btn routeOptionsButton"><img src="img/picto-wheelchair.png">
+											</button>-->
+											<button id="heavyvehicle" class="btn routeOptionsButton"><img src="img/picto-truck.png">
+											</button>
+										</div>
+										<div class="btn-group" id="weightingDropdown">
+										<button class="btn btn-mini btn-inverse weightOptions dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" aria-expanded="false" id="weightOptions"><img src="img/reload-white.png"></button>
+										  	<ul class="dropdown-menu" id="dropdown_weighting">
+													<label class="radio">
+														<input type="radio" id="Fastest" name="weighting" checked="checked">
+														<label id="fastestLabel">fastest</label>
+														</label>										
+													<label class="radio">
+														<input type="radio" id="Shortest" name="weighting">
+														<label id="shortestLabel">shortest</label>
+													</label>
+												</ul>
+									    </div>
+										<div class="panel panelMedium" id="carOptions" style="">
+											<table class="optionsTable" style="width:100%">
+											 	<tr>
+												    <td>
+														<div class="radioContainer">
+															<div class="radio"><label>
+																<input type="radio" id="Car" name="car"  value="car" checked="checked">
+																<span class="label" id="carLabel">car</span></label>
+															</div>
+														</div>
+													</td>
+												</tr>
+											</table>
+										</div>
+										<div class="panel panelMedium" id="bicycleOptions" style="display: none;">
+											<table class="optionsTable" style="width:100%">
+											 	<tr>
+												    <td>
+												    	<div class="radioContainer">
+															<div class="radio"><label>
+																<input type="radio" id="Bicycle" name="bicycle"  value="shortest" checked="checked">
+																<span class="label" id="BicycleLabel">normal</span></label>
+
+															</div>
+															<div class="radio"><label>
+																<input type="radio" id="BicycleSafety" name="bicycle"  value="safest">
+																<span class="label" id="BicycleSafetyLabel">safest route</span></label>
+															</div>
+															<div class="radio"><label>
+																<input type="radio" id="BicycleTour" name="bicycle"  value="tour">
+																<span class="label" id="BicycleTourLabel">cycle tour</span></label>
+															</div>
+														</div>
+													</td>
+													<td>
+														<div class="radioContainer">
+															<!-- <div class="radio">
+																<input type="radio" id="BicycleRoute" name="bicycle" value="preferredcycle">
+																<label id="BicycleRouteLabel">preferred bicycle lane</label>
+															</div> -->
+															<div class="radio"><label>
+																<input type="radio" id="BicycleMTB" name="bicycle" value="mountain">
+																<span class="label" id="BicycleMtbLabel">mountain bike</span></label>
+
+															</div>
+															<div class="radio"><label>
+																<input type="radio" id="BicycleRacer" name="bicycle" value="racing">
+																<span class="label" id="BicycleRacerLabel">racing bike</span></label>
+															</div>
+														</div>
+												    </td>
+												</tr>
+											</table>
+										</div>
+										<div class="panel panelMedium" id="pedestrianOptions" style="display: none;">
+											<table class="optionsTable" style="width:100%">
+											 	<tr>
+												    <td>
+														<div class="radioContainer">
+															<div class="radio"><label>
+																<input type="radio" id="Pedestrian" name="pedestrian"  value="pedestrian" checked="checked">
+																<span class="label" id="PedestrianLabel">pedestrian</span></label>
+															</div>
+														</div>
+													</td>
+												</tr>
+											</table>
+										</div>
+										<div class="panel panelMedium" id="heavyvehicleOptions" style="display: none;">
+											<table class="optionsTable" style="width: 100%">
+												<tr>
+													<td>
+														<div class="radioContainer">
+															<div class="radio"><label>
+																<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="goods" checked="checked">
+																<span class="label" id="goodsHeavyTruckLabel">goods</span></label>
+															</div>
+															<div class="radio"><label>
+																<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="hgv">
+																<span class="label" id="hgvHeavyTruckLabel">HGV</span></label>
+															</div>
+															<div class="radio"><label>
+																<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="bus">
+																<span class="label" id="busHeavyTruckLabel">Bus</span></label>
+															</div>
+														</div>
+													</td>
+													<td>
+														<div class="radioContainer">
+															<div class="radio"><label>
+																<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="agricultural">
+																<span class="label" id="agriculturalHeavyTruckLabel">Agricultural Vehicle</span></label>
+															</div>
+															<div class="radio"><label>
+																<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="forestry">
+																<span class="label" id="forestryHeavyTruckLabel">Forestry</span></label>
+															</div>
+															<div class="radio"><label>
+																<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="delivery">
+																<span class="label" id="deliveryHeavyTruckLabel">Delivery</span></label>
+															</div>
+														</div>
+													</td>
+												</tr>
+											</table>
+											<div class="panel panelMedium" id="hazardOptions">
+												<label class="checkbox">
+														<input type="checkbox" id="Hazardous" value="hazmat">
+														<span id="hazardous" class="label label-warning"><i class="icon-tint icon-white"></i>&nbsp;Hazardous Materials</span>
+												</label>
+											</div>
+										</div>
+										<div class="panel panelMedium" id="truckOptions_restrict" style="display: none;">
+												<ul id="TruckTabs" class="nav nav-tabs" data-tabs="tabs">
+												<li class="active"><a href="#length" data-toggle="tab" id="trucklengthLabel">length</a></li>
+												<li><a href="#width" data-toggle="tab" id="truckwidthLabel">width</a></li>
+												<li><a href="#height" data-toggle="tab" id="truckheightLabel">height</a></li>
+												<li><a href="#weight" data-toggle="tab" id="truckweightLabel">weight</a></li>
+													<li><a href="#axleload" data-toggle="tab" id="truckaxleloadLabel">axleload</a></li>
+											    </ul>
+											    <div id="my-tab-content" class="tab-content">
+												<div class="tab-pane active" id="length">
+														<form class="mySlider">
+															<input type="text" value="15" min="0" max="50" autocomplete="off" id="value_length" oninput="this.form.value_length_slide.value=this.value","m">
+															<input type="range" min="0" max="50" value="15" step="0.5" id="value_length_slide" oninput="this.form.value_length.value=this.value" />
+															<img src="img/picto-truck-long.png">
+														</form>
+												</div>
+												<div class="tab-pane" id="width">
+												    <form class="mySlider">
+															<input type="text" value="4" min="0" max="20" autocomplete="off" id="value_width" oninput="this.form.value_width_slide.value=this.value">
+															<input type="range" min="0" max="20" value="4" step="0.5" id="value_width_slide"  oninput="this.form.value_width.value=this.value" />
+															<img src="img/picto-truck-width.png">
+														</form>
+												</div>
+												<div class="tab-pane" id="height">
+													<form class="mySlider">
+															<input type="text" value="4" autocomplete="off" id="value_height" oninput="this.form.value_height_slide.value=this.value">
+															<input type="range" min="0" max="15" value="4" step="0.5" id="value_height_slide" oninput="this.form.value_height.value=this.value"  />
+															<img src="img/picto-truck-height.png">
+														</form>
+												</div>
+												<div class="tab-pane" id="weight">
+												    <form class="mySlider">
+															<input type="text" value="7" autocomplete="off" id="value_weight" oninput="this.form.value_weight_slide.value=this.value">
+															<input type="range" min="0" max="50" value="4" step="0.5" id="value_weigth_slide"  oninput="this.form.value_weight.value=this.value"  />
+															<img src="img/picto-truck-weight.png"></td>
+														</form>
+												</div>
+													<div class="tab-pane" id="axleload">
+												    <form class="mySlider">
+															<input type="text" value="2" autocomplete="off" id="value_axleload" oninput="this.form.value_axleload_slide.value=this.value">
+															<input type="range" min="0" max="20" value="4" step="0.5" id="value_axleload_slide"  oninput="this.form.value_axleload.value=this.value"  />
+															<img src="img/picto-truck-axleload.png"></td>
+														</form>
+												</div>
+											    </div>
+											    <span id="truckLabelMain" class="label label-descrip">Truck Parameters (in meters/tons)</span>	
+										</div>
+										<div class="panel panelMedium" id="wheelchairOptions" style="display: none;">
+											<table class="optionsTable" style="width:100%">
+											 	<tr>
+												    <td>
+												    	<div class="radioContainer">
+															<div class="radio"><label>
+																	<input type="radio" id="Wheelchair" name="wheelchair" checked="checked">
+																	<span class="label" id="WheelchairLabel">wheelchair</span></label>
+															</div>
+														</div>
+													</td>
+												</tr>
+											</table>
+										</div>
+										<div class="panel panelMedium" id="wheelchairParameters" style="display: none;">
+											<select id="Surface" class="wheelchairSelect">
+												<option id="asphaltOption">Asphalt</option>
+												<option id="cobblestoneFlattenedOption">Flattened Cobblestone</option>
+												<option id="cobblestoneOption">Cobblestone</option>
+												<option id="compactedOption">Compacted</option>
+												<option id="allSurfacesOption">All Surfaces</option>
+											</select>
+											<span id="surfaceLabel" class="label label-info">Surface</span>	
+											<!-- 
+											<label id="smoothnessLabel">Smoothness</label>
+											<select id="Smoothness">
+												<option id="excellentOption">Excellent</option>
+												<option id="goodOption">Good</option>
+												<option id="intermediateOption">Intermediate</option>
+												<option id="badOption">Bad</option>
+												<option id="allSmoothnessesOption">All Smoothnesses</option>
+											</select> 
+											 -->
+										
+											<select id="Incline" class="wheelchairSelect">
+												<option id="threePercentOption">Up to 3%</option>
+												<option id="sixPercentOption">Up to 6%</option>
+												<option id="tenPercentOption">Up to 10%</option>
+												<option id="fifteenPercentOption">Up to 15%</option>
+												<option id="allInclinesOption">All Inclines</option>
+											</select>
+											<span id="inclineLabel" class="label label-info">Maximum Incline</span>	
+
+											<!-- hide option as proper data is missing in OSM? -->
+										
+											<select id="SlopedCurb" class="wheelchairSelect">
+												<option id="threeCmOption">Up to 3cm</option>
+												<option id="sixCmOption">Up to 6cm</option>
+												<option id="tenCmOption">Up to 10cm</option>
+												<option id="allSlopedCurbesOption">All Sloped Curbs</option>
+											</select>
+											<span id="slopedCurbLabel" class="label label-info">Maximum Sloped Curb</span>
+										</div>
+										<div class="panel panelMedium">
+											<div class="btn-group" id="avoidables">
+											<button class="btn btn-small btn-danger dropdown-toggle" id="avoidRoadsBtn" data-hover="dropdown" aria-expanded="false"><i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types<span class="caret"></span></button>
+												<ul class="dropdown-menu dropdown_avoid">
+									          	<label class="checkbox">
+														<input type="checkbox" id="Highway">
+														<label id="avoidMotorLabel">highways</label>
+													</label>										
+													<label class="checkbox">
+														<input type="checkbox" id="Tollway">
+														<label id="avoidTollLabel">toll roads</label>
+													</label>
+													<label class="checkbox">
+														<input type="checkbox" id="Unpavedroads">
+														<label id="avoidunpavedRoadsLabel">unpaved roads</label>
+													</label>
+													<label class="checkbox">
+														<input type="checkbox" id="Ferry">
+														<label id="avoidFerryLabel">ferrys</label>
+													</label>
+												</ul>
+									    	</div>
+									    	<div class="btn-group" id="avoidablesPedestrian" style="display: none;">
+											<button class="btn btn-small btn-danger dropdown-toggle" id="avoidPedesBtn" data-hover="dropdown" aria-expanded="false"><i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;avoid road types<span class="caret"></span></button>
+												<ul class="dropdown-menu dropdown_avoid">
+									          	<label class="checkbox">
+														<input type="checkbox" id="Ferry">
+														<label id="avoidFerryLabelPedestrian">ferries</label>
+													</label>										
+												</ul>
+									    	</div>
+									    	<div class="btn-group" id="avoidablesBike" style="display: none;">
+											<button class="btn btn-small btn-danger dropdown-toggle" id="avoidBikesBtn" data-hover="dropdown" aria-expanded="false"><i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;avoid road types<span class="caret"></span></button>
+												<ul class="dropdown-menu dropdown_avoid">
+									          	<label class="checkbox">
+														<input type="checkbox" id="Ferry">
+														<label id="avoidFerryLabelBike">ferries</label>
+													</label>										
+													<label class="checkbox">
+														<input type="checkbox" id="Unpavedroads">
+														<label id="avoidunpavedRoadsLabelBike">unpaved roads</label>
+													</label>
+													<label class="checkbox">
+														<input type="checkbox" id="Steps">
+														<label id="avoidStepsLabelBike">steps</label>
+													</label>
+												</ul>
+									    	</div>
+											<div class="btn-group" id="avoidAreas">
+										        <button class="btn btn-small btn-danger dropdown-toggle" id="avoidAreasBtn" data-hover="dropdown" data-hover="dropdown" aria-expanded="false"><i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;avoid areas<span class="caret"></span></button>
+										        <ul class="dropdown-menu" id="dropdown_avoid_areas">
+										        	<div class="btn-group" id="avoidAreasToolbar">
+															<button class="btn" id="avoidCreate" title="draw avoid area"><img src="img/avoid-plus.png">
+															</button>
+															<button class="btn" id="avoidEdit" title="modify avoid area"><img src="img/avoid-edit.png">
+															</button>
+															<button class="btn" id="avoidRemove" title="remove avoid area"><img src="img/avoid-minus.png">
+															</button>
+														</div>	
+													</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="panel panelLight">
+								<div class="guiComponent waypoint unset" draggable="draggable" id="Draft" style="display: none">
+									<span class="clickable removeWaypoint" title="Remove waypoint"> </span>
+									<span class="clickable moveUpWaypoint" href="#" title="Move waypoint up"> </span>
+									<span class="clickable moveDownWaypoint" href="#" title="Move Waypoint down"> </span>
+									<span class="clickable searchAgainButton" title="show previous search result" style="display: none;"> </span>
+									<div class="waypointResult" style="display:none;"></div>
+									<div class="guiComponent">
+										<input type="text" class="searchWaypoint" placeholder="enter an address">
+										<div class="alert alert-error searchWaypointError" style="display:none"></div>
+										<div class="responseContainer">
+											<div class="clickable zoomToSearchResults zoomToWaypointResults" title="Zoom to search results"></div>
+											<ul class="guiComponent resultList SearchAddress searchWaypointResults"></ul>
+										</div>
+									</div>
+								</div>
+								<div class="guiComponent waypoint unset" draggable="draggable" id="0">
+									<span class="clickable removeWaypoint" title="Remove waypoint"> </span>
+									<span class="clickable moveUpWaypoint" href="#" title="Move waypoint up" style="display: none;"> </span>
+									<span class="clickable moveDownWaypoint" href="#" title="Move Waypoint down" style=""> </span>
+									<span class="clickable searchAgainButton" title="search Again" style="display: none;"> </span>
+									<div class="waypointResult" style="display:none;"></div>
+									<div class="guiComponent">
+										<input type="text" class="searchWaypoint" placeholder="enter an address">
+										<div class="alert alert-error searchWaypointError" style="display:none"></div>
+										<div class="responseContainer">
+											<div class="clickable zoomToSearchResults zoomToWaypointResults" title="Zoom to search results"></div>
+											<ul class="guiComponent resultList SearchAddress searchWaypointResults"></ul>
+										</div>
+									</div>
+								</div>
+								<div class="guiComponent waypoint unset" draggable="draggable" id="1">
+									<span class="clickable removeWaypoint" title="Remove waypoint"> </span>
+									<span class="clickable moveUpWaypoint" href="#" title="Move waypoint up" style=""> </span>
+									<span class="clickable moveDownWaypoint" href="#" title="Move Waypoint down" style="display: none;"> </span>
+									<span class="clickable searchAgainButton" title="search Again" style="display: none;"> </span>
+									<div class="waypointResult" style="display:none;"></div>
+									<div class="guiComponent">
+										<input type="text" class="searchWaypoint" placeholder="enter an address">
+										<div class="alert alert-error searchWaypointError" style="display:none"></div>
+										<div class="responseContainer">
+											<div class="clickable zoomToSearchResults zoomToWaypointResults" title="Zoom to search results"></div>
+											<ul class="guiComponent resultList SearchAddress searchWaypointResults"></ul>
+										</div>
+									</div>
+								</div>
+								<div class="addWaypoint clickable" id="addWaypoint">
+									add waypoint
+								</div>
+								<div class="buttonHolder">
+									<button id="resetRoute" class="btn btn-small" type="button"><i class="icon-trash"></i></button>
+								</div>
+							</div>
+							<div id="routeCalculate" style="display:none" class="alert alert-info searchingBlue"></div>
+							<div id="routeError" style="display:none" class="alert alert-error"></div>
+							<div class="routeSummaryContainer panel panelLight" style="display: none;"></div><div class="routeInstructionsContainer panel panelLight" style="display: none;"></div>
+							<div class="panel panelLight" id="routeSummaryContainer" style="display:none">
+								<div class="collapsible guiComponent">
+									<div class="collapsibleHead clickable" id="routeSummaryHead">
+										Summary:
+									</div>
+									<div class="collapsibleBody">
+										<span id ="route_totalTime" class="label label-info"></span>
+										<br/>
+										<span id ="route_totalDistance" class="label label-info"></span>
+										<br/>
+										<span id ="route_actualDistance" class="label label-info"></span>
+									</div>
+								</div>
+							</div>
+							<div class="panel panelLight" id="routeInstructionsContainer" style="display:none">
+								<div class="collapsible guiComponent">
+									<div class="collapsibleHead clickable collapsed" id="routeInstructionHead">
+										Route instructions:
+									</div>
+									<btn class="btn" id="zoomToRouteButton" style="display:none"><i class="icon-resize-full"></i></btn>
+									<div class="collapsibleBody" style="display: none;">
+										<div class="directions-main"></div>
+									</div>
+								</div>
+								&nbsp;
+							</div>
+							<div class="routeExtrasContainer panel panelLight">
+								<div class="collapsible guiComponent">
+									<div class="collapsibleHead clickable collapsed" id="routeExtrasHead">
+										Route extras:
+										<br>
+									</div>
+									<div class="collapsibleBody" style="display: none;">
+										<div class="alert alert-error" style="display: none;"></div>
+										<div class="panel panelMedium" style="position: relative;">	
+											<select id="accessibilityAnalysisMethodList">
+												<option id="Default" value="RecursiveGrid">Recursive Grid</option>
+												<option id="Default2" value="TIN">TIN</option>
+											</select>
+											<span id ="accessibilityAnalysisMethod" class="label">Select Isochrone method</span>
+											<br/>
+											<input type="text" id="accessibilityDistance" class="textfield" value="15">
+											<span id ="accessibilityAnalysisMinutes" class="label">Select Minutes</span>
+											<br/>						
+											<input type="text" id="accessibilityAnalysisIsochronesIntervall" class="textfield" value="3">
+											<span id ="accessibilityAnalysisIsochrones" class="label">Select Isochrone Interval</span>
+											<br/>	
+											<btn class="btn btn-small" id="analyzeAccessibility"><i class="icon-picture"></i>&nbsp;&nbsp;Analyze</btn>	
+											<br/>
+											<btn class="btn btn-small" id="removeAccessibility" style="display:none">
+												Remove
+											</btn>
+											<div class="alert alert-info searchingBlue" id="accessibilityCalculation" style="display: none;">
+												The accessibility is being analyzed...
+											</div>
+											<div class="alert alert-error" id="accessibilityError" style="display: none;">
+												An error occured during the accessibility analysis. Did you forget to set a start point?
+											</div>
+											<br/>
+											<span id="accessibilityAnalysisLabel" class="label label-descrip">Accessibility analysis</span>
+										</div>
+										<div id="exportImport">
+											<label id="imExportLabel"><b>Import/ Export</b></label>
+											<div class="panel panelMedium">
+												<a id="export-gpx" class="btn btn-small" download="map.gpx" title="Download of current route in GPX format"><i class="icon-download"></i>&nbsp;&nbsp;Export GPX</a>
+												<br/>
+												<div class="alert alert-error" style="display:none" id="exportGpxError">
+													Unfortunately an error occured while downloading the route.
+												</div>
+												<br/>
+												<div id="GPXcontainer">
+													<span class="btn btn-file" id="import-gpx" title="Upload multiple tracks from a GPX-files"><i class="icon-upload"></i>&nbsp;&nbsp;Upload GPX files<input type="file" id="files" multiple /></span>	
+														<div id="fileContainerMain" style="display: none;"></div>		
+												</div>
+												<span id ="importRouteInfoLabel" class="label label-descrip">GPX-Features</span>
+												<div id="importGpxError" class="alert alert-error" style="display:none">
+													Unfortunately an error occured while uploading the route.
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div id="searchPanel" style="display: none;">
+					<div id="searchPoi" class="panel panelLight">
+						<div class="toolHeading" id="searchPoiHead">
+							Search for a POI
+						</div><span id="poiNearRoute">
+							<input type="checkbox" class="checkbox poisNearRoute" id="fnct_searchPoi_nearRoute">
+							<label id="searchPoiWithin1" class="poisNearRoute">&nbsp;find POIs within&nbsp;</label>
+							<input type="text" id="fnct_searchPoi_distance" class="textfield poisNearRoute" value="100">
+							<select class="distMeasurePoi poisNearRoute" id="fnct_searchPoi_distanceUnit"></select><label id="searchPoiWithin2" class="poisNearRoute">&nbsp; next to the route</label></span>
+						<div class="guiComponent">
+							<div id="inputWarn" class="alert alert-error" style="display: none;"></div><div id="checkboxWarn" class="alert alert-error" style="display: none;"></div>
+							<input type="text" class="searchField" id="fnct_searchPoi" placeholder="enter a POI" data-provide="typeahead" data-items="6">
+							<div class="clickable zoomToSearchResults" id="zoomToPoiResults" title="zoom to search results"></div>
+							<ul class="guiComponent resultList SearchPoi" id="fnct_searchPoiResults"></ul>
+							<div id="searchPoiError" class="alert alert-error" style="display:none"></div>
+						</div>
+						<div class="responseContainer panel panelMedium" id="poiResponseContainer" style="display: none;">
+							<div class="clickable zoomToSearchResults" id="zoomToPoiResults" title="Zoom to search results"></div>
+						</div>
+					</div>
+				</div>
+
+				<div id="geolocationPanel" style="display: none;">
+					<div id="geoloc" class="panel panelLight">
+						<div class="toolHeading" id="geolocationHead">
+							My current location
+						</div>
+						<div class="guiComponent">
+							<div class="alert alert-error" id="geolocationError" style="display: none;"></div>
+							<div id="geolocationResult"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="infoButton"></div>
+			<div id="infoPanel"></div>
 			<div id="infoPermalink">Permalink</div>
 			<div id="bubble">
 				<div id="permaText">
@@ -555,7 +554,6 @@
 					<div id="open">open</div>
 				</div>
 			</div>
-
 		</div>
 
 		<!-- Height profile draft -->
