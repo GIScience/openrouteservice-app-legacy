@@ -24,6 +24,17 @@
 	background-color: rgba(255,255,255,0.75);
 	padding: 1px;
 }
+/* position controls relative to navigation height */
+.olControlPanZoom {
+	top: 45px !important;
+}
+.olControlMousePosition {
+	top: 52px !important;
+}
+.olControlLayerSwitcher {
+	top: 70px !important;
+	right: 7px !important;
+}
 /* avoid red tiles */
 .olImageLoadError {
 	background-color: transparent !important;
@@ -1110,7 +1121,6 @@ img {
 #layerSwitcherPanel_layersDiv > .baseLayersDiv > label, .dataLayersDiv > label {
 	display: inline;
 }
-
 
 .routePreferenceBtns {
 	margin-bottom: 3px;
