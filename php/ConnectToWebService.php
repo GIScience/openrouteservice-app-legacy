@@ -26,7 +26,7 @@ function post($host, $path, $data, $timeout, $port) {
 	$content_length = strlen($data);
 	$fp = fsockopen($host, $port, $errno, $errdesc, $timeout);
 	if(!$fp){
-		die("Konnte Verbindung zu $host nicht öffnen:\nFehler:"."$errno \n Beschreibung: $errdesc \n");
+		die("Could not create connection to $host:\nError:"."$errno \n Description: $errdesc \n");
 	}
 	fputs($fp, "POST $path HTTP/1.1\r\n");
 	fputs($fp, "Host: $host\r\n");

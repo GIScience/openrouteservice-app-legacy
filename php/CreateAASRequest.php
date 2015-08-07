@@ -21,7 +21,7 @@
 ///////////////////////////////////////////////////
 //Function die XML Request an Accessibility Analyse erstellt
 
-function createRequest($position, $minutes) {
+function createRequest($minutes, $routepreference, $method, $interval,$position) {
 	$request = "<?xml version="1.0" encoding="UTF-8" ?>
 <aas:AAS version="1.0" xmlns:aas="http://www.geoinform.fh-mainz.de/aas" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.geoinform.fh-mainz.de/aas">
 	<aas:RequestHeader>
@@ -35,7 +35,7 @@ function createRequest($position, $minutes) {
 				<aas:AccessibilitySettings>
 					<aas:RoutePreference>$routepreference</aas:RoutePreference>
 					<aas:Method>$method</aas:Method>
-					<aas:Interval>$intervall</aas:Interval>
+					<aas:Interval>$interval</aas:Interval>
 				</aas:AccessibilitySettings>
 				<aas:LocationPoint>
 					<aas:Position>
