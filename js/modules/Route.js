@@ -201,6 +201,9 @@ var Route = ( function(w) {"use strict";
 			if (avoidableParams[4] == 'true' || avoidableParams[4] == true) {
 				writer.writeElementString('xls:AvoidFeature', 'Steps');
 			}
+			if (avoidableParams[5] == 'true' || avoidableParams[5] == true) {
+				writer.writeElementString('xls:AvoidFeature', 'Fords');
+			}
 			
 			//</xls:AvoidList>
 			writer.writeEndElement();

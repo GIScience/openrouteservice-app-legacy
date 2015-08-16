@@ -5,10 +5,10 @@ var Preferences = ( function(w) {'use strict';
 	//are there any cookies of thie page yet?
 	var cookiesAvailable = false;
 
-	var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version','avUnpaved', 'avFerry','value_length','value_height','value_weight','value_width','value_axleload','surface','incline','slopedCurb', 'hazardous', 'routeWeight', 'avSteps', 'routeOptType', 'trackType', 'smoothness'];
+	var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version','avUnpaved', 'avFerry','value_length','value_height','value_weight','value_width','value_axleload','surface','incline','slopedCurb', 'hazardous', 'routeWeight', 'avSteps', 'routeOptType', 'trackType', 'smoothness', 'avFords'];
 
 	//store information that can be used for the permalink
-	permaInfo = Array.apply(null, new Array(28)).map(String.prototype.valueOf,'null')
+	permaInfo = Array.apply(null, new Array(29)).map(String.prototype.valueOf,'null')
 
 	/**
 	 * Constructor
@@ -43,6 +43,7 @@ var Preferences = ( function(w) {'use strict';
 		this.routeOptionsTypesIdx = 25;
 		this.trackTypeIdx = 26;
 		this.smoothnessIdx = 27;
+		this.avoidFordsIdx = 28;
 
 		//define variables
 		this.language = 'en';
@@ -460,9 +461,9 @@ var Preferences = ( function(w) {'use strict';
 	 * @param highway, tollway: extracted from the GET variables in readGetVars()
 	 * @return the avoidables
 	 */
-	function loadAvoidables(highway, tollway, unpaved, ferry, steps) {
+	function loadAvoidables(highway, tollway, unpaved, ferry, steps, fords) {
 		
-		var avoidables = [false, false, false, false, false];
+		var avoidables = [false, false, false, false, false, false];
 		
 
 		// highway
@@ -493,15 +494,20 @@ var Preferences = ( function(w) {'use strict';
 			avoidables[3] = true;
 		} else {
 			permaInfo[this.avoidFerryIdx] = false;
-			
 		}
-		// ferry
+		// steps
 		if (steps == true || steps == 'true') {
 			permaInfo[this.avoidStepsIdx] = true;
 			avoidables[4] = true;
 		} else {
 			permaInfo[this.avoidStepsIdx] = false;
-			
+		}
+		// fords
+		if (fords == true || fords == 'true') {
+			permaInfo[this.avoidFordsIdx] = true;
+			avoidables[5] = true;
+		} else {
+			permaInfo[this.avoidFordsIdx] = false;
 		}
 
 		return avoidables;

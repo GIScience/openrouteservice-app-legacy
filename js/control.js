@@ -804,11 +804,13 @@ var Controller = ( function(w) {'use strict';
                 var avoidUnpavedRoads = permaInfo[preferences.avoidUnpavedIdx]; 
                 var avoidFerry = permaInfo[preferences.avoidFerryIdx]; 
                 var avoidSteps = permaInfo[preferences.avoidStepsIdx]; 
+                var avoidFords = permaInfo[preferences.avoidFordsIdx]; 
                 avoidableParams[0] = avoidHighway;
                 avoidableParams[1] = avoidTollway;
                 avoidableParams[2] = avoidUnpavedRoads;
                 avoidableParams[3] = avoidFerry;
                 avoidableParams[4] = avoidSteps;
+                avoidableParams[5] = avoidFords;
 
 
                 var truckParams = new Array();
@@ -1447,7 +1449,7 @@ var Controller = ( function(w) {'use strict';
             var smoothness = getVars[preferences.getPrefName(preferences.smoothnessIdx)];
             var routeWeight = getVars[preferences.getPrefName(preferences.weightIdx)];
             var hazardous = getVars[preferences.getPrefName(preferences.hazardousIdx)];
-            
+            var fords = getVars[preferences.getPrefName(preferences.avoidFordsIdx)];
 
             pos = preferences.loadMapPosition(pos);
             if (pos && pos != 'null') {
@@ -1486,13 +1488,14 @@ var Controller = ( function(w) {'use strict';
             routeWeight = preferences.loadRouteWeight(routeWeight);
             ui.setRouteWeight(routeWeight);
 
-            var avSettings = preferences.loadAvoidables(motorways, tollways, unpaved, ferry, steps);
+            var avSettings = preferences.loadAvoidables(motorways, tollways, unpaved, ferry, steps, fords);
             motorways = avSettings[0];
             tollways = avSettings[1];
             unpaved = avSettings[2];
             ferry = avSettings[3];
             steps = avSettings[4];
-            ui.setAvoidables(motorways, tollways, unpaved, ferry, steps);
+            fords = avSettings[5];
+            ui.setAvoidables(motorways, tollways, unpaved, ferry, steps, fords);
             
             // get wheelchair parameters from getVars
             var wheelParameters = preferences.loadWheelParameters(surface, incline, slopedCurb, trackType, smoothness);

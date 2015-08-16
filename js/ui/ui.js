@@ -2631,6 +2631,17 @@ var Ui = ( function(w) {'use strict';
 						value : boolVar
 					});
 				}
+				else if (itemId === list.routeAvoidables[5]) {
+					if (permaInfo[preferences.avoidFordsIdx] == "true" || permaInfo[preferences.avoidFordsIdx] == true) {
+						var boolVar = false;
+					} else {
+						var boolVar = true;
+					}
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.avoidFordsIdx,
+						value : boolVar
+					});
+				}
 
 			// if heavy vehicle type
 			} else if ($.inArray(itemValue, list.routePreferencesTypes.get('heavyvehicle')) >= 0) {
@@ -2739,7 +2750,6 @@ var Ui = ( function(w) {'use strict';
 				});
 
 			}
-
 			theInterface.emit('ui:routingParamsChanged');
 		}
 
@@ -2892,21 +2902,21 @@ var Ui = ( function(w) {'use strict';
 		 * @param highway: true, if highway checkbox is to be checked
 		 * @param tollway: accordingly.
 		 */
-		function setAvoidables(highway, tollway,unpaved,ferry,steps) {
+		function setAvoidables(highway, tollway,unpaved,ferry,steps,fords) {
 
 			var highwayTrue = (highway === 'true') || highway == true;
 			var tollwayTrue = (tollway === 'true') || tollway == true;
 			var unpavedTrue = (unpaved === 'true') || unpaved == true;
 			var ferryTrue = (ferry === 'true') || ferry == true;
 			var stepsTrue = (steps === 'true') || steps == true;
+			var fordsTrue = (fords === 'true') || fords == true;
 
 			$('[type="checkbox"]').filter('#Highway').prop('checked', highwayTrue);
 			$('[type="checkbox"]').filter('#Tollway').prop('checked', tollwayTrue);
 			$('[type="checkbox"]').filter('#Unpavedroads').prop('checked', unpavedTrue);
 			$('[type="checkbox"]').filter('#Ferry').prop('checked', ferryTrue);		
 			$('[type="checkbox"]').filter('#Steps').prop('checked', stepsTrue);
-
-
+			$('[type="checkbox"]').filter('#Fords').prop('checked', fordsTrue);
 
 		}
 
