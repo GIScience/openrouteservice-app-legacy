@@ -2797,7 +2797,7 @@ var Ui = ( function(w) {'use strict';
 
 		/**
 		 * used to activate route weight on startup if necessary
-		 * @param routeWeight: 'Fastest' or 'Shortest'
+		 * @param routeWeight: 'Fastest' or 'Shortest' or 'Recommended'
 		 */
 		function setRouteWeight(routeWeight) {
 
@@ -2806,6 +2806,9 @@ var Ui = ( function(w) {'use strict';
 			
 			} else if (routeWeight = 'Shortest') {
 				$('#Shortest').attr('checked', 'checked');
+
+			} else if (routeWeight = 'Recommended') {
+				$('#Recommended').attr('checked', 'checked');
 			}
 		
 		}

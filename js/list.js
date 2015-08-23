@@ -48,7 +48,7 @@ list = {
 
 	routeDangerousGoods : ['hazmat'],
 
-	routeWeightSettings : ['Fastest', 'Shortest'],
+	routeWeightSettings : ['Fastest', 'Shortest', 'Recommended'],
 	
 	routeAvoidables : ['Highway', 'Tollway', 'Unpavedroads', 'Ferry', 'Steps', 'Fords'],
 

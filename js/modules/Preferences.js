@@ -318,7 +318,7 @@ var Preferences = ( function(w) {'use strict';
 
 		//set a default in the permaInfo Array if routeOpt == null, undef, etc.
 		if (routeWeight == undefined || routeWeight == null || routeWeight == 'undefined') {
-			routeWeight = 'Fastest'
+			routeWeight = 'Fastest';
 		}
 		permaInfo[this.weightIdx] = routeWeight;
 
