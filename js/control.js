@@ -1544,7 +1544,7 @@ var Controller = ( function(w) {'use strict';
                     var type;
 
                     if (waypoints[i].lat == 0 & waypoints[i].lon == 0) {
-                        continue
+                        continue;
                     } else if (i == 0) {
                         type = Waypoint.type.START;
                     } else if (i == waypoints.length - 1) {
