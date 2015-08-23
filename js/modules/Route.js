@@ -21,7 +21,7 @@ var Route = ( function(w) {"use strict";
 		 * @param avoidFerry: flag set to true if ferrys should be avoided in the route; else: false
 		 * @param avoidAreas: array of avoid areas represented by OL.Geometry.Polygons
 		 */
-		function calculate(routePoints, successCallback, failureCallback, language, routePref, extendedRoutePreferencesType, wheelChairParams, truckParams, avoidableParams , avoidAreas, extendedRoutePreferencesWeight, calcRouteID) {
+		function calculate(routePoints, successCallback, failureCallback, language, routePref, extendedRoutePreferencesType, wheelChairParams, truckParams, avoidableParams , avoidAreas, extendedRoutePreferencesWeight, extendedRoutePreferencesMaxspeed, calcRouteID) {
 
 			var writer = new XMLWriter('UTF-8', '1.0');
 			writer.writeStartDocument();
@@ -54,34 +54,39 @@ var Route = ( function(w) {"use strict";
 			writer.writeStartElement('xls:ExtendedRoutePreference');
 
 			writer.writeElementString('xls:WeightingMethod', extendedRoutePreferencesWeight || 'Fastest');
+			
+			console.log(extendedRoutePreferencesMaxspeed)
+			if (extendedRoutePreferencesMaxspeed !== null) {
+				writer.writeElementString('xls:MaxSpeed', extendedRoutePreferencesMaxspeed);
+			}
 
 			if (routePref == 'HeavyVehicle') {
 
-					if (extendedRoutePreferencesType != null ) {
+					if (extendedRoutePreferencesType !== null ) {
 						writer.writeElementString('xls:VehicleType', extendedRoutePreferencesType);
 					}
 					//truck width
-					 if (truckParams[3] != null) {
+					 if (truckParams[3] !== null) {
 						 writer.writeElementString('xls:Width', truckParams[3]);
 					 }
 					 //truck heigth
-					 if (truckParams[1] != null) {
+					 if (truckParams[1] !== null) {
 						 writer.writeElementString('xls:Height', truckParams[1]);
 					 }
 					 //truck weigth
-					 if (truckParams[2] != null) {
+					 if (truckParams[2] !== null) {
 						 writer.writeElementString('xls:Weight', truckParams[2]);
 					 }
 					 //truck length
-					if (truckParams[0] != null) {
+					if (truckParams[0] !== null) {
 						writer.writeElementString('xls:Length', truckParams[0]);
 					}
 					 //truck axle load
-					if (truckParams[4] != null) {
+					if (truckParams[4] !== null) {
 						writer.writeElementString('xls:AxleLoad', truckParams[4]);
 					}
 					//truck hazardous
-					if (truckParams[5] != null) {
+					if (truckParams[5] !== null) {
 						writer.writeStartElement('xls:LoadCharacteristics');
 							writer.writeElementString('xls:LoadCharacteristic', truckParams[5]);
 						writer.writeEndElement();
@@ -137,7 +142,7 @@ var Route = ( function(w) {"use strict";
 				writer.writeStartElement('xls:Position');
 				//<gml:Point>
 				writer.writeStartElement('gml:Point');
-				writer.writeAttributeString('xmlns:gml', namespaces.gml)
+				writer.writeAttributeString('xmlns:gml', namespaces.gml);
 				//<gml:pos />
 				writer.writeStartElement('gml:pos');
 				writer.writeAttributeString('srsName', 'EPSG:4326');

@@ -1359,3 +1359,7 @@ img {
     font-weight: bold;
     font-size: 14px;
 }
+
+#maxSpeedInput {
+	font-size: 12px;
+}

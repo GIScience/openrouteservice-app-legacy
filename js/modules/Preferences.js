@@ -5,10 +5,10 @@ var Preferences = ( function(w) {'use strict';
 	//are there any cookies of thie page yet?
 	var cookiesAvailable = false;
 
-	var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version','avUnpaved', 'avFerry','value_length','value_height','value_weight','value_width','value_axleload','surface','incline','slopedCurb', 'hazardous', 'routeWeight', 'avSteps', 'routeOptType', 'trackType', 'smoothness', 'avFords'];
+	var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version','avUnpaved', 'avFerry','value_length','value_height','value_weight','value_width','value_axleload','surface','incline','slopedCurb', 'hazardous', 'routeWeight', 'avSteps', 'routeOptType', 'trackType', 'smoothness', 'avFords', 'maxspeed'];
 
 	//store information that can be used for the permalink
-	permaInfo = Array.apply(null, new Array(29)).map(String.prototype.valueOf,'null')
+	permaInfo = Array.apply(null, new Array(30)).map(String.prototype.valueOf,'null')
 
 	/**
 	 * Constructor
@@ -44,6 +44,7 @@ var Preferences = ( function(w) {'use strict';
 		this.trackTypeIdx = 26;
 		this.smoothnessIdx = 27;
 		this.avoidFordsIdx = 28;
+		this.maxspeedIdx = 29;
 
 		//define variables
 		this.language = 'en';
@@ -323,6 +324,22 @@ var Preferences = ( function(w) {'use strict';
 
 		return routeWeight;
 	}
+
+	/**
+	 * determines route options by GET variable
+	 * @param maxspeed: extracted from the GET variables in readGetVars()
+	 * @return the maxspeed option
+	 */
+	function loadMaxspeed(maxspeed) {
+		maxspeed = unescape(maxspeed);
+
+		maxspeed = ((maxspeed == 'undefined' || maxspeed === undefined) ? null : maxspeed);
+
+		permaInfo[this.maxspeedIdx] = maxspeed;
+
+		return maxspeed;
+	}
+
 
 
 	/**
@@ -782,6 +799,7 @@ var Preferences = ( function(w) {'use strict';
 	Preferences.prototype.loadWaypoints = loadWaypoints;
 	Preferences.prototype.loadRouteOptions = loadRouteOptions;
 	Preferences.prototype.loadRouteWeight = loadRouteWeight;
+	Preferences.prototype.loadMaxspeed = loadMaxspeed;
 	Preferences.prototype.loadRouteOptionsType = loadRouteOptionsType;
 	Preferences.prototype.loadAvoidables = loadAvoidables;
 	Preferences.prototype.loadAvoidAreas = loadAvoidAreas;

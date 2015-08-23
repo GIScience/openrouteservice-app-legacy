@@ -1052,6 +1052,7 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+
 		/* *********************************************************************
 		* SEARCH ADDRESS
 		* *********************************************************************/
@@ -1063,7 +1064,7 @@ var Ui = ( function(w) {'use strict';
 		 */
 		function handleSearchAddressInput(e) {
 			clearTimeout(typingTimerSearchAddress);
-			if (e.keyIdentifier != 'Shift' && e.currentTarget.value.length != 0) {
+			if (e.keyIdentifier != 'Shift' && e.currentTarget.value.length !== 0) {
 				typingTimerSearchAddress = setTimeout(function() {
 					//empty search results
 					var resultContainer = document.getElementById('fnct_searchAddressResults');
@@ -2529,6 +2530,18 @@ var Ui = ( function(w) {'use strict';
 			
 		}
 
+		/** 
+		 * set maxspeed
+		 * @params maxspeed: is either maxspeed or null
+		 */
+		function setMaxspeedParameter(maxspeed) {
+			
+			if (maxspeed !== null) {
+				jQuery('#maxSpeedInput').val(maxspeed);
+			}
+		
+		}
+
 		/**
 		 * when the user wants to switch between route options
 		 * @param activeRouteOption: the active route option, i.e. one of car,bicycle,pedestrian,wheelchair
@@ -2677,10 +2690,22 @@ var Ui = ( function(w) {'use strict';
 						key : preferences.value_axleloadIdx,
 						value : $("#value_axleload").val()
 					});
-				}
+				}	
 			}
 			// if route weight settings are modified
 			else if ($.inArray(itemId, list.routeWeightSettings) >= 0) {
+				//show or hide maxSpeed div
+				if (itemId == 'Shortest') {
+					$('#maxSpeed').hide();
+					// if maxspeed was set then remove it also from prefs
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.maxspeedIdx,
+						value : null
+					});
+
+				} else {
+					$('#maxSpeed').show();
+				}
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.weightIdx,
 					value : itemId
@@ -2752,6 +2777,21 @@ var Ui = ( function(w) {'use strict';
 			}
 			theInterface.emit('ui:routingParamsChanged');
 		}
+
+		/** 
+		 * The user inserts maximum speed into the form when route profile fastest is selected
+		 * when speed is set preferences are updated 
+		 */
+		function handleMaxspeed() {
+
+			var maxspeed = $('#maxSpeedInput').val();
+			// update preferences
+			theInterface.emit('ui:prefsChanged', {
+				key : preferences.maxspeedIdx,
+				value : maxspeed
+			});
+		}
+
 
 
 
@@ -3540,17 +3580,18 @@ var Ui = ( function(w) {'use strict';
 			//keep dropdowns open
 			$('.dropdown-menu').on({
 				"click":function(e){
-
 			      	e.stopPropagation();
 			    }
 			});
-
 			$('.btn-group').button();
 			
 			//feedback slide
 			$("#feedback_button").click(function(){
-			$('.form').slideToggle();   		
-		});
+				$('.form').slideToggle();   
+			});
+
+			//maxspeed button listener
+			$('#maxSpeedBtn').click(handleMaxspeed);		
 			
 		}
 
@@ -3624,9 +3665,12 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.setTruckParameters = setTruckParameters;
 		
 		Ui.prototype.setHazardousParameter = setHazardousParameter;
+		Ui.prototype.setMaxspeedParameter = setMaxspeedParameter;
 
 		Ui.prototype.handleGpxFiles = handleGpxFiles;
 		Ui.prototype.handleResetRoute = handleResetRoute;
+
+		Ui.prototype.handleMaxspeed = handleMaxspeed; 
 
 		theInterface = new Ui();
 

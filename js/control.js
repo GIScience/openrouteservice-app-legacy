@@ -795,7 +795,8 @@ var Controller = ( function(w) {'use strict';
                 var routePref = permaInfo[preferences.routeOptionsIdx];
                 
                 var extendedRoutePreferencesWeight = permaInfo[preferences.weightIdx];
-               
+                var extendedRoutePreferencesMaxspeed = permaInfo[preferences.maxspeedIdx];
+
                 var avoidAreas = map.getAvoidAreas();
 
                 var avoidableParams = new Array();
@@ -842,7 +843,7 @@ var Controller = ( function(w) {'use strict';
                 wheelChairParams[3] = wheelchairTrackType;
                 wheelChairParams[4] = wheelchairSmoothness;
 
-                route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferencesType, wheelChairParams, truckParams, avoidableParams , avoidAreas, extendedRoutePreferencesWeight, calcRouteID);
+                route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferencesType, wheelChairParams, truckParams, avoidableParams , avoidAreas, extendedRoutePreferencesWeight, extendedRoutePreferencesMaxspeed, calcRouteID);
 
                 //try to read a variable that is set after the service response was received. If this variable is not set after a while -> timeout.
                 clearTimeout(timerRoute);
@@ -1450,6 +1451,7 @@ var Controller = ( function(w) {'use strict';
             var routeWeight = getVars[preferences.getPrefName(preferences.weightIdx)];
             var hazardous = getVars[preferences.getPrefName(preferences.hazardousIdx)];
             var fords = getVars[preferences.getPrefName(preferences.avoidFordsIdx)];
+            var maxspeed = getVars[preferences.getPrefName(preferences.maxspeedIdx)];
 
             pos = preferences.loadMapPosition(pos);
             if (pos && pos != 'null') {
@@ -1476,7 +1478,7 @@ var Controller = ( function(w) {'use strict';
             // if routeOpt is not in getVars then use Car for init
             routeOpt = preferences.loadRouteOptions(routeOpt);
             
-            if (routeOpt == undefined || routeOpt == null || routeOpt == 'undefined') {
+            if (routeOpt === undefined || routeOpt === null || routeOpt == 'undefined') {
                 ui.setRouteOption(list.routePreferences.get('car'));
             } else {
                 ui.setRouteOption(routeOpt); 
@@ -1487,6 +1489,9 @@ var Controller = ( function(w) {'use strict';
 
             routeWeight = preferences.loadRouteWeight(routeWeight);
             ui.setRouteWeight(routeWeight);
+
+            maxspeed = preferences.loadMaxspeed(maxspeed);
+            ui.setMaxspeedParameter(maxspeed);
 
             var avSettings = preferences.loadAvoidables(motorways, tollways, unpaved, ferry, steps, fords);
             motorways = avSettings[0];
@@ -1580,7 +1585,7 @@ var Controller = ( function(w) {'use strict';
             uiLanguages.loadPoiDistanceUnitData();
 
             //hide or show Ui elements based on the version
-            uiVersions.applyVersion(preferences.version)
+            uiVersions.applyVersion(preferences.version);
 
             //in the user preferences popup, set appropriate element active
             ui.setUserPreferences(preferences.version, preferences.language, preferences.routingLanguage, preferences.distanceUnit);
