@@ -420,7 +420,7 @@ var Map = ( function() {"use strict";
 			//this.theMap.addControl(new OpenLayers.Control.Attribution());
 
 			this.selectMarker = new OpenLayers.Control.SelectFeature([layerSearch, layerGeolocation, layerRoutePoints, layerPoi, layerRouteLines, layerRestriction], {
-				hover : true
+				hover : true,
 				callbacks: {
 					click: function(e) {
 						if(e.layer == layerRestriction) {
