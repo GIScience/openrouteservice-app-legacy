@@ -471,7 +471,7 @@ var Ui = ( function(w) {'use strict';
 			var numWaypoints = $('.waypoint').length - 1;
 
 			//decide which button to show
-			if (currentIndex == 0) {
+			if (currentIndex === 0) {
 				//the waypoint which has been moved up is the first waypoint: hide move up button
 				$(waypointElement.get(0).querySelector('.moveUpWaypoint')).hide();
 				$(waypointElement.get(0).querySelector('.moveDownWaypoint')).show();
@@ -483,11 +483,11 @@ var Ui = ( function(w) {'use strict';
 
 			if (succIndex == (numWaypoints - 1)) {
 				//the waypoint which has been moved down is the last waypoint: hide the move down button
-				$(previousElement.get(0).querySelector('.moveUpWaypoint')).show()
+				$(previousElement.get(0).querySelector('.moveUpWaypoint')).show();
 				$(previousElement.get(0).querySelector('.moveDownWaypoint')).hide();
 			} else {
 				//show both
-				$(previousElement.get(0).querySelector('.moveUpWaypoint')).show()
+				$(previousElement.get(0).querySelector('.moveUpWaypoint')).show();
 				$(previousElement.get(0).querySelector('.moveDownWaypoint')).show();
 			}
 
@@ -2695,12 +2695,12 @@ var Ui = ( function(w) {'use strict';
 			// if route weight settings are modified
 			else if ($.inArray(itemId, list.routeWeightSettings) >= 0) {
 				//show or hide maxSpeed div
-				if (itemId == 'Shortest') {
+				if (itemId == 'Shortest' || itemId == 'Recommended') {
 					$('#maxSpeed').hide();
 					// if maxspeed was set then remove it also from prefs
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.maxspeedIdx,
-						value : null
+						value : 0
 					});
 
 				} else {
@@ -2767,15 +2767,16 @@ var Ui = ( function(w) {'use strict';
 						value : boolVar
 				});
 			
-			} else {
-
+			} else if (itemId != 'maxSpeedInput')  {
+				// update route type if not maxspeedinput updated
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.routeOptionsIdx,
 					value : itemId
 				});
 
 			}
-			theInterface.emit('ui:routingParamsChanged');
+			// update route except when user has updated maxspeed
+			if (itemId != "maxSpeedInput") theInterface.emit('ui:routingParamsChanged');
 		}
 
 		/** 
@@ -2786,10 +2787,14 @@ var Ui = ( function(w) {'use strict';
 
 			var maxspeed = $('#maxSpeedInput').val();
 			// update preferences
+			console.log(maxspeed)
 			theInterface.emit('ui:prefsChanged', {
 				key : preferences.maxspeedIdx,
 				value : maxspeed
 			});
+			
+			theInterface.emit('ui:routingParamsChanged');
+
 		}
 
 

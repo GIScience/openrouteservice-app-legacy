@@ -80,15 +80,15 @@
 								          	<ul class="dropdown-menu" id="dropdown_weighting">
 												<label class="radio">
 													<input type="radio" id="Fastest" name="weighting" checked="checked">
-													<label id="fastestLabel">fastest</label>
-													</label>										
+													<span id="fastestLabel">fastest</span>
+												</label>										
 												<label class="radio">
 													<input type="radio" id="Shortest" name="weighting">
 													<span id="shortestLabel">shortest</span>
 												</label>
 												<label class="radio">
 													<input type="radio" id="Recommended" name="weighting">
-													<label id="recommendedLabel">recommended</label>
+													<span id="recommendedLabel">recommended</span>
 												</label>
 											</ul>
 								    </div>
@@ -387,7 +387,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="panel panelLight">
+						<div class="panel panelLight" style="position: relative;">
 							<div class="guiComponent waypoint unset" draggable="draggable" id="Draft" style="display: none">
 								<span class="clickable removeWaypoint" title="Remove waypoint"> </span>
 								<span class="clickable moveUpWaypoint" href="#" title="Move waypoint up"> </span>
@@ -437,7 +437,10 @@
 								add waypoint
 							</div>
 							<div class="buttonHolder">
-								<button id="resetRoute" class="btn btn-small" type="button"><i class="icon-trash"></i></button>
+								<button id="orderRoute" class="btn btn-small" type="button" title="Reorder Waypoints"><i class="icon-refresh"></i></button>
+							</div>
+							<div class="buttonHolder">
+								<button id="resetRoute" class="btn btn-small" type="button" title="Reset Route"><i class="icon-trash"></i></button>
 							</div>
 						</div>
 						<div id="routeCalculate" style="display:none" class="alert alert-info searchingBlue"></div>

@@ -55,8 +55,11 @@ var Route = ( function(w) {"use strict";
 
 			writer.writeElementString('xls:WeightingMethod', extendedRoutePreferencesWeight || 'Fastest');
 			
+			console.log(extendedRoutePreferencesMaxspeed);
 			if (extendedRoutePreferencesMaxspeed !== null) {
-				writer.writeElementString('xls:MaxSpeed', extendedRoutePreferencesMaxspeed);
+				if (extendedRoutePreferencesMaxspeed > 0) {
+					writer.writeElementString('xls:MaxSpeed', extendedRoutePreferencesMaxspeed);
+				}
 			}
 
 			if (routePref == 'HeavyVehicle') {

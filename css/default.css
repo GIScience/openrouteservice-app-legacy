@@ -1146,14 +1146,21 @@ button.weightOptions {
     margin-top: 5px;
 }
 
-.buttonHolder {
-    margin-top: -25px;
+#resetRoute {
     height: 25px;
+    position: absolute; 
+    right: 5px;
+    bottom: 4px;
 }
 
-#resetRoute {
-    float: right;
+#orderRoute {
+    height: 25px;
+    position: absolute; 
+    right: 45px;
+    bottom: 4px;
 }
+
+
 
 #hazardOptions {
     margin-top: 10px;

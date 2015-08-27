@@ -183,31 +183,34 @@ util = (function() {
                     element.appendChild(new Element('br'));
                 }
             }
-            var places = util.getElementsByTagNameNS(xmlAddress, namespaces.xls, 'Place');
-            var postalCode = util.getElementsByTagNameNS(xmlAddress, namespaces.xls, 'PostalCode');
-            //Place line
+
             var separator = '';
-            if (postalCode[0]) {
-                element.appendChild(new Element('span').update(postalCode[0].textContent));
-                separator = ' ';
-            }
-            //insert the value of each of the following attributes in order, if they are present
+            var places = util.getElementsByTagNameNS(xmlAddress, namespaces.xls, 'Place');
+              //insert the value of each of the following attributes in order, if they are present
             ['MunicipalitySubdivision', 'Municipality', 'CountrySecondarySubdivision', 'CountrySubdivision'].each(function(type) {
                 $A(places).each(function(place) {
                     if (place.getAttribute('type') === type) {
                         //Chrome, Firefox: place.textContent; IE: place.text
                         var content = place.textContent || place.text;
-                        if (content != undefined || content != null) {
+                        if (content !== undefined || content !== null) {
                             element.appendChild(new Element('span', {
                                 'class': 'addressElement'
                             }).update(separator + content));
                             separator = ', ';
                         }
                     }
-                })
+                });
             });
+
+            var postalCode = util.getElementsByTagNameNS(xmlAddress, namespaces.xls, 'PostalCode');
+            //Place line
+            
+            if (postalCode[0]) {
+                element.appendChild(new Element('span').update(separator + postalCode[0].textContent));
+                separator = ' ';
+            }
             var countryCode = xmlAddress.getAttribute('countryCode');
-            if (countryCode != null) {
+            if (countryCode !== null) {
                 element.appendChild(new Element('span').update(', ' + countryCode.toUpperCase()));
             }
             return element;
