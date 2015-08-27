@@ -4,21 +4,20 @@
 		<title>OpenRouteService</title>
 		<meta name="robots" content="index, follow">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 		<link rel="stylesheet" type="text/css" href="lib/rickshaw/rickshaw.min.css">
 		<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" type="text/css" href="css/bootstrap-ext.min.css"><!-- for file upload -->
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"> 
  		<link rel="stylesheet" type="text/css" href="css/default.css">
 		<link rel="stylesheet" type="text/css" href="css/contact_form.css">
-
  	</head>
 	<body id="main">
 		<!-- navigation bar on top -->
 		<div class="navbar navbar-fixed-top" id="navbar">
 			<a class="brand" href="http://www.openrouteservice.org"> <img src="img/logo.png" class="logo" alt="ORS"></a>
 			<a class="brand" id="title" href="http://www.openrouteservice.org">OpenRouteService.org</a>
-			<a href="https://github.com/GIScience/openrouteservice/blob/bugfixes-2.2/release_notes/v2.2.md" style="cursor:pointer;" target="_blank" id="info" class="btn btn-large btn-success disabled">-= ORS succesfully updated!!! New cycle tour profile and turn restrictions for cars & bikes click here for release notes =-</a>
-
+			<!-- <a href="https://github.com/GIScience/openrouteservice/blob/bugfixes-2.2/release_notes/v2.2.md" style="cursor:pointer;" target="_blank" id="info" class="btn btn-large btn-success disabled">ORS succesfully updated!!! New cycle tour profile and turn restrictions for cars & bikes click here for release notes</a> -->
 			<ul id="topMenu">
 				<li>
 					<div class="alert alert-info" id="newToOrs">
@@ -85,7 +84,11 @@
 													</label>										
 												<label class="radio">
 													<input type="radio" id="Shortest" name="weighting">
-													<label id="shortestLabel">shortest</label>
+													<span id="shortestLabel">shortest</span>
+												</label>
+												<label class="radio">
+													<input type="radio" id="Recommended" name="weighting">
+													<label id="recommendedLabel">recommended</label>
 												</label>
 											</ul>
 								    </div>
@@ -301,25 +304,35 @@
 										</select>
 										<span id="slopedCurbLabel" class="label label-info">Maximum Sloped Curb</span>
 									</div>
+									<div class="panel panelMedium" id="maxSpeed">
+										<div class="input-append">
+											<input class="span3" id="maxSpeedInput" type="text" placeholder="maximum speed (kmh or mph)">
+											<button class="btn" type="button" id="maxSpeedBtn">set</button>
+										</div>
+									</div>
 									<div class="panel panelMedium">
 										<div class="btn-group" id="avoidables">
 								        	<button class="btn btn-small btn-danger dropdown-toggle" id="avoidRoadsBtn" data-hover="dropdown" aria-expanded="false"><i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types<span class="caret"></span></button>
 											<ul class="dropdown-menu dropdown_avoid">
 							                  	<label class="checkbox">
 													<input type="checkbox" id="Highway">
-													<label id="avoidMotorLabel">highways</label>
+													<span id="avoidMotorLabel">highways</span>
 												</label>										
 												<label class="checkbox">
 													<input type="checkbox" id="Tollway">
-													<label id="avoidTollLabel">toll roads</label>
+													<span id="avoidTollLabel">toll roads</span>
 												</label>
 												<label class="checkbox">
 													<input type="checkbox" id="Unpavedroads">
-													<label id="avoidunpavedRoadsLabel">unpaved roads</label>
+													<span id="avoidunpavedRoadsLabel">unpaved roads</span>
 												</label>
 												<label class="checkbox">
 													<input type="checkbox" id="Ferry">
-													<label id="avoidFerryLabel">ferrys</label>
+													<span id="avoidFerryLabel">ferrys</span>
+												</label>
+												<label class="checkbox">
+													<input type="checkbox" id="Fords">
+													<span id="avoidFordsLabel">fords</span>
 												</label>
 											</ul>
 								    	</div>
@@ -329,7 +342,11 @@
 							                  	<label class="checkbox">
 													<input type="checkbox" id="Ferry">
 													<label id="avoidFerryLabelPedestrian">ferries</label>
-												</label>										
+												</label>	
+												<label class="checkbox">
+													<input type="checkbox" id="Fords">
+													<label id="avoidFordsLabelPedestrian">fords</label>
+												</label>									
 											</ul>
 								    	</div>
 								    	<div class="btn-group" id="avoidablesBike" style="display: none;">
@@ -346,6 +363,10 @@
 												<label class="checkbox">
 													<input type="checkbox" id="Steps">
 													<label id="avoidStepsLabelBike">steps</label>
+												</label>
+												<label class="checkbox">
+													<input type="checkbox" id="Fords">
+													<label id="avoidFordsLabelBike">fords</label>
 												</label>
 											</ul>
 								    	</div>
@@ -443,7 +464,6 @@
 								</div>
 								<btn class="btn" id="zoomToRouteButton" style="display:none"><i class="icon-resize-full"></i></btn>
 								<div class="collapsibleBody" style="display: none;">
-									<span id ="routeFromTo" class="label label-descrip" style="font-size: 13px;"></span>
 									<div class="directions-main"></div>
 								</div>
 							</div>
@@ -630,8 +650,8 @@
 		</div>
 		
 		<!-- popup for contact form -->
-		<div id="mainform" class="feedback">
-		<a id="feedback_button">Feedback</a>
+		<!-- <div class="feedback">
+			<a id="feedback_button">Feedback</a>
 			<div class="form">
 			<p id="returnmessage"></p>
 				<label>Name: <span>*</span></label>
@@ -642,7 +662,7 @@
 				<textarea id="message" placeholder="Type your message here"></textarea>
 				<input type="button" id="submit_feedback" value="Send Message"/>
 			</div>
-		</div>
+		</div> -->
 
 
 

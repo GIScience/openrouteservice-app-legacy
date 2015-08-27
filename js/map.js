@@ -8,15 +8,15 @@ var Map = ( function() {"use strict";
 		 */
 		var pointAndLineStyle = {
 			line : {
-				stroke : '#009ad5',
-				fill : '#009ad5',
+				stroke : '#FF0066',
+				fill : '#FF0066',
 				strokeWidthEm : 5,
 				strokeEm : '#fb5400',
-				fillEm : '#009ad5'
+				fillEm : '#FF0066'
 			},
 			point : {
 				stroke : '#009ad5',
-				fill : '#009ad5',
+				fill : '#FF0066',
 				strokeWidthEm : 2,
 				strokeEm : '#009ad5',
 				fillEm : '#fba400'
@@ -53,7 +53,7 @@ var Map = ( function() {"use strict";
 			strokeWidth : 5,
 			strokeColor : '${stroke}',
 			fillColor : '${fill}',
-			strokeOpacity: 0.6,
+			strokeOpacity: 0.8,
 			graphicZIndex : 2,
 			cursor : 'pointer'
 		};

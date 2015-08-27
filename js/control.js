@@ -164,9 +164,9 @@ var Controller = ( function(w) {'use strict';
         /**
          * the user sets a waypoint by clicking on the map saying "add waypoint...". The waypoint is displayed on Ui and on the map, internal variables are updated and the address of the waypoint is looked up.
          * @param atts: pos: position of the new waypoint, type: type of the waypoint
+         * @param noRouteRequest: if noRouteRequest is true, then no route request is fired
          */
-        function handleAddWaypointByRightclick(atts) {
-
+        function handleAddWaypointByRightclick(atts,noRouteRequest) {
             var pos = atts.pos;
             var wpType = atts.type;
             var featureId;
@@ -196,7 +196,24 @@ var Controller = ( function(w) {'use strict';
 
             //add the new marker
             var newFeatureId = map.addWaypointAtPos(util.convertPointForMap(pos), wpIndex, wpType);
+            
+            //add lat lon to input field 
+            waypoint.setWaypoint(wpIndex, true);
+            var position = map.convertFeatureIdToPositionString(newFeatureId, map.ROUTE_POINTS);
+            
+            //convert position to string
+            var displayPosition = util.convertPositionStringToLonLat(position);
+            displayPosition = util.convertPointForDisplay(displayPosition);
+            displayPosition = util.convertPointToString(displayPosition);
+        
+            var newIndex = ui.addWaypointResultByRightclick(wpType, wpIndex, displayPosition, true);
+            ui.setWaypointFeatureId(newIndex, newFeatureId, position, map.ROUTE_POINTS);
+            
+            if (!noRouteRequest) {
+                handleWaypointChanged();
+            }
 
+            //start geocoding process and replace lat lon in input if response
             geolocator.reverseGeolocate(pos, reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, wpType, wpIndex, newFeatureId);
         }
 
@@ -210,10 +227,9 @@ var Controller = ( function(w) {'use strict';
          */
         function reverseGeocodeSuccess(addressResult, wpType, wpIndex, featureId, addWaypointAt) {
             
-
             //IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
             var addressResult = addressResult.responseXML ? addressResult.responseXML : util.parseStringToDOM(addressResult.responseText);
-
+            
             //when the service gives response but contains an error the response is handeled as success, not error. We have to check for an error tag here:
             var responseError = util.getElementsByTagNameNS(addressResult, namespaces.xls, 'ErrorList').length;
             if (parseInt(responseError) > 0) {
@@ -223,20 +239,21 @@ var Controller = ( function(w) {'use strict';
 
                 //adapt the waypoint internals:
                 if (addWaypointAt && addWaypointAt >= 0) {
+
                     ui.addWaypointAfter(addWaypointAt - 1, waypoint.getNumWaypoints());
                     waypoint.setWaypoint(addWaypointAt, true);
 
                 }
-                waypoint.setWaypoint(wpIndex, true);
+                //waypoint.setWaypoint(wpIndex, true);
+
 
                 ui.showSearchingAtWaypoint(wpIndex, false);
-                var newIndex = ui.addWaypointResultByRightclick(addressResult, wpType, wpIndex);
+                var newIndex = ui.addWaypointResultByRightclick(wpType, wpIndex, addressResult);
                 var position = map.convertFeatureIdToPositionString(featureId, map.ROUTE_POINTS);
                 ui.setWaypointFeatureId(newIndex, featureId, position, map.ROUTE_POINTS);
-
-                //update preferences
-                handleWaypointChanged();
                 
+
+
                 //cannot be emmited by 'this', so let's use sth that is known inside the callback...
                 ui.emit('control:reverseGeocodeCompleted');
             }
@@ -301,11 +318,14 @@ var Controller = ( function(w) {'use strict';
 
             //re-calculate the waypoint types
             for (var i = 0; i < waypoint.getNumWaypoints(); i++) {
+
                 var type = waypoint.determineWaypointType(i);
                 ui.setWaypointType(i, type);
-
+                
                 featureId = ui.getFeatureIdOfWaypoint(i);
+                
                 var newId = map.setWaypointType(featureId, type);
+                
                 var position = map.convertFeatureIdToPositionString(newId, map.ROUTE_POINTS);
                 ui.setWaypointFeatureId(i, newId, position, map.ROUTE_POINTS);
             }
@@ -721,11 +741,26 @@ var Controller = ( function(w) {'use strict';
             var position = new OpenLayers.LonLat(featureMoved.geometry.x, featureMoved.geometry.y);
             var index = ui.getWaypiontIndexByFeatureId(featureMoved.id);
             var type = waypoint.determineWaypointType(index);
+
+            //add lat lon to input field 
+            var newPosition = map.convertFeatureIdToPositionString(featureMoved.id, map.ROUTE_POINTS);
+
+            //convert position dis
+            var displayPosition = util.convertPositionStringToLonLat(newPosition);
+            displayPosition = util.convertPointForDisplay(displayPosition);
+            displayPosition = util.convertPointToString(displayPosition);
+
+            var newIndex = ui.addWaypointResultByRightclick(type, index, displayPosition, true);
+
+            ui.setWaypointFeatureId(newIndex, featureMoved.id, newPosition, map.ROUTE_POINTS);
+            
+            //update preferences
+            handleWaypointChanged();
+
+            // request for geocoding which will replace lat lon in input field if returned
             geolocator.reverseGeolocate(util.convertPointForDisplay(position), reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, type, index, featureMoved.id, -1);
             ui.invalidateWaypointSearch(index);
-
-            //update preferences
-            handleWaypointChanged(true);
+            
         }
 
         /* *********************************************************************
@@ -760,7 +795,8 @@ var Controller = ( function(w) {'use strict';
                 var routePref = permaInfo[preferences.routeOptionsIdx];
                 
                 var extendedRoutePreferencesWeight = permaInfo[preferences.weightIdx];
-               
+                var extendedRoutePreferencesMaxspeed = permaInfo[preferences.maxspeedIdx];
+
                 var avoidAreas = map.getAvoidAreas();
 
                 var avoidableParams = new Array();
@@ -769,11 +805,13 @@ var Controller = ( function(w) {'use strict';
                 var avoidUnpavedRoads = permaInfo[preferences.avoidUnpavedIdx]; 
                 var avoidFerry = permaInfo[preferences.avoidFerryIdx]; 
                 var avoidSteps = permaInfo[preferences.avoidStepsIdx]; 
+                var avoidFords = permaInfo[preferences.avoidFordsIdx]; 
                 avoidableParams[0] = avoidHighway;
                 avoidableParams[1] = avoidTollway;
                 avoidableParams[2] = avoidUnpavedRoads;
                 avoidableParams[3] = avoidFerry;
                 avoidableParams[4] = avoidSteps;
+                avoidableParams[5] = avoidFords;
 
 
                 var truckParams = new Array();
@@ -805,7 +843,7 @@ var Controller = ( function(w) {'use strict';
                 wheelChairParams[3] = wheelchairTrackType;
                 wheelChairParams[4] = wheelchairSmoothness;
 
-                route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferencesType, wheelChairParams, truckParams, avoidableParams , avoidAreas, extendedRoutePreferencesWeight, calcRouteID);
+                route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferencesType, wheelChairParams, truckParams, avoidableParams , avoidAreas, extendedRoutePreferencesWeight, extendedRoutePreferencesMaxspeed, calcRouteID);
 
                 //try to read a variable that is set after the service response was received. If this variable is not set after a while -> timeout.
                 clearTimeout(timerRoute);
@@ -1120,7 +1158,7 @@ var Controller = ( function(w) {'use strict';
                                 handleAddWaypointByRightclick({
                                     pos : wps[i],
                                     type : type
-                                })
+                                },true)
                             }
                             if (wps.length >= 2) {
                                 handleRoutePresent();
@@ -1412,7 +1450,8 @@ var Controller = ( function(w) {'use strict';
             var smoothness = getVars[preferences.getPrefName(preferences.smoothnessIdx)];
             var routeWeight = getVars[preferences.getPrefName(preferences.weightIdx)];
             var hazardous = getVars[preferences.getPrefName(preferences.hazardousIdx)];
-            
+            var fords = getVars[preferences.getPrefName(preferences.avoidFordsIdx)];
+            var maxspeed = getVars[preferences.getPrefName(preferences.maxspeedIdx)];
 
             pos = preferences.loadMapPosition(pos);
             if (pos && pos != 'null') {
@@ -1439,7 +1478,7 @@ var Controller = ( function(w) {'use strict';
             // if routeOpt is not in getVars then use Car for init
             routeOpt = preferences.loadRouteOptions(routeOpt);
             
-            if (routeOpt == undefined || routeOpt == null || routeOpt == 'undefined') {
+            if (routeOpt === undefined || routeOpt === null || routeOpt == 'undefined') {
                 ui.setRouteOption(list.routePreferences.get('car'));
             } else {
                 ui.setRouteOption(routeOpt); 
@@ -1451,13 +1490,17 @@ var Controller = ( function(w) {'use strict';
             routeWeight = preferences.loadRouteWeight(routeWeight);
             ui.setRouteWeight(routeWeight);
 
-            var avSettings = preferences.loadAvoidables(motorways, tollways, unpaved, ferry, steps);
+            maxspeed = preferences.loadMaxspeed(maxspeed);
+            ui.setMaxspeedParameter(maxspeed);
+
+            var avSettings = preferences.loadAvoidables(motorways, tollways, unpaved, ferry, steps, fords);
             motorways = avSettings[0];
             tollways = avSettings[1];
             unpaved = avSettings[2];
             ferry = avSettings[3];
             steps = avSettings[4];
-            ui.setAvoidables(motorways, tollways, unpaved, ferry, steps);
+            fords = avSettings[5];
+            ui.setAvoidables(motorways, tollways, unpaved, ferry, steps, fords);
             
             // get wheelchair parameters from getVars
             var wheelParameters = preferences.loadWheelParameters(surface, incline, slopedCurb, trackType, smoothness);
@@ -1501,7 +1544,7 @@ var Controller = ( function(w) {'use strict';
                     var type;
 
                     if (waypoints[i].lat == 0 & waypoints[i].lon == 0) {
-                        continue
+                        continue;
                     } else if (i == 0) {
                         type = Waypoint.type.START;
                     } else if (i == waypoints.length - 1) {
@@ -1512,7 +1555,7 @@ var Controller = ( function(w) {'use strict';
                     handleAddWaypointByRightclick({
                         pos : waypoints[i],
                         type : type
-                    })
+                    }, true)
                 }
                 if (waypoints.length >= 2) {
                     handleRoutePresent();
@@ -1542,7 +1585,7 @@ var Controller = ( function(w) {'use strict';
             uiLanguages.loadPoiDistanceUnitData();
 
             //hide or show Ui elements based on the version
-            uiVersions.applyVersion(preferences.version)
+            uiVersions.applyVersion(preferences.version);
 
             //in the user preferences popup, set appropriate element active
             ui.setUserPreferences(preferences.version, preferences.language, preferences.routingLanguage, preferences.distanceUnit);

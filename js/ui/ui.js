@@ -628,24 +628,38 @@ var Ui = ( function(w) {'use strict';
 		}
 
 		/**
-		 * set a waypint with the service respponse after the user requested to set a waypoint by clicking on the map (right click).
-		 * @param results: the service response in XML format
+		 * set a waypoint with the service response after the user requested to set a waypoint by clicking on the map (right click).
+		 * @param resultsOrLatlon: the service response in XML format or a latlon position
 		 * @param typeOfWaypoint: one of START, VIA or END
 		 * @param index: index of the waypoint
 		 * @return: the index of the wayoint
 		 */
-		function addWaypointResultByRightclick(results, typeOfWaypoint, index) {
-			
+		function addWaypointResultByRightclick(typeOfWaypoint, index, results, latlon) {
+
 			var numWaypoints = $('.waypoint').length - 1;
 			while (index >= numWaypoints) {
 				addWaypointAfter(numWaypoints - 1);
 				numWaypoints++;
 			}
 
-			var addressResult = util.getElementsByTagNameNS(results, namespaces.xls, 'Address');
-			addressResult = addressResult ? addressResult[0] : null;
-			var address = util.parseAddress(addressResult);
-			var shortAddress = util.parseAddressShort(addressResult);
+			//checks whether latlon is passed in first call
+			//for geocoding shortaddress is updated in second call
+			if (latlon == true) {
+				var address = util.parseLatlon(results);
+				var shortAddress = results.toString();
+				var stopover = $(".directions-main").find("[waypoint-id=" + index + "]");
+            	stopover.html(shortAddress);
+
+			} else {
+				var addressResult = util.getElementsByTagNameNS(results, namespaces.xls, 'Address');
+				addressResult = addressResult ? addressResult[0] : null;
+				var address = util.parseAddress(addressResult);
+				var shortAddress = util.parseAddressShort(addressResult);
+				//update stopover info from latlon to address
+  		        var stopover = $(".directions-main").find("[waypoint-id=" + index + "]");
+            	stopover.html(shortAddress);
+			}
+
 
 			//insert information as waypoint
 			var rootElement = $('#' + index);
@@ -938,7 +952,9 @@ var Ui = ( function(w) {'use strict';
 		 * @param showSearching: if true, the spinner is shown; hidden otherwise.
 		 */
 		function showSearchingAtWaypoint(wpIndex, showSearching) {
+
 			var wp = $('#' + wpIndex).get(0);
+
 			var inputElement = wp.querySelector('input');
 
 			if (showSearching) {
@@ -1036,6 +1052,7 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+
 		/* *********************************************************************
 		* SEARCH ADDRESS
 		* *********************************************************************/
@@ -1047,7 +1064,7 @@ var Ui = ( function(w) {'use strict';
 		 */
 		function handleSearchAddressInput(e) {
 			clearTimeout(typingTimerSearchAddress);
-			if (e.keyIdentifier != 'Shift' && e.currentTarget.value.length != 0) {
+			if (e.keyIdentifier != 'Shift' && e.currentTarget.value.length !== 0) {
 				typingTimerSearchAddress = setTimeout(function() {
 					//empty search results
 					var resultContainer = document.getElementById('fnct_searchAddressResults');
@@ -1461,8 +1478,8 @@ var Ui = ( function(w) {'use strict';
 					address = $(address).children(".waypointResult");
 					address = $(address).find("li").attr("data-shortaddress");
 					
-					address = address.match(/[^,]*/).toString();
-					address = address.replace(/(\r\n|\n|\r)/gm,", ");
+					//address = address.match(/[^,]*/).toString();
+					//address = address.replace(/(\r\n|\n|\r)/gm,", ");
 					waypoints.push(address);
 				}
 
@@ -1617,9 +1634,6 @@ var Ui = ( function(w) {'use strict';
 			} else {
 				//parse results and show them in the container
 
-				var destination = getRouteDestination();		
-
-				$('#routeFromTo').html(preferences.translate('routeFromTo') + destination);
 				
 				var container = $('#routeInstructionsContainer').get(0);
 				container.show();
@@ -1637,7 +1651,7 @@ var Ui = ( function(w) {'use strict';
 				instructionsList = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstruction');
 				
 				// variable for distance until stopover is reached
-				var numStopovers = 0;
+				var numStopovers = 1;
 				var stopoverDistance = 0;
 				var distArr; 
 				var stopoverTime = 0;
@@ -1646,11 +1660,13 @@ var Ui = ( function(w) {'use strict';
 					var waypoints = getWaypoints();
 				}
 
-				var startpoint = waypoints.splice(0, 1);
-				var endpoint = waypoints.splice(-1, 1);
+				//var startpoint = waypoints.splice(0, 1);
+				//var endpoint = waypoints.splice(-1, 1);
+				var startpoint = waypoints[0];
 
+				var endpoint = waypoints[(waypoints.length)-1];
 				//add startpoint
-				var directionsContainer = buildWaypoint(mapLayer,'start',startpoint,null);
+				var directionsContainer = buildWaypoint(mapLayer,'start',startpoint,0);
 
 				directionsMain.appendChild(directionsContainer);
 
@@ -1834,7 +1850,7 @@ var Ui = ( function(w) {'use strict';
 					});
 
 					//add endpoint
-					var directionsContainer = buildWaypoint(mapLayer,'end',endpoint,null,stopoverDistance,stopoverTime);
+					var directionsContainer = buildWaypoint(mapLayer,'end',endpoint,getWaypoints().length-1,stopoverDistance,stopoverTime);
 					directionsMain.appendChild(directionsContainer);
 				
 	
@@ -1865,7 +1881,7 @@ var Ui = ( function(w) {'use strict';
 					
 					var icon = new Element('span', {
 							'class' : 'badge badge-inverse'
-					}).update(numStopovers+1);
+					}).update(numStopovers);
 
 				} else {
 					var icon = new Element('img', {
@@ -1875,13 +1891,14 @@ var Ui = ( function(w) {'use strict';
 				}
 				
 				var wayPoint = new Element('div', {
-					'class' : 'directions-waypoint'
+					'class' : 'directions-waypoint',
 				})
 			
 				wayPoint.appendChild(icon);
 				
 				var shortAddress = new Element('div', {
-					'class' : 'directions-waypoint-address'
+					'class' : 'directions-waypoint-address',
+					'waypoint-id': viaCounter
 				}).update(address)
 
 
@@ -2513,6 +2530,18 @@ var Ui = ( function(w) {'use strict';
 			
 		}
 
+		/** 
+		 * set maxspeed
+		 * @params maxspeed: is either maxspeed or null
+		 */
+		function setMaxspeedParameter(maxspeed) {
+			
+			if (maxspeed !== null) {
+				jQuery('#maxSpeedInput').val(maxspeed);
+			}
+		
+		}
+
 		/**
 		 * when the user wants to switch between route options
 		 * @param activeRouteOption: the active route option, i.e. one of car,bicycle,pedestrian,wheelchair
@@ -2615,6 +2644,17 @@ var Ui = ( function(w) {'use strict';
 						value : boolVar
 					});
 				}
+				else if (itemId === list.routeAvoidables[5]) {
+					if (permaInfo[preferences.avoidFordsIdx] == "true" || permaInfo[preferences.avoidFordsIdx] == true) {
+						var boolVar = false;
+					} else {
+						var boolVar = true;
+					}
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.avoidFordsIdx,
+						value : boolVar
+					});
+				}
 
 			// if heavy vehicle type
 			} else if ($.inArray(itemValue, list.routePreferencesTypes.get('heavyvehicle')) >= 0) {
@@ -2650,10 +2690,22 @@ var Ui = ( function(w) {'use strict';
 						key : preferences.value_axleloadIdx,
 						value : $("#value_axleload").val()
 					});
-				}
+				}	
 			}
 			// if route weight settings are modified
 			else if ($.inArray(itemId, list.routeWeightSettings) >= 0) {
+				//show or hide maxSpeed div
+				if (itemId == 'Shortest') {
+					$('#maxSpeed').hide();
+					// if maxspeed was set then remove it also from prefs
+					theInterface.emit('ui:prefsChanged', {
+						key : preferences.maxspeedIdx,
+						value : null
+					});
+
+				} else {
+					$('#maxSpeed').show();
+				}
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.weightIdx,
 					value : itemId
@@ -2723,15 +2775,29 @@ var Ui = ( function(w) {'use strict';
 				});
 
 			}
-
 			theInterface.emit('ui:routingParamsChanged');
 		}
+
+		/** 
+		 * The user inserts maximum speed into the form when route profile fastest is selected
+		 * when speed is set preferences are updated 
+		 */
+		function handleMaxspeed() {
+
+			var maxspeed = $('#maxSpeedInput').val();
+			// update preferences
+			theInterface.emit('ui:prefsChanged', {
+				key : preferences.maxspeedIdx,
+				value : maxspeed
+			});
+		}
+
 
 
 
 		/**
 		 * used to activate route weight on startup if necessary
-		 * @param routeWeight: 'Fastest' or 'Shortest'
+		 * @param routeWeight: 'Fastest' or 'Shortest' or 'Recommended'
 		 */
 		function setRouteWeight(routeWeight) {
 
@@ -2740,6 +2806,9 @@ var Ui = ( function(w) {'use strict';
 			
 			} else if (routeWeight = 'Shortest') {
 				$('#Shortest').attr('checked', 'checked');
+
+			} else if (routeWeight = 'Recommended') {
+				$('#Recommended').attr('checked', 'checked');
 			}
 		
 		}
@@ -2876,21 +2945,21 @@ var Ui = ( function(w) {'use strict';
 		 * @param highway: true, if highway checkbox is to be checked
 		 * @param tollway: accordingly.
 		 */
-		function setAvoidables(highway, tollway,unpaved,ferry,steps) {
+		function setAvoidables(highway, tollway,unpaved,ferry,steps,fords) {
 
 			var highwayTrue = (highway === 'true') || highway == true;
 			var tollwayTrue = (tollway === 'true') || tollway == true;
 			var unpavedTrue = (unpaved === 'true') || unpaved == true;
 			var ferryTrue = (ferry === 'true') || ferry == true;
 			var stepsTrue = (steps === 'true') || steps == true;
+			var fordsTrue = (fords === 'true') || fords == true;
 
 			$('[type="checkbox"]').filter('#Highway').prop('checked', highwayTrue);
 			$('[type="checkbox"]').filter('#Tollway').prop('checked', tollwayTrue);
 			$('[type="checkbox"]').filter('#Unpavedroads').prop('checked', unpavedTrue);
 			$('[type="checkbox"]').filter('#Ferry').prop('checked', ferryTrue);		
 			$('[type="checkbox"]').filter('#Steps').prop('checked', stepsTrue);
-
-
+			$('[type="checkbox"]').filter('#Fords').prop('checked', fordsTrue);
 
 		}
 
@@ -3514,17 +3583,18 @@ var Ui = ( function(w) {'use strict';
 			//keep dropdowns open
 			$('.dropdown-menu').on({
 				"click":function(e){
-
 			      	e.stopPropagation();
 			    }
 			});
-
 			$('.btn-group').button();
 			
 			//feedback slide
 			$("#feedback_button").click(function(){
-			$('.form').slideToggle();   		
-		});
+				$('.form').slideToggle();   
+			});
+
+			//maxspeed button listener
+			$('#maxSpeedBtn').click(handleMaxspeed);		
 			
 		}
 
@@ -3598,9 +3668,12 @@ var Ui = ( function(w) {'use strict';
 		Ui.prototype.setTruckParameters = setTruckParameters;
 		
 		Ui.prototype.setHazardousParameter = setHazardousParameter;
+		Ui.prototype.setMaxspeedParameter = setMaxspeedParameter;
 
 		Ui.prototype.handleGpxFiles = handleGpxFiles;
 		Ui.prototype.handleResetRoute = handleResetRoute;
+
+		Ui.prototype.handleMaxspeed = handleMaxspeed; 
 
 		theInterface = new Ui();
 

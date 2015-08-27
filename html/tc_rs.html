@@ -39,7 +39,7 @@ body {
       <td align="left" valign="top" nowrap>Request : </td>
       <td colspan="2"><textarea name="REQUEST" cols="70" rows="20">
 <?xml version="1.0" encoding="UTF-8" ?>
-<xls:XLS xmlns:xls="http://www.opengis.net/xls" xsi:schemaLocation="http://www.opengis.net/xls http://schemas.opengis.net/ols/1.1.0/RouteService.xsd" xmlns:sch="http://www.ascc.net/xml/schematron" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xls:lang="it">
+<xls:XLS xmlns:xls="http://www.opengis.net/xls" xsi:schemaLocation="http://www.opengis.net/xls http://schemas.opengis.net/ols/1.1.0/RouteService.xsd" xmlns:sch="http://www.ascc.net/xml/schematron" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xls:lang="de">
 	<xls:RequestHeader>
 	</xls:RequestHeader>
 	<xls:Request methodName="RouteRequest" version="1.1" requestID="00" maximumResponses="15">
@@ -53,14 +53,14 @@ body {
 					<xls:StartPoint>
 						<xls:Position>
 							<gml:Point xmlns:gml="http://www.opengis.net/gml">
-								<gml:pos srsName="EPSG:4326">8.676780149999997 49.418723600000135</gml:pos>
+								<gml:pos srsName="EPSG:4326">8.57442885249016 49.377624782307144</gml:pos>
 							</gml:Point>
 						</xls:Position>
 					</xls:StartPoint>
 					<xls:EndPoint>
 						<xls:Position>
 							<gml:Point xmlns:gml="http://www.opengis.net/gml">
-								<gml:pos srsName="EPSG:4326">8.682015821997037 49.41503834505884</gml:pos>
+								<gml:pos srsName="EPSG:4326">8.647556599072209 49.40030757466526</gml:pos>
 							</gml:Point>
 						</xls:Position>
 					</xls:EndPoint>
@@ -73,6 +73,13 @@ body {
 		</xls:DetermineRouteRequest>
 	</xls:Request>
 </xls:XLS>
+Name	
+proxy.cgi?url=http%3A%2F%2Fopenls.geog.uni-heidelberg.de%2Ftesting2015%2Fgeocoding	
+proxy.cgi?url=http://openls.geog.uni-heidelberg.de/testing2015/routing	
+proxy.cgi?url=http%3A%2F%2Fopenls.geog.uni-heidelberg.de%2Ftesting2015%2Fgeocoding	
+3 / 41 requests ? 4.6?KB / 656?KB transferred
+.
+map.js:453 Uncaught TypeError: Cannot read property 'style' of undefined
       </textarea></td>
     </tr>
     <tr align="right" valign="bottom">
