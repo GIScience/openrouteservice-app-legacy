@@ -592,6 +592,15 @@ div.olControlPermalink {
     margin-left: -5px;
 }
 
+.restrictionPopup {
+	position: absolute;
+	overflow: hidden;
+	background-color: rgb(255,255,245);
+	background-color: rgba(255,255,245,0.85);
+	box-shadow: 3px 3px 10px rgb(180,180,215);
+	box-shadow: 5px 5px 10px rgba(180,180,215,0.7);
+	border-color: rgb(100,100,100);
+}
 
 /*preferences popup*/
 
