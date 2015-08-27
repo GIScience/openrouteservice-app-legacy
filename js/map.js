@@ -65,6 +65,26 @@ var Map = ( function() {"use strict";
 			strokeOpacity: 0.6,
 			graphicZIndex : 3
 		};
+		
+		//restrictions layer
+		var restrictionTemplate = {
+				pointRadius : 6,
+				fillOpacity : 1,
+				strokeWidth : 5,
+				strokeColor : '#ee2c2c',
+				fillColor : '#ee2c2c',
+				fillOpacity: 1.0,
+				strokeOpacity: 1.0,
+				cursor : 'pointer'
+		};
+		var restrictionSelTemplate = {
+				pointRadius : 6,
+				strokeWidth : 6,
+				strokeColor : '#ffd700',
+				fillColor : '#ffd700',
+				fillOpacity: 1.0,
+				strokeOpacity: 1.0,
+		};
 
 		//POI layer
 		var poiTemplate = {
@@ -112,6 +132,7 @@ var Map = ( function() {"use strict";
 			this.TRACK = 'track';
 			this.ACCESSIBILITY = 'accessiblity';
 			this.HEIGHTS = 'Height Profile';
+			this.RESTRICTION = 'restriction';
 
 			var self = this;
 			/* *********************************************************************
@@ -348,9 +369,31 @@ var Map = ( function() {"use strict";
 			var layerHeights = new OpenLayers.Layer.Vector(this.HEIGHTS, {
 				displayInLayerSwitcher : false
 			});
+			
+			//restrictions
+			var restrictionStyleMap = new OpenLayers.StyleMap({
+				'default' : new OpenLayers.Style(restrictionTemplate),
+				'select' : new OpenLayers.Style(restrictionSelTemplate)
+			});
+			
+			var timeout = 10;
+			var url = namespaces.services.overpass + "?data=[timeout:"+timeout+"];" + 'node(bbox)[maxheight][waterway!~"."]["waterway:sign"!~"."]["seamark:type"!~"."]["obstacle"!="bridge"];out;' + 
+			'node(bbox)["maxheight:physical"~"."][waterway!~"."]["waterway:sign"!~"."]["seamark:type"!~"."]["obstacle"!~"bridge"];out;' + 
+			'(way(bbox)[maxheight][highway];>;);out;' + 
+			'(way(bbox)[maxheight][amenity=parking];>;);out;' +
+			'(way(bbox)["maxheight:physical"][highway];>;);out;';
+			var layerRestriction = make_layer(url, restrictionStyleMap);
+			layerRestriction.styleMap = restrictionStyleMap;
+			layerRestriction.displayInLayerSwitcher = false;
+
+//			layerRestriction.events.register("loadend", layerRestriction, function(){
+//			});
+
+			
+			
 
 			//define order
-			this.theMap.addLayers([layerHeights, layerAccessibility, layerRouteLines, layerTrack, layerGeolocation, layerSearch, layerPoi, layerRoutePoints, layerAvoid]);
+			this.theMap.addLayers([layerHeights, layerAccessibility, layerRouteLines, layerTrack, layerGeolocation, layerSearch, layerPoi, layerRoutePoints, layerAvoid, layerRestriction]);
 
 			/* *********************************************************************
 			 * MAP CONTROLS
@@ -376,9 +419,19 @@ var Map = ( function() {"use strict";
 			//this.theMap.addControl(new OpenLayers.Control.Permalink());
 			//this.theMap.addControl(new OpenLayers.Control.Attribution());
 
-			this.selectMarker = new OpenLayers.Control.SelectFeature([layerSearch, layerGeolocation, layerRoutePoints, layerPoi, layerRouteLines], {
+			this.selectMarker = new OpenLayers.Control.SelectFeature([layerSearch, layerGeolocation, layerRoutePoints, layerPoi, layerRouteLines, layerRestriction], {
 				hover : true
+				callbacks: {
+					click: function(e) {
+						if(e.layer == layerRestriction) {
+								smartPopup.onFeatureSelect(e);
+						}
+					}
+				}
 			});
+			
+			var smartPopup = new SmartPopup(self.theMap, layerRestriction);
+			
 			//highlighting of the markers's DOM representation (address text) on mouseover
 			this.selectMarker.onSelect = function(feature) {
 				self.emit('map:markerEmph', feature.id);
@@ -488,12 +541,15 @@ var Map = ( function() {"use strict";
 					},
 					'click' : function(e) {
 						closeContextMenu();
+						smartPopup.onFeatureUnselect;
 					},
 					'dblclick' : function(e) {
 						closeContextMenu();
+						smartPopup.onFeatureUnselect;
 					},
 					'dblrightclick' : function(e) {
 						closeContextMenu();
+						smartPopup.onFeatureUnselect;
 					}
 				}
 			});
