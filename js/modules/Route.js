@@ -54,8 +54,7 @@ var Route = ( function(w) {"use strict";
 			writer.writeStartElement('xls:ExtendedRoutePreference');
 
 			writer.writeElementString('xls:WeightingMethod', extendedRoutePreferencesWeight || 'Fastest');
-			
-			console.log(extendedRoutePreferencesMaxspeed);
+		
 			if (extendedRoutePreferencesMaxspeed !== null) {
 				if (extendedRoutePreferencesMaxspeed > 0) {
 					writer.writeElementString('xls:MaxSpeed', extendedRoutePreferencesMaxspeed);

@@ -445,6 +445,51 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+
+		/**
+		 * The user clicked on the button to reorder waypoints inverted; internal attributes are adapted.
+		 */
+		function handleReorderWaypoints() {
+
+			var j = 1;
+			var i = $('.waypoint').length-1;
+
+			// last waypoint is inserted before first and j is incremented
+			// so in the second run last waypoint is inserted before second item etc.
+			// this is repeated as long as j is smaller i
+			while (j < i) {
+
+				var waypointElement = $('.waypoint').last();
+
+				var swapElement = $('.waypoint').eq(j);
+				waypointElement.insertBefore(swapElement);
+
+				// internal ids are updated
+				$('.waypoint').each(function (index) {
+					if ($(this).attr('id') != 'Draft') {
+						$(this).attr('id', index-1);
+					}
+				});
+							
+				j++;
+			}
+
+			// create object with indices
+			var indices = {};
+			$('.waypoint').each(function (index) {
+				if ($(this).attr('id') != 'Draft') {
+					indices[index] = index-1;
+				}
+			});
+
+
+			//adapt marker-IDs, decide about wpType
+			theInterface.emit('ui:movedWaypoints', indices);
+
+			theInterface.emit('ui:routingParamsChanged');
+			
+		}
+
 		/**
 		 * The user clicked on the button to move the waypoint up in the list of waypoints for the route calculation. The waypoint element is moved upwards; internal attributes are adapted.
 		 * @param e: the event
@@ -1469,7 +1514,7 @@ var Ui = ( function(w) {'use strict';
 		 * returns the addresses of all waypoints
 		 */
 		 function getWaypoints() {
-		 	var waypoints = new Array();
+		 	var waypoints = [];
 		 	
 			 for (var i = 0; i < $('.waypoint').length-1; i++) {
 				var address = $('#' + i).get(0);
@@ -3525,6 +3570,7 @@ var Ui = ( function(w) {'use strict';
 			$('.moveDownWaypoint').click(handleMoveDownWaypointClick);
 			$('.removeWaypoint').click(handleRemoveWaypointClick);
 			$('.searchAgainButton').click(handleSearchAgainWaypointClick);
+			$('#orderRoute').click(handleReorderWaypoints);
 
 			//route
 			$('#zoomToRouteButton').click(handleZoomToRouteClick);

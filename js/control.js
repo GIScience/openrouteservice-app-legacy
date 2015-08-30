@@ -270,29 +270,37 @@ var Controller = ( function(w) {'use strict';
          * after waypoints have been moved, re-calculations are necessary: update of internal variables, waypoint type exchange,...
          */
         function handleMovedWaypoints(atts) {
-            var index1 = atts.id1;
-            var index2 = atts.id2;
 
-            //waypoint-internal:
-            var set1 = waypoint.getWaypointSet(index1);
-            var set2 = waypoint.getWaypointSet(index2);
-            waypoint.setWaypoint(index1, set2);
-            waypoint.setWaypoint(index2, set1);
+            var j = 0;
+            var i = Object.keys(atts).length-1;
 
-            // map.switchMarkers(index1, index2);
+            while (j < i) {
 
-            var type = selectWaypointType(index1);
-            var ftId = ui.getFeatureIdOfWaypoint(index1);
-            var newFtId = map.setWaypointType(ftId, type);
-            var position = map.convertFeatureIdToPositionString(newFtId, map.ROUTE_POINTS);
-            ui.setWaypointFeatureId(index1, newFtId, position, map.ROUTE_POINTS);
+                var wp1 = atts[Object.keys(atts)[j]];
+                var wp2 = atts[Object.keys(atts)[i]];
 
-            var type = selectWaypointType(index2);
-            var ftId = ui.getFeatureIdOfWaypoint(index2);
-            newFtId = map.setWaypointType(ftId, type);
-            var position = map.convertFeatureIdToPositionString(newFtId, map.ROUTE_POINTS);
-            ui.setWaypointFeatureId(index2, newFtId, position, map.ROUTE_POINTS);
+                //waypoint-internal:
+                var set1 = waypoint.getWaypointSet(j);
+                var set2 = waypoint.getWaypointSet(i);
+                waypoint.setWaypoint(j, set2);
+                waypoint.setWaypoint(i, set1);
 
+                var type = selectWaypointType(j);
+                var ftId = ui.getFeatureIdOfWaypoint(j);
+                var newFtId = map.setWaypointType(ftId, type);
+                var position = map.convertFeatureIdToPositionString(newFtId, map.ROUTE_POINTS);
+                ui.setWaypointFeatureId(j, newFtId, position, map.ROUTE_POINTS);
+
+                var type = selectWaypointType(i);
+                var ftId = ui.getFeatureIdOfWaypoint(i);
+                newFtId = map.setWaypointType(ftId, type);
+                var position = map.convertFeatureIdToPositionString(newFtId, map.ROUTE_POINTS);
+                ui.setWaypointFeatureId(i, newFtId, position, map.ROUTE_POINTS);
+         
+                j++;
+                i--;
+            }
+           
             //update preferences
             handleWaypointChanged(true);
         }
@@ -793,7 +801,6 @@ var Controller = ( function(w) {'use strict';
                 
                 var extendedRoutePreferencesWeight = permaInfo[preferences.weightIdx];
                 var extendedRoutePreferencesMaxspeed = permaInfo[preferences.maxspeedIdx];
-                console.log(extendedRoutePreferencesMaxspeed);
                 var avoidAreas = map.getAvoidAreas();
 
                 var avoidableParams = [];
