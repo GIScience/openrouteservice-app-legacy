@@ -14,7 +14,7 @@ $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 $headers .= 'From:' . $email. "\r\n"; // Sender's Email
 $headers .= 'Cc:' . $email. "\r\n"; // Carbon copy to Sender
 $template = '<div style="padding:50px; color:white;">Hello ' . $name . ',<br/>'
-. '<br/>Thank you...! For Contacting OpenRouteService.<br/><br/>'
+. '<br/>Thank you for contacting OpenRouteService.<br/><br/>'
 . 'Name:' . $name . '<br/>'
 . 'Email:' . $email . '<br/>'
 . 'Message:' . $message . '<br/><br/>'
