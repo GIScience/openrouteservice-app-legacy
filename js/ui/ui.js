@@ -474,6 +474,7 @@ var Ui = ( function(w) {'use strict';
 				j++;
 			}
 
+	
 			// create object with indices
 			var indices = {};
 			$('.waypoint').each(function (index) {
@@ -481,7 +482,17 @@ var Ui = ( function(w) {'use strict';
 					indices[index] = index-1;
 				}
 			});
+			
+			//the waypoint which has been moved up is the first waypoint: hide move up button
+			$('#' + 0 + '> .moveUpWaypoint').hide();
+			$('#' + 0 + '> .moveDownWaypoint').show();
+			
 
+			//the waypoint which has been moved down is the last waypoint: hide the move down button
+			var lastWp = $('.waypoint').length-2;
+			$('#' + lastWp + '> .moveUpWaypoint').show();
+			$('#' + lastWp + '> .moveDownWaypoint').hide();
+			
 
 			//adapt marker-IDs, decide about wpType
 			theInterface.emit('ui:movedWaypoints', indices);
