@@ -280,29 +280,31 @@ var Controller = ( function(w) {'use strict';
                 var wp2 = atts[Object.keys(atts)[i]];
 
                 //waypoint-internal:
-                var set1 = waypoint.getWaypointSet(j);
-                var set2 = waypoint.getWaypointSet(i);
+                var set1 = waypoint.getWaypointSet(wp1);
+                var set2 = waypoint.getWaypointSet(wp2);
+                console.log(set1, set2)
                 waypoint.setWaypoint(j, set2);
                 waypoint.setWaypoint(i, set1);
-
-                var type = selectWaypointType(j);
-                var ftId = ui.getFeatureIdOfWaypoint(j);
+                var type = selectWaypointType(wp1);
+                var ftId = ui.getFeatureIdOfWaypoint(wp1);
                 var newFtId = map.setWaypointType(ftId, type);
                 var position = map.convertFeatureIdToPositionString(newFtId, map.ROUTE_POINTS);
-                ui.setWaypointFeatureId(j, newFtId, position, map.ROUTE_POINTS);
+                ui.setWaypointFeatureId(wp1, newFtId, position, map.ROUTE_POINTS);
 
-                var type = selectWaypointType(i);
-                var ftId = ui.getFeatureIdOfWaypoint(i);
+                var type = selectWaypointType(wp2);
+                var ftId = ui.getFeatureIdOfWaypoint(wp2);
                 newFtId = map.setWaypointType(ftId, type);
                 var position = map.convertFeatureIdToPositionString(newFtId, map.ROUTE_POINTS);
-                ui.setWaypointFeatureId(i, newFtId, position, map.ROUTE_POINTS);
+                ui.setWaypointFeatureId(wp2, newFtId, position, map.ROUTE_POINTS);
          
                 j++;
                 i--;
+                //update preferences
+                handleWaypointChanged(true);
+
             }
            
-            //update preferences
-            handleWaypointChanged(true);
+            
         }
 
         /**
