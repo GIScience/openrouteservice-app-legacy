@@ -25,7 +25,7 @@
 	include ('ConnectToWebService.php');
 	
 
-	//GETGeocode.php?FreeFormAdress=Bonn, Meckenheimer Allee&MaxResponse=20
+		//?FreeFormAdress=Bonn, Meckenheimer Allee&MaxResponse=20
 	if(isset($_GET["FreeFormAdress"]) && isset($_GET["MaxResponse"])){
 		$freeform = $_GET["FreeFormAdress"];
 		$maxresponse = $_GET["MaxResponse"];
@@ -35,7 +35,7 @@
 		//*** Sende Request an Web Service ***
 		
 		//Server
-		$http_response = post('openls.geog.uni-heidelberg.de', '/osm/eu/geocoding', $request, 20, 80);
+		$http_response = post('openls.geog.uni-heidelberg.de', '/osm/geocoding', $request, 20, 80);
 
 		//*** Request auswerten ***
 		//Header entfernen
@@ -52,10 +52,10 @@
 		}
 	}
 
-	//?Lon=8.00155179216218&Lat=52.2675937206745&MaxResponse=20
-	else if(isset($_GET["Lon"]) && isset($_GET["Lat"]) && isset($_GET["MaxResponse"])){
-		$lon = $_GET["Lon"];
-		$lat = $_GET["Lat"];
+	//?lon=8.00155179216218&lat=52.2675937206745&MaxResponse=20
+	else if(isset($_GET["lon"]) && isset($_GET["lat"]) && isset($_GET["MaxResponse"])){
+		$lon = $_GET["lon"];
+		$lat = $_GET["lat"];
 		$maxresponse = $_GET["MaxResponse"];
 
 		$request = createReverseGeocodeRequest($lon, $lat, $maxresponse);

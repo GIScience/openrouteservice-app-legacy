@@ -33,6 +33,8 @@ function createRequest($startcoord, $endcoord, $viaPoints_XML, $language, $dista
 						<xls:RoutePreference>$routepref</xls:RoutePreference>
 							<xls:ExtendedRoutePreference>
 									<xls:WeightingMethod>$weighting</xls:WeightingMethod>
+									$hgv
+									$haz
 							</xls:ExtendedRoutePreference>
 								<xls:WayPointList>
 								<xls:StartPoint>
@@ -52,7 +54,7 @@ function createRequest($startcoord, $endcoord, $viaPoints_XML, $language, $dista
 								</xls:EndPoint>
 							</xls:WayPointList>
 							<xls:AvoidList>
-								$avoidAreas
+								$avArea
 								$avoidFeatures
 							</xls:AvoidList>
 						</xls:RoutePlan>
