@@ -1,7 +1,7 @@
 
 var Controller = ( function(w) {'use strict';
 
-        var $ = w.jQuery, ui = w.Ui, uiVersions = w.Versions, uiLanguages = w.Languages, waypoint = w.Waypoint, geolocator = w.Geolocator, searchAddress = w.SearchAddress, searchPoi = w.SearchPoi, route = w.Route, analyse = w.AccessibilityAnalysis, preferences = w.Preferences, openRouteService = w.OpenRouteService, Map = w.Map,
+        var $ = w.jQuery, ui = w.Ui, uiVersions = w.Versions, uiLanguages = w.Languages, waypoint = w.Waypoint, geolocator = w.Geolocator, searchAddress = w.SearchAddress, searchPoi = w.SearchPoi, route = w.Route, analyse = w.AccessibilityAnalysis, preferences = w.Preferences, openRouteService = w.OpenRouteService, restrictions = w.Restrictions, Map = w.Map,
         //the map
         map,
         //Timeout for service responses
@@ -904,6 +904,9 @@ var Controller = ( function(w) {'use strict';
                     // each route instruction has a part of this lineString as geometry for this instruction
                     var routeLines = route.parseResultsToLineStrings(results, util.convertPointForMap);
                     var routePoints = route.parseResultsToCornerPoints(results, util.convertPointForMap);
+                    
+                    //Get the restrictions along the route
+                    map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString));
 
                     var featureIds = map.updateRoute(routeLines, routePoints);
 

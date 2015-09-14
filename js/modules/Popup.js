@@ -108,12 +108,12 @@ SmartPopup.prototype.onFeatureSelect = function(feature) {
 			rows.push ('<tr><th scope="row">cluster</th><td>' + places + '</td></tr>');
 		}
 		 */		
-		if (!data.osm_id) {
-			var point = data.geometry.clone();
-			point.transform(selectedFeature.layer.map.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
-			rows.push ('<tr><th scope="row">lon</th><td>' + (point.x).toFixed(4) + '</td></tr>');
-			rows.push ('<tr><th scope="row">lat</th><td>' + (point.y).toFixed(4) + '</td></tr>');
-		}
+//		if (!data.osm_id) {
+//			var point = data.geometry.clone();
+//			point.transform(selectedFeature.layer.map.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
+//			rows.push ('<tr><th scope="row">lon</th><td>' + (point.x).toFixed(4) + '</td></tr>');
+//			rows.push ('<tr><th scope="row">lat</th><td>' + (point.y).toFixed(4) + '</td></tr>');
+//		}
 
 //		if (data.osm_id) {
 //			var osm_id_link = '<a target="_blank" title="' + OpenLayers.i18n("info_title") + '" ' + 
@@ -147,14 +147,10 @@ SmartPopup.prototype.onFeatureSelect = function(feature) {
 
 	}
 	
-//	var menuObject = .clone();
 	SmartPopup.popup = new OpenLayers.Popup.Anchored('smartPopup', 
 			selectedFeature.geometry.getBounds().getCenterLonLat(),
 			null, html, selectedFeature.layer.anchor, false, null
 	);
-	SmartPopup.popup.div.className = window.jQuery('#mapRestrictionPopup').attr('class');
-//	console.log(window.jQuery('#mapRestrictionPopup').clone().get(0));
-//	console.log(SmartPopup.popup.div);
 	SmartPopup.popup.autoSize=true;
 	SmartPopup.popup.opacity=0.9;
 	SmartPopup.popup.border='1px';
@@ -185,7 +181,6 @@ SmartPopup.prototype.onMoveStart = function() {
 		this.map.removePopup(SmartPopup.popup);
 		SmartPopup.popup.destroy();
 		SmartPopup.popup = null;
-		//this.selectControl.unselectAll();
 	}
 };
 
