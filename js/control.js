@@ -282,7 +282,6 @@ var Controller = ( function(w) {'use strict';
                 //waypoint-internal:
                 var set1 = waypoint.getWaypointSet(wp1);
                 var set2 = waypoint.getWaypointSet(wp2);
-                console.log(set1, set2)
                 waypoint.setWaypoint(j, set2);
                 waypoint.setWaypoint(i, set1);
                 var type = selectWaypointType(wp1);
