@@ -43,6 +43,7 @@ namespaces.services = {
 	directory : 'http://openls.geog.uni-heidelberg.de/testing2015/directory', //for POI search requests
 	analyse : 'http://openls.geog.uni-heidelberg.de/testing2015/analysis', //for accessibility analysis requests
 	shorten: 'http://openls.geog.uni-heidelberg.de/testing2015/shortenlink', //for bitly shortlink conversion
+	overpass : 'http://overpass-api.de/api/interpreter', //for specified restriction requests
 	wps : '' //for calculation of polygon around route for POI search
 	//profile: '' 			//for height profile of route
 	
