@@ -8,7 +8,7 @@ var Preferences = ( function(w) {'use strict';
 	var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version','avUnpaved', 'avFerry','value_length','value_height','value_weight','value_width','value_axleload','surface','incline','slopedCurb', 'hazardous', 'routeWeight', 'avSteps', 'routeOptType', 'trackType', 'smoothness', 'avFords', 'maxspeed'];
 
 	//store information that can be used for the permalink
-	permaInfo = Array.apply(null, new Array(30)).map(String.prototype.valueOf,'null')
+	permaInfo = Array.apply(null, new Array(30)).map(String.prototype.valueOf,'null');
 
 	/**
 	 * Constructor
@@ -260,6 +260,7 @@ var Preferences = ( function(w) {'use strict';
 		if (!zoom) {
 			//if GET is not set, use cookie
 			zoom = readCookie(prefNames[this.zoomIdx]);
+			console.log(zoom)
 		}
 		//if neither GET nor cookie have been set -> use default which is set automatically
 
@@ -278,6 +279,7 @@ var Preferences = ( function(w) {'use strict';
 		if (!layerCode) {
 			//if GET is not set, use cookie
 			layerCode = readCookie(prefNames[this.layerIdx]);
+			console.log(layerCode)
 		}
 		//if neither GET nor cookie have been set -> use default which is set automatically
 
@@ -620,10 +622,13 @@ var Preferences = ( function(w) {'use strict';
 	 * @return: the content of the cookie
 	 */
 	function readCookie(name) {
+
+
 		if (!name) {
 			return null;
 		}
 		var allCookies = document.cookie;
+		console.log(allCookies,name)
 		if (allCookies.indexOf(name) == -1) {
 			return null;
 		}
@@ -640,6 +645,7 @@ var Preferences = ( function(w) {'use strict';
 			//cookie exists
 			cookiesAvailable = true;
 		}
+		console.log(cookieData)
 		return cookieData;
 	}
 
@@ -662,7 +668,7 @@ var Preferences = ( function(w) {'use strict';
 		document.cookie = prefNames[this.positionIdx] + "=" + escape(position) + ";expires=" + exdate.toUTCString();
 		document.cookie = prefNames[this.zoomIdx] + "=" + escape(zoomLvl) + ";expires=" + exdate.toUTCString();
 		document.cookie = prefNames[this.layerIdx] + "=" + escape(layerCode) + ";expires=" + exdate.toUTCString();
-
+		console.log(document.cookie)
 		permaInfo[this.positionIdx] = escape(position);
 		permaInfo[this.zoomIdx] = escape(zoomLvl);
 		permaInfo[this.layerIdx] = escape(layerCode);

@@ -1457,6 +1457,17 @@ var Controller = ( function(w) {'use strict';
             var fords = getVars[preferences.getPrefName(preferences.avoidFordsIdx)];
             var maxspeed = getVars[preferences.getPrefName(preferences.maxspeedIdx)];
 
+            // either layer, pos or zoom is read, as soon as one is read the eventlistener on map
+            // updates the other two and overwrites the cookie info
+
+            console.log(map.theMap.events)
+            console.log(map.theMap.emitMapChangedEvent)
+            
+            layer = preferences.loadMapLayer(layer);
+            if (layer) {
+                map.restoreLayerPrefs(layer);
+            }
+
             pos = preferences.loadMapPosition(pos);
             if (pos && pos != 'null') {
                 pos = util.convertPointForMap(pos);

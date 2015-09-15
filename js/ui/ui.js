@@ -3462,6 +3462,7 @@ var Ui = ( function(w) {'use strict';
 			var language = $('#languagePrefs').find(":selected").text();
 			var routingLanguage = $('#routingLanguagePrefs').find(":selected").text();
 			var distanceUnit = $('#unitPrefs').find(":selected").text();
+			//var baseLayer = $('input[name=layerSwitcherPanel_baseLayers]:checked').val();
 
 			//version: one of list.version
 			version = preferences.reverseTranslate(version);

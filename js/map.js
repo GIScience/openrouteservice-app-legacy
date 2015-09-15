@@ -684,10 +684,12 @@ var Map = ( function() {"use strict";
 				var layer = layers[i];
 				if (layer.isBaseLayer) {
 					str += (layer == baseLayer) ? "B" : "0";
+					console.log(baseLayer)
 				} else {
 					str += (layer.getVisibility()) ? "T" : "F";
 				}
 			}
+			console.log(str);
 			return str;
 		}
 
