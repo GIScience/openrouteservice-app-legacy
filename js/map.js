@@ -65,6 +65,35 @@ var Map = ( function() {"use strict";
 			strokeOpacity: 0.6,
 			graphicZIndex : 3
 		};
+		
+		//restrictions layer
+		var restrictionTemplate = {
+				pointRadius : 3,
+				fillOpacity : 1,
+				strokeWidth : 3,
+				strokeColor : '#FFA500',
+				fillColor : '#FFA500',
+				fillOpacity: 0.8,
+				strokeOpacity: 0.8,
+				cursor : 'pointer'
+		};
+		var restrictionSelTemplate = {
+				pointRadius : 3,
+				strokeWidth : 3,
+				strokeColor : '#ffd700',
+				fillColor : '#ffd700',
+				fillOpacity: 0.8,
+				strokeOpacity: 0.8,
+		};
+		
+		//restrictions bounding box style
+		var styleRestrictionBbox = {
+				strokeColor: "#00FF00",
+				strokeOpacity: 0.4,
+				strokeWidth: 3,
+				fillColor: "#00FF00",
+				fillOpacity: 0.2
+		};
 
 		//POI layer
 		var poiTemplate = {
@@ -112,6 +141,9 @@ var Map = ( function() {"use strict";
 			this.TRACK = 'track';
 			this.ACCESSIBILITY = 'accessiblity';
 			this.HEIGHTS = 'Height Profile';
+			this.RESTRICTIONS = 'restrictions';
+			this.TEMPRESTRICTIONS = 'tempRestrictions';
+			this.BBOX = 'bbox';
 
 			var self = this;
 			/* *********************************************************************
@@ -348,9 +380,27 @@ var Map = ( function() {"use strict";
 			var layerHeights = new OpenLayers.Layer.Vector(this.HEIGHTS, {
 				displayInLayerSwitcher : false
 			});
+			
+			//restrictions
+			var restrictionStyleMap = new OpenLayers.StyleMap({
+				'default' : new OpenLayers.Style(restrictionTemplate),
+				'select' : new OpenLayers.Style(restrictionSelTemplate)
+			});
+			
+			
+			var layerRestriction = new OpenLayers.Layer.Vector(this.RESTRICTIONS);
+			layerRestriction.styleMap = restrictionStyleMap;
+			layerRestriction.displayInLayerSwitcher = false;
+			layerRestriction.redraw(true);
+			
+			var layerRestrictionBbox = new OpenLayers.Layer.Vector(this.BBOX);
+			layerRestrictionBbox.displayInLayerSwitcher = false;
+			layerRestrictionBbox.styleMap = styleRestrictionBbox;
+			layerRestrictionBbox.redraw(true);
+			this.theMap.addLayers([layerRestrictionBbox]);
 
 			//define order
-			this.theMap.addLayers([layerHeights, layerAccessibility, layerRouteLines, layerTrack, layerGeolocation, layerSearch, layerPoi, layerRoutePoints, layerAvoid]);
+			this.theMap.addLayers([layerHeights, layerAccessibility, layerRouteLines, layerRestrictionBbox, layerRestriction, layerTrack, layerGeolocation, layerSearch, layerPoi, layerRoutePoints, layerAvoid]);
 
 			/* *********************************************************************
 			 * MAP CONTROLS
@@ -376,9 +426,19 @@ var Map = ( function() {"use strict";
 			//this.theMap.addControl(new OpenLayers.Control.Permalink());
 			//this.theMap.addControl(new OpenLayers.Control.Attribution());
 
-			this.selectMarker = new OpenLayers.Control.SelectFeature([layerSearch, layerGeolocation, layerRoutePoints, layerPoi, layerRouteLines], {
-				hover : true
+			this.selectMarker = new OpenLayers.Control.SelectFeature([layerSearch, layerGeolocation, layerRoutePoints, layerPoi, layerRouteLines, layerRestriction], {
+				hover : true,
+				callbacks: {
+					click: function(e) {
+						if(e.layer == layerRestriction) {
+								smartPopup.onFeatureSelect(e);
+						}
+					}
+				}
 			});
+			
+			var smartPopup = new SmartPopup(self.theMap, layerRestriction);
+			
 			//highlighting of the markers's DOM representation (address text) on mouseover
 			this.selectMarker.onSelect = function(feature) {
 				self.emit('map:markerEmph', feature.id);
@@ -488,12 +548,15 @@ var Map = ( function() {"use strict";
 					},
 					'click' : function(e) {
 						closeContextMenu();
+						smartPopup.onFeatureUnselect;
 					},
 					'dblclick' : function(e) {
 						closeContextMenu();
+						smartPopup.onFeatureUnselect;
 					},
 					'dblrightclick' : function(e) {
 						closeContextMenu();
+						smartPopup.onFeatureUnselect;
 					}
 				}
 			});
@@ -895,8 +958,6 @@ var Map = ( function() {"use strict";
 				iconEm : Ui.markerIcons[type][1],
 				type: type
 			});
-			//console.log(newFeature)
-			//console.log(layerWaypoints.features)
 			layerWaypoints.addFeatures([newFeature]);
 			return newFeature.id;
 		}
@@ -1320,6 +1381,58 @@ var Map = ( function() {"use strict";
 				layer.addFeatures([newFeature]);
 			}
 		}
+		
+		/**
+		 * adds the restrictions along the route to the map
+		 *  @param query: array [queryString, vectorArray] representing the overpass query and the polygon for display
+		 */
+		function updateRestrictionsLayer(query) {
+			var showRestrictionsBBOX = false;
+			var overpassQuery = query[0];
+			var bboxArray = query[1];
+			var map = this.theMap;
+			
+			var restrictionStyleMap = new OpenLayers.StyleMap({
+				'default' : new OpenLayers.Style(restrictionTemplate),
+				'select' : new OpenLayers.Style(restrictionSelTemplate)
+			});
+			var styleRestrictionBbox = {
+					strokeColor: "#00FF00",
+					strokeOpacity: 0.4,
+					strokeWidth: 3,
+					fillColor: "#00FF00",
+					fillOpacity: 0.2
+			};
+			
+			//display the restrictions bounding polygon
+			if (showRestrictionsBBOX == true){
+				map.getLayersByName(this.BBOX)[0].removeAllFeatures();
+				var ln = new OpenLayers.Geometry.LinearRing(bboxArray);
+				var pf = new OpenLayers.Feature.Vector(ln, null, styleRestrictionBbox);
+				map.getLayersByName(this.BBOX)[0].addFeatures([pf]);
+			}
+						
+			map.getLayersByName(this.RESTRICTIONS)[0].removeAllFeatures();
+			
+			//TODO: Remove workaround to make layer load... won't load without adding dummy layer to the map
+			if(map.getLayersByName(this.TEMPRESTRICTIONS).length > 0){
+				map.getLayersByName(this.TEMPRESTRICTIONS)[0].removeAllFeatures();
+				map.getLayersByName(this.TEMPRESTRICTIONS)[0].destroy();
+			}
+			var layerRestrictionNew = make_layer(overpassQuery, restrictionStyleMap);
+			layerRestrictionNew.setName(this.TEMPRESTRICTIONS);
+			layerRestrictionNew.setVisibility(false);
+			this.theMap.addLayers([layerRestrictionNew]);
+			
+			var this_ = this;
+			layerRestrictionNew.events.register("loadend", layerRestrictionNew, function(){
+				//clone features from dummy layer to Restrictions layer and remove the dummy layer
+				map.getLayersByName(this_.RESTRICTIONS)[0].addFeatures(map.getLayersByName(this_.TEMPRESTRICTIONS)[0].clone().features);
+				map.getLayersByName(this_.TEMPRESTRICTIONS)[0].removeAllFeatures();
+				map.getLayersByName(this_.TEMPRESTRICTIONS)[0].destroy();
+			});
+		}
+		
 
 		/**
 		 * removes all accessibility analysis features from the layer
@@ -1636,6 +1749,8 @@ var Map = ( function() {"use strict";
 		map.prototype.addAvoidAreas = addAvoidAreas;
 		map.prototype.getAvoidAreas = getAvoidAreas;
 		map.prototype.getAvoidAreasString = getAvoidAreasString;
+		
+		map.prototype.updateRestrictionsLayer = updateRestrictionsLayer;
 
 		map.prototype.addAccessiblityPolygon = addAccessiblityPolygon;
 		map.prototype.eraseAccessibilityFeatures = eraseAccessibilityFeatures;
