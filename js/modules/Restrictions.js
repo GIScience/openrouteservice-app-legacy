@@ -27,8 +27,8 @@ var Restrictions = ( function(w) {"use strict";
 			var timeout = 20;
 			var query = namespaces.services.overpass + "?data=[timeout:"+timeout+"];";
 			
-			query += 'node(' + polygonString + ')[maxheight][waterway!~"."]["waterway:sign"!~"."]["seamark:type"!~"."]["obstacle"!="bridge"];out;' + 
-			'node(' + polygonString + ')["maxheight:physical"~"."][waterway!~"."]["waterway:sign"!~"."]["seamark:type"!~"."]["obstacle"!~"bridge"];out;'
+			query += 'node(' + polygonString + ')[maxheight][waterway!~"."]["waterway:sign"!~"."]["seamark:type"!~"."]["obstacle"!="bridge"];out;';// + 
+			//'node(' + polygonString + ')["maxheight:physical"~"."][waterway!~"."]["waterway:sign"!~"."]["seamark:type"!~"."]["obstacle"!~"bridge"];out;'
 			return query;
 		}
 		
@@ -42,7 +42,7 @@ var Restrictions = ( function(w) {"use strict";
 			var epsg4326 = new OpenLayers.Projection('EPSG:4326');
 			var epsg900913 = new OpenLayers.Projection('EPSG:900913');
 			//Empirical constant for polygon size
-			var delta = 0.015;
+			var delta = 0.025;
 			//float length to keep overpass query short
 			var floatCut = 3;
 			
