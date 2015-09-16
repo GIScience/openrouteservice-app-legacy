@@ -141,9 +141,9 @@ var Map = ( function() {"use strict";
 			this.TRACK = 'track';
 			this.ACCESSIBILITY = 'accessiblity';
 			this.HEIGHTS = 'Height Profile';
-			this.RESTRICTIONS = 'restrictions';
+			this.RESTRICTIONS = 'Restrictions';
 			this.TEMPRESTRICTIONS = 'tempRestrictions';
-			this.BBOX = 'bbox';
+			this.BBOX = 'Restrictions Boundingbox';
 
 			var self = this;
 			/* *********************************************************************
@@ -389,12 +389,14 @@ var Map = ( function() {"use strict";
 			
 			
 			var layerRestriction = new OpenLayers.Layer.Vector(this.RESTRICTIONS);
+			layerRestriction.setName(this.RESTRICTIONS);
 			layerRestriction.styleMap = restrictionStyleMap;
-			layerRestriction.displayInLayerSwitcher = false;
+			layerRestriction.displayInLayerSwitcher = true;
 			layerRestriction.redraw(true);
 			
 			var layerRestrictionBbox = new OpenLayers.Layer.Vector(this.BBOX);
-			layerRestrictionBbox.displayInLayerSwitcher = false;
+			layerRestrictionBbox.setName(this.BBOX);
+			layerRestrictionBbox.displayInLayerSwitcher = true;
 			layerRestrictionBbox.styleMap = styleRestrictionBbox;
 			layerRestrictionBbox.redraw(true);
 			this.theMap.addLayers([layerRestrictionBbox]);
@@ -1385,7 +1387,6 @@ var Map = ( function() {"use strict";
 		 *  @param query: array [queryString, vectorArray] representing the overpass query and the polygon for display
 		 */
 		function updateRestrictionsLayer(query) {
-			var showRestrictionsBBOX = false;
 			var overpassQuery = query[0];
 			var bboxArray = query[1];
 			var map = this.theMap;
@@ -1403,13 +1404,11 @@ var Map = ( function() {"use strict";
 			};
 			
 			//display the restrictions bounding polygon
-			if (showRestrictionsBBOX == true){
 				map.getLayersByName(this.BBOX)[0].removeAllFeatures();
 				var ln = new OpenLayers.Geometry.LinearRing(bboxArray);
 				var pf = new OpenLayers.Feature.Vector(ln, null, styleRestrictionBbox);
 				map.getLayersByName(this.BBOX)[0].addFeatures([pf]);
-			}
-						
+			
 			map.getLayersByName(this.RESTRICTIONS)[0].removeAllFeatures();
 			
 			//TODO: Remove workaround to make layer load... won't load without adding dummy layer to the map
@@ -1420,6 +1419,7 @@ var Map = ( function() {"use strict";
 			var layerRestrictionNew = make_layer(overpassQuery, restrictionStyleMap);
 			layerRestrictionNew.setName(this.TEMPRESTRICTIONS);
 			layerRestrictionNew.setVisibility(false);
+			layerRestrictionNew.displayInLayerSwitcher = false;
 			this.theMap.addLayers([layerRestrictionNew]);
 			
 			var this_ = this;
