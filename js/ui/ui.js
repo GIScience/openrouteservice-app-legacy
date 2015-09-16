@@ -2135,7 +2135,6 @@ var Ui = ( function(w) {'use strict';
 			var avoidablesPedestrian = $('#avoidablesPedestrian');
 			var wheel = $('#wheelchairOptions');
 			var wheelParameters = $('#wheelchairParameters');
-			console.log(optionType);
 			if (optionType === 'car') {
 				avoidablesPedestrian.hide();
 				car.show();
@@ -3640,10 +3639,13 @@ var Ui = ( function(w) {'use strict';
 			$('#infoButton,#infoPanel').hover(function() {
 			      $('#infoPanel').show();
 			      $('#infoButton').hide();
+			      $('.feedback').hide();
 			}, function() {
 			      $('#infoPanel').hide();
 			      $('#infoButton').show();
+			      $('.feedback').show();
 			});
+
 
 			//keep dropdowns open
 			$('.dropdown-menu').on({
