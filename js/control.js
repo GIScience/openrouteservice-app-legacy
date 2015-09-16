@@ -1463,8 +1463,6 @@ var Controller = ( function(w) {'use strict';
             // either layer, pos or zoom is read, as soon as one is read the eventlistener on map
             // updates the other two and overwrites the cookie info
 
-            console.log(map.theMap.events)
-            console.log(map.theMap.emitMapChangedEvent)
             
             layer = preferences.loadMapLayer(layer);
             if (layer) {

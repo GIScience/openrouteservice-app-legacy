@@ -2135,6 +2135,7 @@ var Ui = ( function(w) {'use strict';
 			var avoidablesPedestrian = $('#avoidablesPedestrian');
 			var wheel = $('#wheelchairOptions');
 			var wheelParameters = $('#wheelchairParameters');
+			console.log(optionType);
 			if (optionType === 'car') {
 				avoidablesPedestrian.hide();
 				car.show();
@@ -2184,10 +2185,11 @@ var Ui = ( function(w) {'use strict';
 				wheel.hide();
 				wheelParameters.hide();
 			}
-			else {
+			else if (optionType === 'wheelchair') {
 				car.hide();
 				avoidables.hide();
 				avoidablesBike.hide();
+				avoidablesPedestrian.show();
 				bike.hide();
 				ped.hide();
 				truck.hide();

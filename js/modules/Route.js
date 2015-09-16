@@ -55,7 +55,9 @@ var Route = ( function(w) {"use strict";
 
 			writer.writeElementString('xls:WeightingMethod', extendedRoutePreferencesWeight || 'Fastest');
 		
-			writer.writeElementString('xls:SurfaceInformation', 'true');
+			if (routePref == 'Bicycle') {
+				writer.writeElementString('xls:SurfaceInformation', 'true');
+			}
 
 
 			if (extendedRoutePreferencesMaxspeed !== null) {

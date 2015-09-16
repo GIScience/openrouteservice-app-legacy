@@ -260,7 +260,6 @@ var Preferences = ( function(w) {'use strict';
 		if (!zoom) {
 			//if GET is not set, use cookie
 			zoom = readCookie(prefNames[this.zoomIdx]);
-			console.log(zoom)
 		}
 		//if neither GET nor cookie have been set -> use default which is set automatically
 
@@ -279,7 +278,6 @@ var Preferences = ( function(w) {'use strict';
 		if (!layerCode) {
 			//if GET is not set, use cookie
 			layerCode = readCookie(prefNames[this.layerIdx]);
-			console.log(layerCode)
 		}
 		//if neither GET nor cookie have been set -> use default which is set automatically
 
@@ -628,7 +626,6 @@ var Preferences = ( function(w) {'use strict';
 			return null;
 		}
 		var allCookies = document.cookie;
-		console.log(allCookies,name)
 		if (allCookies.indexOf(name) == -1) {
 			return null;
 		}
@@ -645,7 +642,6 @@ var Preferences = ( function(w) {'use strict';
 			//cookie exists
 			cookiesAvailable = true;
 		}
-		console.log(cookieData)
 		return cookieData;
 	}
 
@@ -668,7 +664,6 @@ var Preferences = ( function(w) {'use strict';
 		document.cookie = prefNames[this.positionIdx] + "=" + escape(position) + ";expires=" + exdate.toUTCString();
 		document.cookie = prefNames[this.zoomIdx] + "=" + escape(zoomLvl) + ";expires=" + exdate.toUTCString();
 		document.cookie = prefNames[this.layerIdx] + "=" + escape(layerCode) + ";expires=" + exdate.toUTCString();
-		console.log(document.cookie)
 		permaInfo[this.positionIdx] = escape(position);
 		permaInfo[this.zoomIdx] = escape(zoomLvl);
 		permaInfo[this.layerIdx] = escape(layerCode);
