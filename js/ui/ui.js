@@ -445,6 +445,62 @@ var Ui = ( function(w) {'use strict';
 			}
 		}
 
+
+		/**
+		 * The user clicked on the button to reorder waypoints inverted; internal attributes are adapted.
+		 */
+		function handleReorderWaypoints() {
+
+			var j = 1;
+			var i = $('.waypoint').length-1;
+
+			// last waypoint is inserted before first and j is incremented
+			// so in the second run last waypoint is inserted before second item etc.
+			// this is repeated as long as j is smaller i
+			while (j < i) {
+
+				var waypointElement = $('.waypoint').last();
+
+				var swapElement = $('.waypoint').eq(j);
+				waypointElement.insertBefore(swapElement);
+
+				// internal ids are updated
+				$('.waypoint').each(function (index) {
+					if ($(this).attr('id') != 'Draft') {
+						$(this).attr('id', index-1);
+					}
+				});
+							
+				j++;
+			}
+
+	
+			// create object with indices
+			var indices = {};
+			$('.waypoint').each(function (index) {
+				if ($(this).attr('id') != 'Draft') {
+					indices[index] = index-1;
+				}
+			});
+			
+			//the waypoint which has been moved up is the first waypoint: hide move up button
+			$('#' + 0 + '> .moveUpWaypoint').hide();
+			$('#' + 0 + '> .moveDownWaypoint').show();
+			
+
+			//the waypoint which has been moved down is the last waypoint: hide the move down button
+			var lastWp = $('.waypoint').length-2;
+			$('#' + lastWp + '> .moveUpWaypoint').show();
+			$('#' + lastWp + '> .moveDownWaypoint').hide();
+			
+
+			//adapt marker-IDs, decide about wpType
+			theInterface.emit('ui:movedWaypoints', indices);
+
+			theInterface.emit('ui:routingParamsChanged');
+			
+		}
+
 		/**
 		 * The user clicked on the button to move the waypoint up in the list of waypoints for the route calculation. The waypoint element is moved upwards; internal attributes are adapted.
 		 * @param e: the event
@@ -471,7 +527,7 @@ var Ui = ( function(w) {'use strict';
 			var numWaypoints = $('.waypoint').length - 1;
 
 			//decide which button to show
-			if (currentIndex == 0) {
+			if (currentIndex === 0) {
 				//the waypoint which has been moved up is the first waypoint: hide move up button
 				$(waypointElement.get(0).querySelector('.moveUpWaypoint')).hide();
 				$(waypointElement.get(0).querySelector('.moveDownWaypoint')).show();
@@ -483,11 +539,11 @@ var Ui = ( function(w) {'use strict';
 
 			if (succIndex == (numWaypoints - 1)) {
 				//the waypoint which has been moved down is the last waypoint: hide the move down button
-				$(previousElement.get(0).querySelector('.moveUpWaypoint')).show()
+				$(previousElement.get(0).querySelector('.moveUpWaypoint')).show();
 				$(previousElement.get(0).querySelector('.moveDownWaypoint')).hide();
 			} else {
 				//show both
-				$(previousElement.get(0).querySelector('.moveUpWaypoint')).show()
+				$(previousElement.get(0).querySelector('.moveUpWaypoint')).show();
 				$(previousElement.get(0).querySelector('.moveDownWaypoint')).show();
 			}
 
@@ -1469,7 +1525,7 @@ var Ui = ( function(w) {'use strict';
 		 * returns the addresses of all waypoints
 		 */
 		 function getWaypoints() {
-		 	var waypoints = new Array();
+		 	var waypoints = [];
 		 	
 			 for (var i = 0; i < $('.waypoint').length-1; i++) {
 				var address = $('#' + i).get(0);
@@ -2128,10 +2184,11 @@ var Ui = ( function(w) {'use strict';
 				wheel.hide();
 				wheelParameters.hide();
 			}
-			else {
+			else if (optionType === 'wheelchair') {
 				car.hide();
 				avoidables.hide();
 				avoidablesBike.hide();
+				avoidablesPedestrian.show();
 				bike.hide();
 				ped.hide();
 				truck.hide();
@@ -2695,12 +2752,12 @@ var Ui = ( function(w) {'use strict';
 			// if route weight settings are modified
 			else if ($.inArray(itemId, list.routeWeightSettings) >= 0) {
 				//show or hide maxSpeed div
-				if (itemId == 'Shortest') {
+				if (itemId == 'Shortest' || itemId == 'Recommended') {
 					$('#maxSpeed').hide();
 					// if maxspeed was set then remove it also from prefs
 					theInterface.emit('ui:prefsChanged', {
 						key : preferences.maxspeedIdx,
-						value : null
+						value : 0
 					});
 
 				} else {
@@ -2767,15 +2824,16 @@ var Ui = ( function(w) {'use strict';
 						value : boolVar
 				});
 			
-			} else {
-
+			} else if (itemId != 'maxSpeedInput')  {
+				// update route type if not maxspeedinput updated
 				theInterface.emit('ui:prefsChanged', {
 					key : preferences.routeOptionsIdx,
 					value : itemId
 				});
 
 			}
-			theInterface.emit('ui:routingParamsChanged');
+			// update route except when user has updated maxspeed
+			if (itemId != "maxSpeedInput") theInterface.emit('ui:routingParamsChanged');
 		}
 
 		/** 
@@ -2786,10 +2844,14 @@ var Ui = ( function(w) {'use strict';
 
 			var maxspeed = $('#maxSpeedInput').val();
 			// update preferences
+			console.log(maxspeed)
 			theInterface.emit('ui:prefsChanged', {
 				key : preferences.maxspeedIdx,
 				value : maxspeed
 			});
+			
+			theInterface.emit('ui:routingParamsChanged');
+
 		}
 
 
@@ -3401,6 +3463,7 @@ var Ui = ( function(w) {'use strict';
 			var language = $('#languagePrefs').find(":selected").text();
 			var routingLanguage = $('#routingLanguagePrefs').find(":selected").text();
 			var distanceUnit = $('#unitPrefs').find(":selected").text();
+			//var baseLayer = $('input[name=layerSwitcherPanel_baseLayers]:checked').val();
 
 			//version: one of list.version
 			version = preferences.reverseTranslate(version);
@@ -3520,6 +3583,7 @@ var Ui = ( function(w) {'use strict';
 			$('.moveDownWaypoint').click(handleMoveDownWaypointClick);
 			$('.removeWaypoint').click(handleRemoveWaypointClick);
 			$('.searchAgainButton').click(handleSearchAgainWaypointClick);
+			$('#orderRoute').click(handleReorderWaypoints);
 
 			//route
 			$('#zoomToRouteButton').click(handleZoomToRouteClick);
@@ -3575,10 +3639,13 @@ var Ui = ( function(w) {'use strict';
 			$('#infoButton,#infoPanel').hover(function() {
 			      $('#infoPanel').show();
 			      $('#infoButton').hide();
+			      $('.feedback').hide();
 			}, function() {
 			      $('#infoPanel').hide();
 			      $('#infoButton').show();
+			      $('.feedback').show();
 			});
+
 
 			//keep dropdowns open
 			$('.dropdown-menu').on({

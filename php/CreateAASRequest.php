@@ -21,37 +21,36 @@
 ///////////////////////////////////////////////////
 //Function die XML Request an Accessibility Analyse erstellt
 
-function createRequest($minutes, $routepreference, $method, $interval,$position) {
-	$request = "<?xml version="1.0" encoding="UTF-8" ?>
-<aas:AAS version="1.0" xmlns:aas="http://www.geoinform.fh-mainz.de/aas" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.geoinform.fh-mainz.de/aas">
-	<aas:RequestHeader>
-	</aas:RequestHeader>
-	<aas:Request methodName="AccessibilityRequest" version="1.0" requestID="00">
-		<aas:DetermineAccessibilityRequest>
-			<aas:Accessibility>
-				<aas:AccessibilityPreference>
-					<aas:Time Duration=\"PT0H".$minutes."M00S\">
-				</aas:AccessibilityPreference>
-				<aas:AccessibilitySettings>
-					<aas:RoutePreference>$routepreference</aas:RoutePreference>
-					<aas:Method>$method</aas:Method>
-					<aas:Interval>$interval</aas:Interval>
-				</aas:AccessibilitySettings>
-				<aas:LocationPoint>
-					<aas:Position>
-						<gml:Point xmlns:gml="http://www.opengis.net/gml" srsName="EPSG:4326">
-							<gml:pos>$position</gml:pos>
-						</gml:Point>
-					</aas:Position>
-				</aas:LocationPoint>
-			</aas:Accessibility>
-			<aas:AccessibilityGeometryRequest>
-				<aas:PolygonPreference>Detailed</aas:PolygonPreference>
-			</aas:AccessibilityGeometryRequest>
-		</aas:DetermineAccessibilityRequest>
-	</aas:Request>
-</aas:AAS>";
-	return $request;
+function createAnalysisRequest($position, $minutes, $routepreference, $method, $interval) {
+	$request = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+			<aas:AAS version=\"1.0\" xmlns:aas=\"http://www.geoinform.fh-mainz.de/aas\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.geoinform.fh-mainz.de/aas\">
+			<aas:RequestHeader>
+			</aas:RequestHeader>
+			<aas:Request methodName=\"AccessibilityRequest\" version=\"1.0\" requestID=\"00\">
+				<aas:DetermineAccessibilityRequest>
+					<aas:Accessibility>
+						<aas:AccessibilityPreference>
+							<aas:Time Duration=\"PT0H".$minutes."M00S\" />
+						</aas:AccessibilityPreference>
+						<aas:AccessibilitySettings>
+							<aas:RoutePreference>$routepreference</aas:RoutePreference>
+							<aas:Method>$method</aas:Method>
+							<aas:Interval>$interval</aas:Interval>
+						</aas:AccessibilitySettings>
+						<aas:LocationPoint>
+							<aas:Position>
+								<gml:Point xmlns:gml=\"http://www.opengis.net/gml\" srsName=\"EPSG:4326\">
+									<gml:pos>$position</gml:pos>
+								</gml:Point>
+							</aas:Position>
+						</aas:LocationPoint>
+					</aas:Accessibility>
+					<aas:AccessibilityGeometryRequest>
+						<aas:PolygonPreference>Detailed</aas:PolygonPreference>
+					</aas:AccessibilityGeometryRequest>
+				</aas:DetermineAccessibilityRequest>
+			</aas:Request>
+		</aas:AAS>";
+		return $request;
 }
-
 ?>

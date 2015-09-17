@@ -147,6 +147,9 @@ util = (function() {
             if (v1 != null) {
                 StreetAddress = v1[0]
             };
+
+            var hasStreetElement = false;
+
             if (StreetAddress != null) {
                 var Streets = util.getElementsByTagNameNS(StreetAddress, namespaces.xls, 'Street');
                 var Building = util.getElementsByTagNameNS(StreetAddress, namespaces.xls, 'Building')[0];
@@ -181,34 +184,88 @@ util = (function() {
                 }
                 if (streetline > 0) {
                     element.appendChild(new Element('br'));
+                    hasStreetElement = true;
                 }
             }
-            var places = util.getElementsByTagNameNS(xmlAddress, namespaces.xls, 'Place');
-            var postalCode = util.getElementsByTagNameNS(xmlAddress, namespaces.xls, 'PostalCode');
-            //Place line
+
             var separator = '';
-            if (postalCode[0]) {
-                element.appendChild(new Element('span').update(postalCode[0].textContent));
-                separator = ' ';
-            }
-            //insert the value of each of the following attributes in order, if they are present
-            ['MunicipalitySubdivision', 'Municipality', 'CountrySecondarySubdivision', 'CountrySubdivision'].each(function(type) {
-                $A(places).each(function(place) {
+
+            var places = util.getElementsByTagNameNS(xmlAddress, namespaces.xls, 'Place');
+
+            if (places)
+            {
+               var elemCountry = null;
+               var elemMunicipalitySubdivision = null;
+               var elemMunicipality = null;
+               var elemCountrySecondarySubdivision = null;
+               var elemCountrySubdivision = null;
+
+               //insert the value of each of the following attributes in order, if they are present
+               ['MunicipalitySubdivision', 'Municipality', 'CountrySecondarySubdivision', 'CountrySubdivision', 'Country'].each(function(type) {
+                  $A(places).each(function(place) {
                     if (place.getAttribute('type') === type) {
                         //Chrome, Firefox: place.textContent; IE: place.text
                         var content = place.textContent || place.text;
-                        if (content != undefined || content != null) {
-                            element.appendChild(new Element('span', {
-                                'class': 'addressElement'
-                            }).update(separator + content));
-                            separator = ', ';
+                        if (content !== undefined || content !== null) {
+                          if (type == 'MunicipalitySubdivision')
+                              elemMunicipalitySubdivision = content;
+                          else if (type == 'Municipality')
+                              elemMunicipality = content;
+                          else if (type == 'CountrySecondarySubdivision')
+                              elemCountrySecondarySubdivision = content;  
+                          else if (type == 'CountrySubdivision')
+                              elemCountrySubdivision = content;
+                          else if (type == 'Country')
+                              elemCountry = content;
                         }
                     }
-                })
-            });
-            var countryCode = xmlAddress.getAttribute('countryCode');
-            if (countryCode != null) {
-                element.appendChild(new Element('span').update(', ' + countryCode.toUpperCase()));
+                  });
+               });
+
+               var placesText = '';
+          
+               if (hasStreetElement)  {
+            	   var postalCode = util.getElementsByTagNameNS(xmlAddress, namespaces.xls, 'PostalCode');
+            
+            	   if (postalCode[0]) {
+                     placesText = placesText + postalCode[0].textContent+ '  ';
+            	   }
+
+               	   if (elemMunicipality) 
+                     placesText = placesText + elemMunicipality;
+
+                   if (elemMunicipalitySubdivision && elemMunicipalitySubdivision != elemMunicipality) 
+                     placesText = placesText + ' (' + elemMunicipalitySubdivision + ') ';
+                   
+                   placesText = placesText + ', ';
+               	}
+               	else {
+                   if (elemMunicipalitySubdivision) 
+                      placesText = placesText + elemMunicipalitySubdivision + ', ';
+                   
+		           if (elemMunicipality && elemMunicipality != elemMunicipalitySubdivision) 
+                      placesText = placesText + elemMunicipality + ', ';
+               }
+                
+               if (elemCountrySecondarySubdivision && elemCountrySecondarySubdivision != elemMunicipality) 
+                  placesText = placesText + elemCountrySecondarySubdivision + ', ';
+
+               if (elemCountrySubdivision && elemCountrySubdivision != elemCountrySecondarySubdivision && elemCountrySubdivision != elemMunicipality) 
+                  placesText = placesText + elemCountrySubdivision + ', ';
+
+               element.appendChild(new Element('span', {
+                  'class': 'addressElement'
+                   }).update(placesText));
+            }
+
+            if (elemCountry) {
+                element.appendChild(new Element('span').update(elemCountry));              
+            }
+            else {
+             	var countryCode = xmlAddress.getAttribute('countryCode');
+	            if (countryCode !== null) {
+                    element.appendChild(new Element('span').update(countryCode.toUpperCase()));
+            	}
             }
             return element;
         },

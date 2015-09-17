@@ -54,9 +54,16 @@ var Route = ( function(w) {"use strict";
 			writer.writeStartElement('xls:ExtendedRoutePreference');
 
 			writer.writeElementString('xls:WeightingMethod', extendedRoutePreferencesWeight || 'Fastest');
-			
+		
+			if (routePref == 'Bicycle') {
+				writer.writeElementString('xls:SurfaceInformation', 'true');
+			}
+
+
 			if (extendedRoutePreferencesMaxspeed !== null) {
-				writer.writeElementString('xls:MaxSpeed', extendedRoutePreferencesMaxspeed);
+				if (extendedRoutePreferencesMaxspeed > 0) {
+					writer.writeElementString('xls:MaxSpeed', extendedRoutePreferencesMaxspeed);
+				}
 			}
 
 			if (routePref == 'HeavyVehicle') {
@@ -129,7 +136,7 @@ var Route = ( function(w) {"use strict";
 			//<xls:WayPointList>
 			writer.writeStartElement('xls:WayPointList');
 			for (var i = 0; i < routePoints.length; i++) {
-				if (i == 0) {
+				if (i === 0) {
 					writer.writeStartElement('xls:StartPoint');
 				} else if (i == (routePoints.length - 1)) {
 					writer.writeStartElement('xls:EndPoint');
@@ -190,22 +197,22 @@ var Route = ( function(w) {"use strict";
 			}
 
 			
-			if (avoidableParams[0] == 'true' || avoidableParams[0] == true) {
+			if (avoidableParams[0] == 'true' || avoidableParams[0] === true) {
 				writer.writeElementString('xls:AvoidFeature', 'Highway');
 			}
-			if (avoidableParams[1] == 'true' || avoidableParams[1] == true) {
+			if (avoidableParams[1] == 'true' || avoidableParams[1] === true) {
 				writer.writeElementString('xls:AvoidFeature', 'Tollway');
 			}
-			if (avoidableParams[2] == 'true' || avoidableParams[2] == true) {
+			if (avoidableParams[2] == 'true' || avoidableParams[2] === true) {
 				writer.writeElementString('xls:AvoidFeature', 'Unpavedroads');
 			}
-			if (avoidableParams[3] == 'true' || avoidableParams[3] == true) {
+			if (avoidableParams[3] == 'true' || avoidableParams[3] === true) {
 				writer.writeElementString('xls:AvoidFeature', 'Ferry');
 			}
-			if (avoidableParams[4] == 'true' || avoidableParams[4] == true) {
+			if (avoidableParams[4] == 'true' || avoidableParams[4] === true) {
 				writer.writeElementString('xls:AvoidFeature', 'Steps');
 			}
-			if (avoidableParams[5] == 'true' || avoidableParams[5] == true) {
+			if (avoidableParams[5] == 'true' || avoidableParams[5] === true) {
 				writer.writeElementString('xls:AvoidFeature', 'Fords');
 			}
 			

@@ -70,8 +70,8 @@
 										</button>
 										<button id="pedestrian" class="btn routeOptionsButton"><img src="img/picto-dude.png">
 										</button>
-										<!--<button id="wheelchair" class="btn routeOptionsButton"><img src="img/picto-wheelchair.png">
-										</button>-->
+										<button id="wheelchair" class="btn routeOptionsButton"><img src="img/picto-wheelchair.png">
+										</button>
 										<button id="heavyvehicle" class="btn routeOptionsButton"><img src="img/picto-truck.png">
 										</button>
 									</div>
@@ -80,15 +80,15 @@
 								          	<ul class="dropdown-menu" id="dropdown_weighting">
 												<label class="radio">
 													<input type="radio" id="Fastest" name="weighting" checked="checked">
-													<label id="fastestLabel">fastest</label>
-													</label>										
+													<span id="fastestLabel">fastest</span>
+												</label>										
 												<label class="radio">
 													<input type="radio" id="Shortest" name="weighting">
 													<span id="shortestLabel">shortest</span>
 												</label>
 												<label class="radio">
 													<input type="radio" id="Recommended" name="weighting">
-													<label id="recommendedLabel">recommended</label>
+													<span id="recommendedLabel">recommended</span>
 												</label>
 											</ul>
 								    </div>
@@ -387,7 +387,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="panel panelLight">
+						<div class="panel panelLight" style="position: relative;">
 							<div class="guiComponent waypoint unset" draggable="draggable" id="Draft" style="display: none">
 								<span class="clickable removeWaypoint" title="Remove waypoint"> </span>
 								<span class="clickable moveUpWaypoint" href="#" title="Move waypoint up"> </span>
@@ -437,7 +437,10 @@
 								add waypoint
 							</div>
 							<div class="buttonHolder">
-								<button id="resetRoute" class="btn btn-small" type="button"><i class="icon-trash"></i></button>
+								<button id="orderRoute" class="btn btn-small" type="button" title="Reorder Waypoints"><i class="icon-refresh"></i></button>
+							</div>
+							<div class="buttonHolder">
+								<button id="resetRoute" class="btn btn-small" type="button" title="Reset Route"><i class="icon-trash"></i></button>
 							</div>
 						</div>
 						<div id="routeCalculate" style="display:none" class="alert alert-info searchingBlue"></div>
@@ -565,7 +568,7 @@
 				</div>
 			</div>
 		</div>
-<div id="infoButton"></div>
+			<!-- <div id="infoButton"></div>-->		
 		<div id="map" class="panel panelLight olMap">
 			<!-- Map goes here -->
 				<div id="infoButton"></div>
@@ -577,7 +580,6 @@
 					<div id="open">open</div>
 				</div>
 			</div>
-
 		</div>
 
 		<!-- Height profile draft -->
@@ -648,9 +650,9 @@
 				</button>
 			</div>
 		</div>
-		
 		<!-- popup for contact form -->
-		<!-- <div class="feedback">
+
+		<div class="feedback">
 			<a id="feedback_button">Feedback</a>
 			<div class="form">
 			<p id="returnmessage"></p>
@@ -662,8 +664,7 @@
 				<textarea id="message" placeholder="Type your message here"></textarea>
 				<input type="button" id="submit_feedback" value="Send Message"/>
 			</div>
-		</div> -->
-
+		</div>
 
 
 		<!-- Libraries -->
@@ -700,13 +701,18 @@
 		<script type="text/javascript" src="js/modules/SearchPoi.js"></script>
 		<script type="text/javascript" src="js/modules/Route.js"></script>
 		<script type="text/javascript" src="js/modules/AccessibilityAnalysis.js"></script>
+		<script type="text/javascript" src="js/modules/Popup.js"></script>
+		<script type="text/javascript" src="js/modules/Restrictions.js"></script>
 		<script type="text/javascript" src="js/ui/ui.js"></script>
 		<script type="text/javascript" src="js/ui/Versions.js"></script>
 		<script type="text/javascript" src="js/ui/Languages.js"></script>
 		<script type="text/javascript" src="js/map.js"></script>
 		<script type="text/javascript" src="js/control.js"></script>
 		<script type="text/javascript" src="js/ORS.OpenLayers.js"></script>
+		<script type="text/javascript" src="js/overpass.js"></script>
 		<script type="text/javascript" src="js/contact_form.js"></script>
+		<script type="text/javascript" src="js/javascript.util.min.js"></script>
+		<script type="text/javascript" src="js/jsts.min.js"></script>
 
 		<!-- ORS language files alphabertically sorted -->
 		<script type="text/javascript" src="js/lang/lang-cz.js"></script>

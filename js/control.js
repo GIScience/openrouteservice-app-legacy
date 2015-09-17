@@ -1,7 +1,7 @@
 
 var Controller = ( function(w) {'use strict';
 
-        var $ = w.jQuery, ui = w.Ui, uiVersions = w.Versions, uiLanguages = w.Languages, waypoint = w.Waypoint, geolocator = w.Geolocator, searchAddress = w.SearchAddress, searchPoi = w.SearchPoi, route = w.Route, analyse = w.AccessibilityAnalysis, preferences = w.Preferences, openRouteService = w.OpenRouteService, Map = w.Map,
+        var $ = w.jQuery, ui = w.Ui, uiVersions = w.Versions, uiLanguages = w.Languages, waypoint = w.Waypoint, geolocator = w.Geolocator, searchAddress = w.SearchAddress, searchPoi = w.SearchPoi, route = w.Route, analyse = w.AccessibilityAnalysis, preferences = w.Preferences, openRouteService = w.OpenRouteService, restrictions = w.Restrictions, Map = w.Map,
         //the map
         map,
         //Timeout for service responses
@@ -44,7 +44,6 @@ var Controller = ( function(w) {'use strict';
          */
         function handleWaypointRequest(atts) {
 
-
             ui.searchWaypointChangeToSearchingState(true, atts.wpIndex);
             var lastSearchResults = atts.searchIds;
             lastSearchResults = lastSearchResults ? lastSearchResults.split(' ') : null;
@@ -63,7 +62,6 @@ var Controller = ( function(w) {'use strict';
          * @param wpIndex: index of the waypoint
          */
         function handleSearchWaypointResults(results, wpIndex) {
-
             //IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
             results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
 
@@ -83,6 +81,7 @@ var Controller = ( function(w) {'use strict';
 
                         var listOfFeatures = map.addSearchAddressResultMarkers(listOfPoints, wpIndex);
                         ui.updateSearchWaypointResultList(results, listOfFeatures, map.SEARCH, wpIndex);
+
 
                     } else {
                         ui.showSearchWaypointError(wpIndex)
@@ -271,31 +270,40 @@ var Controller = ( function(w) {'use strict';
          * after waypoints have been moved, re-calculations are necessary: update of internal variables, waypoint type exchange,...
          */
         function handleMovedWaypoints(atts) {
-            var index1 = atts.id1;
-            var index2 = atts.id2;
 
-            //waypoint-internal:
-            var set1 = waypoint.getWaypointSet(index1);
-            var set2 = waypoint.getWaypointSet(index2);
-            waypoint.setWaypoint(index1, set2);
-            waypoint.setWaypoint(index2, set1);
+            var j = 0;
+            var i = Object.keys(atts).length-1;
 
-            // map.switchMarkers(index1, index2);
+            while (j < i) {
 
-            var type = selectWaypointType(index1);
-            var ftId = ui.getFeatureIdOfWaypoint(index1);
-            var newFtId = map.setWaypointType(ftId, type);
-            var position = map.convertFeatureIdToPositionString(newFtId, map.ROUTE_POINTS);
-            ui.setWaypointFeatureId(index1, newFtId, position, map.ROUTE_POINTS);
+                var wp1 = atts[Object.keys(atts)[j]];
+                var wp2 = atts[Object.keys(atts)[i]];
 
-            var type = selectWaypointType(index2);
-            var ftId = ui.getFeatureIdOfWaypoint(index2);
-            newFtId = map.setWaypointType(ftId, type);
-            var position = map.convertFeatureIdToPositionString(newFtId, map.ROUTE_POINTS);
-            ui.setWaypointFeatureId(index2, newFtId, position, map.ROUTE_POINTS);
+                //waypoint-internal:
+                var set1 = waypoint.getWaypointSet(wp1);
+                var set2 = waypoint.getWaypointSet(wp2);
+                waypoint.setWaypoint(j, set2);
+                waypoint.setWaypoint(i, set1);
+                var type = selectWaypointType(wp1);
+                var ftId = ui.getFeatureIdOfWaypoint(wp1);
+                var newFtId = map.setWaypointType(ftId, type);
+                var position = map.convertFeatureIdToPositionString(newFtId, map.ROUTE_POINTS);
+                ui.setWaypointFeatureId(wp1, newFtId, position, map.ROUTE_POINTS);
 
-            //update preferences
-            handleWaypointChanged(true);
+                var type = selectWaypointType(wp2);
+                var ftId = ui.getFeatureIdOfWaypoint(wp2);
+                newFtId = map.setWaypointType(ftId, type);
+                var position = map.convertFeatureIdToPositionString(newFtId, map.ROUTE_POINTS);
+                ui.setWaypointFeatureId(wp2, newFtId, position, map.ROUTE_POINTS);
+         
+                j++;
+                i--;
+                //update preferences
+                handleWaypointChanged(true);
+
+            }
+           
+            
         }
 
         /**
@@ -503,7 +511,6 @@ var Controller = ( function(w) {'use strict';
          * @param atts: address: address as text string the user wants to search for; lastSearchResults: string of OL feature ids for the last search results
          */
         function handleSearchAddressRequest(atts) {
-
             var address = atts.address;
             var lastSearchResults = atts.lastSearchResults;
             lastSearchResults = lastSearchResults ? lastSearchResults.split(' ') : null;
@@ -525,7 +532,6 @@ var Controller = ( function(w) {'use strict';
         function handleSearchAddressResults(results) {
             //IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
             results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
-
             //when the service gives response but contains an error the response is handeled as success, not error. We have to check for an error tag here:
             var responseError = util.getElementsByTagNameNS(results, namespaces.xls, 'ErrorList').length;
             if (parseInt(responseError) > 0) {
@@ -796,10 +802,9 @@ var Controller = ( function(w) {'use strict';
                 
                 var extendedRoutePreferencesWeight = permaInfo[preferences.weightIdx];
                 var extendedRoutePreferencesMaxspeed = permaInfo[preferences.maxspeedIdx];
-
                 var avoidAreas = map.getAvoidAreas();
 
-                var avoidableParams = new Array();
+                var avoidableParams = [];
                 var avoidHighway = permaInfo[preferences.avoidHighwayIdx];
                 var avoidTollway = permaInfo[preferences.avoidTollwayIdx]; 
                 var avoidUnpavedRoads = permaInfo[preferences.avoidUnpavedIdx]; 
@@ -814,7 +819,7 @@ var Controller = ( function(w) {'use strict';
                 avoidableParams[5] = avoidFords;
 
 
-                var truckParams = new Array();
+                var truckParams = [];
                 var truck_length = permaInfo[preferences.value_lengthIdx];
                 var truck_height = permaInfo[preferences.value_heightIdx];
                 var truck_weight = permaInfo[preferences.value_weightIdx];
@@ -831,7 +836,7 @@ var Controller = ( function(w) {'use strict';
                 //check whether truck button is active and send extendedRoutePreferences, otherwise don't 
                 var extendedRoutePreferencesType = permaInfo[preferences.routeOptionsTypesIdx];
 
-                var wheelChairParams = new Array();
+                var wheelChairParams = [];
                 var wheelchairSurface = permaInfo[preferences.surfaceIdx]; 
                 var wheelchairIncline = permaInfo[preferences.inclineIdx]; 
                 var wheelchairSloped = permaInfo[preferences.slopedCurbIdx];
@@ -904,6 +909,9 @@ var Controller = ( function(w) {'use strict';
                     // each route instruction has a part of this lineString as geometry for this instruction
                     var routeLines = route.parseResultsToLineStrings(results, util.convertPointForMap);
                     var routePoints = route.parseResultsToCornerPoints(results, util.convertPointForMap);
+                    
+                    //Get the restrictions along the route
+                    map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString));
 
                     var featureIds = map.updateRoute(routeLines, routePoints);
 
@@ -1345,7 +1353,6 @@ var Controller = ( function(w) {'use strict';
          * @param wpIndex: indicates position of waypoint
          */
         function handlePrefsChanged(atts) {
-
             var key = atts.key;
             var value = atts.value;
             preferences.updatePreferences(key, value);
@@ -1452,6 +1459,15 @@ var Controller = ( function(w) {'use strict';
             var hazardous = getVars[preferences.getPrefName(preferences.hazardousIdx)];
             var fords = getVars[preferences.getPrefName(preferences.avoidFordsIdx)];
             var maxspeed = getVars[preferences.getPrefName(preferences.maxspeedIdx)];
+
+            // either layer, pos or zoom is read, as soon as one is read the eventlistener on map
+            // updates the other two and overwrites the cookie info
+
+            
+            layer = preferences.loadMapLayer(layer);
+            if (layer) {
+                map.restoreLayerPrefs(layer);
+            }
 
             pos = preferences.loadMapPosition(pos);
             if (pos && pos != 'null') {
