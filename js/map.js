@@ -1417,7 +1417,6 @@ var Map = ( function() {"use strict";
 			map.getLayersByName(this.RESTRICTIONS)[0].displayInLayerSwitcher = true;
 			map.getLayersByName(this.BBOX)[0].displayInLayerSwitcher = true;
 			map.getLayersByName(this.RESTRICTIONS)[0].setVisibility(true);
-			map.getLayersByName(this.BBOX)[0].setVisibility(false);
 			//display the restrictions bounding polygon
 			map.getLayersByName(this.BBOX)[0].removeAllFeatures();
 			var ln = new OpenLayers.Geometry.LinearRing(bboxArray);
