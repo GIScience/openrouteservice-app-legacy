@@ -10,7 +10,10 @@ var Restrictions = ( function(w) {"use strict";
          * @param lineString: the route linestring
          * @return: the query and the polygon
          */
-		function getRestrictionsQuery(lineString) {
+		function getRestrictionsQuery(lineString, routePref) {
+			if (routePref != 'HeavyVehicle'){
+				return [null, null];
+			}
 			var tolerance = 0.03;
 			var polygon = createPolygon(lineString.simplify(tolerance));
 			var query = createQuery(polygon[0]);

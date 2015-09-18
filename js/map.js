@@ -391,12 +391,12 @@ var Map = ( function() {"use strict";
 			var layerRestriction = new OpenLayers.Layer.Vector(this.RESTRICTIONS);
 			layerRestriction.setName(this.RESTRICTIONS);
 			layerRestriction.styleMap = restrictionStyleMap;
-			layerRestriction.displayInLayerSwitcher = true;
+			layerRestriction.displayInLayerSwitcher = false;
 			layerRestriction.redraw(true);
 			
 			var layerRestrictionBbox = new OpenLayers.Layer.Vector(this.BBOX);
 			layerRestrictionBbox.setName(this.BBOX);
-			layerRestrictionBbox.displayInLayerSwitcher = true;
+			layerRestrictionBbox.displayInLayerSwitcher = false;
 			layerRestrictionBbox.styleMap = styleRestrictionBbox;
 			layerRestrictionBbox.redraw(true);
 			this.theMap.addLayers([layerRestrictionBbox]);
@@ -1390,7 +1390,17 @@ var Map = ( function() {"use strict";
 			var overpassQuery = query[0];
 			var bboxArray = query[1];
 			var map = this.theMap;
-			
+			//Do not load anything if the profile is not HeavyVehicle
+			if(overpassQuery == null || bboxArray == null){
+				map.getLayersByName(this.RESTRICTIONS)[0].removeAllFeatures();
+				map.getLayersByName(this.BBOX)[0].removeAllFeatures();
+				map.getLayersByName(this.RESTRICTIONS)[0].displayInLayerSwitcher = false;
+				map.getLayersByName(this.BBOX)[0].displayInLayerSwitcher = false;
+				map.getLayersByName(this.RESTRICTIONS)[0].setVisibility(false);
+				map.getLayersByName(this.BBOX)[0].setVisibility(false);
+				return;
+			}
+
 			var restrictionStyleMap = new OpenLayers.StyleMap({
 				'default' : new OpenLayers.Style(restrictionTemplate),
 				'select' : new OpenLayers.Style(restrictionSelTemplate)
@@ -1402,15 +1412,20 @@ var Map = ( function() {"use strict";
 					fillColor: "#00FF00",
 					fillOpacity: 0.2
 			};
-			
+
+			//display the layers in the layer switcher if truck profile is chosen
+			map.getLayersByName(this.RESTRICTIONS)[0].displayInLayerSwitcher = true;
+			map.getLayersByName(this.BBOX)[0].displayInLayerSwitcher = true;
+			map.getLayersByName(this.RESTRICTIONS)[0].setVisibility(true);
+			map.getLayersByName(this.BBOX)[0].setVisibility(false);
 			//display the restrictions bounding polygon
-				map.getLayersByName(this.BBOX)[0].removeAllFeatures();
-				var ln = new OpenLayers.Geometry.LinearRing(bboxArray);
-				var pf = new OpenLayers.Feature.Vector(ln, null, styleRestrictionBbox);
-				map.getLayersByName(this.BBOX)[0].addFeatures([pf]);
-			
+			map.getLayersByName(this.BBOX)[0].removeAllFeatures();
+			var ln = new OpenLayers.Geometry.LinearRing(bboxArray);
+			var pf = new OpenLayers.Feature.Vector(ln, null, styleRestrictionBbox);
+			map.getLayersByName(this.BBOX)[0].addFeatures([pf]);
+
 			map.getLayersByName(this.RESTRICTIONS)[0].removeAllFeatures();
-			
+
 			//TODO: Remove workaround to make layer load... won't load without adding dummy layer to the map
 			if(map.getLayersByName(this.TEMPRESTRICTIONS).length > 0){
 				map.getLayersByName(this.TEMPRESTRICTIONS)[0].removeAllFeatures();
@@ -1421,7 +1436,7 @@ var Map = ( function() {"use strict";
 			layerRestrictionNew.setVisibility(false);
 			layerRestrictionNew.displayInLayerSwitcher = false;
 			this.theMap.addLayers([layerRestrictionNew]);
-			
+
 			var this_ = this;
 			layerRestrictionNew.events.register("loadend", layerRestrictionNew, function(){
 				//clone features from dummy layer to Restrictions layer and remove the dummy layer
