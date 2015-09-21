@@ -1386,8 +1386,9 @@ var Map = ( function() {"use strict";
 		 * adds the restrictions along the route to the map
 		 *  @param query: array [queryString, vectorArray] representing the overpass query and the polygon for display
 		 */
-		function updateRestrictionsLayer(query) {
+		function updateRestrictionsLayer(query, permaInfo) {
 			var overpassQuery = query[0];
+			console.log(permaInfo);
 			var bboxArray = query[1];
 			var map = this.theMap;
 			//Do not load anything if the profile is not HeavyVehicle
@@ -1438,10 +1439,25 @@ var Map = ( function() {"use strict";
 
 			var this_ = this;
 			layerRestrictionNew.events.register("loadend", layerRestrictionNew, function(){
-				//clone features from dummy layer to Restrictions layer and remove the dummy layer
-				map.getLayersByName(this_.RESTRICTIONS)[0].addFeatures(map.getLayersByName(this_.TEMPRESTRICTIONS)[0].clone().features);
-				map.getLayersByName(this_.TEMPRESTRICTIONS)[0].removeAllFeatures();
-				map.getLayersByName(this_.TEMPRESTRICTIONS)[0].destroy();
+				//filter out unnecessary maxheight tags
+				var layerTempRestriction = map.getLayersByName(this_.TEMPRESTRICTIONS)[0];
+				var length = layerTempRestriction.features.length;
+				var featuresToRemove = [];
+				for (var i = 0; i < length; i++){
+					//permaInfo[1] is maxheight
+					try {
+						if(permaInfo[1] < parseFloat(layerTempRestriction.features[i].attributes.maxheight)) featuresToRemove.push(layerTempRestriction.features[i]);
+					}
+					catch(e) {//Keep the feature if the maxheight-tag is not well formatted
+					}
+				}
+				console.log(layerTempRestriction.features.length);
+				layerTempRestriction.removeFeatures(featuresToRemove);
+				console.log(featuresToRemove.length);
+				console.log(layerTempRestriction.features.length);
+				map.getLayersByName(this_.RESTRICTIONS)[0].addFeatures(layerTempRestriction.clone().features);
+				layerTempRestriction.removeAllFeatures();
+				layerTempRestriction.destroy();
 			});
 		}
 		

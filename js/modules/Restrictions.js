@@ -14,6 +14,8 @@ var Restrictions = ( function(w) {"use strict";
 			if (routePref != 'HeavyVehicle'){
 				return [null, null];
 			}
+			//get height limit set by user
+			console.log(permaInfo[w.Preferences.value_heightIdx]);
 			var tolerance = 0.03;
 			var polygon = createPolygon(lineString.simplify(tolerance));
 			var query = createQuery(polygon[0]);
