@@ -1394,10 +1394,10 @@ var Map = ( function() {"use strict";
 			//Do not load anything if the profile is not HeavyVehicle
 			if(overpassQuery == null || bboxArray == null){
 				map.getLayersByName(this.RESTRICTIONS)[0].removeAllFeatures();
-				map.getLayersByName(this.BBOX)[0].removeAllFeatures();
 				map.getLayersByName(this.RESTRICTIONS)[0].displayInLayerSwitcher = false;
-				map.getLayersByName(this.BBOX)[0].displayInLayerSwitcher = false;
 				map.getLayersByName(this.RESTRICTIONS)[0].setVisibility(false);
+				map.getLayersByName(this.BBOX)[0].removeAllFeatures();
+				map.getLayersByName(this.BBOX)[0].displayInLayerSwitcher = false;
 				map.getLayersByName(this.BBOX)[0].setVisibility(false);
 				return;
 			}
@@ -1420,17 +1420,14 @@ var Map = ( function() {"use strict";
 			map.getLayersByName(this.RESTRICTIONS)[0].setVisibility(true);
 			//display the restrictions bounding polygon
 			map.getLayersByName(this.BBOX)[0].removeAllFeatures();
-			var ln = new OpenLayers.Geometry.LinearRing(bboxArray);
-			var pf = new OpenLayers.Feature.Vector(ln, null, styleRestrictionBbox);
+			var pf = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LinearRing(bboxArray), null, styleRestrictionBbox);
 			map.getLayersByName(this.BBOX)[0].addFeatures([pf]);
 
 			map.getLayersByName(this.RESTRICTIONS)[0].removeAllFeatures();
 
 			//TODO: Remove workaround to make layer load... won't load without adding dummy layer to the map
-			if(map.getLayersByName(this.TEMPRESTRICTIONS).length > 0){
-				map.getLayersByName(this.TEMPRESTRICTIONS)[0].removeAllFeatures();
-				map.getLayersByName(this.TEMPRESTRICTIONS)[0].destroy();
-			}
+			if(map.getLayersByName(this.TEMPRESTRICTIONS).length > 0) map.getLayersByName(this.TEMPRESTRICTIONS)[0].destroy();
+			
 			var layerRestrictionNew = make_layer(overpassQuery, restrictionStyleMap);
 			layerRestrictionNew.setName(this.TEMPRESTRICTIONS);
 			layerRestrictionNew.setVisibility(false);
@@ -1440,24 +1437,9 @@ var Map = ( function() {"use strict";
 			var this_ = this;
 			layerRestrictionNew.events.register("loadend", layerRestrictionNew, function(){
 				//filter out unnecessary maxheight tags
-				var layerTempRestriction = map.getLayersByName(this_.TEMPRESTRICTIONS)[0];
-				var length = layerTempRestriction.features.length;
-				var featuresToRemove = [];
-				for (var i = 0; i < length; i++){
-					//permaInfo[1] is maxheight
-					try {
-						if(permaInfo[1] < parseFloat(layerTempRestriction.features[i].attributes.maxheight)) featuresToRemove.push(layerTempRestriction.features[i]);
-					}
-					catch(e) {//Keep the feature if the maxheight-tag is not well formatted
-					}
-				}
-				console.log(layerTempRestriction.features.length);
-				layerTempRestriction.removeFeatures(featuresToRemove);
-				console.log(featuresToRemove.length);
-				console.log(layerTempRestriction.features.length);
-				map.getLayersByName(this_.RESTRICTIONS)[0].addFeatures(layerTempRestriction.clone().features);
-				layerTempRestriction.removeAllFeatures();
-				layerTempRestriction.destroy();
+				if (layerRestrictionNew.features.length > 0) layerRestrictionNew = window.Restrictions.filterByAttribute(layerRestrictionNew, "maxheight", permaInfo[1]);
+				map.getLayersByName(this_.RESTRICTIONS)[0].addFeatures(layerRestrictionNew.clone().features);
+				layerRestrictionNew.destroy();
 			});
 		}
 		

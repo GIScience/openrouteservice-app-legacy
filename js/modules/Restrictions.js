@@ -88,10 +88,34 @@ var Restrictions = ( function(w) {"use strict";
 			}
 			return [bboxString, bboxArrayTransformed];
 		}
+		
+		function filterByAttribute(layer, attribute, vehicleValue){
+			var length = layer.features.length;
+			var featuresToRemove = [];
+			switch (attribute){
+			case "maxheight":
+				for (var i = 0; i < length; i++){
+					//permaInfo[1] is maxheight
+					try {
+						if(vehicleValue < parseFloat(layer.features[i].attributes.maxheight)) featuresToRemove.push(layer.features[i]);
+					}
+					catch(e) {//Keep the feature if the maxheight-tag is not well formatted
+					}
+				}
+				break;
+			default: //return the unchanged layer
+			}
+			console.log(layer.features.length);
+			layer.removeFeatures(featuresToRemove);
+			console.log(featuresToRemove.length);
+			console.log(layer.features.length);
+			return layer;
+		}
 
 		Restrictions.prototype.createQuery = createQuery;
 		Restrictions.prototype.createPolygon = createPolygon;
 		Restrictions.prototype.getRestrictionsQuery = getRestrictionsQuery;
+		Restrictions.prototype.filterByAttribute = filterByAttribute;
 
 		return new Restrictions();
 	}(window));
