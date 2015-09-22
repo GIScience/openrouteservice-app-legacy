@@ -391,12 +391,12 @@ var Map = ( function() {"use strict";
 			var layerRestriction = new OpenLayers.Layer.Vector(this.RESTRICTIONS);
 			layerRestriction.setName(this.RESTRICTIONS);
 			layerRestriction.styleMap = restrictionStyleMap;
-			layerRestriction.displayInLayerSwitcher = true;
+			layerRestriction.displayInLayerSwitcher = false;
 			layerRestriction.redraw(true);
 			
 			var layerRestrictionBbox = new OpenLayers.Layer.Vector(this.BBOX);
 			layerRestrictionBbox.setName(this.BBOX);
-			layerRestrictionBbox.displayInLayerSwitcher = true;
+			layerRestrictionBbox.displayInLayerSwitcher = false;
 			layerRestrictionBbox.styleMap = styleRestrictionBbox;
 			layerRestrictionBbox.redraw(true);
 			this.theMap.addLayers([layerRestrictionBbox]);
@@ -1386,11 +1386,22 @@ var Map = ( function() {"use strict";
 		 * adds the restrictions along the route to the map
 		 *  @param query: array [queryString, vectorArray] representing the overpass query and the polygon for display
 		 */
-		function updateRestrictionsLayer(query) {
+		function updateRestrictionsLayer(query, permaInfo) {
 			var overpassQuery = query[0];
+			console.log(permaInfo);
 			var bboxArray = query[1];
 			var map = this.theMap;
-			
+			//Do not load anything if the profile is not HeavyVehicle
+			if(overpassQuery == null || bboxArray == null){
+				map.getLayersByName(this.RESTRICTIONS)[0].removeAllFeatures();
+				map.getLayersByName(this.RESTRICTIONS)[0].displayInLayerSwitcher = false;
+				map.getLayersByName(this.RESTRICTIONS)[0].setVisibility(false);
+				map.getLayersByName(this.BBOX)[0].removeAllFeatures();
+				map.getLayersByName(this.BBOX)[0].displayInLayerSwitcher = false;
+				map.getLayersByName(this.BBOX)[0].setVisibility(false);
+				return;
+			}
+
 			var restrictionStyleMap = new OpenLayers.StyleMap({
 				'default' : new OpenLayers.Style(restrictionTemplate),
 				'select' : new OpenLayers.Style(restrictionSelTemplate)
@@ -1402,32 +1413,33 @@ var Map = ( function() {"use strict";
 					fillColor: "#00FF00",
 					fillOpacity: 0.2
 			};
-			
+
+			//display the layers in the layer switcher if truck profile is chosen
+			map.getLayersByName(this.RESTRICTIONS)[0].displayInLayerSwitcher = true;
+			map.getLayersByName(this.BBOX)[0].displayInLayerSwitcher = true;
+			map.getLayersByName(this.RESTRICTIONS)[0].setVisibility(true);
 			//display the restrictions bounding polygon
-				map.getLayersByName(this.BBOX)[0].removeAllFeatures();
-				var ln = new OpenLayers.Geometry.LinearRing(bboxArray);
-				var pf = new OpenLayers.Feature.Vector(ln, null, styleRestrictionBbox);
-				map.getLayersByName(this.BBOX)[0].addFeatures([pf]);
-			
+			map.getLayersByName(this.BBOX)[0].removeAllFeatures();
+			var pf = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LinearRing(bboxArray), null, styleRestrictionBbox);
+			map.getLayersByName(this.BBOX)[0].addFeatures([pf]);
+
 			map.getLayersByName(this.RESTRICTIONS)[0].removeAllFeatures();
-			
+
 			//TODO: Remove workaround to make layer load... won't load without adding dummy layer to the map
-			if(map.getLayersByName(this.TEMPRESTRICTIONS).length > 0){
-				map.getLayersByName(this.TEMPRESTRICTIONS)[0].removeAllFeatures();
-				map.getLayersByName(this.TEMPRESTRICTIONS)[0].destroy();
-			}
+			if(map.getLayersByName(this.TEMPRESTRICTIONS).length > 0) map.getLayersByName(this.TEMPRESTRICTIONS)[0].destroy();
+			
 			var layerRestrictionNew = make_layer(overpassQuery, restrictionStyleMap);
 			layerRestrictionNew.setName(this.TEMPRESTRICTIONS);
 			layerRestrictionNew.setVisibility(false);
 			layerRestrictionNew.displayInLayerSwitcher = false;
 			this.theMap.addLayers([layerRestrictionNew]);
-			
+
 			var this_ = this;
 			layerRestrictionNew.events.register("loadend", layerRestrictionNew, function(){
-				//clone features from dummy layer to Restrictions layer and remove the dummy layer
-				map.getLayersByName(this_.RESTRICTIONS)[0].addFeatures(map.getLayersByName(this_.TEMPRESTRICTIONS)[0].clone().features);
-				map.getLayersByName(this_.TEMPRESTRICTIONS)[0].removeAllFeatures();
-				map.getLayersByName(this_.TEMPRESTRICTIONS)[0].destroy();
+				//filter out unnecessary maxheight tags
+				if (layerRestrictionNew.features.length > 0) layerRestrictionNew = window.Restrictions.filterByAttribute(layerRestrictionNew, "maxheight", permaInfo[1]);
+				map.getLayersByName(this_.RESTRICTIONS)[0].addFeatures(layerRestrictionNew.clone().features);
+				layerRestrictionNew.destroy();
 			});
 		}
 		

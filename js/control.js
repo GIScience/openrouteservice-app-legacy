@@ -911,7 +911,7 @@ var Controller = ( function(w) {'use strict';
                     var routePoints = route.parseResultsToCornerPoints(results, util.convertPointForMap);
                     
                     //Get the restrictions along the route
-                    map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString));
+                    map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString, permaInfo[preferences.routeOptionsIdx]),  [permaInfo[preferences.value_lengthIdx], permaInfo[preferences.value_heightIdx], permaInfo[preferences.value_weightIdx], permaInfo[preferences.value_widhtIdx]]);
 
                     var featureIds = map.updateRoute(routeLines, routePoints);
 

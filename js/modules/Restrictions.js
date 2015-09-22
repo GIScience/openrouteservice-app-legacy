@@ -10,7 +10,12 @@ var Restrictions = ( function(w) {"use strict";
          * @param lineString: the route linestring
          * @return: the query and the polygon
          */
-		function getRestrictionsQuery(lineString) {
+		function getRestrictionsQuery(lineString, routePref) {
+			if (routePref != 'HeavyVehicle'){
+				return [null, null];
+			}
+			//get height limit set by user
+			console.log(permaInfo[w.Preferences.value_heightIdx]);
 			var tolerance = 0.03;
 			var polygon = createPolygon(lineString.simplify(tolerance));
 			var query = createQuery(polygon[0]);
@@ -83,10 +88,31 @@ var Restrictions = ( function(w) {"use strict";
 			}
 			return [bboxString, bboxArrayTransformed];
 		}
+		
+		function filterByAttribute(layer, attribute, vehicleValue){
+			var length = layer.features.length;
+			var featuresToRemove = [];
+			switch (attribute){
+			case "maxheight":
+				for (var i = 0; i < length; i++){
+					//permaInfo[1] is maxheight
+					try {
+						if(vehicleValue < parseFloat(layer.features[i].attributes.maxheight)) featuresToRemove.push(layer.features[i]);
+					}
+					catch(e) {//Keep the feature if the maxheight-tag is not well formatted
+					}
+				}
+				break;
+			default: //return the unchanged layer
+			}
+			layer.removeFeatures(featuresToRemove);
+			return layer;
+		}
 
 		Restrictions.prototype.createQuery = createQuery;
 		Restrictions.prototype.createPolygon = createPolygon;
 		Restrictions.prototype.getRestrictionsQuery = getRestrictionsQuery;
+		Restrictions.prototype.filterByAttribute = filterByAttribute;
 
 		return new Restrictions();
 	}(window));
