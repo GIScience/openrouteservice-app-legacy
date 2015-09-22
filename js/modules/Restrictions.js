@@ -105,10 +105,7 @@ var Restrictions = ( function(w) {"use strict";
 				break;
 			default: //return the unchanged layer
 			}
-			console.log(layer.features.length);
 			layer.removeFeatures(featuresToRemove);
-			console.log(featuresToRemove.length);
-			console.log(layer.features.length);
 			return layer;
 		}
 
