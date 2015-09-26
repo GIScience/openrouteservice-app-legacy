@@ -1,6 +1,7 @@
 /**
  * OpenLayers map and functions
  */
+
 var Map = ( function() {"use strict";
 		/**
 		 * create the layer styleMap by giving the default style a context;
@@ -712,14 +713,16 @@ var Map = ( function() {"use strict";
 			 * MAP EVENTS
 			 * *********************************************************************/
 			function emitMapChangedEvent(e) {			
-
-				var centerTransformed = util.convertPointForDisplay(self.theMap.getCenter());
-				self.emit('map:changed', {
-					layer : self.serializeLayers(),
-					zoom : self.theMap.getZoom(),
-					lat : centerTransformed.lat,
-					lon : centerTransformed.lon
-				});
+				// without this condition map zoom lat/lon isnt loaded from cookies
+				if (!initMap) {
+					var centerTransformed = util.convertPointForDisplay(self.theMap.getCenter());
+					self.emit('map:changed', {
+						layer : self.serializeLayers(),
+						zoom : self.theMap.getZoom(),
+						lat : centerTransformed.lat,
+						lon : centerTransformed.lon
+					});
+				}
 			}
 
 			var self = this;
@@ -1388,7 +1391,6 @@ var Map = ( function() {"use strict";
 		 */
 		function updateRestrictionsLayer(query, permaInfo) {
 			var overpassQuery = query[0];
-			console.log(permaInfo);
 			var bboxArray = query[1];
 			var map = this.theMap;
 			//Do not load anything if the profile is not HeavyVehicle

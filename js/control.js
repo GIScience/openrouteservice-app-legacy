@@ -1,3 +1,6 @@
+// global variable which is set to false after init is run
+// is needed in order for cookies to be loaded properly
+var initMap = true;
 
 var Controller = ( function(w) {'use strict';
 
@@ -1583,7 +1586,7 @@ var Controller = ( function(w) {'use strict';
                 ui.showNewToOrsPopup();
             }
 
-           
+            initMap = false;
 
         }
 
