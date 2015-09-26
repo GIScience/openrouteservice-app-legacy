@@ -163,6 +163,8 @@ var Languages = (function(w) {'use strict';
 		$('#contextStart').html(p.translate('useAsStartPoint'));
 		$('#contextVia').html(p.translate('useAsViaPoint'));
 		$('#contextEnd').html(p.translate('useAsEndPoint'));
+
+		$("#maxSpeedInput").attr("placeholder", p.translate('maxSpeed')).val("").focus().blur();
 	}
 
 	/**

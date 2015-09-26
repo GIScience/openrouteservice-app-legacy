@@ -805,6 +805,12 @@ var Controller = ( function(w) {'use strict';
                 
                 var extendedRoutePreferencesWeight = permaInfo[preferences.weightIdx];
                 var extendedRoutePreferencesMaxspeed = permaInfo[preferences.maxspeedIdx];
+
+                // check if mph and transform to kmh
+                if (preferences.distanceUnit == 'yd') {
+                    extendedRoutePreferencesMaxspeed = (Number(extendedRoutePreferencesMaxspeed) * 1.60934).toString();
+                }
+
                 var avoidAreas = map.getAvoidAreas();
 
                 var avoidableParams = [];

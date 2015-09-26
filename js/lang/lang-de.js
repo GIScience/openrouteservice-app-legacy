@@ -2,6 +2,7 @@ var lang_de = {
 	'serverError': 'Sorry, w&auml;hrend der Berechnung ist ein Fehler auf dem Server passiert. Bitte versuchen Sie es sp&auml;ter noch einmal ',
 	'contact': 'Info&nbsp;&amp;&nbsp;Kontakt',
 
+		'maxSpeed' : 'maximale Geschwindigkeit',
 		'closeBtn': 'Schlie&szlig;en',
 		'saveBtn': 'Speichern',
 

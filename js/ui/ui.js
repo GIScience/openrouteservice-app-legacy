@@ -2844,7 +2844,6 @@ var Ui = ( function(w) {'use strict';
 
 			var maxspeed = $('#maxSpeedInput').val();
 			// update preferences
-			console.log(maxspeed)
 			theInterface.emit('ui:prefsChanged', {
 				key : preferences.maxspeedIdx,
 				value : maxspeed
