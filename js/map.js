@@ -2,7 +2,7 @@
  * OpenLayers map and functions
  */
 
-var Map = ( function() {"use strict";
+var Map = ( function() {
 		/**
 		 * create the layer styleMap by giving the default style a context;
 		 * based on: http://openlayers.org/dev/examples/styles-context.html
@@ -70,7 +70,6 @@ var Map = ( function() {"use strict";
 		//restrictions layer
 		var restrictionTemplate = {
 				pointRadius : 3,
-				fillOpacity : 1,
 				strokeWidth : 3,
 				strokeColor : '#FFA500',
 				fillColor : '#FFA500',
@@ -95,7 +94,13 @@ var Map = ( function() {"use strict";
 				fillColor: "#00FF00",
 				fillOpacity: 0.2
 		};
-
+		var bordersTemplate = {
+				strokeColor: "#FF0066",
+				strokeOpacity: 0.4,
+				strokeWidth: 3,
+				fillColor: "#FF0066",
+				fillOpacity: 0.2
+		};
 		//POI layer
 		var poiTemplate = {
 			pointRadius : 16,
@@ -145,6 +150,7 @@ var Map = ( function() {"use strict";
 			this.RESTRICTIONS = 'Restrictions';
 			this.TEMPRESTRICTIONS = 'tempRestrictions';
 			this.BBOX = 'Restrictions Boundingbox';
+			this.BORDERS = 'Map borders';
 
 			var self = this;
 			/* *********************************************************************
@@ -291,7 +297,7 @@ var Map = ( function() {"use strict";
 			}
 
 
-			//layrers required for routing, etc.
+			//layers required for routing, etc.
 			//route points
 			var styles = new OpenLayers.StyleMap({
 				"default" : new OpenLayers.Style({
@@ -381,6 +387,11 @@ var Map = ( function() {"use strict";
 			var layerHeights = new OpenLayers.Layer.Vector(this.HEIGHTS, {
 				displayInLayerSwitcher : false
 			});
+
+			//height profile
+			var borderRegions = new OpenLayers.Layer.Vector(this.BORDERS, {
+				displayInLayerSwitcher : false
+			});
 			
 			//restrictions
 			var restrictionStyleMap = new OpenLayers.StyleMap({
@@ -400,10 +411,9 @@ var Map = ( function() {"use strict";
 			layerRestrictionBbox.displayInLayerSwitcher = false;
 			layerRestrictionBbox.styleMap = styleRestrictionBbox;
 			layerRestrictionBbox.redraw(true);
-			this.theMap.addLayers([layerRestrictionBbox]);
 
 			//define order
-			this.theMap.addLayers([layerHeights, layerAccessibility, layerRouteLines, layerRestrictionBbox, layerRestriction, layerTrack, layerGeolocation, layerSearch, layerPoi, layerRoutePoints, layerAvoid]);
+			this.theMap.addLayers([layerHeights, layerAccessibility, layerRouteLines, layerRestrictionBbox, layerRestriction, layerTrack, layerGeolocation, layerSearch, layerPoi, layerRoutePoints, layerAvoid, borderRegions]);
 
 			/* *********************************************************************
 			 * MAP CONTROLS
@@ -514,7 +524,7 @@ var Map = ( function() {"use strict";
 						};
 						options[0].onmouseout = function(e) { 
 							document.getElementsByClassName("useAsStartPoint")[0].style.backgroundColor = 'transparent';
-						}
+						};
 
 						options[1].onclick = function(e) {
 							//click on via point
@@ -530,7 +540,7 @@ var Map = ( function() {"use strict";
 						};
 						options[1].onmouseout = function(e) { 
 							document.getElementsByClassName("useAsViaPoint")[0].style.backgroundColor = 'transparent';
-						}
+						};
 						
 						options[2].onclick = function(e) {
 							//click on end point
@@ -539,7 +549,7 @@ var Map = ( function() {"use strict";
 								type : Waypoint.type.END
 							});
 							closeContextMenu();
-						}
+						};
 						options[2].onmouseover = function(e) {
 							//click on start point
 							document.getElementsByClassName("useAsEndPoint")[0].style.backgroundColor = '#e6e6e6';
@@ -609,11 +619,10 @@ var Map = ( function() {"use strict";
 				
 				var popup = document.getElementById('mapContextMenu');
 
-				if (popup != null) {
+				if (popup !== null) {
 					popup.remove();
-
 				}
-			};
+			}
 
 			// create a new contextMenu
 			function createMapContextMenu() {
@@ -657,9 +666,42 @@ var Map = ( function() {"use strict";
 
 			//make route waypoints draggable
 			var dragWaypoints = new OpenLayers.Control.DragFeature(layerRoutePoints);
-			dragWaypoints.onComplete = function(feature) {
+			dragWaypoints.onComplete = function(feature) {				
 				self.emit('map:waypointMoved', feature);
 			};
+
+			// dragWaypoints.onDrag = function(feature,pixel) {
+			// 	var point = new OpenLayers.Geometry.Point(feature.geometry.x,feature.geometry.y);
+			// 	var borderRegions = self.theMap.getLayersByName(self.BORDERS)[0].features;
+
+			// 	if (borderRegions[0].geometry.containsPoint(point)) {
+			// 		//console.log(borderRegions[0].data)
+			// 		var center = self.theMap.getCenter();
+			// 		//console.log(center);
+			// 		console.log('bump')
+			// 		layerRoutePoints.isFixed = true;
+			// 		console.log(layerRoutePoints.isFixed)
+			// 		self.theMap.panTo((new OpenLayers.LonLat(center.lon-200,center.lat)));
+			// 	} else if (borderRegions[1].geometry.containsPoint(point)) {
+			// 		console.log('in')
+
+			// 	} else if (borderRegions[2].geometry.containsPoint(point)) {
+			// 		console.log('in')
+			// 	} else if (borderRegions[3].geometry.containsPoint(point)) {
+			// 		console.log('in')
+			// 	} else if (borderRegions[4].geometry.containsPoint(point)) {
+			// 		console.log('in')
+			// 	} else if (borderRegions[5].geometry.containsPoint(point)) {
+			// 		console.log('in')
+			// 	} else if (borderRegions[6].geometry.containsPoint(point)) {
+			// 		console.log('in')
+			// 	} else if (borderRegions[7].geometry.containsPoint(point)) {
+			// 		console.log('in')
+			// 	}
+				
+
+			// };
+
 			this.theMap.addControl(dragWaypoints);
 			dragWaypoints.activate();
 
@@ -723,14 +765,111 @@ var Map = ( function() {"use strict";
 						lon : centerTransformed.lon
 					});
 				}
+
+				
+
 			}
 
-			var self = this;
+			// function panMapChangedEvent(e) {
+
+			// 	console.log('map paned');
+			// 	// updates map borders
+			// 	self.theMap.getLayersByName(self.BORDERS)[0].removeAllFeatures();
+
+			// 	var leftCoord = self.theMap.getExtent().left;
+			// 	var rightCoord = self.theMap.getExtent().right;
+			// 	var bottomCoord = self.theMap.getExtent().bottom;
+			// 	var topCoord = self.theMap.getExtent().top;
+			// 	var paddingHorizontal = (rightCoord - leftCoord)/20;
+			// 	var paddingVertical = (topCoord - bottomCoord)/10;
+
+			// 	// left border
+			// 	var p1 = new OpenLayers.Geometry.Point(leftCoord,topCoord-paddingVertical);
+			// 	var p2 = new OpenLayers.Geometry.Point(leftCoord+paddingHorizontal, topCoord-paddingVertical);
+			// 	var p3 = new OpenLayers.Geometry.Point(leftCoord+paddingHorizontal, bottomCoord+paddingVertical);
+			// 	var p4 = new OpenLayers.Geometry.Point(leftCoord,bottomCoord+paddingVertical);
+
+			// 	// right border
+			// 	var p5 = new OpenLayers.Geometry.Point(rightCoord,topCoord-paddingVertical);
+			// 	var p6 = new OpenLayers.Geometry.Point(rightCoord-paddingHorizontal,topCoord-paddingVertical);
+			// 	var p7 = new OpenLayers.Geometry.Point(rightCoord-paddingHorizontal,bottomCoord+paddingVertical);
+			// 	var p8 = new OpenLayers.Geometry.Point(rightCoord,bottomCoord+paddingVertical);
+
+			// 	// top border
+			// 	var p9 = new OpenLayers.Geometry.Point(rightCoord-paddingHorizontal,topCoord);
+			// 	var p10 = new OpenLayers.Geometry.Point(rightCoord-paddingHorizontal,topCoord-paddingVertical);
+			// 	var p11 = new OpenLayers.Geometry.Point(leftCoord+paddingHorizontal,topCoord-paddingVertical);
+			// 	var p12 = new OpenLayers.Geometry.Point(leftCoord+paddingHorizontal,topCoord);
+				
+			// 	// bottom border
+			// 	var p13 = new OpenLayers.Geometry.Point(rightCoord-paddingHorizontal,bottomCoord);
+			// 	var p14 = new OpenLayers.Geometry.Point(rightCoord-paddingHorizontal,bottomCoord+paddingVertical);
+			// 	var p15 = new OpenLayers.Geometry.Point(leftCoord+paddingHorizontal,bottomCoord+paddingVertical);
+			// 	var p16 = new OpenLayers.Geometry.Point(leftCoord+paddingHorizontal,bottomCoord);
+
+			// 	// left top border
+			// 	var p17 = new OpenLayers.Geometry.Point(leftCoord,topCoord);
+			// 	var p18 = new OpenLayers.Geometry.Point(leftCoord,topCoord-paddingVertical);
+			// 	var p19 = new OpenLayers.Geometry.Point(leftCoord+paddingHorizontal,topCoord-paddingVertical);
+			// 	var p20 = new OpenLayers.Geometry.Point(leftCoord+paddingHorizontal,topCoord);
+
+			// 	// left bottom border
+			// 	var p21 = new OpenLayers.Geometry.Point(leftCoord,bottomCoord);
+			// 	var p22 = new OpenLayers.Geometry.Point(leftCoord+paddingHorizontal,bottomCoord);
+			// 	var p23 = new OpenLayers.Geometry.Point(leftCoord+paddingHorizontal,bottomCoord+paddingVertical);
+			// 	var p24 = new OpenLayers.Geometry.Point(leftCoord,bottomCoord+paddingVertical);
+
+			// 	// right top border
+			// 	var p25 = new OpenLayers.Geometry.Point(rightCoord,topCoord);
+			// 	var p26 = new OpenLayers.Geometry.Point(rightCoord-paddingHorizontal,topCoord);
+			// 	var p27 = new OpenLayers.Geometry.Point(rightCoord-paddingHorizontal,topCoord-paddingVertical);
+			// 	var p28 = new OpenLayers.Geometry.Point(rightCoord,topCoord-paddingVertical);
+
+			// 	// right bottom border
+			// 	var p29 = new OpenLayers.Geometry.Point(rightCoord,bottomCoord);
+			// 	var p30 = new OpenLayers.Geometry.Point(rightCoord-paddingHorizontal,bottomCoord);
+			// 	var p31 = new OpenLayers.Geometry.Point(rightCoord-paddingHorizontal,bottomCoord+paddingVertical);
+			// 	var p32 = new OpenLayers.Geometry.Point(rightCoord,bottomCoord+paddingVertical);
+
+			// 	var left_border = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LinearRing([p1,p2,p3,p4]), 'l', bordersTemplate);
+			// 	var right_border = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LinearRing([p5,p6,p7,p8]), 'r', bordersTemplate);
+			// 	var top_border = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LinearRing([p9,p10,p11,p12]), 't', bordersTemplate);
+			// 	var bottom_border = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LinearRing([p13,p14,p15,p16]), 'b', bordersTemplate);
+			// 	var left_top_border = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LinearRing([p17,p18,p19,p20]), 'lt', bordersTemplate);
+			// 	var left_bottom_border = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LinearRing([p21,p22,p23,p24]), 'lb', bordersTemplate);
+			// 	var right_top_border = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LinearRing([p25,p26,p27,p28]), 'rt', bordersTemplate);
+			// 	var right_bottom_border = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LinearRing([p29,p30,p31,p32]), 'rb', bordersTemplate);
+
+			// 	self.theMap.getLayersByName(self.BORDERS)[0].addFeatures([
+			// 		left_border, 
+			// 		right_border, 
+			// 		top_border, 
+			// 		bottom_border, 
+			// 		left_top_border, 
+			// 		left_bottom_border,
+			// 		right_top_border,
+			// 		right_bottom_border
+			// 		]);
+
+			// 	var startPoint = new OpenLayers.Geometry.Point(layerRoutePoints.features[0].geometry.x,layerRoutePoints.features[0].geometry.y);
+			// 	if (left_border.geometry.containsPoint(startPoint)) {
+			// 		var center = self.theMap.getCenter();
+			// 		console.log(center);
+			// 		self.theMap.panTo((new OpenLayers.LonLat(center.lon-200,center.lat)));
+			// 	}
+
+
+
+			// }
+
+			//var self = this;
 			this.theMap.events.register('zoomend', this.theMap, function(e) {
 				emitMapChangedEvent(e);
 			});
 			this.theMap.events.register('moveend', this.theMap, emitMapChangedEvent);
 			this.theMap.events.register('changelayer', this.theMap, emitMapChangedEvent);
+
+			this.theMap.events.register('move', this.theMap, panMapChangedEvent);
 
 			//when zooming or moving the map -> close the context menu
 			this.theMap.events.register("zoomend", this.map, closeContextMenu);
