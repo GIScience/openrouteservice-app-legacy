@@ -70,6 +70,11 @@ util = (function() {
                 return ptCopy.transform(src, dest);
             }
         },
+        convertPointForMapLL: function(pt) {
+            if (pt.lat && pt.lng) {
+                return L.Projection.SphericalMercator.project(pt);
+            }
+        },
         /**
          * takes a given string and parses it to DOM objects
          * @param s: the String to parse
@@ -147,9 +152,7 @@ util = (function() {
             if (v1 != null) {
                 StreetAddress = v1[0]
             };
-
             var hasStreetElement = false;
-
             if (StreetAddress != null) {
                 var Streets = util.getElementsByTagNameNS(StreetAddress, namespaces.xls, 'Street');
                 var Building = util.getElementsByTagNameNS(StreetAddress, namespaces.xls, 'Building')[0];
@@ -187,85 +190,56 @@ util = (function() {
                     hasStreetElement = true;
                 }
             }
-
             var separator = '';
-
             var places = util.getElementsByTagNameNS(xmlAddress, namespaces.xls, 'Place');
-
-            if (places)
-            {
-               var elemCountry = null;
-               var elemMunicipalitySubdivision = null;
-               var elemMunicipality = null;
-               var elemCountrySecondarySubdivision = null;
-               var elemCountrySubdivision = null;
-
-               //insert the value of each of the following attributes in order, if they are present
-               ['MunicipalitySubdivision', 'Municipality', 'CountrySecondarySubdivision', 'CountrySubdivision', 'Country'].each(function(type) {
-                  $A(places).each(function(place) {
-                    if (place.getAttribute('type') === type) {
-                        //Chrome, Firefox: place.textContent; IE: place.text
-                        var content = place.textContent || place.text;
-                        if (content !== undefined || content !== null) {
-                          if (type == 'MunicipalitySubdivision')
-                              elemMunicipalitySubdivision = content;
-                          else if (type == 'Municipality')
-                              elemMunicipality = content;
-                          else if (type == 'CountrySecondarySubdivision')
-                              elemCountrySecondarySubdivision = content;  
-                          else if (type == 'CountrySubdivision')
-                              elemCountrySubdivision = content;
-                          else if (type == 'Country')
-                              elemCountry = content;
+            if (places) {
+                var elemCountry = null;
+                var elemMunicipalitySubdivision = null;
+                var elemMunicipality = null;
+                var elemCountrySecondarySubdivision = null;
+                var elemCountrySubdivision = null;
+                //insert the value of each of the following attributes in order, if they are present
+                ['MunicipalitySubdivision', 'Municipality', 'CountrySecondarySubdivision', 'CountrySubdivision', 'Country'].each(function(type) {
+                    $A(places).each(function(place) {
+                        if (place.getAttribute('type') === type) {
+                            //Chrome, Firefox: place.textContent; IE: place.text
+                            var content = place.textContent || place.text;
+                            if (content !== undefined || content !== null) {
+                                if (type == 'MunicipalitySubdivision') elemMunicipalitySubdivision = content;
+                                else if (type == 'Municipality') elemMunicipality = content;
+                                else if (type == 'CountrySecondarySubdivision') elemCountrySecondarySubdivision = content;
+                                else if (type == 'CountrySubdivision') elemCountrySubdivision = content;
+                                else if (type == 'Country') elemCountry = content;
+                            }
                         }
+                    });
+                });
+                var placesText = '';
+                if (hasStreetElement) {
+                    var postalCode = util.getElementsByTagNameNS(xmlAddress, namespaces.xls, 'PostalCode');
+                    if (postalCode[0]) {
+                        placesText = placesText + postalCode[0].textContent + '  ';
                     }
-                  });
-               });
-
-               var placesText = '';
-          
-               if (hasStreetElement)  {
-            	   var postalCode = util.getElementsByTagNameNS(xmlAddress, namespaces.xls, 'PostalCode');
-            
-            	   if (postalCode[0]) {
-                     placesText = placesText + postalCode[0].textContent+ '  ';
-            	   }
-
-               	   if (elemMunicipality) 
-                     placesText = placesText + elemMunicipality;
-
-                   if (elemMunicipalitySubdivision && elemMunicipalitySubdivision != elemMunicipality) 
-                     placesText = placesText + ' (' + elemMunicipalitySubdivision + ') ';
-                   
-                   placesText = placesText + ', ';
-               	}
-               	else {
-                   if (elemMunicipalitySubdivision) 
-                      placesText = placesText + elemMunicipalitySubdivision + ', ';
-                   
-		           if (elemMunicipality && elemMunicipality != elemMunicipalitySubdivision) 
-                      placesText = placesText + elemMunicipality + ', ';
-               }
-                
-               if (elemCountrySecondarySubdivision && elemCountrySecondarySubdivision != elemMunicipality) 
-                  placesText = placesText + elemCountrySecondarySubdivision + ', ';
-
-               if (elemCountrySubdivision && elemCountrySubdivision != elemCountrySecondarySubdivision && elemCountrySubdivision != elemMunicipality) 
-                  placesText = placesText + elemCountrySubdivision + ', ';
-
-               element.appendChild(new Element('span', {
-                  'class': 'addressElement'
-                   }).update(placesText));
+                    if (elemMunicipality) placesText = placesText + elemMunicipality;
+                    if (elemMunicipalitySubdivision && elemMunicipalitySubdivision != elemMunicipality) placesText = placesText + ' (' + elemMunicipalitySubdivision + ') ';
+                    placesText = placesText + ', ';
+                } else {
+                    if (elemMunicipalitySubdivision) placesText = placesText + elemMunicipalitySubdivision + ', ';
+                    if (elemMunicipality && elemMunicipality != elemMunicipalitySubdivision) placesText = placesText + elemMunicipality + ', ';
+                }
+                if (elemCountrySecondarySubdivision && elemCountrySecondarySubdivision != elemMunicipality) placesText = placesText + elemCountrySecondarySubdivision + ', ';
+                if (elemCountrySubdivision && elemCountrySubdivision != elemCountrySecondarySubdivision && elemCountrySubdivision != elemMunicipality) placesText = placesText + elemCountrySubdivision + ', ';
+                element.appendChild(new Element('span', {
+                    'class': 'addressElement'
+                }).update(placesText));
             }
-
             if (elemCountry) {
-                element.appendChild(new Element('span').update(elemCountry));              
-            }
-            else {
-             	var countryCode = xmlAddress.getAttribute('countryCode');
-	            if (countryCode !== null) {
+                element.appendChild(new Element('span').update(elemCountry));
+            } else {
+                var countryCode = xmlAddress.getAttribute('countryCode');
+                if (countryCode !== null) {
                     element.appendChild(new Element('span').update(countryCode.toUpperCase()));
-            	}
+                }
             }
             return element;
         },
@@ -363,7 +337,6 @@ util = (function() {
                     element[0] = element[0].substring(0, element[0].length - 2);
                 }
             }
-            
             // remove empty item from array
             if (element[0].length == 0) {
                 element.splice(0, 1);

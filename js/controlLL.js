@@ -146,12 +146,13 @@ var Controller = ( function(w) {'use strict';
             var index = waypoint.getNumWaypoints() - 2;
             var type = waypoint.determineWaypointType(index);
             ui.setWaypointType(index, type);
-
+            console.log(index,type)
             var featureId = ui.getFeatureIdOfWaypoint(index);
+            console.log(featureId);
             var newId = map.setWaypointType(featureId, type);
             console.log(newId)
-            var position = map.convertFeatureIdToPositionString(newId, map.ROUTE_POINTS);
-            ui.setWaypointFeatureId(index, newId, position, map.ROUTE_POINTS);
+            var position = map.convertFeatureIdToPositionString(newId, map.layerRoutePoints);
+            ui.setWaypointFeatureId(index, newId, position, map.layerRoutePoints);
         }
 
         /**
@@ -195,27 +196,32 @@ var Controller = ( function(w) {'use strict';
             featureId = ui.getFeatureIdOfWaypoint(wpIndex);
             if (featureId) {
                 //address has been set yet
-                map.clearMarkers(map.ROUTE_POINTS, [featureId]);
+                map.clearMarkers(map.layerRoutePoints, [featureId]);
             }
 
             //add the new marker
-            var newFeatureId = map.addWaypointAtPos(util.convertPointForMap(pos), wpIndex, wpType);
-            
+            //var newFeatureId = map.addWaypointAtPos(util.convertPointForMap(pos), wpIndex, wpType);
+            var newFeatureId = map.addWaypointAtPos(pos, wpIndex, wpType);
+            console.log(newFeatureId);
             //add lat lon to input field 
             waypoint.setWaypoint(wpIndex, true);
-            var position = map.convertFeatureIdToPositionString(newFeatureId, map.ROUTE_POINTS);
-            
+            var position = map.convertFeatureIdToPositionString(newFeatureId, map.layerRoutePoints);
+            console.log(position)
             //convert position to string
-            var displayPosition = util.convertPositionStringToLonLat(position);
-            displayPosition = util.convertPointForDisplay(displayPosition);
-            displayPosition = util.convertPointToString(displayPosition);
-        
-            var newIndex = ui.addWaypointResultByRightclick(wpType, wpIndex, displayPosition, true);
-            ui.setWaypointFeatureId(newIndex, newFeatureId, position, map.ROUTE_POINTS);
+            //var displayPosition = util.convertPositionStringToLonLat(position);
+            //displayPosition = util.convertPointForDisplay(displayPosition);
+            //displayPosition = util.convertPointToString(displayPosition);
             
+            var newIndex = ui.addWaypointResultByRightclick(wpType, wpIndex, position, true);
+            ui.setWaypointFeatureId(newIndex, newFeatureId, position, 'layerRoutePoints');
+            
+            console.log('h')
+
+
             if (!noRouteRequest) {
                 handleWaypointChanged();
             }
+
 
             //start geocoding process and replace lat lon in input if response
             geolocator.reverseGeolocate(pos, reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, wpType, wpIndex, newFeatureId);
@@ -253,8 +259,8 @@ var Controller = ( function(w) {'use strict';
 
                 ui.showSearchingAtWaypoint(wpIndex, false);
                 var newIndex = ui.addWaypointResultByRightclick(wpType, wpIndex, addressResult);
-                var position = map.convertFeatureIdToPositionString(featureId, map.ROUTE_POINTS);
-                ui.setWaypointFeatureId(newIndex, featureId, position, map.ROUTE_POINTS);
+                var position = map.convertFeatureIdToPositionString(featureId, map.layerRoutePoints);
+                ui.setWaypointFeatureId(newIndex, featureId, position, map.layerRoutePoints);
                 
 
 
@@ -421,17 +427,18 @@ var Controller = ( function(w) {'use strict';
 
             var routePoints = ui.getRoutePoints();
             var wpString = "";
+            console.log(routePoints);
 
             for (var i = 0; i < routePoints.length; i++) {
                 routePoints[i] = routePoints[i].split(' ');
                 if (routePoints[i].length == 2) {
-                    routePoints[i] = new OpenLayers.LonLat(routePoints[i][0], routePoints[i][1]);
-                    routePoints[i] = util.convertPointForDisplay(routePoints[i]);
-                    wpString = wpString + routePoints[i].lon + ',' + routePoints[i].lat + ',';
+                    //routePoints[i] = new OpenLayers.LonLat(routePoints[i][0], routePoints[i][1]);
+                    //routePoints[i] = util.convertPointForDisplay(routePoints[i]);
+                    wpString = wpString + routePoints[i][0] + ',' + routePoints[i][1] + ',';
                 }
             }
             //slice away the last separator ','
-            wpString = wpString.substring(0, wpString.length - 3);
+            wpString = wpString.substring(0, wpString.length - 1);
 
             handlePrefsChanged({
                 key : preferences.waypointIdx,
@@ -797,11 +804,11 @@ var Controller = ( function(w) {'use strict';
                 for (var i = 0; i < routePoints.length; i++) {
                     routePoints[i] = routePoints[i].split(' ');
                     if (routePoints[i].length == 2) {
-                        routePoints[i] = new OpenLayers.LonLat(routePoints[i][0], routePoints[i][1]);
-                        routePoints[i] = util.convertPointForDisplay(routePoints[i]);
+                        routePoints[i] = {'lat': routePoints[i][0] , 'lon' : routePoints[i][1]};
                     }
                 }
             
+                console.log(routePoints)
                 
                 var routePref = permaInfo[preferences.routeOptionsIdx];
                 
@@ -813,7 +820,8 @@ var Controller = ( function(w) {'use strict';
                     extendedRoutePreferencesMaxspeed = (Number(extendedRoutePreferencesMaxspeed) * 1.60934).toString();
                 }
 
-                var avoidAreas = map.getAvoidAreas();
+                // TO DO
+                //var avoidAreas = map.getAvoidAreas();
 
                 var avoidableParams = [];
                 var avoidHighway = permaInfo[preferences.avoidHighwayIdx];
@@ -897,7 +905,6 @@ var Controller = ( function(w) {'use strict';
 
             // only fire if returned routeID from callback is same as current global calcRouteID
             if (routeID == calcRouteID) {
-                
                 var zoomToMap = !route.routePresent;
                 route.routePresent = true;
                 ui.setRouteIsPresent(true);
@@ -908,21 +915,30 @@ var Controller = ( function(w) {'use strict';
                 var responseError = util.getElementsByTagNameNS(results, namespaces.xls, 'ErrorList').length;
 
                 if (parseInt(responseError) > 0) {
+                                                        console.log('success')
+
                     //service response contains an error, switch to error handling function
                     routeCalculationError();
                 } else {
 
+
                     //use all-in-one-LineString to save the whole route in a single string
                     var routeLineString = route.writeRouteToSingleLineString(results);
-                    var routeString = map.writeRouteToString(routeLineString);
-                    route.routeString = routeString;
+                    
+                    //TODO: change to Leaflet..
+                    //var routeString = map.writeRouteToString(routeLineString);
+                    //route.routeString = routeString;
                     
                     // each route instruction has a part of this lineString as geometry for this instruction
-                    var routeLines = route.parseResultsToLineStrings(results, util.convertPointForMap);
-                    var routePoints = route.parseResultsToCornerPoints(results, util.convertPointForMap);
+                    var routeLines = route.parseResultsToLineStrings(results);
+                    var routePoints = route.parseResultsToCornerPoints(results);
+
+                    console.log(routeLines)
+                    console.log(routePoints)
                     
                     //Get the restrictions along the route
-                    map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString, permaInfo[preferences.routeOptionsIdx]),  [permaInfo[preferences.value_lengthIdx], permaInfo[preferences.value_heightIdx], permaInfo[preferences.value_weightIdx], permaInfo[preferences.value_widhtIdx]]);
+                    //TODO
+                    //map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString, permaInfo[preferences.routeOptionsIdx]),  [permaInfo[preferences.value_lengthIdx], permaInfo[preferences.value_heightIdx], permaInfo[preferences.value_weightIdx], permaInfo[preferences.value_widhtIdx]]);
 
                     var featureIds = map.updateRoute(routeLines, routePoints);
 
@@ -1632,6 +1648,7 @@ var Controller = ( function(w) {'use strict';
          * initialization
          */
         function initialize() {
+            console.log('init')
             map = new Map('map');
             console.log(map)
             ui.register('ui:startDebug', showDebugInfo);

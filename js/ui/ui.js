@@ -679,7 +679,6 @@ var Ui = ( function(w) {'use strict';
 			newWp.querySelector('.moveDownWaypoint').addEventListener('click', handleMoveDownWaypointClick);
 			newWp.querySelector('.removeWaypoint').addEventListener('click', handleRemoveWaypointClick);
 			newWp.querySelector('.searchAgainButton').addEventListener('click', handleSearchAgainWaypointClick);
-
 			theInterface.emit('ui:addWaypoint', newIndex);
 		}
 

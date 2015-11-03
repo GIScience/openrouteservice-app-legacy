@@ -59,7 +59,7 @@ var Geolocator = (function(w) {
         //<gml:pos>
         writer.writeStartElement('gml:pos');
         writer.writeAttributeString('srsName', 'EPSG:4326');
-        writer.writeString(position.lon + ' ' + position.lat);
+        writer.writeString(position.lng + ' ' + position.lat);
         //</gml:pos>
         writer.writeEndElement();
         //</gml:Point>

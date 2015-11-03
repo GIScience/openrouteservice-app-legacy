@@ -22,7 +22,7 @@ var Route = ( function(w) {"use strict";
 		 * @param avoidAreas: array of avoid areas represented by OL.Geometry.Polygons
 		 */
 		function calculate(routePoints, successCallback, failureCallback, language, routePref, extendedRoutePreferencesType, wheelChairParams, truckParams, avoidableParams , avoidAreas, extendedRoutePreferencesWeight, extendedRoutePreferencesMaxspeed, calcRouteID) {
-
+			console.log(routePref)
 			var writer = new XMLWriter('UTF-8', '1.0');
 			writer.writeStartDocument();
 			//<xls:XLS>
@@ -152,6 +152,7 @@ var Route = ( function(w) {"use strict";
 				//<gml:pos />
 				writer.writeStartElement('gml:pos');
 				writer.writeAttributeString('srsName', 'EPSG:4326');
+				console.log(routePoints[i].lon, routePoints[i].lat)
 				writer.writeString(routePoints[i].lon + ' ' + routePoints[i].lat);
 				writer.writeEndElement();
 				//</gml:Point>
@@ -268,16 +269,18 @@ var Route = ( function(w) {"use strict";
 		 * @param routeString: OL.Geometry.LineString representing the whole route
 		 */
 		function writeRouteToSingleLineString(results) {
+			console.log(results)
 			var routeString = [];
 			var routeGeometry = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteGeometry')[0];
 
 			$A(util.getElementsByTagNameNS(routeGeometry, namespaces.gml, 'pos')).each(function(point) {
 						point = point.text || point.textContent;
 						point = point.split(' ');
-						point = new OpenLayers.Geometry.Point(point[0], point[1]);
+						//point = new OpenLayers.Geometry.Point(point[0], point[1]);
+						point = L.latLng(point[0], point[1]);
 						routeString.push(point);
 					});
-			routeString = new OpenLayers.Geometry.LineString(routeString);
+			//routeString = new OpenLayers.Geometry.LineString(routeString);
 			return routeString;
 		}
 
@@ -285,9 +288,8 @@ var Route = ( function(w) {"use strict";
 		 * the line strings represent a part of the route when driving on one street (e.g. 7km on autoroute A7)
 		 * we examine the lineStrings from the instruction list to get one lineString-ID per route segment so that we can support mouseover/mouseout events on the route and the instructions
 		 * @param {Object} results: XML response
-		 * @param {Object} converterFunction
 		 */
-		function parseResultsToLineStrings(results, converterFunction) {
+		function parseResultsToLineStrings(results) {
 			var listOfLineStrings = [];
 
 			var routeInstructions = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstructionsList')[0];
@@ -306,12 +308,15 @@ var Route = ( function(w) {"use strict";
 					$A(util.getElementsByTagNameNS(instructionElement, namespaces.gml, 'pos')).each(function(point) {
 						point = point.text || point.textContent;
 						point = point.split(' ');
-						point = new OpenLayers.LonLat(point[0], point[1]);
-						point = converterFunction(point);
-						point = new OpenLayers.Geometry.Point(point.lon, point.lat);
+						//point = new OpenLayers.LonLat(point[0], point[1]);
+						point = L.latLng(point[1], point[0]);
+
+						//point = converterFunction(point);
+						//point = new OpenLayers.Geometry.Point(point.lon, point.lat);
 						segment.push(point);
 					});
-					segment = new OpenLayers.Geometry.LineString(segment);
+					//segment = new OpenLayers.Geometry.LineString(segment);
+
 					listOfLineStrings.push(segment);
 				});
 			}
@@ -341,9 +346,11 @@ var Route = ( function(w) {"use strict";
 					var point = util.getElementsByTagNameNS(instructionElement, namespaces.gml, 'pos')[0];
 					point = point.text || point.textContent;
 					point = point.split(' ');
-					point = new OpenLayers.LonLat(point[0], point[1]);
-					point = converterFunction(point);
-					point = new OpenLayers.Geometry.Point(point.lon, point.lat);
+					point = L.latLng(point[1], point[0]);
+
+					// point = new OpenLayers.LonLat(point[0], point[1]);
+					// point = converterFunction(point);
+					// point = new OpenLayers.Geometry.Point(point.lon, point.lat);
 					listOfCornerPoints.push(point);
 				});
 			}

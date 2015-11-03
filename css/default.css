@@ -554,16 +554,23 @@ div.olControlPermalink {
 
 #layersButton {}
 
-#mapContextMenu {
+.mapContextMenu {
     position: absolute;
     background-color: rgba(255, 255, 245, 0.85);
     box-shadow: 5px 5px 10px rgba(180, 180, 215, 0.7);
     border-color: rgb(100, 100, 100);
-    max-height: 112px;
-    max-width: 120px;
 }
 
-#mapContextMenu span {
+.leaflet-popup-content-wrapper {
+}
+
+.leaflet-popup-content-wrapper .leaflet-popup-content {
+}
+
+.leaflet-popup-tip-container {
+}
+
+.mapContextMenu span {
     -margin-top: 15px;
 }
 
