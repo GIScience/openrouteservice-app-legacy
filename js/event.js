@@ -18,7 +18,6 @@ var EventEmitter = (function () {
 	 * @param  {Function} callback The callback function.
 	 */
 	function register(ev, callback) {
-		console.log(ev, callback)
 		if (!this.events[ev]) {this.events[ev] = []; }
 		this.events[ev].push(callback);
 	}
@@ -29,8 +28,6 @@ var EventEmitter = (function () {
      * @param  {Object} eventObj An optional object giving information on the state of the event
 	 */
 	function emit(ev, eventObj) {
-		console.log(ev, eventObj)
-		console.log(this.events[ev])
 		if (this.events[ev]) {
 			for (var i = 0, len = this.events[ev].length; i < len; i++) {
 				this.events[ev][i](eventObj);

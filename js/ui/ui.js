@@ -403,6 +403,7 @@ var Ui = ( function(w) {'use strict';
 		 * @param layer: map layer the feature is located on
 		 */
 		function setWaypointFeatureId(wpIndex, featureId, position, layer) {
+			console.log('setWaypointFeatureId', wpIndex,featureId,position,layer)
 			var rootElement = $('#' + wpIndex).get(0);
 			var address = rootElement.querySelector('.address');
 			if (address) {
@@ -430,11 +431,14 @@ var Ui = ( function(w) {'use strict';
 		 * @return: the index of the wayoint; null if the waypoint does not exist
 		 */
 		function getWaypiontIndexByFeatureId(featureId) {
+			console.log(featureId)
 			var wpResult = $('#' + featureId);
 			var wpElement;
 			if (wpResult) {
 				wpElement = wpResult.parent().parent();
 			}
+			console.log(wpElement)
+
 			if (wpElement) {
 				var wpIndex = wpElement.attr('id');
 				if (!isNaN(wpIndex)) {
@@ -690,7 +694,8 @@ var Ui = ( function(w) {'use strict';
 		 * @return: the index of the wayoint
 		 */
 		function addWaypointResultByRightclick(typeOfWaypoint, index, results, latlon) {
-
+			console.log('addWaypointResultByRightclick')
+			console.log(typeOfWaypoint, index, results, latlon)
 			var numWaypoints = $('.waypoint').length - 1;
 			while (index >= numWaypoints) {
 				addWaypointAfter(numWaypoints - 1);

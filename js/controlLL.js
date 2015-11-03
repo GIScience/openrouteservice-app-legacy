@@ -111,7 +111,6 @@ var Controller = ( function(w) {'use strict';
          * @param atts: wpIndex: index of the waypoint; featureId: map feature id of the selected marker; searchIds: string of all search features for this search
          */
         function handleWaypointResultClick(atts) {
-            
             var wpIndex = atts.wpIndex;
             var featureId = atts.featureId;
             var searchIds = atts.searchIds;
@@ -146,11 +145,8 @@ var Controller = ( function(w) {'use strict';
             var index = waypoint.getNumWaypoints() - 2;
             var type = waypoint.determineWaypointType(index);
             ui.setWaypointType(index, type);
-            console.log(index,type)
             var featureId = ui.getFeatureIdOfWaypoint(index);
-            console.log(featureId);
             var newId = map.setWaypointType(featureId, type);
-            console.log(newId)
             var position = map.convertFeatureIdToPositionString(newId, map.layerRoutePoints);
             ui.setWaypointFeatureId(index, newId, position, map.layerRoutePoints);
         }
@@ -171,7 +167,7 @@ var Controller = ( function(w) {'use strict';
          * @param noRouteRequest: if noRouteRequest is true, then no route request is fired
          */
         function handleAddWaypointByRightclick(atts,noRouteRequest) {
-            console.log(atts);
+
             var pos = atts.pos;
             var wpType = atts.type;
             var featureId;
@@ -202,20 +198,20 @@ var Controller = ( function(w) {'use strict';
             //add the new marker
             //var newFeatureId = map.addWaypointAtPos(util.convertPointForMap(pos), wpIndex, wpType);
             var newFeatureId = map.addWaypointAtPos(pos, wpIndex, wpType);
-            console.log(newFeatureId);
-            //add lat lon to input field 
+                //add lat lon to input field 
             waypoint.setWaypoint(wpIndex, true);
             var position = map.convertFeatureIdToPositionString(newFeatureId, map.layerRoutePoints);
-            console.log(position)
+
+
             //convert position to string
             //var displayPosition = util.convertPositionStringToLonLat(position);
             //displayPosition = util.convertPointForDisplay(displayPosition);
             //displayPosition = util.convertPointToString(displayPosition);
             
+
             var newIndex = ui.addWaypointResultByRightclick(wpType, wpIndex, position, true);
             ui.setWaypointFeatureId(newIndex, newFeatureId, position, 'layerRoutePoints');
             
-            console.log('h')
 
 
             if (!noRouteRequest) {
@@ -236,7 +232,6 @@ var Controller = ( function(w) {'use strict';
          * @param addWaypointAt: index where to add the waypoint
          */
         function reverseGeocodeSuccess(addressResult, wpType, wpIndex, featureId, addWaypointAt) {
-            
             //IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
             var addressResult = addressResult.responseXML ? addressResult.responseXML : util.parseStringToDOM(addressResult.responseText);
             
@@ -260,7 +255,7 @@ var Controller = ( function(w) {'use strict';
                 ui.showSearchingAtWaypoint(wpIndex, false);
                 var newIndex = ui.addWaypointResultByRightclick(wpType, wpIndex, addressResult);
                 var position = map.convertFeatureIdToPositionString(featureId, map.layerRoutePoints);
-                ui.setWaypointFeatureId(newIndex, featureId, position, map.layerRoutePoints);
+                ui.setWaypointFeatureId(newIndex, featureId, position, 'layerRoutePoints');
                 
 
 
@@ -427,7 +422,6 @@ var Controller = ( function(w) {'use strict';
 
             var routePoints = ui.getRoutePoints();
             var wpString = "";
-            console.log(routePoints);
 
             for (var i = 0; i < routePoints.length; i++) {
                 routePoints[i] = routePoints[i].split(' ');
@@ -756,27 +750,28 @@ var Controller = ( function(w) {'use strict';
          * @param featureMoved: the map feature that has been moved
          */
         function handleWaypointMoved(featureMoved) {
-            var position = new OpenLayers.LonLat(featureMoved.geometry.x, featureMoved.geometry.y);
-            var index = ui.getWaypiontIndexByFeatureId(featureMoved.id);
-            var type = waypoint.determineWaypointType(index);
 
+            var pos = featureMoved.getLatLng();
+            pos = new L.LatLng(pos.lat, pos.lng);
+            var index = ui.getWaypiontIndexByFeatureId(featureMoved._leaflet_id);
+            var type = waypoint.determineWaypointType(index);
             //add lat lon to input field 
-            var newPosition = map.convertFeatureIdToPositionString(featureMoved.id, map.ROUTE_POINTS);
+            var newPosition = map.convertFeatureIdToPositionString(featureMoved._leaflet_id, map.layerRoutePoints);
 
             //convert position dis
-            var displayPosition = util.convertPositionStringToLonLat(newPosition);
-            displayPosition = util.convertPointForDisplay(displayPosition);
-            displayPosition = util.convertPointToString(displayPosition);
+            // var displayPosition = util.convertPositionStringToLonLat(newPosition);
+            // displayPosition = util.convertPointForDisplay(displayPosition);
+            // displayPosition = util.convertPointToString(displayPosition);
 
-            var newIndex = ui.addWaypointResultByRightclick(type, index, displayPosition, true);
+            var newIndex = ui.addWaypointResultByRightclick(type, index, newPosition, true);
 
-            ui.setWaypointFeatureId(newIndex, featureMoved.id, newPosition, map.ROUTE_POINTS);
+            ui.setWaypointFeatureId(newIndex, featureMoved._leaflet_id, newPosition, 'layerRoutePoints');
             
             //update preferences
             handleWaypointChanged();
 
             // request for geocoding which will replace lat lon in input field if returned
-            geolocator.reverseGeolocate(util.convertPointForDisplay(position), reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, type, index, featureMoved.id, -1);
+            geolocator.reverseGeolocate(pos, reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, type, index, featureMoved._leaflet_id, -1);
             ui.invalidateWaypointSearch(index);
             
         }
@@ -808,7 +803,6 @@ var Controller = ( function(w) {'use strict';
                     }
                 }
             
-                console.log(routePoints)
                 
                 var routePref = permaInfo[preferences.routeOptionsIdx];
                 
@@ -915,8 +909,6 @@ var Controller = ( function(w) {'use strict';
                 var responseError = util.getElementsByTagNameNS(results, namespaces.xls, 'ErrorList').length;
 
                 if (parseInt(responseError) > 0) {
-                                                        console.log('success')
-
                     //service response contains an error, switch to error handling function
                     routeCalculationError();
                 } else {
@@ -932,9 +924,6 @@ var Controller = ( function(w) {'use strict';
                     // each route instruction has a part of this lineString as geometry for this instruction
                     var routeLines = route.parseResultsToLineStrings(results);
                     var routePoints = route.parseResultsToCornerPoints(results);
-
-                    console.log(routeLines)
-                    console.log(routePoints)
                     
                     //Get the restrictions along the route
                     //TODO
@@ -1491,32 +1480,33 @@ var Controller = ( function(w) {'use strict';
             // updates the other two and overwrites the cookie info
 
             
-            layer = preferences.loadMapLayer(layer);
-            if (layer) {
-                map.restoreLayerPrefs(layer);
-            }
+            //TODO
+            // layer = preferences.loadMapLayer(layer);
+            // if (layer) {
+            //     map.restoreLayerPrefs(layer);
+            // }
 
-            pos = preferences.loadMapPosition(pos);
-            if (pos && pos != 'null') {
-                pos = util.convertPointForMap(pos);
-                map.theMap.setCenter(pos);
-            } else {
-                //position not set, use geolocation feature to determine position
-                var locationSuccess = function(position) {
-                    var pos = new OpenLayers.LonLat(position.coords.longitude, position.coords.latitude);
-                    pos = util.convertPointForMap(pos);
-                    map.theMap.moveTo(pos);
-                };
-                geolocator.locate(locationSuccess, null, null);
-            }
-            zoom = preferences.loadMapZoom(zoom);
-            if (zoom) {
-                map.theMap.zoomTo(zoom);
-            }
-            layer = preferences.loadMapLayer(layer);
-            if (layer) {
-                map.restoreLayerPrefs(layer);
-            }
+            // pos = preferences.loadMapPosition(pos);
+            // if (pos && pos != 'null') {
+            //     pos = util.convertPointForMap(pos);
+            //     map.theMap.setCenter(pos);
+            // } else {
+            //     //position not set, use geolocation feature to determine position
+            //     var locationSuccess = function(position) {
+            //         var pos = new OpenLayers.LonLat(position.coords.longitude, position.coords.latitude);
+            //         pos = util.convertPointForMap(pos);
+            //         map.theMap.moveTo(pos);
+            //     };
+            //     geolocator.locate(locationSuccess, null, null);
+            // }
+            // zoom = preferences.loadMapZoom(zoom);
+            // if (zoom) {
+            //     map.theMap.zoomTo(zoom);
+            // }
+            // layer = preferences.loadMapLayer(layer);
+            // if (layer) {
+            //     map.restoreLayerPrefs(layer);
+            // }
             
             // if routeOpt is not in getVars then use Car for init
             routeOpt = preferences.loadRouteOptions(routeOpt);
@@ -1559,7 +1549,8 @@ var Controller = ( function(w) {'use strict';
             //avoidAreas: array of OL.Polygon representing one avoid area each
             avoidAreas = preferences.loadAvoidAreas(avoidAreas);
             //apply avoid areas
-            map.addAvoidAreas(avoidAreas);
+            //TODO
+            //map.addAvoidAreas(avoidAreas);
 
             /* get and set truck parameters */
             var truckParameters = preferences.loadtruckParameters(truck_length, truck_height, truck_width, truck_weight,truck_axleload);
@@ -1586,9 +1577,9 @@ var Controller = ( function(w) {'use strict';
 
                     var type;
 
-                    if (waypoints[i].lat == 0 & waypoints[i].lon == 0) {
+                    if (waypoints[i].lat === 0 & waypoints[i].lon === 0) {
                         continue;
-                    } else if (i == 0) {
+                    } else if (i === 0) {
                         type = Waypoint.type.START;
                     } else if (i == waypoints.length - 1) {
                         type = Waypoint.type.END;
@@ -1598,7 +1589,7 @@ var Controller = ( function(w) {'use strict';
                     handleAddWaypointByRightclick({
                         pos : waypoints[i],
                         type : type
-                    }, true)
+                    }, true);
                 }
                 if (waypoints.length >= 2) {
                     handleRoutePresent();
@@ -1650,7 +1641,6 @@ var Controller = ( function(w) {'use strict';
         function initialize() {
             console.log('init')
             map = new Map('map');
-            console.log(map)
             ui.register('ui:startDebug', showDebugInfo);
 
             //e.g. when viewing/hiding the sidebar

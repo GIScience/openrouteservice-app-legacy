@@ -3,31 +3,28 @@
  */
 var Map = (function() {
     /* *********************************************************************
-     * LAYER NAMES
+     * STYLES
      * *********************************************************************/
+    var startIcon = L.icon({
+        iconUrl: '../lib/images/marker-icon.png',
+        shadowUrl: '../lib/images/marker-shadow.png',
+        iconAnchor: [10, 40], // point of the icon which will correspond to marker's location
+        shadowAnchor: [10, 40], // the same for the shadow
+    });
+
+    
+
+
+
+
     var $ = window.jQuery;
+    var self;
     /**
      * Constructor
      * @param  {[type]} container [description]
      */
     function map(container) {
-        //layer names
-        this.ROUTE_LINES = 'routeLines';
-        this.ROUTE_POINTS = 'routePoints';
-        this.ROUTE_INSTRUCTIONS = 'routeInstructions';
-        this.GEOLOCATION = 'Geolocation';
-        this.SEARCH = 'Address Search';
-        this.POI = 'poi';
-        this.GEOLOCATION = 'searchResults';
-        this.AVOID = 'avoidAreas';
-        this.TRACK = 'track';
-        this.ACCESSIBILITY = 'accessiblity';
-        this.HEIGHTS = 'Height Profile';
-        this.RESTRICTIONS = 'Restrictions';
-        this.TEMPRESTRICTIONS = 'tempRestrictions';
-        this.BBOX = 'Restrictions Boundingbox';
-        this.BORDERS = 'Map borders';
-        var self = this;
+        self = this;
         /* *********************************************************************
          * MAP LAYERS
          * *********************************************************************/
@@ -110,7 +107,6 @@ var Map = (function() {
          * *********************************************************************/
         this.theMap.on('contextmenu', function(e) {
             var displayPos = e.latlng;
-            console.log(displayPos)
             $('.leaflet-popup-content').remove();
             var menuObject = createMapContextMenu();
             var popup = L.popup({
@@ -119,11 +115,9 @@ var Map = (function() {
                 maxWidth: '120px'
             }).setContent(menuObject.innerHTML).setLatLng(e.latlng);
             self.theMap.openPopup(popup);
-
             var options = $('.leaflet-popup-content');
             options = options[0].childNodes;
             options[0].onclick = function(e) {
-                console.log('click');
                 //click on start point
                 self.emit('map:addWaypoint', {
                     pos: displayPos,
@@ -332,21 +326,21 @@ var Map = (function() {
      * @params: layer string with active base layer and overlays
      */
     function restoreLayerPrefs(params) {
-        var layers = this.theMap.layers;
-        var result, indices = [];
-        //set given map layer active
-        var baseLayer = params.indexOf('B') >= 0 ? params.indexOf('B') : 0;
-        this.theMap.setBaseLayer(this.theMap.layers[baseLayer]);
-        //determine which overlays to set active
-        var regex = /T/gi;
-        while ((result = regex.exec(params))) {
-            indices.push(result.index);
-        }
-        for (var i = 0; i < indices.length; i++) {
-            if (layers[indices[i]]) {
-                layers[indices[i]].setVisibility(true);
-            }
-        }
+        // var layers = this.theMap.layers;
+        // var result, indices = [];
+        // //set given map layer active
+        // var baseLayer = params.indexOf('B') >= 0 ? params.indexOf('B') : 0;
+        // this.theMap.setBaseLayer(this.theMap.layers[baseLayer]);
+        // //determine which overlays to set active
+        // var regex = /T/gi;
+        // while ((result = regex.exec(params))) {
+        //     indices.push(result.index);
+        // }
+        // for (var i = 0; i < indices.length; i++) {
+        //     if (layers[indices[i]]) {
+        //         layers[indices[i]].setVisibility(true);
+        //     }
+        // }
     }
     /* *********************************************************************
      * GENERAL
@@ -357,7 +351,6 @@ var Map = (function() {
      *  @param waypointIndex: index of the waypoint where to remove objects from
      */
     function clearMarkers(layerName, featureIds) {
-        console.log('clear', featureIds);
         if (featureIds && featureIds.length > 0) {
             for (var i = 0; i < featureIds.length; i++) {
                 if (featureIds[i]) {
@@ -365,7 +358,7 @@ var Map = (function() {
                 }
             }
         } else {
-           layerName.clearLayers();
+            layerName.clearLayers();
         }
     }
     /**
@@ -423,11 +416,9 @@ var Map = (function() {
      */
     function convertFeatureIdToPositionString(featureId, layer) {
         featureId = parseInt(featureId);
-        console.log(layer._layers);
-        console.log(layer._layers[featureId])
         var ft = layer._layers[featureId];
         if (ft && ft._latlng) {
-            return ft._latlng.lat + ' ' + ft._latlng.lng;  
+            return ft._latlng.lat + ' ' + ft._latlng.lng;
         }
     }
     /**
@@ -494,14 +485,22 @@ var Map = (function() {
      * @param type: type of the waypoint (start, via, end)
      */
     function addWaypointAtPos(position, wpIndex, type) {
-        console.log(position, wpIndex, type)
-            // TODO: add styles depending on type, http://leafletjs.com/reference.html#icon
-        newMarker = new L.marker(position);
+        // TODO: add styles depending on type, http://leafletjs.com/reference.html#icon
+        newMarker = new L.marker(position, {
+            draggable: true,
+            icon: startIcon
+        });
         //newMarker.id = 'rp_' + position.lat + '_' + position.lng;
         newMarker.addTo(this.layerRoutePoints);
+        // newMarker.on("drag", function(e) {
+        //     var marker = e.target;
+        //     var position = marker.getLatLng();
+        //     self.theMap.panTo(new L.LatLng(position.lat, position.lng));
+        // });
+        newMarker.on("dragend", function(e) {
+            self.emit('map:waypointMoved', e.target);
+        });
         return newMarker._leaflet_id;
-
-
     }
     /**
      * sets the type of the given waypoint identified by its feature ID
@@ -509,8 +508,6 @@ var Map = (function() {
      * @param type: type of the waypoint (start, via, end)
      */
     function setWaypointType(featureId, type) {
-
-        console.log(featureId, type);
         //create new feature
         var feature = this.layerRoutePoints[featureId];
         if (feature) {
@@ -521,13 +518,9 @@ var Map = (function() {
             // });
             var newFeature = new L.marker(feature._latlng);
             //newMarker.id = 'rp_' + position.lat + '_' + position.lng;
-
             newFeature.addTo(this.layerRoutePoints);
-
             this.layerRoutePoints.removeLayer(feature);
-
             var id = newFeature._leaflet_id;
-
             return id;
         }
     }
@@ -707,35 +700,34 @@ var Map = (function() {
      * @return array of OL.Feature.Vector added to the layer
      */
     function updateRoute(routeLineSegments, routeLinePoints) {
-        
         this.layerRouteLines.clearLayers();
-
-
         //var layer = this.theMap.getLayersByName(this.ROUTE_LINES)[0];
         //layer.removeAllFeatures();
-
         var ftIds = [];
         if (routeLineSegments && routeLineSegments.length > 0) {
-            console.log(routeLineSegments)
             var self = this;
             for (var i = 0; i < routeLineSegments.length; i++) {
                 //"lines" of the route
                 var segment = []
                 for (var j = 0; j < routeLineSegments[i].length; j++) {
                     segment.push(routeLineSegments[i][j]);
-                //var segmentFt = new OpenLayers.Feature.Vector(segment, pointAndLineStyle.line);
+                    //var segmentFt = new OpenLayers.Feature.Vector(segment, pointAndLineStyle.line);
                 }
-                console.log(segment)
                 var segmentFt = L.polyline(segment);
-                console.log(segmentFt)
                 segmentFt.addTo(self.layerRouteLines);
                 //"corner points" of the route where direction changes
                 var cornerPoint = routeLinePoints[i];
                 //var cornerFt = new OpenLayers.Feature.Vector(cornerPoint, pointAndLineStyle.point);
-                var cornerFt = L.marker(cornerPoint);
+                var cornerFt = new L.CircleMarker(cornerPoint, {
+                    color: 'black',
+                    fillColor: 'white',
+                    fillOpacity: 1,
+                    fill: true,
+                    radius: 3,
+                    weight: 1
+                });
                 cornerFt.addTo(self.layerRouteLines);
                 //layer.addFeatures([segmentFt, cornerFt]);
-
                 ftIds.push(segmentFt._leaflet_id, cornerFt._leaflet_id);
             }
         }
@@ -1163,7 +1155,7 @@ var Map = (function() {
     map.prototype = new EventEmitter();
     map.prototype.constructor = map;
     // map.prototype.serializeLayers = serializeLayers;
-    // map.prototype.restoreLayerPrefs = restoreLayerPrefs;
+    map.prototype.restoreLayerPrefs = restoreLayerPrefs;
     map.prototype.clearMarkers = clearMarkers;
     // map.prototype.emphMarker = emphMarker;
     map.prototype.convertFeatureIdToPositionString = convertFeatureIdToPositionString;
