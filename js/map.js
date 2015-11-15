@@ -5,17 +5,6 @@ var Map = (function() {
     /* *********************************************************************
      * STYLES
      * *********************************************************************/
-    var startIcon = L.icon({
-        iconUrl: '../lib/images/marker-icon.png',
-        shadowUrl: '../lib/images/marker-shadow.png',
-        iconAnchor: [10, 40], // point of the icon which will correspond to marker's location
-        shadowAnchor: [10, 40], // the same for the shadow
-    });
-
-    
-
-
-
 
     var $ = window.jQuery;
     var self;
@@ -486,9 +475,10 @@ var Map = (function() {
      */
     function addWaypointAtPos(position, wpIndex, type) {
         // TODO: add styles depending on type, http://leafletjs.com/reference.html#icon
+        console.log(wpIndex, type)
         newMarker = new L.marker(position, {
             draggable: true,
-            icon: startIcon
+            icon: Ui.markerIcons[type]
         });
         //newMarker.id = 'rp_' + position.lat + '_' + position.lng;
         newMarker.addTo(this.layerRoutePoints);
@@ -586,15 +576,16 @@ var Map = (function() {
      * @return array with added OL.Feature.Vector
      */
     function addSearchAddressResultMarkers(listOfPoints, wpIndex) {
-        var layerSearchResults = this.theMap.getLayersByName(this.SEARCH)[0];
+        
         var listOfFeatures = [];
         for (var i = 0; i < listOfPoints.length; i++) {
             //convert corrdinates of marker
             var point = listOfPoints[i];
             var feature = null;
             if (point) {
-                point = util.convertPointForMap(point);
-                point = new OpenLayers.Geometry.Point(point.lon, point.lat);
+                var position = [point[1], point[0]];
+                // point = util.convertPointForMap(point);
+                // point = new OpenLayers.Geometry.Point(point.lon, point.lat);
                 if (wpIndex) {
                     //a waypoint search
                     var ftId = 'address_' + wpIndex + '_' + i;
@@ -602,11 +593,17 @@ var Map = (function() {
                     //an address search
                     var ftId = 'address_' + i;
                 }
-                feature = new OpenLayers.Feature.Vector(point, {
-                    icon: Ui.markerIcons.unset[0],
-                    iconEm: Ui.markerIcons.unset[1],
+
+                feature = new L.marker(position, {
+                    draggable: true,
+                    icon: Ui.markerIcons.unset
                 });
-                layerSearchResults.addFeatures([feature]);
+                // feature = new OpenLayers.Feature.Vector(point, {
+                //     icon: Ui.markerIcons.unset[0],
+                //     iconEm: Ui.markerIcons.unset[1],
+                // });
+                feature.addTo(self.layerSearch);
+
             }
             listOfFeatures.push(feature);
         }
@@ -619,12 +616,15 @@ var Map = (function() {
      * (this is also used for waypoint search results)
      */
     function zoomToAddressResults() {
-        var layerSearchResults = this.theMap.getLayersByName(this.SEARCH)[0];
-        var resultBounds = layerSearchResults.getDataExtent();
-        this.theMap.zoomToExtent(resultBounds);
-        if (this.theMap.getZoom() > 14) {
-            this.theMap.zoomTo(14);
-        }
+        
+        this.theMap.fitBounds(self.layerSearch.getBounds());
+
+        // var layerSearchResults = this.theMap.getLayersByName(this.SEARCH)[0];
+        // var resultBounds = layerSearchResults.getDataExtent();
+        // this.theMap.zoomToExtent(resultBounds);
+        // if (this.theMap.getZoom() > 14) {
+        //     this.theMap.zoomTo(14);
+        // }
     }
     /*
      * SEARCH POI
@@ -1157,7 +1157,7 @@ var Map = (function() {
     // map.prototype.serializeLayers = serializeLayers;
     map.prototype.restoreLayerPrefs = restoreLayerPrefs;
     map.prototype.clearMarkers = clearMarkers;
-    // map.prototype.emphMarker = emphMarker;
+    map.prototype.emphMarker = emphMarker;
     map.prototype.convertFeatureIdToPositionString = convertFeatureIdToPositionString;
     // map.prototype.getFirstPointIdOfLine = getFirstPointIdOfLine;
     // map.prototype.activateSelectControl = activateSelectControl;
@@ -1167,8 +1167,8 @@ var Map = (function() {
     // map.prototype.getWaypointsString = getWaypointsString;
     // map.prototype.getWaypointsAmount = getWaypointsAmount;
     // map.prototype.addGeolocationResultMarker = addGeolocationResultMarker;
-    // map.prototype.addSearchAddressResultMarkers = addSearchAddressResultMarkers;
-    // map.prototype.zoomToAddressResults = zoomToAddressResults;
+    map.prototype.addSearchAddressResultMarkers = addSearchAddressResultMarkers;
+    map.prototype.zoomToAddressResults = zoomToAddressResults;
     // map.prototype.addSearchPoiResultMarkers = addSearchPoiResultMarkers;
     // map.prototype.emphasizeSearchPoiMarker = emphasizeSearchPoiMarker;
     // map.prototype.deEmphasizeSearchPoiMarker = deEmphasizeSearchPoiMarker;

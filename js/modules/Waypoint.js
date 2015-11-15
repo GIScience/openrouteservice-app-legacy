@@ -94,7 +94,6 @@ var Waypoint = (function(w) {
             for (var i = 0; i < allAddress.length; i++) {
                 var point = util.getElementsByTagNameNS(allAddress[i], namespaces.gml, 'pos')[0];
                 point = (point.firstChild.nodeValue).split(" ");
-                point = new OpenLayers.LonLat(point[0], point[1]);
                 listOfPoints.push(point);
                 //if (europeBbox.containsLonLat(point)) {
                 //listOfPoints.push(point);
