@@ -468,7 +468,7 @@ var Map = (function() {
      * @return: ID of the waypoint feature
      */
     function addWaypointMarker(wpIndex, featureId, type) {
-        console.log(wpIndex,featureId,type)
+        console.log(wpIndex, featureId, type)
         var layerSearchResults = this.layerSearch;
         var layerWaypoints = this.layerRoutePoints;
         var oldMarker = layerSearchResults._layers[featureId];
@@ -481,6 +481,11 @@ var Map = (function() {
                 icon_emph: Ui.markerIcons.emph
             });
             newMarker.addTo(this.layerRoutePoints);
+
+            newMarker.on("dragend", function(e) {
+                self.emit('map:waypointMoved', e.target);
+            });
+
             return newMarker._leaflet_id;
         }
     }
@@ -753,11 +758,7 @@ var Map = (function() {
      * zooms the map so that the whole route becomes visible (i.e. all features of the route line layer)
      */
     function zoomToRoute() {
-        var layer = this.theMap.getLayersByName(this.ROUTE_LINES)[0];
-        var dataExtent = layer.getDataExtent();
-        if (dataExtent) {
-            this.theMap.zoomToExtent(dataExtent);
-        }
+        this.theMap.fitBounds(this.layerRoutePoints.getBounds());
     }
     /*
      * AVOID AREAS
@@ -1192,7 +1193,7 @@ var Map = (function() {
     // map.prototype.zoomToPoiResults = zoomToPoiResults;
     map.prototype.zoomToMarker = zoomToMarker;
     // map.prototype.zoomToFeature = zoomToFeature;
-    // map.prototype.zoomToRoute = zoomToRoute;
+    map.prototype.zoomToRoute = zoomToRoute;
     map.prototype.updateRoute = updateRoute;
     // map.prototype.avoidAreaTools = avoidAreaTools;
     // map.prototype.checkAvoidAreasIntersectThemselves = checkAvoidAreasIntersectThemselves;

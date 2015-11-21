@@ -128,7 +128,7 @@ var Controller = ( function(w) {'use strict';
 
             var position_string = map.convertFeatureIdToPositionString(waypointResultId, map.layerRoutePoints);
             var position = map.convertFeatureIdToPosition(waypointResultId, map.layerRoutePoints);
-            map.zoomToMarker(position,14);
+            map.zoomToMarker(position,5);
             ui.setWaypointFeatureId(wpIndex, waypointResultId, position_string, 'layerRoutePoints');
 
             handleWaypointChanged();
