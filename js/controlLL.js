@@ -121,16 +121,17 @@ var Controller = ( function(w) {'use strict';
 
             var type = selectWaypointType(wpIndex);
             var waypointResultId = map.addWaypointMarker(wpIndex, featureId, type);
-            map.clearMarkers(map.SEARCH, searchIds);
+            console.log(waypointResultId)
+            map.clearMarkers('layerSearch', searchIds);
 
             waypoint.setWaypoint(wpIndex, true);
 
-            var position = map.convertFeatureIdToPositionString(waypointResultId, map.ROUTE_POINTS);
-            map.zoomToMarker(util.convertPositionStringToLonLat(position), 14);
-            ui.setWaypointFeatureId(wpIndex, waypointResultId, position, map.ROUTE_POINTS);
+            var position_string = map.convertFeatureIdToPositionString(waypointResultId, map.layerRoutePoints);
+            var position = map.convertFeatureIdToPosition(waypointResultId, map.layerRoutePoints);
+            map.zoomToMarker(position,14);
+            ui.setWaypointFeatureId(wpIndex, waypointResultId, position_string, 'layerRoutePoints');
 
             handleWaypointChanged();
-            
 
         }
 

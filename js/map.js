@@ -5,7 +5,6 @@ var Map = (function() {
     /* *********************************************************************
      * STYLES
      * *********************************************************************/
-
     var $ = window.jQuery;
     var self;
     /**
@@ -343,19 +342,22 @@ var Map = (function() {
         if (featureIds && featureIds.length > 0) {
             for (var i = 0; i < featureIds.length; i++) {
                 if (featureIds[i]) {
-                    layerName.removeLayer(featureIds[i]);
+                    this[layerName].removeLayer(featureIds[i]);
                 }
             }
         } else {
-            layerName.clearLayers();
+            this[layerName].clearLayers();
         }
     }
     /**
      * Move and zoom the map to a given marker
-     * @param {Object} objectId String containing the CSS-id of the marker representation, e.g. 'address_2' or 'poi_47'
+     * @param position: leaflet latlng object
+     * @param zoom: zoom int
      */
     function zoomToMarker(position, zoom) {
-        this.theMap.moveTo(position, zoom);
+        this.theMap.panTo(position);
+        //TODO
+        //this.theMap.setZoom(3);
     }
     /**
      * zoom to a given feature vector defined by its vector id.
@@ -382,24 +384,23 @@ var Map = (function() {
      * @param empg: if true, the feature is emphasized; if false, the feature is deemphasized
      */
     function emphMarker(layer, featureId, emph) {
-        var layer = this.theMap.getLayersByName(layer);
-        layer = layer ? layer[0] : null;
+        var layer = this[layer];
+        layer = layer ? layer : null;
         if (layer) {
-            var marker = layer.getFeatureById(featureId);
+            var marker = layer._layers[featureId];
             if (marker) {
                 if (emph) {
                     //emphasize feature
-                    this.selectMarker.select(marker);
+                    marker.setIcon(marker.options.icon_emph);
                 } else {
-                    //de-emphasize feature
-                    this.selectMarker.unselect(marker);
+                    marker.setIcon(marker.options.icon_orig);
                 }
             }
         }
     }
     /**
-     * based on an OL feature id and the layer the feature is located on, the position is looked up
-     * @param featureId: OL feature ID as string
+     * based on an Leaflet feature id and the layer the feature is located on, the position is looked up
+     * @param featureId: LL feature ID as string
      * @param layer: string name of the layer the feature is located on.
      * @return: string with the position of the feature; style: 'x-coordinate y-coordinate'
      */
@@ -408,6 +409,19 @@ var Map = (function() {
         var ft = layer._layers[featureId];
         if (ft && ft._latlng) {
             return ft._latlng.lat + ' ' + ft._latlng.lng;
+        }
+    }
+    /**
+     * based on an Leaflet feature id and the layer the feature is located on, the position is looked up
+     * @param featureId: LL feature ID as string
+     * @param layer: string name of the layer the feature is located on.
+     * @return: leaflet position object
+     */
+    function convertFeatureIdToPosition(featureId, layer) {
+        featureId = parseInt(featureId);
+        var ft = layer.getLayer(featureId);
+        if (ft && ft.getLatLng()) {
+            return ft.getLatLng();
         }
     }
     /**
@@ -454,17 +468,20 @@ var Map = (function() {
      * @return: ID of the waypoint feature
      */
     function addWaypointMarker(wpIndex, featureId, type) {
-        var layerSearchResults = this.theMap.getLayersByName(this.SEARCH)[0];
-        var layerWaypoints = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
-        var oldMarker = layerSearchResults.getFeatureById(featureId);
+        console.log(wpIndex,featureId,type)
+        var layerSearchResults = this.layerSearch;
+        var layerWaypoints = this.layerRoutePoints;
+        var oldMarker = layerSearchResults._layers[featureId];
         if (oldMarker) {
-            var newMarker = new OpenLayers.Geometry.Point(oldMarker.geometry.x, oldMarker.geometry.y);
-            var newFeature = new OpenLayers.Feature.Vector(newMarker, {
-                icon: Ui.markerIcons[type][0],
-                iconEm: Ui.markerIcons[type][1],
+            console.log(oldMarker.getLatLng())
+            newMarker = new L.marker(oldMarker.getLatLng(), {
+                draggable: true,
+                icon: Ui.markerIcons[type],
+                icon_orig: Ui.markerIcons[type],
+                icon_emph: Ui.markerIcons.emph
             });
-            layerWaypoints.addFeatures([newFeature]);
-            return newFeature.id;
+            newMarker.addTo(this.layerRoutePoints);
+            return newMarker._leaflet_id;
         }
     }
     /**
@@ -478,7 +495,9 @@ var Map = (function() {
         console.log(wpIndex, type)
         newMarker = new L.marker(position, {
             draggable: true,
-            icon: Ui.markerIcons[type]
+            icon: Ui.markerIcons[type],
+            icon_orig: Ui.markerIcons[type],
+            icon_emph: Ui.markerIcons.emph
         });
         //newMarker.id = 'rp_' + position.lat + '_' + position.lng;
         newMarker.addTo(this.layerRoutePoints);
@@ -576,7 +595,6 @@ var Map = (function() {
      * @return array with added OL.Feature.Vector
      */
     function addSearchAddressResultMarkers(listOfPoints, wpIndex) {
-        
         var listOfFeatures = [];
         for (var i = 0; i < listOfPoints.length; i++) {
             //convert corrdinates of marker
@@ -593,17 +611,17 @@ var Map = (function() {
                     //an address search
                     var ftId = 'address_' + i;
                 }
-
                 feature = new L.marker(position, {
                     draggable: true,
-                    icon: Ui.markerIcons.unset
+                    icon: Ui.markerIcons.unset,
+                    icon_orig: Ui.markerIcons.unset,
+                    icon_emph: Ui.markerIcons.emph
                 });
                 // feature = new OpenLayers.Feature.Vector(point, {
                 //     icon: Ui.markerIcons.unset[0],
                 //     iconEm: Ui.markerIcons.unset[1],
                 // });
                 feature.addTo(self.layerSearch);
-
             }
             listOfFeatures.push(feature);
         }
@@ -616,9 +634,7 @@ var Map = (function() {
      * (this is also used for waypoint search results)
      */
     function zoomToAddressResults() {
-        
         this.theMap.fitBounds(self.layerSearch.getBounds());
-
         // var layerSearchResults = this.theMap.getLayersByName(this.SEARCH)[0];
         // var resultBounds = layerSearchResults.getDataExtent();
         // this.theMap.zoomToExtent(resultBounds);
@@ -1159,9 +1175,10 @@ var Map = (function() {
     map.prototype.clearMarkers = clearMarkers;
     map.prototype.emphMarker = emphMarker;
     map.prototype.convertFeatureIdToPositionString = convertFeatureIdToPositionString;
+    map.prototype.convertFeatureIdToPosition = convertFeatureIdToPosition;
     // map.prototype.getFirstPointIdOfLine = getFirstPointIdOfLine;
     // map.prototype.activateSelectControl = activateSelectControl;
-    // map.prototype.addWaypointMarker = addWaypointMarker;
+    map.prototype.addWaypointMarker = addWaypointMarker;
     map.prototype.addWaypointAtPos = addWaypointAtPos;
     map.prototype.setWaypointType = setWaypointType;
     // map.prototype.getWaypointsString = getWaypointsString;
@@ -1173,7 +1190,7 @@ var Map = (function() {
     // map.prototype.emphasizeSearchPoiMarker = emphasizeSearchPoiMarker;
     // map.prototype.deEmphasizeSearchPoiMarker = deEmphasizeSearchPoiMarker;
     // map.prototype.zoomToPoiResults = zoomToPoiResults;
-    // map.prototype.zoomToMarker = zoomToMarker;
+    map.prototype.zoomToMarker = zoomToMarker;
     // map.prototype.zoomToFeature = zoomToFeature;
     // map.prototype.zoomToRoute = zoomToRoute;
     map.prototype.updateRoute = updateRoute;

@@ -159,7 +159,6 @@ var Ui = (function(w) {
      * @param e: the event
      */
     function handleMouseOverElement(e) {
-    	console.log('emph ', e.currentTarget.getAttribute('id'), e.currentTarget.getAttribute('data-layer'));
         theInterface.emit('ui:emphElement', {
             id: e.currentTarget.getAttribute('id'),
             layer: e.currentTarget.getAttribute('data-layer')
@@ -239,7 +238,6 @@ var Ui = (function(w) {
             for (var i = 0; i < allAddress.length; i++) {
                 //listOfFeatures[i] == null if result is not in Europe
                 if (listOfFeatures[i]) {
-                	console.log(listOfFeatures[i])
                     var lonLat = listOfFeatures[i]._latlng;
                     allIds += listOfFeatures[i]._leaflet_id + ' ';
                     var xmlAddress = allAddress[i];
@@ -3147,6 +3145,11 @@ Ui.markerIcons = {
     unset: L.MakiMarkers.icon({
         icon: "circle-stroked",
         color: "#e2e2e2",
+        size: "m"
+    }),
+    emph: L.MakiMarkers.icon({
+        icon: "circle-stroked",
+        color: "#83e",
         size: "m"
     })
 };
