@@ -1436,18 +1436,19 @@ var Ui = (function(w) {
     /**
      * displays instructions for the route
      * @param results: response of the service
-     * @param mapFeatureIds: list of IDs of OpenLayers elements containing BOTH - ids for route line segments AND corner points: [routeLineSegment_0, cornerPoint_0, routeLineSegment_1, cornerPoint_1,...]
+     * @param mapFeatureIds: list of IDs of Leaflet elements containing BOTH - ids for route line segments AND corner points: [routeLineSegment_0, cornerPoint_0, routeLineSegment_1, cornerPoint_1,...]
      * @param mapLayer: map layer containing these features
      */
     function updateRouteInstructions(results, mapFeatureIds, mapLayer) {
+        var container;
         if (!results) {
-            var container = $('#routeInstructionsContainer').get(0);
+            container = $('#routeInstructionsContainer').get(0);
             container.hide();
         } else {
             //parse results and show them in the container
-            var container = $('#routeInstructionsContainer').get(0);
+            container = $('#routeInstructionsContainer').get(0);
             container.show();
-            var directionsMain = container.querySelector('.directions-main')
+            var directionsMain = container.querySelector('.directions-main');
                 // remove old instructions
             while (directionsMain.firstChild) {
                 directionsMain.removeChild(directionsMain.firstChild);
@@ -1460,24 +1461,24 @@ var Ui = (function(w) {
             var stopoverDistance = 0;
             var distArr;
             var stopoverTime = 0;
+            var waypoints;
             // get stopovers which are viapoints
             if ($('.waypoint').length > 2) {
-                var waypoints = getWaypoints();
+            	waypoints = getWaypoints();
             }
             //var startpoint = waypoints.splice(0, 1);
             //var endpoint = waypoints.splice(-1, 1);
             var startpoint = waypoints[0];
             var endpoint = waypoints[(waypoints.length) - 1];
             //add startpoint
-            var directionsContainer = buildWaypoint(mapLayer, 'start', startpoint, 0);
+            var directionsContainer = buildWaypoint('layerRoutePoints', 'start', startpoint, 0);
             directionsMain.appendChild(directionsContainer);
             // container for all direction instructions
             $A(instructionsList).each(function(instruction) {
                 var directionCode = util.getElementsByTagNameNS(instruction, namespaces.xls, 'DirectionCode')[0];
                 directionCode = directionCode.textContent;
-                //skip directionCode 100 for now
                 if (directionCode == '100') {
-                    var directionsContainer = buildWaypoint(mapLayer, 'via', waypoints[numStopovers], numStopovers, stopoverDistance, stopoverTime);
+                    var directionsContainer = buildWaypoint('layerRoutePoints', 'via', waypoints[numStopovers], numStopovers, stopoverDistance, stopoverTime);
                     directionsMain.appendChild(directionsContainer);
                     stopoverDistance = 0;
                     stopoverTime = 0;
@@ -1497,7 +1498,7 @@ var Ui = (function(w) {
                     for (var c = 0; c < duration.length; c++) {
                         if (duration[c].slice(-1) == "D") {
                             sec = parseInt(duration[c].match(/\d+/g) * 60 * 60);
-                            myduration += sec
+                            myduration += sec;
                         }
                         if (duration[c].slice(-1) == "M") {
                             sec = parseInt(duration[c].match(/\d+/g) * 60);
@@ -1583,10 +1584,10 @@ var Ui = (function(w) {
                     // modeContainer
                     var directionsModeContainer = new Element('div', {
                         'class': 'directions-mode-container'
-                    })
+                    });
                     var directionsBorder = new Element('div', {
                         'class': 'directions-mode-line'
-                    })
+                    });
                     var distanceDiv = new Element('div', {
                         'class': 'directions-mode-distance clickable',
                         'id': mapFeatureIds[2 * (numInstructions - 1)],
@@ -1614,7 +1615,7 @@ var Ui = (function(w) {
                 }
             });
             //add endpoint
-            var directionsContainer = buildWaypoint(mapLayer, 'end', endpoint, getWaypoints().length - 1, stopoverDistance, stopoverTime);
+            var directionsContainer = buildWaypoint('layerRoutePoints', 'end', endpoint, getWaypoints().length - 1, stopoverDistance, stopoverTime);
             directionsMain.appendChild(directionsContainer);
         }
         /** 
@@ -1632,34 +1633,35 @@ var Ui = (function(w) {
                 'class': 'directions-container clickable',
                 'data-layer': mapLayer,
             });
+            var icon;
             if (wpType == 'start') {
-                var icon = new Element('img', {
+                icon = new Element('img', {
                     'src': './img/startWaypoint.png'
                 });
             } else if (wpType == 'via') {
-                var icon = new Element('span', {
+                icon = new Element('span', {
                     'class': 'badge badge-inverse'
                 }).update(numStopovers);
             } else {
-                var icon = new Element('img', {
+                icon = new Element('img', {
                     'src': './img/endWaypoint.png'
                 });
             }
             var wayPoint = new Element('div', {
                 'class': 'directions-waypoint',
-            })
+            });
             wayPoint.appendChild(icon);
             var shortAddress = new Element('div', {
                     'class': 'directions-waypoint-address',
                     'waypoint-id': viaCounter
-                }).update(address)
+                }).update(address);
                 // modeContainer
             var directionsModeContainer = new Element('div', {
                 'class': 'directions-mode-container'
-            })
+            });
             var directionsBorder = new Element('div', {
                 'class': 'directions-mode-line'
-            })
+            });
             directionsContainer.appendChild(wayPoint);
             // add info if via or endpoint
             if (wpType == 'end' || wpType == 'via') {

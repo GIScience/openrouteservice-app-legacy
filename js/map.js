@@ -342,11 +342,11 @@ var Map = (function() {
         if (featureIds && featureIds.length > 0) {
             for (var i = 0; i < featureIds.length; i++) {
                 if (featureIds[i]) {
-                    this[layerName].removeLayer(featureIds[i]);
+                    layerName.removeLayer(featureIds[i]);
                 }
             }
         } else {
-            this[layerName].clearLayers();
+            layerName.clearLayers();
         }
     }
     /**
@@ -365,35 +365,50 @@ var Map = (function() {
      * @param zoom: optional zoom level
      */
     function zoomToFeature(mapLayer, vectorId, zoom) {
-        mapLayer = this.theMap.getLayersByName(mapLayer);
-        if (mapLayer && mapLayer.length > 0) {
-            mapLayer = mapLayer[0];
-        }
-        var vectors = mapLayer.getFeatureById(vectorId);
-        var bounds = vectors.geometry.getBounds();
-        if (zoom) {
-            this.theMap.moveTo(bounds.getCenterLonLat(), zoom);
-        } else {
-            this.theMap.zoomToExtent(bounds);
+        if (mapLayer) {
+            var vectors = mapLayer.getLayer(vectorId);
+            if (vectors.getBounds) {
+                this.theMap.fitBounds(vectors.getBounds());
+            } else {
+                this.theMap.panTo(vectors.getLatLng());
+            }
+            // TODO...
+            // if (zoom) {
+            //     this.theMap.panTo(bounds.getCenterLonLat(), zoom);
+            // }
         }
     }
     /**
-     * when performing certain actions on the Ui, OL features need to be emphasized/ deemphasized.
+     * when performing certain actions on the Ui, LL features need to be emphasized/ deemphasized.
      * @param layer: the layer the feature is located on
-     * @param featureId: OL id of the feature to emph/deemph
-     * @param empg: if true, the feature is emphasized; if false, the feature is deemphasized
+     * @param featureId: LL id of the feature to emph/deemph
+     * @param emph: if true, the feature is emphasized; if false, the feature is deemphasized
      */
     function emphMarker(layer, featureId, emph) {
-        var layer = this[layer];
-        layer = layer ? layer : null;
+        var myLayer = this[layer];
+        myLayer = myLayer ? myLayer : null;
         if (layer) {
-            var marker = layer._layers[featureId];
+            var marker = myLayer.getLayer(featureId);
             if (marker) {
                 if (emph) {
                     //emphasize feature
-                    marker.setIcon(marker.options.icon_emph);
+                    if (layer == 'layerRoutePoints') {
+                        marker.setIcon(marker.options.icon_emph);
+                    } else if (layer == 'layerRouteLines') {
+                        marker.setStyle({
+                            fillColor: '#ff9900',
+                            color: '#ff9900'
+                        });
+                    }
                 } else {
-                    marker.setIcon(marker.options.icon_orig);
+                    if (layer == 'layerRoutePoints') {
+                        marker.setIcon(marker.options.icon_orig);
+                    } else if (layer == 'layerRouteLines') {
+                        marker.setStyle({
+                            fillColor: '#ffffff',
+                            color: '#ff0066'
+                        });
+                    }
                 }
             }
         }
@@ -406,7 +421,7 @@ var Map = (function() {
      */
     function convertFeatureIdToPositionString(featureId, layer) {
         featureId = parseInt(featureId);
-        var ft = layer._layers[featureId];
+        var ft = layer.getLayer(featureId);
         if (ft && ft._latlng) {
             return ft._latlng.lat + ' ' + ft._latlng.lng;
         }
@@ -471,7 +486,7 @@ var Map = (function() {
         console.log(wpIndex, featureId, type)
         var layerSearchResults = this.layerSearch;
         var layerWaypoints = this.layerRoutePoints;
-        var oldMarker = layerSearchResults._layers[featureId];
+        var oldMarker = layerSearchResults.getLayer(featureId);
         if (oldMarker) {
             console.log(oldMarker.getLatLng())
             newMarker = new L.marker(oldMarker.getLatLng(), {
@@ -481,11 +496,9 @@ var Map = (function() {
                 icon_emph: Ui.markerIcons.emph
             });
             newMarker.addTo(this.layerRoutePoints);
-
             newMarker.on("dragend", function(e) {
                 self.emit('map:waypointMoved', e.target);
             });
-
             return newMarker._leaflet_id;
         }
     }
@@ -530,7 +543,7 @@ var Map = (function() {
             //     icon: Ui.markerIcons[type][0],
             //     iconEm: Ui.markerIcons[type][1],
             // });
-            var newFeature = new L.marker(feature._latlng);
+            var newFeature = new L.marker(feature.getLatLng());
             //newMarker.id = 'rp_' + position.lat + '_' + position.lng;
             newFeature.addTo(this.layerRoutePoints);
             this.layerRoutePoints.removeLayer(feature);
@@ -729,18 +742,21 @@ var Map = (function() {
             var self = this;
             for (var i = 0; i < routeLineSegments.length; i++) {
                 //"lines" of the route
-                var segment = []
+                var segment = [];
                 for (var j = 0; j < routeLineSegments[i].length; j++) {
                     segment.push(routeLineSegments[i][j]);
                     //var segmentFt = new OpenLayers.Feature.Vector(segment, pointAndLineStyle.line);
                 }
-                var segmentFt = L.polyline(segment);
+                var segmentFt = L.polyline(segment, {
+                    color: '#ff0066',
+                    opacity: '0.9'
+                });
                 segmentFt.addTo(self.layerRouteLines);
                 //"corner points" of the route where direction changes
                 var cornerPoint = routeLinePoints[i];
                 //var cornerFt = new OpenLayers.Feature.Vector(cornerPoint, pointAndLineStyle.point);
                 var cornerFt = new L.CircleMarker(cornerPoint, {
-                    color: 'black',
+                    color: '#ff0066',
                     fillColor: 'white',
                     fillOpacity: 1,
                     fill: true,
@@ -1192,7 +1208,7 @@ var Map = (function() {
     // map.prototype.deEmphasizeSearchPoiMarker = deEmphasizeSearchPoiMarker;
     // map.prototype.zoomToPoiResults = zoomToPoiResults;
     map.prototype.zoomToMarker = zoomToMarker;
-    // map.prototype.zoomToFeature = zoomToFeature;
+    map.prototype.zoomToFeature = zoomToFeature;
     map.prototype.zoomToRoute = zoomToRoute;
     map.prototype.updateRoute = updateRoute;
     // map.prototype.avoidAreaTools = avoidAreaTools;

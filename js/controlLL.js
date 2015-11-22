@@ -121,8 +121,7 @@ var Controller = ( function(w) {'use strict';
 
             var type = selectWaypointType(wpIndex);
             var waypointResultId = map.addWaypointMarker(wpIndex, featureId, type);
-            console.log(waypointResultId)
-            map.clearMarkers('layerSearch', searchIds);
+            map.clearMarkers(map.layerSearch, searchIds);
 
             waypoint.setWaypoint(wpIndex, true);
 
@@ -452,7 +451,7 @@ var Controller = ( function(w) {'use strict';
          * @param vectorId: id of the map feature to zoom to
          */
         function handleZoomToRouteInstruction(vectorId) {
-            map.zoomToFeature(map.ROUTE_LINES, vectorId);
+            map.zoomToFeature(map.layerRouteLines, vectorId);
         }
 
         /* *********************************************************************
@@ -940,7 +939,7 @@ var Controller = ( function(w) {'use strict';
                     if (!errors) {
                         ui.updateRouteSummary(results);
 
-                        ui.updateRouteInstructions(results, featureIds, map.ROUTE_LINES);
+                        ui.updateRouteInstructions(results, featureIds, 'layerRouteLines');
                         ui.endRouteCalculation();
 
                         if (zoomToMap) map.zoomToRoute();
