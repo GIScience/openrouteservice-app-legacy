@@ -1,45 +1,23 @@
 /*|-----------------------------------------------------------------------------------
- *|														University of Heidelberg
- *|	  _____ _____  _____      _                     	Department of Geography
- *|	 / ____|_   _|/ ____|    (_)                    	Chair of GIScience
- *|	| |  __  | | | (___   ___ _  ___ _ __   ___ ___ 	(C) 2011
- *|	| | |_ | | |  \___ \ / __| |/ _ \ '_ \ / __/ _ \
- *|	| |__| |_| |_ ____) | (__| |  __/ | | | (_|  __/	Berliner Strasse 48
- *|	 \_____|_____|_____/ \___|_|\___|_| |_|\___\___|	D-69120 Heidelberg, Germany
- *|	        	                                       	http://www.giscience.uni-hd.de
+ *|                                                     University of Heidelberg
+ *|   _____ _____  _____      _                         Department of Geography
+ *|  / ____|_   _|/ ____|    (_)                        Chair of GIScience
+ *| | |  __  | | | (___   ___ _  ___ _ __   ___ ___     (C) 2011
+ *| | | |_ | | |  \___ \ / __| |/ _ \ '_ \ / __/ _ \
+ *| | |__| |_| |_ ____) | (__| |  __/ | | | (_|  __/    Berliner Strasse 48
+ *|  \_____|_____|_____/ \___|_|\___|_| |_|\___\___|    D-69120 Heidelberg, Germany
+ *|                                                     http://www.giscience.uni-hd.de
  *|------------------------------------------------------------------------------------*/
 
 
 /**
- * @author: Timothy Ellersiek, timothy.ellersiek@geog.uni-heidelberg.de, Enrico Steiger, enrico.steiger@geog.uni-heidelberg.de, Oliver Roick, roick@uni-heidelberg.de, Carina Eichler, carina.eichler@uni-heidelberg.de
- * @verion: 0.1
+ * @author: Timothy Ellersiek, timothy.ellersiek@geog.uni-heidelberg.de, Enrico Steiger, enrico.steiger@geog.uni-heidelberg.de 
+ * @version: 0.1
  */
 
 
 /**
- * CSS for elements visible in map area
- */
-
-
-/* info link to layers at the bottom */
-
-.olControlAttribution {
-    right: 115px;
-    bottom: 2px;
-    background-color: rgba(255, 255, 255, 0.75);
-    padding: 1px;
-}
-
-
-/* avoid red tiles */
-
-.olImageLoadError {
-    background-color: transparent !important;
-}
-
-
-/**
- * 	info link disclaimer, license,... at the bottom
+ *  info link disclaimer, license,... at the bottom
  */
 
 .disclaimer {
@@ -51,57 +29,33 @@
     font-size: 83%;
 }
 
-div.olControlMousePosition {
-    font-size: 11px;
-    right: 2px;
-    background-color: rgba(255, 255, 255, 0.5);
-    padding: 4px;
-    top: 2px;
-    max-width: 120px;
-    max-height: 14px;
-    font-weight: bold;
-    border-radius: 5px
-}
-
-div.olControlScaleLine {
-    background-color: rgba(255, 255, 255, 0.5);
-    padding: 4px;
-    left: 0px;
-    bottom: 25px;
-    border-radius: 5px;
-}
-
-div.olControlPermalink {
-    background-color: rgba(255, 255, 255, 0.5);
-    padding: 4px;
-    left: 2px;
-    bottom: 59px;
-    max-width: 80px;
-}
-
-.olControlLayerSwitcher .layersDiv {
-    background-color: rgba(255, 255, 255, 0.8) !important;
-    border-radius: 5px;
-    color: black;
-    font-family: 'Roboto', sans-serif;
+#infoPanel {
+    float: right;
+    font-size: 90%;
+    margin-top: 1px;
+    margin-left: 10px;
 }
 
 
-/* Permalink CSS */
+/**
+ * CSS for elements visible in map area
+ */
 
 #infoPermalink {
     position: fixed;
-    bottom: 5px;
+    bottom: 10px;
     cursor: pointer;
     width: 80px;
-    font-weight: bold;
     text-align: center;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 5px;
     color: black;
     z-index: 999;
-    -padding-left: 5px;
-    -margin-left: 5px;
+    margin-left: -2px;
+        font-family: 'Roboto', sans-serif;
+
+
+
 }
 
 #bubble {
@@ -552,60 +506,71 @@ div.olControlPermalink {
     margin-top: 5px;
 }
 
-#layersButton {}
 
-.mapContextMenu {
+/* Leaflet styles */
+
+.leaflet-bottom .leaflet-control-scale {
+    margin-bottom: 23px;
+}
+
+.leaflet-pane {
+    font-family: 'Roboto', sans-serif;
+}
+
+.leaflet-control-container {
+    font-family: 'Roboto', sans-serif;
+}
+
+.mapContextMenu .contextWaypoint {
+    padding: 3px 10px 3px 10px;
+    white-space: nowrap;
+    cursor: pointer;
+    margin-bottom: 3px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border-left: 2px solid rgba(1, 11, 30, 0.8);
+    color: white;
+    min-height: 10px;
+    -o-transition: .2s;
+    -ms-transition: .2s;
+    -moz-transition: .2s;
+    -webkit-transition: .2s;
+    transition: .2s;
+}
+
+.mapContextMenu .contextWaypoint:hover {
+    background-color: rgba(0, 0, 0, 1);
+    border-left: 2px solid #0DD5FC;
+}
+
+.mapContextMenu .leaflet-popup-content {
     position: absolute;
-    background-color: rgba(255, 255, 245, 0.85);
-    box-shadow: 5px 5px 10px rgba(180, 180, 215, 0.7);
-    border-color: rgb(100, 100, 100);
+    left: 2.5em;
+    bottom: 0.7em;
 }
 
-.leaflet-popup-content-wrapper {
+.mapContextMenu .leaflet-popup-content-wrapper {
+    background: transparent;
+    box-shadow: none;
 }
 
-.leaflet-popup-content-wrapper .leaflet-popup-content {
+.mapContextMenu .leaflet-popup-tip-container {
+    margin: 0 auto;
+    position: relative;
+    overflow: visible;
+    width: 100px;
+    height: 20px;
 }
 
-.leaflet-popup-tip-container {
+.mapContextMenu .leaflet-popup-tip {
+    border: 2px solid black;
+    box-shadow: none;
+    background-color: transparent;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
 }
 
-.mapContextMenu span {
-    -margin-top: 15px;
-}
-
-.useAsStartPoint {
-    padding: 7px 7px 7px 7px;
-    min-height: 25px;
-    white-space: nowrap;
-    cursor: pointer;
-    margin-top: -5px;
-    margin-left: -5px;
-}
-
-.useAsViaPoint {
-    padding: 7px 7px 7px 7px;
-    min-height: 25px;
-    white-space: nowrap;
-    cursor: pointer;
-    margin-left: -5px;
-}
-
-.useAsEndPoint {
-    padding: 7px 7px 7px 7px;
-    min-height: 25px;
-    white-space: nowrap;
-    cursor: pointer;
-    margin-left: -5px;
-}
-
-#smartPopup{
-	position: absolute;
-	overflow: hidden;
-	background-color: rgba(255,255,245,0.85);
-	box-shadow: 5px 5px 10px rgba(180,180,215,0.7);
-	border-color: rgb(100,100,100);
-}
 
 /*preferences popup*/
 
@@ -636,14 +601,7 @@ a img {
 }
 
 
-/*Layerswitcher*/
-
-
 /*avoid layer names too close to radio button */
-
-.baseLayersDiv span {
-    padding-left: 4px;
-}
 
 body {
     font-size: 90%;
@@ -665,6 +623,10 @@ input, textarea {
 
 input[type=text] {
     height: 30px;
+}
+
+input[type='checkbox'], input[type='radio'] {
+    vertical-align: baseline;
 }
 
 div.options {
@@ -873,11 +835,6 @@ button.weightOptions {
     *zoom: 1;
 }
 
-
-/*#topMenu > li:first-child {
- margin-right: 0px;
- }*/
-
 #topMenu > li > a, #title, #info {
     padding-top: 15px;
     font-weight: normal;
@@ -928,64 +885,6 @@ button.weightOptions {
     bottom: 0px;
 }
 
-
-/* info buttons in map */
-
-#infoButton {
-    position: fixed;
-    background: url('../img/info-32.png') no-repeat center;
-    bottom: 10px;
-    right: 5px;
-    z-index: 999;
-    width: 32px;
-    height: 32px;
-}
-
-#infoPanel {
-    position: fixed;
-    width: 400px;
-    background-color: rgba(255, 255, 255, 0.7);
-    background-image: url("../img/unihd.png");
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: right 10px bottom 20px;
-    border-radius: 5px;
-    z-index: 999;
-    right: 5px;
-    bottom: 13px;
-    overflow: auto;
-    display: none;
-    padding: 10px 150px 5px 5px;
-}
-
-
-/* uncomment for height pofile */
-
-
-/*.heightContent {
-	float: left;
-}*/
-
-
-/*#heightProfile {
-	position: absolute;
-	left: 400px;
-	right: 0px;
-	bottom: 0px;
-	height: 200px;
-	display: none;
-}*/
-
-
-/*#heightProfileChart {
-	position: absolute;
-	height: 170px;
-	bottom: 5px;
-	right: 5px;
-	left: 5px;
-	width: 100%;
-}*/
-
 #geolocationNotification {
     width: 80%;
     margin-left: auto;
@@ -1035,11 +934,11 @@ button.weightOptions {
 
 
 /*#toggleHeightProfile {
-	position: absolute;
-	z-index: 1040;
-	background-color: #FFFFFF;
-	opacity: 1;
-	padding: 2px 5px 0px 0px;
+    position: absolute;
+    z-index: 1040;
+    background-color: #FFFFFF;
+    opacity: 1;
+    padding: 2px 5px 0px 0px;
 }*/
 
 .sidebarVisible {
@@ -1065,29 +964,29 @@ button.weightOptions {
 
 
 /*.heightProfileVisible {
-	cursor: pointer;
-	right: 10px;
-	bottom: 180px;
-	-ms-transform: rotate(270deg);
-	-webkit-transform: rotate(270deg)
+    cursor: pointer;
+    right: 10px;
+    bottom: 180px;
+    -ms-transform: rotate(270deg);
+    -webkit-transform: rotate(270deg)
 }*/
 
 
 /*.heightProfileInvisible {
-	cursor: pointer;
-	left: 415px;
-	bottom: 3px;
-	-ms-transform: rotate(90deg);
-	-webkit-transform: rotate(90deg);
+    cursor: pointer;
+    left: 415px;
+    bottom: 3px;
+    -ms-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
 }*/
 
 .panel {
     /* panels in the sidebar
-	 * (similar to class 'well' from bootstrap but with other margins and color)*/
+     * (similar to class 'well' from bootstrap but with other margins and color)*/
     min-height: 10px;
     padding: 7px;
     /*margin-left: 10px;
-	 margin-right: 10px;*/
+     margin-right: 10px;*/
     margin-bottom: 7px;
     border: 1px solid #eee;
     border: 1px solid rgba(0, 0, 0, 0.05);
@@ -1162,19 +1061,17 @@ button.weightOptions {
 
 #resetRoute {
     height: 25px;
-    position: absolute; 
+    position: absolute;
     right: 5px;
     bottom: 4px;
 }
 
 #orderRoute {
     height: 25px;
-    position: absolute; 
+    position: absolute;
     right: 45px;
     bottom: 4px;
 }
-
-
 
 #hazardOptions {
     margin-top: 10px;
@@ -1292,18 +1189,6 @@ img {
     margin: 0px;
 }
 
-
-/*problems with the OpenLayers2.12 lib. Layerswitcher-Panel looks strange, we have to fix that here:*/
-
-#layerSwitcherPanel_layersDiv > .baseLayersDiv > input, .dataLayersDiv > input {
-    float: left;
-    margin-right: 5px;
-}
-
-#layerSwitcherPanel_layersDiv > .baseLayersDiv > label, .dataLayersDiv > label {
-    display: inline;
-}
-
 .routePreferenceBtns {
     margin-bottom: 3px;
 }
@@ -1353,8 +1238,6 @@ img {
     margin-top: 5px;
 }
 
-
-
 #maxSpeedInput {
-	font-size: 12px;
+    font-size: 12px;
 }

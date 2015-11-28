@@ -64,15 +64,25 @@ var Waypoint = (function(w) {
         writer.close();
         var success = function(result) {
             successCallback(result, wpIndex);
-        }
+        };
         var failure = function() {
             failureCallback(wpIndex);
+        };
+        var url;
+        if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
+            url = "cgi-bin/proxy.cgi?url=" + namespaces.services.geocoding;
+        } else {
+            url = namespaces.services.geocoding;
         }
-        var request = OpenLayers.Request.POST({
-            url: namespaces.services.geocoding,
+        var request = jQuery.ajax({
+            url: url,
+            processData: false,
+            type: "POST",
+            dataType: "xml",
+            crossDomain: false,
             data: xmlRequest,
             success: success,
-            failure: failure,
+            error: failure
         });
     }
 
@@ -86,7 +96,6 @@ var Waypoint = (function(w) {
      * @return: array of OL.LonLat representing the coordinates of the waypoint results
      */
     function parseResultsToPoints(results, wpIndex) {
-        //var europeBbox = new OpenLayers.Bounds(-31.303, 34.09, 50.455, 71.869);
         var listOfPoints = [];
         var geocodeResponseList = util.getElementsByTagNameNS(results, namespaces.xls, 'GeocodeResponseList');
         $A(geocodeResponseList).each(function(geocodeResponse) {
@@ -95,11 +104,6 @@ var Waypoint = (function(w) {
                 var point = util.getElementsByTagNameNS(allAddress[i], namespaces.gml, 'pos')[0];
                 point = (point.firstChild.nodeValue).split(" ");
                 listOfPoints.push(point);
-                //if (europeBbox.containsLonLat(point)) {
-                //listOfPoints.push(point);
-                //} //else {
-                //listOfPoints.push(null);
-                //}
             }
         });
         return listOfPoints;
@@ -109,8 +113,9 @@ var Waypoint = (function(w) {
      * @return the type
      */
     function determineWaypointType(wpIndex) {
+        /*jshint validthis: true */
         var type;
-        if (wpIndex == 0) {
+        if (wpIndex == '0') {
             type = this.type.START;
         } else if (wpIndex == waypointsSet.length - 1) {
             type = this.type.END;

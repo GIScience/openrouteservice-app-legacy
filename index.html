@@ -5,7 +5,6 @@
 		<meta name="robots" content="index, follow">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
-		<link rel="stylesheet" type="text/css" href="lib/rickshaw/rickshaw.min.css">
 		<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" type="text/css" href="css/bootstrap-ext.min.css"><!-- for file upload -->
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"> 
@@ -570,11 +569,7 @@
 				</div>
 			</div>
 		</div>
-			<!-- <div id="infoButton"></div>-->		
 		<div id="map" class="panel panelLight olMap">
-			<!-- Map goes here -->
-				<div id="infoButton"></div>
-					<div id="infoPanel"></div>
 			<div id="infoPermalink">Permalink</div>
 			<div id="bubble">
 				<div id="permaText">
@@ -611,6 +606,7 @@
 			<a href="contact.html" class="inlineLink">(c) 2008-2015 &nbsp; -</a>
 			<a href="contact.html#disclaimer" class="inlineLink">Disclaimer &nbsp; -</a>
 			<a href="contact.html#license" class="inlineLink">License</a>
+			<div id="infoPanel"></div>
 		</div>
 
 		<!-- arrow to show/hide sidebar -->
@@ -677,26 +673,17 @@
 		<script type="text/javascript" src="lib/bootstrap/bootstrap-ext.min.js"></script><!-- for file upload -->
 		<script type="text/javascript" src="lib/bootstrap/bootstrap-hover-dropdown.js"></script><!-- for hover dropdowns -->
 		<script type="text/javascript" src="lib/prototype.1.7.minified.js"></script>
-		<script type="text/javascript" src="lib/OpenLayers2.13.1.js"></script>
 		<script type="text/javascript" src="lib/leaflet-1.0.0-beta.2.js"></script>
+		<script type="text/javascript" src="lib/leaflet-drag-marker-edges.js"></script>
 		<script type="text/javascript" src="lib/Leaflet.MakiMarkers.js"></script>
-
+		<script type="text/javascript" src="lib/leaflet.active-layers.min.js"></script>
 		<script type="text/javascript" src="lib/XMLWriter-1.0.0-min.js"></script>
-		<script type="text/javascript" src="lib/jsts/javascript.util.js"></script>
-		<script type="text/javascript" src="lib/jsts/jsts-0.13.1.js"></script>
-		<script type="text/javascript" src="lib/rickshaw/d3.min.js"></script>
-		<script type="text/javascript" src="lib/rickshaw/d3.layout.min.js"></script>
-		<script type="text/javascript" src="lib/rickshaw/rickshaw.min.js"></script>
-
-		<!-- ORS single file -->
-		<!-- <script type="text/javascript" src="build/ORS.js"></script> -->
 
 		<!-- ORS dev multiple file-->
 		<script type="text/javascript" src="js/namespaces.js"></script>
 		<script type="text/javascript" src="js/util.js"></script>
 		<script type="text/javascript" src="js/list.js"></script>
 		<script type="text/javascript" src="js/modules/Preferences.js"></script>
-		<!--<script type="text/javascript" src="js/OpenRouteService.js"></script>-->
 		<script type="text/javascript" src="js/event.js"></script>
 		<script type="text/javascript" src="js/modules/Waypoint.js"></script>
 		<script type="text/javascript" src="js/modules/Geolocation.js"></script>
@@ -711,16 +698,10 @@
 		<script type="text/javascript" src="js/ui/Languages.js"></script>
 		
 		<script type="text/javascript" src="js/map.js"></script>
-		<script type="text/javascript" src="js/controlLL.js"></script>
+		<script type="text/javascript" src="js/control.js"></script>
 
-		<!--<script type="text/javascript" src="js/mapold.js"></script>
-		<script type="text/javascript" src="js/control.js"></script>-->
-
-		<script type="text/javascript" src="js/ORS.OpenLayers.js"></script>
 		<script type="text/javascript" src="js/overpass.js"></script>
 		<script type="text/javascript" src="js/contact_form.js"></script>
-		<script type="text/javascript" src="js/javascript.util.min.js"></script>
-		<script type="text/javascript" src="js/jsts.min.js"></script>
 
 		<!-- ORS language files alphabertically sorted -->
 		<script type="text/javascript" src="js/lang/lang-cz.js"></script>

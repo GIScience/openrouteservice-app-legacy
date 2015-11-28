@@ -54,9 +54,9 @@ var Map = (function() {
             center: [49.409445, 8.692953],
             minZoom: 2,
             zoom: 13,
-            attributionControl: false,
+            attributionControl: true,
             crs: L.CRS.EPSG900913,
-            layers: [openmapsurfer, openstreetmap, ors_osm_worldwide, opencyclemap, aster_hillshade, stamen]
+            //layers: [openmapsurfer, openstreetmap, ors_osm_worldwide, opencyclemap, aster_hillshade, stamen]
         });
         var baseLayers = {
             "OpenMapSurver": openmapsurfer,
@@ -68,7 +68,10 @@ var Map = (function() {
         var overlays = {
             "Hillshade places": aster_hillshade
         };
-        L.control.layers(baseLayers, overlays, true).addTo(this.theMap);
+        this.theMap.addLayer(openmapsurfer);
+        //this.theMap.on('baselayerchange', mapBaseLayerChanged);
+        var control = L.control.activeLayers(baseLayers, overlays).addTo(this.theMap);
+        // L.control.layers(baseLayers, overlays).addTo(this.theMap);
         L.control.scale().addTo(this.theMap);
         var markers = [{
             "name": "Canada",
@@ -100,7 +103,8 @@ var Map = (function() {
             var popup = L.popup({
                 closeButton: false,
                 maxHeight: '112px',
-                maxWidth: '120px'
+                maxWidth: '120px',
+                className: 'mapContextMenu'
             }).setContent(menuObject.innerHTML).setLatLng(e.latlng);
             self.theMap.openPopup(popup);
             var options = $('.leaflet-popup-content');
@@ -113,13 +117,6 @@ var Map = (function() {
                 });
                 self.theMap.closePopup(popup);
             };
-            options[0].onmouseover = function(e) {
-                //click on start point
-                document.getElementsByClassName("useAsStartPoint")[0].style.backgroundColor = '#e6e6e6';
-            };
-            options[0].onmouseout = function(e) {
-                document.getElementsByClassName("useAsStartPoint")[0].style.backgroundColor = 'transparent';
-            };
             options[1].onclick = function(e) {
                 //click on via point
                 self.emit('map:addWaypoint', {
@@ -127,13 +124,6 @@ var Map = (function() {
                     type: Waypoint.type.VIA
                 });
                 self.theMap.closePopup(popup);
-            };
-            options[1].onmouseover = function(e) {
-                //click on start point
-                document.getElementsByClassName("useAsViaPoint")[0].style.backgroundColor = '#e6e6e6';
-            };
-            options[1].onmouseout = function(e) {
-                document.getElementsByClassName("useAsViaPoint")[0].style.backgroundColor = 'transparent';
             };
             options[2].onclick = function(e) {
                 //click on end point
@@ -143,43 +133,32 @@ var Map = (function() {
                 });
                 self.theMap.closePopup(popup);
             };
-            options[2].onmouseover = function(e) {
-                //click on start point
-                document.getElementsByClassName("useAsEndPoint")[0].style.backgroundColor = '#e6e6e6';
-            };
-            options[2].onmouseout = function(e) {
-                document.getElementsByClassName("useAsEndPoint")[0].style.backgroundColor = 'transparent';
-            };
         });
-        // // this function is needed to update panelInformation when Layers are changed
-        // function mapBaseLayerChanged() {
-        //     // update map attributions in infoPanel
-        //     document.getElementById("infoPanel").innerHTML = self.theMap.baseLayer.attribution;
-        //     var url;
-        //     if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
-        //         url = "cgi-bin/proxy.cgi?url=" + namespaces.services.routing + "?info";
-        //     } else {
-        //         url = namespaces.services.routing + "?info";
-        //     }
-        //     // set crossDomain to true if on localhost
-        //     jQuery.ajax({
-        //         url: url,
-        //         dataType: 'json',
-        //         type: 'GET',
-        //         crossDomain: false,
-        //         success: updateInfoPanel,
-        //         error: updateInfoPanel
-        //     });
-        //     function updateInfoPanel(results) {
-        //         var lastUpdate = new Date(results.profiles['profile 1'].import_date);
-        //         // TODO: add nextUpdate from results when live
-        //         lastUpdate = lastUpdate.getUTCDate() + '.' + (parseInt(lastUpdate.getMonth()) + parseInt(1)) + '.' + lastUpdate.getFullYear();
-        //         document.getElementById("infoPanel").innerHTML += '<br/><br/>';
-        //         document.getElementById("infoPanel").innerHTML += '<b>Last Update:</b> ' + lastUpdate;
-        //         document.getElementById("infoPanel").innerHTML += '<br/>';
-        //         document.getElementById("infoPanel").innerHTML += '<b>Next Update:</b> ' + results.next_update;
-        //     }
-        // }
+        // load graph info when map loaded
+        var url;
+        if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
+            url = "cgi-bin/proxy.cgi?url=" + namespaces.services.routing + "?info";
+        } else {
+            url = namespaces.services.routing + "?info";
+        }
+        jQuery.ajax({
+            url: url,
+            dataType: 'json',
+            type: 'GET',
+            crossDomain: false,
+            success: updateInfoPanel,
+            error: updateInfoPanel
+        });
+        function updateInfoPanel(results) {
+            var infoPanel = document.getElementById("infoPanel");
+            // var lastUpdate = new Date(results.responseText.profiles['profile 1'].import_date);
+            // lastUpdate = lastUpdate.getUTCDate() + '.' + (parseInt(lastUpdate.getMonth()) + parseInt(1)) + '.' + lastUpdate.getFullYear();
+            //infoPanel[0].innerHTML += '<b>Last Update:</b> ' + lastUpdate;
+            //infoPanel[0].innerHTML += '<b>Next Update:</b> ' + results.next_update;
+            infoPanel.innerHTML += '(' + '<b>Last/Next Update</b> ' + '01.01.' + '/' + '02.01.' + ')';
+
+        }
+
         // create a new contextMenu
         function createMapContextMenu() {
             var mapContextMenuContainer = new Element('div', {
@@ -187,38 +166,31 @@ var Map = (function() {
                 'style': 'display:none',
             });
             var useAsStartPointContainer = new Element('div', {
-                'class': 'useAsStartPoint'
+                'class': 'contextWaypoint'
             });
             var startSpan = new Element('span', {
                 'id': 'contextStart',
-            }).update('use as start point');
+            }).update('Set as starting point');
             useAsStartPointContainer.appendChild(startSpan);
             var useAsViaPointContainer = new Element('div', {
-                'class': 'useAsViaPoint'
+                'class': 'contextWaypoint'
             });
             var viaSpan = new Element('span', {
                 'id': 'contextVia',
-            }).update('use as via point');
+            }).update('Add a waypoint');
             useAsViaPointContainer.appendChild(viaSpan);
             var useAsEndPointContainer = new Element('div', {
-                'class': 'useAsEndPoint'
+                'class': 'contextWaypoint'
             });
             var endSpan = new Element('span', {
                 'id': 'contextEnd',
-            }).update('use as end point');
+            }).update('Set as destination');
             useAsEndPointContainer.appendChild(endSpan);
             mapContextMenuContainer.appendChild(useAsStartPointContainer);
             mapContextMenuContainer.appendChild(useAsViaPointContainer);
             mapContextMenuContainer.appendChild(useAsEndPointContainer);
-            return mapContextMenuContainer
+            return mapContextMenuContainer;
         }
-        //     //make route waypoints draggable
-        //     var dragWaypoints = new OpenLayers.Control.DragFeature(layerRoutePoints);
-        //     dragWaypoints.onComplete = function(feature) {
-        //         self.emit('map:waypointMoved', feature);
-        //     };
-        //     this.theMap.addControl(dragWaypoints);
-        //     dragWaypoints.activate();
         //     //avoid area controls
         //     this.avoidTools = {
         //         'create': new OpenLayers.Control.DrawFeature(layerAvoid, OpenLayers.Handler.Polygon, {
@@ -355,9 +327,7 @@ var Map = (function() {
      * @param zoom: zoom int
      */
     function zoomToMarker(position, zoom) {
-        this.theMap.panTo(position);
-        //TODO
-        //this.theMap.setZoom(3);
+        this.theMap.setView(position, zoom);
     }
     /**
      * zoom to a given feature vector defined by its vector id.
@@ -367,15 +337,17 @@ var Map = (function() {
     function zoomToFeature(mapLayer, vectorId, zoom) {
         if (mapLayer) {
             var vectors = mapLayer.getLayer(vectorId);
-            if (vectors.getBounds) {
-                this.theMap.fitBounds(vectors.getBounds());
-            } else {
-                this.theMap.panTo(vectors.getLatLng());
+            if (!zoom) {
+                if (vectors.getBounds) {
+                    this.theMap.fitBounds(vectors.getBounds());
+                } else {
+                    if (!zoom) {
+                        this.theMap.panTo(vectors.getLatLng());
+                    } else {
+                        this.theMap.setView(vectors.getLatLng(), zoom);
+                    }
+                }
             }
-            // TODO...
-            // if (zoom) {
-            //     this.theMap.panTo(bounds.getCenterLonLat(), zoom);
-            // }
         }
     }
     /**
@@ -387,7 +359,7 @@ var Map = (function() {
     function emphMarker(layer, featureId, emph) {
         var myLayer = this[layer];
         myLayer = myLayer ? myLayer : null;
-        if (layer) {
+        if (myLayer) {
             var marker = myLayer.getLayer(featureId);
             if (marker) {
                 if (emph) {
@@ -483,12 +455,10 @@ var Map = (function() {
      * @return: ID of the waypoint feature
      */
     function addWaypointMarker(wpIndex, featureId, type) {
-        console.log(wpIndex, featureId, type)
         var layerSearchResults = this.layerSearch;
         var layerWaypoints = this.layerRoutePoints;
         var oldMarker = layerSearchResults.getLayer(featureId);
         if (oldMarker) {
-            console.log(oldMarker.getLatLng())
             newMarker = new L.marker(oldMarker.getLatLng(), {
                 draggable: true,
                 icon: Ui.markerIcons[type],
@@ -496,8 +466,11 @@ var Map = (function() {
                 icon_emph: Ui.markerIcons.emph
             });
             newMarker.addTo(this.layerRoutePoints);
-            newMarker.on("dragend", function(e) {
+            newMarker.on('dragend', function(e) {
                 self.emit('map:waypointMoved', e.target);
+            });
+            newMarker.on('drag', function(e) {
+                panMapOnEdges(e);
             });
             return newMarker._leaflet_id;
         }
@@ -509,23 +482,18 @@ var Map = (function() {
      * @param type: type of the waypoint (start, via, end)
      */
     function addWaypointAtPos(position, wpIndex, type) {
-        // TODO: add styles depending on type, http://leafletjs.com/reference.html#icon
-        console.log(wpIndex, type)
         newMarker = new L.marker(position, {
             draggable: true,
             icon: Ui.markerIcons[type],
             icon_orig: Ui.markerIcons[type],
             icon_emph: Ui.markerIcons.emph
         });
-        //newMarker.id = 'rp_' + position.lat + '_' + position.lng;
         newMarker.addTo(this.layerRoutePoints);
-        // newMarker.on("drag", function(e) {
-        //     var marker = e.target;
-        //     var position = marker.getLatLng();
-        //     self.theMap.panTo(new L.LatLng(position.lat, position.lng));
-        // });
-        newMarker.on("dragend", function(e) {
+        newMarker.on('dragend', function(e) {
             self.emit('map:waypointMoved', e.target);
+        });
+        newMarker.on('drag', function(e) {
+            panMapOnEdges(e);
         });
         return newMarker._leaflet_id;
     }
@@ -535,16 +503,20 @@ var Map = (function() {
      * @param type: type of the waypoint (start, via, end)
      */
     function setWaypointType(featureId, type) {
-        //create new feature
-        var feature = this.layerRoutePoints[featureId];
+        var feature = this.layerRoutePoints.getLayer(featureId);
         if (feature) {
-            // var pt = new OpenLayers.Geometry.Point(feature.geometry.x, feature.geometry.y);
-            // var newFeature = new OpenLayers.Feature.Vector(pt, {
-            //     icon: Ui.markerIcons[type][0],
-            //     iconEm: Ui.markerIcons[type][1],
-            // });
-            var newFeature = new L.marker(feature.getLatLng());
-            //newMarker.id = 'rp_' + position.lat + '_' + position.lng;
+            var newFeature = new L.marker(feature.getLatLng(), {
+                draggable: true,
+                icon: Ui.markerIcons[type],
+                icon_orig: Ui.markerIcons[type],
+                icon_emph: Ui.markerIcons.emph
+            });
+            newFeature.on('dragend', function(e) {
+                self.emit('map:waypointMoved', e.target);
+            });
+            newFeature.on('drag', function(e) {
+                panMapOnEdges(e);
+            });
             newFeature.addTo(this.layerRoutePoints);
             this.layerRoutePoints.removeLayer(feature);
             var id = newFeature._leaflet_id;
@@ -557,7 +529,7 @@ var Map = (function() {
      */
     function getWaypointsAmount() {
         var layer = this.theMap.getLayersByName(this.ROUTE_POINTS)[0];
-        var nWaypoints = layer.features.length
+        var nWaypoints = layer.features.length;
         return nWaypoints;
     }
     /**
@@ -622,12 +594,13 @@ var Map = (function() {
                 var position = [point[1], point[0]];
                 // point = util.convertPointForMap(point);
                 // point = new OpenLayers.Geometry.Point(point.lon, point.lat);
+                var ftId;
                 if (wpIndex) {
                     //a waypoint search
-                    var ftId = 'address_' + wpIndex + '_' + i;
+                    ftId = 'address_' + wpIndex + '_' + i;
                 } else {
                     //an address search
-                    var ftId = 'address_' + i;
+                    ftId = 'address_' + i;
                 }
                 feature = new L.marker(position, {
                     draggable: true,
@@ -1185,6 +1158,39 @@ var Map = (function() {
         });
         layer.addFeatures([ft]);
     }
+    /**
+     * pans the map when marker hits boundaries
+     * code from https://github.com/Leaflet/Leaflet/pull/3643
+     * @param e: mouse event of marker object
+     */
+    function panMapOnEdges(e) {
+        // Parameters for superellipse boundaries (feels more natural)
+        // https://en.wikipedia.org/wiki/Superellipse 
+        var panOptions = {
+            a: 0.90,
+            b: 0.90,
+            n: 5,
+            maxVelocity: 50
+        };
+        //Transform mouse coordinates [0,0] to [mapSizeX,mapSizeY] to [-1,+1] to [+1,-1] coordinates
+        var halfMapSize = self.theMap.getSize()._divideBy(2),
+            //Fix event for touch input
+            fixedEvent = (e.originalEvent.touches && e.originalEvent.touches.length === 1) ? e.originalEvent.touches[0] : e.originalEvent,
+            dragPoint = self.theMap.mouseEventToContainerPoint(fixedEvent),
+            scaledPoint = dragPoint.subtract(halfMapSize).unscaleBy(halfMapSize),
+            superEllipse = Math.pow(Math.abs(scaledPoint.x / panOptions.a), panOptions.n) + Math.pow(Math.abs(scaledPoint.y / panOptions.b), panOptions.n);
+        if (superEllipse >= 1) {
+            /*
+             * Calculate smooth increase of pan by moving further to the edge by calculating
+             * first a index between 0 (the pan bounding box edge) to 1 (the map edge)
+             * and then plug that value into a sigmoid function to get a smooth transition
+             */
+            var panSmoothed = 1 / (1 + Math.exp(-12 * (superEllipse - 1))),
+                panMagnitude = L.point(panSmoothed, panSmoothed).multiplyBy(panOptions.maxVelocity),
+                panAngle = Math.atan2(scaledPoint.y, scaledPoint.x);
+            self.theMap.panBy(panMagnitude.scaleBy(L.point(Math.cos(panAngle), Math.sin(panAngle))));
+        }
+    }
     map.prototype = new EventEmitter();
     map.prototype.constructor = map;
     // map.prototype.serializeLayers = serializeLayers;
@@ -1218,7 +1224,7 @@ var Map = (function() {
     // map.prototype.getAvoidAreasString = getAvoidAreasString;
     // map.prototype.updateRestrictionsLayer = updateRestrictionsLayer;
     // map.prototype.addAccessiblityPolygon = addAccessiblityPolygon;
-    // map.prototype.eraseAccessibilityFeatures = eraseAccessibilityFeatures;
+    map.prototype.eraseAccessibilityFeatures = eraseAccessibilityFeatures;
     map.prototype.writeRouteToString = writeRouteToString;
     // map.prototype.parseStringToWaypoints = parseStringToWaypoints;
     // map.prototype.parseStringToTrack = parseStringToTrack;
@@ -1226,5 +1232,6 @@ var Map = (function() {
     // map.prototype.getWaypointsByGranularity = getWaypointsByGranularity;
     // map.prototype.parseStringToElevationPoints = parseStringToElevationPoints;
     // map.prototype.hoverPosition = hoverPosition;
+    map.prototype.panMapOnEdges = panMapOnEdges;
     return map;
 }());

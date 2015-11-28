@@ -76,12 +76,22 @@ var Geolocator = (function(w) {
         writer.close();
         var success = function(result) {
             successCallback(result, waypointType, waypointIndex, featureId, routePresent);
+        };
+        var url;
+        if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
+            url = "cgi-bin/proxy.cgi?url=" + namespaces.services.geocoding;
+        } else {
+            url = namespaces.services.geocoding;
         }
-        var request = OpenLayers.Request.POST({
-            url: namespaces.services.geocoding,
+        var request = jQuery.ajax({
+            url: url,
+            processData: false,
+            type: "POST",
+            dataType: "xml",
+            crossDomain: false,
             data: xmlRequest,
             success: success,
-            failure: failureCallback
+            error: failureCallback
         });
     }
     Geolocator.prototype.locate = locate;

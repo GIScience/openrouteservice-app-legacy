@@ -327,10 +327,9 @@ var Ui = (function(w) {
                 searchIds: rootElement.getAttribute('data-search')
             });
         } else {
-            //console.log('else')
             handleSearchAgainWaypointClick({
                 currentTarget: e.currentTarget.up('.waypointResult')
-            })
+            });
         }
         // make input field not selectable
         // var thisDiv = selectedDiv.className
@@ -351,7 +350,6 @@ var Ui = (function(w) {
      * @param layer: map layer the feature is located on
      */
     function setWaypointFeatureId(wpIndex, featureId, position, layer) {
-        console.log('setWaypointFeatureId', wpIndex, featureId, position, layer)
         var rootElement = $('#' + wpIndex).get(0);
         var address = rootElement.querySelector('.address');
         if (address) {
@@ -377,13 +375,11 @@ var Ui = (function(w) {
      * @return: the index of the wayoint; null if the waypoint does not exist
      */
     function getWaypiontIndexByFeatureId(featureId) {
-        console.log(featureId)
         var wpResult = $('#' + featureId);
         var wpElement;
         if (wpResult) {
             wpElement = wpResult.parent().parent();
         }
-        console.log(wpElement)
         if (wpElement) {
             var wpIndex = wpElement.attr('id');
             if (!isNaN(wpIndex)) {
@@ -592,8 +588,6 @@ var Ui = (function(w) {
      * @return: the index of the wayoint
      */
     function addWaypointResultByRightclick(typeOfWaypoint, index, results, latlon) {
-        console.log('addWaypointResultByRightclick')
-        console.log(typeOfWaypoint, index, results, latlon)
         var numWaypoints = $('.waypoint').length - 1;
         while (index >= numWaypoints) {
             addWaypointAfter(numWaypoints - 1);
@@ -601,18 +595,19 @@ var Ui = (function(w) {
         }
         //checks whether latlon is passed in first call
         //for geocoding shortaddress is updated in second call
-        if (latlon == true) {
-            var address = util.parseLatlon(results);
-            var shortAddress = results.toString();
-            var stopover = $(".directions-main").find("[waypoint-id=" + index + "]");
+        var address, shortAddress, stopover, addressResult;
+        if (latlon === true) {
+            address = util.parseLatlon(results);
+            shortAddress = results.toString();
+            stopover = $(".directions-main").find("[waypoint-id=" + index + "]");
             stopover.html(shortAddress);
         } else {
-            var addressResult = util.getElementsByTagNameNS(results, namespaces.xls, 'Address');
+            addressResult = util.getElementsByTagNameNS(results, namespaces.xls, 'Address');
             addressResult = addressResult ? addressResult[0] : null;
-            var address = util.parseAddress(addressResult);
-            var shortAddress = util.parseAddressShort(addressResult);
+            address = util.parseAddress(addressResult);
+            shortAddress = util.parseAddressShort(addressResult);
             //update stopover info from latlon to address
-            var stopover = $(".directions-main").find("[waypoint-id=" + index + "]");
+            stopover = $(".directions-main").find("[waypoint-id=" + index + "]");
             stopover.html(shortAddress);
         }
         //insert information as waypoint
@@ -991,7 +986,6 @@ var Ui = (function(w) {
      * @param layername: map layer name the features are located on
      */
     function updateSearchAddressResultList(results, listOfFeatures, layername) {
-    	console.log('update')
         //insert address information to page
         var allAddress;
         var allIds = "";
@@ -1449,7 +1443,7 @@ var Ui = (function(w) {
             container = $('#routeInstructionsContainer').get(0);
             container.show();
             var directionsMain = container.querySelector('.directions-main');
-                // remove old instructions
+            // remove old instructions
             while (directionsMain.firstChild) {
                 directionsMain.removeChild(directionsMain.firstChild);
             }
@@ -1464,7 +1458,7 @@ var Ui = (function(w) {
             var waypoints;
             // get stopovers which are viapoints
             if ($('.waypoint').length > 2) {
-            	waypoints = getWaypoints();
+                waypoints = getWaypoints();
             }
             //var startpoint = waypoints.splice(0, 1);
             //var endpoint = waypoints.splice(-1, 1);
@@ -1652,10 +1646,10 @@ var Ui = (function(w) {
             });
             wayPoint.appendChild(icon);
             var shortAddress = new Element('div', {
-                    'class': 'directions-waypoint-address',
-                    'waypoint-id': viaCounter
-                }).update(address);
-                // modeContainer
+                'class': 'directions-waypoint-address',
+                'waypoint-id': viaCounter
+            }).update(address);
+            // modeContainer
             var directionsModeContainer = new Element('div', {
                 'class': 'directions-mode-container'
             });
@@ -3040,16 +3034,6 @@ var Ui = (function(w) {
         $('#heightProfileFilesDelete').click(handleHeightProfileRemove);
         //user preferences
         $('#savePrefsBtn').click(handleSaveUserPreferences);
-        //show info 
-        $('#infoButton,#infoPanel').hover(function() {
-            $('#infoPanel').show();
-            $('#infoButton').hide();
-            $('.feedback').hide();
-        }, function() {
-            $('#infoPanel').hide();
-            $('#infoButton').show();
-            $('.feedback').show();
-        });
         //keep dropdowns open
         $('.dropdown-menu').on({
             "click": function(e) {
