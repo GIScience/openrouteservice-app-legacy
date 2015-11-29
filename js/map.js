@@ -79,7 +79,6 @@ var Map = (function() {
             "lat": 49.409445,
             "lng": 8.692953
         }, ];
-        //testmarker = L.marker([markers[0].lat, markers[0].lng]);
         //https://github.com/ardhi/Leaflet.MousePosition
         //this.theMap.addControl(new OpenLayers.Control.MousePosition());
         this.layerRoutePoints = L.featureGroup().addTo(this.theMap);
@@ -149,6 +148,7 @@ var Map = (function() {
             success: updateInfoPanel,
             error: updateInfoPanel
         });
+
         function updateInfoPanel(results) {
             var infoPanel = document.getElementById("infoPanel");
             // var lastUpdate = new Date(results.responseText.profiles['profile 1'].import_date);
@@ -156,9 +156,7 @@ var Map = (function() {
             //infoPanel[0].innerHTML += '<b>Last Update:</b> ' + lastUpdate;
             //infoPanel[0].innerHTML += '<b>Next Update:</b> ' + results.next_update;
             infoPanel.innerHTML += '(' + '<b>Last/Next Update</b> ' + '01.01.' + '/' + '02.01.' + ')';
-
         }
-
         // create a new contextMenu
         function createMapContextMenu() {
             var mapContextMenuContainer = new Element('div', {
@@ -876,16 +874,14 @@ var Map = (function() {
     function addAccessiblityPolygon(polygonArray) {
         var colorRange = rangeColors(polygonArray.length - 1);
         for (var i = polygonArray.length - 1; i >= 0; i--) {
-            var layer = this.theMap.getLayersByName(this.ACCESSIBILITY)[0];
-            var newFeature = new OpenLayers.Feature.Vector(polygonArray[i].geometry);
-            newFeature.style = {
-                'strokeWidth': 1,
-                'strokeOpacity': 1,
-                'strokeColor': '#000',
-                'fillColor': colorRange[i],
-                'fillOpacity': 1
-            };
-            layer.addFeatures([newFeature]);
+            L.polygon(polygonArray[i], {
+                //fillColor: colorRange[i],
+                //fillOpacity: 1,
+                //fill: true,
+                color: colorRange[i],
+                stroke: true,
+                weight: 4
+            }).addTo(this.layerAccessibility);
         }
     }
     /**
@@ -897,7 +893,7 @@ var Map = (function() {
         var bboxArray = query[1];
         var map = this.theMap;
         //Do not load anything if the profile is not HeavyVehicle
-        if (overpassQuery == null || bboxArray == null) {
+        if (overpassQuery === null || bboxArray === null) {
             map.getLayersByName(this.RESTRICTIONS)[0].removeAllFeatures();
             map.getLayersByName(this.RESTRICTIONS)[0].displayInLayerSwitcher = false;
             map.getLayersByName(this.RESTRICTIONS)[0].setVisibility(false);
@@ -945,8 +941,8 @@ var Map = (function() {
      * removes all accessibility analysis features from the layer
      */
     function eraseAccessibilityFeatures() {
-        var layer = this.theMap.getLayersByName(this.ACCESSIBILITY)[0];
-        layer.removeAllFeatures();
+        var layer = this.layerAccessibility;
+        layer.clearLayers();
     }
     /*
      * IMPORT / EXPORT
@@ -1223,7 +1219,7 @@ var Map = (function() {
     // map.prototype.getAvoidAreas = getAvoidAreas;
     // map.prototype.getAvoidAreasString = getAvoidAreasString;
     // map.prototype.updateRestrictionsLayer = updateRestrictionsLayer;
-    // map.prototype.addAccessiblityPolygon = addAccessiblityPolygon;
+    map.prototype.addAccessiblityPolygon = addAccessiblityPolygon;
     map.prototype.eraseAccessibilityFeatures = eraseAccessibilityFeatures;
     map.prototype.writeRouteToString = writeRouteToString;
     // map.prototype.parseStringToWaypoints = parseStringToWaypoints;

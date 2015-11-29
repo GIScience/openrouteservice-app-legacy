@@ -11,7 +11,7 @@ util = (function() {
          */
         convertPositionStringToLonLat: function(positionString) {
             var pos = positionString.split(' ');
-            pos = new OpenLayers.LonLat(pos[0], pos[1]);
+            pos = L.latLng(pos[1], pos[0]);
             return pos;
         },
         /** 

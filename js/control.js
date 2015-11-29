@@ -828,12 +828,10 @@ var Controller = (function(w) {
      * @param atts: position: position of the start waypoint; distance: distance for the accessibility analysis in minutes
      */
     function handleAnalyzeAccessibility(atts) {
-        console.log(atts)
         var pos = atts.position;
         if (pos) {
             //assuming we have a position set...
-            pos = util.convertPositionStringToLonLat(pos);
-            pos = util.convertPointForDisplay(pos);
+            pos = pos.split(' ');
             var dist = atts.distance;
             //aas setting route type
             var aasRoutePref = permaInfo[preferences.routeOptionsIdx];
@@ -856,7 +854,6 @@ var Controller = (function(w) {
      * @param result: XML response from the service
      */
     function accessibilitySuccessCallback(result) {
-        result = result.responseXML ? result.responseXML : util.parseStringToDOM(result.responseText);
         //when the service gives response but contains an error the response is handeled as success, not error. We have to check for an error tag here:
         var responseError = util.getElementsByTagNameNS(result, namespaces.xls, 'ErrorList').length;
         if (parseInt(responseError) > 0) {
@@ -865,7 +862,7 @@ var Controller = (function(w) {
         } else {
             var bounds = analyse.parseResultsToBounds(result);
             if (bounds) {
-                map.theMap.zoomToExtent(bounds, true);
+                map.theMap.fitBounds(bounds, true);
                 var polygonArr = analyse.parseResultsToPolygon(result);
                 map.addAccessiblityPolygon(polygonArr);
                 ui.showSearchingAtAccessibility(false);
@@ -1430,7 +1427,6 @@ var Controller = (function(w) {
      * initialization
      */
     function initialize() {
-        console.log('init')
         map = new Map('map');
         ui.register('ui:startDebug', showDebugInfo);
         //e.g. when viewing/hiding the sidebar
