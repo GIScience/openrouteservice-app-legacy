@@ -16,39 +16,38 @@ var Map = (function() {
         /* *********************************************************************
          * MAP LAYERS
          * *********************************************************************/
-        var openmapsurfer = L.tileLayer(namespaces.layerMapSurfer, {
+        this.openmapsurfer = L.tileLayer(namespaces.layerMapSurfer, {
             id: 'openmapsurfer',
             attribution: 'Map data &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> contributors, powered by <a href="http://mapsurfernet.com/">MapSurfer.NET</a>'
         });
-        var openstreetmap = L.tileLayer(namespaces.layerOSM, {
+        this.openstreetmap = L.tileLayer(namespaces.layerOSM, {
             id: 'openstreetmap',
             attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
         });
-        var ors_osm_worldwide = L.tileLayer.wms(namespaces.layerWms, {
+        this.ors_osm_worldwide = L.tileLayer.wms(namespaces.layerWms, {
             id: 'openstreetmap_worldwide',
             layers: 'osm_auto:all',
             format: 'image/png',
             maxZoom: 19,
             attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> contributors'
         });
-        var opencyclemap = L.tileLayer(namespaces.layerOSMCycle, {
+        this.opencyclemap = L.tileLayer(namespaces.layerOSMCycle, {
             id: 'opencyclemap',
             attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> contributors'
         });
-        var aster_hillshade = L.tileLayer.wms("http://129.206.228.72/cached/hillshade", {
-            layers: 'europe_wms:hs_srtm_europa',
+        this.aster_hillshade = L.tileLayer.wms(namespaces.layerHs, {
             format: 'image/png',
-            opacity: 0.15,
+            opacity: 0.45,
             transparent: true,
             attribution: '<a href="http://srtm.csi.cgiar.org/">SRTM</a>; ASTER GDEM is a product of <a href="http://www.meti.go.jp/english/press/data/20090626_03.html">METI</a> and <a href="https://lpdaac.usgs.gov/products/aster_policies">NASA</a>',
             crs: L.CRS.EPSG900913
         });
-        var stamen = L.tileLayer(namespaces.stamenUrl, {
+        this.stamen = L.tileLayer(namespaces.stamenUrl, {
             id: 'stamen',
             attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.'
         });
         /* *********************************************************************
-         * MAP INIT
+         * MAP INIT & MAP LOCATION
          * *********************************************************************/
         this.theMap = new L.map(container, {
             center: [49.409445, 8.692953],
@@ -56,22 +55,19 @@ var Map = (function() {
             zoom: 13,
             attributionControl: true,
             crs: L.CRS.EPSG900913,
-            //layers: [openmapsurfer, openstreetmap, ors_osm_worldwide, opencyclemap, aster_hillshade, stamen]
+            layers: [this.openmapsurfer]
         });
-        var baseLayers = {
-            "OpenMapSurver": openmapsurfer,
-            "OSM-WMS worldwide": ors_osm_worldwide,
-            "Openstreetmap": openstreetmap,
-            "OpenCycleMap": opencyclemap,
-            "Stamen Maps": stamen
+        this.baseLayers = {
+            "OpenMapSurver": this.openmapsurfer,
+            "OSM-WMS worldwide": this.ors_osm_worldwide,
+            "Openstreetmap": this.openstreetmap,
+            "OpenCycleMap": this.opencyclemap,
+            "Stamen Maps": this.stamen
         };
-        var overlays = {
-            "Hillshade places": aster_hillshade
+        this.overlays = {
+            "Hillshade places": this.aster_hillshade
         };
-        this.theMap.addLayer(openmapsurfer);
-        //this.theMap.on('baselayerchange', mapBaseLayerChanged);
-        var control = L.control.activeLayers(baseLayers, overlays).addTo(this.theMap);
-        // L.control.layers(baseLayers, overlays).addTo(this.theMap);
+        L.control.layers(this.baseLayers, this.overlays).addTo(this.theMap);
         L.control.scale().addTo(this.theMap);
         var markers = [{
             "name": "Canada",
@@ -92,9 +88,9 @@ var Map = (function() {
         this.layerHeights = L.featureGroup().addTo(this.theMap);
         this.borderRegions = L.featureGroup().addTo(this.theMap);
         this.layerRestriction = L.featureGroup().addTo(this.theMap);
-        /* *********************************************************************
-         * MAP CONTROLS
-         * *********************************************************************/
+            /* *********************************************************************
+             * MAP CONTROLS
+             * *********************************************************************/
         this.theMap.on('contextmenu', function(e) {
             var displayPos = e.latlng;
             $('.leaflet-popup-content').remove();
@@ -189,91 +185,94 @@ var Map = (function() {
             mapContextMenuContainer.appendChild(useAsEndPointContainer);
             return mapContextMenuContainer;
         }
-        //     //avoid area controls
-        //     this.avoidTools = {
-        //         'create': new OpenLayers.Control.DrawFeature(layerAvoid, OpenLayers.Handler.Polygon, {
-        //             featureAdded: function() {
-        //                 var errorous = self.checkAvoidAreasIntersectThemselves();
-        //                 if (errorous) {
-        //                     self.emit('map:errorsInAvoidAreas', true);
-        //                 }
-        //                 self.emit('map:routingParamsChanged');
-        //                 self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
+        //avoid area controls
+        // this.avoidTools = {
+        //     'create': new OpenLayers.Control.DrawFeature(layerAvoid, OpenLayers.Handler.Polygon, {
+        //         featureAdded: function() {
+        //             var errorous = self.checkAvoidAreasIntersectThemselves();
+        //             if (errorous) {
+        //                 self.emit('map:errorsInAvoidAreas', true);
         //             }
-        //         }),
-        //         'edit': new OpenLayers.Control.ModifyFeature(layerAvoid),
-        //         'remove': new OpenLayers.Control.SelectFeature(layerAvoid, {
-        //             onSelect: function(feature) {
-        //                 layerAvoid.removeFeatures([feature]);
-        //                 var errorous = self.checkAvoidAreasIntersectThemselves();
-        //                 if (!errorous) {
-        //                     self.emit('map:errorsInAvoidAreas', false);
-        //                 }
-        //                 self.emit('map:routingParamsChanged');
-        //                 self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
+        //             self.emit('map:routingParamsChanged');
+        //             self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
+        //         }
+        //     }),
+        //     'edit': new OpenLayers.Control.ModifyFeature(layerAvoid),
+        //     'remove': new OpenLayers.Control.SelectFeature(layerAvoid, {
+        //         onSelect: function(feature) {
+        //             layerAvoid.removeFeatures([feature]);
+        //             var errorous = self.checkAvoidAreasIntersectThemselves();
+        //             if (!errorous) {
+        //                 self.emit('map:errorsInAvoidAreas', false);
         //             }
-        //         })
-        //     };
-        //     for (var key in this.avoidTools) {
-        //         this.theMap.addControl(this.avoidTools[key]);
-        //     }
-        //     //trigger an event after changing the avoid area polygon
-        //     layerAvoid.events.register('afterfeaturemodified', this.theMap, function(feature) {
-        //         var errorous = self.checkAvoidAreasIntersectThemselves();
-        //         if (errorous) {
-        //             self.emit('map:errorsInAvoidAreas', true);
-        //         } else {
-        //             self.emit('map:errorsInAvoidAreas', false);
+        //             self.emit('map:routingParamsChanged');
+        //             self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
         //         }
-        //         self.emit('map:routingParamsChanged');
-        //         self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
-        //     });
-        //     /* *********************************************************************
-        //      * MAP LOCATION
-        //      * *********************************************************************/
-        //     var hd = util.convertPointForMap(new OpenLayers.LonLat(8.692953, 49.409445));
-        //     this.theMap.setCenter(hd, 13);
-        //     /* *********************************************************************
-        //      * MAP EVENTS
-        //      * *********************************************************************/
-        //     function emitMapChangedEvent(e) {
-        //         // without this condition map zoom lat/lon isnt loaded from cookies
-        //         if (!initMap) {
-        //             var centerTransformed = util.convertPointForDisplay(self.theMap.getCenter());
-        //             self.emit('map:changed', {
-        //                 layer: self.serializeLayers(),
-        //                 zoom: self.theMap.getZoom(),
-        //                 lat: centerTransformed.lat,
-        //                 lon: centerTransformed.lon
-        //             });
-        //         }
+        //     })
+        // };
+        // for (var key in this.avoidTools) {
+        //     this.theMap.addControl(this.avoidTools[key]);
+        // }
+        //trigger an event after changing the avoid area polygon
+        // layerAvoid.events.register('afterfeaturemodified', this.theMap, function(feature) {
+        //     var errorous = self.checkAvoidAreasIntersectThemselves();
+        //     if (errorous) {
+        //         self.emit('map:errorsInAvoidAreas', true);
+        //     } else {
+        //         self.emit('map:errorsInAvoidAreas', false);
         //     }
-        //     this.theMap.events.register('zoomend', this.theMap, function(e) {
-        //         emitMapChangedEvent(e);
-        //     });
-        //     this.theMap.events.register('moveend', this.theMap, emitMapChangedEvent);
-        //     this.theMap.events.register('changelayer', this.theMap, emitMapChangedEvent);
-        //     //this.theMap.events.register('move', this.theMap, panMapChangedEvent);
-        //     //when zooming or moving the map -> close the context menu
-        //     this.theMap.events.register("zoomend", this.map, closeContextMenu);
-        //     //this.theMap.events.register("movestart", this.map, closeContextMenu);
+        //     self.emit('map:routingParamsChanged');
+        //     self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
+        // });
+        /* *********************************************************************
+         * MAP EVENTS
+         * *********************************************************************/
+        function emitMapChangedEvent(e) {
+            // without this condition map zoom lat/lon isnt loaded from cookies
+            if (!initMap) {
+                var centerTransformed = self.theMap.getCenter();
+                self.emit('map:changed', {
+                    zoom: self.theMap.getZoom(),
+                    lat: centerTransformed.lat,
+                    lon: centerTransformed.lng
+                });
+            }
+        }
+
+        function emitMapChangeBaseMap(e) {
+            // without this condition map zoom lat/lon isnt loaded from cookies
+            if (!initMap) {
+                var changedLayer = e.name;
+                self.emit('map:basemapChanged', {
+                    layer: self.serializeLayers(changedLayer)
+                });
+            }
+        }
+        this.theMap.on('baselayerchange', emitMapChangeBaseMap);
+        this.theMap.on('zoomend', emitMapChangedEvent);
+        this.theMap.on('moveend', emitMapChangedEvent);
+        //when zooming or moving the map -> close the context menu
+        //this.theMap.on("zoomend", self.theMap.closePopup(popup));
+        //this.theMap.on("movestart", self.theMap.closePopup(popup));
     }
     /* *********************************************************************
      * FOR PERMALINK OR COOKIE
      * *********************************************************************/
     /**
      * returns one single string with the layers of the given map that can be used in HTTP GET vars
+     * if layer is undefined return and use saved active layer
      */
-    function serializeLayers() {
-        var layers = this.theMap.layers;
-        var baseLayer = this.theMap.baseLayer;
+    function serializeLayers(layer) {
+        var baseLayer;
+        baseLayer = layer;
         var str = '';
-        for (var i = 0, len = layers.length; i < len; i++) {
-            var layer = layers[i];
-            if (layer.isBaseLayer) {
-                str += (layer == baseLayer) ? "B" : "0";
+        var baseLayers = this.baseLayers;
+        console.log(this.baseLayers);
+        for (var i in baseLayers) {
+            if (i == baseLayer) {
+                str += "B";
             } else {
-                str += (layer.getVisibility()) ? "T" : "F";
+                str += "0";
             }
         }
         return str;
@@ -284,12 +283,13 @@ var Map = (function() {
      * @params: layer string with active base layer and overlays
      */
     function restoreLayerPrefs(params) {
-        // var layers = this.theMap.layers;
-        // var result, indices = [];
-        // //set given map layer active
-        // var baseLayer = params.indexOf('B') >= 0 ? params.indexOf('B') : 0;
-        // this.theMap.setBaseLayer(this.theMap.layers[baseLayer]);
-        // //determine which overlays to set active
+        var layers = this.baseLayers;
+        var result, indices = [];
+        //set given map layer active
+        var baseLayerIdx = params.indexOf('B') >= 0 ? params.indexOf('B') : 0;
+        baseLayer = Object.keys(layers)[baseLayerIdx];
+        this.theMap.addLayer(layers[baseLayer]);
+        //TODO determine which overlays to set active
         // var regex = /T/gi;
         // while ((result = regex.exec(params))) {
         //     indices.push(result.index);
@@ -579,8 +579,8 @@ var Map = (function() {
     /**
      * transform given search results to markers and add them on the map.
      * (this is also used for waypoint search results)
-     * @param {Object} listOfPoints array of OpenLayers.LonLat
-     * @return array with added OL.Feature.Vector
+     * @param {Object} listOfPoints array of Leaflet.LonLat
+     * @return array with added Leaflet Marker
      */
     function addSearchAddressResultMarkers(listOfPoints, wpIndex) {
         var listOfFeatures = [];
@@ -590,8 +590,6 @@ var Map = (function() {
             var feature = null;
             if (point) {
                 var position = [point[1], point[0]];
-                // point = util.convertPointForMap(point);
-                // point = new OpenLayers.Geometry.Point(point.lon, point.lat);
                 var ftId;
                 if (wpIndex) {
                     //a waypoint search
@@ -606,10 +604,6 @@ var Map = (function() {
                     icon_orig: Ui.markerIcons.unset,
                     icon_emph: Ui.markerIcons.emph
                 });
-                // feature = new OpenLayers.Feature.Vector(point, {
-                //     icon: Ui.markerIcons.unset[0],
-                //     iconEm: Ui.markerIcons.unset[1],
-                // });
                 feature.addTo(self.layerSearch);
             }
             listOfFeatures.push(feature);
@@ -1190,7 +1184,7 @@ var Map = (function() {
     }
     map.prototype = new EventEmitter();
     map.prototype.constructor = map;
-    // map.prototype.serializeLayers = serializeLayers;
+    map.prototype.serializeLayers = serializeLayers;
     map.prototype.restoreLayerPrefs = restoreLayerPrefs;
     map.prototype.clearMarkers = clearMarkers;
     map.prototype.emphMarker = emphMarker;

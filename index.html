@@ -444,6 +444,9 @@
 							<div class="buttonHolder">
 								<button id="resetRoute" class="btn btn-small" type="button" title="Reset Route"><i class="icon-trash"></i></button>
 							</div>
+							<div class="buttonHolder">
+								<button id="zoomToRouteButton" class="btn btn-small" type="button" title="Zoom to Route"><i class="icon-resize-full"></i></button>
+							</div>
 						</div>
 						<div id="routeCalculate" style="display:none" class="alert alert-info searchingBlue"></div>
 						<div id="routeError" style="display:none" class="alert alert-error"></div>
@@ -467,7 +470,6 @@
 								<div class="collapsibleHead clickable collapsed" id="routeInstructionHead">
 									Route instructions:
 								</div>
-								<btn class="btn" id="zoomToRouteButton" style="display:none"><i class="icon-resize-full"></i></btn>
 								<div class="collapsibleBody" style="display: none;">
 									<div class="directions-main"></div>
 								</div>
@@ -677,9 +679,11 @@
 		<script type="text/javascript" src="lib/leaflet-1.0.0-beta.2.js"></script>
 		<script type="text/javascript" src="lib/leaflet-drag-marker-edges.js"></script>
 		<script type="text/javascript" src="lib/Leaflet.MakiMarkers.js"></script>
+
 		<script type="text/javascript" src="lib/leaflet.active-layers.min.js"></script>
 		<script type="text/javascript" src="lib/d3.v3.min.js" ></script>
 		<script type="text/javascript" src="lib/leaflet.elevation-0.0.4.min.js"></script>
+
 		<script type="text/javascript" src="lib/XMLWriter-1.0.0-min.js"></script>
 
 		<!-- ORS dev multiple file-->
