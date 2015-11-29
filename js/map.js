@@ -741,6 +741,7 @@ var Map = (function() {
         }
         return ftIds;
     }
+
     /**
      * zooms the map so that the whole route becomes visible (i.e. all features of the route line layer)
      */
