@@ -217,20 +217,19 @@ var Preferences = (function(w) {
     function loadMapPosition(pos) {
         if (pos && pos.length == 2) {
             //use GET variables (permalink)
-            pos = new OpenLayers.LonLat(pos[0], pos[1]);
+            pos = L.latLng(pos[1], pos[0]);
         }
         if (!pos) {
             //if GET is not set and geolocation not available use cookie
             pos = unescape(readCookie(prefNames[this.positionIdx]));
-            //contains sth like '1018700.9016211,6334189.5605773', parse it!
             if (pos != "null") {
                 var pos = pos.split(',');
-                pos = new OpenLayers.LonLat(pos[0], pos[1]);
+                pos = new L.latLng(pos[1], pos[0]);
             }
         }
         //if neither GET nor cookie have been set -> use Geolocation (called in control.js) or default (Heidelberg) which is automatically set when initializing the map
         //save this location in the permaInfo array
-        permaInfo[this.positionIdx] = escape(pos.lon + ',' + pos.lat);
+        permaInfo[this.positionIdx] = escape(pos.lng + ',' + pos.lat);
         return pos;
     }
     /**
@@ -279,7 +278,7 @@ var Preferences = (function(w) {
             var lonLatCoordinates = waypoints.split(',');
             waypoints = [];
             for (var i = 0; i < lonLatCoordinates.length - 1; i += 2) {
-                waypoints.push(new OpenLayers.LonLat(lonLatCoordinates[i], lonLatCoordinates[i + 1]));
+                waypoints.push(L.latLng(lonLatCoordinates[i+1], lonLatCoordinates[i]));
             }
         }
         return waypoints;
@@ -564,14 +563,13 @@ var Preferences = (function(w) {
         return cookieData;
     }
     /**
-     * Used to write all information at once; e.g. if no cookies ara available so far
-     * when the map position, zoom level or selected mapLayer changes, refresh the cookies with the current data
+     * Used to write all information at once; e.g. if no cookies are available so far
+     * when the map position or zoom level changes, refresh the cookies with the current data
      * @param lon: lon coordinate of current position
      * @param lat: lat coordinate of current position
      * @param zoomLvl: map zoom level
-     * @param layerCode: encoded layer information (which layers and overlays are active)
      */
-    function writeMapCookies(lon, lat, zoomLvl, layerCode) {
+    function writeMapCookies(lon, lat, zoomLvl) {
         //convert position into String
         var position = lon + "," + lat;
         var exdate = new Date();
@@ -579,9 +577,20 @@ var Preferences = (function(w) {
         exdate.setDate(exdate.getDate() + 30);
         document.cookie = prefNames[this.positionIdx] + "=" + escape(position) + ";expires=" + exdate.toUTCString();
         document.cookie = prefNames[this.zoomIdx] + "=" + escape(zoomLvl) + ";expires=" + exdate.toUTCString();
-        document.cookie = prefNames[this.layerIdx] + "=" + escape(layerCode) + ";expires=" + exdate.toUTCString();
         permaInfo[this.positionIdx] = escape(position);
         permaInfo[this.zoomIdx] = escape(zoomLvl);
+        cookiesAvailable = true;
+    }
+    /**
+     * Used to write all information at once; e.g. if no cookies are available so far
+     * when the selected mapLayer changes, refresh the cookies with the current data
+     * @param layerCode: encoded layer information (which layers and overlays are active)
+     */
+    function writeBaseMapCookie(layerCode) {
+        var exdate = new Date();
+        //cookie expires in 30 days
+        exdate.setDate(exdate.getDate() + 30);
+        document.cookie = prefNames[this.layerIdx] + "=" + escape(layerCode) + ";expires=" + exdate.toUTCString();
         permaInfo[this.layerIdx] = escape(layerCode);
         cookiesAvailable = true;
     }
@@ -705,6 +714,7 @@ var Preferences = (function(w) {
     Preferences.prototype.loadWheelParameters = loadWheelParameters;
     Preferences.prototype.loadHazardous = loadHazardous;
     Preferences.prototype.writeMapCookies = writeMapCookies;
+    Preferences.prototype.writeBaseMapCookie = writeBaseMapCookie;
     Preferences.prototype.writePrefsCookies = writePrefsCookies;
     Preferences.prototype.updatePreferences = updatePreferences;
     Preferences.prototype.updateCookies = updateCookies;

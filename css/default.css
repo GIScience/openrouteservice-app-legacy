@@ -424,13 +424,6 @@
 
 /*for displaying route instructions in the panel*/
 
-#zoomToRouteButton {
-    float: right;
-    -width: 20px;
-    -margin: 0;
-    -padding: 0;
-}
-
 #routeInstructionHead {
     float: left;
     width: 60%;
@@ -1070,6 +1063,13 @@ button.weightOptions {
     height: 25px;
     position: absolute;
     right: 45px;
+    bottom: 4px;
+}
+
+#zoomToRouteButton {
+    height: 25px;
+    position: absolute;
+    right: 85px;
     bottom: 4px;
 }
 

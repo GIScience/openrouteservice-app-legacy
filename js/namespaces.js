@@ -65,7 +65,7 @@ namespaces.layerWms = 'http://129.206.228.72/cached/osm?';
 //url to Open Map Surfer layer
 namespaces.layerMapSurfer = 'http://korona.geog.uni-heidelberg.de/tiles/roads/x={x}&y={y}&z={z}';
 //url to hillshade overlay
-namespaces.layerHs = 'http://korona.geog.uni-heidelberg.de/tiles/asterh/';
+namespaces.layerHs = 'http://korona.geog.uni-heidelberg.de/tiles/asterh/x={x}&y={y}&z={z}';
 //url to OSM layer
 namespaces.layerOSM = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 //url to OpenCycleMap

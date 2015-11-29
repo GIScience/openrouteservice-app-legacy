@@ -1156,7 +1156,15 @@ var Controller = (function(w) {
      */
     function handleMapChanged(mapState) {
         //update cookies
-        updateMapCookies(mapState.lon, mapState.lat, mapState.zoom, mapState.layer);
+        updateMapCookies(mapState.lon, mapState.lat, mapState.zoom);
+    }
+    /**
+     * triggers an update of the cookies when the map changed
+     * @param mapState: lon: lon-coordinate of the current position; lat: lat-coordinate; zoom: current zoom level; layer: active layer (and overlays)
+     */
+    function handleBaseMapChanged(mapState) {
+        //update cookies
+        updateBaseMapCookies(mapState.layer);
     }
     /**
      * highlights the correspoinding Ui element based on the given map feature/ marker, e.g. the corresponding POI description
@@ -1249,11 +1257,22 @@ var Controller = (function(w) {
      * @param lon: lon coordinate of current position
      * @param lat: lat coordinate of current position
      * @param zoom: current zoom level
+     */
+    function updateMapCookies(lon, lat, zoom) {
+        if (preferences.areCookiesAVailable()) {
+            preferences.writeMapCookies(lon, lat, zoom);
+        } else {
+            //write all information, not only map stuff
+            updateCookies(null, null);
+        }
+    }
+    /**
+     * when basemap is changed update cookies
      * @param layer: active layer, including overlays (OL encode)
      */
-    function updateMapCookies(lon, lat, zoom, layer) {
+    function updateBaseMapCookies(layer) {
         if (preferences.areCookiesAVailable()) {
-            preferences.writeMapCookies(lon, lat, zoom, layer);
+            preferences.writeBaseMapCookie(layer);
         } else {
             //write all information, not only map stuff
             updateCookies(null, null);
@@ -1294,34 +1313,28 @@ var Controller = (function(w) {
         var hazardous = getVars[preferences.getPrefName(preferences.hazardousIdx)];
         var fords = getVars[preferences.getPrefName(preferences.avoidFordsIdx)];
         var maxspeed = getVars[preferences.getPrefName(preferences.maxspeedIdx)];
-        // either layer, pos or zoom is read, as soon as one is read the eventlistener on map
-        // updates the other two and overwrites the cookie info
-        //TODO
-        // layer = preferences.loadMapLayer(layer);
-        // if (layer) {
-        //     map.restoreLayerPrefs(layer);
-        // }
-        // pos = preferences.loadMapPosition(pos);
-        // if (pos && pos != 'null') {
-        //     pos = util.convertPointForMap(pos);
-        //     map.theMap.setCenter(pos);
-        // } else {
-        //     //position not set, use geolocation feature to determine position
-        //     var locationSuccess = function(position) {
-        //         var pos = new OpenLayers.LonLat(position.coords.longitude, position.coords.latitude);
-        //         pos = util.convertPointForMap(pos);
-        //         map.theMap.moveTo(pos);
-        //     };
-        //     geolocator.locate(locationSuccess, null, null);
-        // }
-        // zoom = preferences.loadMapZoom(zoom);
-        // if (zoom) {
-        //     map.theMap.zoomTo(zoom);
-        // }
-        // layer = preferences.loadMapLayer(layer);
-        // if (layer) {
-        //     map.restoreLayerPrefs(layer);
-        // }
+        console.log(getVars)
+            // either layer, pos or zoom is read, as soon as one is read the eventlistener on map
+            // updates the other two and overwrites the cookie info
+        pos = preferences.loadMapPosition(pos);
+        if (pos && pos != 'null') {
+            map.theMap.panTo(pos);
+        } else {
+            //position not set, use geolocation feature to determine position
+            var locationSuccess = function(position) {
+                var pos = L.latLng(position.coords.longitude, position.coords.latitude);
+                map.theMap.panTo(pos);
+            };
+            geolocator.locate(locationSuccess, null, null);
+        }
+        zoom = preferences.loadMapZoom(zoom);
+        if (zoom) {
+            map.theMap.setZoom(zoom);
+        }
+        layer = preferences.loadMapLayer(layer);
+        if (layer) {
+            map.restoreLayerPrefs(layer);
+        }
         // if routeOpt is not in getVars then use Car for init
         routeOpt = preferences.loadRouteOptions(routeOpt);
         if (routeOpt === undefined || routeOpt === null || routeOpt == 'undefined') {
@@ -1353,11 +1366,11 @@ var Controller = (function(w) {
             smoothness = wheelParameters[4];
             ui.setWheelParameters(surface, incline, slopedCurb, trackType, smoothness);
         }
-        //avoidAreas: array of OL.Polygon representing one avoid area each
-        avoidAreas = preferences.loadAvoidAreas(avoidAreas);
-        //apply avoid areas
-        //TODO
-        //map.addAvoidAreas(avoidAreas);
+        // //avoidAreas: array of OL.Polygon representing one avoid area each
+        // avoidAreas = preferences.loadAvoidAreas(avoidAreas);
+        // //apply avoid areas
+        // //TODO
+        // //map.addAvoidAreas(avoidAreas);
         /* get and set truck parameters */
         var truckParameters = preferences.loadtruckParameters(truck_length, truck_height, truck_width, truck_weight, truck_axleload);
         if (truckParameters.length > 0) {
@@ -1371,12 +1384,12 @@ var Controller = (function(w) {
         /* get and set hazardous */
         hazardous = preferences.loadHazardous(hazardous);
         ui.setHazardousParameter(hazardous);
-        //waypoints: array of OL.LonLat representing one wayoint each
+        //waypoints: array of Leaflet LatLng's representing one wayoint each
         waypoints = preferences.loadWaypoints(waypoints);
         if (waypoints && waypoints.length > 0) {
             for (var i = 0; i < waypoints.length; i++) {
                 var type;
-                if (waypoints[i].lat === 0 & waypoints[i].lon === 0) {
+                if (waypoints[i].lat === 0 & waypoints[i].lng === 0) {
                     continue;
                 } else if (i === 0) {
                     type = Waypoint.type.START;
@@ -1433,6 +1446,7 @@ var Controller = (function(w) {
         ui.register('ui:mapPositionChanged', handleMapUpdate);
         //after zooming, switching layers,...
         map.register('map:changed', handleMapChanged);
+        map.register('map:basemapChanged', handleBaseMapChanged);
         //when moving mouse over a marker
         map.register('map:markerEmph', handleMarkerEmph);
         map.register('map:markerDeEmph', handleMarkerDeEmph);
