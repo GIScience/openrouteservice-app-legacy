@@ -51,6 +51,7 @@ var Route = (function(w) {
         writer.writeElementString('xls:WeightingMethod', extendedRoutePreferencesWeight || 'Fastest');
         if (routePref == 'Bicycle') {
             writer.writeElementString('xls:SurfaceInformation', 'true');
+            writer.writeElementString('xls:ElevationInformation', 'true');
         }
         if (extendedRoutePreferencesMaxspeed !== null) {
             if (extendedRoutePreferencesMaxspeed > 0) {
@@ -229,7 +230,7 @@ var Route = (function(w) {
             crossDomain: false,
             data: xmlRequest,
             success: function(response) {
-                successCallback(response, calcRouteID);
+                successCallback(response, calcRouteID, routePref);
             },
             error: function(response) {
                 failureCallback(response);
@@ -256,8 +257,19 @@ var Route = (function(w) {
      * the line strings represent a part of the route when driving on one street (e.g. 7km on autoroute A7)
      * we examine the lineStrings from the instruction list to get one lineString-ID per route segment so that we can support mouseover/mouseout events on the route and the instructions
      * @param {Object} results: XML response
+     * @param routePref: Car, Bicycle...
      */
-    function parseResultsToLineStrings(results) {
+    function parseResultsToLineStrings(results, routePref) {
+        var heights = [];
+        if (routePref == 'Bicycle') {
+            var routePoints = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteGeometry')[0];
+            $A(util.getElementsByTagNameNS(routePoints, namespaces.gml, 'pos')).each(function(point) {
+                point = point.text || point.textContent;
+                point = point.split(' ');
+                var height = point[2];
+                heights.push(height);
+            });
+        }
         var listOfLineStrings = [];
         var routeInstructions = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstructionsList')[0];
         if (routeInstructions) {
@@ -270,11 +282,14 @@ var Route = (function(w) {
                     return;
                 }
                 var segment = [];
-                $A(util.getElementsByTagNameNS(instructionElement, namespaces.gml, 'pos')).each(function(point) {
+                $A(util.getElementsByTagNameNS(instructionElement, namespaces.gml, 'pos')).each(function(point, i) {
                     point = point.text || point.textContent;
                     point = point.split(' ');
-                    point = L.latLng(point[1], point[0]);
-                    //point = converterFunction(point);
+                    if (heights.length > 0) {
+                        point = L.latLng(point[1], point[0], heights[i]);
+                    } else {
+                        point = L.latLng(point[1], point[0]);
+                    }
                     segment.push(point);
                 });
                 listOfLineStrings.push(segment);

@@ -725,7 +725,7 @@ var Controller = (function(w) {
      * processes route results: triggers displaying the route on the map, showing instructions and a summary
      * @param results: XML route service results
      */
-    function routeCalculationSuccess(results, routeID) {
+    function routeCalculationSuccess(results, routeID, routePref) {
         // only fire if returned routeID from callback is same as current global calcRouteID
         if (routeID == calcRouteID) {
             var zoomToMap = !route.routePresent;
@@ -744,11 +744,13 @@ var Controller = (function(w) {
                 //var routeString = map.writeRouteToString(routeLineString);
                 //route.routeString = routeString;
                 // each route instruction has a part of this lineString as geometry for this instruction
-                var routeLines = route.parseResultsToLineStrings(results);
+                var routeLines = route.parseResultsToLineStrings(results, routePref);
                 var routePoints = route.parseResultsToCornerPoints(results);
                 //Get the restrictions along the route
                 //TODO
                 //map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString, permaInfo[preferences.routeOptionsIdx]),  [permaInfo[preferences.value_lengthIdx], permaInfo[preferences.value_heightIdx], permaInfo[preferences.value_weightIdx], permaInfo[preferences.value_widhtIdx]]);
+                // update height profiles if bicycle selected
+                if (routePref == 'Bicycle') map.updateHeightprofiles(routeLines);
                 var featureIds = map.updateRoute(routeLines, routePoints);
                 var errors = route.hasRoutingErrors(results);
                 if (!errors) {
