@@ -751,7 +751,7 @@ var Controller = (function(w) {
                 //map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString, permaInfo[preferences.routeOptionsIdx]),  [permaInfo[preferences.value_lengthIdx], permaInfo[preferences.value_heightIdx], permaInfo[preferences.value_weightIdx], permaInfo[preferences.value_widhtIdx]]);
                 // update height profiles if bicycle selected
                 if (routePref == 'Bicycle') map.updateHeightprofiles(routeLines);
-                var featureIds = map.updateRoute(routeLines, routePoints);
+                var featureIds = map.updateRoute(routeLines, routePoints, routePref);
                 var errors = route.hasRoutingErrors(results);
                 if (!errors) {
                     ui.updateRouteSummary(results);

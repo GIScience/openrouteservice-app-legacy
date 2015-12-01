@@ -735,13 +735,16 @@ var Map = (function() {
     }
     /**
      * draws given points as route line on the map
-     * @param {Object} routeLineSegments: array of Leaflet Linestrings
+     * @param {Object} routeLineSegments: array of Linestrings
+     * @param {Object} routeLinePoints: array of Points
+     * @param routePref: Bike, Car etc..
      * @return array of Leaflet Ids added to the layer
      */
-    function updateRoute(routeLineSegments, routeLinePoints) {
+    function updateRoute(routeLineSegments, routeLinePoints, routePref) {
         this.layerRouteLines.clearLayers();
-        //var layer = this.theMap.getLayersByName(this.ROUTE_LINES)[0];
-        //layer.removeAllFeatures();
+        // clear elevation info if not bike
+        var el = this.elevationControl;
+        if (routePref !== 'Bicycle') el.clear();
         var ftIds = [];
         if (routeLineSegments && routeLineSegments.length > 0) {
             var self = this;
@@ -753,7 +756,7 @@ var Map = (function() {
                     //var segmentFt = new OpenLayers.Feature.Vector(segment, pointAndLineStyle.line);
                 }
                 var segmentFt = L.polyline(segment, {
-                    color: '#009ACD',
+                    color: '#4682B4',
                     stroke: 'true',
                     opacity: '0.9',
                     weight: 5,
@@ -764,7 +767,7 @@ var Map = (function() {
                 var cornerPoint = routeLinePoints[i];
                 //var cornerFt = new OpenLayers.Feature.Vector(cornerPoint, pointAndLineStyle.point);
                 var cornerFt = new L.CircleMarker(cornerPoint, {
-                    color: '#009ACD',
+                    color: '#4682B4',
                     fillColor: 'white',
                     fillOpacity: 1,
                     fill: true,
