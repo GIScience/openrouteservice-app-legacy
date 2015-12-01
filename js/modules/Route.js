@@ -266,11 +266,12 @@ var Route = (function(w) {
             $A(util.getElementsByTagNameNS(routePoints, namespaces.gml, 'pos')).each(function(point) {
                 point = point.text || point.textContent;
                 point = point.split(' ');
-                var height = point[2];
-                heights.push(height);
+                point = L.latLng(point[1], point[0], point[2]);
+                heights.push(point);
             });
         }
         var listOfLineStrings = [];
+        var heightIdx = 0;
         var routeInstructions = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstructionsList')[0];
         if (routeInstructions) {
             routeInstructions = util.getElementsByTagNameNS(routeInstructions, namespaces.xls, 'RouteInstruction');
@@ -282,20 +283,16 @@ var Route = (function(w) {
                     return;
                 }
                 var segment = [];
-                $A(util.getElementsByTagNameNS(instructionElement, namespaces.gml, 'pos')).each(function(point, i) {
+                $A(util.getElementsByTagNameNS(instructionElement, namespaces.gml, 'pos')).each(function(point) {
                     point = point.text || point.textContent;
                     point = point.split(' ');
-                    if (heights.length > 0) {
-                        point = L.latLng(point[1], point[0], heights[i]);
-                    } else {
-                        point = L.latLng(point[1], point[0]);
-                    }
+                    point = L.latLng(point[1], point[0]);
                     segment.push(point);
                 });
                 listOfLineStrings.push(segment);
             });
         }
-        return listOfLineStrings;
+        return [listOfLineStrings, heights];
     }
     /**
      * corner points are points in the route where the direction changes (turn right at street xy...)

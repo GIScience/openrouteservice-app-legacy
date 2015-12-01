@@ -87,7 +87,7 @@ var Map = (function() {
                 left: 50
             },
             useHeightIndicator: true, //if false a marker is drawn at map position
-            interpolation: "linear", //see https://github.com/mbostock/d3/wiki/SVG-Shapes#wiki-area_interpolate
+            interpolation: "basis", //see https://github.com/mbostock/d3/wiki/SVG-Shapes#wiki-area_interpolate
             hoverNumber: {
                 decimalsX: 3, //decimals on distance (always in km)
                 decimalsY: 0, //deciamls on height (always in m)
@@ -95,9 +95,9 @@ var Map = (function() {
             },
             xTicks: undefined, //number of ticks in x axis, calculated by default according to width
             yTicks: undefined, //number of ticks on y axis, calculated by default according to height
-            collapsed: true //collapsed mode, show chart on click or mouseover
+            collapsed: true, //collapsed mode, show chart on click or mouseover,
+            //yAxisMin: 0
         });
-        this.elevationControl.addTo(this.theMap);
         //https://github.com/ardhi/Leaflet.MousePosition
         //this.theMap.addControl(new OpenLayers.Control.MousePosition());
         this.layerRoutePoints = L.featureGroup().addTo(this.theMap);
@@ -722,12 +722,12 @@ var Map = (function() {
      * route is hidden with opacity 0
      * @param {Object} routeLineSegments: array of Leaflet Linestrings with height information
      */
-    function updateHeightprofiles(routeLineSegments) {
+    function updateHeightprofiles(routeLineHeights) {
         var el = this.elevationControl;
+        el.addTo(this.theMap);
         this.layerRouteLines.clearLayers();
         el.clear();
-        var merged = [].concat.apply([], routeLineSegments);
-        var polyline = L.polyline(merged).toGeoJSON();
+        var polyline = L.polyline(routeLineHeights).toGeoJSON();
         var gjl = L.geoJson(polyline, {
             opacity: '0',
             onEachFeature: el.addData.bind(el)
@@ -744,7 +744,10 @@ var Map = (function() {
         this.layerRouteLines.clearLayers();
         // clear elevation info if not bike
         var el = this.elevationControl;
-        if (routePref !== 'Bicycle') el.clear();
+        if (routePref !== 'Bicycle') {
+            el.clear();
+            el.remove();
+        }
         var ftIds = [];
         if (routeLineSegments && routeLineSegments.length > 0) {
             var self = this;
