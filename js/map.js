@@ -76,7 +76,7 @@ var Map = (function() {
             "lng": 8.692953
         }, ];
         this.elevationControl = L.control.elevation({
-            position: "bottomright",
+            position: "topright",
             theme: "steelblue-theme", //default: lime-theme
             width: 400,
             height: 125,
