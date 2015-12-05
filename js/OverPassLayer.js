@@ -8,7 +8,7 @@ L.OverPassLayer = L.FeatureGroup.extend({
   options: {
     debug: false,
     minzoom: 15,
-    endpoint: "//overpass-api.de/api/",
+    endpoint: "http://overpass-api.de/api/interpreter",
     query: "(node(BBOX)[organic];node(BBOX)[second_hand];);out qt;",
     callback: function(data) {
       for(var i = 0; i < data.elements.length; i++) {
@@ -158,7 +158,8 @@ L.OverPassLayer = L.FeatureGroup.extend({
 
 
           var queryWithMapCoordinates = this.options.query.replace(/(BBOX)/g, bbox.toOverpassBBoxString());
-          var url =  this.options.endpoint + "interpreter?data=[out:json];" + queryWithMapCoordinates;
+          var url =  this.options.endpoint;
+		  var data = "?data=[out:json];" + queryWithMapCoordinates;
 
           if (beforeRequest) {
               this.options.beforeRequest.call(this);
@@ -167,7 +168,7 @@ L.OverPassLayer = L.FeatureGroup.extend({
 
           var self = this;
           var request = new XMLHttpRequest();
-          request.open("GET", url, true);
+          request.open("POST", url, true);
 
           request.onload = function() {
             if (this.status >= 200 && this.status < 400) {
@@ -182,7 +183,7 @@ L.OverPassLayer = L.FeatureGroup.extend({
             }
           };
 
-          request.send();
+          request.send(data);
 
 
         }
