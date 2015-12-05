@@ -237,6 +237,9 @@ var Restrictions = ( function(w) {"use strict";
 	
 	
 	
+	
+	
+	
 	Restrictions.prototype.createQuery = createQuery;
 	Restrictions.prototype.createPolygon = createPolygon;
 	Restrictions.prototype.getRestrictionsQuery = getRestrictionsQuery;
