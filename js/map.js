@@ -969,7 +969,13 @@ var Map = (function() {
 		// map.getLayersByName(this.RESTRICTIONS)[0].removeAllFeatures();
 		
 		
-		layerRestriction = L.polygon(bboxArray);
+		this.layerRestriction = L.polygon(bboxArray);
+		
+		var opl = new L.OverPassLayer({
+			query: "node(BBOX)['amenity'='post_box'];out;",
+		});
+
+		this.theMap.addLayer(opl);
 	
         // var overpassQuery = query[0];
         // var bboxArray = query[1];
@@ -1304,7 +1310,7 @@ var Map = (function() {
     // map.prototype.addAvoidAreas = addAvoidAreas;
     // map.prototype.getAvoidAreas = getAvoidAreas;
     // map.prototype.getAvoidAreasString = getAvoidAreasString;
-    // map.prototype.updateRestrictionsLayer = updateRestrictionsLayer;
+    map.prototype.updateRestrictionsLayer = updateRestrictionsLayer;
     map.prototype.addAccessiblityPolygon = addAccessiblityPolygon;
     map.prototype.eraseAccessibilityFeatures = eraseAccessibilityFeatures;
     map.prototype.writeRouteToString = writeRouteToString;

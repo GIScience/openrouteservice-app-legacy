@@ -52,7 +52,7 @@ var Restrictions = ( function(w) {"use strict";
 		var floatCut = 3;
 		
 		var vertices = [];
-		for (var i= 0; i < lineString.length; i++) vertices.push([lineString[i].lat, lineString[i].lng]); //.getVertices();
+		for (var i= 0; i < lineString.length; i++) vertices.push([lineString[i].lng, lineString[i].lat]); //.getVertices();
 		console.log(vertices);
 		//create polygon from array
 		var featureArray = vertices.concat(vertices.slice(0).reverse());
@@ -61,16 +61,26 @@ var Restrictions = ( function(w) {"use strict";
 		for (var i = 0; i < featureArray.length; i ++) inputString += featureArray[i][0].toString() + " " + featureArray[i][1].toString() + ", ";
 		inputString = inputString.slice(0, -2);
 		inputString += "))";
-		var reader = new jsts.io.WKTReader();
-		var input = reader.read(inputString);
-		
-		var bufOp = new jsts.operation.buffer.BufferOp(input);
+		var geoReader = new jsts.io.GeoJSONReader();
+		var geoWriter = new jsts.io.GeoJSONWriter();
+		// var reader = new jsts.io.WKTReader();
+		// var input = reader.read(inputString);
+		var geoInput = {
+        type: "LineString",
+        coordinates: featureArray
+		};
+		console.log(geoInput);
+		// var geometry = geoReader.read(geoInput).buffer(delta);
+		var bufOp = new jsts.operation.buffer.BufferOp(geoReader.read(geoInput));
 		bufOp.setQuadrantSegments(1);
-		var buffer = bufOp.getResultGeometry(delta);
+		var geometry = bufOp.getResultGeometry(delta);
 		
-		var parser = new jsts.io.OpenLayersParser();
-		buffer = parser.write(buffer);
-		var bboxArray = buffer.getVertices();
+		// var parser = new jsts.io.OpenLayersParser();
+		// buffer = parser.write(buffer);
+		var polygon = geoWriter.write(geometry);
+		console.log(polygon.coordinates[0]);
+		// var bboxArray = buffer.getVertices();
+		var bboxArray = polygon.coordinates[0];
 		
 		//Create the polygon string for overpass
 		var bboxString = "poly:" + "\"";
