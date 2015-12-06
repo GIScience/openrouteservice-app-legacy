@@ -162,13 +162,17 @@ var Route = (function(w) {
                 writer.writeStartElement('gml:exterior');
                 //<gml:LinearRing>
                 writer.writeStartElement('gml:LinearRing');
-                var corners = currentArea.geometry.components[0].components;
+                var corners = currentArea.getLatLngs()[0];
                 for (var j = 0; j < corners.length; j++) {
-                    var pt = new OpenLayers.LonLat(corners[j].x, corners[j].y);
-                    pt = pt.transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:4326'));
                     writer.writeStartElement('gml:pos');
-                    writer.writeString(pt.lon + ' ' + pt.lat);
+                    writer.writeString(corners[j].lng + ' ' + corners[j].lat);
                     writer.writeEndElement();
+                    // close polygon
+                    if (j == corners.length - 1) {
+                        writer.writeStartElement('gml:pos');
+                        writer.writeString(corners[0].lng + ' ' + corners[0].lat);
+                        writer.writeEndElement();
+                    }
                 }
                 writer.writeEndElement();
                 //</gml:exterior>
