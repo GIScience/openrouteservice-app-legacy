@@ -30,7 +30,7 @@ var Restrictions = ( function(w) {"use strict";
 	function createQuery(polygonString){
 		//TODO: consider restriction type
 		var timeout = 20;
-		var query = namespaces.services.overpass + "?data=[timeout:"+timeout+"];";
+		var query = namespaces.services.overpass + "?data=[out:json];";//[timeout:"+timeout+"];";
 		
 		query += 'node(' + polygonString + ')[maxheight][waterway!~"."]["waterway:sign"!~"."]["seamark:type"!~"."]["obstacle"!="bridge"];out;';// + 
 		//'node(' + polygonString + ')["maxheight:physical"~"."][waterway!~"."]["waterway:sign"!~"."]["seamark:type"!~"."]["obstacle"!~"bridge"];out;'

@@ -157,9 +157,10 @@ L.OverPassLayer = L.FeatureGroup.extend({
           this._requested[x][y] = true;
 
 
-          var queryWithMapCoordinates = this.options.query.replace(/(BBOX)/g, bbox.toOverpassBBoxString());
+          // var queryWithMapCoordinates = this.options.query.replace(/(BBOX)/g, bbox.toOverpassBBoxString());
           var url =  this.options.endpoint;
-		  var data = "?data=[out:json];" + queryWithMapCoordinates;
+		  // var data = "?data=[out:json];" + queryWithMapCoordinates;
+		  var data = "?data=[out:json];" + this.options.query;
 
           if (beforeRequest) {
               this.options.beforeRequest.call(this);

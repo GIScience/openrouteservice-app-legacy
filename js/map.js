@@ -972,7 +972,7 @@ var Map = (function() {
 		this.layerRestriction = L.polygon(bboxArray);
 		
 		var opl = new L.OverPassLayer({
-			query: "node(BBOX)['amenity'='post_box'];out;",
+			query: "overpassQuery",
 		});
 
 		this.theMap.addLayer(opl);
