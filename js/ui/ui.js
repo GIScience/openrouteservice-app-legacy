@@ -72,7 +72,6 @@ var Ui = (function(w) {
             //sidebar is not visible, show it
             $('#sidebar').css('display', 'inline');
             $('#map').css('left', '415px');
-            $('#heightProfile').css('left', '415px');
             $('#toggleSidebar').attr('class', 'sidebarVisible');
             //trigger map update
             theInterface.emit('ui:mapPositionChanged');
@@ -80,7 +79,6 @@ var Ui = (function(w) {
             //sidebar is visible, hide it
             $('#sidebar').css('display', 'none');
             $('#map').css('left', '25px');
-            $('#heightProfile').css('left', '25px');
             $('#toggleSidebar').attr('class', 'sidebarInvisible');
             //trigger map update
             theInterface.emit('ui:mapPositionChanged');
@@ -2750,80 +2748,7 @@ var Ui = (function(w) {
         //remove the track from the map
         theInterface.emit('ui:removeTrack');
     }
-    /* *********************************************************************
-     * HEIGHT PROFILE
-     * *********************************************************************/
-    /**
-     * forwards the selected height profile file and triggers data extraction to visualize the elevation data
-     */
-    function handleUploadHeightProfileSelection() {
-        var file;
-        var fileInput = $$('#uploadHeightProfileFiles input[type="file"]')[0];
-        if (fileInput && fileInput.files && fileInput.files.length > 0) {
-            file = fileInput.files[0];
-        } else if (fileInput && fileInput.value) {
-            //IE doesn't know x.files
-            file = fileInput.value;
-        }
-        if (file) {
-            theInterface.emit('ui:uploadHeightProfile', file);
-        }
-    }
-    /**
-     * shows the height profile as graph in the Ui.
-     * @param elevationPoints: array of OL.LonLat.Ele containing x, y and elevation information
-     */
-    function showHeightProfile(elevationPoints) {
-        var heightData = [];
-        for (var i = 0; i < elevationPoints.length; i++) {
-            var element = {
-                x: i,
-                y: parseInt(elevationPoints[i].ele)
-            };
-            heightData.push(element);
-        }
-        //define the height profile graph using Rickshaw library
-        var graph = new Rickshaw.Graph({
-            element: $('#heightProfileChart').get(0),
-            series: [{
-                color: 'steelblue',
-                data: heightData,
-                name: 'height'
-            }]
-        });
-        graph.render();
-        //shor percentage labels at the x axis
-        var xAxis = new Rickshaw.Graph.Axis.X({
-            graph: graph,
-            tickFormat: function(x) {
-                return Math.round(100 * x / elevationPoints.length) + '%'
-            }
-        });
-        xAxis.render();
-        //hover behavior of the height profile
-        var hoverDetail = new Rickshaw.Graph.HoverDetail({
-            graph: graph,
-            //show nothing for x; name and heightData for y (default)
-            xFormatter: function(x) {
-                //show hover-maker for this position
-                theInterface.emit('ui:heightProfileHover', {
-                    lon: elevationPoints[x].lon,
-                    lat: elevationPoints[x].lat
-                });
-                return elevationPoints[x].lon + ' ' + elevationPoints[x].lat;
-            }
-        });
-        //note: deleting the height profile, i.e. ghe rickshaw graph and re-loading another file causes errors in the Rickshaw.Graph.HoverDetail feature though optically everything seems to work fine.
-        //I didn't find a reason for that behavior so far.
-    }
-    /**
-     * removes the height profile from the UI
-     */
-    function handleHeightProfileRemove() {
-        $('#heightProfileChart').empty();
-        //remove the track from the map
-        theInterface.emit('ui:removeHeightProfileTrack');
-    }
+    
     /* *********************************************************************
      * USER PREFERENCES
      * *********************************************************************/
@@ -2974,9 +2899,6 @@ var Ui = (function(w) {
         $('#files').click(handleResetFileInput);
         //when gpx files are uploaded
         $('#files').change(handleGpxFiles);
-        //height profile
-        $('#uploadHeightProfileFiles').change(handleUploadHeightProfileSelection);
-        $('#heightProfileFilesDelete').click(handleHeightProfileRemove);
         //user preferences
         $('#savePrefsBtn').click(handleSaveUserPreferences);
         //keep dropdowns open
@@ -3042,7 +2964,6 @@ var Ui = (function(w) {
     Ui.prototype.showAccessibilityError = showAccessibilityError;
     Ui.prototype.showExportRouteError = showExportRouteError;
     Ui.prototype.showImportRouteError = showImportRouteError;
-    Ui.prototype.showHeightProfile = showHeightProfile;
     Ui.prototype.setUserPreferences = setUserPreferences;
     Ui.prototype.setTruckParameters = setTruckParameters;
     Ui.prototype.setHazardousParameter = setHazardousParameter;
