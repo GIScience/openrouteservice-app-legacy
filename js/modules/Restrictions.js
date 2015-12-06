@@ -27,13 +27,19 @@ var Restrictions = ( function(w) {"use strict";
 		* @param polygonString: String representation of the polygon in overpass notation
 		* @return: the final overpass query
 	*/
+	
+	
 	function createQuery(polygonString){
 		//TODO: consider restriction type
 		var timeout = 20;
-		var query = namespaces.services.overpass + "?data=[out:json];";//[timeout:"+timeout+"];";
+		var query = "";//namespaces.services.overpass + "?data=[timeout:"+timeout+"];";
 		
-		query += 'node(' + polygonString + ')[maxheight][waterway!~"."]["waterway:sign"!~"."]["seamark:type"!~"."]["obstacle"!="bridge"];out;';// + 
-		//'node(' + polygonString + ')["maxheight:physical"~"."][waterway!~"."]["waterway:sign"!~"."]["seamark:type"!~"."]["obstacle"!~"bridge"];out;'
+		query += '[timeout:'+timeout+'];node(' + polygonString + ')[~"maxlength|maxwidth|maxheight|maxweight|maxaxleload|hazmat|hazmat:water"~"."];out;'//[waterway!~"."]["waterway:sign"!~"."]["seamark:type"!~"."]["obstacle"!="bridge"];out;'
+		+ '(way(' + polygonString + ')[~"maxlength|maxwidth|maxheight|maxweight|maxaxleload|hazmat|hazmat:water"~"."];>;);out;';
+		
+		// + 
+		//query += 'node(' + polygonString + ')[maxheight][waterway!~"."]["waterway:sign"!~"."]["seamark:type"!~"."]["obstacle"!="bridge"];out;';// + 
+		console.log(query);
 		return query;
 	}
 	
@@ -93,13 +99,71 @@ var Restrictions = ( function(w) {"use strict";
 		bboxString = bboxString.slice(0, -1);
 		bboxString += "\"";
 		
-		//Transform projection for correct display of bbox
-		// var bboxArrayTransformed = [];
-		// for (var i=0; i < bboxArray.length; i++){
-			// bboxArrayTransformed.push(new OpenLayers.Geometry.Point(bboxArray[i].x, bboxArray[i].y).transform(epsg4326, epsg900913));
-		// }
-		// return [bboxString, bboxArrayTransformed];
 		return [bboxString, bboxArray];
+	}
+	
+	function filterByAllAttributes(layer){
+		var featuresToRemove = [];
+		var removeFeature = true;
+		
+		var vehicleLength = permaInfo[w.Preferences.value_lengthIdx];
+		var vehicleWidth = permaInfo[w.Preferences.value_widthIdx];
+		var vehicleHeight = permaInfo[w.Preferences.value_heightIdx];
+		var vehicleWeight = permaInfo[w.Preferences.value_weightIdx];
+		var vehicleAxleload = permaInfo[w.Preferences.value_axleloadIdx];
+		var vehicleHazmat = permaInfo[w.Preferences.hazardousIdx];
+		
+		var featureLength;
+		var featureWidth;
+		var featureHeight;
+		var featureWeight;
+		var featureAxleload;
+		
+		for (var i = 0; i < layer.features.length; i++){
+			
+			try{featureLength = parseFloat(layer.features[i].attributes.maxlength)}
+			catch(e) {
+				featureLength = 1000;
+				console.log("No length found for feature");
+			}
+			try{featureWidth = parseFloat(layer.features[i].attributes.maxwidth)}
+			catch(e) {
+				featureWidth = 1000;
+				console.log("No featureWidth found for feature");
+			}
+			try{featureHeight = parseFloat(layer.features[i].attributes.maxheight)}
+			catch(e) {
+				featureHeight = 1000;
+				console.log("No featureHeight found for feature");
+			}
+			try{featureWeight = parseFloat(layer.features[i].attributes.maxweight)}
+			catch(e) {
+				featureWeight = 1000;
+				console.log("No featureWeight found for feature");
+			}
+			try{featureAxleload = parseFloat(layer.features[i].attributes.maxaxleload)}
+			catch(e) {
+				featureAxleload = 1000;
+				console.log("No featureAxleload found for feature");
+			}
+			
+			try {
+				removeFeature = 
+				!((vehicleLength > featureLength)
+				|| (vehicleWidth > featureWidth)
+				|| (vehicleHeight > featureHeight)
+				|| (vehicleWeight > featureWeight)
+				|| (vehicleAxleload > featureAxleload)
+				|| (vehicleHazmat == 'hazmat'))
+				
+			}
+			catch(e) {//Keep the feature if any tag is not well formatted
+				removeFeature = false;
+			}
+			if (removeFeature) featuresToRemove.push(layer.features[i]);
+		}
+		layer.removeFeatures(featuresToRemove);
+		return layer;
 	}
 	
 	function filterByAttribute(layer, attribute, vehicleValue){
@@ -254,6 +318,8 @@ var Restrictions = ( function(w) {"use strict";
 	Restrictions.prototype.createPolygon = createPolygon;
 	Restrictions.prototype.getRestrictionsQuery = getRestrictionsQuery;
 	Restrictions.prototype.filterByAttribute = filterByAttribute;
+	Restrictions.prototype.filterByAllAttributes = filterByAllAttributes;
+
 	
 	return new Restrictions();
 }(window));
