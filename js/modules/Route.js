@@ -201,6 +201,9 @@ var Route = (function(w) {
         if (avoidableParams[5] == 'true' || avoidableParams[5] === true) {
             writer.writeElementString('xls:AvoidFeature', 'Fords');
         }
+        if (avoidableParams[6] == 'true' || avoidableParams[6] === true) {
+            writer.writeElementString('xls:AvoidFeature', 'Pavedroads');
+        }
         //</xls:AvoidList>
         writer.writeEndElement();
         //</xls:RoutePlan>

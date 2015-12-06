@@ -1846,9 +1846,11 @@ var Ui = (function(w) {
         theInterface.emit('ui:prefsChanged', {
             key: preferences.avoidUnpavedIdx,
             value: false
+        });        
+        theInterface.emit('ui:prefsChanged', {
+            key: preferences.avoidPavedIdx,
+            value: false
         });
-        
-
         theInterface.emit('ui:prefsChanged', {
             key: preferences.avoidFerryIdx,
             value: false
@@ -2207,8 +2209,6 @@ var Ui = (function(w) {
                     key: preferences.avoidUnpavedIdx,
                     value: boolVar
                 });
-
-
             }
             if (itemId === list.routeAvoidables[3]) {
                 if (permaInfo[preferences.avoidFerryIdx] == "true" || permaInfo[preferences.avoidFerryIdx] == true) {
@@ -2238,6 +2238,17 @@ var Ui = (function(w) {
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidFordsIdx,
+                    value: boolVar
+                });
+            } else if (itemId === list.routeAvoidables[6]) {
+                //if the avoidable is set, remove it (and vice versa)
+                if (permaInfo[preferences.avoidPavedIdx] == "true" || permaInfo[preferences.avoidPavedIdx] == true) {
+                    var boolVar = false;
+                } else {
+                    var boolVar = true;
+                }
+                theInterface.emit('ui:prefsChanged', {
+                    key: preferences.avoidPavedIdx,
                     value: boolVar
                 });
             }
@@ -2493,18 +2504,18 @@ var Ui = (function(w) {
      * @param highway: true, if highway checkbox is to be checked
      * @param tollway: accordingly.
      */
-    function setAvoidables(highway, tollway, unpaved, ferry, steps, fords) {
+    function setAvoidables(highway, tollway, unpaved, ferry, steps, fords, paved) {
         var highwayTrue = (highway === 'true') || highway == true;
         var tollwayTrue = (tollway === 'true') || tollway == true;
         var unpavedTrue = (unpaved === 'true') || unpaved == true;
-
+        var pavedTrue = (paved === 'true') || paved == true;
         var ferryTrue = (ferry === 'true') || ferry == true;
         var stepsTrue = (steps === 'true') || steps == true;
         var fordsTrue = (fords === 'true') || fords == true;
         $('[type="checkbox"]').filter('#Highway').prop('checked', highwayTrue);
         $('[type="checkbox"]').filter('#Tollway').prop('checked', tollwayTrue);
         $('[type="checkbox"]').filter('#Unpavedroads').prop('checked', unpavedTrue);
-
+        $('[type="checkbox"]').filter('#Pavedroads').prop('checked', pavedTrue);
         $('[type="checkbox"]').filter('#Ferry').prop('checked', ferryTrue);
         $('[type="checkbox"]').filter('#Steps').prop('checked', stepsTrue);
         $('[type="checkbox"]').filter('#Fords').prop('checked', fordsTrue);

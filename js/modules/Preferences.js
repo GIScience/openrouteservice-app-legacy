@@ -3,9 +3,9 @@ var Preferences = (function(w) {
     'use strict';
     //are there any cookies of thie page yet?
     var cookiesAvailable = false;
-    var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version', 'avUnpaved', 'avFerry', 'value_length', 'value_height', 'value_weight', 'value_width', 'value_axleload', 'surface', 'incline', 'slopedCurb', 'hazardous', 'routeWeight', 'avSteps', 'routeOptType', 'trackType', 'smoothness', 'avFords', 'maxspeed'];
+    var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version', 'avUnpaved', 'avFerry', 'value_length', 'value_height', 'value_weight', 'value_width', 'value_axleload', 'surface', 'incline', 'slopedCurb', 'hazardous', 'routeWeight', 'avSteps', 'routeOptType', 'trackType', 'smoothness', 'avFords', 'maxspeed', 'avPaved'];
     //store information that can be used for the permalink
-    permaInfo = Array.apply(null, new Array(30)).map(String.prototype.valueOf, 'null');
+    permaInfo = Array.apply(null, new Array(31)).map(String.prototype.valueOf, 'null');
     /**
      * Constructor
      */
@@ -41,6 +41,7 @@ var Preferences = (function(w) {
         this.smoothnessIdx = 27;
         this.avoidFordsIdx = 28;
         this.maxspeedIdx = 29;
+        this.avoidPavedIdx = 30;
         //define variables
         this.language = 'en';
         this.routingLanguage = 'en';
@@ -419,8 +420,8 @@ var Preferences = (function(w) {
      * @param highway, tollway: extracted from the GET variables in readGetVars()
      * @return the avoidables
      */
-    function loadAvoidables(highway, tollway, unpaved, ferry, steps, fords) {
-        var avoidables = [false, false, false, false, false, false];
+    function loadAvoidables(highway, tollway, unpaved, ferry, steps, fords, paved) {
+        var avoidables = [false, false, false, false, false, false, false];
         // highway
         if (highway == true || highway == 'true') {
             permaInfo[this.avoidHighwayIdx] = true;
@@ -435,12 +436,19 @@ var Preferences = (function(w) {
         } else {
             permaInfo[this.avoidTollwayIdx] = false;
         }
-        // tollway
+        // unpaved
         if (unpaved == true || unpaved == 'true') {
             permaInfo[this.avoidUnpavedIdx] = true;
             avoidables[2] = true;
         } else {
             permaInfo[this.avoidUnpavedIdx] = false;
+        }
+         // paved
+        if (paved == true || paved == 'true') {
+            permaInfo[this.avoidPavedIdx] = true;
+            avoidables[6] = true;
+        } else {
+            permaInfo[this.avoidPavedIdx] = false;
         }
         // ferry
         if (ferry == true || ferry == 'true') {
