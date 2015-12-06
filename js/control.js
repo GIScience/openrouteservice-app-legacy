@@ -659,7 +659,7 @@ var Controller = (function(w) {
                 extendedRoutePreferencesMaxspeed = (Number(extendedRoutePreferencesMaxspeed) * 1.60934).toString();
             }
             // TO DO
-            //var avoidAreas = map.getAvoidAreas();
+            var avoidAreas = map.getAvoidAreas();
             var avoidableParams = [];
             var avoidHighway = permaInfo[preferences.avoidHighwayIdx];
             var avoidTollway = permaInfo[preferences.avoidTollwayIdx];
@@ -727,7 +727,7 @@ var Controller = (function(w) {
      * processes route results: triggers displaying the route on the map, showing instructions and a summary
      * @param results: XML route service results
      */
-    function routeCalculationSuccess(results, routeID) {
+    function routeCalculationSuccess(results, routeID, routePref) {
         // only fire if returned routeID from callback is same as current global calcRouteID
         if (routeID == calcRouteID) {
             var zoomToMap = !route.routePresent;
@@ -746,12 +746,14 @@ var Controller = (function(w) {
                 //var routeString = map.writeRouteToString(routeLineString);
                 //route.routeString = routeString;
                 // each route instruction has a part of this lineString as geometry for this instruction
-                var routeLines = route.parseResultsToLineStrings(results);
+                var routeLinesHeights = route.parseResultsToLineStrings(results, routePref);
                 var routePoints = route.parseResultsToCornerPoints(results);
                 //Get the restrictions along the route
                 //TODO
                 //map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString, permaInfo[preferences.routeOptionsIdx]),  [permaInfo[preferences.value_lengthIdx], permaInfo[preferences.value_heightIdx], permaInfo[preferences.value_weightIdx], permaInfo[preferences.value_widhtIdx]]);
-                var featureIds = map.updateRoute(routeLines, routePoints);
+                // update height profiles if bicycle selected
+                if (routePref == 'Bicycle') map.updateHeightprofiles(routeLinesHeights[1]);
+                var featureIds = map.updateRoute(routeLinesHeights[0], routePoints, routePref);
                 var errors = route.hasRoutingErrors(results);
                 if (!errors) {
                     ui.updateRouteSummary(results);
@@ -779,31 +781,6 @@ var Controller = (function(w) {
      */
     function handleZoomToRoute() {
         map.zoomToRoute();
-    }
-    /**
-     * a tool for handling avoid areas has been selected/ deactivated.
-     * If the avoid area tools are active, all selectFeature-controls of the map layers have to be deactivated (otherwise these layers always stay on top and prevent the user from modifying his avoidAreas)
-     * Delegate the tool call to the map object.
-     * @param atts: toolType: either drawing, moving or deleting avoid areas ; activated: true, if the feature should be activated; false otherwise
-     */
-    var activeAvoidAreaButtons = 0;
-
-    function avoidAreaToolClicked(atts) {
-        var toolTpye = atts.toolType;
-        var activated = atts.activated;
-        //if at least one button is active, the selectFeature control has to be deactivated
-        if (activated) {
-            activeAvoidAreaButtons++;
-        } else {
-            activeAvoidAreaButtons--;
-        }
-        if (activeAvoidAreaButtons > 0) {
-            map.activateSelectControl(false);
-        } else {
-            map.activateSelectControl(true);
-        }
-        //actual avoid area handling is done in the map object
-        map.avoidAreaTools(toolTpye, activated);
     }
     /**
      * if avoid areas intersect themselves they are invalid and no route calculation can be done. Inform the user by showing an error message in the UI
@@ -1370,7 +1347,7 @@ var Controller = (function(w) {
             smoothness = wheelParameters[4];
             ui.setWheelParameters(surface, incline, slopedCurb, trackType, smoothness);
         }
-        // //avoidAreas: array of OL.Polygon representing one avoid area each
+        //avoidAreas: array of OL.Polygon representing one avoid area each
         // avoidAreas = preferences.loadAvoidAreas(avoidAreas);
         // //apply avoid areas
         // //TODO
@@ -1483,7 +1460,6 @@ var Controller = (function(w) {
         ui.register('ui:routingParamsChanged', handleRoutePresent);
         ui.register('ui:handleMoveUpWaypointClick', handleRoutePresent);
         ui.register('ui:zoomToRoute', handleZoomToRoute);
-        ui.register('ui:avoidAreaControls', avoidAreaToolClicked);
         map.register('map:errorsInAvoidAreas', avoidAreasError);
         map.register('map:avoidAreaChanged', handleAvoidAreaChanged);
         map.register('map:routingParamsChanged', handleRoutePresent);

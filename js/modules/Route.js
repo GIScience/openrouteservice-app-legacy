@@ -51,6 +51,7 @@ var Route = (function(w) {
         writer.writeElementString('xls:WeightingMethod', extendedRoutePreferencesWeight || 'Fastest');
         if (routePref == 'Bicycle') {
             writer.writeElementString('xls:SurfaceInformation', 'true');
+            writer.writeElementString('xls:ElevationInformation', 'true');
         }
         if (extendedRoutePreferencesMaxspeed !== null) {
             if (extendedRoutePreferencesMaxspeed > 0) {
@@ -161,13 +162,17 @@ var Route = (function(w) {
                 writer.writeStartElement('gml:exterior');
                 //<gml:LinearRing>
                 writer.writeStartElement('gml:LinearRing');
-                var corners = currentArea.geometry.components[0].components;
+                var corners = currentArea.getLatLngs()[0];
                 for (var j = 0; j < corners.length; j++) {
-                    var pt = new OpenLayers.LonLat(corners[j].x, corners[j].y);
-                    pt = pt.transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:4326'));
                     writer.writeStartElement('gml:pos');
-                    writer.writeString(pt.lon + ' ' + pt.lat);
+                    writer.writeString(corners[j].lng + ' ' + corners[j].lat);
                     writer.writeEndElement();
+                    // close polygon
+                    if (j == corners.length - 1) {
+                        writer.writeStartElement('gml:pos');
+                        writer.writeString(corners[0].lng + ' ' + corners[0].lat);
+                        writer.writeEndElement();
+                    }
                 }
                 writer.writeEndElement();
                 //</gml:exterior>
@@ -229,7 +234,7 @@ var Route = (function(w) {
             crossDomain: false,
             data: xmlRequest,
             success: function(response) {
-                successCallback(response, calcRouteID);
+                successCallback(response, calcRouteID, routePref);
             },
             error: function(response) {
                 failureCallback(response);
@@ -256,9 +261,21 @@ var Route = (function(w) {
      * the line strings represent a part of the route when driving on one street (e.g. 7km on autoroute A7)
      * we examine the lineStrings from the instruction list to get one lineString-ID per route segment so that we can support mouseover/mouseout events on the route and the instructions
      * @param {Object} results: XML response
+     * @param routePref: Car, Bicycle...
      */
-    function parseResultsToLineStrings(results) {
+    function parseResultsToLineStrings(results, routePref) {
+        var heights = [];
+        if (routePref == 'Bicycle') {
+            var routePoints = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteGeometry')[0];
+            $A(util.getElementsByTagNameNS(routePoints, namespaces.gml, 'pos')).each(function(point) {
+                point = point.text || point.textContent;
+                point = point.split(' ');
+                point = L.latLng(point[1], point[0], point[2]);
+                heights.push(point);
+            });
+        }
         var listOfLineStrings = [];
+        var heightIdx = 0;
         var routeInstructions = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstructionsList')[0];
         if (routeInstructions) {
             routeInstructions = util.getElementsByTagNameNS(routeInstructions, namespaces.xls, 'RouteInstruction');
@@ -274,13 +291,12 @@ var Route = (function(w) {
                     point = point.text || point.textContent;
                     point = point.split(' ');
                     point = L.latLng(point[1], point[0]);
-                    //point = converterFunction(point);
                     segment.push(point);
                 });
                 listOfLineStrings.push(segment);
             });
         }
-        return listOfLineStrings;
+        return [listOfLineStrings, heights];
     }
     /**
      * corner points are points in the route where the direction changes (turn right at street xy...)

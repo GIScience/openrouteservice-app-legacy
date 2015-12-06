@@ -86,29 +86,6 @@ var Ui = (function(w) {
             theInterface.emit('ui:mapPositionChanged');
         }
     }
-    /**
-     * makes the height profile pane visible or invisible (larger map)
-     * @param e: the event
-     */
-    function handleToggleHeightProfile(e) {
-        var height = $('#heightProfile').get(0);
-        //when calling this for the first time on page startup, style.display attribute will be empty which corresponds to the default case of "not visible"
-        if (height.style.display == 'inline') {
-            //height profile is visible, hide it
-            $('#heightProfile').css('display', 'none');
-            $('#map').css('bottom', '25px');
-            $('#toggleHeightProfile').attr('class', 'heightProfileInvisible');
-            //trigger map update
-            theInterface.emit('ui:mapPositionChanged');
-        } else {
-            //height profile is not visible, show it
-            $('#heightProfile').css('display', 'inline');
-            $('#map').css('bottom', '200px');
-            $('#toggleHeightProfile').attr('class', 'heightProfileVisible');
-            //trigger map update
-            theInterface.emit('ui:mapPositionChanged');
-        }
-    }
     /* *********************************************************************
      * LANGUAGE-SPECIFIC
      * *********************************************************************/
@@ -280,7 +257,7 @@ var Ui = (function(w) {
      */
     function showSearchWaypointError(wpIndex) {
         var rootElement = $('#' + wpIndex).get(0);
-        var errorContainer = rootElement.querySelector('.searchWaypointError')
+        var errorContainer = rootElement.querySelector('.searchWaypointError');
         errorContainer.update(preferences.translate("searchError"));
         errorContainer.show();
     }
@@ -677,7 +654,7 @@ var Ui = (function(w) {
             //generate an empty waypoint
             var draftWp = $('#Draft');
             var newWp = draftWp.clone();
-            newWp.attr('id', wpIndex)
+            newWp.attr('id', wpIndex);
             if (wpIndex > 0) {
                 newWp.insertAfter($('#' + (wpIndex - 1)));
             } else {
@@ -2533,42 +2510,12 @@ var Ui = (function(w) {
         $('[type="checkbox"]').filter('#Fords').prop('checked', fordsTrue);
     }
     /**
-     * the user clicks on one of the buttons to handle avoid areas (draw, edit, delete)
-     * @param e: the event
-     */
-    function avoidAreasToolClicked(e) {
-        var btn = e.target;
-        var tag = e.target.tagName;
-        if (tag.toUpperCase() == 'IMG') {
-            //we selected the image inside the button; get the parent (this will be the button).
-            btn = $(e.target).parent().get(0);
-        }
-        //will be either create, edit or remove
-        var mainPart = 'avoid'.length;
-        var toolType = btn.id.substring(mainPart).toLowerCase();
-        var btnIsActive = btn.className.indexOf('active') > -1;
-        //set all btns to inactive
-        var allBtn = $(btn).parent().get(0).querySelectorAll('button');
-        for (var i = 0; i < allBtn.length; i++) {
-            $(allBtn[i]).removeClass('active');
-        }
-        //activate current button if necessary
-        if (!btnIsActive) {
-            $(btn).addClass('active');
-        }
-        theInterface.emit('ui:avoidAreaControls', {
-            toolType: toolType,
-            //if the button has been active before, it will be de-activated now!
-            activated: !btnIsActive
-        });
-    }
-    /**
      * shows or hides an avoid area error message, e.g. if one avoid area intersects itself
      * @param showError: if true, shows the error message; hides it otherwise
      */
     function showAvoidAreasError(showError) {
         var el = $('#avoidAreasError');
-        el.html(preferences.translate('invalidAvoidArea'));
+        //el.html(preferences.translate('invalidAvoidArea'));
         if (showError) {
             el.show();
         } else {
@@ -2989,7 +2936,6 @@ var Ui = (function(w) {
         $('.collapsibleHead').click(handleToggleCollapsibles);
         //hide & view sidebar
         $('#toggleSidebar').click(handleToggleSidebar);
-        $('#toggleHeightProfile').click(handleToggleHeightProfile);
         //waypoints
         $('.searchWaypoint').keyup(handleSearchWaypointInput);
         $('#addWaypoint').click(handleAddWaypointClick);
@@ -3019,7 +2965,6 @@ var Ui = (function(w) {
         $('#heavyvehicle').click(switchRouteOptionsPane);
         $('#wheelchair').click(switchRouteOptionsPane);
         $('.routeOptions').change(handleOptionsChanged);
-        $('#avoidAreasToolbar').click(avoidAreasToolClicked);
         //permalink
         $('#infoPermalink').click(handleOpenPermaOptions);
         $('#open').click(handleGeneratePerma);

@@ -12,7 +12,6 @@
 		<link rel="stylesheet" type="text/css" href="css/leaflet.css">
 		<link rel="stylesheet" type="text/css" href="css/default.css">
 		<link rel="stylesheet" type="text/css" href="css/leaflet.elevation-0.0.4.css">
-
  	</head>
 	<body id="main">
 		<!-- navigation bar on top -->
@@ -37,9 +36,6 @@
 				<li>
 					<a href="http://www.geog.uni-heidelberg.de/giscience.html" target="_blank"><img src="img/logo_giscience.png" alt="GIScience" class="links"></a>
 				</li>
-				<!-- <li>
-					<a href="http://www.geog.uni-heidelberg.de/giscience.html" target="_blank"><img src="img/unihd.png" alt="Uni HD" class="links"></a>
-				</li> -->
 			</ul>
 		</div>
 		<div id="sidebar">
@@ -376,18 +372,11 @@
 												</label>
 											</ul>
 								    	</div>
-										<div class="btn-group" id="avoidAreas">
-								                <button class="btn btn-small btn-danger dropdown-toggle" id="avoidAreasBtn" data-hover="dropdown" data-hover="dropdown" aria-expanded="false"><i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;avoid areas<span class="caret"></span></button>
-								                <ul class="dropdown-menu" id="dropdown_avoid_areas">
-								                	<div class="btn-group" id="avoidAreasToolbar">
-														<button class="btn" id="avoidCreate" title="draw avoid area"><img src="img/avoid-plus.png">
-														</button>
-														<button class="btn" id="avoidEdit" title="modify avoid area"><img src="img/avoid-edit.png">
-														</button>
-														<button class="btn" id="avoidRemove" title="remove avoid area"><img src="img/avoid-minus.png">
-														</button>
-													</div>	
-												</ul>
+
+										<div id="avoidAreas">
+								         	<div class="alert alert-error" id="avoidAreasError" style="display: none;">
+												Polygons are overlapping. Please refit!
+											</div>
 										</div>
 									</div>
 								</div>
@@ -681,6 +670,9 @@
 		<script type="text/javascript" src="lib/bootstrap/bootstrap-hover-dropdown.js"></script><!-- for hover dropdowns -->
 		<script type="text/javascript" src="lib/prototype.1.7.minified.js"></script>
 		<script type="text/javascript" src="lib/leaflet-1.0.0-beta.2.js"></script>
+		<script type="text/javascript" src="lib/Leaflet.Editable.js"></script>
+		<script type="text/javascript" src="lib/turf.min.js"></script>
+		<!-- Code copied from github pan map issue -->
 		<script type="text/javascript" src="lib/leaflet-drag-marker-edges.js"></script>
 		<script type="text/javascript" src="lib/Leaflet.MakiMarkers.js"></script>
 

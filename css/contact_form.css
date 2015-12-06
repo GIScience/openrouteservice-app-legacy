@@ -9,8 +9,9 @@
 
 .feedback {
     position: absolute;
-    right: 40px;
-    bottom: 15px;
+    right: 5px;
+    bottom: 28px;
+    z-index: 9999;
 }
 
 .feedback a {

@@ -49,13 +49,20 @@ var Map = (function() {
         /* *********************************************************************
          * MAP INIT & MAP LOCATION
          * *********************************************************************/
+        // avoid polygons layer has to be defined before map is created
+        this.layerAvoid = new L.featureGroup();
         this.theMap = new L.map(container, {
             center: [49.409445, 8.692953],
             minZoom: 2,
             zoom: 13,
             attributionControl: true,
             crs: L.CRS.EPSG900913,
-            layers: [this.openmapsurfer]
+            layers: [this.openmapsurfer],
+            editable: true,
+            editOptions: {
+                skipMiddleMarkers: false,
+                featuresLayer: this.layerAvoid
+            }
         });
         this.baseLayers = {
             "OpenMapSurver": this.openmapsurfer,
@@ -75,6 +82,29 @@ var Map = (function() {
             "lat": 49.409445,
             "lng": 8.692953
         }, ];
+        this.elevationControl = L.control.elevation({
+            position: "topright",
+            theme: "steelblue-theme", //default: lime-theme
+            width: 400,
+            height: 125,
+            margins: {
+                top: 10,
+                right: 20,
+                bottom: 30,
+                left: 50
+            },
+            useHeightIndicator: true, //if false a marker is drawn at map position
+            interpolation: "basis", //see https://github.com/mbostock/d3/wiki/SVG-Shapes#wiki-area_interpolate
+            hoverNumber: {
+                decimalsX: 3, //decimals on distance (always in km)
+                decimalsY: 0, //deciamls on height (always in m)
+                formatter: undefined //custom formatter function may be injected
+            },
+            xTicks: undefined, //number of ticks in x axis, calculated by default according to width
+            yTicks: undefined, //number of ticks on y axis, calculated by default according to height
+            collapsed: true, //collapsed mode, show chart on click or mouseover,
+            //yAxisMin: 0
+        });
         //https://github.com/ardhi/Leaflet.MousePosition
         //this.theMap.addControl(new OpenLayers.Control.MousePosition());
         this.layerRoutePoints = L.featureGroup().addTo(this.theMap);
@@ -82,15 +112,15 @@ var Map = (function() {
         this.layerGeolocation = L.featureGroup().addTo(this.theMap);
         this.layerPoi = L.featureGroup().addTo(this.theMap);
         this.layerSearch = L.featureGroup().addTo(this.theMap);
-        this.layerAvoid = L.featureGroup().addTo(this.theMap);
         this.layerTrack = L.featureGroup().addTo(this.theMap);
         this.layerAccessibility = L.featureGroup().addTo(this.theMap);
         this.layerHeights = L.featureGroup().addTo(this.theMap);
         this.borderRegions = L.featureGroup().addTo(this.theMap);
         this.layerRestriction = L.featureGroup().addTo(this.theMap);
-            /* *********************************************************************
-             * MAP CONTROLS
-             * *********************************************************************/
+        this.layerAvoid.addTo(this.theMap);
+        /* *********************************************************************
+         * MAP CONTROLS
+         * *********************************************************************/
         this.theMap.on('contextmenu', function(e) {
             var displayPos = e.latlng;
             $('.leaflet-popup-content').remove();
@@ -186,44 +216,47 @@ var Map = (function() {
             return mapContextMenuContainer;
         }
         //avoid area controls
-        // this.avoidTools = {
-        //     'create': new OpenLayers.Control.DrawFeature(layerAvoid, OpenLayers.Handler.Polygon, {
-        //         featureAdded: function() {
-        //             var errorous = self.checkAvoidAreasIntersectThemselves();
-        //             if (errorous) {
-        //                 self.emit('map:errorsInAvoidAreas', true);
-        //             }
-        //             self.emit('map:routingParamsChanged');
-        //             self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
-        //         }
-        //     }),
-        //     'edit': new OpenLayers.Control.ModifyFeature(layerAvoid),
-        //     'remove': new OpenLayers.Control.SelectFeature(layerAvoid, {
-        //         onSelect: function(feature) {
-        //             layerAvoid.removeFeatures([feature]);
-        //             var errorous = self.checkAvoidAreasIntersectThemselves();
-        //             if (!errorous) {
-        //                 self.emit('map:errorsInAvoidAreas', false);
-        //             }
-        //             self.emit('map:routingParamsChanged');
-        //             self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
-        //         }
-        //     })
-        // };
-        // for (var key in this.avoidTools) {
-        //     this.theMap.addControl(this.avoidTools[key]);
-        // }
-        //trigger an event after changing the avoid area polygon
-        // layerAvoid.events.register('afterfeaturemodified', this.theMap, function(feature) {
-        //     var errorous = self.checkAvoidAreasIntersectThemselves();
-        //     if (errorous) {
-        //         self.emit('map:errorsInAvoidAreas', true);
-        //     } else {
-        //         self.emit('map:errorsInAvoidAreas', false);
-        //     }
-        //     self.emit('map:routingParamsChanged');
-        //     self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
-        // });
+        L.NewPolygonControl = L.Control.extend({
+            options: {
+                position: 'topleft'
+            },
+            onAdd: function(map) {
+                var container = L.DomUtil.create('div', 'leaflet-control leaflet-bar'),
+                    link = L.DomUtil.create('a', '', container);
+                link.href = '#';
+                link.title = 'Create a new polygon';
+                link.innerHTML = '▱';
+                L.DomEvent.on(link, 'click', L.DomEvent.stop).on(link, 'click', function() {
+                    map.editTools.startPolygon();
+                });
+                return container;
+            }
+        });
+        this.theMap.addControl(new L.NewPolygonControl());
+        var deleteShape = function(e) {
+            if ((e.originalEvent.ctrlKey || e.originalEvent.metaKey) && this.editEnabled()) this.editor.deleteShapeAt(e.latlng);
+        };
+        this.theMap.on('layeradd', function(e) {
+            if (e.layer instanceof L.Path) e.layer.on('click', L.DomEvent.stop).on('click', deleteShape, e.layer);
+            if (e.layer instanceof L.Path) e.layer.on('dblclick', L.DomEvent.stop).on('dblclick', e.layer.toggleEdit);
+        });
+        var shapeListener = function(e) {
+            console.log(self.layerAvoid);
+            var errorous = self.checkAvoidAreasIntersectThemselves();
+            if (errorous) self.emit('map:errorsInAvoidAreas', true);
+            else self.emit('map:errorsInAvoidAreas', false);
+            self.emit('map:routingParamsChanged');
+            self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
+
+
+        };
+
+        //this.theMap.on('editable:drawing:end', addTooltip);
+        this.theMap.on('editable:shape:deleted', shapeListener);
+        this.theMap.on('editable:drawing:commit', shapeListener);
+        this.theMap.on('editable:vertex:deleted', shapeListener);
+        this.theMap.on('editable:vertex:dragend', shapeListener);
+        
         /* *********************************************************************
          * MAP EVENTS
          * *********************************************************************/
@@ -425,18 +458,6 @@ var Map = (function() {
             return ft.geometry.components[0].id;
         } else {
             return null;
-        }
-    }
-    /**
-     * activates or deactivates all select controls
-     * (used by the avoid area tools which require all selectFeature controls to be off)
-     * @param activate: if true, select controls are activated; if false, they are de-activated.
-     */
-    function activateSelectControl(activate) {
-        if (activate) {
-            this.selectMarker.activate();
-        } else {
-            this.selectMarker.deactivate();
         }
     }
     /* *********************************************************************
@@ -694,14 +715,37 @@ var Map = (function() {
      * ROUTE
      */
     /**
-     * draws given points as route line on the map
-     * @param {Object} routeLineSegments: array of OL.Geometry.LineString
-     * @return array of OL.Feature.Vector added to the layer
+     * Called for Bicycle profil
+     * draws given points as height map on top of route
+     * route is hidden with opacity 0
+     * @param {Object} routeLineSegments: array of Leaflet Linestrings with height information
      */
-    function updateRoute(routeLineSegments, routeLinePoints) {
+    function updateHeightprofiles(routeLineHeights) {
+        var el = this.elevationControl;
+        el.addTo(this.theMap);
         this.layerRouteLines.clearLayers();
-        //var layer = this.theMap.getLayersByName(this.ROUTE_LINES)[0];
-        //layer.removeAllFeatures();
+        el.clear();
+        var polyline = L.polyline(routeLineHeights).toGeoJSON();
+        var gjl = L.geoJson(polyline, {
+            opacity: '0',
+            onEachFeature: el.addData.bind(el)
+        }).addTo(this.layerRouteLines);
+    }
+    /**
+     * draws given points as route line on the map
+     * @param {Object} routeLineSegments: array of Linestrings
+     * @param {Object} routeLinePoints: array of Points
+     * @param routePref: Bike, Car etc..
+     * @return array of Leaflet Ids added to the layer
+     */
+    function updateRoute(routeLineSegments, routeLinePoints, routePref) {
+        this.layerRouteLines.clearLayers();
+        // clear elevation info if not bike
+        var el = this.elevationControl;
+        if (routePref !== 'Bicycle') {
+            el.clear();
+            el.remove();
+        }
         var ftIds = [];
         if (routeLineSegments && routeLineSegments.length > 0) {
             var self = this;
@@ -713,15 +757,17 @@ var Map = (function() {
                     //var segmentFt = new OpenLayers.Feature.Vector(segment, pointAndLineStyle.line);
                 }
                 var segmentFt = L.polyline(segment, {
-                    color: '#ff0066',
-                    opacity: '0.9'
+                    color: '#4682B4',
+                    stroke: 'true',
+                    opacity: '0.9',
+                    weight: 5,
                 });
                 segmentFt.addTo(self.layerRouteLines);
                 //"corner points" of the route where direction changes
                 var cornerPoint = routeLinePoints[i];
                 //var cornerFt = new OpenLayers.Feature.Vector(cornerPoint, pointAndLineStyle.point);
                 var cornerFt = new L.CircleMarker(cornerPoint, {
-                    color: '#ff0066',
+                    color: '#4682B4',
                     fillColor: 'white',
                     fillOpacity: 1,
                     fill: true,
@@ -735,7 +781,6 @@ var Map = (function() {
         }
         return ftIds;
     }
-
     /**
      * zooms the map so that the whole route becomes visible (i.e. all features of the route line layer)
      */
@@ -746,64 +791,21 @@ var Map = (function() {
      * AVOID AREAS
      */
     /**
-     * activates or deactivates the given avoid area tool (draw, modify, delete)
-     * @param {Object} tool: control to select
-     * @param {Object} activate: if true, the control is activated; if false, it is deactivated
-     */
-    function avoidAreaTools(tool, activate) {
-        for (var key in this.avoidTools) {
-            this.avoidTools[key].deactivate();
-        }
-        if (activate) {
-            this.avoidTools[tool].activate();
-        }
-    }
-    /**
-     * checks if two avoid ares, i.e. polygons intersect each other.
+     * checks if two avoid areas, i.e. polygons intersect each other.
      * @return true, if polygons intersect; otherwise false
      */
     function checkAvoidAreasIntersectThemselves() {
-        //code adapted from http://lists.osgeo.org/pipermail/openlayers-users/2012-March/024285.html
-        var layer = this.theMap.getLayersByName(this.AVOID)[0];
+        var polygons = this.layerAvoid.getLayers();
         var intersect = false;
-        for (var ftNum = 0; ftNum < layer.features.length; ftNum++) {
-            var fauxpoint = [];
-            var line = [];
-            var led = layer.features[ftNum];
-            var strng = led.geometry.toString();
-            var coord = strng.split(',');
-            // remove the 'Polygon((' from the 1st coord
-            coord[0] = coord[0].substr(9);
-            // Remove the '))' from the last coord
-            coord[coord.length - 1] = coord[coord.length - 1].substr(0, coord[coord.length - 1].length - 2);
-            //convert to lines
-            for (i = 0; i < coord.length; i++) {
-                var lonlat = coord[i].split(' ');
-                fauxpoint.push(new OpenLayers.Geometry.Point(lonlat[0], lonlat[1]));
-                if (i > 0) {
-                    // create an array with the 2 last points
-                    var point = [fauxpoint[i - 1], fauxpoint[i]];
-                    //create the line
-                    line.push(new OpenLayers.Geometry.LineString(point));
-                }
-            }
-            // Check every line against every line
-            for (var i = 1; i < line.length; i++) {
-                for (var j = 1; j < line.length; j++) {
-                    // get points of the I line in an array
-                    var vi = line[i].getVertices();
-                    // get points of the J line in an array
-                    var vj = line[j].getVertices();
-                    /*
-                     *  the lines must be differents and not adjacents.
-                     *  The end or start point of an adjacent line will be intersect,
-                     *  and adjacent lines never intersect in other point than the ends.
-                     */
-                    if (i != j && vi[1].toString() != vj[0].toString() && vi[0].toString() != vj[1].toString()) {
-                        // the intersect check
-                        if (line[i].intersects(line[j])) {
-                            intersect = true;
-                        }
+        if (polygons.length > 1) {
+            for (var i = 0; i < polygons.length-1; i++) {
+                for (var j = i+1; j < polygons.length; j++) {
+                    a = turf.polygon(polygons[j].toGeoJSON().geometry.coordinates);
+                    b = turf.polygon(polygons[i].toGeoJSON().geometry.coordinates);
+                    if (turf.intersect(a, b) !== undefined) {
+                        console.log(turf.intersect(a, b));
+                        intersect = true;
+                        return intersect;
                     }
                 }
             }
@@ -819,7 +821,7 @@ var Map = (function() {
         if (areas && areas.length > 0) {
             var allFt = [];
             for (var i = 0; i < areas.length; i++) {
-                var ft = new OpenLayers.Feature.Vector(areas[i])
+                var ft = new OpenLayers.Feature.Vector(areas[i]);
                 allFt.push(ft);
             }
             layerAvoid.addFeatures(allFt);
@@ -830,11 +832,11 @@ var Map = (function() {
     /**
      * gets all avoid area polygons
      * used for e.g. routing service request
-     * @return avoid areas as array of OL.Feature.Vector
+     * @return avoid areas as array of Leaflet Layer
      */
     function getAvoidAreas() {
-        var layerAvoid = this.theMap.getLayersByName(this.AVOID)[0];
-        return layerAvoid.features;
+        var layerAvoid = this.layerAvoid;
+        return layerAvoid.getLayers();
     }
     /**
      * gets all avoid area polygons
@@ -842,13 +844,13 @@ var Map = (function() {
      * @return avoid areas as string of polygon points; style: 'poly1pt1.y,poly1pt1.x,poly1pt2.x,poly1pt2.y,...'
      */
     function getAvoidAreasString() {
-        var layerAvoid = this.theMap.getLayersByName(this.AVOID)[0];
+        var layerAvoid = this.layerAvoid.getLayers();
         //serialize these features to string
         var avAreaString = "";
-        for (var avAreas = 0; avAreas < layerAvoid.features.length; avAreas++) {
-            var avAreaPoints = layerAvoid.features[avAreas].geometry.components[0].components;
-            for (var pt = 0; pt < avAreaPoints.length; pt++) {
-                avAreaString += avAreaPoints[pt].x + escape(',') + avAreaPoints[pt].y + escape(',');
+        for (var i = 0; i < layerAvoid.length; i++) {
+            var avAreaPoints = layerAvoid[i].getLatLngs()[0];
+            for (var j = 0; j < avAreaPoints.length; j++) {
+                avAreaString += avAreaPoints[j].lng + escape(',') + avAreaPoints[j].lat + escape(',');
             }
             //slice away the last separator ','
             avAreaString = avAreaString.substring(0, avAreaString.length - 3);
@@ -864,15 +866,12 @@ var Map = (function() {
      */
     /**
      * adds the given polygon as avoid area polygon to the map layer
-     *  @param polygon: OL.Feature.Vector, the polygon to add
+     * @param polygon: Polygon LatLngs, the polygon to add
      */
     function addAccessiblityPolygon(polygonArray) {
         var colorRange = rangeColors(polygonArray.length - 1);
         for (var i = polygonArray.length - 1; i >= 0; i--) {
             L.polygon(polygonArray[i], {
-                //fillColor: colorRange[i],
-                //fillOpacity: 1,
-                //fill: true,
                 color: colorRange[i],
                 stroke: true,
                 weight: 4
@@ -1191,7 +1190,6 @@ var Map = (function() {
     map.prototype.convertFeatureIdToPositionString = convertFeatureIdToPositionString;
     map.prototype.convertFeatureIdToPosition = convertFeatureIdToPosition;
     // map.prototype.getFirstPointIdOfLine = getFirstPointIdOfLine;
-    // map.prototype.activateSelectControl = activateSelectControl;
     map.prototype.addWaypointMarker = addWaypointMarker;
     map.prototype.addWaypointAtPos = addWaypointAtPos;
     map.prototype.setWaypointType = setWaypointType;
@@ -1208,11 +1206,10 @@ var Map = (function() {
     map.prototype.zoomToFeature = zoomToFeature;
     map.prototype.zoomToRoute = zoomToRoute;
     map.prototype.updateRoute = updateRoute;
-    // map.prototype.avoidAreaTools = avoidAreaTools;
-    // map.prototype.checkAvoidAreasIntersectThemselves = checkAvoidAreasIntersectThemselves;
+    map.prototype.checkAvoidAreasIntersectThemselves = checkAvoidAreasIntersectThemselves;
     // map.prototype.addAvoidAreas = addAvoidAreas;
-    // map.prototype.getAvoidAreas = getAvoidAreas;
-    // map.prototype.getAvoidAreasString = getAvoidAreasString;
+    map.prototype.getAvoidAreas = getAvoidAreas;
+    map.prototype.getAvoidAreasString = getAvoidAreasString;
     // map.prototype.updateRestrictionsLayer = updateRestrictionsLayer;
     map.prototype.addAccessiblityPolygon = addAccessiblityPolygon;
     map.prototype.eraseAccessibilityFeatures = eraseAccessibilityFeatures;
@@ -1224,5 +1221,6 @@ var Map = (function() {
     // map.prototype.parseStringToElevationPoints = parseStringToElevationPoints;
     // map.prototype.hoverPosition = hoverPosition;
     map.prototype.panMapOnEdges = panMapOnEdges;
+    map.prototype.updateHeightprofiles = updateHeightprofiles;
     return map;
 }());

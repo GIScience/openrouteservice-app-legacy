@@ -537,7 +537,7 @@
 }
 
 .mapContextMenu .leaflet-popup-content {
-    position: absolute;
+    -position: absolute;
     left: 2.5em;
     bottom: 0.7em;
 }
