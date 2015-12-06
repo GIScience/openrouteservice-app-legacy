@@ -664,12 +664,14 @@ var Controller = (function(w) {
             var avoidHighway = permaInfo[preferences.avoidHighwayIdx];
             var avoidTollway = permaInfo[preferences.avoidTollwayIdx];
             var avoidUnpavedRoads = permaInfo[preferences.avoidUnpavedIdx];
+
             var avoidFerry = permaInfo[preferences.avoidFerryIdx];
             var avoidSteps = permaInfo[preferences.avoidStepsIdx];
             var avoidFords = permaInfo[preferences.avoidFordsIdx];
             avoidableParams[0] = avoidHighway;
             avoidableParams[1] = avoidTollway;
             avoidableParams[2] = avoidUnpavedRoads;
+
             avoidableParams[3] = avoidFerry;
             avoidableParams[4] = avoidSteps;
             avoidableParams[5] = avoidFords;
@@ -1296,6 +1298,7 @@ var Controller = (function(w) {
         var motorways = getVars[preferences.getPrefName(preferences.avoidHighwayIdx)];
         var tollways = getVars[preferences.getPrefName(preferences.avoidTollwayIdx)];
         var unpaved = getVars[preferences.getPrefName(preferences.avoidUnpavedIdx)];
+
         var ferry = getVars[preferences.getPrefName(preferences.avoidFerryIdx)];
         var steps = getVars[preferences.getPrefName(preferences.avoidStepsIdx)];
         var avoidAreas = getVars[preferences.getPrefName(preferences.avoidAreasIdx)];
@@ -1352,6 +1355,7 @@ var Controller = (function(w) {
         motorways = avSettings[0];
         tollways = avSettings[1];
         unpaved = avSettings[2];
+
         ferry = avSettings[3];
         steps = avSettings[4];
         fords = avSettings[5];

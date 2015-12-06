@@ -57,6 +57,7 @@ var Languages = (function(w) {'use strict';
 		$('#avoidFerryLabelBike').html(p.translate('avoidFerryBike'));
 		$('#avoidunpavedRoadsLabelBike').html(p.translate('avoidunpavedRoadsBike'));
 		$('#avoidStepsLabelBike').html(p.translate('avoidStepsBike'));
+		$('#avoidpavedRoadsLabelBike').html(p.translate('avoidpavedRoadsBike'));
 		$('#avoidFerryLabelPedestrian').html(p.translate('avoidFerryPedes'));
 		
 		
