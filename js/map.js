@@ -74,7 +74,8 @@ var Map = (function() {
         this.overlays = {
             "Hillshade places": this.aster_hillshade
         };
-        L.control.layers(this.baseLayers, this.overlays).addTo(this.theMap);
+        this.layerControls = L.control.layers(this.baseLayers, this.overlays);
+        this.layerControls.addTo(this.theMap);
         L.control.scale().addTo(this.theMap);
         var markers = [{
             "name": "Canada",
@@ -114,8 +115,6 @@ var Map = (function() {
         this.layerSearch = L.featureGroup().addTo(this.theMap);
         this.layerTrack = L.featureGroup().addTo(this.theMap);
         this.layerAccessibility = L.featureGroup().addTo(this.theMap);
-        this.layerHeights = L.featureGroup().addTo(this.theMap);
-        this.borderRegions = L.featureGroup().addTo(this.theMap);
         this.layerRestriction = L.featureGroup().addTo(this.theMap);
         this.layerAvoid.addTo(this.theMap);
         /* *********************************************************************
@@ -177,11 +176,10 @@ var Map = (function() {
 
         function updateInfoPanel(results) {
             var infoPanel = document.getElementById("infoPanel");
-            // var lastUpdate = new Date(results.responseText.profiles['profile 1'].import_date);
-            // lastUpdate = lastUpdate.getUTCDate() + '.' + (parseInt(lastUpdate.getMonth()) + parseInt(1)) + '.' + lastUpdate.getFullYear();
-            //infoPanel[0].innerHTML += '<b>Last Update:</b> ' + lastUpdate;
-            //infoPanel[0].innerHTML += '<b>Next Update:</b> ' + results.next_update;
-            infoPanel.innerHTML += '(' + '<b>Last/Next Update</b> ' + '01.01.' + '/' + '02.01.' + ')';
+            var lastUpdate = new Date(results.profiles['profile 1'].import_date);
+            var nextUpdate = results.next_update !== undefined ? results.next_update : '?';
+            lastUpdate = lastUpdate.getUTCDate() + '.' + (parseInt(lastUpdate.getMonth()) + parseInt(1)) + '.';
+            infoPanel.innerHTML += '(' + '<b>Last/Next Update</b> ' + lastUpdate + '/' + nextUpdate + ')';
         }
         // create a new contextMenu
         function createMapContextMenu() {
@@ -247,16 +245,13 @@ var Map = (function() {
             else self.emit('map:errorsInAvoidAreas', false);
             self.emit('map:routingParamsChanged');
             self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
-
-
+            self.layerControls.addOverlay(self.layerAvoid, 'Avoidable Regions');
         };
-
         //this.theMap.on('editable:drawing:end', addTooltip);
         this.theMap.on('editable:shape:deleted', shapeListener);
         this.theMap.on('editable:drawing:commit', shapeListener);
         this.theMap.on('editable:vertex:deleted', shapeListener);
         this.theMap.on('editable:vertex:dragend', shapeListener);
-        
         /* *********************************************************************
          * MAP EVENTS
          * *********************************************************************/
@@ -300,7 +295,6 @@ var Map = (function() {
         baseLayer = layer;
         var str = '';
         var baseLayers = this.baseLayers;
-        console.log(this.baseLayers);
         for (var i in baseLayers) {
             if (i == baseLayer) {
                 str += "B";
@@ -798,8 +792,8 @@ var Map = (function() {
         var polygons = this.layerAvoid.getLayers();
         var intersect = false;
         if (polygons.length > 1) {
-            for (var i = 0; i < polygons.length-1; i++) {
-                for (var j = i+1; j < polygons.length; j++) {
+            for (var i = 0; i < polygons.length - 1; i++) {
+                for (var j = i + 1; j < polygons.length; j++) {
                     a = turf.polygon(polygons[j].toGeoJSON().geometry.coordinates);
                     b = turf.polygon(polygons[i].toGeoJSON().geometry.coordinates);
                     if (turf.intersect(a, b) !== undefined) {
@@ -817,14 +811,11 @@ var Map = (function() {
      * @param areas: array of avoid area polygons (OL.Feature.Vector)
      */
     function addAvoidAreas(areas) {
-        var layerAvoid = this.theMap.getLayersByName(this.AVOID)[0];
+        var layerAvoid = this.layerAvoid;
         if (areas && areas.length > 0) {
-            var allFt = [];
             for (var i = 0; i < areas.length; i++) {
-                var ft = new OpenLayers.Feature.Vector(areas[i]);
-                allFt.push(ft);
+                areas[i].addTo(layerAvoid);
             }
-            layerAvoid.addFeatures(allFt);
         }
         var self = this;
         this.emit('map:avoidAreaChanged', self.getAvoidAreasString());
@@ -947,12 +938,10 @@ var Map = (function() {
      * @return string with encoded route information
      */
     function writeRouteToString(singleRouteLineString) {
-        //TODO: change to Leaflet
-        var formatter = new OpenLayers.Format.GPX();
         var route;
         if (singleRouteLineString) {
-            var ft = new OpenLayers.Feature.Vector(singleRouteLineString)
-            route = formatter.write([ft]);
+            route = L.polyline(singleRouteLineString).toGeoJSON();
+            route = togpx(route);
             //insert line breaks for nicely readable code
             route = route.replace(/></g, '>\n<');
             //note: doesn't include namespaces in every tag any more
@@ -992,7 +981,7 @@ var Map = (function() {
      * @return array of Points with flight distance given in granularity
      */
     function getWaypointsByGranularity(linePoints, granularity) {
-        var routepointList = new Array();
+        var routepointList = [];
         var startPoint = new OpenLayers.LonLat(linePoints[0].x, linePoints[0].y);
         routepointList.push(startPoint);
         var sumDistance = 0;
@@ -1010,45 +999,32 @@ var Map = (function() {
         return routepointList;
     }
     /**
-     * Based on the String with GPX information a track (an OL.Geometry.LineString object) is extracted
+     * Based on the String with GPX information a track (an Leaflet Polyline object) is extracted
      * @param {Object} trackString: String with GPX track
-     * @return array of OL.FeatureVectors (usually only one) containing the track points
+     * @return Leaflet Polyline containing the track points
      */
     function parseStringToTrack(trackString) {
-        var formatter = new OpenLayers.Format.GPX();
-        var trackFeatures = formatter.read(trackString);
-        trackFeatures[0].style = {
-            fillColor: randomColors(),
-            strokeColor: randomColors(),
-            pointRadius: 5,
-            strokeOpacity: 0.7,
-            strokeWidth: 4,
-            cursor: "pointer"
-        }
-        if (!trackFeatures || trackFeatures.length == 0) {
-            return null;
-        }
-        //convert all points
-        for (var i = 0; i < trackFeatures.length; i++) {
-            var points = trackFeatures[i].geometry.components;
-            for (var j = 0; j < points.length; j++) {
-                points[j] = util.convertPointForMap(points[j]);
-            }
-        }
-        return trackFeatures;
+        var track = jQuery.parseXML(trackString);
+        track = toGeoJSON.gpx(track);
+        track = L.polyline(track.features[0].geometry.coordinates, {
+            color: randomColors(),
+            stroke: 'true',
+            opacity: '0.7',
+            weight: 4,
+        });
+        return track;
     }
     /**
      * add the given track features to the map and zoom to all tracks
-     * @param {Object} trackFeatures: array of OL.FeatureVectors (usually only one) with track points
+     * @param {Object} trackFeatures: Leaflet Polyline with GPX track points
      */
     function addTrackToMap(trackFeatures) {
-        //fill up data field in html with openlayers id
-        var layer = this.theMap.getLayersByName(this.TRACK)[0];
-        layer.addFeatures(trackFeatures);
+        var layer = this.layerTrack;
+        trackFeatures.addTo(layer);
+        this.layerControls.addOverlay(trackFeatures, 'GPX track');
         //zoom to track
-        var resultBounds = layer.getDataExtent();
-        this.theMap.zoomToExtent(resultBounds);
-        var featureName = trackFeatures[0].id;
+        this.theMap.fitBounds(trackFeatures.getBounds());
+        var featureName = trackFeatures._leaflet_id;
         return featureName;
     }
     /** 
@@ -1110,44 +1086,6 @@ var Map = (function() {
         }
         return colorArr;
     }
-    /*
-     * HEIGHT PROFILE
-     */
-    /**
-     * extracts coordinates with elevation data (lon, lat, ele)
-     * @param {Object} data string containing the coorinates
-     * @return: array of OL.LonLat.Ele coordinates
-     */
-    function parseStringToElevationPoints(data) {
-        var results = util.parseStringToDOM(data);
-        var ptArray = [];
-        var layer = this.theMap.getLayersByName(this.SEARCH)[0];
-        var points = util.getElementsByTagNameNS(results, '', 'trkpt');
-        $A(points).each(function(pt) {
-            var lat = pt.attributes[0].value;
-            var lon = pt.attributes[1].value;
-            var ele = pt.textContent;
-            var pt = new OpenLayers.LonLat.Ele(lon, lat, ele);
-            ptArray.push(pt);
-        });
-        return ptArray;
-    }
-    /**
-     * shows a hover marker at the given position (and erases all other hover markers)
-     * @param {Object} lon: lon coordinate of the position
-     * @param {Object} lat: lat coordinate of the position
-     */
-    function hoverPosition(lon, lat) {
-        var layer = this.theMap.getLayersByName(this.HEIGHTS)[0];
-        layer.removeAllFeatures();
-        var point = util.convertPointForMap(new OpenLayers.LonLat(lon, lat));
-        point = new OpenLayers.Geometry.Point(point.lon, point.lat);
-        var ft = new OpenLayers.Feature.Vector(point, {
-            icon: Ui.markerIcons.unset[0],
-            iconEm: Ui.markerIcons.unset[1],
-        });
-        layer.addFeatures([ft]);
-    }
     /**
      * pans the map when marker hits boundaries
      * code from https://github.com/Leaflet/Leaflet/pull/3643
@@ -1207,19 +1145,17 @@ var Map = (function() {
     map.prototype.zoomToRoute = zoomToRoute;
     map.prototype.updateRoute = updateRoute;
     map.prototype.checkAvoidAreasIntersectThemselves = checkAvoidAreasIntersectThemselves;
-    // map.prototype.addAvoidAreas = addAvoidAreas;
+    map.prototype.addAvoidAreas = addAvoidAreas;
     map.prototype.getAvoidAreas = getAvoidAreas;
     map.prototype.getAvoidAreasString = getAvoidAreasString;
     // map.prototype.updateRestrictionsLayer = updateRestrictionsLayer;
     map.prototype.addAccessiblityPolygon = addAccessiblityPolygon;
     map.prototype.eraseAccessibilityFeatures = eraseAccessibilityFeatures;
     map.prototype.writeRouteToString = writeRouteToString;
-    // map.prototype.parseStringToWaypoints = parseStringToWaypoints;
-    // map.prototype.parseStringToTrack = parseStringToTrack;
-    // map.prototype.addTrackToMap = addTrackToMap;
+    map.prototype.parseStringToWaypoints = parseStringToWaypoints;
+    map.prototype.parseStringToTrack = parseStringToTrack;
+    map.prototype.addTrackToMap = addTrackToMap;
     // map.prototype.getWaypointsByGranularity = getWaypointsByGranularity;
-    // map.prototype.parseStringToElevationPoints = parseStringToElevationPoints;
-    // map.prototype.hoverPosition = hoverPosition;
     map.prototype.panMapOnEdges = panMapOnEdges;
     map.prototype.updateHeightprofiles = updateHeightprofiles;
     return map;

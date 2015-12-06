@@ -3,9 +3,9 @@ var Preferences = (function(w) {
     'use strict';
     //are there any cookies of thie page yet?
     var cookiesAvailable = false;
-    var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version', 'avUnpaved', 'avFerry', 'value_length', 'value_height', 'value_weight', 'value_width', 'value_axleload', 'surface', 'incline', 'slopedCurb', 'hazardous', 'routeWeight', 'avSteps', 'routeOptType', 'trackType', 'smoothness', 'avFords', 'maxspeed', 'avPaved'];
+    var prefNames = list.prefNames;
     //store information that can be used for the permalink
-    permaInfo = Array.apply(null, new Array(31)).map(String.prototype.valueOf, 'null');
+    permaInfo = Array.apply(null, new Array(prefNames.length)).map(String.prototype.valueOf, 'null');
     /**
      * Constructor
      */
@@ -521,11 +521,11 @@ var Preferences = (function(w) {
             var lonLatCoordinates = differentAreas[j].split(',');
             avoidAreas = [];
             for (var i = 0; i < lonLatCoordinates.length - 1; i += 2) {
-                avoidAreas.push(new OpenLayers.Geometry.Point(lonLatCoordinates[i], lonLatCoordinates[i + 1]));
+                avoidAreas.push(L.latLng(lonLatCoordinates[i+1], lonLatCoordinates[i]));
             }
             if (avoidAreas.length > 0) {
                 //generate avoid area Polygon
-                var poly = new OpenLayers.Geometry.Polygon(new OpenLayers.Geometry.LinearRing(avoidAreas));
+                var poly = L.polygon(avoidAreas);
                 allAvoidAreas.push(poly)
             }
         }
@@ -578,6 +578,7 @@ var Preferences = (function(w) {
      * @param zoomLvl: map zoom level
      */
     function writeMapCookies(lon, lat, zoomLvl) {
+    	console.log('updating')
         //convert position into String
         var position = lon + "," + lat;
         var exdate = new Date();

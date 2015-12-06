@@ -2752,8 +2752,8 @@ var Ui = (function(w) {
     function handleDeleteFromMapGpx(e) {
         //remove the track from the map and clicked
         var thisTarget = e.currentTarget;
-        var olFeature = thisTarget.getAttribute('olFeatureName');
-        theInterface.emit('ui:removeTrack', olFeature);
+        var llFeature = thisTarget.getAttribute('LeafletFeatureName');
+        theInterface.emit('ui:removeTrack', llFeature);
         $(thisTarget).parent().fadeOut(300, function() {
             $(this).remove();
         });

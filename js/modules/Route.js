@@ -247,7 +247,7 @@ var Route = (function(w) {
     /**
      * parses the routing results of the service to a single 'path'
      * @param results: response of the service
-     * @param routeString: OL.Geometry.LineString representing the whole route
+     * @param routeString: Leaflet LineString representing the whole route
      */
     function writeRouteToSingleLineString(results) {
         var routeString = [];

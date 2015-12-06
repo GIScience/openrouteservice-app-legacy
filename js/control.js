@@ -338,7 +338,7 @@ var Controller = (function(w) {
         for (var i = 0; i < routePoints.length; i++) {
             routePoints[i] = routePoints[i].split(' ');
             if (routePoints[i].length == 2) {
-                wpString = wpString + routePoints[i][0] + ',' + routePoints[i][1] + ',';
+                wpString = wpString + routePoints[i][1] + ',' + routePoints[i][0] + ',';
             }
         }
         //slice away the last separator ','
@@ -742,9 +742,8 @@ var Controller = (function(w) {
             } else {
                 //use all-in-one-LineString to save the whole route in a single string
                 var routeLineString = route.writeRouteToSingleLineString(results);
-                //TODO: change to Leaflet..
-                //var routeString = map.writeRouteToString(routeLineString);
-                //route.routeString = routeString;
+                var routeString = map.writeRouteToString(routeLineString);
+                route.routeString = routeString;
                 // each route instruction has a part of this lineString as geometry for this instruction
                 var routeLinesHeights = route.parseResultsToLineStrings(results, routePref);
                 var routePoints = route.parseResultsToCornerPoints(results);
@@ -894,13 +893,13 @@ var Controller = (function(w) {
                         u = (r & 15) << 2 | i >> 6;
                         a = i & 63;
                         if (isNaN(r)) {
-                            u = a = 64
+                            u = a = 64;
                         } else if (isNaN(i)) {
-                            a = 64
+                            a = 64;
                         }
-                        t = t + this._keyStr.charAt(s) + this._keyStr.charAt(o) + this._keyStr.charAt(u) + this._keyStr.charAt(a)
+                        t = t + this._keyStr.charAt(s) + this._keyStr.charAt(o) + this._keyStr.charAt(u) + this._keyStr.charAt(a);
                     }
-                    return t
+                    return t;
                 },
                 decode: function(e) {
                     var t = "";
@@ -918,14 +917,14 @@ var Controller = (function(w) {
                         i = (u & 3) << 6 | a;
                         t = t + String.fromCharCode(n);
                         if (u != 64) {
-                            t = t + String.fromCharCode(r)
+                            t = t + String.fromCharCode(r);
                         }
                         if (a != 64) {
-                            t = t + String.fromCharCode(i)
+                            t = t + String.fromCharCode(i);
                         }
                     }
                     t = Base64._utf8_decode(t);
-                    return t
+                    return t;
                 },
                 _utf8_encode: function(e) {
                     e = e.replace(/\r\n/g, "\n");
@@ -933,17 +932,17 @@ var Controller = (function(w) {
                     for (var n = 0; n < e.length; n++) {
                         var r = e.charCodeAt(n);
                         if (r < 128) {
-                            t += String.fromCharCode(r)
+                            t += String.fromCharCode(r);
                         } else if (r > 127 && r < 2048) {
                             t += String.fromCharCode(r >> 6 | 192);
-                            t += String.fromCharCode(r & 63 | 128)
+                            t += String.fromCharCode(r & 63 | 128);
                         } else {
                             t += String.fromCharCode(r >> 12 | 224);
                             t += String.fromCharCode(r >> 6 & 63 | 128);
-                            t += String.fromCharCode(r & 63 | 128)
+                            t += String.fromCharCode(r & 63 | 128);
                         }
                     }
-                    return t
+                    return t;
                 },
                 _utf8_decode: function(e) {
                     var t = "";
@@ -953,21 +952,21 @@ var Controller = (function(w) {
                         r = e.charCodeAt(n);
                         if (r < 128) {
                             t += String.fromCharCode(r);
-                            n++
+                            n++;
                         } else if (r > 191 && r < 224) {
                             c2 = e.charCodeAt(n + 1);
                             t += String.fromCharCode((r & 31) << 6 | c2 & 63);
-                            n += 2
+                            n += 2;
                         } else {
                             c2 = e.charCodeAt(n + 1);
                             c3 = e.charCodeAt(n + 2);
                             t += String.fromCharCode((r & 15) << 12 | (c2 & 63) << 6 | c3 & 63);
-                            n += 3
+                            n += 3;
                         }
                     }
-                    return t
+                    return t;
                 }
-            }
+            };
             var newRouteString = Base64.encode(routeString);
             if (isSafari == true) {
                 ui.showExportRouteError(false);
@@ -1041,7 +1040,7 @@ var Controller = (function(w) {
     function handleGpxTrack(fileTarget) {
         ui.showImportRouteError(false);
         //clean old track from map (at the moment only one track is supported)
-        //map.clearMarkers(map.TRACK);
+        map.clearMarkers(map.layerTrack);
         if (fileTarget[0]) {
             if (!window.FileReader) {
                 // File APIs are not supported, e.g. IE
@@ -1060,7 +1059,7 @@ var Controller = (function(w) {
                         //add features to map
                         var newFeature = map.addTrackToMap(track);
                         // adds custom attribute to html element in order to remove it later on
-                        fileTarget[1].writeAttribute("olFeatureName", newFeature);
+                        fileTarget[1].writeAttribute("LeafletFeatureName", newFeature);
                     }
                 };
             }
@@ -1070,61 +1069,12 @@ var Controller = (function(w) {
     }
     /**
      * removes an uploaded track or route from the map
-     * @param olFeature: ol feature Id
+     * @param LeafletFeatureName: leaflet feature Id
      */
-    function handleRemoveTrack(olFeatureName) {
-        //console.log(JSON.stringify(olFeatureName));
+    function handleRemoveTrack(LeafletFeatureName) {
+        //console.log(JSON.stringify(LeafletFeatureName));
         ui.handleResetRoute();
-        map.clearMarkers(map.TRACK, [olFeatureName]);
-        // remove div..
-    }
-    /* *********************************************************************
-     * HEIGHT PROFILE
-     * *********************************************************************/
-    /**
-     * extracts information from the given file and shows the height profile
-     * @param file: the file with elevation information
-     */
-    function handleUploadHeightProfile(file) {
-        if (file) {
-            if (!window.FileReader) {
-                // File APIs are not supported, e.g. IE
-                //todo: show error
-            } else {
-                var r = new FileReader();
-                r.readAsText(file);
-                r.onload = function(e) {
-                    var data = e.target.result;
-                    //calculate the height profile
-                    var eleArray = map.parseStringToElevationPoints(data);
-                    ui.showHeightProfile(eleArray);
-                    //show the track on the map
-                    //remove gpx: tags; Firefox cannot cope with that.
-                    data = data.replace(/gpx:/g, '');
-                    var track = map.parseStringToTrack(data);
-                    if (track) {
-                        //add features to map
-                        map.addTrackToMap(track);
-                    }
-                };
-            }
-        } else {
-            //todo: show error
-        }
-    }
-    /**
-     * hovers the correspoinding position on the map/ the height profile
-     * @param atts: lon: lon coordinate, lat: lat coordinate
-     */
-    function handleHeightProfileHover(atts) {
-        map.hoverPosition(atts.lon, atts.lat);
-    }
-    /**
-     * removes an uploaded height profile track from the map
-     */
-    function handleRemoveHeightProfile() {
-        map.clearMarkers(map.TRACK);
-        map.clearMarkers(map.HEIGHTS);
+        map.clearMarkers(map.layerTrack, [LeafletFeatureName]);
     }
     /* *********************************************************************
      * MAP
@@ -1219,12 +1169,13 @@ var Controller = (function(w) {
      */
     function updateCookies(key, value) {
         if (!preferences.areCookiesAVailable()) {
-            //no cookies found so far, we need to write all information
-            var lon = map.theMap.getCenter().lon;
-            var lat = map.theMap.getCenter().lat;
-            var zoom = map.theMap.getZoom();
-            var layer = map.serializeLayers();
-            preferences.writeMapCookies(lon, lat, zoom, layer);
+            //TODO: no cookies found so far, we need to write all information
+            // var lon = map.theMap.getCenter().lng;
+            // var lat = map.theMap.getCenter().lat;
+            // var zoom = map.theMap.getZoom();
+            // var layer = map.serializeLayers();
+            // preferences.writeMapCookies(lon, lat, zoom);
+            // preferences.writeBaseMapCookie(layer);
             preferences.writePrefsCookies();
             //then write the requested data...
         }
@@ -1294,15 +1245,15 @@ var Controller = (function(w) {
         var fords = getVars[preferences.getPrefName(preferences.avoidFordsIdx)];
         var maxspeed = getVars[preferences.getPrefName(preferences.maxspeedIdx)];
         console.log(getVars)
-            // either layer, pos or zoom is read, as soon as one is read the eventlistener on map
-            // updates the other two and overwrites the cookie info
+        // either layer, pos or zoom is read, as soon as one is read the eventlistener on map
+        // updates the other two and overwrites the cookie info
         pos = preferences.loadMapPosition(pos);
         if (pos && pos != 'null') {
             map.theMap.panTo(pos);
         } else {
             //position not set, use geolocation feature to determine position
             var locationSuccess = function(position) {
-                var pos = L.latLng(position.coords.longitude, position.coords.latitude);
+                var pos = L.latLng(position.coords.latitude, position.coords.longitude);
                 map.theMap.panTo(pos);
             };
             geolocator.locate(locationSuccess, null, null);
@@ -1317,7 +1268,7 @@ var Controller = (function(w) {
         }
         // if routeOpt is not in getVars then use Car for init
         routeOpt = preferences.loadRouteOptions(routeOpt);
-        if (routeOpt === undefined || routeOpt === null || routeOpt == 'undefined') {
+        if (routeOpt == undefined || routeOpt == null || routeOpt == 'undefined') {
             ui.setRouteOption(list.routePreferences.get('car'));
         } else {
             ui.setRouteOption(routeOpt);
@@ -1347,11 +1298,10 @@ var Controller = (function(w) {
             smoothness = wheelParameters[4];
             ui.setWheelParameters(surface, incline, slopedCurb, trackType, smoothness);
         }
-        //avoidAreas: array of OL.Polygon representing one avoid area each
-        // avoidAreas = preferences.loadAvoidAreas(avoidAreas);
-        // //apply avoid areas
-        // //TODO
-        // //map.addAvoidAreas(avoidAreas);
+        //avoidAreas: array of Leaflet Polygon representing one avoid area each
+        avoidAreas = preferences.loadAvoidAreas(avoidAreas);
+        //apply avoid areas
+        map.addAvoidAreas(avoidAreas);
         /* get and set truck parameters */
         var truckParameters = preferences.loadtruckParameters(truck_length, truck_height, truck_width, truck_weight, truck_axleload);
         if (truckParameters.length > 0) {
@@ -1469,9 +1419,6 @@ var Controller = (function(w) {
         ui.register('ui:uploadRoute', handleGpxRoute);
         ui.register('ui:uploadTrack', handleGpxTrack);
         ui.register('ui:removeTrack', handleRemoveTrack);
-        ui.register('ui:uploadHeightProfile', handleUploadHeightProfile);
-        ui.register('ui:heightProfileHover', handleHeightProfileHover);
-        ui.register('ui:removeHeightProfileTrack', handleRemoveHeightProfile);
         ui.register('ui:saveUserPreferences', updateUserPreferences);
         ui.register('ui:generatePermalinkRequest', handlePermalinkRequest);
         ui.register('ui:clearFromGpx', handleRemoveTrack);
