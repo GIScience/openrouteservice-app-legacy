@@ -12,7 +12,7 @@
             div.appendData(text);
 	  }
       }
-
+	  
       var zoom_valid = true;
       var load_counter = 0;      
       

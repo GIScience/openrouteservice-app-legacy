@@ -969,13 +969,17 @@ var Map = (function() {
 		// map.getLayersByName(this.RESTRICTIONS)[0].removeAllFeatures();
 		
 		
-		this.layerRestriction = L.polygon(bboxArray);
+		// this.layerRestriction = L.polygon(bboxArray);
+		console.log(map.hasLayer(this.layerRestriction));
+		if(map.hasLayer(this.layerRestriction)) map.removeLayer(this.layerRestriction);
+		if(map.hasLayer(this.polygon)) map.removeLayer(this.polygon);
+		this.polygon = L.polygon([bboxArray]).addTo(map);
 		
-		var opl = new L.OverPassLayer({
-			query: "overpassQuery",
+		this.layerRestriction = new L.OverPassLayer({
+			query: overpassQuery,
 		});
 
-		this.theMap.addLayer(opl);
+		this.theMap.addLayer(this.layerRestriction);
 	
         // var overpassQuery = query[0];
         // var bboxArray = query[1];

@@ -16,7 +16,8 @@ var Restrictions = ( function(w) {"use strict";
 		}
 		//get height limit set by user
 		// console.log(permaInfo[w.Preferences.value_heightIdx]);
-		var tolerance = 0.01;
+		//tolerance: lower means more polygon points
+		var tolerance = 0.003;
 		var polygon = createPolygon(simplify(lineString, tolerance, false));
 		var query = createQuery(polygon[0]);
 		return [query, polygon[1]];
@@ -34,7 +35,7 @@ var Restrictions = ( function(w) {"use strict";
 		var timeout = 20;
 		var query = "";//namespaces.services.overpass + "?data=[timeout:"+timeout+"];";
 		
-		query += '[timeout:'+timeout+'];node(' + polygonString + ')[~"maxlength|maxwidth|maxheight|maxweight|maxaxleload|hazmat|hazmat:water"~"."];out;'//[waterway!~"."]["waterway:sign"!~"."]["seamark:type"!~"."]["obstacle"!="bridge"];out;'
+		query += 'node(' + polygonString + ')[~"maxlength|maxwidth|maxheight|maxweight|maxaxleload|hazmat|hazmat:water"~"."];out;'//[waterway!~"."]["waterway:sign"!~"."]["seamark:type"!~"."]["obstacle"!="bridge"];out;'
 		+ '(way(' + polygonString + ')[~"maxlength|maxwidth|maxheight|maxweight|maxaxleload|hazmat|hazmat:water"~"."];>;);out;';
 		
 		// + 
@@ -53,13 +54,12 @@ var Restrictions = ( function(w) {"use strict";
 		// var epsg4326 = new OpenLayers.Projection('EPSG:4326');
 		// var epsg900913 = new OpenLayers.Projection('EPSG:900913');
 		//Empirical constant for polygon size
-		var delta = 0.025;
+		var delta = 0.005;
 		//float length to keep overpass query short
 		var floatCut = 3;
 		
 		var vertices = [];
 		for (var i= 0; i < lineString.length; i++) vertices.push([lineString[i].lng, lineString[i].lat]); //.getVertices();
-		console.log(vertices);
 		//create polygon from array
 		var featureArray = vertices.concat(vertices.slice(0).reverse());
 		
@@ -75,7 +75,6 @@ var Restrictions = ( function(w) {"use strict";
         type: "LineString",
         coordinates: featureArray
 		};
-		console.log(geoInput);
 		// var geometry = geoReader.read(geoInput).buffer(delta);
 		var bufOp = new jsts.operation.buffer.BufferOp(geoReader.read(geoInput));
 		bufOp.setQuadrantSegments(1);
@@ -84,7 +83,6 @@ var Restrictions = ( function(w) {"use strict";
 		// var parser = new jsts.io.OpenLayersParser();
 		// buffer = parser.write(buffer);
 		var polygon = geoWriter.write(geometry);
-		console.log(polygon.coordinates[0]);
 		// var bboxArray = buffer.getVertices();
 		var bboxArray = polygon.coordinates[0];
 		
@@ -94,7 +92,7 @@ var Restrictions = ( function(w) {"use strict";
 		for (var i=0; i < bboxArray.length; i++){
 			//Logic is inverted for Overpass API
 			//Use + for whitespace to make query work
-			bboxString += (bboxArray[i][1].toFixed(floatCut).toString() + '+' + bboxArray[i][0].toFixed(floatCut).toString() + '+');
+			bboxString += (bboxArray[i][0].toFixed(floatCut).toString() + '+' + bboxArray[i][1].toFixed(floatCut).toString() + '+');
 		}
 		bboxString = bboxString.slice(0, -1);
 		bboxString += "\"";
