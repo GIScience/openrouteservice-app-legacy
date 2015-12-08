@@ -170,15 +170,10 @@ var Controller = (function(w) {
             map.clearMarkers(map.layerRoutePoints, [featureId]);
         }
         //add the new marker
-        //var newFeatureId = map.addWaypointAtPos(util.convertPointForMap(pos), wpIndex, wpType);
         var newFeatureId = map.addWaypointAtPos(pos, wpIndex, wpType);
         //add lat lon to input field 
         waypoint.setWaypoint(wpIndex, true);
         var position = map.convertFeatureIdToPositionString(newFeatureId, map.layerRoutePoints);
-        //convert position to string
-        //var displayPosition = util.convertPositionStringToLonLat(position);
-        //displayPosition = util.convertPointForDisplay(displayPosition);
-        //displayPosition = util.convertPointToString(displayPosition);
         var newIndex = ui.addWaypointResultByRightclick(wpType, wpIndex, position, true);
         ui.setWaypointFeatureId(newIndex, newFeatureId, position, 'layerRoutePoints');
         if (!noRouteRequest) {
@@ -321,6 +316,7 @@ var Controller = (function(w) {
         if (isWaypointPresent) {
             //remove all waypoint markers
             map.clearMarkers(map.layerRoutePoints);
+            map.clearMarkers(map.layerCornerPoints);
             waypoint.resetWaypointSet();
             //console.log(waypoint.getDebugInfo());
             //update preferences
@@ -859,7 +855,7 @@ var Controller = (function(w) {
      * removes the accessibility map features
      */
     function handleRemoveAccessibility() {
-        map.clearMarkers(map.ACCESSIBILITY);
+        map.clearMarkers(map.layerAccessibility);
     }
     /* *********************************************************************
      * EXPORT / IMPORT
@@ -1008,7 +1004,7 @@ var Controller = (function(w) {
                         //waypoints: array of OL.LonLat representing one wayoint each
                         for (var i = 0; i < wps.length; i++) {
                             var type;
-                            if (wps[i].lat === 0 & wps[i].lon === 0) {
+                            if (wps[i][1] === 0 & wps[i][0] === 0) {
                                 continue;
                             } else if (i === 0) {
                                 type = Waypoint.type.START;
@@ -1244,7 +1240,6 @@ var Controller = (function(w) {
         var hazardous = getVars[preferences.getPrefName(preferences.hazardousIdx)];
         var fords = getVars[preferences.getPrefName(preferences.avoidFordsIdx)];
         var maxspeed = getVars[preferences.getPrefName(preferences.maxspeedIdx)];
-        console.log(getVars)
         // either layer, pos or zoom is read, as soon as one is read the eventlistener on map
         // updates the other two and overwrites the cookie info
         pos = preferences.loadMapPosition(pos);

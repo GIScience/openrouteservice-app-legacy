@@ -151,7 +151,7 @@ var Route = (function(w) {
         //<xls:AvoidList>
         writer.writeStartElement('xls:AvoidList');
         if (avoidAreas) {
-            //avoidAreas contains an array of OpenLayers.Feature.Vector
+            //avoidAreas contains an array of Leaflet latLngs
             for (var i = 0; i < avoidAreas.length; i++) {
                 var currentArea = avoidAreas[i];
                 //<xls:AOI>

@@ -65,7 +65,7 @@ var Map = (function() {
             }
         });
         this.baseLayers = {
-            "OpenMapSurver": this.openmapsurfer,
+            "OpenMapSurfer": this.openmapsurfer,
             "OSM-WMS worldwide": this.ors_osm_worldwide,
             "Openstreetmap": this.openstreetmap,
             "OpenCycleMap": this.opencyclemap,
@@ -110,6 +110,7 @@ var Map = (function() {
         //this.theMap.addControl(new OpenLayers.Control.MousePosition());
         this.layerRoutePoints = L.featureGroup().addTo(this.theMap);
         this.layerRouteLines = L.featureGroup().addTo(this.theMap);
+        this.layerCornerPoints = L.featureGroup().addTo(this.theMap);
         this.layerGeolocation = L.featureGroup().addTo(this.theMap);
         this.layerPoi = L.featureGroup().addTo(this.theMap);
         this.layerSearch = L.featureGroup().addTo(this.theMap);
@@ -232,23 +233,29 @@ var Map = (function() {
         });
         this.theMap.addControl(new L.NewPolygonControl());
         var deleteShape = function(e) {
-            if ((e.originalEvent.ctrlKey || e.originalEvent.metaKey) && this.editEnabled()) this.editor.deleteShapeAt(e.latlng);
+            if ((e.originalEvent.ctrlKey || e.originalEvent.metaKey) && this.editEnabled()) {
+                this.editor.deleteShapeAt(e.latlng);
+                self.layerAvoid.removeLayer(e.target._leaflet_id);
+                self.emit('map:routingParamsChanged');
+                self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
+                // remove overlay in controls if no regions left
+                if (self.layerAvoid.getLayers().length === 0) self.layerControls.removeLayer(self.layerAvoid);
+            }
         };
         this.theMap.on('layeradd', function(e) {
             if (e.layer instanceof L.Path) e.layer.on('click', L.DomEvent.stop).on('click', deleteShape, e.layer);
             if (e.layer instanceof L.Path) e.layer.on('dblclick', L.DomEvent.stop).on('dblclick', e.layer.toggleEdit);
         });
         var shapeListener = function(e) {
-            console.log(self.layerAvoid);
-            var errorous = self.checkAvoidAreasIntersectThemselves();
-            if (errorous) self.emit('map:errorsInAvoidAreas', true);
-            else self.emit('map:errorsInAvoidAreas', false);
+            // var errorous = self.checkAvoidAreasIntersectThemselves();
+            // if (errorous) self.emit('map:errorsInAvoidAreas', true);
+            // else self.emit('map:errorsInAvoidAreas', false);
             self.emit('map:routingParamsChanged');
             self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
             self.layerControls.addOverlay(self.layerAvoid, 'Avoidable Regions');
         };
         //this.theMap.on('editable:drawing:end', addTooltip);
-        this.theMap.on('editable:shape:deleted', shapeListener);
+        //this.theMap.on('editable:shape:deleted', shapeListener);
         this.theMap.on('editable:drawing:commit', shapeListener);
         this.theMap.on('editable:vertex:deleted', shapeListener);
         this.theMap.on('editable:vertex:dragend', shapeListener);
@@ -265,6 +272,9 @@ var Map = (function() {
                     lon: centerTransformed.lng
                 });
             }
+            var currentZoom = self.theMap.getZoom();
+            if (currentZoom < 14) self.theMap.removeLayer(self.layerCornerPoints);
+            else self.theMap.addLayer(self.layerCornerPoints);
         }
 
         function emitMapChangeBaseMap(e) {
@@ -342,8 +352,11 @@ var Map = (function() {
                     layerName.removeLayer(featureIds[i]);
                 }
             }
+            // check if layer has empty of features and if it does remove it
+            if (layerName.getLayers().length === 0) this.layerControls.removeLayer(layerName);
         } else {
             layerName.clearLayers();
+            this.layerControls.removeLayer(layerName);
         }
     }
     /**
@@ -734,6 +747,7 @@ var Map = (function() {
      */
     function updateRoute(routeLineSegments, routeLinePoints, routePref) {
         this.layerRouteLines.clearLayers();
+        this.layerCornerPoints.clearLayers();
         // clear elevation info if not bike
         var el = this.elevationControl;
         if (routePref !== 'Bicycle') {
@@ -768,7 +782,7 @@ var Map = (function() {
                     radius: 3,
                     weight: 1
                 });
-                cornerFt.addTo(self.layerRouteLines);
+                cornerFt.addTo(self.layerCornerPoints);
                 //layer.addFeatures([segmentFt, cornerFt]);
                 ftIds.push(segmentFt._leaflet_id, cornerFt._leaflet_id);
             }
@@ -865,9 +879,10 @@ var Map = (function() {
             L.polygon(polygonArray[i], {
                 color: colorRange[i],
                 stroke: true,
-                weight: 4
+                weight: 3
             }).addTo(this.layerAccessibility);
         }
+        this.layerControls.addOverlay(this.layerAccessibility, 'Accessibility Analysis');
     }
     /**
      * adds the restrictions along the route to the map
@@ -952,24 +967,20 @@ var Map = (function() {
      * Based on the String with GPX information multiple waypoints - depending on the granularity input of the user - are extracted
      * @param {Object} routeString: String with GPX track
      * @param {Number} granularity: Value picked in dropdown list
-     * @return: array of two waypoints of OL.LonLat or null if no adequate data available
+     * @return: array of two or more waypoints of Leaflet LatLng or null if no adequate data available
      */
     function parseStringToWaypoints(routeString, granularity) {
-        var formatter = new OpenLayers.Format.GPX();
-        var featureVectors = formatter.read(routeString);
+        var featureVectors = jQuery.parseXML(routeString);
+        featureVectors = toGeoJSON.gpx(featureVectors);
+        //var formatter = new OpenLayers.Format.GPX();
+        //var featureVectors = formatter.read(routeString);
         if (!featureVectors || featureVectors.length == 0) {
             return null;
         }
-        var linePoints = featureVectors[0].geometry.components;
+        var linePoints = featureVectors.features[0].geometry.coordinates;
         if (linePoints && linePoints.length >= 2) {
             var positions = getWaypointsByGranularity(linePoints, granularity);
             return positions;
-            //only proceed if the route contains at least 2 points (which can be interpreted as start and end)
-            // var startPos = new OpenLayers.LonLat(linePoints[0].x, linePoints[0].y);
-            // startPos = util.convertPointForMap(startPos);
-            // var endPos = new OpenLayers.LonLat(linePoints[linePoints.length - 1].x, linePoints[linePoints.length - 1].y);
-            // endPos = util.convertPointForMap(endPos);
-            // return [startPos, endPos];
         } else {
             return null;
         }
@@ -982,19 +993,19 @@ var Map = (function() {
      */
     function getWaypointsByGranularity(linePoints, granularity) {
         var routepointList = [];
-        var startPoint = new OpenLayers.LonLat(linePoints[0].x, linePoints[0].y);
+        var startPoint = L.latLng(linePoints[0][0], linePoints[0][1]);
         routepointList.push(startPoint);
         var sumDistance = 0;
         for (var i = 1; i < linePoints.length - 2; i++) {
-            var lastPoint = new OpenLayers.LonLat(linePoints[i - 1].x, linePoints[i - 1].y);
-            var thisPoint = new OpenLayers.LonLat(linePoints[i].x, linePoints[i].y);
+            var lastPoint = L.latLng(linePoints[i - 1][0], linePoints[i - 1][1]);
+            var thisPoint = L.latLng(linePoints[i][0], linePoints[i][1]);
             sumDistance += util.calcFlightDistance(lastPoint, thisPoint);
             if (sumDistance > Number(granularity)) {
                 routepointList.push(thisPoint);
                 sumDistance = 0;
             }
         }
-        var endPoint = new OpenLayers.LonLat(linePoints[linePoints.length - 1].x, linePoints[linePoints.length - 1].y);
+        var endPoint = L.latLng(linePoints[linePoints.length - 1][0], linePoints[linePoints.length - 1][1]);
         routepointList.push(endPoint);
         return routepointList;
     }
@@ -1009,7 +1020,7 @@ var Map = (function() {
         track = L.polyline(track.features[0].geometry.coordinates, {
             color: randomColors(),
             stroke: 'true',
-            opacity: '0.7',
+            opacity: '0.9',
             weight: 4,
         });
         return track;
@@ -1021,7 +1032,7 @@ var Map = (function() {
     function addTrackToMap(trackFeatures) {
         var layer = this.layerTrack;
         trackFeatures.addTo(layer);
-        this.layerControls.addOverlay(trackFeatures, 'GPX track');
+        this.layerControls.addOverlay(this.layerTrack, 'GPX tracks');
         //zoom to track
         this.theMap.fitBounds(trackFeatures.getBounds());
         var featureName = trackFeatures._leaflet_id;
@@ -1155,7 +1166,7 @@ var Map = (function() {
     map.prototype.parseStringToWaypoints = parseStringToWaypoints;
     map.prototype.parseStringToTrack = parseStringToTrack;
     map.prototype.addTrackToMap = addTrackToMap;
-    // map.prototype.getWaypointsByGranularity = getWaypointsByGranularity;
+    map.prototype.getWaypointsByGranularity = getWaypointsByGranularity;
     map.prototype.panMapOnEdges = panMapOnEdges;
     map.prototype.updateHeightprofiles = updateHeightprofiles;
     return map;

@@ -578,7 +578,6 @@ var Preferences = (function(w) {
      * @param zoomLvl: map zoom level
      */
     function writeMapCookies(lon, lat, zoomLvl) {
-    	console.log('updating')
         //convert position into String
         var position = lon + "," + lat;
         var exdate = new Date();

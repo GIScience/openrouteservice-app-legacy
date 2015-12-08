@@ -570,7 +570,7 @@ var Ui = (function(w) {
         }
         //checks whether latlon is passed in first call
         //for geocoding shortaddress is updated in second call
-        var address, shortAddress, stopover, addressResult;
+        var address, shortAddress, stopover, addressResult, lat, lon;
         if (latlon === true) {
             address = util.parseLatlon(results);
             shortAddress = results.toString();
@@ -1466,6 +1466,10 @@ var Ui = (function(w) {
                     var sec;
                     for (var c = 0; c < duration.length; c++) {
                         if (duration[c].slice(-1) == "D") {
+                            sec = parseInt(duration[c].match(/\d+/g) * 60 * 60 * 60);
+                            myduration += sec;
+                        }
+                        if (duration[c].slice(-1) == "H") {
                             sec = parseInt(duration[c].match(/\d+/g) * 60 * 60);
                             myduration += sec;
                         }
@@ -1478,7 +1482,7 @@ var Ui = (function(w) {
                             myduration += sec;
                         }
                     }
-                    // add to stopoverTime
+                        // add to stopoverTime
                     stopoverTime += myduration;
                     var distance = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Distance')[0];
                     var distanceValue = distance.getAttribute('value');
@@ -1844,7 +1848,7 @@ var Ui = (function(w) {
         theInterface.emit('ui:prefsChanged', {
             key: preferences.avoidUnpavedIdx,
             value: false
-        });        
+        });
         theInterface.emit('ui:prefsChanged', {
             key: preferences.avoidPavedIdx,
             value: false
@@ -2765,7 +2769,6 @@ var Ui = (function(w) {
         //remove the track from the map
         theInterface.emit('ui:removeTrack');
     }
-    
     /* *********************************************************************
      * USER PREFERENCES
      * *********************************************************************/

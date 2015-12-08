@@ -574,29 +574,12 @@
 				</div>
 			</div>
 		</div>
-
-		<!-- Height profile draft -->
-		<!-- <div id="heightProfile">
-			<label class="headingElement heightContent" id="heightProfileHeadingLabel">Height Profile</label>
-			<label class="heightContent" id="heightProfiletInfoLabel">&nbsp;&nbsp; Upload a route to show its height profile &nbsp;&nbsp;</label>
-			<form class="fileUploadForm heightContent">
-				<div id="uploadHeightProfileFiles" class="fileupload fileupload-new" data-provides="fileupload">
-					<span class="btn btn-file"><span class="fileupload-new fileUploadNewLabel">Select file</span><span class="fileupload-exists fileUploadExistsLabel">Change</span>
-						<input type="file">
-					</span>&nbsp;<span class="fileupload-preview"></span><a href="#" id="heightProfileFilesDelete" class="close fileupload-exists" data-dismiss="fileupload" style="float:none">x</a>
-				</div>
-			</form>
-
-			<div id="heightProfileChart"></div>
-		</div> -->
-
 		<!-- Popup for service timeouts -->
 		<div class="alert alert-error" id="serviceTimeout">
 			<button type="button" class="close" data-dismiss="alert">
 				×
 			</button>
 		</div>
-
 		<div class="disclaimer">
 			<a id="debug">debug - </a>
 			<a href="contact.html" class="inlineLink">(c) 2008-2015 &nbsp; -</a>
@@ -607,9 +590,6 @@
 
 		<!-- arrow to show/hide sidebar -->
 		<a class="sidebarVisible" id="toggleSidebar"><img src="img/arrowLeft.png" alt="/"></a>
-
-		<!-- arrow to show/hide height Profile -->
-		<a class="heightProfileInvisible" id="toggleHeightProfile"><img src="img/arrowLeft.png" alt="/"></a>
 
 		<!-- popup for user preferences (language, distance unit,...) -->
 		<div id="sitePrefsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sitePrefs">
@@ -678,7 +658,6 @@
 		<script type="text/javascript" src="lib/leaflet-drag-marker-edges.js"></script>
 		<script type="text/javascript" src="lib/Leaflet.MakiMarkers.js"></script>
 
-		<script type="text/javascript" src="lib/leaflet.active-layers.min.js"></script>
 		<script type="text/javascript" src="lib/d3.v3.min.js" ></script>
 		<script type="text/javascript" src="lib/leaflet.elevation-0.0.4.min.js"></script>
 
@@ -700,12 +679,10 @@
 		<script type="text/javascript" src="js/modules/Restrictions.js"></script>
 		<script type="text/javascript" src="js/ui/ui.js"></script>
 		<script type="text/javascript" src="js/ui/Versions.js"></script>
-		<script type="text/javascript" src="js/ui/Languages.js"></script>
-		
+		<script type="text/javascript" src="js/ui/Languages.js"></script>		
 		<script type="text/javascript" src="js/map.js"></script>
 		<script type="text/javascript" src="js/control.js"></script>
 
-		<script type="text/javascript" src="js/overpass.js"></script>
 		<script type="text/javascript" src="js/contact_form.js"></script>
 
 		<!-- ORS language files alphabertically sorted -->

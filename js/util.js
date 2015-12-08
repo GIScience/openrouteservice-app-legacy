@@ -44,14 +44,12 @@ util = (function() {
         },
         /**
          * calculates flight distance between two points
-         * @param {Object} ptA: OpenLayers LonLat or Point coordinates
-         * @param {Object} ptB: OpenLayers LonLat or Point coordinates
+         * @param {Object} ptA: Leaflet latLng
+         * @param {Object} ptB: Leaflet latLng
+         * @return metric distance between points
          */
         calcFlightDistance: function(ptA, ptB) {
-            var point1 = new OpenLayers.Geometry.Point(ptA.lon, ptA.lat);
-            var point2 = new OpenLayers.Geometry.Point(ptB.lon, ptB.lat);
-            var line = new OpenLayers.Geometry.LineString([point1, point2]);
-            return line.getGeodesicLength(new OpenLayers.Projection("EPSG:4326"));
+            return ptA.distanceTo(ptB);
         },
         /**
          * transforms a given point to the internal projection of the map
@@ -129,6 +127,8 @@ util = (function() {
                 'class': 'address'
             });
             if (latlon) {
+                latlon = latlon.split(' ');
+                latlon = latlon[0].substring(0, 6) + ' ' + latlon[1].substring(0, 6);
                 element.appendChild(new Element('span', {
                     'class': 'addressElement'
                 }).update(latlon + ' '));
