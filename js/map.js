@@ -340,6 +340,9 @@ var Map = (function() {
     /* *********************************************************************
      * GENERAL
      * *********************************************************************/
+    function updateSize() {
+        this.theMap.invalidateSize();
+    }
     /**
      * removes all (appropriate) markers/ features from the given layer
      *  @param layerName: name of the layer to remove the objects from
@@ -1155,6 +1158,7 @@ var Map = (function() {
     map.prototype.zoomToFeature = zoomToFeature;
     map.prototype.zoomToRoute = zoomToRoute;
     map.prototype.updateRoute = updateRoute;
+    map.prototype.updateSize = updateSize;
     map.prototype.checkAvoidAreasIntersectThemselves = checkAvoidAreasIntersectThemselves;
     map.prototype.addAvoidAreas = addAvoidAreas;
     map.prototype.getAvoidAreas = getAvoidAreas;

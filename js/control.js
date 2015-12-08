@@ -40,7 +40,7 @@ var Controller = (function(w) {
      *called when sidebar toggles and the map area is resized
      */
     function handleMapUpdate() {
-        map.theMap.updateSize();
+        map.updateSize();
     }
     /* *********************************************************************
      * WAYPOINTS
