@@ -5,7 +5,6 @@ L.OverPassLayer = L.FeatureGroup.extend({
 		endpoint: namespaces.services.overpass,//"http://overpass-api.de/api/interpreter",
 		query: "(node(BBOX)[organic];node(BBOX)[second_hand];);out qt;",
 		callback: function(data) {
-		//TODO: Attribute filtering (see Restrictions.js) and popup implementation
 			nodes = {};
 			nodesToKeep = {};
 			ways = {};
@@ -14,7 +13,6 @@ L.OverPassLayer = L.FeatureGroup.extend({
 				switch (p.type) {
 					case 'node':
 					p.coordinates = new L.LatLng(p.lat, p.lon);
-					// console.log(p.coordinates);
 					
 					p.geometry = {type: 'Point', coordinates: p.coordinates};
 					nodes[p.id] = p;
@@ -30,33 +28,31 @@ L.OverPassLayer = L.FeatureGroup.extend({
 					});
 					p.geometry = {type: 'LineString', coordinates: p.coordinates};
 					ways[p.id] = p;
-					// p has type=way, id, tags={k:v}, nodes=[id], coordinates=[[lon,lat]], geometry
-					this.instance.addLayer( L.polyline(p.coordinates, {color: 'red', opacity: 0.5}));
-					
-					// if (typeof callbackWay === 'function') callbackWay(p);
 					break;
-					
-					// case 'relation':
-					// if (!p.members) {
-					// console.log('Empty relation', p);
-					// break;
-					// }
-					// p.members.map(function (mem) {
-					// mem.obj = (mem.type == 'way' ? ways : nodes)[mem.ref];
-					// });
-					// p has type=relaton, id, tags={k:v}, members=[{role, obj}]
-					// if (typeof callbackRelation === 'function') callbackRelation(p);
-					// break;
 				}
 			}
 			for (var node in nodesToKeep){
+				Restrictions.filterByAllAttributes(nodesToKeep[node]);
+				// console.log(nodesToKeep[node].tags);
+				// console.log();
+				if (jQuery.isEmptyObject(nodesToKeep[node].tags)) continue;
+				var popup = this.instance._poiInfo(nodesToKeep[node].tags, nodesToKeep[node].id);
 				var circle = L.circle(nodesToKeep[node].coordinates, 10, {
 					color: 'red',
-					fillColor: '#3f0',
+					fillColor: '#f00',
 					fillOpacity: 0.5
-				});
-				// .bindPopup(popup);
+				})
+				.bindPopup(popup);
 				this.instance.addLayer(circle);
+			}
+			for (var way in ways){
+				Restrictions.filterByAllAttributes(ways[way]);
+				// console.log(nodesToKeep[node].tags);
+				// console.log();
+				if (jQuery.isEmptyObject(ways[way].tags)) continue;
+				var popup = this.instance._poiInfo(ways[way].tags, ways[way].id);
+				var line = L.polyline(p.coordinates, {color: 'red', opacity: 0.5}).bindPopup(popup);
+				this.instance.addLayer(line);
 			}
 			
 		},
@@ -157,32 +153,11 @@ L.OverPassLayer = L.FeatureGroup.extend({
 		if (this.options.debug) {
 			console.debug("load Pois");
 		}
-		//console.log(this._map.getBounds());
-		// if (this._map.getZoom() >= this.options.minzoom) {
-		//var bboxList = new Array(this._map.getBounds());
-		// var bboxList = this._view2BBoxes(
-		// this._map.getBounds()._southWest.lng,
-		// this._map.getBounds()._southWest.lat,
-		// this._map.getBounds()._northEast.lng,
-		// this._map.getBounds()._northEast.lat);
 		
 		// controls the after/before (Request) callbacks
 		var finishedCount = 0;
 		// var queryCount = bboxList.length;
 		var beforeRequest = true;
-		
-		// for (var i = 0; i < bboxList.length; i++) {
-		// var bbox = bboxList[i];
-		// var x = bbox._southWest.lng;
-		// var y = bbox._northEast.lat;
-		// if ((x in this._requested) && (y in this._requested[x]) && (this._requested[x][y] == true)) {
-		// queryCount--;
-		// continue;
-		// }
-		// if (!(x in this._requested)) {
-		// this._requested[x] = {};
-		// }
-		// this._requested[x][y] = true;
 		
 		
 		// var queryWithMapCoordinates = this.options.query.replace(/(BBOX)/g, bbox.toOverpassBBoxString());
@@ -259,14 +234,6 @@ L.OverPassLayer = L.FeatureGroup.extend({
 	
 	onAdd: function (map) {
 		this._map = map;
-		// if (map.zoomIndicator) {
-		// this._zoomControl = map.zoomIndicator;
-		// this._zoomControl._addLayer(this);
-		// }else{
-		// this._zoomControl = new L.Control.MinZoomIndicator(this.options.minZoomIndicatorOptions);
-		// map.addControl(this._zoomControl);
-		// this._zoomControl._addLayer(this);
-		
 		
 		this.onMoveEnd();
 		// if (this.options.query.indexOf("(BBOX)") != -1) {

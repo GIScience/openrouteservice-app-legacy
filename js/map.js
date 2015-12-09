@@ -933,105 +933,20 @@ var Map = (function() {
      */
     function updateRestrictionsLayer(query, permaInfo) {
 		var overpassQuery = query[0];
-        var bboxArray = query[1];
+        // var bboxArray = query[1];
         var map = this.theMap;
-		
-		// if (overpassQuery === null || bboxArray === null) {
-            // map.getLayersByName(this.RESTRICTIONS)[0].removeAllFeatures();
-            // map.getLayersByName(this.RESTRICTIONS)[0].displayInLayerSwitcher = false;
-            // map.getLayersByName(this.RESTRICTIONS)[0].setVisibility(false);
-            // map.getLayersByName(this.BBOX)[0].removeAllFeatures();
-            // map.getLayersByName(this.BBOX)[0].displayInLayerSwitcher = false;
-            // map.getLayersByName(this.BBOX)[0].setVisibility(false);
-            // return;
-        // }
-		
-		// var restrictionStyleMap = new OpenLayers.StyleMap({
-            // 'default': new OpenLayers.Style(restrictionTemplate),
-            // 'select': new OpenLayers.Style(restrictionSelTemplate)
-        // });
-        // var styleRestrictionBbox = {
-            // strokeColor: "#00FF00",
-            // strokeOpacity: 0.4,
-            // strokeWidth: 3,
-            // fillColor: "#00FF00",
-            // fillOpacity: 0.2
-        // };
-		// map.getLayersByName(this.RESTRICTIONS)[0].displayInLayerSwitcher = true;
-        // map.getLayersByName(this.BBOX)[0].displayInLayerSwitcher = true;
-        // map.getLayersByName(this.RESTRICTIONS)[0].setVisibility(true);
-		
-        // display the restrictions bounding polygon
-        // map.getLayersByName(this.BBOX)[0].removeAllFeatures();
-        // var pf = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LinearRing(bboxArray), null, styleRestrictionBbox);
-        // map.getLayersByName(this.BBOX)[0].addFeatures([pf]);
-		
-		// map.getLayersByName(this.RESTRICTIONS)[0].removeAllFeatures();
-		
-		
-		// this.layerRestriction = L.polygon(bboxArray);
-		console.log(map.hasLayer(this.layerRestriction));
+		// console.log(map.hasLayer(this.layerRestriction));
 		if(map.hasLayer(this.layerRestriction)) map.removeLayer(this.layerRestriction);
-		if(map.hasLayer(this.polygon)) map.removeLayer(this.polygon);
-		this.polygon = L.polygon([bboxArray]).addTo(map);
+		// if(map.hasLayer(this.polygon)) map.removeLayer(this.polygon);
+		// this.polygon = L.polygon([bboxArray]).addTo(map);
 		
+		//Create the layer and query Overpass
 		this.layerRestriction = new L.OverPassLayer({
 			query: overpassQuery,
 		});
 
 		this.theMap.addLayer(this.layerRestriction);
 	
-        // var overpassQuery = query[0];
-        // var bboxArray = query[1];
-        // var map = this.theMap;
-		
-        //Do not load anything if the profile is not HeavyVehicle
-        // if (overpassQuery === null || bboxArray === null) {
-            // map.getLayersByName(this.RESTRICTIONS)[0].removeAllFeatures();
-            // map.getLayersByName(this.RESTRICTIONS)[0].displayInLayerSwitcher = false;
-            // map.getLayersByName(this.RESTRICTIONS)[0].setVisibility(false);
-            // map.getLayersByName(this.BBOX)[0].removeAllFeatures();
-            // map.getLayersByName(this.BBOX)[0].displayInLayerSwitcher = false;
-            // map.getLayersByName(this.BBOX)[0].setVisibility(false);
-            // return;
-        // }
-        // var restrictionStyleMap = new OpenLayers.StyleMap({
-            // 'default': new OpenLayers.Style(restrictionTemplate),
-            // 'select': new OpenLayers.Style(restrictionSelTemplate)
-        // });
-        // var styleRestrictionBbox = {
-            // strokeColor: "#00FF00",
-            // strokeOpacity: 0.4,
-            // strokeWidth: 3,
-            // fillColor: "#00FF00",
-            // fillOpacity: 0.2
-        // };
-        //display the layers in the layer switcher if truck profile is chosen
-        // map.getLayersByName(this.RESTRICTIONS)[0].displayInLayerSwitcher = true;
-        // map.getLayersByName(this.BBOX)[0].displayInLayerSwitcher = true;
-        // map.getLayersByName(this.RESTRICTIONS)[0].setVisibility(true);
-        // display the restrictions bounding polygon
-        // map.getLayersByName(this.BBOX)[0].removeAllFeatures();
-        // var pf = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LinearRing(bboxArray), null, styleRestrictionBbox);
-        // map.getLayersByName(this.BBOX)[0].addFeatures([pf]);
-		
-		
-		
-        // map.getLayersByName(this.RESTRICTIONS)[0].removeAllFeatures();
-        // TODO: Remove workaround to make layer load... won't load without adding dummy layer to the map
-        // if (map.getLayersByName(this.TEMPRESTRICTIONS).length > 0) map.getLayersByName(this.TEMPRESTRICTIONS)[0].destroy();
-        // var layerRestrictionNew = make_layer(overpassQuery, restrictionStyleMap);
-        // layerRestrictionNew.setName(this.TEMPRESTRICTIONS);
-        // layerRestrictionNew.setVisibility(false);
-        // layerRestrictionNew.displayInLayerSwitcher = false;
-        // this.theMap.addLayers([layerRestrictionNew]);
-        // var this_ = this;
-        // layerRestrictionNew.events.register("loadend", layerRestrictionNew, function() {
-            // filter out unnecessary maxheight tags
-            // if (layerRestrictionNew.features.length > 0) layerRestrictionNew = window.Restrictions.filterByAttribute(layerRestrictionNew, "maxheight", permaInfo[1]);
-            // map.getLayersByName(this_.RESTRICTIONS)[0].addFeatures(layerRestrictionNew.clone().features);
-            // layerRestrictionNew.destroy();
-        // });
     }
     /**
      * removes all accessibility analysis features from the layer

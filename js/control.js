@@ -748,7 +748,6 @@ var Controller = (function(w) {
                 var routePoints = route.parseResultsToCornerPoints(results);
                 //Get the restrictions along the route
                 //TODO
-				console.log(routeLineString.length);
                 map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString, permaInfo[preferences.routeOptionsIdx]),  [permaInfo[preferences.value_lengthIdx], permaInfo[preferences.value_heightIdx], permaInfo[preferences.value_weightIdx], permaInfo[preferences.value_widhtIdx]]);
                 // update height profiles if bicycle selected
                 if (routePref == 'Bicycle') map.updateHeightprofiles(routeLinesHeights[1]);
