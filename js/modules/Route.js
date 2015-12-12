@@ -153,7 +153,7 @@ var Route = (function(w) {
         //<xls:AvoidList>
         writer.writeStartElement('xls:AvoidList');
         if (avoidAreas) {
-            //avoidAreas contains an array of OpenLayers.Feature.Vector
+            //avoidAreas contains an array of Leaflet latLngs
             for (var i = 0; i < avoidAreas.length; i++) {
                 var currentArea = avoidAreas[i];
                 //<xls:AOI>
@@ -253,7 +253,7 @@ var Route = (function(w) {
     /**
      * parses the routing results of the service to a single 'path'
      * @param results: response of the service
-     * @param routeString: OL.Geometry.LineString representing the whole route
+     * @param routeString: Leaflet LineString representing the whole route
      */
     function writeRouteToSingleLineString(results) {
         var routeString = [];

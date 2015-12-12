@@ -237,16 +237,16 @@ var Ui = (function(w) {
         $('.address').click(handleSearchWaypointResultClick);
         // if one result is found then select it automatically
         // if (listOfFeatures.length == 1) {
-        // 	var featureID = listOfFeatures[0].id
-        // 	$(".address").click( function (event, a) {
-        // 		// for a trigger like below a refers to featureID
-        // 		handleSearchWaypointResultClickHelper(event, a)
-        // 	} ).trigger("click", featureID);
+        //  var featureID = listOfFeatures[0].id
+        //  $(".address").click( function (event, a) {
+        //      // for a trigger like below a refers to featureID
+        //      handleSearchWaypointResultClickHelper(event, a)
+        //  } ).trigger("click", featureID);
         // } else {
-        // 	//event handling
-        // 	$('.address').mouseover(handleMouseOverElement);
-        // 	$('.address').mouseout(handleMouseOutElement);
-        // 	$('.address').click(handleSearchWaypointResultClickHelper);
+        //  //event handling
+        //  $('.address').mouseover(handleMouseOverElement);
+        //  $('.address').mouseout(handleMouseOutElement);
+        //  $('.address').click(handleSearchWaypointResultClickHelper);
         // }
     }
     /**
@@ -266,13 +266,13 @@ var Ui = (function(w) {
      * @param featureID: id of address, is optional as it is only passed when one result is returned
      */
     // function handleSearchWaypointResultClickHelper(e, featureID) {
-    // 	if (featureID != undefined) {
-    // 		if (featureID == e.target.id) {
-    // 			handleSearchWaypointResultClick(e)
-    // 		}
-    // 	} else {
-    // 			handleSearchWaypointResultClick(e)
-    // 	}
+    //  if (featureID != undefined) {
+    //      if (featureID == e.target.id) {
+    //          handleSearchWaypointResultClick(e)
+    //      }
+    //  } else {
+    //          handleSearchWaypointResultClick(e)
+    //  }
     // }
     /**
      * when the user clicks on a waypoint search result, it is used as waypoint. The search results vanish and only the selected address is shown.
@@ -570,7 +570,7 @@ var Ui = (function(w) {
         }
         //checks whether latlon is passed in first call
         //for geocoding shortaddress is updated in second call
-        var address, shortAddress, stopover, addressResult;
+        var address, shortAddress, stopover, addressResult, lat, lon;
         if (latlon === true) {
             address = util.parseLatlon(results);
             shortAddress = results.toString();
@@ -854,9 +854,9 @@ var Ui = (function(w) {
      * @param layername: map layer name that contains the feature
      * @param point: coordinate position of the feature
      */
-    function showCurrentLocation(request, featureId, layername, point) {
+    function showCurrentLocation(results, featureId, layername, point) {
         //IE doesn't know responseXML, it can only provide text that has to be parsed to XML...
-        var results = request.responseXML ? request.responseXML : util.parseStringToDOM(request.responseText);
+        //var results = request.responseXML ? request.responseXML : util.parseStringToDOM(request.responseText);
         var resultContainer = $('#geolocationResult');
         resultContainer.empty();
         var addressResult = util.getElementsByTagNameNS(results, namespaces.xls, 'Address');
@@ -867,14 +867,14 @@ var Ui = (function(w) {
             'class': 'clickable useAsWaypoint',
             'title': 'use as waypoint',
             'id': featureId,
-            'data-position': point.x + ' ' + point.y,
+            'data-position': point.getLatLng().lng + ' ' + point.getLatLng().lat,
             'data-layer': layername
         });
         address.insert(useAsWaypointButton);
         //set data-attributes
         address.setAttribute('data-layer', layername);
         address.setAttribute('id', featureId);
-        address.setAttribute('data-position', point.x + ' ' + point.y);
+        address.setAttribute('data-position', point.getLatLng().lng + ' ' + point.getLatLng().lat);
         resultContainer.append(address);
         //event handling
         $('.address').mouseover(handleMouseOverElement);
@@ -1267,7 +1267,7 @@ var Ui = (function(w) {
             var element = $('#' + i).get(0);
             element = element.querySelector('.address');
             if (element) {
-                allRoutePoints.push(element.getAttribute('data-position'))
+                allRoutePoints.push(element.getAttribute('data-position'));
             }
         }
         return allRoutePoints;
@@ -1409,7 +1409,7 @@ var Ui = (function(w) {
      * @param mapLayer: map layer containing these features
      */
     function updateRouteInstructions(results, mapFeatureIds, mapLayer) {
-        var container;
+        var container, directionsContainer;
         if (!results) {
             container = $('#routeInstructionsContainer').get(0);
             container.hide();
@@ -1440,14 +1440,14 @@ var Ui = (function(w) {
             var startpoint = waypoints[0];
             var endpoint = waypoints[(waypoints.length) - 1];
             //add startpoint
-            var directionsContainer = buildWaypoint('layerRoutePoints', 'start', startpoint, 0);
+            directionsContainer = buildWaypoint('layerRoutePoints', 'start', startpoint, 0);
             directionsMain.appendChild(directionsContainer);
             // container for all direction instructions
             $A(instructionsList).each(function(instruction) {
                 var directionCode = util.getElementsByTagNameNS(instruction, namespaces.xls, 'DirectionCode')[0];
                 directionCode = directionCode.textContent;
                 if (directionCode == '100') {
-                    var directionsContainer = buildWaypoint('layerRoutePoints', 'via', waypoints[numStopovers], numStopovers, stopoverDistance, stopoverTime);
+                    directionsContainer = buildWaypoint('layerRoutePoints', 'via', waypoints[numStopovers], numStopovers, stopoverDistance, stopoverTime);
                     directionsMain.appendChild(directionsContainer);
                     stopoverDistance = 0;
                     stopoverTime = 0;
@@ -1466,6 +1466,10 @@ var Ui = (function(w) {
                     var sec;
                     for (var c = 0; c < duration.length; c++) {
                         if (duration[c].slice(-1) == "D") {
+                            sec = parseInt(duration[c].match(/\d+/g) * 60 * 60 * 60);
+                            myduration += sec;
+                        }
+                        if (duration[c].slice(-1) == "H") {
                             sec = parseInt(duration[c].match(/\d+/g) * 60 * 60);
                             myduration += sec;
                         }
@@ -1501,8 +1505,6 @@ var Ui = (function(w) {
                     }
                     //arrow direction
                     var direction;
-                    // will be used for traffic jam info etc
-                    var notice;
                     if (directionCode == '-2') {
                         direction = new Element('img', {
                             'src': './img/left.png'
@@ -1535,8 +1537,7 @@ var Ui = (function(w) {
                     } else {}
                     numInstructions++;
                     //add DOM elements
-                    //add DOM elements
-                    var directionsContainer = new Element('div', {
+                    directionsContainer = new Element('div', {
                         'class': 'directions-container clickable',
                         'data-layer': mapLayer,
                     });
@@ -1563,11 +1564,21 @@ var Ui = (function(w) {
                     }).update(distArr[0] + ' ' + distArr[1]);
                     directionsContainer.appendChild(directionsImgDiv);
                     directionsContainer.appendChild(directionTextDiv);
-                    // for traffic jams etc..
-                    if (notice) {
+                    var tmcMessage = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Message')[0];
+                    if (tmcMessage) {
+                        console.log(tmcMessage)
+                            // add icons and jquery collapsible stuff
+                        tmcMessage = tmcMessage.text || tmcMessage.textContent;
+                        var tmcText = tmcMessage.split(" | ")[1];
+                        var tmcCode = tmcMessage.split(" | ")[0];
+                        tmcCode = tmcCode.split(',');
+                        for (var i = 0; i < tmcCode.length; i++ ){
+                            //console.log(list.tmc[tmcCode[i]])
+                            break;
+                        }
                         var noticeDiv = new Element('div', {
                             'class': 'directions-notice',
-                        }).update('Vorsicht Stau auf der B31');
+                        }).update(tmcText);
                         directionsContainer.appendChild(noticeDiv);
                     }
                     directionsModeContainer.appendChild(directionsBorder);
@@ -1580,12 +1591,14 @@ var Ui = (function(w) {
                     $(directionTextDiv).mouseover(handleMouseOverText);
                     $(directionTextDiv).mouseout(handleMouseOutText);
                     $(distanceDiv).click(handleClickRouteInstr);
-                    $(directionTextDiv).click(handleClickRouteInstr);
+                    $(directionTextDiv).click(handleClickRouteCorner);
                 }
             });
             //add endpoint
-            var directionsContainer = buildWaypoint('layerRoutePoints', 'end', endpoint, getWaypoints().length - 1, stopoverDistance, stopoverTime);
+            directionsContainer = buildWaypoint('layerRoutePoints', 'end', endpoint, getWaypoints().length - 1, stopoverDistance, stopoverTime);
             directionsMain.appendChild(directionsContainer);
+            // TODO tmc messages expand collapse function
+   
         }
         /** 
          * builds Waypoint for start, via and end points in instructionlist
@@ -1693,6 +1706,12 @@ var Ui = (function(w) {
          */
         function handleClickRouteInstr(e) {
             theInterface.emit('ui:zoomToRouteInstruction', e.currentTarget.id);
+        }
+        /**
+         * when the distance or text part of the route instruction is clicked, triggers zooming to that part of the route
+         */
+        function handleClickRouteCorner(e) {
+            theInterface.emit('ui:zoomToRouteCorner', e.currentTarget.id);
         }
     }
     /**
@@ -1848,7 +1867,7 @@ var Ui = (function(w) {
         theInterface.emit('ui:prefsChanged', {
             key: preferences.avoidUnpavedIdx,
             value: false
-        });        
+        });
         theInterface.emit('ui:prefsChanged', {
             key: preferences.avoidPavedIdx,
             value: false
@@ -2775,8 +2794,8 @@ var Ui = (function(w) {
     function handleDeleteFromMapGpx(e) {
         //remove the track from the map and clicked
         var thisTarget = e.currentTarget;
-        var olFeature = thisTarget.getAttribute('olFeatureName');
-        theInterface.emit('ui:removeTrack', olFeature);
+        var llFeature = thisTarget.getAttribute('LeafletFeatureName');
+        theInterface.emit('ui:removeTrack', llFeature);
         $(thisTarget).parent().fadeOut(300, function() {
             $(this).remove();
         });
@@ -2788,7 +2807,6 @@ var Ui = (function(w) {
         //remove the track from the map
         theInterface.emit('ui:removeTrack');
     }
-    
     /* *********************************************************************
      * USER PREFERENCES
      * *********************************************************************/

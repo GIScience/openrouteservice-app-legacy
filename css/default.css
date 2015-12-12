@@ -52,10 +52,7 @@
     color: black;
     z-index: 999;
     margin-left: -2px;
-        font-family: 'Roboto', sans-serif;
-
-
-
+    font-family: 'Roboto', sans-serif;
 }
 
 #bubble {
@@ -65,13 +62,13 @@
     margin-left: 100px;
     height: 50px;
     padding: 0px;
-    -left: 200px;
-    bottom: 5px;
+    bottom: 13px;
     background: rgba(255, 255, 255, 0.5);
     z-index: 999;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
+    font-family: 'Roboto', sans-serif;
 }
 
 #bubble:after {
@@ -323,8 +320,9 @@
     padding: 0 0 0 40px;
     margin-top: 5px;
     color: #FF6961;
+    -height: 50px;
+    -overflow: hidden;
 }
-
 
 /* gpx upload styles */
 
@@ -614,9 +612,9 @@ input, textarea {
     color: #444;
 }
 
-input[type=text] {
+/*input[type=text] {
     height: 30px;
-}
+}*/
 
 input[type='checkbox'], input[type='radio'] {
     vertical-align: baseline;
@@ -922,18 +920,6 @@ button.weightOptions {
     padding: 2px 5px 0px 0px;
 }
 
-
-/* uncomment for height pofile*/
-
-
-/*#toggleHeightProfile {
-    position: absolute;
-    z-index: 1040;
-    background-color: #FFFFFF;
-    opacity: 1;
-    padding: 2px 5px 0px 0px;
-}*/
-
 .sidebarVisible {
     cursor: pointer;
     top: 65px;
@@ -951,27 +937,6 @@ button.weightOptions {
     filter: fliph;
     /*IE*/
 }
-
-
-/* uncomment for height pofile*/
-
-
-/*.heightProfileVisible {
-    cursor: pointer;
-    right: 10px;
-    bottom: 180px;
-    -ms-transform: rotate(270deg);
-    -webkit-transform: rotate(270deg)
-}*/
-
-
-/*.heightProfileInvisible {
-    cursor: pointer;
-    left: 415px;
-    bottom: 3px;
-    -ms-transform: rotate(90deg);
-    -webkit-transform: rotate(90deg);
-}*/
 
 .panel {
     /* panels in the sidebar
