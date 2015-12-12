@@ -1569,17 +1569,28 @@ var Ui = (function(w) {
                         console.log(tmcMessage)
                             // add icons and jquery collapsible stuff
                         tmcMessage = tmcMessage.text || tmcMessage.textContent;
+                        var tmcWarning;
                         var tmcText = tmcMessage.split(" | ")[1];
                         var tmcCode = tmcMessage.split(" | ")[0];
                         tmcCode = tmcCode.split(',');
-                        for (var i = 0; i < tmcCode.length; i++ ){
-                            //console.log(list.tmc[tmcCode[i]])
+                        for (var i = 0; i < tmcCode.length; i++) {
+                            tmcWarning = new Element('img', {
+                                'src': list.tmc[tmcCode[i]]
+                            });
                             break;
                         }
                         var noticeDiv = new Element('div', {
                             'class': 'directions-notice',
                         }).update(tmcText);
+                        // here
+                        var noticeImgDiv = new Element('div', {
+                            'class': 'directions-warning-img'
+                        });
+                        noticeImgDiv.appendChild(tmcWarning);
+                        //
                         directionsContainer.appendChild(noticeDiv);
+                        directionsContainer.appendChild(noticeImgDiv);
+
                     }
                     directionsModeContainer.appendChild(directionsBorder);
                     directionsModeContainer.appendChild(distanceDiv);
@@ -1598,7 +1609,6 @@ var Ui = (function(w) {
             directionsContainer = buildWaypoint('layerRoutePoints', 'end', endpoint, getWaypoints().length - 1, stopoverDistance, stopoverTime);
             directionsMain.appendChild(directionsContainer);
             // TODO tmc messages expand collapse function
-   
         }
         /** 
          * builds Waypoint for start, via and end points in instructionlist

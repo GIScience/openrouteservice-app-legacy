@@ -116,6 +116,7 @@ var Map = (function() {
         this.layerSearch = L.featureGroup().addTo(this.theMap);
         this.layerTrack = L.featureGroup().addTo(this.theMap);
         this.layerAccessibility = L.featureGroup().addTo(this.theMap);
+        this.layerTMC = L.featureGroup().addTo(this.theMap);
         this.layerRestriction = L.featureGroup().addTo(this.theMap);
         this.layerAvoid.addTo(this.theMap);
         /* *********************************************************************
@@ -293,6 +294,25 @@ var Map = (function() {
         //this.theMap.on("zoomend", self.theMap.closePopup(popup));
         //this.theMap.on("movestart", self.theMap.closePopup(popup));
     }
+    /* *********************************************************************
+     * TMC LAYER - REFRESHED EVERY 5 MINUTES
+     * *********************************************************************/
+    //http://openls.geog.uni-heidelberg.de/osm/routing-test?tmc&bbox=9.6423748868789,53.477631332476,10.163538827309,53.674346464158'
+
+    var getTmcInformation = function(){
+        // build url
+        url = namespaces.services.tmc;
+        console.log(this.theMap.getBounds());
+        geojson = new L.GeoJSON.AJAX(url, {
+            //onEachFeature: onEachFeature,
+            //style: style
+        }).addTo(this.layerRoutePoints);
+    }();
+
+    setTimeout(function() {
+        console.log(refresh);
+        getTmcInformation();
+    }, 10000);
     /* *********************************************************************
      * FOR PERMALINK OR COOKIE
      * *********************************************************************/
