@@ -50,7 +50,7 @@ list = {
 
 	routeWeightSettings : ['Fastest', 'Shortest', 'Recommended'],
 	
-	routeAvoidables : ['Highway', 'Tollway', 'Unpavedroads', 'Ferry', 'Steps', 'Fords', 'Pavedroads'],
+	routeAvoidables : ['Highway', 'Tollway', 'Unpavedroads', 'Ferry', 'Steps', 'Fords', 'Pavedroads', 'Tunnel'],
 
 	truckParams : ['value_length_slide', 'value_height_slide', 'value_weigth_slide',,'value_axleload_slide', 'value_width_slide'],
 	

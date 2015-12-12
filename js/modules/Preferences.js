@@ -3,7 +3,7 @@ var Preferences = (function(w) {
     'use strict';
     //are there any cookies of thie page yet?
     var cookiesAvailable = false;
-    var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version', 'avUnpaved', 'avFerry', 'value_length', 'value_height', 'value_weight', 'value_width', 'value_axleload', 'surface', 'incline', 'slopedCurb', 'hazardous', 'routeWeight', 'avSteps', 'routeOptType', 'trackType', 'smoothness', 'avFords', 'maxspeed', 'avPaved'];
+    var prefNames = ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version', 'avUnpaved', 'avFerry', 'value_length', 'value_height', 'value_weight', 'value_width', 'value_axleload', 'surface', 'incline', 'slopedCurb', 'hazardous', 'routeWeight', 'avSteps', 'routeOptType', 'trackType', 'smoothness', 'avFords', 'maxspeed', 'avPaved', 'avTunnel'];
     //store information that can be used for the permalink
     permaInfo = Array.apply(null, new Array(31)).map(String.prototype.valueOf, 'null');
     /**
@@ -42,6 +42,7 @@ var Preferences = (function(w) {
         this.avoidFordsIdx = 28;
         this.maxspeedIdx = 29;
         this.avoidPavedIdx = 30;
+        this.avoidTunnelIdx = 31;
         //define variables
         this.language = 'en';
         this.routingLanguage = 'en';
@@ -417,11 +418,11 @@ var Preferences = (function(w) {
     }
     /**
      * determines route option avoidables by GET variable
-     * @param highway, tollway: extracted from the GET variables in readGetVars()
+     * @param highway, tollway,unpaved, ferry, steps, fords, paved, tunnel: extracted from the GET variables in readGetVars()
      * @return the avoidables
      */
-    function loadAvoidables(highway, tollway, unpaved, ferry, steps, fords, paved) {
-        var avoidables = [false, false, false, false, false, false, false];
+    function loadAvoidables(highway, tollway, unpaved, ferry, steps, fords, paved, tunnel) {
+        var avoidables = [false, false, false, false, false, false, false, false];
         // highway
         if (highway == true || highway == 'true') {
             permaInfo[this.avoidHighwayIdx] = true;
@@ -435,6 +436,13 @@ var Preferences = (function(w) {
             avoidables[1] = true;
         } else {
             permaInfo[this.avoidTollwayIdx] = false;
+        }
+        // tunnel
+        if (tunnel == true || tunnel == 'true') {
+            permaInfo[this.avoidTunnelIdx] = true;
+            avoidables[7] = true;
+        } else {
+            permaInfo[this.avoidTunnelIdx] = false;
         }
         // unpaved
         if (unpaved == true || unpaved == 'true') {
