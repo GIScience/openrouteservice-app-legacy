@@ -120,7 +120,7 @@ var Route = (function(w) {
                 writer.writeElementString('xls:SlopedCurb', wheelChairParams[2]);
             }
         }
-        //</xls:ExtendedRoutePreference>			
+        //</xls:ExtendedRoutePreference>            
         writer.writeEndElement();
         //<xls:WayPointList>
         writer.writeStartElement('xls:WayPointList');
@@ -183,9 +183,8 @@ var Route = (function(w) {
                 writer.writeEndElement();
                 //</xls:AOI>
                 writer.writeEndElement();
-            }            
+            }
         }
-        console.log(avoidableParams);
         if (avoidableParams[0] == 'true' || avoidableParams[0] === true) {
             writer.writeElementString('xls:AvoidFeature', 'Highway');
         }

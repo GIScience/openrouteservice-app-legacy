@@ -2273,7 +2273,6 @@ var Ui = (function(w) {
                 });
             }
             else if (itemId === list.routeAvoidables[7]) {
-                console.log(itemId);
                 if (permaInfo[preferences.avoidTunnelIdx] == "true" || permaInfo[preferences.avoidTunnelIdx] == true) {
                     var boolVar = false;
                 } else {

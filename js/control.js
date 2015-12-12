@@ -684,6 +684,7 @@ var Controller = (function(w) {
             avoidableParams[4] = avoidSteps;
             avoidableParams[5] = avoidFords;
             avoidableParams[6] = avoidPavedRoads;
+            avoidableParams[7] = avoidTunnel;
             var truckParams = [];
             var truck_length = permaInfo[preferences.value_lengthIdx];
             var truck_height = permaInfo[preferences.value_heightIdx];
