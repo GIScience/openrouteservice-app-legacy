@@ -5,18 +5,13 @@ var Restrictions = ( function(w) {"use strict";
 	function Restrictions() {
 		
 	}
+	
 	/**
 		* creates restrictions query and polygon for display
 		* @param lineString: the route linestring
 		* @return: the query and the polygon
 	*/
-	function getRestrictionsQuery(lineString, routePref) {
-		if (routePref != 'HeavyVehicle'){
-			return [null, null];
-		}
-		//get height limit set by user
-		// console.log(permaInfo[w.Preferences.value_heightIdx]);
-		//tolerance: lower means more polygon points
+	function getRestrictionsQuery(lineString) {
 		var tolerance = 0.003;
 		var polygon = createPolygon(simplify(lineString, tolerance, false));
 		var query = createQuery(polygon[0]);
@@ -31,18 +26,16 @@ var Restrictions = ( function(w) {"use strict";
 	
 	
 	function createQuery(polygonString){
-		//TODO: consider restriction type
 		var timeout = 20;
 		var query = "";//namespaces.services.overpass + "?data=[timeout:"+timeout+"];";
 		
-		query += 'node(' + polygonString + ')[~"maxlength|maxwidth|maxheight|maxweight|maxaxleload|hazmat|hazmat:water"~"."];out;'//[waterway!~"."]["waterway:sign"!~"."]["seamark:type"!~"."]["obstacle"!="bridge"];out;'
+		query += 'node(' + polygonString + ')[~"maxlength|maxwidth|maxheight|maxweight|maxaxleload|hazmat|hazmat:water"~"."];out;'//[waterway!~"."]["waterway:sign"!~"."]["seamark:type"!~"."]["obstacle"!="bridge"];out;'    << This is really slowing down the API so better don't use it
 		+ '(way(' + polygonString + ')[~"maxlength|maxwidth|maxheight|maxweight|maxaxleload|hazmat|hazmat:water"~"."];>;);out;';
-		console.log(query);
 		return query;
 	}
 	
 	/**
-		* creates a tube-like polygon from the linestring
+		* creates a tube-like polygon from the linestring as buffer
 		* @param lineString: the (simplified) linestring representing the route
 		* @return: string representation of the polygon in overpass notation; polygon as array for display
 	*/
@@ -63,21 +56,14 @@ var Restrictions = ( function(w) {"use strict";
 		inputString += "))";
 		var geoReader = new jsts.io.GeoJSONReader();
 		var geoWriter = new jsts.io.GeoJSONWriter();
-		// var reader = new jsts.io.WKTReader();
-		// var input = reader.read(inputString);
 		var geoInput = {
 			type: "LineString",
 			coordinates: featureArray
 		};
-		// var geometry = geoReader.read(geoInput).buffer(delta);
 		var bufOp = new jsts.operation.buffer.BufferOp(geoReader.read(geoInput));
 		bufOp.setQuadrantSegments(1);
 		var geometry = bufOp.getResultGeometry(delta);
-		
-		// var parser = new jsts.io.OpenLayersParser();
-		// buffer = parser.write(buffer);
 		var polygon = geoWriter.write(geometry);
-		// var bboxArray = buffer.getVertices();
 		var bboxArray = polygon.coordinates[0];
 		
 		//Create the polygon string for overpass
@@ -93,7 +79,11 @@ var Restrictions = ( function(w) {"use strict";
 		
 		return [bboxString, bboxArray];
 	}
-	
+	/**
+		* filters restrictions that are not relevant to the user because of the user's vehicle specifications
+		* @param restriction feature to be filtered
+		* @return: filtered feature
+	*/
 	function filterByAllAttributes(restriction){
 		var featuresToRemove = [];
 		var removeFeature = true;
@@ -159,32 +149,14 @@ var Restrictions = ( function(w) {"use strict";
 		return restriction;
 	}
 	
-	function filterByAttribute(layer, attribute, vehicleValue){
-		var length = layer.features.length;
-		var featuresToRemove = [];
-		switch (attribute){
-			case "maxheight":
-			for (var i = 0; i < length; i++){
-				//permaInfo[1] is maxheight
-				try {
-					if(vehicleValue < parseFloat(layer.features[i].attributes.maxheight)) featuresToRemove.push(layer.features[i]);
-				}
-				catch(e) {//Keep the feature if the maxheight-tag is not well formatted
-				}
-			}
-			break;
-			default: //return the unchanged layer
-		}
-		layer.removeFeatures(featuresToRemove);
-	return layer;
-	}
+	
 	
 	
 	
 	/*
-	(c) 2013, Vladimir Agafonkin
-	Simplify.js, a high-performance JS polyline simplification library
-	mourner.github.io/simplify-js
+		(c) 2013, Vladimir Agafonkin
+		Simplify.js, a high-performance JS polyline simplification library
+		mourner.github.io/simplify-js
 	*/
 	
 	
@@ -194,105 +166,105 @@ var Restrictions = ( function(w) {"use strict";
 	
 	// square distance between 2 points
 	function getSqDist(p1, p2) {
-	
-	var dx = p1.lat - p2.lat,
-	dy = p1.lng - p2.lng;
-	
-	return dx * dx + dy * dy;
+		
+		var dx = p1.lat - p2.lat,
+		dy = p1.lng - p2.lng;
+		
+		return dx * dx + dy * dy;
 	}
 	
 	// square distance from a point to a segment
 	function getSqSegDist(p, p1, p2) {
-	
-	var lat = p1.lat,
-	y = p1.lng,
-	dx = p2.lat - lat,
-	dy = p2.lng - y;
-	
-	if (dx !== 0 || dy !== 0) {
-	
-	var t = ((p.lat - lat) * dx + (p.lng - y) * dy) / (dx * dx + dy * dy);
-	
-	if (t > 1) {
-	lat = p2.lat;
-	y = p2.lng;
-	
-	} else if (t > 0) {
-	lat += dx * t;
-	y += dy * t;
-	}
-	}
-	
-	dx = p.lat - lat;
-	dy = p.lng - y;
-	
-	return dx * dx + dy * dy;
+		
+		var lat = p1.lat,
+		y = p1.lng,
+		dx = p2.lat - lat,
+		dy = p2.lng - y;
+		
+		if (dx !== 0 || dy !== 0) {
+			
+			var t = ((p.lat - lat) * dx + (p.lng - y) * dy) / (dx * dx + dy * dy);
+			
+			if (t > 1) {
+				lat = p2.lat;
+				y = p2.lng;
+				
+				} else if (t > 0) {
+				lat += dx * t;
+				y += dy * t;
+			}
+		}
+		
+		dx = p.lat - lat;
+		dy = p.lng - y;
+		
+		return dx * dx + dy * dy;
 	}
 	// rest of the code doesn't care about point format
 	
 	// basic distance-based simplification
 	function simplifyRadialDist(points, sqTolerance) {
-	
-	var prevPoint = points[0],
-	newPoints = [prevPoint],
-	point;
-	
-	for (var i = 1, len = points.length; i < len; i++) {
-	point = points[i];
-	
-	if (getSqDist(point, prevPoint) > sqTolerance) {
-	newPoints.push(point);
-	prevPoint = point;
-	}
-	}
-	
-	if (prevPoint !== point) newPoints.push(point);
-	
-	return newPoints;
+		
+		var prevPoint = points[0],
+		newPoints = [prevPoint],
+		point;
+		
+		for (var i = 1, len = points.length; i < len; i++) {
+			point = points[i];
+			
+			if (getSqDist(point, prevPoint) > sqTolerance) {
+				newPoints.push(point);
+				prevPoint = point;
+			}
+		}
+		
+		if (prevPoint !== point) newPoints.push(point);
+		
+		return newPoints;
 	}
 	
 	function simplifyDPStep(points, first, last, sqTolerance, simplified) {
-	var maxSqDist = sqTolerance,
-	index;
-	
-	for (var i = first + 1; i < last; i++) {
-	var sqDist = getSqSegDist(points[i], points[first], points[last]);
-	
-	if (sqDist > maxSqDist) {
-	index = i;
-	maxSqDist = sqDist;
-	}
-	}
-	
-	if (maxSqDist > sqTolerance) {
-	if (index - first > 1) simplifyDPStep(points, first, index, sqTolerance, simplified);
-	simplified.push(points[index]);
-	if (last - index > 1) simplifyDPStep(points, index, last, sqTolerance, simplified);
-	}
+		var maxSqDist = sqTolerance,
+		index;
+		
+		for (var i = first + 1; i < last; i++) {
+			var sqDist = getSqSegDist(points[i], points[first], points[last]);
+			
+			if (sqDist > maxSqDist) {
+				index = i;
+				maxSqDist = sqDist;
+			}
+		}
+		
+		if (maxSqDist > sqTolerance) {
+			if (index - first > 1) simplifyDPStep(points, first, index, sqTolerance, simplified);
+			simplified.push(points[index]);
+			if (last - index > 1) simplifyDPStep(points, index, last, sqTolerance, simplified);
+		}
 	}
 	
 	// simplification using Ramer-Douglas-Peucker algorithm
 	function simplifyDouglasPeucker(points, sqTolerance) {
-	var last = points.length - 1;
-	
-	var simplified = [points[0]];
-	simplifyDPStep(points, 0, last, sqTolerance, simplified);
-	simplified.push(points[last]);
-	
-	return simplified;
+		var last = points.length - 1;
+		
+		var simplified = [points[0]];
+		simplifyDPStep(points, 0, last, sqTolerance, simplified);
+		simplified.push(points[last]);
+		
+		return simplified;
 	}
 	
 	// both algorithms combined for awesome performance
 	function simplify(points, tolerance, highestQuality) {
-	
-	if (points.length <= 2) return points;
-	
-	var sqTolerance = tolerance !== undefined ? tolerance * tolerance : 1;
-	
-	points = highestQuality ? points : simplifyRadialDist(points, sqTolerance);
-	points = simplifyDouglasPeucker(points, sqTolerance);
-	
-	return points;
+		
+		if (points.length <= 2) return points;
+		
+		var sqTolerance = tolerance !== undefined ? tolerance * tolerance : 1;
+		
+		points = highestQuality ? points : simplifyRadialDist(points, sqTolerance);
+		points = simplifyDouglasPeucker(points, sqTolerance);
+		
+		return points;
 	}
 	
 	// export as AMD module / Node module / browser or worker variable
@@ -310,10 +282,8 @@ var Restrictions = ( function(w) {"use strict";
 	Restrictions.prototype.createQuery = createQuery;
 	Restrictions.prototype.createPolygon = createPolygon;
 	Restrictions.prototype.getRestrictionsQuery = getRestrictionsQuery;
-	Restrictions.prototype.filterByAttribute = filterByAttribute;
 	Restrictions.prototype.filterByAllAttributes = filterByAllAttributes;
 	
 	
 	return new Restrictions();
-	}(window));
-		
+}(window));

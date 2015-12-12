@@ -67,7 +67,8 @@ var Map = (function() {
         this.overlays = {
             "Hillshade places": this.aster_hillshade
         };
-        L.control.layers(this.baseLayers, this.overlays).addTo(this.theMap);
+        this.layerControl = L.control.layers(this.baseLayers, this.overlays).addTo(this.theMap);
+		
         L.control.scale().addTo(this.theMap);
         var markers = [{
             "name": "Canada",
@@ -929,24 +930,27 @@ var Map = (function() {
     }
     /**
      * adds the restrictions along the route to the map
-     *  @param query: array [queryString, vectorArray] representing the overpass query and the polygon for display
+     *  @param query: array [queryString, vectorArray] representing the overpass query and the polygon for displaying the bounding box
+     *  @param routePref: from PermaInfo
      */
-    function updateRestrictionsLayer(query, permaInfo) {
+    function updateRestrictionsLayer(query, routePref) {
+		if(routePref != 'HeavyVehicle'){
+			this.layerRestriction.clearLayers();
+			// if(this.theMap.hasLayer(this.polygon)) this.theMap.removeLayer(this.polygon);
+			this.layerControl.removeLayer(this.layerRestriction); //Don't show the Restrictions control in the controller if the Profile is not HV
+			return;
+		}
 		var overpassQuery = query[0];
-        // var bboxArray = query[1];
-        var map = this.theMap;
-		// console.log(map.hasLayer(this.layerRestriction));
-		if(map.hasLayer(this.layerRestriction)) map.removeLayer(this.layerRestriction);
-		// if(map.hasLayer(this.polygon)) map.removeLayer(this.polygon);
-		// this.polygon = L.polygon([bboxArray]).addTo(map);
+        var bboxArray = query[1];
+		this.layerRestriction.clearLayers();
 		
-		//Create the layer and query Overpass
-		this.layerRestriction = new L.OverPassLayer({
-			query: overpassQuery,
-		});
-
-		this.theMap.addLayer(this.layerRestriction);
-	
+		// if(this.theMap.hasLayer(this.polygon)) this.theMap.removeLayer(this.polygon);
+		// this.polygon = L.polygon([bboxArray]).addTo(this.theMap);
+		
+		this.layerRestriction.addLayer(new L.OverPassLayer({
+					query: overpassQuery
+				}));
+		this.layerControl.addOverlay(this.layerRestriction, "Restrictions");
     }
     /**
      * removes all accessibility analysis features from the layer
