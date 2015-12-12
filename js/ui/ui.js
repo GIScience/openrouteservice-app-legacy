@@ -1871,6 +1871,10 @@ var Ui = (function(w) {
             value: false
         });
         theInterface.emit('ui:prefsChanged', {
+            key: preferences.avoidTunnelIdx,
+            value: false
+        });
+        theInterface.emit('ui:prefsChanged', {
             key: preferences.avoidUnpavedIdx,
             value: false
         });
@@ -2268,7 +2272,6 @@ var Ui = (function(w) {
                     value: boolVar
                 });
             } else if (itemId === list.routeAvoidables[6]) {
-                //if the avoidable is set, remove it (and vice versa)
                 if (permaInfo[preferences.avoidPavedIdx] == "true" || permaInfo[preferences.avoidPavedIdx] == true) {
                     var boolVar = false;
                 } else {
@@ -2276,6 +2279,17 @@ var Ui = (function(w) {
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidPavedIdx,
+                    value: boolVar
+                });
+            }
+            else if (itemId === list.routeAvoidables[7]) {
+                if (permaInfo[preferences.avoidTunnelIdx] == "true" || permaInfo[preferences.avoidTunnelIdx] == true) {
+                    var boolVar = false;
+                } else {
+                    var boolVar = true;
+                }
+                theInterface.emit('ui:prefsChanged', {
+                    key: preferences.avoidTunnelIdx,
                     value: boolVar
                 });
             }
@@ -2527,13 +2541,20 @@ var Ui = (function(w) {
         $('#SlopedCurb option')[slopedCurbParamIndex].selected = true;
     }
     /**
-     * used to activate the checkboxes for "avoid tollways" and "avoid highways" on startup if necessary
+     * used to activate the checkboxes for "avoid tollways", "avoid highways", "avoid unpaved", "avoid ferry", 
+     "avoid steps", "avoid fords" and "avoid paved" on startup if necessary
      * @param highway: true, if highway checkbox is to be checked
      * @param tollway: accordingly.
+     * @param unpaved: accordingly.
+     * @param ferry: accordingly.
+     * @param steps: accordingly.
+     * @param fords: accordingly.
+     * @param paved: accordingly.
      */
-    function setAvoidables(highway, tollway, unpaved, ferry, steps, fords, paved) {
+    function setAvoidables(highway, tollway, unpaved, ferry, steps, fords, paved, tunnel) {
         var highwayTrue = (highway === 'true') || highway == true;
         var tollwayTrue = (tollway === 'true') || tollway == true;
+        var tunnelTrue = (tunnel === 'true') || tunnel == true;
         var unpavedTrue = (unpaved === 'true') || unpaved == true;
         var pavedTrue = (paved === 'true') || paved == true;
         var ferryTrue = (ferry === 'true') || ferry == true;
@@ -2541,6 +2562,7 @@ var Ui = (function(w) {
         var fordsTrue = (fords === 'true') || fords == true;
         $('[type="checkbox"]').filter('#Highway').prop('checked', highwayTrue);
         $('[type="checkbox"]').filter('#Tollway').prop('checked', tollwayTrue);
+        $('[type="checkbox"]').filter('#Tunnel').prop('checked', tunnelTrue);
         $('[type="checkbox"]').filter('#Unpavedroads').prop('checked', unpavedTrue);
         $('[type="checkbox"]').filter('#Pavedroads').prop('checked', pavedTrue);
         $('[type="checkbox"]').filter('#Ferry').prop('checked', ferryTrue);

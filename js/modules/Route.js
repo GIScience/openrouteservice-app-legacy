@@ -16,7 +16,9 @@ var Route = (function(w) {
      * @param routePref: route preference, e.g. Fastest
      * @param avoidMotorways: flag set to true if motorways should be avoided in the route; else: false
      * @param avoidTollways: flag set to true if tollways should be avoided in the route; else: false
+     * @param avoidTunnels: flag set to true if tunnels should be avoided in the route; else: false
      * @param avoidunpavedRoads: flag set to true if unpaved roads should be avoided in the route; else: false
+     * @param avoidpavedRoads: flag set to true if paved roads should be avoided in the route; else: false
      * @param avoidFerry: flag set to true if ferrys should be avoided in the route; else: false
      * @param avoidAreas: array of avoid areas represented by OL.Geometry.Polygons
      */
@@ -118,7 +120,7 @@ var Route = (function(w) {
                 writer.writeElementString('xls:SlopedCurb', wheelChairParams[2]);
             }
         }
-        //</xls:ExtendedRoutePreference>			
+        //</xls:ExtendedRoutePreference>            
         writer.writeEndElement();
         //<xls:WayPointList>
         writer.writeStartElement('xls:WayPointList');
@@ -203,6 +205,9 @@ var Route = (function(w) {
         }
         if (avoidableParams[6] == 'true' || avoidableParams[6] === true) {
             writer.writeElementString('xls:AvoidFeature', 'Pavedroads');
+        }
+        if (avoidableParams[7] == 'true' || avoidableParams[7] === true) {
+            writer.writeElementString('xls:AvoidFeature', 'Tunnel');
         }
         //</xls:AvoidList>
         writer.writeEndElement();

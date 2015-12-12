@@ -42,6 +42,7 @@ var Preferences = (function(w) {
         this.avoidFordsIdx = 28;
         this.maxspeedIdx = 29;
         this.avoidPavedIdx = 30;
+        this.avoidTunnelIdx = 31;
         //define variables
         this.language = 'en';
         this.routingLanguage = 'en';
@@ -279,7 +280,7 @@ var Preferences = (function(w) {
             var lonLatCoordinates = waypoints.split(',');
             waypoints = [];
             for (var i = 0; i < lonLatCoordinates.length - 1; i += 2) {
-                waypoints.push(L.latLng(lonLatCoordinates[i+1], lonLatCoordinates[i]));
+                waypoints.push(L.latLng(lonLatCoordinates[i + 1], lonLatCoordinates[i]));
             }
         }
         return waypoints;
@@ -417,11 +418,11 @@ var Preferences = (function(w) {
     }
     /**
      * determines route option avoidables by GET variable
-     * @param highway, tollway: extracted from the GET variables in readGetVars()
+     * @param highway, tollway,unpaved, ferry, steps, fords, paved, tunnel: extracted from the GET variables in readGetVars()
      * @return the avoidables
      */
-    function loadAvoidables(highway, tollway, unpaved, ferry, steps, fords, paved) {
-        var avoidables = [false, false, false, false, false, false, false];
+    function loadAvoidables(highway, tollway, unpaved, ferry, steps, fords, paved, tunnel) {
+        var avoidables = [false, false, false, false, false, false, false, false];
         // highway
         if (highway == true || highway == 'true') {
             permaInfo[this.avoidHighwayIdx] = true;
@@ -436,6 +437,13 @@ var Preferences = (function(w) {
         } else {
             permaInfo[this.avoidTollwayIdx] = false;
         }
+        // tunnel
+        if (tunnel == true || tunnel == 'true') {
+            permaInfo[this.avoidTunnelIdx] = true;
+            avoidables[7] = true;
+        } else {
+            permaInfo[this.avoidTunnelIdx] = false;
+        }
         // unpaved
         if (unpaved == true || unpaved == 'true') {
             permaInfo[this.avoidUnpavedIdx] = true;
@@ -443,7 +451,7 @@ var Preferences = (function(w) {
         } else {
             permaInfo[this.avoidUnpavedIdx] = false;
         }
-         // paved
+        // paved
         if (paved == true || paved == 'true') {
             permaInfo[this.avoidPavedIdx] = true;
             avoidables[6] = true;
@@ -521,7 +529,7 @@ var Preferences = (function(w) {
             var lonLatCoordinates = differentAreas[j].split(',');
             avoidAreas = [];
             for (var i = 0; i < lonLatCoordinates.length - 1; i += 2) {
-                avoidAreas.push(L.latLng(lonLatCoordinates[i+1], lonLatCoordinates[i]));
+                avoidAreas.push(L.latLng(lonLatCoordinates[i + 1], lonLatCoordinates[i]));
             }
             if (avoidAreas.length > 0) {
                 //generate avoid area Polygon
