@@ -354,6 +354,13 @@ var Controller = (function(w) {
     function handleZoomToRouteInstruction(vectorId) {
         map.zoomToFeature(map.layerRouteLines, vectorId);
     }
+    /**
+     * map is zoomed to the selected part of the route (route instruction)
+     * @param vectorId: id of the map feature to zoom to
+     */
+    function handleZoomToRouteCorner(vectorId) {
+        map.zoomToFeature(map.layerCornerPoints, vectorId);
+    }
     /* *********************************************************************
      * GEOLOCATION
      * *********************************************************************/
@@ -370,11 +377,11 @@ var Controller = (function(w) {
      * @param position: service result containing the result location
      */
     function handleGeolocateSuccess(position) {
-        var pos = new OpenLayers.LonLat(position.coords.longitude, position.coords.latitude);
+        position = L.latLng(position.coords.latitude, position.coords.longitude);
         //add marker at current position
-        var feature = map.addGeolocationResultMarker(pos);
+        var feature = map.addGeolocationResultMarker(position);
         //show current position as address in the Ui pane
-        geolocator.reverseGeolocate(pos, handleReverseGeolocationSuccess, handleGeolocateError, preferences.language, null, null, feature);
+        geolocator.reverseGeolocate(position, handleReverseGeolocationSuccess, handleGeolocateError, preferences.language, null, null, feature);
     }
     /**
      * handles a runtime error during geolocation
@@ -399,7 +406,7 @@ var Controller = (function(w) {
      */
     function handleReverseGeolocationSuccess(result, nn0, nn1, feature) {
         ui.showGeolocationSearching(false);
-        ui.showCurrentLocation(result, feature.id, map.GEOLOCATION, feature.geometry);
+        ui.showCurrentLocation(result, feature.id, 'layerGeolocation', feature);
     }
     /* *********************************************************************
      * SEARCH ADDRESS
@@ -598,7 +605,12 @@ var Controller = (function(w) {
         }
         //use position to add the waypoint
         var featureId = map.addWaypointAtPos(position, index, type);
-        geolocator.reverseGeolocate(util.convertPointForDisplay(position), reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, type, index, featureId, addWp);
+        waypoint.setWaypoint(index, true);
+        position = map.convertFeatureIdToPositionString(featureId, map.layerRoutePoints);
+        var newIndex = ui.addWaypointResultByRightclick(type, index, position, true);
+        ui.setWaypointFeatureId(newIndex, featureId, position, 'layerRoutePoints');
+        handleWaypointChanged();
+        geolocator.reverseGeolocate(position, reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, type, index, featureId, addWp);
         //markers of the search results will not be removed cause the search is still visible.
     }
     /**
@@ -1391,6 +1403,7 @@ var Controller = (function(w) {
         ui.register('ui:searchAgainWaypoint', handleSearchAgainWaypoint);
         ui.register('ui:resetRoute', handleResetRoute);
         ui.register('ui:zoomToRouteInstruction', handleZoomToRouteInstruction);
+        ui.register('ui:zoomToRouteCorner', handleZoomToRouteCorner);
         ui.register('ui:geolocationRequest', handleGeolocationRequest);
         ui.register('ui:searchAddressRequest', handleSearchAddressRequest);
         ui.register('ui:clearSearchAddressMarkers', handleClearSearchAddressMarkers);

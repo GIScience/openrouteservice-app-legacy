@@ -26,23 +26,6 @@ util = (function() {
             return (pointLon + ', ' + pointLat);
         },
         /**
-         * transforms a given point to the display-projection of the map
-         * @param {Object} pt: OpenLayers LonLat or Point coordinates to transform
-         */
-        convertPointForDisplay: function(pt) {
-            var src = new OpenLayers.Projection('EPSG:900913');
-            var dest = new OpenLayers.Projection('EPSG:4326');
-            if (pt.x && pt.y) {
-                //the input is likely to be of OL.Geometry.Point... special handling necessary
-                var ptCopy = new OpenLayers.LonLat(pt.x, pt.y);
-                ptCopy = ptCopy.transform(src, dest);
-                return new OpenLayers.Geometry.Point(ptCopy.lon, ptCopy.lat);
-            } else {
-                var ptCopy = new OpenLayers.LonLat(pt.lon, pt.lat);
-                return ptCopy.transform(src, dest);
-            }
-        },
-        /**
          * calculates flight distance between two points
          * @param {Object} ptA: Leaflet latLng
          * @param {Object} ptB: Leaflet latLng

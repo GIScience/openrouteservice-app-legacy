@@ -1,4 +1,4 @@
-ƒ√<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 	<head>
 		<title>OpenRouteService</title>
@@ -126,14 +126,9 @@
 												</td>
 												<td>
 													<div class="radioContainer">
-														<!-- <div class="radio">
-															<input type="radio" id="BicycleRoute" name="bicycle" value="preferredcycle">
-															<label id="BicycleRouteLabel">preferred bicycle lane</label>
-														</div> -->
 														<div class="radio"><label>
 															<input type="radio" id="BicycleMTB" name="bicycle" value="mountain">
 															<span class="label" id="BicycleMtbLabel">mountain bike</span></label>
-
 														</div>
 														<div class="radio"><label>
 															<input type="radio" id="BicycleRacer" name="bicycle" value="racing">
@@ -236,14 +231,14 @@
 										            <form class="mySlider">
 														<input type="text" value="7" autocomplete="off" id="value_weight" oninput="this.form.value_weight_slide.value=this.value">
 														<input type="range" min="0" max="50" value="4" step="0.5" id="value_weigth_slide"  oninput="this.form.value_weight.value=this.value"  />
-														<img src="img/picto-truck-weight.png"></td>
+														<img src="img/picto-truck-weight.png">
 													</form>
 										        </div>
 												<div class="tab-pane" id="axleload">
 										            <form class="mySlider">
 														<input type="text" value="2" autocomplete="off" id="value_axleload" oninput="this.form.value_axleload_slide.value=this.value">
 														<input type="range" min="0" max="20" value="4" step="0.5" id="value_axleload_slide"  oninput="this.form.value_axleload.value=this.value"  />
-														<img src="img/picto-truck-axleload.png"></td>
+														<img src="img/picto-truck-axleload.png">
 													</form>
 										        </div>
 										    </div>
@@ -272,17 +267,6 @@
 											<option id="allSurfacesOption">All Surfaces</option>
 										</select>
 										<span id="surfaceLabel" class="label label-info">Surface</span>	
-										<!-- 
-										<label id="smoothnessLabel">Smoothness</label>
-										<select id="Smoothness">
-											<option id="excellentOption">Excellent</option>
-											<option id="goodOption">Good</option>
-											<option id="intermediateOption">Intermediate</option>
-											<option id="badOption">Bad</option>
-											<option id="allSmoothnessesOption">All Smoothnesses</option>
-										</select> 
-										 -->
-										
 										<select id="Incline" class="wheelchairSelect">
 											<option id="threePercentOption">Up to 3%</option>
 											<option id="sixPercentOption">Up to 6%</option>
@@ -290,11 +274,7 @@
 											<option id="fifteenPercentOption">Up to 15%</option>
 											<option id="allInclinesOption">All Inclines</option>
 										</select>
-										<span id="inclineLabel" class="label label-info">Maximum Incline</span>	
-
-										<!-- hide option as proper data is missing in OSM? -->
-										
-										<select id="SlopedCurb" class="wheelchairSelect">
+										<span id="inclineLabel" class="label label-info">Maximum Incline</span>					<select id="SlopedCurb" class="wheelchairSelect">
 											<option id="threeCmOption">Up to 3cm</option>
 											<option id="sixCmOption">Up to 6cm</option>
 											<option id="tenCmOption">Up to 10cm</option>
@@ -529,7 +509,6 @@
 					</div>
 				</div>
 			</div>
-
 			<div id="searchPanel" style="display: none;">
 				<div id="searchPoi" class="panel panelLight">
 					<div class="toolHeading" id="searchPoiHead">
@@ -551,7 +530,6 @@
 					</div>
 				</div>
 			</div>
-
 			<div id="geolocationPanel" style="display: none;">
 				<div id="geoloc" class="panel panelLight">
 					<div class="toolHeading" id="geolocationHead">
@@ -560,7 +538,6 @@
 					<div class="guiComponent">
 						<div class="alert alert-error" id="geolocationError" style="display: none;"></div>
 						<div id="geolocationResult"></div>
-
 					</div>
 				</div>
 			</div>
@@ -587,10 +564,8 @@
 			<a href="contact.html#license" class="inlineLink">License</a>
 			<div id="infoPanel"></div>
 		</div>
-
 		<!-- arrow to show/hide sidebar -->
 		<a class="sidebarVisible" id="toggleSidebar"><img src="img/arrowLeft.png" alt="/"></a>
-
 		<!-- popup for user preferences (language, distance unit,...) -->
 		<div id="sitePrefsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sitePrefs">
 			<div class="modal-header">
@@ -625,7 +600,6 @@
 			</div>
 		</div>
 		<!-- popup for contact form -->
-
 		<div class="feedback">
 			<a id="feedback_button">Feedback</a>
 			<div class="form">
@@ -639,9 +613,6 @@
 				<input type="button" id="submit_feedback" value="Send Message"/>
 			</div>
 		</div>
-
-
-		<!-- Libraries -->
 		<!-- 	important: jQuery must be included before prototype	 -->
 		<script type="text/javascript" src="lib/jquery-1.7.2.min.js"></script>
 		<script type="text/javascript" src="lib/bootstrap/bootstrap.min.js"></script>
@@ -653,17 +624,11 @@
 		<script type="text/javascript" src="lib/Leaflet.Editable.js"></script>
 		<script type="text/javascript" src="lib/togpx.js"></script>
 		<script type="text/javascript" src="lib/togeojson.js"></script>
-		<script type="text/javascript" src="lib/turf.min.js"></script>
-		<!-- Code copied from github pan map issue -->
 		<script type="text/javascript" src="lib/leaflet-drag-marker-edges.js"></script>
 		<script type="text/javascript" src="lib/Leaflet.MakiMarkers.js"></script>
-
 		<script type="text/javascript" src="lib/d3.v3.min.js" ></script>
 		<script type="text/javascript" src="lib/leaflet.elevation-0.0.4.min.js"></script>
-
 		<script type="text/javascript" src="lib/XMLWriter-1.0.0-min.js"></script>
-
-		<!-- ORS dev multiple file-->
 		<script type="text/javascript" src="js/namespaces.js"></script>
 		<script type="text/javascript" src="js/util.js"></script>
 		<script type="text/javascript" src="js/list.js"></script>
@@ -682,10 +647,7 @@
 		<script type="text/javascript" src="js/ui/Languages.js"></script>		
 		<script type="text/javascript" src="js/map.js"></script>
 		<script type="text/javascript" src="js/control.js"></script>
-
 		<script type="text/javascript" src="js/contact_form.js"></script>
-
-		<!-- ORS language files alphabertically sorted -->
 		<script type="text/javascript" src="js/lang/lang-cz.js"></script>
 		<script type="text/javascript" src="js/lang/lang-de.js"></script>
 		<script type="text/javascript" src="js/lang/lang-en.js"></script>

@@ -419,7 +419,7 @@ var Map = (function() {
                     } else if (layer == 'layerRouteLines') {
                         marker.setStyle({
                             fillColor: '#ffffff',
-                            color: '#ff0066'
+                            color: '#4682B4'
                         });
                     }
                 }
@@ -588,19 +588,18 @@ var Map = (function() {
      * @return: the OL Feature.Vector which was set at the given position
      */
     function addGeolocationResultMarker(position) {
-        var layer = this.theMap.getLayersByName(this.GEOLOCATION)[0];
-        layer.removeAllFeatures();
+        var layer = this.layerGeolocation;
+        layer.clearLayers();
         //convert corrdinates of marker
         var feature = null;
         if (position) {
-            position = util.convertPointForMap(position);
-            var point = new OpenLayers.Geometry.Point(position.lon, position.lat);
-            feature = new OpenLayers.Feature.Vector(point, {
-                icon: Ui.markerIcons.unset[0],
-                iconEm: Ui.markerIcons.unset[1],
+            feature = new L.marker(position, {
+                icon: Ui.markerIcons.unset,
+                icon_orig: Ui.markerIcons.unset,
+                //icon_emph: Ui.markerIcons.emph
             });
-            layer.addFeatures([feature]);
-            this.theMap.moveTo(position, 14);
+            feature.addTo(layer);
+            this.theMap.setView(position, 14);
         }
         return feature;
     }
@@ -1147,7 +1146,7 @@ var Map = (function() {
     map.prototype.setWaypointType = setWaypointType;
     // map.prototype.getWaypointsString = getWaypointsString;
     // map.prototype.getWaypointsAmount = getWaypointsAmount;
-    // map.prototype.addGeolocationResultMarker = addGeolocationResultMarker;
+    map.prototype.addGeolocationResultMarker = addGeolocationResultMarker;
     map.prototype.addSearchAddressResultMarkers = addSearchAddressResultMarkers;
     map.prototype.zoomToAddressResults = zoomToAddressResults;
     // map.prototype.addSearchPoiResultMarkers = addSearchPoiResultMarkers;
