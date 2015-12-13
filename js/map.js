@@ -975,56 +975,27 @@ var Map = (function() {
     }
     /**
      * adds the restrictions along the route to the map
-     *  @param query: array [queryString, vectorArray] representing the overpass query and the polygon for display
+     *  @param query: array [queryString, vectorArray] representing the overpass query and the polygon for displaying the bounding box
+     *  @param routePref: from PermaInfo
      */
-    function updateRestrictionsLayer(query, permaInfo) {
-        var overpassQuery = query[0];
+    function updateRestrictionsLayer(query, routePref) {
+		if(routePref != 'HeavyVehicle'){
+			this.layerRestriction.clearLayers();
+			// if(this.theMap.hasLayer(this.polygon)) this.theMap.removeLayer(this.polygon);
+			this.layerControls.removeLayer(this.layerRestriction); //Don't show the Restrictions control in the controller if the Profile is not HV
+			return;
+		}
+		var overpassQuery = query[0];
         var bboxArray = query[1];
-        var map = this.theMap;
-        //Do not load anything if the profile is not HeavyVehicle
-        if (overpassQuery === null || bboxArray === null) {
-            map.getLayersByName(this.RESTRICTIONS)[0].removeAllFeatures();
-            map.getLayersByName(this.RESTRICTIONS)[0].displayInLayerSwitcher = false;
-            map.getLayersByName(this.RESTRICTIONS)[0].setVisibility(false);
-            map.getLayersByName(this.BBOX)[0].removeAllFeatures();
-            map.getLayersByName(this.BBOX)[0].displayInLayerSwitcher = false;
-            map.getLayersByName(this.BBOX)[0].setVisibility(false);
-            return;
-        }
-        var restrictionStyleMap = new OpenLayers.StyleMap({
-            'default': new OpenLayers.Style(restrictionTemplate),
-            'select': new OpenLayers.Style(restrictionSelTemplate)
-        });
-        var styleRestrictionBbox = {
-            strokeColor: "#00FF00",
-            strokeOpacity: 0.4,
-            strokeWidth: 3,
-            fillColor: "#00FF00",
-            fillOpacity: 0.2
-        };
-        //display the layers in the layer switcher if truck profile is chosen
-        map.getLayersByName(this.RESTRICTIONS)[0].displayInLayerSwitcher = true;
-        map.getLayersByName(this.BBOX)[0].displayInLayerSwitcher = true;
-        map.getLayersByName(this.RESTRICTIONS)[0].setVisibility(true);
-        //display the restrictions bounding polygon
-        map.getLayersByName(this.BBOX)[0].removeAllFeatures();
-        var pf = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LinearRing(bboxArray), null, styleRestrictionBbox);
-        map.getLayersByName(this.BBOX)[0].addFeatures([pf]);
-        map.getLayersByName(this.RESTRICTIONS)[0].removeAllFeatures();
-        //TODO: Remove workaround to make layer load... won't load without adding dummy layer to the map
-        if (map.getLayersByName(this.TEMPRESTRICTIONS).length > 0) map.getLayersByName(this.TEMPRESTRICTIONS)[0].destroy();
-        var layerRestrictionNew = make_layer(overpassQuery, restrictionStyleMap);
-        layerRestrictionNew.setName(this.TEMPRESTRICTIONS);
-        layerRestrictionNew.setVisibility(false);
-        layerRestrictionNew.displayInLayerSwitcher = false;
-        this.theMap.addLayers([layerRestrictionNew]);
-        var this_ = this;
-        layerRestrictionNew.events.register("loadend", layerRestrictionNew, function() {
-            //filter out unnecessary maxheight tags
-            if (layerRestrictionNew.features.length > 0) layerRestrictionNew = window.Restrictions.filterByAttribute(layerRestrictionNew, "maxheight", permaInfo[1]);
-            map.getLayersByName(this_.RESTRICTIONS)[0].addFeatures(layerRestrictionNew.clone().features);
-            layerRestrictionNew.destroy();
-        });
+		this.layerRestriction.clearLayers();
+		
+		// if(this.theMap.hasLayer(this.polygon)) this.theMap.removeLayer(this.polygon);
+		// this.polygon = L.polygon([bboxArray]).addTo(this.theMap);
+		
+		this.layerRestriction.addLayer(new L.OverPassLayer({
+					query: overpassQuery
+				}));
+		this.layerControls.addOverlay(this.layerRestriction, "Restrictions");
     }
     /**
      * removes all accessibility analysis features from the layer
@@ -1250,7 +1221,7 @@ var Map = (function() {
     map.prototype.addAvoidAreas = addAvoidAreas;
     map.prototype.getAvoidAreas = getAvoidAreas;
     map.prototype.getAvoidAreasString = getAvoidAreasString;
-    // map.prototype.updateRestrictionsLayer = updateRestrictionsLayer;
+    map.prototype.updateRestrictionsLayer = updateRestrictionsLayer;
     map.prototype.addAccessiblityPolygon = addAccessiblityPolygon;
     map.prototype.eraseAccessibilityFeatures = eraseAccessibilityFeatures;
     map.prototype.writeRouteToString = writeRouteToString;
