@@ -1151,12 +1151,13 @@ var Controller = (function(w) {
      * generate url from map bounding box and set timeout interval to 5 minutes
      */
     function loadTMC() {
-        url = url + '&bbox=' + map.theMap.getBounds().getSouthWest().lng + ',' + map.theMap.getBounds().getSouthWest().lat + ',' + map.theMap.getBounds().getNorthEast().lng + ',' + map.theMap.getBounds().getNorthEast().lat;
-        console.log(url);
+        var tmcUrl = url + '&bbox=' + map.theMap.getBounds().getSouthWest().lng + ',' + map.theMap.getBounds().getSouthWest().lat + ',' + map.theMap.getBounds().getNorthEast().lng + ',' + map.theMap.getBounds().getNorthEast().lat;
+        console.log(tmcUrl);
         getTMC(url);
         setInterval(function() {
+            tmcUrl = url + '&bbox=' + map.theMap.getBounds().getSouthWest().lng + ',' + map.theMap.getBounds().getSouthWest().lat + ',' + map.theMap.getBounds().getNorthEast().lng + ',' + map.theMap.getBounds().getNorthEast().lat;
             console.log('refresh');
-            getTMC(url);
+            getTMC(tmcUrl);
         }, 300000);
     }
     /**
