@@ -1566,8 +1566,7 @@ var Ui = (function(w) {
                     directionsContainer.appendChild(directionTextDiv);
                     var tmcMessage = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Message')[0];
                     if (tmcMessage) {
-                        console.log(tmcMessage)
-                            // add icons and jquery collapsible stuff
+                        // add icons and jquery collapsible stuff
                         tmcMessage = tmcMessage.text || tmcMessage.textContent;
                         var tmcWarning;
                         var tmcText = tmcMessage.split(" | ")[1];
@@ -1575,7 +1574,7 @@ var Ui = (function(w) {
                         tmcCode = tmcCode.split(',');
                         for (var i = 0; i < tmcCode.length; i++) {
                             tmcWarning = new Element('img', {
-                                'src': list.tmc[tmcCode[i]]
+                                'src': list.tmc[tmcCode[i]][0]
                             });
                             break;
                         }

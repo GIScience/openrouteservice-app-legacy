@@ -117,6 +117,7 @@ var Map = (function() {
         this.layerTrack = L.featureGroup().addTo(this.theMap);
         this.layerAccessibility = L.featureGroup().addTo(this.theMap);
         this.layerTMC = L.featureGroup().addTo(this.theMap);
+        this.layerControls.addOverlay(this.layerTMC, 'TMC Messages');
         this.layerRestriction = L.featureGroup().addTo(this.theMap);
         this.layerAvoid.addTo(this.theMap);
         /* *********************************************************************
@@ -273,9 +274,16 @@ var Map = (function() {
                     lon: centerTransformed.lng
                 });
             }
+            // hide/remove layers depending on zoom level
             var currentZoom = self.theMap.getZoom();
             if (currentZoom < 14) self.theMap.removeLayer(self.layerCornerPoints);
             else self.theMap.addLayer(self.layerCornerPoints);
+
+            if (currentZoom < 11) self.theMap.removeLayer(self.layerTMC);
+            else self.theMap.addLayer(self.layerTMC);
+            // reload TMC Layer when map paned
+            console.log('dude')
+            Controller.loadTMC();
         }
 
         function emitMapChangeBaseMap(e) {
@@ -290,29 +298,88 @@ var Map = (function() {
         this.theMap.on('baselayerchange', emitMapChangeBaseMap);
         this.theMap.on('zoomend', emitMapChangedEvent);
         this.theMap.on('moveend', emitMapChangedEvent);
-        //when zooming or moving the map -> close the context menu
-        //this.theMap.on("zoomend", self.theMap.closePopup(popup));
-        //this.theMap.on("movestart", self.theMap.closePopup(popup));
     }
     /* *********************************************************************
      * TMC LAYER - REFRESHED EVERY 5 MINUTES
      * *********************************************************************/
     //http://openls.geog.uni-heidelberg.de/osm/routing-test?tmc&bbox=9.6423748868789,53.477631332476,10.163538827309,53.674346464158'
+    var tmcGeojson, tmcLayer;
+    function getColor(d) {
+        code = d.split(',')[0];
+        return list.tmc[code][1];
+    }
 
-    var getTmcInformation = function(){
-        // build url
-        url = namespaces.services.tmc;
-        console.log(this.theMap.getBounds());
-        geojson = new L.GeoJSON.AJAX(url, {
-            //onEachFeature: onEachFeature,
-            //style: style
-        }).addTo(this.layerRoutePoints);
-    }();
+    function getWarning(d) {
+        code = d.split(',')[0];
+        return list.tmc[code][0];
+    }
 
-    setTimeout(function() {
-        console.log(refresh);
-        getTmcInformation();
-    }, 10000);
+    function style(feature) {
+        return {
+            weight: 3,
+            opacity: 0.75,
+            color: getColor(feature.properties.codes),
+            //dashArray: '5',
+        };
+    }
+
+    function highlightFeature(e) {
+        var layer = e.target;
+        layer.setStyle({
+            weight: 4,
+            opacity: 1
+        });
+        if (!L.Browser.ie && !L.Browser.opera) {
+            layer.bringToFront();
+        }
+        //info.update(layer.feature.properties);
+    }
+
+    function resetHighlight(e) {
+        tmcGeojson.resetStyle(e.target);
+        //info.update();
+    }
+
+    function zoomToFeatureShowPopup(e) {
+        self.theMap.fitBounds(e.target.getBounds());
+        //show popup with message
+        var popup = L.popup({
+            closeButton: true,
+            // maxHeight: '112px',
+            // maxWidth: '120px',
+            //className: 'mapContextMenu'
+        }).setContent(e.target.feature.properties.message).setLatLng(e.latlng);
+        self.theMap.openPopup(popup);
+    }
+
+    function onEachFeature(feature, layer) {
+        layer.on({
+            mouseover: highlightFeature,
+            mouseout: resetHighlight,
+            click: zoomToFeatureShowPopup
+        });
+        
+        var tmcIcon = L.icon({
+            iconUrl: getWarning(feature.properties.codes),
+            iconAnchor: [6, 6],
+            iconSize: [16, 16],
+        });
+        L.marker(layer.getBounds().getCenter(), {
+            icon: tmcIcon
+        }).addTo(tmcLayer);
+
+    }
+
+    function updateTmcInformation(data) {
+        // clear tmc layer
+        tmcLayer = this.layerTMC;
+        tmcLayer.clearLayers();
+        tmcGeojson = L.geoJson(data, {
+            onEachFeature: onEachFeature,
+            style: style,
+        }).addTo(tmcLayer);
+        
+    }
     /* *********************************************************************
      * FOR PERMALINK OR COOKIE
      * *********************************************************************/
@@ -1155,6 +1222,7 @@ var Map = (function() {
     map.prototype = new EventEmitter();
     map.prototype.constructor = map;
     map.prototype.serializeLayers = serializeLayers;
+    map.prototype.updateTmcInformation = updateTmcInformation;
     map.prototype.restoreLayerPrefs = restoreLayerPrefs;
     map.prototype.clearMarkers = clearMarkers;
     map.prototype.emphMarker = emphMarker;

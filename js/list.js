@@ -63,12 +63,12 @@ var tmcCodes = {
 };
 for (var key in tmcCodes) {
     for (var i = 0; i < tmcCodes[key].length; i++) {
-        if (key == 'UNDEFINED') list.tmc[tmcCodes[key][i]] = './img/warning_black.png';
-        if (key == 'STATIONARY_TRAFFIC') list.tmc[tmcCodes[key][i]] = './img/warning_red.png';
-        if (key == 'SLOW_TRAFFIC') list.tmc[tmcCodes[key][i]] = './img/warning_orange.png';
-        if (key == 'NORMAL_TRAFFIC') list.tmc[tmcCodes[key][i]] = './img/warning_green.png';
-        if (key == 'ROADWORKS') list.tmc[tmcCodes[key][i]] = './img/warning_grey.png';
-        if (key == 'PARTIALLY_CLOSED') list.tmc[tmcCodes[key][i]] = './img/warning_grey.png';
-        if (key == 'COMPLETELY_CLOSED') list.tmc[tmcCodes[key][i]] = './img/warning_darkgrey.png';
+        if (key == 'UNDEFINED') list.tmc[tmcCodes[key][i]] = ['./img/warning_black.png', '#000000'];
+        if (key == 'STATIONARY_TRAFFIC') list.tmc[tmcCodes[key][i]] = ['./img/warning_red.png', '#F97E7E'];
+        if (key == 'SLOW_TRAFFIC') list.tmc[tmcCodes[key][i]] = ['./img/warning_orange.png', '#FFB065', ];
+        if (key == 'NORMAL_TRAFFIC') list.tmc[tmcCodes[key][i]] = ['./img/warning_green.png', '#6AE592'];
+        if (key == 'ROADWORKS') list.tmc[tmcCodes[key][i]] = ['./img/warning_grey.png', '#BDBDBD'];
+        if (key == 'PARTIALLY_CLOSED') list.tmc[tmcCodes[key][i]] = ['./img/warning_grey.png', '#BCBCBC'];
+        if (key == 'COMPLETELY_CLOSED') list.tmc[tmcCodes[key][i]] = ['./img/warning_darkgrey.png', '#606060'];
     }
 }

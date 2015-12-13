@@ -1139,6 +1139,40 @@ var Controller = (function(w) {
         //tell map to de-emph the element
         map.emphMarker(layer, id, false);
     }
+    /** 
+     * LOAD TMC INFORMATION
+     */
+    var url;
+    if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
+        url = "cgi-bin/proxy.cgi?url=" + namespaces.services.tmc;
+    } else {
+        url = namespaces.services.tmc;
+    }
+    /** 
+     * generate url from map bounding box and set timeout interval to 5 minutes
+     */
+    function loadTMC() {
+        url = url + '&bbox=' + map.theMap.getBounds().getSouthWest().lng + ',' + map.theMap.getBounds().getSouthWest().lat + ',' + map.theMap.getBounds().getNorthEast().lng + ',' + map.theMap.getBounds().getNorthEast().lat;
+        console.log(url);
+        getTMC(url);
+        setInterval(function() {
+            console.log('refresh');
+            getTMC(url);
+        }, 300000);
+    }
+    /**
+     * fires xhr request and updates map tmc layer on success
+     * @param url: url with specified boundingbox
+     */
+    function getTMC(url) {
+        $.ajax({
+            dataType: "json",
+            url: url,
+            success: function(data) {
+                map.updateTmcInformation(data);
+            },
+        });
+    }
     /* *********************************************************************
      * PREFERENCES, PERMALINK AND COOKIES
      * *********************************************************************/
@@ -1289,7 +1323,7 @@ var Controller = (function(w) {
         ui.setRouteWeight(routeWeight);
         maxspeed = preferences.loadMaxspeed(maxspeed);
         ui.setMaxspeedParameter(maxspeed);
-        var avSettings = preferences.loadAvoidables(motorways, tollways, unpaved, ferry, steps, fords, paved);
+        var avSettings = preferences.loadAvoidables(motorways, tollways, unpaved, ferry, steps, fords, paved, tunnels);
         motorways = avSettings[0];
         tollways = avSettings[1];
         unpaved = avSettings[2];
@@ -1297,7 +1331,8 @@ var Controller = (function(w) {
         steps = avSettings[4];
         fords = avSettings[5];
         paved = avSettings[6];
-        ui.setAvoidables(motorways, tollways, unpaved, ferry, steps, fords, paved);
+        tunnels = avSettings[7];
+        ui.setAvoidables(motorways, tollways, unpaved, ferry, steps, fords, paved, tunnels);
         // get wheelchair parameters from getVars
         var wheelParameters = preferences.loadWheelParameters(surface, incline, slopedCurb, trackType, smoothness);
         if (wheelParameters.length > 0) {
@@ -1437,6 +1472,7 @@ var Controller = (function(w) {
         loadDynamicUiData();
     }
     Controller.prototype.initialize = initialize;
+    Controller.prototype.loadTMC = loadTMC;
     return new Controller();
 }(window));
 window.onload = Controller.initialize;
