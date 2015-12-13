@@ -278,11 +278,8 @@ var Map = (function() {
             var currentZoom = self.theMap.getZoom();
             if (currentZoom < 14) self.theMap.removeLayer(self.layerCornerPoints);
             else self.theMap.addLayer(self.layerCornerPoints);
-            if (currentZoom < 11) self.theMap.removeLayer(self.layerTMC);
-            else self.theMap.addLayer(self.layerTMC);
-            // reload TMC Layer when map paned
-            console.log('dude')
-            Controller.loadTMC();
+            // if (currentZoom < 10) self.theMap.removeLayer(self.layerTMC);
+            // else self.theMap.addLayer(self.layerTMC);
         }
 
         function emitMapChangeBaseMap(e) {
@@ -294,9 +291,15 @@ var Map = (function() {
                 });
             }
         }
+
+        function emitloadTMC(e) {
+            // reload TMC Layer when map paned
+            Controller.loadTMC();
+        }
         this.theMap.on('baselayerchange', emitMapChangeBaseMap);
         this.theMap.on('zoomend', emitMapChangedEvent);
         this.theMap.on('moveend', emitMapChangedEvent);
+        this.theMap.on('moveend', emitloadTMC);
     }
     /* *********************************************************************
      * TMC LAYER
@@ -316,7 +319,7 @@ var Map = (function() {
     function style(feature) {
         return {
             weight: 4,
-            opacity: 1,
+            opacity: 0.7,
             color: getColor(feature.properties.codes),
             //dashArray: '5',
         };
@@ -325,7 +328,7 @@ var Map = (function() {
     function highlightFeature(e) {
         var layer = e.target;
         layer.setStyle({
-            weight: 4,
+            weight: 5,
             opacity: 1
         });
         if (!L.Browser.ie && !L.Browser.opera) {
@@ -359,7 +362,7 @@ var Map = (function() {
         });
         var tmcIcon = L.icon({
             iconUrl: getWarning(feature.properties.codes),
-            iconAnchor: [6, 6],
+            iconAnchor: [0, 0],
             iconSize: [16, 16],
         });
         L.marker(layer.getBounds().getCenter(), {
