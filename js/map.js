@@ -278,7 +278,6 @@ var Map = (function() {
             var currentZoom = self.theMap.getZoom();
             if (currentZoom < 14) self.theMap.removeLayer(self.layerCornerPoints);
             else self.theMap.addLayer(self.layerCornerPoints);
-
             if (currentZoom < 11) self.theMap.removeLayer(self.layerTMC);
             else self.theMap.addLayer(self.layerTMC);
             // reload TMC Layer when map paned
@@ -300,10 +299,10 @@ var Map = (function() {
         this.theMap.on('moveend', emitMapChangedEvent);
     }
     /* *********************************************************************
-     * TMC LAYER - REFRESHED EVERY 5 MINUTES
+     * TMC LAYER
      * *********************************************************************/
-    //http://openls.geog.uni-heidelberg.de/osm/routing-test?tmc&bbox=9.6423748868789,53.477631332476,10.163538827309,53.674346464158'
     var tmcGeojson, tmcLayer;
+
     function getColor(d) {
         code = d.split(',')[0];
         return list.tmc[code][1];
@@ -316,8 +315,8 @@ var Map = (function() {
 
     function style(feature) {
         return {
-            weight: 3,
-            opacity: 0.75,
+            weight: 4,
+            opacity: 1,
             color: getColor(feature.properties.codes),
             //dashArray: '5',
         };
@@ -345,8 +344,8 @@ var Map = (function() {
         //show popup with message
         var popup = L.popup({
             closeButton: true,
-            // maxHeight: '112px',
-            // maxWidth: '120px',
+            //maxHeight: '112px',
+            //maxWidth: '200px',
             //className: 'mapContextMenu'
         }).setContent(e.target.feature.properties.message).setLatLng(e.latlng);
         self.theMap.openPopup(popup);
@@ -358,7 +357,6 @@ var Map = (function() {
             mouseout: resetHighlight,
             click: zoomToFeatureShowPopup
         });
-        
         var tmcIcon = L.icon({
             iconUrl: getWarning(feature.properties.codes),
             iconAnchor: [6, 6],
@@ -366,8 +364,7 @@ var Map = (function() {
         });
         L.marker(layer.getBounds().getCenter(), {
             icon: tmcIcon
-        }).addTo(tmcLayer);
-
+        }).bindPopup(feature.properties.message).addTo(tmcLayer);
     }
 
     function updateTmcInformation(data) {
@@ -378,7 +375,6 @@ var Map = (function() {
             onEachFeature: onEachFeature,
             style: style,
         }).addTo(tmcLayer);
-        
     }
     /* *********************************************************************
      * FOR PERMALINK OR COOKIE
@@ -979,23 +975,21 @@ var Map = (function() {
      *  @param routePref: from PermaInfo
      */
     function updateRestrictionsLayer(query, routePref) {
-		if(routePref != 'HeavyVehicle'){
-			this.layerRestriction.clearLayers();
-			// if(this.theMap.hasLayer(this.polygon)) this.theMap.removeLayer(this.polygon);
-			this.layerControls.removeLayer(this.layerRestriction); //Don't show the Restrictions control in the controller if the Profile is not HV
-			return;
-		}
-		var overpassQuery = query[0];
+        if (routePref != 'HeavyVehicle') {
+            this.layerRestriction.clearLayers();
+            // if(this.theMap.hasLayer(this.polygon)) this.theMap.removeLayer(this.polygon);
+            this.layerControls.removeLayer(this.layerRestriction); //Don't show the Restrictions control in the controller if the Profile is not HV
+            return;
+        }
+        var overpassQuery = query[0];
         var bboxArray = query[1];
-		this.layerRestriction.clearLayers();
-		
-		// if(this.theMap.hasLayer(this.polygon)) this.theMap.removeLayer(this.polygon);
-		// this.polygon = L.polygon([bboxArray]).addTo(this.theMap);
-		
-		this.layerRestriction.addLayer(new L.OverPassLayer({
-					query: overpassQuery
-				}));
-		this.layerControls.addOverlay(this.layerRestriction, "Restrictions");
+        this.layerRestriction.clearLayers();
+        // if(this.theMap.hasLayer(this.polygon)) this.theMap.removeLayer(this.polygon);
+        // this.polygon = L.polygon([bboxArray]).addTo(this.theMap);
+        this.layerRestriction.addLayer(new L.OverPassLayer({
+            query: overpassQuery
+        }));
+        this.layerControls.addOverlay(this.layerRestriction, "Restrictions");
     }
     /**
      * removes all accessibility analysis features from the layer
