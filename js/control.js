@@ -1153,7 +1153,7 @@ var Controller = (function(w) {
     function loadTMC() {
         var tmcUrl = url + '&bbox=' + map.theMap.getBounds().getSouthWest().lng + ',' + map.theMap.getBounds().getSouthWest().lat + ',' + map.theMap.getBounds().getNorthEast().lng + ',' + map.theMap.getBounds().getNorthEast().lat;
         console.log(tmcUrl);
-        getTMC(url);
+        getTMC(tmcUrl);
         setInterval(function() {
             tmcUrl = url + '&bbox=' + map.theMap.getBounds().getSouthWest().lng + ',' + map.theMap.getBounds().getSouthWest().lat + ',' + map.theMap.getBounds().getNorthEast().lng + ',' + map.theMap.getBounds().getNorthEast().lat;
             console.log('refresh');
