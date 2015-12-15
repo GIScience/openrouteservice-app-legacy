@@ -305,7 +305,7 @@ var Map = (function() {
      * TMC LAYER
      * *********************************************************************/
     var tmcGeojson, tmcLayer;
-    var tmcWarnings = new L.MarkerClusterGroup({showCoverageOnHover: false });
+    var tmcWarnings = new L.MarkerClusterGroup({showCoverageOnHover: false, disableClusteringAtZoom: 12 });
 
     function getColor(d) {
         code = d.split(',')[0];
@@ -370,7 +370,6 @@ var Map = (function() {
             icon: tmcIcon
         }).bindPopup(feature.properties.message);//.addTo(tmcLayer);
         tmcWarnings.addLayer(tmcMarker);
-        self.layerTMC.addLayer(tmcWarnings);
     }
 
     function updateTmcInformation(data) {
@@ -382,6 +381,7 @@ var Map = (function() {
             onEachFeature: onEachFeature,
             style: style,
         }).addTo(tmcLayer);
+        tmcLayer.addLayer(tmcWarnings);
         // bring tmc layer to front
         tmcLayer.bringToFront();
 
