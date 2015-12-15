@@ -305,7 +305,7 @@ var Map = (function() {
      * TMC LAYER
      * *********************************************************************/
     var tmcGeojson, tmcLayer;
-    var tmcWarnings = new L.MarkerClusterGroup();
+    var tmcWarnings = new L.MarkerClusterGroup({showCoverageOnHover: false });
 
     function getColor(d) {
         code = d.split(',')[0];
@@ -883,7 +883,7 @@ var Map = (function() {
                 ftIds.push(segmentFt._leaflet_id, cornerFt._leaflet_id);
             }
             // this is a combined linestring of all sub segments with a border
-            var lineWeight = 6;
+            var lineWeight = 3;
             var segmentWidth = lineWeight + 1;
             L.polyline(routeString, {
                 color: '#000',
