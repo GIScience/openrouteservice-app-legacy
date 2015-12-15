@@ -305,6 +305,7 @@ var Map = (function() {
      * TMC LAYER
      * *********************************************************************/
     var tmcGeojson, tmcLayer;
+    var tmcWarnings = new L.MarkerClusterGroup();
 
     function getColor(d) {
         code = d.split(',')[0];
@@ -365,19 +366,25 @@ var Map = (function() {
             iconAnchor: [0, 0],
             iconSize: [16, 16],
         });
-        L.marker(layer.getBounds().getCenter(), {
+        var tmcMarker = L.marker(layer.getBounds().getCenter(), {
             icon: tmcIcon
-        }).bindPopup(feature.properties.message).addTo(tmcLayer);
+        }).bindPopup(feature.properties.message);//.addTo(tmcLayer);
+        tmcWarnings.addLayer(tmcMarker);
+        self.layerTMC.addLayer(tmcWarnings);
     }
 
     function updateTmcInformation(data) {
         // clear tmc layer
         tmcLayer = this.layerTMC;
         tmcLayer.clearLayers();
+        tmcWarnings.clearLayers();
         tmcGeojson = L.geoJson(data, {
             onEachFeature: onEachFeature,
             style: style,
         }).addTo(tmcLayer);
+        // bring tmc layer to front
+        tmcLayer.bringToFront();
+
     }
     /* *********************************************************************
      * FOR PERMALINK OR COOKIE
@@ -845,18 +852,19 @@ var Map = (function() {
         var ftIds = [];
         if (routeLineSegments && routeLineSegments.length > 0) {
             var self = this;
+            var routeString = [];
+            var routeStringCorners = [];
             for (var i = 0; i < routeLineSegments.length; i++) {
-                //"lines" of the route
+                //"lines" of the route, these are invisible and only used for 
+                // click to segment
                 var segment = [];
                 for (var j = 0; j < routeLineSegments[i].length; j++) {
                     segment.push(routeLineSegments[i][j]);
+                    routeString.push(routeLineSegments[i][j]);
                     //var segmentFt = new OpenLayers.Feature.Vector(segment, pointAndLineStyle.line);
                 }
                 var segmentFt = L.polyline(segment, {
-                    color: '#4682B4',
-                    stroke: 'true',
-                    opacity: '0.9',
-                    weight: 5,
+                    opacity: '0',
                 });
                 segmentFt.addTo(self.layerRouteLines);
                 //"corner points" of the route where direction changes
@@ -870,11 +878,35 @@ var Map = (function() {
                     radius: 3,
                     weight: 1
                 });
-                cornerFt.addTo(self.layerCornerPoints);
+                routeStringCorners.push(cornerFt);
                 //layer.addFeatures([segmentFt, cornerFt]);
                 ftIds.push(segmentFt._leaflet_id, cornerFt._leaflet_id);
             }
+            // this is a combined linestring of all sub segments with a border
+            var lineWeight = 6;
+            var segmentWidth = lineWeight + 1;
+            L.polyline(routeString, {
+                color: '#000',
+                weight: segmentWidth + 5,
+                opacity: 1
+            }).addTo(self.layerRouteLines);
+            L.polyline(routeString, {
+                color: '#fff',
+                weight: segmentWidth + 3,
+                opacity: 1
+            }).addTo(self.layerRouteLines);
+            L.polyline(routeString, {
+                color: '#4682B4',
+                opacity: '1',
+                weight: lineWeight,
+            }).addTo(self.layerRouteLines);
+            // add corner points on top 
+            for (var k = 0; k < routeStringCorners.length; k++) {
+                routeStringCorners[k].addTo(this.layerCornerPoints);
+            }
         }
+        // bring tmc layer to front
+        this.layerTMC.bringToFront();
         return ftIds;
     }
     /**
