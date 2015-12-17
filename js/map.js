@@ -347,8 +347,8 @@ var Map = (function() {
 
     function style(feature) {
         return {
-            weight: 4,
-            opacity: 0.7,
+            weight: 5,
+            opacity: 1.0,
             color: getColor(feature.properties.codes),
             visible: true
             //dashArray: '5',
@@ -392,13 +392,19 @@ var Map = (function() {
         });
         var tmcIcon = L.icon({
             iconUrl: getWarning(feature.properties.codes),
-            iconAnchor: [0, 0],
-            iconSize: [16, 16],
+            iconAnchor: [11, 11],
+            iconSize: [22, 22],
         });
-        var tmcMarker = L.marker(layer.getBounds().getCenter(), {
+        var tmcMarker = L.marker(getIconLocation(feature), { 
             icon: tmcIcon
         }).bindPopup(feature.properties.message); //.addTo(tmcLayer);
         tmcWarnings.addLayer(tmcMarker);
+    }
+
+    function getIconLocation(feature)
+    {
+        var coords = feature.geometry.coordinates;
+	return new L.LatLng(coords[0][1], coords[0][0]);
     }
 
     function updateTmcInformation(data) {
