@@ -1,0 +1,11 @@
+.leaflet-container .leaflet-control-mouseposition {
+  background-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 5px #bbb;
+  padding: 3px;
+  margin-top: 3px;
+  margin-bottom: -3px;
+  color: #333;
+  font: 11px/1.5 "Roboto", sans-serif;
+  border-radius: 4px;
+  cursor: pointer;
+}
