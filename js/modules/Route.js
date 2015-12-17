@@ -207,7 +207,7 @@ var Route = (function(w) {
             writer.writeElementString('xls:AvoidFeature', 'Pavedroads');
         }
         if (avoidableParams[7] == 'true' || avoidableParams[7] === true) {
-            writer.writeElementString('xls:AvoidFeature', 'Tunnel');
+            writer.writeElementString('xls:AvoidFeature', 'Tunnels');
         }
         //</xls:AvoidList>
         writer.writeEndElement();

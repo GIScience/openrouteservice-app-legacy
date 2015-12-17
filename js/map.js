@@ -74,6 +74,7 @@ var Map = (function() {
         this.overlays = {
             "Hillshade places": this.aster_hillshade
         };
+        L.control.mousePosition({position: 'topright', separator: ', '}).addTo(this.theMap);
         this.layerControls = L.control.layers(this.baseLayers, this.overlays);
         this.layerControls.addTo(this.theMap);
         L.control.scale().addTo(this.theMap);
@@ -106,8 +107,6 @@ var Map = (function() {
             collapsed: true, //collapsed mode, show chart on click or mouseover,
             //yAxisMin: 0
         });
-        //https://github.com/ardhi/Leaflet.MousePosition
-        //this.theMap.addControl(new OpenLayers.Control.MousePosition());
         this.layerRoutePoints = L.featureGroup().addTo(this.theMap);
         this.layerRouteLines = L.featureGroup().addTo(this.theMap);
         this.layerCornerPoints = L.featureGroup().addTo(this.theMap);
@@ -282,6 +281,31 @@ var Map = (function() {
             // else self.theMap.addLayer(self.layerTMC);
         }
 
+        function emitMapChangedZoom(e) {
+            var currentZoom = self.theMap.getZoom();
+            // make polylines transparent of route and tmc messages
+            // options are set in custom visible argument
+            if (currentZoom > 14) {
+                for (var i = 0; i < self.layerRouteLines.getLayers().length; i++) {
+                    if (self.layerRouteLines.getLayers()[i].options.visible === true) {
+                        self.layerRouteLines.getLayers()[i].setStyle({opacity: 0.8});
+                    }
+                    if (self.layerRouteLines.getLayers()[i].options.visible === false) {
+                        self.layerRouteLines.getLayers()[i].setStyle({opacity: 0});
+                    }
+                }
+            } else {
+                for (var j = 0; j < self.layerRouteLines.getLayers().length; j++) {
+                    if (self.layerRouteLines.getLayers()[j].options.visible === true) {
+                        self.layerRouteLines.getLayers()[j].setStyle({opacity: 1});
+                    }
+                    if (self.layerRouteLines.getLayers()[j].options.visible === false) {
+                        self.layerRouteLines.getLayers()[j].setStyle({opacity: 1});
+                    }
+                }
+            }
+        }
+
         function emitMapChangeBaseMap(e) {
             // without this condition map zoom lat/lon isnt loaded from cookies
             if (!initMap) {
@@ -300,12 +324,16 @@ var Map = (function() {
         this.theMap.on('zoomend', emitMapChangedEvent);
         this.theMap.on('moveend', emitMapChangedEvent);
         this.theMap.on('moveend', emitloadTMC);
+        this.theMap.on('zoomend', emitMapChangedZoom);
     }
     /* *********************************************************************
      * TMC LAYER
      * *********************************************************************/
     var tmcGeojson, tmcLayer;
-    var tmcWarnings = new L.MarkerClusterGroup({showCoverageOnHover: false, disableClusteringAtZoom: 12 });
+    var tmcWarnings = new L.MarkerClusterGroup({
+        showCoverageOnHover: false,
+        disableClusteringAtZoom: 12
+    });
 
     function getColor(d) {
         code = d.split(',')[0];
@@ -322,6 +350,7 @@ var Map = (function() {
             weight: 4,
             opacity: 0.7,
             color: getColor(feature.properties.codes),
+            visible: true
             //dashArray: '5',
         };
     }
@@ -368,7 +397,7 @@ var Map = (function() {
         });
         var tmcMarker = L.marker(layer.getBounds().getCenter(), {
             icon: tmcIcon
-        }).bindPopup(feature.properties.message);//.addTo(tmcLayer);
+        }).bindPopup(feature.properties.message); //.addTo(tmcLayer);
         tmcWarnings.addLayer(tmcMarker);
     }
 
@@ -384,7 +413,6 @@ var Map = (function() {
         tmcLayer.addLayer(tmcWarnings);
         // bring tmc layer to front
         tmcLayer.bringToFront();
-
     }
     /* *********************************************************************
      * FOR PERMALINK OR COOKIE
@@ -888,16 +916,19 @@ var Map = (function() {
             L.polyline(routeString, {
                 color: '#000',
                 weight: segmentWidth + 5,
-                opacity: 1
+                opacity: 1,
+                visible: false
             }).addTo(self.layerRouteLines);
             L.polyline(routeString, {
                 color: '#fff',
                 weight: segmentWidth + 3,
-                opacity: 1
+                visible: true,
+                opacity: 1,
             }).addTo(self.layerRouteLines);
             L.polyline(routeString, {
                 color: '#4682B4',
                 opacity: '1',
+                visible: true,
                 weight: lineWeight,
             }).addTo(self.layerRouteLines);
             // add corner points on top 
