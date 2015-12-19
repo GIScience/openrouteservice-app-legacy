@@ -105,6 +105,7 @@
     border-radius: 5px;
 }
 
+
 /**
  * CSS for non-map elements
  */
@@ -320,23 +321,18 @@
     margin: 0 2em 0 0;
 }
 
-.directions-notice {
-    padding: 0 0 0 40px;
-    margin-top: 5px;
-    color: #FF6961;
-    -height: 50px;
-    -overflow: hidden;
+.directions-warning-table {
+    color: red;
 }
 
-.directions-warning-img {
-    position: absolute;
-    margin-top: -66px;
-    margin-left: 4px;
+.directions-warning-table tr td:first-child {
+    width: 37px;
 }
 
-.directions-warning-img img {
+.directions-warning-table img {
     height: 16px;
     width: auto;
+    margin-left: 3px;
 }
 
 

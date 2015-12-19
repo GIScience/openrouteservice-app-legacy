@@ -72,9 +72,12 @@ var Map = (function() {
             "Stamen Maps": this.stamen
         };
         this.overlays = {
-            "Hillshade places": this.aster_hillshade
+            "Hillshade": this.aster_hillshade
         };
-        L.control.mousePosition({position: 'topright', separator: ', '}).addTo(this.theMap);
+        L.control.mousePosition({
+            position: 'topright',
+            separator: ', '
+        }).addTo(this.theMap);
         this.layerControls = L.control.layers(this.baseLayers, this.overlays);
         this.layerControls.addTo(this.theMap);
         L.control.scale().addTo(this.theMap);
@@ -116,7 +119,7 @@ var Map = (function() {
         this.layerTrack = L.featureGroup().addTo(this.theMap);
         this.layerAccessibility = L.featureGroup().addTo(this.theMap);
         this.layerTMC = L.featureGroup().addTo(this.theMap);
-        this.layerControls.addOverlay(this.layerTMC, 'TMC Messages');
+        this.layerControls.addOverlay(this.layerTMC, 'Traffic Information');
         this.layerRestriction = L.featureGroup().addTo(this.theMap);
         this.layerAvoid.addTo(this.theMap);
         /* *********************************************************************
@@ -288,19 +291,27 @@ var Map = (function() {
             if (currentZoom > 14) {
                 for (var i = 0; i < self.layerRouteLines.getLayers().length; i++) {
                     if (self.layerRouteLines.getLayers()[i].options.visible === true) {
-                        self.layerRouteLines.getLayers()[i].setStyle({opacity: 0.8});
+                        self.layerRouteLines.getLayers()[i].setStyle({
+                            opacity: 0.5
+                        });
                     }
                     if (self.layerRouteLines.getLayers()[i].options.visible === false) {
-                        self.layerRouteLines.getLayers()[i].setStyle({opacity: 0});
+                        self.layerRouteLines.getLayers()[i].setStyle({
+                            opacity: 0
+                        });
                     }
                 }
             } else {
                 for (var j = 0; j < self.layerRouteLines.getLayers().length; j++) {
                     if (self.layerRouteLines.getLayers()[j].options.visible === true) {
-                        self.layerRouteLines.getLayers()[j].setStyle({opacity: 1});
+                        self.layerRouteLines.getLayers()[j].setStyle({
+                            opacity: 1
+                        });
                     }
                     if (self.layerRouteLines.getLayers()[j].options.visible === false) {
-                        self.layerRouteLines.getLayers()[j].setStyle({opacity: 1});
+                        self.layerRouteLines.getLayers()[j].setStyle({
+                            opacity: 1
+                        });
                     }
                 }
             }
@@ -315,15 +326,9 @@ var Map = (function() {
                 });
             }
         }
-
-        function emitloadTMC(e) {
-            // reload TMC Layer when map paned
-            Controller.loadTMC();
-        }
         this.theMap.on('baselayerchange', emitMapChangeBaseMap);
         this.theMap.on('zoomend', emitMapChangedEvent);
         this.theMap.on('moveend', emitMapChangedEvent);
-        this.theMap.on('moveend', emitloadTMC);
         this.theMap.on('zoomend', emitMapChangedZoom);
     }
     /* *********************************************************************
@@ -335,14 +340,35 @@ var Map = (function() {
         disableClusteringAtZoom: 12
     });
 
+    function emitloadTMC(forceUpdate) {
+        // reload TMC Layer when map paned
+        Controller.loadTMC();
+    }
+
     function getColor(d) {
-        code = d.split(',')[0];
-        return list.tmc[code][1];
+        var codes = d.split(',');
+        for (var i = 0; i < codes.length; i++) {
+            if (codes[i] in list.tmc) {
+                warningColor = list.tmc[codes[i]][1];
+                break;
+            }
+        }
+        // if codes not in dict return default
+        var warningColor = warningColor !== undefined ? warningColor : '#EF0013';
+        return warningColor;
     }
 
     function getWarning(d) {
-        code = d.split(',')[0];
-        return list.tmc[code][0];
+        var codes = d.split(',');
+        for (var i = 0; i < codes.length; i++) {
+            if (codes[i] in list.tmc) {
+                warningIcon = list.tmc[codes[i]][0];
+                break;
+            }
+        }
+        // if codes not in dict return default
+        var warningIcon = warningIcon !== undefined ? warningIcon : './img/warning_undefined.png';
+        return warningIcon;
     }
 
     function style(feature) {
@@ -351,7 +377,7 @@ var Map = (function() {
             opacity: 1.0,
             color: getColor(feature.properties.codes),
             visible: true
-            //dashArray: '5',
+                //dashArray: '5',
         };
     }
 
@@ -395,16 +421,15 @@ var Map = (function() {
             iconAnchor: [11, 11],
             iconSize: [22, 22],
         });
-        var tmcMarker = L.marker(getIconLocation(feature), { 
+        var tmcMarker = L.marker(getIconLocation(feature), {
             icon: tmcIcon
         }).bindPopup(feature.properties.message); //.addTo(tmcLayer);
         tmcWarnings.addLayer(tmcMarker);
     }
 
-    function getIconLocation(feature)
-    {
+    function getIconLocation(feature) {
         var coords = feature.geometry.coordinates;
-	return new L.LatLng(coords[0][1], coords[0][0]);
+        return new L.LatLng(coords[0][1], coords[0][0]);
     }
 
     function updateTmcInformation(data) {
@@ -1297,5 +1322,6 @@ var Map = (function() {
     map.prototype.getWaypointsByGranularity = getWaypointsByGranularity;
     map.prototype.panMapOnEdges = panMapOnEdges;
     map.prototype.updateHeightprofiles = updateHeightprofiles;
+    map.prototype.emitloadTMC = emitloadTMC;
     return map;
 }());

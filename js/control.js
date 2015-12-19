@@ -758,8 +758,8 @@ var Controller = (function(w) {
                 var routeLinesHeights = route.parseResultsToLineStrings(results, routePref);
                 var routePoints = route.parseResultsToCornerPoints(results);
                 //Get the restrictions along the route
-				map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString), permaInfo[preferences.routeOptionsIdx]);
-				// update height profiles if bicycle selected
+                map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString), permaInfo[preferences.routeOptionsIdx]);
+                // update height profiles if bicycle selected
                 if (routePref == 'Bicycle') map.updateHeightprofiles(routeLinesHeights[1]);
                 var featureIds = map.updateRoute(routeLinesHeights[0], routePoints, routePref);
                 var errors = route.hasRoutingErrors(results);
@@ -1139,26 +1139,33 @@ var Controller = (function(w) {
         map.emphMarker(layer, id, false);
     }
     /** 
-     * LOAD TMC INFORMATION
-     */
-    var url;
-    if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
-        url = "cgi-bin/proxy.cgi?url=" + namespaces.services.tmc;
-    } else {
-        url = namespaces.services.tmc;
-    }
-    /** 
-     * generate url from map bounding box and set timeout interval to 5 minutes
+     * LOAD TMC MESSAGES
      */
     function loadTMC() {
-        var tmcUrl = url + '&bbox=' + map.theMap.getBounds().getSouthWest().lng + ',' + map.theMap.getBounds().getSouthWest().lat + ',' + map.theMap.getBounds().getNorthEast().lng + ',' + map.theMap.getBounds().getNorthEast().lat;
-        console.log(tmcUrl);
-        getTMC(tmcUrl);
+        var url = generateUrl(namespaces.services.tmc);
+        compareBoundingBoxes(url, false);
         setInterval(function() {
-            tmcUrl = url + '&bbox=' + map.theMap.getBounds().getSouthWest().lng + ',' + map.theMap.getBounds().getSouthWest().lat + ',' + map.theMap.getBounds().getNorthEast().lng + ',' + map.theMap.getBounds().getNorthEast().lat;
-            console.log('refresh');
-            getTMC(tmcUrl);
+            compareBoundingBoxes(url, true);
         }, 300000);
+    }
+    /**
+     * compares bounding boxes, if old bounding box does not contain new bounding
+     * box, fire new request for tmc messages
+     * @param url: url of tmc service
+     * @param forceUpdate: when auto refreshed after 5 minutes, force update the tmc messages, otherwise proceed as usual
+     */
+    function compareBoundingBoxes(url, forceUpdate) {
+        var tmcUrl = url + '&bbox=' + map.theMap.getBounds().getSouthWest().lng + ',' + map.theMap.getBounds().getSouthWest().lat + ',' + map.theMap.getBounds().getNorthEast().lng + ',' + map.theMap.getBounds().getNorthEast().lat;
+        if (forceUpdate === true) {
+            console.log('force refreshing tmc..');
+            getTMC(tmcUrl);
+        } else {
+            if (!(map.previousBoundingbox.contains(map.theMap.getBounds()))) {
+                console.log('loading tmc..');
+                map.previousBoundingbox = new L.latLngBounds(map.theMap.getBounds());
+                getTMC(tmcUrl);
+            }
+        }
     }
     /**
      * fires xhr request and updates map tmc layer on success
@@ -1387,6 +1394,12 @@ var Controller = (function(w) {
             ui.showNewToOrsPopup();
         }
         initMap = false;
+        // set new bounding box after map and new bounding box are loaded from permalink
+        map.previousBoundingbox = new L.latLngBounds(map.theMap.getBounds().getSouthWest(), map.theMap.getBounds().getNorthEast());
+        // force tmc service once
+        compareBoundingBoxes(generateUrl(namespaces.services.tmc), true);
+        // this listener is added here, otherwise tmc service will be requested several times during map init
+        map.theMap.on('moveend', map.emitloadTMC);
     }
     /**
      * apply selected site language, load dynamic menus, etc.
@@ -1473,6 +1486,7 @@ var Controller = (function(w) {
     }
     Controller.prototype.initialize = initialize;
     Controller.prototype.loadTMC = loadTMC;
+    Controller.prototype.compareBoundingBoxes = compareBoundingBoxes;
     return new Controller();
 }(window));
 window.onload = Controller.initialize;

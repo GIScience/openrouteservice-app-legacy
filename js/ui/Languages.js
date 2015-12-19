@@ -73,7 +73,8 @@ var Languages = (function(w) {'use strict';
 		$('#avoidMotorLabel').html(p.translate('avoidMotorways'));
 		$('#avoidunpavedRoadsLabel').html(p.translate('avoidunpavedRoads'));
 		$('#avoidFerryLabel').html(p.translate('avoidFerry'));
-		
+		$('#avoidTunnelLabel').html(p.translate('avoidTunnel'));
+		$('#avoidFordsLabel').html(p.translate('avoidFord'));
 		
 		//wheelchair parameters
 		$('#surfaceLabel').html(p.translate('surface'));

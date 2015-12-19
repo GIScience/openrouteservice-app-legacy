@@ -232,22 +232,24 @@ var Ui = (function(w) {
         //show number of results and link to zoom
         var numResults = $('#zoomToWaypointResults_' + wpIndex);
         numResults.html(preferences.translate('numPoiResults1') + allAddress.length + preferences.translate('numPoiResults2') + '<br/>' + preferences.translate('selectResult'));
-        $('.address').mouseover(handleMouseOverElement);
-        $('.address').mouseout(handleMouseOutElement);
-        $('.address').click(handleSearchWaypointResultClick);
-        // if one result is found then select it automatically
-        // if (listOfFeatures.length == 1) {
-        //  var featureID = listOfFeatures[0].id
-        //  $(".address").click( function (event, a) {
-        //      // for a trigger like below a refers to featureID
-        //      handleSearchWaypointResultClickHelper(event, a)
-        //  } ).trigger("click", featureID);
-        // } else {
-        //  //event handling
-        //  $('.address').mouseover(handleMouseOverElement);
-        //  $('.address').mouseout(handleMouseOutElement);
-        //  $('.address').click(handleSearchWaypointResultClickHelper);
-        // }
+        // $('.address').mouseover(handleMouseOverElement);
+        // $('.address').mouseout(handleMouseOutElement);
+        // $('.address').click(handleSearchWaypointResultClick);
+        //if one result is found then select it automatically
+        if (listOfFeatures.length == 1) {
+            console.log(listOfFeatures[0])
+            var featureID = listOfFeatures[0]._leaflet_id;
+            $(".address").click(function(event, a) {
+                console.log(featureID)
+                    // for a trigger like below a refers to featureID
+                handleSearchWaypointResultClickHelper(event, a);
+            }).trigger("click", featureID);
+        } else {
+            //event handling
+            $('.address').mouseover(handleMouseOverElement);
+            $('.address').mouseout(handleMouseOutElement);
+            $('.address').click(handleSearchWaypointResultClickHelper);
+        }
     }
     /**
      * views an error message when problems occured during geocoding
@@ -265,15 +267,15 @@ var Ui = (function(w) {
      * @param e: click event
      * @param featureID: id of address, is optional as it is only passed when one result is returned
      */
-    // function handleSearchWaypointResultClickHelper(e, featureID) {
-    //  if (featureID != undefined) {
-    //      if (featureID == e.target.id) {
-    //          handleSearchWaypointResultClick(e)
-    //      }
-    //  } else {
-    //          handleSearchWaypointResultClick(e)
-    //  }
-    // }
+    function handleSearchWaypointResultClickHelper(e, featureID) {
+        if (featureID !== undefined) {
+            if (featureID == e.target.id) {
+                handleSearchWaypointResultClick(e);
+            }
+        } else {
+            handleSearchWaypointResultClick(e);
+        }
+    }
     /**
      * when the user clicks on a waypoint search result, it is used as waypoint. The search results vanish and only the selected address is shown.
      * @param e: the event
@@ -1568,28 +1570,23 @@ var Ui = (function(w) {
                     if (tmcMessage) {
                         // add icons and jquery collapsible stuff
                         tmcMessage = tmcMessage.text || tmcMessage.textContent;
-                        var tmcWarning;
+                        var tmcWarning, warningLink;
                         var tmcText = tmcMessage.split(" | ")[1];
                         var tmcCode = tmcMessage.split(" | ")[0];
                         tmcCode = tmcCode.split(',');
                         for (var i = 0; i < tmcCode.length; i++) {
-                            tmcWarning = new Element('img', {
-                                'src': list.tmc[tmcCode[i]][0]
-                            });
+                            warningLink = list.tmc[tmcCode[i]][0];
                             break;
                         }
+                        // if codes not in dict return default
+                        warningLink = warningLink !== undefined ? warningLink : './img/warning_undefined.png';
                         var noticeDiv = new Element('div', {
                             'class': 'directions-notice',
                         }).update(tmcText);
-                        // here
-                        var noticeImgDiv = new Element('div', {
-                            'class': 'directions-warning-img'
-                        });
-                        noticeImgDiv.appendChild(tmcWarning);
-                        //
-                        directionsContainer.appendChild(noticeDiv);
-                        directionsContainer.appendChild(noticeImgDiv);
-
+                        var directionsWarningTable = new Element('table', {
+                            'class': 'directions-warning-table'
+                        }).update('<thead><tbody><tr><td>' + '<img src="' + warningLink + '" />' + '</td><td>' + tmcText + '</td></tr></tbody>');
+                        directionsContainer.appendChild(directionsWarningTable);
                     }
                     directionsModeContainer.appendChild(directionsBorder);
                     directionsModeContainer.appendChild(distanceDiv);
@@ -2280,8 +2277,7 @@ var Ui = (function(w) {
                     key: preferences.avoidPavedIdx,
                     value: boolVar
                 });
-            }
-            else if (itemId === list.routeAvoidables[7]) {
+            } else if (itemId === list.routeAvoidables[7]) {
                 if (permaInfo[preferences.avoidTunnelIdx] == "true" || permaInfo[preferences.avoidTunnelIdx] == true) {
                     var boolVar = false;
                 } else {

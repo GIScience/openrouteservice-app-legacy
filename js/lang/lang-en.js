@@ -90,6 +90,8 @@ var lang_en = {
     'avoidTollways': 'toll roads',
     'avoidunpavedRoads': 'unpaved roads',
     'avoidFerry': 'ferry connections',
+    'avoidTunnel' : 'tunnels',
+    'avoidFord': 'fords',
     'avoidFerryPedes': 'ferry connections',
     'avoidFerryBike': 'ferry connections',
     'avoidunpavedRoadsBike': 'unpaved roads',
