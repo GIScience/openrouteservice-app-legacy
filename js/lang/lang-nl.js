@@ -68,6 +68,7 @@ var lang_nl = {
 	'Car' : 'auto',
     'Shortest':'kortste route',
     'Fastest':'snelste route',
+    'Recommended': 'aanbevolen route',
     'Pedestrian':'voetganger',
     'Bicycle':'kortste route',
     'BicycleSafety':'veiligste route',
@@ -91,6 +92,12 @@ var lang_nl = {
 	'avoidFerryBike' : 'Vermijd veerverbindingen' ,
 	'avoidunpavedRoadsBike' : 'Vermijd onverharde wegen',
 	'avoidStepsBike' : 'Vermijd stappen',
+
+    'avoidStepsPedestrian' : 'Vermijd stappen',
+   
+    'avoidFords' : 'fords',
+    'avoidFordsBike' : 'fords',
+    'avoidFordsPedestrian' : 'fords',
 	
 	'TruckLength' : 'maximumlengte',
 	'TruckHeight' : 'maximale hoogte',

@@ -72,6 +72,7 @@ var lang_cn = {
 	'Car' : '汽車',
 	'Shortest' : '最短路徑',
 	'Fastest' : '最快路徑',
+	'Recommended': '推薦路線',
 	'Pedestrian' : '步行模式',
 	'Wheelchair' : '輪椅',
 	'Bicycle' : '自行車',
@@ -108,6 +109,10 @@ var lang_cn = {
 	'avoidFerryBike' : '避開渡船' ,
 	'avoidunpavedRoadsBike' : '避開未鋪砌道路',
 	'avoidStepsBike' : '步驟',
+	'avoidStepsPedestrian': '步驟',
+ 	'avoidFords' : '渡口',
+ 	'avoidFordsBike' : '渡口',
+ 	'avoidFordsPedestrian' : '渡口',
 	
 	//Surfaces:
 	'surface': '路面品質',

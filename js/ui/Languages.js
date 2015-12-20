@@ -27,6 +27,7 @@ var Languages = (function(w) {'use strict';
 		$('#carLabel').html(p.translate('Car'));
 		$('#fastestLabel').html(p.translate('Fastest'));
 		$('#shortestLabel').html(p.translate('Shortest'));
+		$('#recommendedLabel').html(p.translate('Recommended'));
 		$('#BicycleLabel').html(p.translate('Bicycle'));
 		$('#BicycleSafetyLabel').html(p.translate('BicycleSafety'));
 		$('#BicycleRouteLabel').html(p.translate('BicycleRoute'));
@@ -58,9 +59,13 @@ var Languages = (function(w) {'use strict';
 		$('#avoidunpavedRoadsLabelBike').html(p.translate('avoidunpavedRoadsBike'));
 		$('#avoidStepsLabelBike').html(p.translate('avoidStepsBike'));
 		//$('#avoidpavedRoadsLabelBike').html(p.translate('avoidpavedRoadsBike'));
+		$('#avoidStepsLabelPedestrian').html(p.translate('avoidStepsBike'));
 		$('#avoidFerryLabelPedestrian').html(p.translate('avoidFerryPedes'));
 		
-		
+		$('#avoidFordsLabel').html(p.translate('avoidFords'));
+ 		$('#avoidFordsLabelBike').html(p.translate('avoidFordsBike'));
+ 		$('#avoidFordsLabelPedestrian').html(p.translate('avoidFordsPedestrian'));
+
 		$('#avoidRoadsBtn').html(p.translate('avoidRoadMain'));
 		$('#avoidAreasBtn').html(p.translate('avoidAreasMain'));
 		$('#avoidBikesBtn').html(p.translate('avoidBikeMain'));

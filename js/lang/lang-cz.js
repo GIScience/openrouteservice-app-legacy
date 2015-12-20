@@ -68,6 +68,7 @@ var lang_cz = {
 	'Car' : 'Auto',
     'Shortest':'nejkrats&iacute;trasa',
     'Fastest':'Nejrychlejs&iacute;cesta',
+    'Recommended': 'Doporu&#269;en&aacute; trasa',
     'Pedestrian':'chodec',
     'Bicycle':'nejkrats&iacute;trasa',
     'BicycleSafety':'Nejbezpecnejs&iacute;cesta',
@@ -91,7 +92,14 @@ var lang_cz = {
 	'avoidFerryBike' : 'Vyhnete trajektov&eacute;ho spojen&iacute;' ,
 	'avoidunpavedRoadsBike' : 'Vyhnete se nezpevnen&yacute;ch cest&aacute;ch',
 	'avoidStepsBike' : 'Vyhnete kroky',
-	
+
+    'avoidStepsPedestrian' : 'Vyhnete kroky',
+    'avoidFords' : 'brody',
+    'avoidFordsBike' : 'brody',
+    'avoidFordsPedestrian' : 'brody',
+
+
+
 	'TruckLength' : 'maxim&aacute;ln&iacute;d&eacute;lka',
 	'TruckHeight' : 'maxim&aacute;ln&iacute;v&yacute;ska',
 	'TruckWeight' : 'maxim&aacute;ln&iacute;v&aacute;ha',

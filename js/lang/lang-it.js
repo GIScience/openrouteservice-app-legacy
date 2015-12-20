@@ -61,6 +61,7 @@ var lang_it = {
 	'Car' : 'auto',
     'Shortest':'percorso pi&ugrave; breve',
     'Fastest':'percorso pi&ugrave; veloce',
+    'Recommended': 'percorso consigliato',
     'Pedestrian':'pedonale',
     'Bicycle':'percorso pi&ugrave; breve',
     'BicycleSafety':'via pi&ugrave; sicura',
@@ -84,6 +85,12 @@ var lang_it = {
 	'avoidFerryBike' : 'Evitare i collegamenti marittimi' ,
 	'avoidunpavedRoadsBike' : 'Evita strade non asfaltate',
 	'avoidStepsBike' : 'Evitare passi',
+
+    'avoidStepsPedestrian' : 'Evitare passi',
+   
+    'avoidFords' : 'guadi',
+    'avoidFordsBike' : 'guadi',
+    'avoidFordsPedestrian' : 'guadi',
 	
 	'TruckLength' : 'lunghezza massima',
 	'TruckHeight' : 'altezza massima',

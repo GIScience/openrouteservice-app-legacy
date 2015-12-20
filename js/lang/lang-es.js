@@ -68,6 +68,7 @@ var lang_es = {
 	'Car' : 'Coche',
     'Shortest':'ruta m&aacute;s corta',
     'Fastest':'ruta m&aacute;s r&aacute;pida',
+    'Recommended':'ruta recomendada',
     'Pedestrian':'peatones',
     'Bicycle':'ruta m&aacute;s corta',
     'BicycleSafety':'ruta m&aacute;s segura',
@@ -91,6 +92,12 @@ var lang_es = {
 	'avoidFerryBike' : 'Evitar las conexiones mar&iacute;timas' ,
 	'avoidunpavedRoadsBike' : 'Evitar carreteras sin pavimentar',
 	'avoidStepsBike' : 'Evitar pasos',
+
+    'avoidStepsPedestrian' : 'Evitar pasos',
+   
+    'avoidFords' : 'vados',
+    'avoidFordsBike' : 'vados',
+    'avoidFordsPedestrian' : 'vados',
 	
 	'TruckLength' : 'longitud m&aacute;xima',
 	'TruckHeight' : 'altura m&aacute;xima',

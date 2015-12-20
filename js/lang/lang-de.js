@@ -72,6 +72,7 @@ var lang_de = {
 		'Car' : 'Auto',
 		'Shortest':  'K&uuml;rzester Weg',
 		'Fastest':  'Schnellster Weg',
+		'Recommended': 'Bevorzugter Weg',
 		'Pedestrian':  'Fußg&auml;nger',
 		'Wheelchair':  'Barrierefrei',
 		'Bicycle':  'Normal',
@@ -109,8 +110,14 @@ var lang_de = {
 		'avoidFerryBike' : 'F&aumlhrverbindungen vermeiden' ,
 		'avoidunpavedRoadsBike' : 'Unbefestigte Straßen vermeiden',
 		'avoidStepsBike' : 'Stufen/Treppen vermeiden',
+
+
+		'avoidStepsPedestrian': 'Stufen/Treppen vermeiden',
+ 		'avoidFords' : 'Furten',
+ 		'avoidFordsBike' : 'Furten',
+ 		'avoidFordsPedestrian' : 'Furten',
 		
-	//Surfaces:
+		//Surfaces:
 		'surface': 'Oberfläche',
 		'paved': 'Befestigt',
         'asphalt': 'wie Beton oder Asphalt',

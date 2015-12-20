@@ -280,40 +280,17 @@ var Map = (function() {
             var currentZoom = self.theMap.getZoom();
             if (currentZoom < 14) self.theMap.removeLayer(self.layerCornerPoints);
             else self.theMap.addLayer(self.layerCornerPoints);
-            // if (currentZoom < 10) self.theMap.removeLayer(self.layerTMC);
-            // else self.theMap.addLayer(self.layerTMC);
         }
 
         function emitMapChangedZoom(e) {
+            var layer = self.layerRouteLines.getLayers();
             var currentZoom = self.theMap.getZoom();
-            // make polylines transparent of route and tmc messages
-            // options are set in custom visible argument
-            if (currentZoom > 14) {
-                for (var i = 0; i < self.layerRouteLines.getLayers().length; i++) {
-                    if (self.layerRouteLines.getLayers()[i].options.visible === true) {
-                        self.layerRouteLines.getLayers()[i].setStyle({
-                            opacity: 0.5
-                        });
-                    }
-                    if (self.layerRouteLines.getLayers()[i].options.visible === false) {
-                        self.layerRouteLines.getLayers()[i].setStyle({
-                            opacity: 0
-                        });
-                    }
-                }
-            } else {
-                for (var j = 0; j < self.layerRouteLines.getLayers().length; j++) {
-                    if (self.layerRouteLines.getLayers()[j].options.visible === true) {
-                        self.layerRouteLines.getLayers()[j].setStyle({
-                            opacity: 1
-                        });
-                    }
-                    if (self.layerRouteLines.getLayers()[j].options.visible === false) {
-                        self.layerRouteLines.getLayers()[j].setStyle({
-                            opacity: 1
-                        });
-                    }
-                }
+            // pass zoom level to style functions
+            for (var i = 0; i < layer.length; i++) {
+                if (layer[i].options.zoomChange === 'routeOutline') layer[i].setStyle(styles.routeOutline(currentZoom, true));
+                else if (layer[i].options.zoomChange === 'routePadding') layer[i].setStyle(styles.routePadding(currentZoom));
+                else if (layer[i].options.zoomChange === 'route') layer[i].setStyle(styles.route(currentZoom));
+                else if (layer[i].options.zoomChange === 'routeCorners') layer[i].setStyle(styles.routeCorners(currentZoom));
             }
         }
 
@@ -375,27 +352,23 @@ var Map = (function() {
         return {
             weight: 5,
             opacity: 1.0,
-            color: getColor(feature.properties.codes),
-            visible: true
-                //dashArray: '5',
+            color: getColor(feature.properties.codes)
         };
     }
 
     function highlightFeature(e) {
         var layer = e.target;
         layer.setStyle({
-            weight: 5,
+            weight: 7,
             opacity: 1
         });
         if (!L.Browser.ie && !L.Browser.opera) {
             layer.bringToFront();
         }
-        //info.update(layer.feature.properties);
     }
 
     function resetHighlight(e) {
         tmcGeojson.resetStyle(e.target);
-        //info.update();
     }
 
     function zoomToFeatureShowPopup(e) {
@@ -894,6 +867,9 @@ var Map = (function() {
     }
     /**
      * draws given points as route line on the map
+     * adds route and corner points twice, the base information has to be added
+     * to enable click events on route instructions for individual segments
+     * visible route is one feature thus has one id
      * @param {Object} routeLineSegments: array of Linestrings
      * @param {Object} routeLinePoints: array of Points
      * @param routePref: Bike, Car etc..
@@ -920,51 +896,24 @@ var Map = (function() {
                 for (var j = 0; j < routeLineSegments[i].length; j++) {
                     segment.push(routeLineSegments[i][j]);
                     routeString.push(routeLineSegments[i][j]);
-                    //var segmentFt = new OpenLayers.Feature.Vector(segment, pointAndLineStyle.line);
                 }
-                var segmentFt = L.polyline(segment, {
-                    opacity: '0',
-                });
-                segmentFt.addTo(self.layerRouteLines);
+                // invisible route segment for clicking
+                var segmentBase = L.polyline(segment, styles.routeBase());
+                segmentBase.addTo(self.layerRouteLines);
                 //"corner points" of the route where direction changes
                 var cornerPoint = routeLinePoints[i];
-                //var cornerFt = new OpenLayers.Feature.Vector(cornerPoint, pointAndLineStyle.point);
-                var cornerFt = new L.CircleMarker(cornerPoint, {
-                    color: '#4682B4',
-                    fillColor: 'white',
-                    fillOpacity: 1,
-                    fill: true,
-                    radius: 3,
-                    weight: 1
-                });
-                routeStringCorners.push(cornerFt);
-                //layer.addFeatures([segmentFt, cornerFt]);
-                ftIds.push(segmentFt._leaflet_id, cornerFt._leaflet_id);
+                var routeCornerBase = L.marker(cornerPoint, styles.routeCornersBase());
+                routeCornerBase.addTo(self.layerCornerPoints);
+                routeStringCorners.push(routeLinePoints[i]);
+                ftIds.push(segmentBase._leaflet_id, routeCornerBase._leaflet_id);
             }
             // this is a combined linestring of all sub segments with a border
-            var lineWeight = 3;
-            var segmentWidth = lineWeight + 1;
-            L.polyline(routeString, {
-                color: '#000',
-                weight: segmentWidth + 5,
-                opacity: 1,
-                visible: false
-            }).addTo(self.layerRouteLines);
-            L.polyline(routeString, {
-                color: '#fff',
-                weight: segmentWidth + 3,
-                visible: true,
-                opacity: 1,
-            }).addTo(self.layerRouteLines);
-            L.polyline(routeString, {
-                color: '#4682B4',
-                opacity: '1',
-                visible: true,
-                weight: lineWeight,
-            }).addTo(self.layerRouteLines);
+            L.polyline(routeString, styles.routeOutline(self.theMap.getZoom())).addTo(self.layerRouteLines);
+            L.polyline(routeString, styles.routePadding(self.theMap.getZoom())).addTo(self.layerRouteLines);
+            L.polyline(routeString, styles.route(self.theMap.getZoom())).addTo(self.layerRouteLines);
             // add corner points on top 
             for (var k = 0; k < routeStringCorners.length; k++) {
-                routeStringCorners[k].addTo(this.layerCornerPoints);
+                new L.CircleMarker(routeStringCorners[k], styles.routeCorners()).addTo(this.layerRouteLines);
             }
         }
         // bring tmc layer to front
@@ -1058,11 +1007,7 @@ var Map = (function() {
     function addAccessiblityPolygon(polygonArray) {
         var colorRange = rangeColors(polygonArray.length - 1);
         for (var i = polygonArray.length - 1; i >= 0; i--) {
-            L.polygon(polygonArray[i], {
-                color: colorRange[i],
-                stroke: true,
-                weight: 3
-            }).addTo(this.layerAccessibility);
+            L.polygon(polygonArray[i], styles.accessibilityAnalysis(colorRange[i])).addTo(this.layerAccessibility);
         }
         this.layerControls.addOverlay(this.layerAccessibility, 'Accessibility Analysis');
     }
@@ -1168,12 +1113,7 @@ var Map = (function() {
     function parseStringToTrack(trackString) {
         var track = jQuery.parseXML(trackString);
         track = toGeoJSON.gpx(track);
-        track = L.polyline(track.features[0].geometry.coordinates, {
-            color: randomColors(),
-            stroke: 'true',
-            opacity: '0.9',
-            weight: 4,
-        });
+        track = L.polyline(track.features[0].geometry.coordinates, styles.gpxTrack());
         return track;
     }
     /**
@@ -1188,65 +1128,6 @@ var Map = (function() {
         this.theMap.fitBounds(trackFeatures.getBounds());
         var featureName = trackFeatures._leaflet_id;
         return featureName;
-    }
-    /** 
-     * generates a random hex color
-     */
-    function randomColors() {
-        var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
-        return randomColor;
-    }
-    /** 
-     * Generates a green to red color range
-     * source: http://stackoverflow.com/questions/11849308/generate-colors-between-red-and-green-for-an-input-range
-     */
-    function rangeColors(rangeNumber) {
-        var colorArr = [];
-        var red = new Color(232, 9, 26),
-            white = new Color(255, 255, 255),
-            green = new Color(6, 170, 60),
-            start = green,
-            end = red;
-        // if (rangeNumber > 50) {
-        //     start = white,
-        //     end = red;
-        //     rangeNumber = rangeNumber % 51;
-        // }
-        var startColors = start.getColors(),
-            endColors = end.getColors();
-        for (var i = 0; i <= rangeNumber; i++) {
-            var r = Interpolate(startColors.r, endColors.r, rangeNumber, i);
-            var g = Interpolate(startColors.g, endColors.g, rangeNumber, i);
-            var b = Interpolate(startColors.b, endColors.b, rangeNumber, i);
-            var color = "rgb(" + r + "," + g + "," + b + ")";
-            colorArr.push(color);
-        }
-
-        function Interpolate(start, end, steps, count) {
-            var s = start,
-                e = end,
-                final = s + (((e - s) / steps) * count);
-            return Math.floor(final);
-        }
-
-        function Color(_r, _g, _b) {
-            var r, g, b;
-            var setColors = function(_r, _g, _b) {
-                r = _r;
-                g = _g;
-                b = _b;
-            };
-            setColors(_r, _g, _b);
-            this.getColors = function() {
-                var colors = {
-                    r: r,
-                    g: g,
-                    b: b
-                };
-                return colors;
-            };
-        }
-        return colorArr;
     }
     /**
      * pans the map when marker hits boundaries

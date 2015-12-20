@@ -72,6 +72,7 @@ var lang_cnsimple = {
 	'Car' : '汽车',
 	'Shortest' : '最短路径',
 	'Fastest' : '最快路径',
+	'Recommended': '推荐路线',
 	'Pedestrian' : '行人模式',
 	'Wheelchair' : '无障碍模式',
 	'Bicycle' : '最短路径',
@@ -108,6 +109,11 @@ var lang_cnsimple = {
 	'avoidFerryBike' : '避开渡船' ,
 	'avoidunpavedRoadsBike' : '避开未铺砌道路',
 	'avoidStepsBike' : '步骤',
+	'avoidStepsPedestrian': '步骤',
+ 	
+ 	'avoidFords' : '渡口',
+ 	'avoidFordsBike' : '渡口',
+ 	'avoidFordsPedestrian' : '渡口',
 	
 	//Surfaces:
 	'surface': '表面',

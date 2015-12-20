@@ -80,7 +80,7 @@
 			$viaPoints_xml = "";
 			for($i = 0; $i < count($points) ; $i++){
 				$p = explode(",", $points[$i]);
-				$viaPoints_xml = $viaPoints_xml."<xls:viaPoint><xls:Position><gml:Point><gml:pos>".$p[0]." ".$p[1]."</gml:pos></gml:Point></xls:Position></xls:viaPoint>";
+				$viaPoints_xml = $viaPoints_xml."<xls:ViaPoint><xls:Position><gml:Point><gml:pos>".$p[0]." ".$p[1]."</gml:pos></gml:Point></xls:Position></xls:ViaPoint>";
 			}
 		}
 		else
@@ -185,8 +185,7 @@
 			$viaPoints_xml = "";
 			for($i = 0; $i < count($points) ; $i++){
 				$p = explode(",", $points[$i]);
-				$viaPoints_xml = $viaPoints_xml."<xls:viaPoint><xls:Position><gml:Point><gml:pos>".$p[0]." ".$p[1]."</gml:pos></gml:Point></xls:Position></xls:viaPoint>";
-			}
+				$viaPoints_xml = $viaPoints_xml."<xls:ViaPoint><xls:Position><gml:Point><gml:pos>".$p[0]." ".$p[1]."</gml:pos></gml:Point></xls:Position></xls:ViaPoint>";			}
 		}
 		else
 			$viaPoints_xml = "";

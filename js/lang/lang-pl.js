@@ -72,6 +72,7 @@ var lang_pl = {
 	'Car': 'Samoch&oacute;d',
 	'Shortest' : 'najkr&oacute;tsza trasa',
 	'Fastest' : 'najszybsza trasa',
+	'Recommended': 'zalecana trasa',
 	'Pedestrian' : 'pieszo',
 	'Bicycle' : 'najkr&oacute;tsza trasa',
 	'BicycleSafety' : 'trasa bezpieczna',
@@ -95,6 +96,13 @@ var lang_pl = {
 	'avoidFerryBike' : 'Unika&#263; po&#322;&#261;czenia promowe' ,
 	'avoidunpavedRoadsBike' : 'Unika&#263; drogi gruntowe',
 	'avoidStepsBike' : 'Kroki',
+
+	'avoidStepsPedestrian' : 'Kroki',
+ 	
+  	'avoidFords' : 'brody',
+  	'avoidFordsBike' : 'brody',
+  	'avoidFordsPedestrian' : 'brody',
+
 	
 	'TruckLength' : 'maksymalna d&#322;ugo&#347;&#263;',
 	'TruckHeight' : 'wysoko&#347;ci&#261; maksymalnej',

@@ -9,14 +9,16 @@ if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
 $subject = $name;
 // To send HTML mail, the Content-type header must be set.
+$browser = $_SERVER['HTTP_USER_AGENT'] . "\n\n";
 $headers = 'MIME-Version: 1.0' . "\r\n";
-$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+$headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
 $headers .= 'From:' . $email. "\r\n"; // Sender's Email
 $headers .= 'Cc:' . $email. "\r\n"; // Carbon copy to Sender
 $template = '<div style="padding:50px; color:white;">Hello ' . $name . ',<br/>'
 . '<br/>Thank you for contacting OpenRouteService.<br/><br/>'
 . 'Name:' . $name . '<br/>'
 . 'Email:' . $email . '<br/>'
+. 'Browser:' . $browser . '<br/>'
 . 'Message:' . $message . '<br/><br/>'
 . 'This is a Contact Confirmation mail.'
 . '<br/>'

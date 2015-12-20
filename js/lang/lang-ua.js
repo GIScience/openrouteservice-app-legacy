@@ -72,6 +72,7 @@ var lang_ua = {
 	'Car': 'автомобіль',
     'Shortest': 'короткий маршрут',
     'Fastest': 'швидкий маршрут',
+    'Recommended': 'Рекомендований маршрут',
     'Pedestrian': 'пішохідний',
     'Bicycle': 'короткий маршрут',
     'BicycleSafety': 'безпечний маршрут',
@@ -126,6 +127,12 @@ var lang_ua = {
 	'avoidFerryBike' : 'Уникайте пороми' ,
 	'avoidunpavedRoadsBike' : 'Уникайте грунтові дороги',
 	'avoidStepsBike' : 'заходи',
+
+    'avoidStepsPedestrian' : 'заходи',
+  
+    'avoidFords' : 'броди',
+    'avoidFordsBike' : 'броди',
+    'avoidFordsPedestrian' : 'броди',
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;уникнути типи доріг &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;уникнути типи доріг &nbsp;&nbsp;<span class="caret">',

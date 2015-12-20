@@ -22,7 +22,9 @@ var Controller = (function(w) {
         //Timeout for service responses
         SERVICE_TIMEOUT_INTERVAL = 10000,
         //timer
-        timerRoute; //TODO more timers for various service calls
+        timerRoute, //TODO more timers for various service calls
+        //timeout for tmc messages
+        refreshIntervalIdTMC;
     //ID for route calculation, will increment each time a route is calculated
     var calcRouteID = 0;
 
@@ -413,7 +415,7 @@ var Controller = (function(w) {
      * *********************************************************************/
     /**
      * parses the user input for the address search and calls the SearchAddress module to build a search request
-     * @param atts: address: address as text string the user wants to search for; lastSearchResults: string of OL feature ids for the last search results
+     * @param atts: address: address as text string the user wants to search for; lastSearchResults: string of LL feature ids for the last search results
      */
     function handleSearchAddressRequest(atts) {
         var address = atts.address;
@@ -484,7 +486,7 @@ var Controller = (function(w) {
     }
     /**
      * parses the user input for the POI search and calls the SearchPoi module to build a search request
-     * @param atts: query: the POI search query as string; nearRoute: true if a POI search along a given route should be performed; maxDist: maximum distance for POIs off the route; lastSearchResults: list of OL map feature ids of the last search
+     * @param atts: query: the POI search query as string; nearRoute: true if a POI search along a given route should be performed; maxDist: maximum distance for POIs off the route; lastSearchResults: list of LL map feature ids of the last search
      */
     function handleSearchPoiRequest(atts) {
         var poi = atts.query;
@@ -624,10 +626,6 @@ var Controller = (function(w) {
         var type = waypoint.determineWaypointType(index);
         //add lat lon to input field 
         var newPosition = map.convertFeatureIdToPositionString(featureMoved._leaflet_id, map.layerRoutePoints);
-        //convert position dis
-        // var displayPosition = util.convertPositionStringToLonLat(newPosition);
-        // displayPosition = util.convertPointForDisplay(displayPosition);
-        // displayPosition = util.convertPointToString(displayPosition);
         var newIndex = ui.addWaypointResultByRightclick(type, index, newPosition, true);
         ui.setWaypointFeatureId(newIndex, featureMoved._leaflet_id, newPosition, 'layerRoutePoints');
         //update preferences
@@ -764,7 +762,7 @@ var Controller = (function(w) {
                 var featureIds = map.updateRoute(routeLinesHeights[0], routePoints, routePref);
                 var errors = route.hasRoutingErrors(results);
                 if (!errors) {
-                    ui.updateRouteSummary(results);
+                    ui.updateRouteSummary(results, routePref);
                     ui.updateRouteInstructions(results, featureIds, 'layerRouteLines');
                     ui.endRouteCalculation();
                     if (zoomToMap) map.zoomToRoute();
@@ -1014,7 +1012,7 @@ var Controller = (function(w) {
                     data = data.replace(/gpx:/g, '');
                     var wps = map.parseStringToWaypoints(data, granularity);
                     if (wps) {
-                        //waypoints: array of OL.LonLat representing one wayoint each
+                        //waypoints: array of LL.lngLat representing one wayoint each
                         for (var i = 0; i < wps.length; i++) {
                             var type;
                             if (wps[i][1] === 0 & wps[i][0] === 0) {
@@ -1106,21 +1104,21 @@ var Controller = (function(w) {
     }
     /**
      * highlights the correspoinding Ui element based on the given map feature/ marker, e.g. the corresponding POI description
-     * @param markerId: OL feature id to highlight
+     * @param markerId: LL feature id to highlight
      */
     function handleMarkerEmph(markerId) {
         ui.emphElement(markerId);
     }
     /**
      * un-highlights the correspoinding Ui element based on the given map feature/ marker, e.g. the corresponding POI description
-     * @param markerId: OL feature id to deemphasize
+     * @param markerId: LL feature id to deemphasize
      */
     function handleMarkerDeEmph(markerId) {
         ui.deEmphElement(markerId);
     }
     /**
      * highlights the corresponding map feature based on the given Ui element, e.g. the corresponding POI marker
-     * @param atts: id: OL feature id of the element; layer: map layer the feature is located on
+     * @param atts: id: LL feature id of the element; layer: map layer the feature is located on
      */
     function handleElementEmph(atts) {
         var id = atts.id;
@@ -1130,7 +1128,7 @@ var Controller = (function(w) {
     }
     /**
      * un-highlights the corresponding map feature based on the given Ui element, e.g. the corresponding POI marker
-     * @param atts: id: OL feature id of the element; layer: map layer the feature is located on
+     * @param atts: id: LL feature id of the element; layer: map layer the feature is located on
      */
     function handleElementDeEmph(atts) {
         var id = atts.id;
@@ -1138,13 +1136,19 @@ var Controller = (function(w) {
         //tell map to de-emph the element
         map.emphMarker(layer, id, false);
     }
+    /* *********************************************************************
+     * TMC Messages
+     * *********************************************************************/
     /** 
-     * LOAD TMC MESSAGES
+     * initiates TMC service call
+     * sets force update if timeout
+     * clearInterval has to be called to remove any old timeouts
      */
     function loadTMC() {
         var url = generateUrl(namespaces.services.tmc);
+        clearInterval(refreshIntervalIdTMC);
         compareBoundingBoxes(url, false);
-        setInterval(function() {
+        refreshIntervalIdTMC = setInterval(function() {
             compareBoundingBoxes(url, true);
         }, 300000);
     }

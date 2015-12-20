@@ -237,11 +237,9 @@ var Ui = (function(w) {
         // $('.address').click(handleSearchWaypointResultClick);
         //if one result is found then select it automatically
         if (listOfFeatures.length == 1) {
-            console.log(listOfFeatures[0])
             var featureID = listOfFeatures[0]._leaflet_id;
             $(".address").click(function(event, a) {
-                console.log(featureID)
-                    // for a trigger like below a refers to featureID
+                // for a trigger like below a refers to featureID
                 handleSearchWaypointResultClickHelper(event, a);
             }).trigger("click", featureID);
         } else {
@@ -1341,8 +1339,9 @@ var Ui = (function(w) {
     /**
      * displays general route information as a route summary
      * @param results: response of the service containing the route summary information
+     * @param routePref: route type selected: car, bicycle etc..
      */
-    function updateRouteSummary(results) {
+    function updateRouteSummary(results, routePref) {
         if (!results) {
             //hide container
             $('#routeSummaryContainer').get(0).hide();
@@ -1383,22 +1382,25 @@ var Ui = (function(w) {
             $(actualDistanceDiv).hide();
             // actual distance
             var actualDistance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'ActualDistance')[0];
-            if (actualDistance != undefined) {
-                var actualDistanceValue = actualDistance.getAttribute('value');
-                var actualDistanceUnit = actualDistance.getAttribute('uom');
-                var actualdistArr = [];
-                if (preferences.distanceUnit == list.distanceUnitsPreferences[0]) {
-                    //use mixture of km and m
-                    actualdistArr = util.convertDistanceFormat(actualDistanceValue, preferences.distanceUnit);
-                } else {
-                    //use mixture of miles and yards
-                    var yardsUnit = 'yd';
-                    var actualDistMeasure = util.convertDistToDist(actualDistanceValue, distanceUnit, yardsUnit);
-                    actualdistArr = util.convertDistanceFormat(actualDistMeasure, preferences.distanceUnit);
+            if (actualDistance !== undefined) {
+                // only show actual distance for bicycle
+                if (routePref == 'Bicycle' || routePref == 'Pedestrian' || routePref == 'Wheelchair') {
+                    var actualDistanceValue = actualDistance.getAttribute('value');
+                    var actualDistanceUnit = actualDistance.getAttribute('uom');
+                    var actualdistArr = [];
+                    if (preferences.distanceUnit == list.distanceUnitsPreferences[0]) {
+                        //use mixture of km and m
+                        actualdistArr = util.convertDistanceFormat(actualDistanceValue, preferences.distanceUnit);
+                    } else {
+                        //use mixture of miles and yards
+                        var yardsUnit = 'yd';
+                        var actualDistMeasure = util.convertDistToDist(actualDistanceValue, distanceUnit, yardsUnit);
+                        actualdistArr = util.convertDistanceFormat(actualDistMeasure, preferences.distanceUnit);
+                    }
+                    var actualDistanceDiv = container.querySelector('#route_actualDistance');
+                    $(actualDistanceDiv)[0].update(preferences.translate('ActualDistance') + ': ' + actualdistArr[0] + ' ' + actualdistArr[1]);
+                    $(actualDistanceDiv).show();
                 }
-                var actualDistanceDiv = container.querySelector('#route_actualDistance');
-                $(actualDistanceDiv)[0].update(preferences.translate('ActualDistance') + ': ' + actualdistArr[0] + ' ' + actualdistArr[1]);
-                $(actualDistanceDiv).show();
             }
             $(timeDiv)[0].update(preferences.translate('TotalTime') + ': ' + totalTime);
             $(distanceDiv)[0].update(preferences.translate('TotalDistance') + ': ' + distArr[0] + ' ' + distArr[1]);
@@ -1575,8 +1577,10 @@ var Ui = (function(w) {
                         var tmcCode = tmcMessage.split(" | ")[0];
                         tmcCode = tmcCode.split(',');
                         for (var i = 0; i < tmcCode.length; i++) {
-                            warningLink = list.tmc[tmcCode[i]][0];
-                            break;
+                            if (tmcCode[i] in list.tmc) {
+                                warningLink = list.tmc[tmcCode[i]][0];
+                                break;
+                            }
                         }
                         // if codes not in dict return default
                         warningLink = warningLink !== undefined ? warningLink : './img/warning_undefined.png';

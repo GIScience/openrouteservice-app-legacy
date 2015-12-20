@@ -1118,7 +1118,8 @@ button.weightOptions {
 
 #dropdown_weighting {
     padding-left: 5px;
-    margin-left: -55px;
+    padding-right: 10px;
+    margin-left: -85px;
     min-width: 100px;
     overflow: auto;
     overflow-x: auto;
