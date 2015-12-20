@@ -61,16 +61,16 @@ function rangeColors(rangeNumber) {
  * various leaflet styles for map
  */
 function opacity(zoomlvl, hide) {
-    if (zoomlvl >= 14) {
+    if (zoomlvl >= 15) {
         if (hide) return 0;
-        else return 0.6;
+        else return 0.5;
     } else {
         return 1;
     }
 }
 
 function fillOpacity(zoomlvl) {
-    if (zoomlvl < 14) {
+    if (zoomlvl < 15) {
         return 0;
     } else {
         return 1;
@@ -78,7 +78,7 @@ function fillOpacity(zoomlvl) {
 }
 
 function weight(zoomlvl) {
-    if (zoomlvl < 14) {
+    if (zoomlvl < 15) {
         return 0;
     } else {
         return 1;
@@ -86,7 +86,7 @@ function weight(zoomlvl) {
 }
 
 function routeWeight(zoomlvl, weight) {
-    if (zoomlvl < 14) {
+    if (zoomlvl < 15) {
         return weight;
     } else {
         return weight + 5;

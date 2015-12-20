@@ -256,7 +256,7 @@ var Map = (function() {
             // else self.emit('map:errorsInAvoidAreas', false);
             self.emit('map:routingParamsChanged');
             self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
-            self.layerControls.addOverlay(self.layerAvoid, 'Avoidable Regions');
+            //self.layerControls.addOverlay(self.layerAvoid, 'Avoidable Regions');
         };
         //this.theMap.on('editable:drawing:end', addTooltip);
         //this.theMap.on('editable:shape:deleted', shapeListener);
@@ -913,7 +913,7 @@ var Map = (function() {
             L.polyline(routeString, styles.route(self.theMap.getZoom())).addTo(self.layerRouteLines);
             // add corner points on top 
             for (var k = 0; k < routeStringCorners.length; k++) {
-                new L.CircleMarker(routeStringCorners[k], styles.routeCorners()).addTo(this.layerRouteLines);
+                new L.CircleMarker(routeStringCorners[k], styles.routeCorners(self.theMap.getZoom())).addTo(this.layerRouteLines);
             }
         }
         // bring tmc layer to front
