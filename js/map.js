@@ -108,7 +108,7 @@ var Map = (function() {
             xTicks: undefined, //number of ticks in x axis, calculated by default according to width
             yTicks: undefined, //number of ticks on y axis, calculated by default according to height
             collapsed: true, //collapsed mode, show chart on click or mouseover,
-            //yAxisMin: 0
+            yAxisMin: 0
         });
         this.layerRoutePoints = L.featureGroup().addTo(this.theMap);
         this.layerRouteLines = L.featureGroup().addTo(this.theMap);

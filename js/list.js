@@ -34,13 +34,14 @@ list = {
     routeDangerousGoods: ['hazmat'],
     routeWeightSettings: ['Fastest', 'Shortest', 'Recommended'],
     routeAvoidables: ['Highway', 'Tollway', 'Unpavedroads', 'Ferry', 'Steps', 'Fords', 'Pavedroads', 'Tunnel'],
-    truckParams: ['value_length_slide', 'value_height_slide', 'value_weigth_slide', , 'value_axleload_slide', 'value_width_slide'],
+    truckParams: ['value_length_slide', 'value_height_slide', 'value_weigth_slide', 'value_axleload_slide', 'value_width_slide'],
     routePreferencesImages: new Hash({
-        'car': ['img/picto-car.png', 'img/picto-car-high.png'],
-        'bicycle': ['img/picto-bike.png', 'img/picto-bike-high.png'],
-        'pedestrian': ['img/picto-dude.png', 'img/picto-dude-high.png'],
-        'heavyvehicle': ['img/picto-truck.png', 'img/picto-truck-high.png'],
-        'wheelchair': ['img/picto-wheelchair.png', 'img/picto-wheelchair-high.png']
+        'car': ['img/picto-car.png'],
+        'bicycle': ['img/picto-bike.png'],
+        'pedestrian': ['img/picto-dude.png'],
+        'heavyvehicle': ['img/picto-truck.png'],
+        'wheelchair': ['img/picto-wheelchair_beta.png']
+        //'wheelchair': ['img/picto-wheelchair.png']
     }),
     //please make sure that each category contains at least one element. all names in the hash have to be unique.
     wheelchairParameters: new Hash({

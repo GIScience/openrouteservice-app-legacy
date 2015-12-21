@@ -1768,7 +1768,7 @@ var Ui = (function(w) {
                 btn.addClassName('active');
                 //adapt image
                 var imgElement = btn.querySelector('img');
-                imgElement.setAttribute('src', list.routePreferencesImages.get(btn.id)[1]);
+                imgElement.setAttribute('src', list.routePreferencesImages.get(btn.id)[0]);
                 //set the selected entry as currently selected route option
                 var options = $('#' + btn.id + 'Options').get(0).querySelector('input[checked="checked"]');
                 /* adapt global settings information */
@@ -2184,7 +2184,7 @@ var Ui = (function(w) {
                 btn.addClassName('active');
                 //adapt image
                 var imgElement = btn.querySelector('img');
-                imgElement.setAttribute('src', list.routePreferencesImages.get(btn.id)[1]);
+                imgElement.setAttribute('src', list.routePreferencesImages.get(btn.id)[0]);
             } else {
                 btn.removeClassName('active');
                 //adapt image
