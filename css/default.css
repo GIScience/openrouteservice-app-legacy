@@ -692,9 +692,9 @@ button.routeOptionsButton > img {
     height: 20px;
 }
 
-button.routeOptionsButton > img {
-    width: 25px;
-    height: 20px;
+button.routeOptionsButtonBeta > img {
+    width: 30px;
+    height: auto;
 }
 
 button.weightOptions {
