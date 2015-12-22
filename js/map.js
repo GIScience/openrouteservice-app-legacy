@@ -182,8 +182,10 @@ var Map = (function() {
         function updateInfoPanel(results) {
             var infoPanel = document.getElementById("infoPanel");
             var lastUpdate = new Date(results.profiles['profile 1'].import_date);
-            var nextUpdate = results.next_update !== undefined ? results.next_update : '?';
             lastUpdate = lastUpdate.getUTCDate() + '.' + (parseInt(lastUpdate.getMonth()) + parseInt(1)) + '.';
+            var nextUpdate = results.next_update !== undefined ? results.next_update : '?';
+            nextUpdate = new Date(nextUpdate);
+            nextUpdate = nextUpdate.getUTCDate() + '.' + (parseInt(nextUpdate.getMonth()) + parseInt(1)) + '.';
             infoPanel.innerHTML += '(' + '<b>Last/Next Update</b> ' + lastUpdate + '/' + nextUpdate + ')';
         }
         // create a new contextMenu
