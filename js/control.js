@@ -1161,11 +1161,9 @@ var Controller = (function(w) {
     function compareBoundingBoxes(url, forceUpdate) {
         var tmcUrl = url + '&bbox=' + map.theMap.getBounds().getSouthWest().lng + ',' + map.theMap.getBounds().getSouthWest().lat + ',' + map.theMap.getBounds().getNorthEast().lng + ',' + map.theMap.getBounds().getNorthEast().lat;
         if (forceUpdate === true) {
-            console.log('force refreshing tmc..');
             getTMC(tmcUrl);
         } else {
             if (!(map.previousBoundingbox.contains(map.theMap.getBounds()))) {
-                console.log('loading tmc..');
                 map.previousBoundingbox = new L.latLngBounds(map.theMap.getBounds());
                 getTMC(tmcUrl);
             }
