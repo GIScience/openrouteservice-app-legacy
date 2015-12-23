@@ -1,5 +1,5 @@
 /**
- * OpenLayers map and functions
+ * Leaflet map and functions
  */
 var Map = (function() {
     /* *********************************************************************
@@ -1091,19 +1091,19 @@ var Map = (function() {
      */
     function getWaypointsByGranularity(linePoints, granularity) {
         var routepointList = [];
-        var startPoint = L.latLng(linePoints[0][0], linePoints[0][1]);
+        var startPoint = L.latLng(linePoints[0][1], linePoints[0][0]);
         routepointList.push(startPoint);
         var sumDistance = 0;
         for (var i = 1; i < linePoints.length - 2; i++) {
-            var lastPoint = L.latLng(linePoints[i - 1][0], linePoints[i - 1][1]);
-            var thisPoint = L.latLng(linePoints[i][0], linePoints[i][1]);
+            var lastPoint = L.latLng(linePoints[i - 1][1], linePoints[i - 1][0]);
+            var thisPoint = L.latLng(linePoints[i][1], linePoints[i][0]);
             sumDistance += util.calcFlightDistance(lastPoint, thisPoint);
             if (sumDistance > Number(granularity)) {
                 routepointList.push(thisPoint);
                 sumDistance = 0;
             }
         }
-        var endPoint = L.latLng(linePoints[linePoints.length - 1][0], linePoints[linePoints.length - 1][1]);
+        var endPoint = L.latLng(linePoints[linePoints.length - 1][1], linePoints[linePoints.length - 1][0]);
         routepointList.push(endPoint);
         return routepointList;
     }
@@ -1115,7 +1115,12 @@ var Map = (function() {
     function parseStringToTrack(trackString) {
         var track = jQuery.parseXML(trackString);
         track = toGeoJSON.gpx(track);
-        track = L.polyline(track.features[0].geometry.coordinates, styles.gpxTrack());
+        var gpxTrack = [];
+        var coords = track.features[0].geometry.coordinates;
+        for (var i = 0; i < coords.length; i++) {
+            gpxTrack.push([coords[i][1], coords[i][0]]);
+        }
+        track = L.polyline(gpxTrack, styles.gpxTrack());
         return track;
     }
     /**

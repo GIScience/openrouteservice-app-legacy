@@ -260,7 +260,7 @@ var Route = (function(w) {
         $A(util.getElementsByTagNameNS(routeGeometry, namespaces.gml, 'pos')).each(function(point) {
             point = point.text || point.textContent;
             point = point.split(' ');
-            point = L.latLng(point[0], point[1]);
+            point = L.latLng(point[1], point[0]);
             routeString.push(point);
         });
         return routeString;
