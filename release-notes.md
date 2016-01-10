@@ -4,7 +4,7 @@
 
 * [3.0](/release_notes/v3.0.md)
 
-## Version 2.x ## - new OpenRouteService Client
+## Version 3.x ## - new OpenRouteService Client
 
 * [3.0](/release_notes/v3.0.md)  (22 Dec 2015)
 
