@@ -752,14 +752,17 @@ var Controller = (function(w) {
                 var routeLineString = route.writeRouteToSingleLineString(results);
                 var routeString = map.writeRouteToString(routeLineString);
                 route.routeString = routeString;
-                // each route instruction has a part of this lineString as geometry for this instruction
-                var routeLinesHeights = route.parseResultsToLineStrings(results, routePref);
+                // each route instruction has a part of this lineString as geometry for this instruction           
+                // get height profile update height profile widget if elevation profile type selected
+                if ($.inArray(routePref, list.elevationProfiles) >= 0) {
+                    var routeLineHeights = route.parseResultsToHeights(results);
+                    map.updateHeightprofiles(routeLineHeights);
+                }
+                var routeLinestring = route.parseResultsToLineStrings(results);
                 var routePoints = route.parseResultsToCornerPoints(results);
                 //Get the restrictions along the route
                 map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString), permaInfo[preferences.routeOptionsIdx]);
-                // update height profiles if bicycle selected
-                if (routePref == 'Bicycle') map.updateHeightprofiles(routeLinesHeights[1]);
-                var featureIds = map.updateRoute(routeLinesHeights[0], routePoints, routePref);
+                var featureIds = map.updateRoute(routeLinestring, routePoints, routePref);
                 var errors = route.hasRoutingErrors(results);
                 if (!errors) {
                     ui.updateRouteSummary(results, routePref);

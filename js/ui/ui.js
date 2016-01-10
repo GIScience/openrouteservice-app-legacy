@@ -157,6 +157,7 @@ var Ui = (function(w) {
      * @param e: the event
      */
     function handleSearchWaypointInput(e) {
+        console.log(e)
         var waypointElement = $(e.currentTarget).parent().parent();
         //index of the waypoint (0st, 1st 2nd,...)
         var index = waypointElement.attr('id');

@@ -51,7 +51,7 @@ var Route = (function(w) {
         writer.writeElementString('xls:RoutePreference', routePref || 'Car');
         writer.writeStartElement('xls:ExtendedRoutePreference');
         writer.writeElementString('xls:WeightingMethod', extendedRoutePreferencesWeight || 'Fastest');
-        if (routePref == 'Bicycle') {
+        if (jQuery.inArray(routePref, list.elevationProfiles) >= 0) {
             writer.writeElementString('xls:SurfaceInformation', 'true');
             writer.writeElementString('xls:ElevationInformation', 'true');
         }
@@ -267,21 +267,26 @@ var Route = (function(w) {
     }
     /**
      * the line strings represent a part of the route when driving on one street (e.g. 7km on autoroute A7)
+     * if we have selected a profile which returns height profiles we have to derive the information
+     * @param {Object} results: XML response
+     */
+    function parseResultsToHeights(results) {
+        var heights = [];
+        var routePoints = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteGeometry')[0];
+        $A(util.getElementsByTagNameNS(routePoints, namespaces.gml, 'pos')).each(function(point) {
+            point = point.text || point.textContent;
+            point = point.split(' ');
+            point = L.latLng(point[1], point[0], point[2]);
+            heights.push(point);
+        });
+        return heights;
+    }
+    /**
+     * the line strings represent a part of the route when driving on one street (e.g. 7km on autoroute A7)
      * we examine the lineStrings from the instruction list to get one lineString-ID per route segment so that we can support mouseover/mouseout events on the route and the instructions
      * @param {Object} results: XML response
-     * @param routePref: Car, Bicycle...
      */
-    function parseResultsToLineStrings(results, routePref) {
-        var heights = [];
-        if (routePref == 'Bicycle') {
-            var routePoints = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteGeometry')[0];
-            $A(util.getElementsByTagNameNS(routePoints, namespaces.gml, 'pos')).each(function(point) {
-                point = point.text || point.textContent;
-                point = point.split(' ');
-                point = L.latLng(point[1], point[0], point[2]);
-                heights.push(point);
-            });
-        }
+    function parseResultsToLineStrings(results) {
         var listOfLineStrings = [];
         var heightIdx = 0;
         var routeInstructions = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstructionsList')[0];
@@ -304,7 +309,7 @@ var Route = (function(w) {
                 listOfLineStrings.push(segment);
             });
         }
-        return [listOfLineStrings, heights];
+        return listOfLineStrings;
     }
     /**
      * corner points are points in the route where the direction changes (turn right at street xy...)
@@ -356,6 +361,7 @@ var Route = (function(w) {
     Route.prototype.calculate = calculate;
     Route.prototype.writeRouteToSingleLineString = writeRouteToSingleLineString;
     Route.prototype.parseResultsToLineStrings = parseResultsToLineStrings;
+    Route.prototype.parseResultsToHeights = parseResultsToHeights;
     Route.prototype.parseResultsToCornerPoints = parseResultsToCornerPoints;
     Route.prototype.hasRoutingErrors = hasRoutingErrors;
     return new Route();

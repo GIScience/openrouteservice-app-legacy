@@ -27,6 +27,7 @@ list = {
         'heavyvehicle': ['HeavyVehicle'],
         'wheelchair': ['wheelchair', 'Wheelchair']
     }),
+    elevationProfiles: ['Bicycle', 'BicycleTour', 'Pedestrian'],
     //please make sure that each category contains at least one element. all names in the hash have to be unique.
     routePreferencesTypes: new Hash({
         'heavyvehicle': ['goods', 'hgv', 'bus', 'agricultural', 'forestry', 'delivery'],
@@ -41,7 +42,7 @@ list = {
         'pedestrian': ['img/picto-dude.png'],
         'heavyvehicle': ['img/picto-truck.png'],
         'wheelchair': ['img/picto-wheelchair_beta.png']
-        //'wheelchair': ['img/picto-wheelchair.png']
+            //'wheelchair': ['img/picto-wheelchair.png']
     }),
     //please make sure that each category contains at least one element. all names in the hash have to be unique.
     wheelchairParameters: new Hash({

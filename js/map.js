@@ -258,7 +258,7 @@ var Map = (function() {
             // else self.emit('map:errorsInAvoidAreas', false);
             self.emit('map:routingParamsChanged');
             self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
-            //self.layerControls.addOverlay(self.layerAvoid, 'Avoidable Regions');
+            self.layerControls.addOverlay(self.layerAvoid, 'Avoidable Regions');
         };
         //this.theMap.on('editable:drawing:end', addTooltip);
         //this.theMap.on('editable:shape:deleted', shapeListener);
@@ -882,7 +882,7 @@ var Map = (function() {
         this.layerCornerPoints.clearLayers();
         // clear elevation info if not bike
         var el = this.elevationControl;
-        if (routePref !== 'Bicycle') {
+        if ($.inArray(routePref, list.elevationProfiles) < 0) {
             el.clear();
             el.remove();
         }
