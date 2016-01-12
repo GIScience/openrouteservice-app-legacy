@@ -1,0 +1,25 @@
+@media print {
+	
+  #main, #main *  {
+    visibility: hidden;
+	/*position: absolute; */
+	overflow: visible;
+    /*left: 0;
+    top: 0;*/
+  }
+  #directionsMainContainer, #directionsMainContainer *{
+    visibility: visible;
+	overflow: visible;
+	font-size: 12pt;
+  }
+  #directionsMainContainer {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+}
+@page {
+  size: A4;
+  margin: 0;
+}

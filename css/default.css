@@ -335,6 +335,12 @@
     margin-left: 3px;
 }
 
+#printRouteInstructions {
+    float: right;
+	padding-bottom: 0px;
+	position: relative;
+	top: -4px;
+}
 
 /* gpx upload styles */
 

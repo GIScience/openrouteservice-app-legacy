@@ -1751,6 +1751,24 @@ var Ui = (function(w) {
         el.html(preferences.translate('noRouteAvailable'));
         el.show();
     }
+	/**
+     * opens the print dialogue
+     */
+    function handlePrintRouteInstructionsClick() {
+		$.ajax({
+			url:"css/printRouteInstructions.css",
+			success:function(data){
+				var style = $("<style />", {
+					id  : 'printCss',
+					type: 'text/css',
+					html: data
+				}).appendTo("head");
+				routeInstructions.show();
+				window.print();
+				style.remove();
+			}
+		});
+    }
     /* *********************************************************************
      * ROUTE OPTIONS
      * *********************************************************************/
@@ -2933,6 +2951,8 @@ var Ui = (function(w) {
         $('#orderRoute').click(handleReorderWaypoints);
         //route
         $('#zoomToRouteButton').click(handleZoomToRouteClick);
+		//route instructions print
+        $('#printRouteInstructions').click(handlePrintRouteInstructionsClick);
         //geolocation
         $('#geolocation').click(handleGeolocationClick);
         //search address

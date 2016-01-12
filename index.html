@@ -16,7 +16,6 @@
 		<link rel="stylesheet" type="text/css" href="css/MarkerCluster.css" />
 		<link rel="stylesheet" type="text/css" href="css/MarkerCluster.Default.css" />
 		<link rel="stylesheet" type="text/css" href="css/L.Control.MousePosition.css" />
-
  	</head>
 	<body id="main">
 		<!-- navigation bar on top -->
@@ -456,8 +455,11 @@
 								<div class="collapsibleHead clickable collapsed" id="routeInstructionHead">
 									Route instructions:
 								</div>
-								<div class="collapsibleBody" style="display: none;">
-									<div class="directions-main"></div>
+								<div class="buttonHolder">
+									<button id="printRouteInstructions" class="btn btn-small" type="button" title="Print Route Instructions"><i class="icon-print"></i></button>
+								</div>
+								<div class="collapsibleBody" style="display: none;" id="routeInstructions">
+									<div class="directions-main" id="directionsMainContainer"></div>
 								</div>
 							</div>
 							&nbsp;
