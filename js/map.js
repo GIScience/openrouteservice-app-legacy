@@ -1054,7 +1054,9 @@ var Map = (function() {
         var route;
         if (singleRouteLineString) {
             route = L.polyline(singleRouteLineString).toGeoJSON();
-            route = togpx(route);
+            route = togpx(route, {creator: 'OpenRouteService.org'});
+            header = '<?xml version="1.0"?>';
+            route = header + route;
             //insert line breaks for nicely readable code
             route = route.replace(/></g, '>\n<');
             //note: doesn't include namespaces in every tag any more
