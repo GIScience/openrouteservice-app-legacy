@@ -147,7 +147,10 @@ var Map = (function() {
                 self.theMap.closePopup(popup);
             };
             options[1].onclick = function(e) {
-                //click on via point
+				//prevent double clicking
+				if($(this).attr("disabled")) return;
+				$(this).attr("disabled", true);
+				//click on via point
                 self.emit('map:addWaypoint', {
                     pos: displayPos,
                     type: Waypoint.type.VIA
