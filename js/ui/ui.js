@@ -519,13 +519,12 @@ var Ui = (function(w) {
         var previous = $('#' + idx);
         previous.children()[2].show();
         //'move' all successor waypoints down from idx+1 to numWaypoints
-        for (var i = idx + 1; i < numWaypoints; i++) {
+        for (var i = numWaypoints - 1; i >= idx + 1; i--) {
             var wpElement = $('#' + i);
             if (i < numWaypoints - 1) {
                 //this is not the last waypoint, show move down button
                 wpElement.children()[2].show();
             }
-            var wpId = wpElement.attr('id');
             wpElement.attr('id', i + 1);
         }
         //generate new id

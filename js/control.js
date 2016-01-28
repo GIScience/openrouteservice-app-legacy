@@ -156,8 +156,8 @@ var Controller = (function(w) {
         var wpIndex = 0;
         //if END: use index of last waypoint
         wpIndex = wpType == Waypoint.type.END ? waypoint.getNumWaypoints() - 1 : wpIndex;
-        //if VIA: use index of prior to last waypoint, insert the new via point after this element
-        wpIndex = wpType == Waypoint.type.VIA ? waypoint.getNumWaypoints() - 2 : wpIndex;
+        //if VIA: calculate the line segment which is closest to the newly added waypoint and add it there
+        wpIndex = wpType == Waypoint.type.VIA ? reindexViaWaypoint(waypoint.getNumWaypoints() - 2, atts) : wpIndex;
         //in case of a newly added VIA, the additional waypoint is added in ui.addWaypintAfter(...)
         if (wpType == Waypoint.type.VIA) {
             ui.addWaypointAfter(wpIndex, waypoint.getNumWaypoints());
@@ -348,6 +348,48 @@ var Controller = (function(w) {
         if (!doNotCalculateRoute) {
             handleRoutePresent();
         }
+    }
+	/**
+     * the users adds a VIA-type wayoint. Calculate the line segment with minimal distance to the waypoint and add the waypoint in between the two corresponding waypoints.
+     * @param index: initial index of the waypoint
+     * @param atts: attributes of the new waypoint
+	 * @return: new index of the waypoint
+	*/
+    function reindexViaWaypoint(initIndex, atts) {
+        var rP = ui.getRoutePoints();
+		//There's not much to calculate if theres not even 3 points yet
+		if(rP.length < 3) return initIndex;
+		for (var i = 0; i < rP.length; i++) {
+			rP[i] = rP[i].split(' ');
+			if (rP[i].length == 2) {
+				rP[i] = {
+					'lat': rP[i][0],
+					'lon': rP[i][1]
+				};
+			}
+		}
+		var pos = atts.pos;
+		var addDist = [];
+		var distAB;
+		var distAC;
+		var distBC;
+		for (var i = 0; i < rP.length - 1; i++){
+			//for each pair of sequent waypoints, calculate the aerial distance. Then calculate the difference in aerial distance if the new waypoint were added there. 
+			distAB = Math.sqrt(Math.pow(rP[i+1].lat - rP[i].lat, 2) + Math.pow(rP[i+1].lon - rP[i].lon, 2));
+			distAC = Math.sqrt(Math.pow(rP[i].lon - pos.lng, 2) + Math.pow(rP[i].lat - pos.lat, 2));
+			distBC = Math.sqrt(Math.pow(rP[i+1].lon - pos.lng, 2) + Math.pow(rP[i+1].lat - pos.lat, 2));
+			addDist[i] = distAC + distBC - distAB;
+		}
+		var index = 0;
+		var value = addDist[0];
+		//Find the lowest additional aerial route distance and set the index accordingly
+		for (var i = 1; i < addDist.length; i++) {
+			if (addDist[i] < value) {
+					value = addDist[i];
+					index = i;
+			}
+		}
+		return index;
     }
     /**
      * map is zoomed to the selected part of the route (route instruction)
