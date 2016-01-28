@@ -157,7 +157,6 @@ var Ui = (function(w) {
      * @param e: the event
      */
     function handleSearchWaypointInput(e) {
-        console.log(e)
         var waypointElement = $(e.currentTarget).parent().parent();
         //index of the waypoint (0st, 1st 2nd,...)
         var index = waypointElement.attr('id');
@@ -239,15 +238,19 @@ var Ui = (function(w) {
         //if one result is found then select it automatically
         if (listOfFeatures.length == 1) {
             var featureID = listOfFeatures[0]._leaflet_id;
-            $(".address").click(function(event, a) {
+            //$(".address").click(function(event, a) {
+            $(rootElement.querySelectorAll('.address')).click(function(event, a) {
                 // for a trigger like below a refers to featureID
                 handleSearchWaypointResultClickHelper(event, a);
             }).trigger("click", featureID);
         } else {
             //event handling
-            $('.address').mouseover(handleMouseOverElement);
-            $('.address').mouseout(handleMouseOutElement);
-            $('.address').click(handleSearchWaypointResultClickHelper);
+            $(rootElement.querySelectorAll('.address')).mouseover(handleMouseOverElement);
+            $(rootElement.querySelectorAll('.address')).mouseout(handleMouseOutElement);
+            $(rootElement.querySelectorAll('.address')).click(handleSearchWaypointResultClickHelper);
+            // $('.address').mouseover(handleMouseOverElement);
+            // $('.address').mouseout(handleMouseOutElement);
+            // $('.address').click(handleSearchWaypointResultClickHelper);
         }
     }
     /**

@@ -1055,11 +1055,20 @@ var Map = (function() {
         if (singleRouteLineString) {
             route = L.polyline(singleRouteLineString).toGeoJSON();
             route = togpx(route, {creator: 'OpenRouteService.org'});
-            header = '<?xml version="1.0"?>';
-            route = header + route;
             //insert line breaks for nicely readable code
             route = route.replace(/></g, '>\n<');
-            //note: doesn't include namespaces in every tag any more
+            // this has to be done because xmlserializer used in
+            // togpx() removes the xmlns attribute we have to
+            // add it manually here
+            // break the textblock into an array of lines
+            var lines = route.split('\n');
+            // remove one line, starting at the first position
+            lines.splice(0,1);
+            lines = lines.join("");
+            header = '<?xml version="1.0"?>';
+            meta = '<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" version="1.1" creator="OpenRouteService.org">';
+            route = header + meta + lines;
+            route = route.replace(/></g, '>\n<');
         }
         return route;
     }

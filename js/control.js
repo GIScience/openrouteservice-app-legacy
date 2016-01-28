@@ -960,8 +960,8 @@ var Controller = (function(w) {
      */
     function handleGpxTrack(fileTarget) {
         ui.showImportRouteError(false);
-        //clean old track from map (at the moment only one track is supported)
-        map.clearMarkers(map.layerTrack);
+        //clean old track from map
+        //map.clearMarkers(map.layerTrack);
         if (fileTarget[0]) {
             if (!window.FileReader) {
                 // File APIs are not supported, e.g. IE
