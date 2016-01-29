@@ -391,6 +391,13 @@ var Controller = (function(w) {
 		}
 		return index;
     }
+	 /**
+     * map is zoomed to the selected waypoint
+     * @param vectorId: id of the map feature to zoom to
+     */
+    function handleZoomToWaypoint(vectorId) {
+        map.zoomToFeature(map.layerRoutePoints, ui.getFeatureIdOfWaypoint(vectorId), 16);
+    }
     /**
      * map is zoomed to the selected part of the route (route instruction)
      * @param vectorId: id of the map feature to zoom to
@@ -1427,6 +1434,7 @@ var Controller = (function(w) {
         ui.register('ui:routingParamsChanged', handleRoutePresent);
         ui.register('ui:handleMoveUpWaypointClick', handleRoutePresent);
         ui.register('ui:zoomToRoute', handleZoomToRoute);
+        ui.register('ui:zoomToWaypoint', handleZoomToWaypoint);
         map.register('map:errorsInAvoidAreas', avoidAreasError);
         map.register('map:avoidAreaChanged', handleAvoidAreaChanged);
         map.register('map:routingParamsChanged', handleRoutePresent);

@@ -519,6 +519,11 @@ var Map = (function() {
                     }
                 }
             }
+			else {
+				//get coordinates of the waypoint if a waypoint icon was clicked
+				var cM = this.theMap.project(vectors.getLatLng());
+				this.theMap.setView(this.theMap.unproject(cM), zoom, {animate: true});
+			}
         }
     }
     /**

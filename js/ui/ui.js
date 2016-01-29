@@ -556,7 +556,8 @@ var Ui = (function(w) {
         newWp.querySelector('.moveDownWaypoint').addEventListener('click', handleMoveDownWaypointClick);
         newWp.querySelector('.removeWaypoint').addEventListener('click', handleRemoveWaypointClick);
         newWp.querySelector('.searchAgainButton').addEventListener('click', handleSearchAgainWaypointClick);
-        theInterface.emit('ui:addWaypoint', newIndex);
+        newWp.querySelector('.waypoint-icon').addEventListener('click', handleZoomToWaypointClick);
+		theInterface.emit('ui:addWaypoint', newIndex);
     }
     /**
      * set a waypoint with the service response after the user requested to set a waypoint by clicking on the map (right click).
@@ -595,14 +596,14 @@ var Ui = (function(w) {
         var children = rootElement.children();
         //show waypoint result and searchAgain button
         //children[3].show();
-        var waypointResultElement = children[4];
+        var waypointResultElement = children[5];
         while (waypointResultElement.hasChildNodes()) {
             waypointResultElement.removeChild(waypointResultElement.lastChild);
         }
         waypointResultElement.appendChild(address);
         waypointResultElement.show();
         //hide input field with search result list
-        children[5].hide();
+        children[6].hide();
         //remove the search result markers
         invalidateWaypointSearch(index);
         //event handling
@@ -682,6 +683,7 @@ var Ui = (function(w) {
             newWp.querySelector('.moveDownWaypoint').addEventListener('click', handleMoveDownWaypointClick);
             newWp.querySelector('.removeWaypoint').addEventListener('click', handleRemoveWaypointClick);
             newWp.querySelector('.searchAgainButton').addEventListener('click', handleSearchAgainWaypointClick);
+			newWp.querySelector('.waypoint-icon').addEventListener('click', handleZoomToWaypointClick);
         }
         theInterface.emit('ui:removeWaypoint', {
             wpIndex: currentId,
@@ -774,7 +776,17 @@ var Ui = (function(w) {
      * @param type: type of the wayoint, one of START, VIA, END or UNSET
      */
     function setWaypointType(wpIndex, type) {
+		//Keep this in order to not cause any bugs in functions relying on this
         var el = $('#' + wpIndex);
+        // var el = $('#' + wpIndex);
+        el.removeClass('unset');
+        el.removeClass('start');
+        el.removeClass('via');
+        el.removeClass('end');
+        el.addClass(type);
+		
+		el = $('#' + wpIndex).children('.waypoint-icon');
+        // var el = $('#' + wpIndex);
         el.removeClass('unset');
         el.removeClass('start');
         el.removeClass('via');
@@ -823,6 +835,7 @@ var Ui = (function(w) {
             newWp.querySelector('.moveDownWaypoint').addEventListener('click', handleMoveDownWaypointClick);
             newWp.querySelector('.removeWaypoint').addEventListener('click', handleRemoveWaypointClick);
             newWp.querySelector('.searchAgainButton').addEventListener('click', handleSearchAgainWaypointClick);
+			newWp.querySelector('.waypoint-icon').addEventListener('click', handleZoomToWaypointClick);
         }
     }
     /**
@@ -1744,6 +1757,16 @@ var Ui = (function(w) {
      */
     function handleZoomToRouteClick() {
         theInterface.emit('ui:zoomToRoute');
+    }
+	/**
+     * triggers zooming to the selected waypoint
+	 * @param e: the event containing the clicked waypoint icon
+     */
+    function handleZoomToWaypointClick(e) {
+		//make sure the waypoint is not empty
+		if($(e.currentTarget).parent().children(".waypointResult").children().length > 0){
+			theInterface.emit('ui:zoomToWaypoint', $(e.currentTarget).parent().attr("id"));
+		}
     }
     /**
      * displays an error message when no route between the selected waypoints could be found or another error happened during route calculation
@@ -2951,6 +2974,7 @@ var Ui = (function(w) {
         $('.removeWaypoint').click(handleRemoveWaypointClick);
         $('.searchAgainButton').click(handleSearchAgainWaypointClick);
         $('#orderRoute').click(handleReorderWaypoints);
+        $('.waypoint-icon').click(handleZoomToWaypointClick);
         //route
         $('#zoomToRouteButton').click(handleZoomToRouteClick);
 		//route instructions print

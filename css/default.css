@@ -140,6 +140,7 @@
 }
 
 .waypointResult {
+	padding-left: 32px;
     margin-bottom: 10px;
 }
 
@@ -203,42 +204,65 @@
 }
 
 .waypoint {
-    padding-left: 32px;
+    padding-left: 0px;
     padding-top: 0;
     min-height: 25px;
     margin-bottom: 10px !important;
 }
 
 .waypoint.start {
-    background-image: url('../img/marker-start.png');
+    /*background-image: url('../img/marker-start.png');
     background-repeat: no-repeat;
     background-size: 16px;
-    background-position: 8px 3px;
+    background-position: 8px 3px;*/
 }
 
 .waypoint.via {
-    background-image: url('../img/marker-via.png');
+    /*background-image: url('../img/marker-via.png');
     background-repeat: no-repeat;
     background-size: 16px;
-    background-position: 8px 3px;
+    background-position: 8px 3px;*/
 }
-
 .waypoint.end {
-    background-image: url('../img/marker-end.png');
+    /*background-image: url('../img/marker-end.png');
     background-repeat: no-repeat;
     background-size: 16px;
-    background-position: 8px 3px;
+    background-position: 8px 3px;*/
 }
-
 .waypoint.unset {
-    background-image: url('../img/marker.png');
-    background-repeat: no-repeat;
+    /*background-image: url('../img/marker.png');
+    background-repeat: no-repeat;*/
     padding-top: 0;
     margin-bottom: 0 !important;
-    background-size: 16px;
-    background-position: 8px 3px;
+    /*background-size: 16px;
+    background-position: 8px 3px;*/
 }
-
+.waypoint-icon {
+	display: inline;
+    float: left;
+    width: 33px;
+    height: 25px;
+}
+.waypoint-icon.start {
+    background: url(../img/marker-start.png) no-repeat;
+	background-size: 16px;
+	background-position: 8px 3px;
+}
+.waypoint-icon.via {
+    background: url(../img/marker-via.png) no-repeat;
+	background-size: 16px;
+	background-position: 8px 3px;
+}
+.waypoint-icon.end {
+    background: url(../img/marker-end.png) no-repeat;
+	background-size: 16px;
+	background-position: 8px 3px;
+}
+.waypoint-icon.unset {
+    background: url(../img/marker.png) no-repeat;
+	background-size: 16px;
+	background-position: 8px 3px;
+}
 
 /* route instructions styles */
 
