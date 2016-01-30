@@ -232,9 +232,7 @@ var Ui = (function(w) {
         //show number of results and link to zoom
         var numResults = $('#zoomToWaypointResults_' + wpIndex);
         numResults.html(preferences.translate('numPoiResults1') + allAddress.length + preferences.translate('numPoiResults2') + '<br/>' + preferences.translate('selectResult'));
-        // $('.address').mouseover(handleMouseOverElement);
-        // $('.address').mouseout(handleMouseOutElement);
-        // $('.address').click(handleSearchWaypointResultClick);
+       
         //if one result is found then select it automatically
         if (listOfFeatures.length == 1) {
             var featureID = listOfFeatures[0]._leaflet_id;
@@ -248,9 +246,6 @@ var Ui = (function(w) {
             $(rootElement.querySelectorAll('.address')).mouseover(handleMouseOverElement);
             $(rootElement.querySelectorAll('.address')).mouseout(handleMouseOutElement);
             $(rootElement.querySelectorAll('.address')).click(handleSearchWaypointResultClickHelper);
-            // $('.address').mouseover(handleMouseOverElement);
-            // $('.address').mouseout(handleMouseOutElement);
-            // $('.address').click(handleSearchWaypointResultClickHelper);
         }
     }
     /**
