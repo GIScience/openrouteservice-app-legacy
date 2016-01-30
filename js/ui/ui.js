@@ -517,13 +517,13 @@ var Ui = (function(w) {
     function addWaypointAfter(idx, numWaypoints) {
         //for the current element, show the move down button (will later be at least the next to last one)
         var previous = $('#' + idx);
-        previous.children()[2].show();
+        previous.children()[3].show();
         //'move' all successor waypoints down from idx+1 to numWaypoints
         for (var i = numWaypoints - 1; i >= idx + 1; i--) {
             var wpElement = $('#' + i);
             if (i < numWaypoints - 1) {
                 //this is not the last waypoint, show move down button
-                wpElement.children()[2].show();
+                wpElement.children()[3].show();
             }
             wpElement.attr('id', i + 1);
         }
@@ -540,14 +540,14 @@ var Ui = (function(w) {
         //decide which buttons to show
         var buttons = newWp.children();
         //show remove waypoint + move up button
-        buttons[0].show();
         buttons[1].show();
+        buttons[2].show();
         //including our new waypoint we are constructing here, we have one more waypoint. So we count to numWaypoints, not numWaypoints-1
         if (newIndex < numWaypoints) {
             //not the last waypoint, allow moving down
-            buttons[2].show();
+            buttons[3].show();
         } else {
-            buttons[2].hide();
+            buttons[3].hide();
         }
         //add event handling
         newWp = newWp.get(0);
@@ -666,15 +666,15 @@ var Ui = (function(w) {
             //decide which buttons to show
             var buttons = newWp.children();
             //show remove waypoint
-            buttons[0].show();
+            buttons[1].show();
             if (wpIndex == 1) {
                 //show only move down button
-                buttons[2].hide();
-                buttons[1].show();
+                buttons[3].hide();
+                buttons[2].show();
             } else if (wpIndex == 0) {
                 //show only move up button
-                buttons[1].hide();
-                buttons[2].show();
+                buttons[2].hide();
+                buttons[3].show();
             }
             //add event handling
             newWp = newWp.get(0);
@@ -818,15 +818,15 @@ var Ui = (function(w) {
             //decide which buttons to show
             var buttons = newWp.children();
             //show remove waypoint
-            buttons[0].show();
+            buttons[1].show();
             if (j == 1) {
                 //show only move down button
-                buttons[2].hide();
-                buttons[1].show();
+                buttons[3].hide();
+                buttons[2].show();
             } else if (j == 0) {
                 //show only move up button
-                buttons[1].hide();
-                buttons[2].show();
+                buttons[2].hide();
+                buttons[3].show();
             }
             //add event handling
             newWp = newWp.get(0);
