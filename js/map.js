@@ -251,7 +251,8 @@ var Map = (function() {
                 if (self.layerAvoid.getLayers().length === 0) self.layerControls.removeLayer(self.layerAvoid);
             }
         };
-        this.theMap.on('layeradd', function(e) {
+        // add eventlisteners for layeravoidables only
+        this.layerAvoid.on('layeradd', function(e) {
             if (e.layer instanceof L.Path) e.layer.on('click', L.DomEvent.stop).on('click', deleteShape, e.layer);
             if (e.layer instanceof L.Path) e.layer.on('dblclick', L.DomEvent.stop).on('dblclick', e.layer.toggleEdit);
         });
@@ -912,7 +913,7 @@ var Map = (function() {
                 segmentBase.addTo(self.layerRouteLines);
                 //"corner points" of the route where direction changes
                 var cornerPoint = routeLinePoints[i];
-                var routeCornerBase = L.marker(cornerPoint, styles.routeCornersBase());
+                var routeCornerBase = L.circle(cornerPoint, styles.routeCornersBase());
                 routeCornerBase.addTo(self.layerCornerPoints);
                 routeStringCorners.push(routeLinePoints[i]);
                 ftIds.push(segmentBase._leaflet_id, routeCornerBase._leaflet_id);
@@ -928,6 +929,8 @@ var Map = (function() {
         }
         // bring tmc layer to front
         this.layerTMC.bringToFront();
+        // bring route markers to front
+        this.layerRoutePoints.bringToFront();
         return ftIds;
     }
     /**

@@ -232,7 +232,6 @@ var Ui = (function(w) {
         //show number of results and link to zoom
         var numResults = $('#zoomToWaypointResults_' + wpIndex);
         numResults.html(preferences.translate('numPoiResults1') + allAddress.length + preferences.translate('numPoiResults2') + '<br/>' + preferences.translate('selectResult'));
-       
         //if one result is found then select it automatically
         if (listOfFeatures.length == 1) {
             var featureID = listOfFeatures[0]._leaflet_id;
@@ -552,7 +551,7 @@ var Ui = (function(w) {
         newWp.querySelector('.removeWaypoint').addEventListener('click', handleRemoveWaypointClick);
         newWp.querySelector('.searchAgainButton').addEventListener('click', handleSearchAgainWaypointClick);
         newWp.querySelector('.waypoint-icon').addEventListener('click', handleZoomToWaypointClick);
-		theInterface.emit('ui:addWaypoint', newIndex);
+        theInterface.emit('ui:addWaypoint', newIndex);
     }
     /**
      * set a waypoint with the service response after the user requested to set a waypoint by clicking on the map (right click).
@@ -678,7 +677,7 @@ var Ui = (function(w) {
             newWp.querySelector('.moveDownWaypoint').addEventListener('click', handleMoveDownWaypointClick);
             newWp.querySelector('.removeWaypoint').addEventListener('click', handleRemoveWaypointClick);
             newWp.querySelector('.searchAgainButton').addEventListener('click', handleSearchAgainWaypointClick);
-			newWp.querySelector('.waypoint-icon').addEventListener('click', handleZoomToWaypointClick);
+            newWp.querySelector('.waypoint-icon').addEventListener('click', handleZoomToWaypointClick);
         }
         theInterface.emit('ui:removeWaypoint', {
             wpIndex: currentId,
@@ -771,7 +770,7 @@ var Ui = (function(w) {
      * @param type: type of the wayoint, one of START, VIA, END or UNSET
      */
     function setWaypointType(wpIndex, type) {
-		//Keep this in order to not cause any bugs in functions relying on this
+        //Keep this in order to not cause any bugs in functions relying on this
         var el = $('#' + wpIndex);
         // var el = $('#' + wpIndex);
         el.removeClass('unset');
@@ -779,8 +778,7 @@ var Ui = (function(w) {
         el.removeClass('via');
         el.removeClass('end');
         el.addClass(type);
-		
-		el = $('#' + wpIndex).children('.waypoint-icon');
+        el = $('#' + wpIndex).children('.waypoint-icon');
         // var el = $('#' + wpIndex);
         el.removeClass('unset');
         el.removeClass('start');
@@ -830,7 +828,7 @@ var Ui = (function(w) {
             newWp.querySelector('.moveDownWaypoint').addEventListener('click', handleMoveDownWaypointClick);
             newWp.querySelector('.removeWaypoint').addEventListener('click', handleRemoveWaypointClick);
             newWp.querySelector('.searchAgainButton').addEventListener('click', handleSearchAgainWaypointClick);
-			newWp.querySelector('.waypoint-icon').addEventListener('click', handleZoomToWaypointClick);
+            newWp.querySelector('.waypoint-icon').addEventListener('click', handleZoomToWaypointClick);
         }
     }
     /**
@@ -1753,15 +1751,15 @@ var Ui = (function(w) {
     function handleZoomToRouteClick() {
         theInterface.emit('ui:zoomToRoute');
     }
-	/**
+    /**
      * triggers zooming to the selected waypoint
-	 * @param e: the event containing the clicked waypoint icon
+     * @param e: the event containing the clicked waypoint icon
      */
     function handleZoomToWaypointClick(e) {
-		//make sure the waypoint is not empty
-		if($(e.currentTarget).parent().children(".waypointResult").children().length > 0){
-			theInterface.emit('ui:zoomToWaypoint', $(e.currentTarget).parent().attr("id"));
-		}
+        //make sure the waypoint is not empty
+        if ($(e.currentTarget).parent().children(".waypointResult").children().length > 0) {
+            theInterface.emit('ui:zoomToWaypoint', $(e.currentTarget).parent().attr("id"));
+        }
     }
     /**
      * displays an error message when no route between the selected waypoints could be found or another error happened during route calculation
@@ -1771,23 +1769,23 @@ var Ui = (function(w) {
         el.html(preferences.translate('noRouteAvailable'));
         el.show();
     }
-	/**
+    /**
      * opens the print dialogue
      */
     function handlePrintRouteInstructionsClick() {
-		$.ajax({
-			url:"css/printRouteInstructions.css",
-			success:function(data){
-				var style = $("<style />", {
-					id  : 'printCss',
-					type: 'text/css',
-					html: data
-				}).appendTo("head");
-				routeInstructions.show();
-				window.print();
-				style.remove();
-			}
-		});
+        $.ajax({
+            url: "css/printRouteInstructions.css",
+            success: function(data) {
+                var style = $("<style />", {
+                    id: 'printCss',
+                    type: 'text/css',
+                    html: data
+                }).appendTo("head");
+                routeInstructions.show();
+                window.print();
+                style.remove();
+            }
+        });
     }
     /* *********************************************************************
      * ROUTE OPTIONS
@@ -2972,7 +2970,7 @@ var Ui = (function(w) {
         $('.waypoint-icon').click(handleZoomToWaypointClick);
         //route
         $('#zoomToRouteButton').click(handleZoomToRouteClick);
-		//route instructions print
+        //route instructions print
         $('#printRouteInstructions').click(handlePrintRouteInstructionsClick);
         //geolocation
         $('#geolocation').click(handleGeolocationClick);
