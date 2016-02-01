@@ -398,7 +398,7 @@ var Ui = (function(w) {
         $('#' + lastWp + '> .moveUpWaypoint').show();
         $('#' + lastWp + '> .moveDownWaypoint').hide();
         //adapt marker-IDs, decide about wpType
-        theInterface.emit('ui:movedWaypoints', indices);
+        theInterface.emit('ui:inverseWaypoints', indices);
         theInterface.emit('ui:routingParamsChanged');
     }
     /**
