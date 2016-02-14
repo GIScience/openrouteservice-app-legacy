@@ -6,6 +6,7 @@ var lang_en = {
     'saveBtn': 'Save',
     'untitled': 'Untitled',
     'infoTextVersions': 'New to OpenRouteService? Activate extended options in the site preference menu.',
+    'infoAboutAvoidables': 'This is where you can draw avoidable regions',
     'routePlanner': 'Plan Route',
     'search': 'Search',
     'routeOptions': 'Route options',
