@@ -223,7 +223,7 @@ var Controller = (function(w) {
     /**
      * after waypoints have been moved, re-calculations are necessary: update of internal variables, waypoint type exchange,...
      */
-    function handleMovedWaypoints(atts) {
+    function handleInverseWaypoints(atts) {
         var j = 0;
         var i = Object.keys(atts).length - 1;
         while (j < i) {
@@ -249,6 +249,30 @@ var Controller = (function(w) {
             //update preferences
             handleWaypointChanged(true);
         }
+    }
+    /**
+     * after waypoints have been moved, re-calculations are necessary: update of internal variables, waypoint type exchange,...
+     */
+    function handleMovedWaypoints(atts) {
+        var wp1 = atts[Object.keys(atts)[0]];
+        var wp2 = atts[Object.keys(atts)[1]];
+        //waypoint-internal:
+        var set1 = waypoint.getWaypointSet(wp1);
+        var set2 = waypoint.getWaypointSet(wp2);
+        waypoint.setWaypoint(wp1, set2);
+        waypoint.setWaypoint(wp2, set1);
+        var type = selectWaypointType(wp1);
+        var ftId = ui.getFeatureIdOfWaypoint(wp1);
+        var newFtId = map.setWaypointType(ftId, type);
+        var position = map.convertFeatureIdToPositionString(newFtId, map.layerRoutePoints);
+        ui.setWaypointFeatureId(wp1, newFtId, position, 'layerRoutePoints');
+        type = selectWaypointType(wp2);
+        ftId = ui.getFeatureIdOfWaypoint(wp2);
+        newFtId = map.setWaypointType(ftId, type);
+        position = map.convertFeatureIdToPositionString(newFtId, map.layerRoutePoints);
+        ui.setWaypointFeatureId(wp2, newFtId, position, 'layerRoutePoints');
+        //update preferences
+        handleWaypointChanged(true);
     }
     /**
      * the user removed a waypoint. Internal variables are updated, waypoint types checked,...
@@ -349,49 +373,49 @@ var Controller = (function(w) {
             handleRoutePresent();
         }
     }
-	/**
+    /**
      * the users adds a VIA-type wayoint. Calculate the line segment with minimal distance to the waypoint and add the waypoint in between the two corresponding waypoints.
      * @param index: initial index of the waypoint
      * @param atts: attributes of the new waypoint
-	 * @return: new index of the waypoint
-	*/
+     * @return: new index of the waypoint
+     */
     function reindexViaWaypoint(initIndex, atts) {
         var rP = ui.getRoutePoints();
-		//There's not much to calculate if theres not even 3 points yet
-		if(rP.length < 3) return initIndex;
-		for (var i = 0; i < rP.length; i++) {
-			rP[i] = rP[i].split(' ');
-			if (rP[i].length == 2) {
-				rP[i] = {
-					'lat': rP[i][0],
-					'lon': rP[i][1]
-				};
-			}
-		}
-		var pos = atts.pos;
-		var addDist = [];
-		var distAB;
-		var distAC;
-		var distBC;
-		for (var i = 0; i < rP.length - 1; i++){
-			//for each pair of sequent waypoints, calculate the aerial distance. Then calculate the difference in aerial distance if the new waypoint were added there. 
-			distAB = Math.sqrt(Math.pow(rP[i+1].lat - rP[i].lat, 2) + Math.pow(rP[i+1].lon - rP[i].lon, 2));
-			distAC = Math.sqrt(Math.pow(rP[i].lon - pos.lng, 2) + Math.pow(rP[i].lat - pos.lat, 2));
-			distBC = Math.sqrt(Math.pow(rP[i+1].lon - pos.lng, 2) + Math.pow(rP[i+1].lat - pos.lat, 2));
-			addDist[i] = distAC + distBC - distAB;
-		}
-		var index = 0;
-		var value = addDist[0];
-		//Find the lowest additional aerial route distance and set the index accordingly
-		for (var i = 1; i < addDist.length; i++) {
-			if (addDist[i] < value) {
-					value = addDist[i];
-					index = i;
-			}
-		}
-		return index;
+        //There's not much to calculate if theres not even 3 points yet
+        if (rP.length < 3) return initIndex;
+        for (var i = 0; i < rP.length; i++) {
+            rP[i] = rP[i].split(' ');
+            if (rP[i].length == 2) {
+                rP[i] = {
+                    'lat': rP[i][0],
+                    'lon': rP[i][1]
+                };
+            }
+        }
+        var pos = atts.pos;
+        var addDist = [];
+        var distAB;
+        var distAC;
+        var distBC;
+        for (var i = 0; i < rP.length - 1; i++) {
+            //for each pair of sequent waypoints, calculate the aerial distance. Then calculate the difference in aerial distance if the new waypoint were added there. 
+            distAB = Math.sqrt(Math.pow(rP[i + 1].lat - rP[i].lat, 2) + Math.pow(rP[i + 1].lon - rP[i].lon, 2));
+            distAC = Math.sqrt(Math.pow(rP[i].lon - pos.lng, 2) + Math.pow(rP[i].lat - pos.lat, 2));
+            distBC = Math.sqrt(Math.pow(rP[i + 1].lon - pos.lng, 2) + Math.pow(rP[i + 1].lat - pos.lat, 2));
+            addDist[i] = distAC + distBC - distAB;
+        }
+        var index = 0;
+        var value = addDist[0];
+        //Find the lowest additional aerial route distance and set the index accordingly
+        for (var i = 1; i < addDist.length; i++) {
+            if (addDist[i] < value) {
+                value = addDist[i];
+                index = i;
+            }
+        }
+        return index;
     }
-	 /**
+    /**
      * map is zoomed to the selected waypoint
      * @param vectorId: id of the map feature to zoom to
      */
@@ -787,7 +811,7 @@ var Controller = (function(w) {
     function routeCalculationSuccess(results, routeID, routePref) {
         // only fire if returned routeID from callback is same as current global calcRouteID
         if (routeID == calcRouteID) {
-            var zoomToMap = !route.routePresent;
+            //var zoomToMap = !route.routePresent;
             route.routePresent = true;
             ui.setRouteIsPresent(true);
             //results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
@@ -817,7 +841,7 @@ var Controller = (function(w) {
                     ui.updateRouteSummary(results, routePref);
                     ui.updateRouteInstructions(results, featureIds, 'layerRouteLines');
                     ui.endRouteCalculation();
-                    if (zoomToMap) map.zoomToRoute();
+                    map.zoomToRoute();
                 } else {
                     routeCalculationError();
                 }
@@ -1416,6 +1440,7 @@ var Controller = (function(w) {
         map.register('map:addWaypoint', handleAddWaypointByRightclick);
         ui.register('ui:selectWaypointType', selectWaypointType);
         ui.register('ui:movedWaypoints', handleMovedWaypoints);
+        ui.register('ui:inverseWaypoints', handleInverseWaypoints);
         ui.register('ui:removeWaypoint', handleRemoveWaypoint);
         ui.register('ui:searchAgainWaypoint', handleSearchAgainWaypoint);
         ui.register('ui:resetRoute', handleResetRoute);

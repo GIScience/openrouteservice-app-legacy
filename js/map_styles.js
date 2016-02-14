@@ -131,7 +131,8 @@ styles = {
     },
     routeCornersBase: function() {
         return {
-            opacity: 0
+            opacity: 0,
+            fillOpacity: 0
         };
     },
     routeCorners: function(zoomlvl) {
