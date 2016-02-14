@@ -8,6 +8,7 @@ var lang_de = {
 
 		'untitled' :  'Unbenannt',
 		'infoTextVersions' :  'Neu auf OpenRouteService? Nutzen Sie erweiterte Routen-Optionen &uuml;ber die Seiteneinstellungen. ',
+    	'infoAboutAvoidables': 'Hiermit k&ouml;nnen Sie vermeidbare Polygone zeichnen',
 
 		'routePlanner':  'Routen-Planer ',
 		'search':  'Suche',

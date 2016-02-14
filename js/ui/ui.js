@@ -96,6 +96,15 @@ var Ui = (function(w) {
         $('#newToOrs').append(label);
         $('#newToOrs').show();
     }
+    /**
+     * if it is the user's first visit to ORS show a popup with information about the avoidables
+     */
+    function showAvoidablesInfoPopup() {
+        var label = new Element('label');
+        label.insert(preferences.translate('infoAboutAvoidables'));
+        $('#avoidables_info').append(label);
+        $('#avoidables_info').show();
+    }
 
     function showServiceTimeoutPopup() {
         var label = new Element('label');
@@ -3031,6 +3040,7 @@ var Ui = (function(w) {
     Ui.prototype = new EventEmitter();
     Ui.prototype.constructor = Ui;
     Ui.prototype.showNewToOrsPopup = showNewToOrsPopup;
+    Ui.prototype.showAvoidablesInfoPopup = showAvoidablesInfoPopup;
     Ui.prototype.showServiceTimeoutPopup = showServiceTimeoutPopup;
     Ui.prototype.emphElement = emphElement;
     Ui.prototype.deEmphElement = deEmphElement;

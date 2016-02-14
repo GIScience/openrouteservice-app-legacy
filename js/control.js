@@ -1357,6 +1357,7 @@ var Controller = (function(w) {
         }
         if (!preferences.areCookiesAVailable()) {
             ui.showNewToOrsPopup();
+            ui.showAvoidablesInfoPopup();
         }
         initMap = false;
         // set new bounding box after map and new bounding box are loaded from permalink
