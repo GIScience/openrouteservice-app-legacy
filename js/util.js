@@ -20,9 +20,9 @@ util = (function() {
          */
         convertPointToString: function(pt) {
             var pointLon = pt.lon.toString().split('.');
-            pointLon = pointLon[0] + '.' + pointLon[1].substring(0, 6)
+            pointLon = pointLon[0] + '.' + pointLon[1].substring(0, 6);
             var pointLat = pt.lat.toString().split('.');
-            pointLat = pointLat[0] + '.' + pointLat[1].substring(0, 6)
+            pointLat = pointLat[0] + '.' + pointLat[1].substring(0, 6);
             return (pointLon + ', ' + pointLat);
         },
         /**
@@ -133,8 +133,8 @@ util = (function() {
             var v1 = util.getElementsByTagNameNS(xmlAddress, namespaces.xls, 'StreetAddress');
             var StreetAddress = null;
             if (v1 != null) {
-                StreetAddress = v1[0]
-            };
+                StreetAddress = v1[0];
+            }
             var hasStreetElement = false;
             if (StreetAddress != null) {
                 var Streets = util.getElementsByTagNameNS(StreetAddress, namespaces.xls, 'Street');
@@ -144,10 +144,10 @@ util = (function() {
                     var buildingName = Building.getAttribute('buildingName');
                     var buildingSubdivision = Building.getAttribute('subdivision');
                     if (buildingName != null) {
-                        element.appendChild(new Element('span').update(buildingName + ' '))
+                        element.appendChild(new Element('span').update(buildingName + ' '));
                     }
                     if (buildingSubdivision != null) {
-                        element.appendChild(new Element('span').update(buildingSubdivision + ' '))
+                        element.appendChild(new Element('span').update(buildingSubdivision + ' '));
                     }
                 }
                 //Street line
@@ -172,7 +172,7 @@ util = (function() {
                     element.appendChild(new Element('br'));
                     hasStreetElement = true;
                 }
-            }
+            } 
             var separator = '';
             var places = util.getElementsByTagNameNS(xmlAddress, namespaces.xls, 'Place');
             if (places) {
@@ -230,9 +230,10 @@ util = (function() {
          * parses the XML result for an address into short HTML format for stopovers
          * element is an array and can contain street + region information or just region information
          * @param xmlAddress: XML encoded address result 
+         * @param position: latlng string of waypoint
          * @return: address result wrapped in appropriate HTML tags for stopover field
          */
-        parseAddressShort: function(address) {
+        parseAddressShort: function(address, position) {
             var element = [];
             //1. Address
             //2. District, City, Region
@@ -320,9 +321,10 @@ util = (function() {
                     element[0] = element[0].substring(0, element[0].length - 2);
                 }
             }
-            // remove empty item from array
-            if (element[0].length == 0) {
-                element.splice(0, 1);
+            // if element has no information add position latlng
+            if (element[0].length === 0) {
+                element[0] = position;
+                //element.splice(0, 1);
             }
             var stopoverString = '';
             $A(element).each(function(addressItem, index) {

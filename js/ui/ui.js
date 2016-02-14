@@ -568,7 +568,7 @@ var Ui = (function(w) {
         }
         //checks whether latlon is passed in first call
         //for geocoding shortaddress is updated in second call
-        var address, shortAddress, stopover, addressResult, lat, lon;
+        var address, shortAddress, stopover, addressResult, posResult, lat, lon;
         if (latlon === true) {
             address = util.parseLatlon(results);
             shortAddress = results.toString();
@@ -577,8 +577,10 @@ var Ui = (function(w) {
         } else {
             addressResult = util.getElementsByTagNameNS(results, namespaces.xls, 'Address');
             addressResult = addressResult ? addressResult[0] : null;
+            posResult = util.getElementsByTagNameNS(results, namespaces.gml, 'pos')[0];
+            posResult = posResult.text || posResult.textContent;
             address = util.parseAddress(addressResult);
-            shortAddress = util.parseAddressShort(addressResult);
+            shortAddress = util.parseAddressShort(addressResult, posResult);
             //update stopover info from latlon to address
             stopover = $(".directions-main").find("[waypoint-id=" + index + "]");
             stopover.html(shortAddress);
