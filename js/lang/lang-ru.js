@@ -21,6 +21,7 @@ var lang_ru = {
     'routeFromTo': 'Маршрут в ',
     'resetRoute': 'Сбросить весь маршрут',
     'TotalTime': 'Общее время',
+	'TotalWarnings':  'информация трафика',
     'TotalDistance': 'Вся дистанция',
     'zoomToRoute': 'Весь Маршрут',
     'routeSummary': 'Сводка',

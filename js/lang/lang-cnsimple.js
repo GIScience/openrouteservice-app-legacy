@@ -21,6 +21,7 @@ var lang_cnsimple = {
 	'routeFromTo' : '导航至 ',
 	'resetRoute' : '重置路径',
 	'TotalTime' : '总时间',
+	'TotalWarnings':  '交通信息',
 	'TotalDistance' : '总距离',
 	'zoomToRoute' : '观察全部',
 	'routeSummary' : '路径概述',

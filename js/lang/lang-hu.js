@@ -17,6 +17,7 @@ var lang_hu = {
     'routeFromTo':'&Uacute;tvonal',
     'resetRoute':'Reset teljes &uacute;tvonal ',
     'TotalTime':'&Ouml;sszes ido',
+	'TotalWarnings':  'forgalmi inform&aacute;ci&oacute;k',
     'TotalDistance':'Teljes t&aacute;vols&aacute;g',
     'zoomToRoute':'Eg&eacute;sz Route',
     'routeSummary':'&Ouml;sszegz&eacute;s',

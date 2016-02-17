@@ -21,6 +21,7 @@ var lang_pl = {
 	'routeFromTo' : 'Trasa do ',
 	'resetRoute' : 'Wyczy&#x015B;&#x0107; ca&#x0142;&#261; tras&#x0119;',
 	'TotalTime' : 'Ca&#x0142;kowity czas',
+	'TotalWarnings':  'Informacje o ruchu drogowym',
 	'TotalDistance' : 'Ca&#x0142;kowita odleg&#x0142;o&#x015B;&#x0107;',
 	'zoomToRoute' : 'Ca&#x0142;a trasa',
 	'routeSummary' : 'Podsumowanie',

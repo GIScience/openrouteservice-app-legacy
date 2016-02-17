@@ -21,6 +21,7 @@ var lang_cn = {
 	'routeFromTo' : '導航至 ',
 	'resetRoute' : '重設路徑',
 	'TotalTime' : '總花費時間',
+	'TotalWarnings':  '交通信息',
 	'TotalDistance' : '總距離',
 	'zoomToRoute' : '縮小至全部路線',
 	'routeSummary' : '路徑概況',

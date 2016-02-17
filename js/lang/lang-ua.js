@@ -21,6 +21,7 @@ var lang_ua = {
     'routeFromTo': 'Маршрут у ',
     'resetRoute': 'Скинути весь маршрут',
     'TotalTime': 'Загальний час',
+	'TotalWarnings':  'інформація трафіку',
     'TotalDistance': 'Вся дистанція',
     'zoomToRoute': 'Увесь маршрут',
     'routeSummary': 'Зведення',

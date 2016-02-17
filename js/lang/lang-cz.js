@@ -17,6 +17,7 @@ var lang_cz = {
     'routeFromTo':'Cesta k',
     'resetRoute':'Obnovit celou trasu',
     'TotalTime':'Celkov&aacute; doba',
+	'TotalWarnings':  'Traffic Information',
     'TotalDistance':'Celkov&aacute; vzd&aacute;lenost',
     'zoomToRoute':'Cel&aacute; trasa',
     'routeSummary':'Shrnut&iacute;',

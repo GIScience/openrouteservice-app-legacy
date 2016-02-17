@@ -17,6 +17,7 @@ var lang_nl = {
     'routeFromTo':'Route naar',
     'resetRoute':'Reset hele route',
     'TotalTime':'Totale tijd',
+	'TotalWarnings':  'verkeersinformatie',
     'TotalDistance':'Totale afstand',
     'zoomToRoute':'Whole Route',
     'routeSummary':'Samenvatting',

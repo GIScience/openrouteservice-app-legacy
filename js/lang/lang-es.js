@@ -17,6 +17,7 @@ var lang_es = {
     'routeFromTo':'Route to',
     'resetRoute':'Restablecer ruta entera',
     'TotalTime':'Tiempo total',
+	'TotalWarnings':  'Informaci&oacute;n de tr&aacute;fico',
     'TotalDistance':'Distancia total',
     'zoomToRoute':'Ruta entero',
     'routeSummary':'Resumen',

@@ -16,6 +16,7 @@ var lang_fr = {
     'routeFromTo':'Itin&eacute;raire vers',
     'resetRoute':'Remettre &agrave;  z&eacute;ro l\'itin&eacute;aire',
     'TotalTime':'Dur&eacute;e totale',
+	'TotalWarnings':  'Informations du trafic',
     'TotalDistance':'Distance totale',
     'zoomToRoute':'Itin&eacute;raire complet',
     'routeSummary':'R&eacute;sum&eacute;de l\'itin&eacute;raire',

@@ -18,6 +18,7 @@ var lang_en = {
     'routeFromTo': 'Route to ',
     'resetRoute': '<i class="icon-remove-sign"></i>&nbsp;Reset whole route',
     'TotalTime': 'Total time',
+	'TotalWarnings':  'Warnings',
     'TotalDistance': 'Total distance',
     'ActualDistance': 'Actual distance',
     'routeSummary': 'Summary',

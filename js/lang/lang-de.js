@@ -22,6 +22,7 @@ var lang_de = {
 		'routeFromTo' :  'Route nach ',
 		'resetRoute' :  'Gesamte Route l&ouml;schen ',
 		'TotalTime':  'Gesamte Reisezeit',
+		'TotalWarnings':  'Verkehrsmeldungen',
 		'TotalDistance':  'Gesamte Wegstrecke',
 		'ActualDistance' : 'Effektive Wegstrecke',
 		'routeSummary':  'Zusammenfassung',
