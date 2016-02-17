@@ -99,20 +99,24 @@ var lang_cn = {
 	'avoidTollways' : '避開收费站',
 	'avoidunpavedRoads':  '避開未鋪砌道路',
 	'avoidFerry':  '避開渡船',
+	'avoidTunnel' : '隧道',
+	'avoidFord': '渡口',
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;避免道路類型 &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;避免道路類型 &nbsp;&nbsp;<span class="caret">',
 	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;避免地區&nbsp;&nbsp;<span class="caret">',
 	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;避免道路類型 &nbsp;&nbsp;<span class="caret">',
 	
-	'avoidFerryPedes' : '避開渡船' ,
 	'avoidFerryBike' : '避開渡船' ,
 	'avoidunpavedRoadsBike' : '避開未鋪砌道路',
+	'avoidpavedRoadsBike' : '避免鋪設道路',
 	'avoidStepsBike' : '步驟',
+	'avoidFordsBike' : '渡口',
+	
+	'avoidFerryPedestrian' : '避開渡船' ,
 	'avoidStepsPedestrian': '步驟',
- 	'avoidFords' : '渡口',
- 	'avoidFordsBike' : '渡口',
  	'avoidFordsPedestrian' : '渡口',
+	'avoidpavedRoadsPedestrian': '避免鋪設道路',
 	
 	//Surfaces:
 	'surface': '路面品質',

@@ -99,21 +99,24 @@ var lang_cnsimple = {
 	'avoidTollways' : '避开收费站',
 	'avoidunpavedRoads':  '避开未铺砌道路',
 	'avoidFerry':  '避开渡船',
+	'avoidTunnel' : '隧道',
+	'avoidFord': '渡口',
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;避免道路类型 &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;避免道路类型 &nbsp;&nbsp;<span class="caret">',
 	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;避免地区 &nbsp;&nbsp;<span class="caret">',
 	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;避免道路类型  &nbsp;&nbsp;<span class="caret">',
 	
-	'avoidFerryPedes' : '避开渡船' ,
 	'avoidFerryBike' : '避开渡船' ,
 	'avoidunpavedRoadsBike' : '避开未铺砌道路',
+	'avoidpavedRoadsBike' : '避免铺设道路',
 	'avoidStepsBike' : '步骤',
-	'avoidStepsPedestrian': '步骤',
- 	
- 	'avoidFords' : '渡口',
  	'avoidFordsBike' : '渡口',
+ 	
  	'avoidFordsPedestrian' : '渡口',
+	'avoidStepsPedestrian': '步骤',	
+	'avoidFerryPedestrian' : '避开渡船' ,
+	'avoidpavedRoadsPedstrian' : '避免铺设道路',
 	
 	//Surfaces:
 	'surface': '表面',

@@ -71,25 +71,27 @@ var lang_it = {
     'BicycleRacer':'bici da corsa',
 	'Wheelchair' : 'percorso accessibile',
     
-	'avoidMotorways':'Evitare autostrade',
-    'avoidTollways':'Evitare strade a pedaggio',
-	'avoidunpavedRoads':  'Evita strade non asfaltate',
+	'avoidMotorways':'autostrade',
+    'avoidTollways':'strade a pedaggio',
+	'avoidunpavedRoads':  'strade non asfaltate',
 	'avoidFerry':  'Evitare i collegamenti marittimi',
+	'avoidFord': 'guadi',
+	'avoidTunnel' : 'tunnel',
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Evitare tipi di strade &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Evitare tipi di strade &nbsp;&nbsp;<span class="caret">',
 	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Evitare le zone &nbsp;&nbsp;<span class="caret">',
 	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;Evitare tipi di strade  &nbsp;&nbsp;<span class="caret">',
 	
-	'avoidFerryPedes' : 'Evitare i collegamenti marittimi' ,
-	'avoidFerryBike' : 'Evitare i collegamenti marittimi' ,
-	'avoidunpavedRoadsBike' : 'Evita strade non asfaltate',
-	'avoidStepsBike' : 'Evitare passi',
-
-    'avoidStepsPedestrian' : 'Evitare passi',
-   
-    'avoidFords' : 'guadi',
+	'avoidFerryBike' : 'collegamenti marittimi' ,
+	'avoidunpavedRoadsBike' : 'strade non asfaltate',
+	'avoidpavedRoadsBike' : 'strade asfaltate',
+	'avoidStepsBike' : 'passi',
     'avoidFordsBike' : 'guadi',
+	
+    'avoidStepsPedestrian' : 'passi',
+	'avoidFerryPedestrian' : 'collegamenti marittimi' ,
+	'avoidpavedRoadsPedstrian' : 'strade asfaltate',
     'avoidFordsPedestrian' : 'guadi',
 	
 	'TruckLength' : 'lunghezza massima',

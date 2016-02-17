@@ -77,26 +77,28 @@ var lang_fr = {
     'BicycleRacer':'v&eacute;lo de course',
 	'Wheelchair' : 'voie accessible',
 	
-    'avoidMotorways':'&Eacute;viter les autoroutes',
-    'avoidTollways':'&Eacute;viter les routes &agrave;  p&eacute;age',
-	'avoidunpavedRoads':  'Eviter les routes non rev&ecirc;tues',
-	'avoidFerry':  'Eviter les liaisons maritimes',
+    'avoidMotorways':'autoroutes',
+    'avoidTollways':'routes &agrave;  p&eacute;age',
+	'avoidunpavedRoads':  'routes non rev&ecirc;tues',
+	'avoidFerry':  'liaisons maritimes',
+	'avoidFord':  'gu&eacute;s',
+	'avoidTunnel' : 'tunnel',
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Eviter les types de route &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Eviter les types de route &nbsp;&nbsp;<span class="caret">',
 	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Eviter les zones &nbsp;&nbsp;<span class="caret">',
 	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;Eviter les types de route  &nbsp;&nbsp;<span class="caret">',
-	
-	'avoidFerryPedes' : 'Eviter les liaisons maritimes' ,
-	'avoidFerryBike' : 'Eviter les liaisons maritimes' ,
-	'avoidunpavedRoadsBike' : 'Eviter les routes non rev&ecirc;tues',
-	'avoidStepsBike' : 'Eviter les &eacute;tapes',
 
-    'avoidStepsPedestrian' : 'Eviter les &eacute;tapes',
-   
-    'avoidFords' : 'gu&eacute;s',
+	'avoidFerryBike' : 'liaisons maritimes' ,
+	'avoidunpavedRoadsBike' : 'routes non rev&ecirc;tues',
+	'avoidpavedRoadsBike' : 'routes rev&ecirc;tues',
+	'avoidStepsBike' : '&eacute;tapes',
     'avoidFordsBike' : 'gu&eacute;s',
+	
     'avoidFordsPedestrian' : 'gu&eacute;s',
+	'avoidStepsPedestrian' : '&eacute;tapes',
+	'avoidFerryPedestrian' : 'liaisons maritimes',
+	'avoidpavedRoadsPedestrian' : 'routes rev&ecirc;tues',
 	
 	'TruckLength' : 'longueur maximale',
 	'TruckHeight' : 'hauteur maximale',

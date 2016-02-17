@@ -123,16 +123,19 @@ var lang_ua = {
     'avoidTollways': 'Уникати платних доріг',
 	'avoidunpavedRoads':  'Уникайте грунтові дороги',
 	'avoidFerry':  'Уникайте пороми',
-	'avoidFerryPedes' : 'Уникайте пороми' ,
+	'avoidFord': 'броди',
+	'avoidTunnel' : 'тунель',
+
 	'avoidFerryBike' : 'Уникайте пороми' ,
+	'avoidFordsBike' : 'броди',
 	'avoidunpavedRoadsBike' : 'Уникайте грунтові дороги',
+	'avoidpavedRoadsBike' : 'Щоб уникнути дороги з твердим покриттям',
 	'avoidStepsBike' : 'заходи',
 
     'avoidStepsPedestrian' : 'заходи',
-  
-    'avoidFords' : 'броди',
-    'avoidFordsBike' : 'броди',
     'avoidFordsPedestrian' : 'броди',
+	'avoidpavedRoadsPedestrian': 'Щоб уникнути дороги з твердим покриттям',
+	'avoidFerryPedestrian' : 'Уникайте пороми' ,
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;уникнути типи доріг &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;уникнути типи доріг &nbsp;&nbsp;<span class="caret">',

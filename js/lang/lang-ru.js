@@ -86,23 +86,25 @@ var lang_ru = {
     'avoidTollways': 'Избегать платных дорог',
 	'avoidunpavedRoads':  'Избегайте грунтовые дороги',
 	'avoidFerry':  'Избегайте паромы',
+	'avoidFord': 'броды',
+	'avoidTunnel' : 'тоннель',	
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;избежать типы дорог &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;избежать типы дорог &nbsp;&nbsp;<span class="caret">',
 	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;избегать районов &nbsp;&nbsp;<span class="caret">',
 	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;избежать типы дорог  &nbsp;&nbsp;<span class="caret">',
 	
-	'avoidFerryPedes' : 'Избегайте паромы' ,
 	'avoidFerryBike' : 'Избегайте паромы' ,
 	'avoidunpavedRoadsBike' : 'Избегайте грунтовые дороги',
+	'avoidpavedRoadsBike' : 'Во избежание дороги с твердым покрытием',
 	'avoidStepsBike' : 'меры',
-
-    'avoidStepsPedestrian' : 'меры',
-   
-    'avoidFords' : 'броды',
     'avoidFordsBike' : 'броды',
-    'avoidFordsPedestrian' : 'броды',
 	
+    'avoidStepsPedestrian' : 'меры',
+    'avoidFordsPedestrian' : 'броды',
+	'avoidpavedRoadsPedestrian' : 'Во избежание дороги с твердым покрытием',
+	'avoidFerryPedestrian' : 'Избегайте паромы' ,
+
 	'TruckLength' : 'максимальная длина',
 	'TruckHeight' : 'максимальная высота',
 	'TruckWeight' : 'максимальный вес',

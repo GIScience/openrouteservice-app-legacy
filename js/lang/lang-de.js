@@ -101,21 +101,24 @@ var lang_de = {
 		'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Gebiete vermeiden &nbsp;&nbsp;<span class="caret">',
 		'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;Stra&szlig;en vermeiden  &nbsp;&nbsp;<span class="caret">',
 
-		'avoidMotorways':  'Autobahnen vermeiden',
-		'avoidTollways':  'Mautstra&szlig;en vermeiden',
-		'avoidunpavedRoads':  'Unbefestigte Straßen vermeiden',
-		'avoidFerry':  'F&aumlhrverbindungen vermeiden',
-		'avoidTunnel' : 'Tunnel vermeiden',
-		'avoidFord': 'Furten vermeiden',
-		'avoidFerryPedes' : 'F&aumlhrverbindungen vermeiden' ,
-		'avoidFerryBike' : 'F&aumlhrverbindungen vermeiden' ,
-		'avoidunpavedRoadsBike' : 'Unbefestigte Straßen vermeiden',
-		'avoidStepsBike' : 'Stufen/Treppen vermeiden',
-
-
-		'avoidStepsPedestrian': 'Stufen/Treppen vermeiden',
- 		'avoidFords' : 'Furten',
- 		'avoidFordsBike' : 'Furten',
+		'avoidMotorways':  'Autobahnen',
+		'avoidTollways':  'Mautstra&szlig;en',
+		'avoidunpavedRoads':  'Unbefestigte Straßen',
+		'avoidFerry':  'F&aumlhrverbindungen',
+		'avoidTunnel' : 'Tunnel',
+		'avoidFord': 'Furten',
+				
+		'avoidFerryBike' : 'F&aumlhrverbindungen' ,
+		'avoidunpavedRoadsBike' : 'Unbefestigte Straßen',
+		'avoidpavedRoadsBike' : 'Befestigte Straßen',
+		'avoidStepsBike' : 'Stufen/Treppen',
+		'avoidFordsBike' : 'Furten',
+		
+		'layer':'blaii',
+		
+		'avoidFerryPedestrian' : 'F&aumlhrverbindungen' ,
+		'avoidpavedRoadsPedestrian': 'Befestigte Straßen',
+		'avoidStepsPedestrian': 'Stufen/Treppen',
  		'avoidFordsPedestrian' : 'Furten',
 		
 		//Surfaces:

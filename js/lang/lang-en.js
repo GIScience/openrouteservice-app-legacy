@@ -84,26 +84,30 @@ var lang_en = {
     'truckMain': 'Truck Parameters (in meters/tons)',
     'agriculturalHeavyTruck': 'Agricultural vehicle',
     'forestryHeavyTruck': 'Forestry vehicly',
-    'avoidRoadMain': '<i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types &nbsp;&nbsp;<span class="caret">',
-    'avoidBikeMain': '<i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types &nbsp;&nbsp;<span class="caret">',
-    'avoidAreasMain': '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;avoid areas &nbsp;&nbsp;<span class="caret">',
-    'avoidPedesMain': '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;avoid road types  &nbsp;&nbsp;<span class="caret">',
-    'avoidMotorways': 'highways',
+	
+	'avoidMotorways': 'highways',
     'avoidTollways': 'toll roads',
     'avoidunpavedRoads': 'unpaved roads',
     'avoidFerry': 'ferry connections',
     'avoidTunnel' : 'tunnels',
     'avoidFord': 'fords',
-    'avoidFerryPedes': 'ferry connections',
+
+    'avoidRoadMain': '<i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types &nbsp;&nbsp;<span class="caret">',
+    'avoidBikeMain': '<i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types &nbsp;&nbsp;<span class="caret">',
+    'avoidAreasMain': '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;avoid areas &nbsp;&nbsp;<span class="caret">',
+    'avoidPedesMain': '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;avoid road types  &nbsp;&nbsp;<span class="caret">',
+   
     'avoidFerryBike': 'ferry connections',
     'avoidunpavedRoadsBike': 'unpaved roads',
+	'avoidpavedRoadsBike' : 'paved roads',
     'avoidStepsBike': 'steps',
-
+    'avoidFordsBike' : 'fords',	
+	
+    'avoidFerryPedestrian': 'ferry connections',
     'avoidStepsPedestrian': 'steps',
-    'avoidFords' : 'fords',
-    'avoidFordsBike' : 'fords',
     'avoidFordsPedestrian' : 'fords',
-
+	'avoidpavedRoadsPedstrian' : 'paved roads',
+	
     //Surfaces:
     'surface': 'Surface',
     'asphalt': 'concrete, asphalt',

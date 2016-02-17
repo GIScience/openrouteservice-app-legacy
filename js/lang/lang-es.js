@@ -78,26 +78,28 @@ var lang_es = {
     'BicycleRacer':'compitiendo con la bici',
 	'Wheelchair' : 'ruta accesible',
 	
-    'avoidMotorways':'Evitar autopistas',
-    'avoidTollways':'Evitar carreteras de peaje',
-	'avoidunpavedRoads':  'Evitar carreteras sin pavimentar',
-	'avoidFerry':  'Evitar las conexiones mar&iacute;timas',
+    'avoidMotorways':'autopistas',
+    'avoidTollways':'carreteras de peaje',
+	'avoidunpavedRoads':  'carreteras sin pavimentar',
+	'avoidFerry':  'conexiones mar&iacute;timas',
+	'avoidFord':  'vados',
+	'avoidTunnel' : 't&uacute;nel',
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;evitar tipos de carretera &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;evitar tipos de carretera &nbsp;&nbsp;<span class="caret">',
 	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;evitar las zonas &nbsp;&nbsp;<span class="caret">',
 	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;evitar tipos de carretera  &nbsp;&nbsp;<span class="caret">',
 	
-	'avoidFerryPedes' : 'Evitar las conexiones mar&iacute;timas' ,
-	'avoidFerryBike' : 'Evitar las conexiones mar&iacute;timas' ,
-	'avoidunpavedRoadsBike' : 'Evitar carreteras sin pavimentar',
-	'avoidStepsBike' : 'Evitar pasos',
-
-    'avoidStepsPedestrian' : 'Evitar pasos',
-   
-    'avoidFords' : 'vados',
+	'avoidFerryBike' : 'conexiones mar&iacute;timas' ,
+	'avoidunpavedRoadsBike' : 'carreteras sin pavimentar',
+	'avoidpavedRoadsBike' : 'carreteras pavimentar',
+	'avoidStepsBike' : 'pasos',
     'avoidFordsBike' : 'vados',
+
+    'avoidStepsPedestrian' : 'pasos',
+	'avoidFerryPedestrian' : 'conexiones mar&iacute;timas' ,   
     'avoidFordsPedestrian' : 'vados',
+	'avoidpavedRoadsPedestrian' : 'carreteras pavimentar',
 	
 	'TruckLength' : 'longitud m&aacute;xima',
 	'TruckHeight' : 'altura m&aacute;xima',

@@ -78,26 +78,28 @@ var lang_hu = {
     'BicycleRacer':'versenyker&eacute;kp&aacute;r',
 	'Wheelchair' : 'megk&ouml;zel&iacute;thet&#337 &#250;tvonalon',
 	
-    'avoidMotorways':'Ker&uuml;lje aut&oacute;p&aacute;ly&aacute;k',
-    'avoidTollways':'Ker&uuml;lje a fizetos utak',
-	'avoidunpavedRoads':  'Ker&uuml;lje a f&ouml;ldutakat',
-	'avoidFerry':  'Ker&uuml;lje a kompj&aacute;rat',
+    'avoidMotorways':'aut&oacute;p&aacute;ly&aacute;k',
+    'avoidTollways':'fizetos utak',
+	'avoidunpavedRoads':  ' f&ouml;ldutakat',
+	'avoidFerry':  'kompj&aacute;rat',
+	'avoidFord': 'g&aacute;zl&oacute;k',
+	'avoidTunnel' : 'alag&uacute;t',
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Elker&uuml;l&eacute;se road t&iacute;pusok &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Elker&uuml;l&eacute;se road t&iacute;pusok &nbsp;&nbsp;<span class="caret">',
 	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Elker&uuml;l&eacute;se ter&uuml;letek &nbsp;&nbsp;<span class="caret">',
 	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;Elker&uuml;l&eacute;se road t&iacute;pusok  &nbsp;&nbsp;<span class="caret">',
 	
-	'avoidFerryPedes' : 'Ker&uuml;lje a kompj&aacute;rat' ,	
-	'avoidFerryBike' : 'Ker&uuml;lje a kompj&aacute;rat' ,
-	'avoidunpavedRoadsBike' : 'Ker&uuml;lje a f&ouml;ldutakat',
-	'avoidStepsBike' : 'Elker&uuml;l&eacute;se l&eacute;p&eacute;sek',
-
-    'avoidStepsPedestrian' : 'Elker&uuml;l&eacute;se l&eacute;p&eacute;sek',
-   
-    'avoidFords' : 'g&aacute;zl&oacute;k',
-    'avoidFordsBike' : 'g&aacute;zl&oacute;k',
+	'avoidFerryBike' : 'kompj&aacute;rat' ,
+	'avoidunpavedRoadsBike' : 'f&ouml;ldutakat',
+	'avoidpavedRoadsBike' : 'ker&uuml;lje a burkolt utak',
+	'avoidStepsBike' : 'l&eacute;p&eacute;sek',
+	'avoidFordsBike' : 'g&aacute;zl&oacute;k',
+	
+	'avoidFerryPedestrian' : 'kompj&aacute;rat' ,
+    'avoidStepsPedestrian' : 'l&eacute;p&eacute;sek',
     'avoidFordsPedestrian' : 'g&aacute;zl&oacute;k',
+	'avoidpavedRoadsPedestrian' : 'ker&uuml;lje a burkolt utak',
 	
 	'TruckLength' : 'maxim&aacute;lis hossza',
 	'TruckHeight' : 'maxim&aacute;lis magass&aacute;g',

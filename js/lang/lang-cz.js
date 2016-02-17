@@ -78,27 +78,28 @@ var lang_cz = {
     'BicycleRacer':'z&aacute;vodn&iacute;motocykl',
 	'Wheelchair' : 'pr&iacute;stupn&aacute;cesta',
 	
-    'avoidMotorways':'Vyhnout se d&aacute;lnic&iacute;m',
-    'avoidTollways':'Vyhnout se placen&yacute;m komunikac&iacute;m ',
-	'avoidunpavedRoads':  'Vyhnete se nezpevnen&yacute;ch cest&aacute;ch',
-	'avoidFerry':  'Vyhnete trajektov&eacute;ho spojen&iacute;',
-	
+    'avoidMotorways':'d&aacute;lnic&iacute;m',
+    'avoidTollways':'placen&yacute;m komunikac&iacute;m ',
+	'avoidunpavedRoads':  'nezpevnen&yacute;ch cest&aacute;ch',
+	'avoidFerry':  'trajektov&eacute;ho spojen&iacute;',
+	'avoidFord':  'brody',
+	'avoidTunnel' : 'tunel',
+
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;vyhnout typům silnic &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;vyhnout typům silnic &nbsp;&nbsp;<span class="caret">',
 	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;vyhnout oblastí &nbsp;&nbsp;<span class="caret">',
 	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;vyhnout typům silnic  &nbsp;&nbsp;<span class="caret">',
 	
-	'avoidFerryPedes' : 'Vyhnete trajektov&eacute;ho spojen&iacute;' ,	
-	'avoidFerryBike' : 'Vyhnete trajektov&eacute;ho spojen&iacute;' ,
-	'avoidunpavedRoadsBike' : 'Vyhnete se nezpevnen&yacute;ch cest&aacute;ch',
-	'avoidStepsBike' : 'Vyhnete kroky',
-
-    'avoidStepsPedestrian' : 'Vyhnete kroky',
-    'avoidFords' : 'brody',
+	'avoidFerryBike' : 'trajektov&eacute;ho spojen&iacute;' ,
+	'avoidunpavedRoadsBike' : 'nezpevnen&yacute;ch cest&aacute;ch',
+	'avoidpavedRoadsBike' : 'zpevn&#283;n&yacute;ch komunikac&iacute;ch',
+	'avoidStepsBike' : 'kroky',
     'avoidFordsBike' : 'brody',
+	
+	'avoidFerryPedestrian' : 'trajektov&eacute;ho spojen&iacute;' ,	
+    'avoidStepsPedestrian' : 'kroky',
     'avoidFordsPedestrian' : 'brody',
-
-
+	'avoidpavedRoadsPedstrian' : 'zpevn&#283;n&yacute;ch komunikac&iacute;ch',
 
 	'TruckLength' : 'maxim&aacute;ln&iacute;d&eacute;lka',
 	'TruckHeight' : 'maxim&aacute;ln&iacute;v&yacute;ska',
