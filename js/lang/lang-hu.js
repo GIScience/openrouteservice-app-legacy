@@ -1,6 +1,7 @@
 var lang_hu = {			
     'serverError':'Sajn&aacute;ljuk. Hiba t&ouml;rt&eacute;nt a sz&aacute;m&iacute;t&aacute;s sor&aacute;n a szerveren. K&eacute;rj&uuml;k pr&oacute;b&aacute;lkozzon k&eacute;sobb. ',
     'contact':'Inform&aacute;ci&oacute;&eacute;s kapcsolat',
+	'maxSpeed': 'Maximalis sebesseg',
     'closeBtn':'Bez&aacute;r&aacute;s',
     'saveBtn':'A Ment&eacute;s',
     'untitled':'Untitled',
@@ -9,6 +10,15 @@ var lang_hu = {
     'search':'Keres&eacute;s',
     'routeOptions':'&Uacute;tvonal-opci&oacute;k',
     'routeExtras':'&Uacute;tvonal extr&aacute;k',
+	
+	//Map Layernames
+	'layer1' : 'OpenMapSurfer',
+	'layer2' : 'OSM-WMS vil&aacute;gszerte',
+	'layer3' : 'Openstreetmap',
+	'layer4' : 'OpenCycleMap',
+	'layer5' : 'Stamen t&eacute;rk&eacute;p',
+	'layer6' : 'Hillshade',
+	'layer7' : 'Forgalmi infromation',
     
 	//Routing
     'planRoute':'&Uacute;tvonal',

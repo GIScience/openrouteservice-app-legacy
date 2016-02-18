@@ -1,18 +1,24 @@
 var lang_cnsimple = {
 	'serverError' : '很抱歉，服务器端发生计算错误。请稍后再试。',
-
 	'contact' : '联系我们',
-
+	'maxSpeed': '最大速率',
 	'closeBtn' : '关闭',
 	'saveBtn' : '保存',
-
 	'untitled' : '新文档',
 	'infoTextVersions' : '新用户？请在偏好设置菜单中激活扩展选项。',
-
 	'routePlanner' : '路径规划器',
 	'search' : '搜索',
 	'routeOptions' : '路径选项',
 	'routeExtras' : '其他',
+	
+	//Map Layernames
+	'layer1' : 'OpenMapSurfer',
+	'layer2' : 'OSM-WMS 全世界',
+	'layer3' : 'Openstreetmap',
+	'layer4' : 'OpenCycleMap',
+	'layer5' : 'Stamen 地圖',
+	'layer6' : '山體陰影',
+	'layer7' : '交通信息',
 
 	//Routing
 	'planRoute' : '规划路径',

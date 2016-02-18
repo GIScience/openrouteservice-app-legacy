@@ -1,18 +1,24 @@
 var lang_ua = {
     'serverError': 'Нам дуже шкода, але на сервері під час розрахунку сталася помилка. Будь ласка спробуйте пізніше.',
- 
     'contact': 'Інформація&nbsp;&amp;&nbsp;Контакти',
- 
+	'maxSpeed': 'максимальна швидкість',
     'closeBtn': 'Зачинити',
     'saveBtn': 'Зберегти',
- 
     'untitled': 'Безіменний',
     'infoTextVersions': 'Вперше на OpenRouteService? Увімкніть розширені опції в меню уподобань сайту.',
- 
     'routePlanner': 'Маршрут',
     'search': 'Пошук',
     'routeOptions': 'Налаштування маршруту',
     'routeExtras': 'Додаткові опції маршруту',
+	
+	//Map Layernames
+	'layer1' : 'OpenMapSurfer',
+	'layer2' : 'OSM-WMS світовий',
+	'layer3' : 'Openstreetmap',
+	'layer4' : 'OpenCycleMap',
+	'layer5' : 'Stamen карта',
+	'layer6' : 'відмивання',
+	'layer7' : 'інформація про рух',
  
     //Routing
     'planRoute': 'План маршруту',

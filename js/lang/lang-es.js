@@ -1,6 +1,7 @@
 var lang_es = {
     'serverError':'Lo lamentamos. Ha ocurrido un error durante el c&aacute;lculo en el servidor. Por favor int&eacute;ntelo de nuevo m&aacute;s tarde.',
     'contact':'Info y Contacto',
+	'maxSpeed': 'Velocidad maxima',
     'closeBtn':'Cerrar',
     'saveBtn':'Save',
     'untitled':'Sin t&iacute;tulo',
@@ -9,6 +10,15 @@ var lang_es = {
     'search':'Buscar',
     'routeOptions':'Opciones de ruta',
     'routeExtras':'Ruta extras',
+	
+	//Map Layernames
+	'layer1' : 'OpenMapSurfer',
+	'layer2' : 'OSM-WMS mundial',
+	'layer3' : 'Openstreetmap',
+	'layer4' : 'OpenCycleMap',
+	'layer5' : 'Stamen mapa',
+	'layer6' : 'Sombreado',
+	'layer7' : 'Informaci&oacute;n de tr&aacute;fico',
    
    //Routing
     'planRoute':'Plan de ruta',

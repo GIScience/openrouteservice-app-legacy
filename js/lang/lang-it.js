@@ -1,6 +1,7 @@
 var lang_it = {			
     'serverError':'Siamo spiacenti. Verificato un errore durante il calcolo sul server. Riprovare pi&ugrave; tardi. ',
     'contact':'Info & Contatti',
+	'maxSpeed': 'Velocita massima',
     'closeBtn':'Chiudere',
     'saveBtn':'Salva',
     'untitled':'Senza titolo',
@@ -9,6 +10,16 @@ var lang_it = {
     'search':'Cerca',
     'routeOptions':'Opzioni di percorso',
     'routeExtras':'Extra Rotta ',
+	
+	//Map Layernames
+	'layer1' : 'OpenMapSurfer',
+	'layer2' : 'OSM-WMS mondiale',
+	'layer3' : 'Openstreetmap',
+	'layer4' : 'OpenCycleMap',
+	'layer5' : 'Stamen carta',
+	'layer6' : 'Hillshade',
+	'layer7' : 'Informazioni sul traffico',
+	
     //Routing
     'planRoute':'Plan route',
     'calculatingRoute':'Calcolo del percorso ...',

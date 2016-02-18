@@ -1,6 +1,7 @@
 var lang_fr = {			
     'serverError':'Nous sommes d&eacute;sol&eacute;s. Une erreur est survenue lors du calcul sur le serveur. Merci de r&eacute;essayer ult&eacute;rieurement.',
     'contact':'Info & Contact',
+	'maxSpeed': 'Vitesse de pointe',
     'closeBtn':'Fermer',
     'saveBtn':'Sauvegarger',
     'untitled':'Sans titre',
@@ -9,6 +10,16 @@ var lang_fr = {
     'search':'Recherche',
     'routeOptions':'Options d\'itin&eacute;raire',
     'routeExtras':'Extras d\'itin&eacute;aires',
+	
+	//Map Layernames
+	'layer1' : 'OpenMapSurfer',
+	'layer2' : 'OSM-WMS mondial',
+	'layer3' : 'Openstreetmap',
+	'layer4' : 'OpenCycleMap',
+	'layer5' : 'Stamen carte',
+	'layer6' : 'Ombrage',
+	'layer7' : 'Infromation du trafic',
+	
     //Routing
     'planRoute':'Pr&eacute;voir l\'itin&eacute;raire',
     'calculatingRoute':'Calcul de l\'itin&eacute;raire...',
