@@ -202,6 +202,9 @@ var lang_de = {
 		'gpxUploadRouteText' :  'GPX-Funktionen',
 		'selectFile' : 'Datei ausw&auml;hlen',
 		'changeFile' : '&Auml;ndern',
+	
+	//Optimize waypoint order
+		'viaOptimize' : 'Wegpunkt-Anordnung optimieren',
 
 		//accessibility Analysis
 		'accessibilityAnalysis' : 'Erreichbarkeits-Analyse',
