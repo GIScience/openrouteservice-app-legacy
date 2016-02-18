@@ -71,7 +71,18 @@ var Preferences = (function(w) {
      */
 
     function translate(term) {
-		this.dictionaryLang = window['lang_' + readCookie(prefNames[this.languageIdx])];
+		var lang=readCookie(prefNames[this.languageIdx]);
+		if (!lang) {
+            var userLang = (navigator.language) ? navigator.language : navigator.userLanguage;
+            if (userLang.indexOf("de") != -1) {
+                //use German for browser language codes that contain "de"
+                lang = 'de';
+            } else {
+                //everything else is set to English
+                lang = 'en';
+            }
+        }
+		this.dictionaryLang = window['lang_' + lang];
         return this.dictionaryLang[term] || '';
     }
     /**
