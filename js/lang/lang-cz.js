@@ -1,6 +1,7 @@
 var lang_cz = {			
     'serverError':'Je n&aacute;m l&iacute;to.Doslo k chybe pri v&yacute;poctu na serveru. Zkuste to pros&iacute;m znovu pozdeji. ',
     'contact':'Info & kontakt',
+    'maxSpeed': 'Maximalni rychlost',
     'closeBtn':'Zavr&iacute;t',
     'saveBtn':'Ulo&#382;it ',
     'untitled':'Untitled',
@@ -9,6 +10,15 @@ var lang_cz = {
     'search':'Hledat',
     'routeOptions':'Mo&#382;nosti trasy',
     'routeExtras':'Trasa doplnky',
+	
+	//Map Layernames
+	'layer1' : 'OpenMapSurfer',
+	'layer2' : 'OSM-WMS celosv&#283;tov&#283;',
+	'layer3' : 'Openstreetmap',
+	'layer4' : 'OpenCycleMap',
+	'layer5' : 'Stamen mapa',
+	'layer6' : 'Hillshade',
+	'layer7' : 'Dopravn&iactue; informace',
     
 	//Routing
     'planRoute':'Pl&aacute;n cesty',
@@ -17,6 +27,7 @@ var lang_cz = {
     'routeFromTo':'Cesta k',
     'resetRoute':'Obnovit celou trasu',
     'TotalTime':'Celkov&aacute; doba',
+	'TotalWarnings':  'Traffic Information',
     'TotalDistance':'Celkov&aacute; vzd&aacute;lenost',
     'zoomToRoute':'Cel&aacute; trasa',
     'routeSummary':'Shrnut&iacute;',
@@ -78,27 +89,28 @@ var lang_cz = {
     'BicycleRacer':'z&aacute;vodn&iacute;motocykl',
 	'Wheelchair' : 'pr&iacute;stupn&aacute;cesta',
 	
-    'avoidMotorways':'Vyhnout se d&aacute;lnic&iacute;m',
-    'avoidTollways':'Vyhnout se placen&yacute;m komunikac&iacute;m ',
-	'avoidunpavedRoads':  'Vyhnete se nezpevnen&yacute;ch cest&aacute;ch',
-	'avoidFerry':  'Vyhnete trajektov&eacute;ho spojen&iacute;',
-	
+    'avoidMotorways':'d&aacute;lnic&iacute;m',
+    'avoidTollways':'placen&yacute;m komunikac&iacute;m ',
+	'avoidunpavedRoads':  'nezpevnen&yacute;ch cest&aacute;ch',
+	'avoidFerry':  'trajektov&eacute;ho spojen&iacute;',
+	'avoidFord':  'brody',
+	'avoidTunnel' : 'tunel',
+
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;vyhnout typům silnic &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;vyhnout typům silnic &nbsp;&nbsp;<span class="caret">',
 	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;vyhnout oblastí &nbsp;&nbsp;<span class="caret">',
 	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;vyhnout typům silnic  &nbsp;&nbsp;<span class="caret">',
 	
-	'avoidFerryPedes' : 'Vyhnete trajektov&eacute;ho spojen&iacute;' ,	
-	'avoidFerryBike' : 'Vyhnete trajektov&eacute;ho spojen&iacute;' ,
-	'avoidunpavedRoadsBike' : 'Vyhnete se nezpevnen&yacute;ch cest&aacute;ch',
-	'avoidStepsBike' : 'Vyhnete kroky',
-
-    'avoidStepsPedestrian' : 'Vyhnete kroky',
-    'avoidFords' : 'brody',
+	'avoidFerryBike' : 'trajektov&eacute;ho spojen&iacute;' ,
+	'avoidunpavedRoadsBike' : 'nezpevnen&yacute;ch cest&aacute;ch',
+	'avoidpavedRoadsBike' : 'zpevn&#283;n&yacute;ch komunikac&iacute;ch',
+	'avoidStepsBike' : 'kroky',
     'avoidFordsBike' : 'brody',
+	
+	'avoidFerryPedestrian' : 'trajektov&eacute;ho spojen&iacute;' ,	
+    'avoidStepsPedestrian' : 'kroky',
     'avoidFordsPedestrian' : 'brody',
-
-
+	'avoidpavedRoadsPedstrian' : 'zpevn&#283;n&yacute;ch komunikac&iacute;ch',
 
 	'TruckLength' : 'maxim&aacute;ln&iacute;d&eacute;lka',
 	'TruckHeight' : 'maxim&aacute;ln&iacute;v&yacute;ska',

@@ -1,18 +1,24 @@
 var lang_cn = {
 	'serverError' : '很抱歉，伺服器端發生計算錯誤。請稍候再試。',
-
 	'contact' : '連絡我們',
-
+	'maxSpeed': '最大速率',
 	'closeBtn' : '關閉',
 	'saveBtn' : '存檔',
-
 	'untitled' : '新文件',
 	'infoTextVersions' : '新使用者？請在偏好選單中啟動擴展選項。',
-
 	'routePlanner' : '路徑規劃工具',
 	'search' : '搜索',
 	'routeOptions' : '路徑選項',
 	'routeExtras' : '其他',
+	
+	//Map Layernames
+	'layer1' : 'OpenMapSurfer',
+	'layer2' : 'OSM-WMS 全世界',
+	'layer3' : 'Openstreetmap',
+	'layer4' : 'OpenCycleMap',
+	'layer5' : 'Stamen 地圖',
+	'layer6' : '山體陰影',
+	'layer7' : 'Traffic Information',
 
 	//Routing
 	'planRoute' : '規劃路徑',
@@ -21,6 +27,7 @@ var lang_cn = {
 	'routeFromTo' : '導航至 ',
 	'resetRoute' : '重設路徑',
 	'TotalTime' : '總花費時間',
+	'TotalWarnings':  '交通信息',
 	'TotalDistance' : '總距離',
 	'zoomToRoute' : '縮小至全部路線',
 	'routeSummary' : '路徑概況',
@@ -99,20 +106,24 @@ var lang_cn = {
 	'avoidTollways' : '避開收费站',
 	'avoidunpavedRoads':  '避開未鋪砌道路',
 	'avoidFerry':  '避開渡船',
+	'avoidTunnel' : '隧道',
+	'avoidFord': '渡口',
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;避免道路類型 &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;避免道路類型 &nbsp;&nbsp;<span class="caret">',
 	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;避免地區&nbsp;&nbsp;<span class="caret">',
 	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;避免道路類型 &nbsp;&nbsp;<span class="caret">',
 	
-	'avoidFerryPedes' : '避開渡船' ,
 	'avoidFerryBike' : '避開渡船' ,
 	'avoidunpavedRoadsBike' : '避開未鋪砌道路',
+	'avoidpavedRoadsBike' : '避免鋪設道路',
 	'avoidStepsBike' : '步驟',
+	'avoidFordsBike' : '渡口',
+	
+	'avoidFerryPedestrian' : '避開渡船' ,
 	'avoidStepsPedestrian': '步驟',
- 	'avoidFords' : '渡口',
- 	'avoidFordsBike' : '渡口',
  	'avoidFordsPedestrian' : '渡口',
+	'avoidpavedRoadsPedestrian': '避免鋪設道路',
 	
 	//Surfaces:
 	'surface': '路面品質',

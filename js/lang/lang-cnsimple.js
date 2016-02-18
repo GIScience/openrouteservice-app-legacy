@@ -1,18 +1,24 @@
 var lang_cnsimple = {
 	'serverError' : '很抱歉，服务器端发生计算错误。请稍后再试。',
-
 	'contact' : '联系我们',
-
+	'maxSpeed': '最大速率',
 	'closeBtn' : '关闭',
 	'saveBtn' : '保存',
-
 	'untitled' : '新文档',
 	'infoTextVersions' : '新用户？请在偏好设置菜单中激活扩展选项。',
-
 	'routePlanner' : '路径规划器',
 	'search' : '搜索',
 	'routeOptions' : '路径选项',
 	'routeExtras' : '其他',
+	
+	//Map Layernames
+	'layer1' : 'OpenMapSurfer',
+	'layer2' : 'OSM-WMS 全世界',
+	'layer3' : 'Openstreetmap',
+	'layer4' : 'OpenCycleMap',
+	'layer5' : 'Stamen 地圖',
+	'layer6' : '山體陰影',
+	'layer7' : '交通信息',
 
 	//Routing
 	'planRoute' : '规划路径',
@@ -21,6 +27,7 @@ var lang_cnsimple = {
 	'routeFromTo' : '导航至 ',
 	'resetRoute' : '重置路径',
 	'TotalTime' : '总时间',
+	'TotalWarnings':  '交通信息',
 	'TotalDistance' : '总距离',
 	'zoomToRoute' : '观察全部',
 	'routeSummary' : '路径概述',
@@ -99,21 +106,24 @@ var lang_cnsimple = {
 	'avoidTollways' : '避开收费站',
 	'avoidunpavedRoads':  '避开未铺砌道路',
 	'avoidFerry':  '避开渡船',
+	'avoidTunnel' : '隧道',
+	'avoidFord': '渡口',
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;避免道路类型 &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;避免道路类型 &nbsp;&nbsp;<span class="caret">',
 	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;避免地区 &nbsp;&nbsp;<span class="caret">',
 	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;避免道路类型  &nbsp;&nbsp;<span class="caret">',
 	
-	'avoidFerryPedes' : '避开渡船' ,
 	'avoidFerryBike' : '避开渡船' ,
 	'avoidunpavedRoadsBike' : '避开未铺砌道路',
+	'avoidpavedRoadsBike' : '避免铺设道路',
 	'avoidStepsBike' : '步骤',
-	'avoidStepsPedestrian': '步骤',
- 	
- 	'avoidFords' : '渡口',
  	'avoidFordsBike' : '渡口',
+ 	
  	'avoidFordsPedestrian' : '渡口',
+	'avoidStepsPedestrian': '步骤',	
+	'avoidFerryPedestrian' : '避开渡船' ,
+	'avoidpavedRoadsPedstrian' : '避免铺设道路',
 	
 	//Surfaces:
 	'surface': '表面',

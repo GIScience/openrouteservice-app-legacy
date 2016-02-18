@@ -1,7 +1,7 @@
 var lang_en = {
     'serverError': 'We are sorry. An error occured during the calculation on the server. Please try again later.',
     'contact': 'Info&nbsp;&amp;&nbsp;Contact',
-    'maxSpeed': 'maximum speed',
+    'maxSpeed': 'Maximum speed',
     'closeBtn': 'Close',
     'saveBtn': 'Save',
     'untitled': 'Untitled',
@@ -11,13 +11,25 @@ var lang_en = {
     'search': 'Search',
     'routeOptions': 'Route options',
     'routeExtras': 'Route extras',
+	
+	//Map Layernames
+	'layer1' : 'OpenMapSurfer',
+	'layer2' : 'OSM-WMS worldwide',
+	'layer3' : 'Openstreetmap',
+	'layer4' : 'OpenCycleMap',
+	'layer5' : 'Stamen Map',
+	'layer6' : 'Hillshade',
+	'layer7' : 'Traffic Information',
+	
     //Routing
+	'test' : 'scheiss',
     'planRoute': 'Plan route',
     'calculatingRoute': 'Calculating Route...',
     'noRouteAvailable': 'Sorry, no route was found between the selected points. Please choose your points closer to a road.',
     'routeFromTo': 'Route to ',
     'resetRoute': '<i class="icon-remove-sign"></i>&nbsp;Reset whole route',
     'TotalTime': 'Total time',
+	'TotalWarnings':  'Warnings',
     'TotalDistance': 'Total distance',
     'ActualDistance': 'Actual distance',
     'routeSummary': 'Summary',
@@ -84,26 +96,30 @@ var lang_en = {
     'truckMain': 'Truck Parameters (in meters/tons)',
     'agriculturalHeavyTruck': 'Agricultural vehicle',
     'forestryHeavyTruck': 'Forestry vehicly',
-    'avoidRoadMain': '<i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types &nbsp;&nbsp;<span class="caret">',
-    'avoidBikeMain': '<i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types &nbsp;&nbsp;<span class="caret">',
-    'avoidAreasMain': '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;avoid areas &nbsp;&nbsp;<span class="caret">',
-    'avoidPedesMain': '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;avoid road types  &nbsp;&nbsp;<span class="caret">',
-    'avoidMotorways': 'highways',
+	
+	'avoidMotorways': 'highways',
     'avoidTollways': 'toll roads',
     'avoidunpavedRoads': 'unpaved roads',
     'avoidFerry': 'ferry connections',
     'avoidTunnel' : 'tunnels',
     'avoidFord': 'fords',
-    'avoidFerryPedes': 'ferry connections',
+
+    'avoidRoadMain': '<i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types &nbsp;&nbsp;<span class="caret">',
+    'avoidBikeMain': '<i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types &nbsp;&nbsp;<span class="caret">',
+    'avoidAreasMain': '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;avoid areas &nbsp;&nbsp;<span class="caret">',
+    'avoidPedesMain': '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;avoid road types  &nbsp;&nbsp;<span class="caret">',
+   
     'avoidFerryBike': 'ferry connections',
     'avoidunpavedRoadsBike': 'unpaved roads',
+	'avoidpavedRoadsBike' : 'paved roads',
     'avoidStepsBike': 'steps',
-
+    'avoidFordsBike' : 'fords',	
+	
+    'avoidFerryPedestrian': 'ferry connections',
     'avoidStepsPedestrian': 'steps',
-    'avoidFords' : 'fords',
-    'avoidFordsBike' : 'fords',
     'avoidFordsPedestrian' : 'fords',
-
+	'avoidpavedRoadsPedstrian' : 'paved roads',
+	
     //Surfaces:
     'surface': 'Surface',
     'asphalt': 'concrete, asphalt',

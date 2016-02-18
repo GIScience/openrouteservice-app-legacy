@@ -1,6 +1,7 @@
 var lang_es = {
     'serverError':'Lo lamentamos. Ha ocurrido un error durante el c&aacute;lculo en el servidor. Por favor int&eacute;ntelo de nuevo m&aacute;s tarde.',
     'contact':'Info y Contacto',
+	'maxSpeed': 'Velocidad maxima',
     'closeBtn':'Cerrar',
     'saveBtn':'Save',
     'untitled':'Sin t&iacute;tulo',
@@ -9,6 +10,15 @@ var lang_es = {
     'search':'Buscar',
     'routeOptions':'Opciones de ruta',
     'routeExtras':'Ruta extras',
+	
+	//Map Layernames
+	'layer1' : 'OpenMapSurfer',
+	'layer2' : 'OSM-WMS mundial',
+	'layer3' : 'Openstreetmap',
+	'layer4' : 'OpenCycleMap',
+	'layer5' : 'Stamen mapa',
+	'layer6' : 'Sombreado',
+	'layer7' : 'Informaci&oacute;n de tr&aacute;fico',
    
    //Routing
     'planRoute':'Plan de ruta',
@@ -17,6 +27,7 @@ var lang_es = {
     'routeFromTo':'Route to',
     'resetRoute':'Restablecer ruta entera',
     'TotalTime':'Tiempo total',
+	'TotalWarnings':  'Informaci&oacute;n de tr&aacute;fico',
     'TotalDistance':'Distancia total',
     'zoomToRoute':'Ruta entero',
     'routeSummary':'Resumen',
@@ -78,26 +89,28 @@ var lang_es = {
     'BicycleRacer':'compitiendo con la bici',
 	'Wheelchair' : 'ruta accesible',
 	
-    'avoidMotorways':'Evitar autopistas',
-    'avoidTollways':'Evitar carreteras de peaje',
-	'avoidunpavedRoads':  'Evitar carreteras sin pavimentar',
-	'avoidFerry':  'Evitar las conexiones mar&iacute;timas',
+    'avoidMotorways':'autopistas',
+    'avoidTollways':'carreteras de peaje',
+	'avoidunpavedRoads':  'carreteras sin pavimentar',
+	'avoidFerry':  'conexiones mar&iacute;timas',
+	'avoidFord':  'vados',
+	'avoidTunnel' : 't&uacute;nel',
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;evitar tipos de carretera &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;evitar tipos de carretera &nbsp;&nbsp;<span class="caret">',
 	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;evitar las zonas &nbsp;&nbsp;<span class="caret">',
 	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;evitar tipos de carretera  &nbsp;&nbsp;<span class="caret">',
 	
-	'avoidFerryPedes' : 'Evitar las conexiones mar&iacute;timas' ,
-	'avoidFerryBike' : 'Evitar las conexiones mar&iacute;timas' ,
-	'avoidunpavedRoadsBike' : 'Evitar carreteras sin pavimentar',
-	'avoidStepsBike' : 'Evitar pasos',
-
-    'avoidStepsPedestrian' : 'Evitar pasos',
-   
-    'avoidFords' : 'vados',
+	'avoidFerryBike' : 'conexiones mar&iacute;timas' ,
+	'avoidunpavedRoadsBike' : 'carreteras sin pavimentar',
+	'avoidpavedRoadsBike' : 'carreteras pavimentar',
+	'avoidStepsBike' : 'pasos',
     'avoidFordsBike' : 'vados',
+
+    'avoidStepsPedestrian' : 'pasos',
+	'avoidFerryPedestrian' : 'conexiones mar&iacute;timas' ,   
     'avoidFordsPedestrian' : 'vados',
+	'avoidpavedRoadsPedestrian' : 'carreteras pavimentar',
 	
 	'TruckLength' : 'longitud m&aacute;xima',
 	'TruckHeight' : 'altura m&aacute;xima',

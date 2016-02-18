@@ -1,18 +1,24 @@
 var lang_ua = {
     'serverError': 'Нам дуже шкода, але на сервері під час розрахунку сталася помилка. Будь ласка спробуйте пізніше.',
- 
     'contact': 'Інформація&nbsp;&amp;&nbsp;Контакти',
- 
+	'maxSpeed': 'максимальна швидкість',
     'closeBtn': 'Зачинити',
     'saveBtn': 'Зберегти',
- 
     'untitled': 'Безіменний',
     'infoTextVersions': 'Вперше на OpenRouteService? Увімкніть розширені опції в меню уподобань сайту.',
- 
     'routePlanner': 'Маршрут',
     'search': 'Пошук',
     'routeOptions': 'Налаштування маршруту',
     'routeExtras': 'Додаткові опції маршруту',
+	
+	//Map Layernames
+	'layer1' : 'OpenMapSurfer',
+	'layer2' : 'OSM-WMS світовий',
+	'layer3' : 'Openstreetmap',
+	'layer4' : 'OpenCycleMap',
+	'layer5' : 'Stamen карта',
+	'layer6' : 'відмивання',
+	'layer7' : 'інформація про рух',
  
     //Routing
     'planRoute': 'План маршруту',
@@ -21,6 +27,7 @@ var lang_ua = {
     'routeFromTo': 'Маршрут у ',
     'resetRoute': 'Скинути весь маршрут',
     'TotalTime': 'Загальний час',
+	'TotalWarnings':  'інформація трафіку',
     'TotalDistance': 'Вся дистанція',
     'zoomToRoute': 'Увесь маршрут',
     'routeSummary': 'Зведення',
@@ -123,16 +130,19 @@ var lang_ua = {
     'avoidTollways': 'Уникати платних доріг',
 	'avoidunpavedRoads':  'Уникайте грунтові дороги',
 	'avoidFerry':  'Уникайте пороми',
-	'avoidFerryPedes' : 'Уникайте пороми' ,
+	'avoidFord': 'броди',
+	'avoidTunnel' : 'тунель',
+
 	'avoidFerryBike' : 'Уникайте пороми' ,
+	'avoidFordsBike' : 'броди',
 	'avoidunpavedRoadsBike' : 'Уникайте грунтові дороги',
+	'avoidpavedRoadsBike' : 'Щоб уникнути дороги з твердим покриттям',
 	'avoidStepsBike' : 'заходи',
 
     'avoidStepsPedestrian' : 'заходи',
-  
-    'avoidFords' : 'броди',
-    'avoidFordsBike' : 'броди',
     'avoidFordsPedestrian' : 'броди',
+	'avoidpavedRoadsPedestrian': 'Щоб уникнути дороги з твердим покриттям',
+	'avoidFerryPedestrian' : 'Уникайте пороми' ,
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;уникнути типи доріг &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;уникнути типи доріг &nbsp;&nbsp;<span class="caret">',

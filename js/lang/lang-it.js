@@ -1,6 +1,7 @@
 var lang_it = {			
     'serverError':'Siamo spiacenti. Verificato un errore durante il calcolo sul server. Riprovare pi&ugrave; tardi. ',
     'contact':'Info & Contatti',
+	'maxSpeed': 'Velocita massima',
     'closeBtn':'Chiudere',
     'saveBtn':'Salva',
     'untitled':'Senza titolo',
@@ -9,6 +10,16 @@ var lang_it = {
     'search':'Cerca',
     'routeOptions':'Opzioni di percorso',
     'routeExtras':'Extra Rotta ',
+	
+	//Map Layernames
+	'layer1' : 'OpenMapSurfer',
+	'layer2' : 'OSM-WMS mondiale',
+	'layer3' : 'Openstreetmap',
+	'layer4' : 'OpenCycleMap',
+	'layer5' : 'Stamen carta',
+	'layer6' : 'Hillshade',
+	'layer7' : 'Informazioni sul traffico',
+	
     //Routing
     'planRoute':'Plan route',
     'calculatingRoute':'Calcolo del percorso ...',
@@ -16,6 +27,7 @@ var lang_it = {
     'routeFromTo':'Route to',
     'resetRoute':'Reset intero percorso',
     'TotalTime':'Tempo totale',
+	'TotalWarnings':  'Informazioni sul traffico',
     'TotalDistance':'Distanza totale',
     'zoomToRoute':'Intero percorso',
     'routeSummary':'Sintesi',
@@ -71,25 +83,27 @@ var lang_it = {
     'BicycleRacer':'bici da corsa',
 	'Wheelchair' : 'percorso accessibile',
     
-	'avoidMotorways':'Evitare autostrade',
-    'avoidTollways':'Evitare strade a pedaggio',
-	'avoidunpavedRoads':  'Evita strade non asfaltate',
+	'avoidMotorways':'autostrade',
+    'avoidTollways':'strade a pedaggio',
+	'avoidunpavedRoads':  'strade non asfaltate',
 	'avoidFerry':  'Evitare i collegamenti marittimi',
+	'avoidFord': 'guadi',
+	'avoidTunnel' : 'tunnel',
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Evitare tipi di strade &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Evitare tipi di strade &nbsp;&nbsp;<span class="caret">',
 	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Evitare le zone &nbsp;&nbsp;<span class="caret">',
 	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;Evitare tipi di strade  &nbsp;&nbsp;<span class="caret">',
 	
-	'avoidFerryPedes' : 'Evitare i collegamenti marittimi' ,
-	'avoidFerryBike' : 'Evitare i collegamenti marittimi' ,
-	'avoidunpavedRoadsBike' : 'Evita strade non asfaltate',
-	'avoidStepsBike' : 'Evitare passi',
-
-    'avoidStepsPedestrian' : 'Evitare passi',
-   
-    'avoidFords' : 'guadi',
+	'avoidFerryBike' : 'collegamenti marittimi' ,
+	'avoidunpavedRoadsBike' : 'strade non asfaltate',
+	'avoidpavedRoadsBike' : 'strade asfaltate',
+	'avoidStepsBike' : 'passi',
     'avoidFordsBike' : 'guadi',
+	
+    'avoidStepsPedestrian' : 'passi',
+	'avoidFerryPedestrian' : 'collegamenti marittimi' ,
+	'avoidpavedRoadsPedstrian' : 'strade asfaltate',
     'avoidFordsPedestrian' : 'guadi',
 	
 	'TruckLength' : 'lunghezza massima',

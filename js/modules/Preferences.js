@@ -69,7 +69,9 @@ var Preferences = (function(w) {
      * translates a given term to the selected language of the application
      * @param {Object} term: the key to translate to the given language based on the language files (dictionary)
      */
+
     function translate(term) {
+		this.dictionaryLang = window['lang_' + readCookie(prefNames[this.languageIdx])];
         return this.dictionaryLang[term] || '';
     }
     /**

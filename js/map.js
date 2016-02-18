@@ -63,17 +63,35 @@ var Map = (function() {
                 skipMiddleMarkers: false,
                 featuresLayer: this.layerAvoid
             }
-        });
+        });	
+		this.baseLayers = {};
         this.baseLayers = {
-            "OpenMapSurfer": this.openmapsurfer,
-            "OSM-WMS worldwide": this.ors_osm_worldwide,
-            "Openstreetmap": this.openstreetmap,
-            "OpenCycleMap": this.opencyclemap,
-            "Stamen Maps": this.stamen
+            layerName1: this.openmapsurfer,
+            layerName2: this.ors_osm_worldwide,
+            layerName3: this.openstreetmap,
+            layerName4: this.opencyclemap,
+            layerName5: this.stamen
         };
-        this.overlays = {
-            "Hillshade": this.aster_hillshade
-        };
+		
+		var layerName1 = Preferences.translate('layer1');
+		this.baseLayers[layerName1] = this.openmapsurfer;
+		var layerName2 = Preferences.translate('layer2');
+		this.baseLayers[layerName2] = this.ors_osm_worldwide; 
+		var layerName3 = Preferences.translate('layer3');
+		this.baseLayers[layerName3] = this.openstreetmap; 
+		var layerName4 = Preferences.translate('layer4');
+		this.baseLayers[layerName4] = this.opencyclemap; 
+		var layerName5 = Preferences.translate('layer5');
+		this.baseLayers[layerName5] = this.stamen; 
+		
+        this.overlays = {};
+		var overlays= {
+		layerName6: this.aster_hillshade,
+		};
+		
+		var layerName6 = Preferences.translate('layer6');
+		this.overlays[layerName6] = this.aster_hillshade; 
+		
         L.control.mousePosition({
             position: 'topright',
             separator: ', '
@@ -117,9 +135,11 @@ var Map = (function() {
         this.layerPoi = L.featureGroup().addTo(this.theMap);
         this.layerSearch = L.featureGroup().addTo(this.theMap);
         this.layerTrack = L.featureGroup().addTo(this.theMap);
-        this.layerAccessibility = L.featureGroup().addTo(this.theMap);
+        this.layerAccessibility = L.featureGroup().addTo(this.theMap);		
+		var layerName7 = Preferences.translate('layer7');
+		this.overlays[layerName7] = this.layerTMC;		
         this.layerTMC = L.featureGroup().addTo(this.theMap);
-        this.layerControls.addOverlay(this.layerTMC, 'Traffic Information');
+        this.layerControls.addOverlay(this.layerTMC, layerName7);
         this.layerRestriction = L.featureGroup().addTo(this.theMap);
         this.layerAvoid.addTo(this.theMap);
         /* *********************************************************************
