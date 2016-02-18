@@ -120,6 +120,8 @@ var lang_de = {
 	'avoidpavedRoadsBike' : 'Befestigte Straßen',
 	'avoidStepsBike' : 'Stufen/Treppen',
 	'avoidFordsBike' : 'Furten',
+
+	'viaOptimize' : 'Wegpunkt-Anordnung optimieren',
 	
 	'layer':'blaii',
 	

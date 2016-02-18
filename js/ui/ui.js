@@ -1399,13 +1399,13 @@ var Ui = (function(w) {
             var timeDiv = container.querySelector('#route_totalTime');
             var distanceDiv = container.querySelector('#route_totalDistance');
             var actualDistanceDiv = container.querySelector('#route_actualDistance');
-			var warningDiv = container.querySelector('#route_trafficWarnings');
-					// number of warnings on route
-					var warningnumber;
-					if (warningnumber !== undefined && warningnumber !== 0) {
-					$(warningDiv)[0].update(preferences.translate('TotalWarnings') + ': ' + warningnumber);
-					}
-			$(actualDistanceDiv).hide();
+            var warningDiv = container.querySelector('#route_trafficWarnings');
+            // number of warnings on route
+            var warningnumber;
+            if (warningnumber !== undefined && warningnumber !== 0) {
+                $(warningDiv)[0].update(preferences.translate('TotalWarnings') + ': ' + warningnumber);
+            }
+            $(actualDistanceDiv).hide();
             // actual distance
             var actualDistance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'ActualDistance')[0];
             if (actualDistance !== undefined) {
@@ -1595,7 +1595,7 @@ var Ui = (function(w) {
                     directionsContainer.appendChild(directionsImgDiv);
                     directionsContainer.appendChild(directionTextDiv);
                     var tmcMessage = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Message')[0];
-						if (tmcMessage) {			
+                    if (tmcMessage) {
                         // add icons and jquery collapsible stuff
                         tmcMessage = tmcMessage.text || tmcMessage.textContent;
                         var tmcWarning, warningLink;
@@ -1608,7 +1608,7 @@ var Ui = (function(w) {
                                 break;
                             }
                         }
-						var warningnumber = tmcMessage.length;
+                        var warningnumber = tmcMessage.length;
                         // if codes not in dict return default
                         warningLink = warningLink !== undefined ? warningLink : './img/warning_undefined.png';
                         var noticeDiv = new Element('div', {
@@ -1618,7 +1618,7 @@ var Ui = (function(w) {
                             'class': 'directions-warning-table'
                         }).update('<thead><tbody><tr><td>' + '<img src="' + warningLink + '" />' + '</td><td>' + tmcText + '</td></tr></tbody>');
                         directionsContainer.appendChild(directionsWarningTable);
-					}		
+                    }
                     directionsModeContainer.appendChild(directionsBorder);
                     directionsModeContainer.appendChild(distanceDiv);
                     directionsContainer.appendChild(directionsModeContainer);

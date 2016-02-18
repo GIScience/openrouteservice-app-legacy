@@ -157,12 +157,11 @@ var Controller = (function(w) {
         //if END: use index of last waypoint
         wpIndex = wpType == Waypoint.type.END ? waypoint.getNumWaypoints() - 1 : wpIndex;
         //if VIA: calculate the line segment which is closest to the newly added waypoint and add it there
-		staticOrder = staticOrder === undefined ? !$("#viaOptimize")[0].checked : staticOrder;
-		if (staticOrder === undefined) staticOrder = false;
-		if (staticOrder){
-			wpIndex = wpType == Waypoint.type.VIA ? waypoint.getNumWaypoints() - 2 : wpIndex;
-		}
-        else wpIndex = wpType == Waypoint.type.VIA ? reindexViaWaypoint(waypoint.getNumWaypoints() - 2, atts) : wpIndex;
+        staticOrder = staticOrder === undefined ? !$("#viaOptimize")[0].checked : staticOrder;
+        if (staticOrder === undefined) staticOrder = false;
+        if (staticOrder) {
+            wpIndex = wpType == Waypoint.type.VIA ? waypoint.getNumWaypoints() - 2 : wpIndex;
+        } else wpIndex = wpType == Waypoint.type.VIA ? reindexViaWaypoint(waypoint.getNumWaypoints() - 2, atts) : wpIndex;
         //in case of a newly added VIA, the additional waypoint is added in ui.addWaypintAfter(...)
         if (wpType == Waypoint.type.VIA) {
             ui.addWaypointAfter(wpIndex, waypoint.getNumWaypoints());
@@ -842,9 +841,9 @@ var Controller = (function(w) {
                 map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString), permaInfo[preferences.routeOptionsIdx]);
                 var featureIds = map.updateRoute(routeLinestring, routePoints, routePref);
                 var errors = route.hasRoutingErrors(results);
-                if (!errors) {                    
+                if (!errors) {
                     ui.updateRouteSummary(results, routePref);
-					ui.updateRouteInstructions(results, featureIds, 'layerRouteLines');
+                    ui.updateRouteInstructions(results, featureIds, 'layerRouteLines');
                     ui.endRouteCalculation();
                     map.zoomToRoute();
                 } else {

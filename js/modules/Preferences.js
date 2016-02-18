@@ -69,10 +69,9 @@ var Preferences = (function(w) {
      * translates a given term to the selected language of the application
      * @param {Object} term: the key to translate to the given language based on the language files (dictionary)
      */
-
     function translate(term) {
-		var lang=readCookie(prefNames[this.languageIdx]);
-		if (!lang) {
+        var lang = readCookie(prefNames[this.languageIdx]);
+        if (!lang) {
             var userLang = (navigator.language) ? navigator.language : navigator.userLanguage;
             if (userLang.indexOf("de") != -1) {
                 //use German for browser language codes that contain "de"
@@ -82,7 +81,7 @@ var Preferences = (function(w) {
                 lang = 'en';
             }
         }
-		this.dictionaryLang = window['lang_' + lang];
+        this.dictionaryLang = window['lang_' + lang];
         return this.dictionaryLang[term] || '';
     }
     /**

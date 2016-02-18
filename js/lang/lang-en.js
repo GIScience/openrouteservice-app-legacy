@@ -104,6 +104,8 @@ var lang_en = {
     'avoidTunnel' : 'tunnels',
     'avoidFord': 'fords',
 
+    'viaOptimize' : 'Optimize waypoint arrangement',
+
     'avoidRoadMain': '<i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types &nbsp;&nbsp;<span class="caret">',
     'avoidBikeMain': '<i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types &nbsp;&nbsp;<span class="caret">',
     'avoidAreasMain': '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;avoid areas &nbsp;&nbsp;<span class="caret">',
