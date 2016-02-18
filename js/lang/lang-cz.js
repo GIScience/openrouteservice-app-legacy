@@ -18,7 +18,7 @@ var lang_cz = {
 	'layer4' : 'OpenCycleMap',
 	'layer5' : 'Stamen mapa',
 	'layer6' : 'Hillshade',
-	'layer7' : 'Dopravn&iactue; informace',
+	'layer7' : 'Dopravn&iacute; informace',
     
 	//Routing
     'planRoute':'Pl&aacute;n cesty',
