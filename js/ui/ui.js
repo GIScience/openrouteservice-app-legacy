@@ -1455,6 +1455,7 @@ var Ui = (function(w) {
             var distArr;
             var stopoverTime = 0;
             var waypoints;
+            var distArrAll = [];
             // get stopovers which are viapoints
             if ($('.waypoint').length > 2) {
                 waypoints = getWaypoints();
@@ -1612,6 +1613,7 @@ var Ui = (function(w) {
                         }).update('<thead><tbody><tr><td>' + '<img src="' + warningLink + '" />' + '</td><td>' + tmcText + '</td></tr></tbody>');
                         directionsContainer.appendChild(directionsWarningTable);
                     }
+                    distArrAll.push(distArr[0]);
                     directionsModeContainer.appendChild(directionsBorder);
                     directionsModeContainer.appendChild(distanceDiv);
                     directionsContainer.appendChild(directionsModeContainer);
@@ -1625,7 +1627,69 @@ var Ui = (function(w) {
                     $(directionTextDiv).click(handleClickRouteCorner);
                 }
             });
-            //add endpoint
+            // Calculate Chart information for WayType and WaySurface Type
+            // get Information of xls data (Distance, Segments)
+            var types = ["WayType", "WaySurface"];
+            var WayTypeResult = CalculateChart(types[0]);
+            var WaySurfaceResult = CalculateChart(types[1]);
+
+            function CalculateChart(types) {
+                if (types == "WayType") {
+                    var information = util.getElementsByTagNameNS(results, namespaces.xls, 'WayTypeList')[0];
+                    information = util.getElementsByTagNameNS(results, namespaces.xls, 'WayType');
+                    var typelist = Array.apply(null, Array(11)).map(function() {
+                        return 0
+                    });
+                } else {
+                    var information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySurfaceList')[0];
+                    information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySurface');
+                    var typelist = Array.apply(null, Array(19)).map(function() {
+                        return 0
+                    });
+                }
+                var totaldistance = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteSummary')[1];
+                totaldistance = util.getElementsByTagNameNS(results, namespaces.xls, 'TotalDistance')[0];
+                var totaldistancevalue = totaldistance.getAttribute('value');
+                var informationlength = information.length;
+                $A(information).each(function(WayType) {
+                    var from = util.getElementsByTagNameNS(WayType, namespaces.xls, 'From')[0];
+                    from = from.textContent;
+                    var to = util.getElementsByTagNameNS(WayType, namespaces.xls, 'To')[0];
+                    to = to.textContent;
+                    var typenumber = util.getElementsByTagNameNS(WayType, namespaces.xls, 'Type')[0];
+                    typenumber = typenumber.textContent;
+                    if (from == to) {
+                        typelist[typenumber] += distArrAll[from];
+                    } else {
+                        for (from; from <= to; from++) {
+                            typelist[typenumber] += distArrAll[from];
+                        }
+                    }
+                });
+                var a = 0;
+                var WayTypePercentList = [];
+                var unknown = 0;
+                //var TypeListpercent = [];
+                for (a; a < typelist.length; a++) {
+                    if (typelist[a] != 0) {
+                        WayTypePercentList[a] = (typelist[a] / totaldistancevalue) * 100;
+                        unknown += WayTypePercentList[a];
+                    } else {
+                        WayTypePercentList[a] = 0;
+                    }
+                }
+                var WayTypesObject = {};
+                for (var b = 0; b < WayTypePercentList.length; b++) {
+                    if (WayTypePercentList[b] != 0 && types == "WayType") {
+                        WayTypesObject[list.WayType[b]] = WayTypePercentList[b];
+                    }
+                    if (WayTypePercentList[b] != 0 && types == "WaySurface") {
+                        WayTypesObject[list.SurfaceType[b]] = WayTypePercentList[b];
+                    }
+                }
+                return WayTypesObject;
+            }
+            // Container for WayType
             directionsContainer = buildWaypoint('layerRoutePoints', 'end', endpoint, getWaypoints().length - 1, stopoverDistance, stopoverTime);
             directionsMain.appendChild(directionsContainer);
             // TODO tmc messages expand collapse function
