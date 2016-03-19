@@ -1,6 +1,7 @@
 var lang_nl = {			
     'serverError':'Spijtig. Er is een fout opgetreden tijdens de berekening op de server. Probeer het later opnieuw. ',
     'contact':'Info & Contact',
+	'maxSpeed': 'Maximumsnelheid',
     'closeBtn':'Sluit',
     'saveBtn':'Opslaan',
     'untitled':'Untitled',
@@ -9,6 +10,15 @@ var lang_nl = {
     'search':'Zoeken',
     'routeOptions':'Route-opties',
     'routeExtras':'Route extras',
+	
+	//Map Layernames
+	'layer1' : 'OpenMapSurfer',
+	'layer2' : 'OSM-WMS wereldwijd',
+	'layer3' : 'Openstreetmap',
+	'layer4' : 'OpenCycleMap',
+	'layer5' : 'Stamen kaart',
+	'layer6' : 'Hillshade',
+	'layer7' : 'Verkeersinformatie',
    
    //Routing
     'planRoute':'Plan route',
@@ -17,6 +27,7 @@ var lang_nl = {
     'routeFromTo':'Route naar',
     'resetRoute':'Reset hele route',
     'TotalTime':'Totale tijd',
+	'TotalWarnings':  'verkeersinformatie',
     'TotalDistance':'Totale afstand',
     'zoomToRoute':'Whole Route',
     'routeSummary':'Samenvatting',

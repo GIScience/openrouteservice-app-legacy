@@ -1,18 +1,24 @@
 var lang_pl = {
 	'serverError' : 'Przepraszamy, podczas wylicze&#x0144; na serwerze pojawi&#x0142; si&#x0119; b&#x0142;&#x0105;d. Prosz&#x0119; spr&oacute;bowa&#x0107; p&oacute;&#x017A;niej.',
-	
 	'contact' : 'Informacje&nbsp;i&nbsp;kontakt',
-	
+	'maxSpeed': 'Maksymalna predkosc',
 	'closeBtn' : 'Zamknij',
 	'saveBtn' : 'Zapisz',
-	
 	'untitled' : 'bez tytu&#x0142;u',
 	'infoTextVersions' : 'Jeste&#347; nowy na OpenRouteService? Aktywuj rozszerzone opcje w menu preferencji.',
-	
 	'routePlanner' : 'Planowanie trasy',
 	'search' : 'Szukaj',
 	'routeOptions' : 'Opcje nawigacji',
 	'routeExtras' : 'Opcje dodatkowe',
+	
+	//Map Layernames
+	'layer1' : 'OpenMapSurfer',
+	'layer2' : 'OSM-WMS swiatowy',
+	'layer3' : 'Openstreetmap',
+	'layer4' : 'OpenCycleMap',
+	'layer5' : 'Stamen mapa',
+	'layer6' : 'Hillshade',
+	'layer7' : 'Informacje o ruchu drogowym',
 
 	//Routing
 	'planRoute' : 'Zaplanuj tras&#x0119;',
@@ -21,6 +27,7 @@ var lang_pl = {
 	'routeFromTo' : 'Trasa do ',
 	'resetRoute' : 'Wyczy&#x015B;&#x0107; ca&#x0142;&#261; tras&#x0119;',
 	'TotalTime' : 'Ca&#x0142;kowity czas',
+	'TotalWarnings':  'Informacje o ruchu drogowym',
 	'TotalDistance' : 'Ca&#x0142;kowita odleg&#x0142;o&#x015B;&#x0107;',
 	'zoomToRoute' : 'Ca&#x0142;a trasa',
 	'routeSummary' : 'Podsumowanie',

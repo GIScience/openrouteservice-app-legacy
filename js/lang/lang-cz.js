@@ -1,6 +1,7 @@
 var lang_cz = {			
     'serverError':'Je n&aacute;m l&iacute;to.Doslo k chybe pri v&yacute;poctu na serveru. Zkuste to pros&iacute;m znovu pozdeji. ',
     'contact':'Info & kontakt',
+    'maxSpeed': 'Maximalni rychlost',
     'closeBtn':'Zavr&iacute;t',
     'saveBtn':'Ulo&#382;it ',
     'untitled':'Untitled',
@@ -9,6 +10,15 @@ var lang_cz = {
     'search':'Hledat',
     'routeOptions':'Mo&#382;nosti trasy',
     'routeExtras':'Trasa doplnky',
+	
+	//Map Layernames
+	'layer1' : 'OpenMapSurfer',
+	'layer2' : 'OSM-WMS celosv&#283;tov&#283;',
+	'layer3' : 'Openstreetmap',
+	'layer4' : 'OpenCycleMap',
+	'layer5' : 'Stamen mapa',
+	'layer6' : 'Hillshade',
+	'layer7' : 'Dopravn&iacute; informace',
     
 	//Routing
     'planRoute':'Pl&aacute;n cesty',
@@ -17,6 +27,7 @@ var lang_cz = {
     'routeFromTo':'Cesta k',
     'resetRoute':'Obnovit celou trasu',
     'TotalTime':'Celkov&aacute; doba',
+	'TotalWarnings':  'Traffic Information',
     'TotalDistance':'Celkov&aacute; vzd&aacute;lenost',
     'zoomToRoute':'Cel&aacute; trasa',
     'routeSummary':'Shrnut&iacute;',

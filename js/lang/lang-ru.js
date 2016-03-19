@@ -1,18 +1,24 @@
 var lang_ru = {
     'serverError': 'Нам очень жаль, но на сервере во время расчёта произошла ошибка. Пожалуйста попробуйте позже.',
- 
     'contact': 'Информация&nbsp;&amp;&nbsp;Контакты',
- 
+	'maxSpeed': 'максимальная скорость',
     'closeBtn': 'Закрыть',
     'saveBtn': 'Сохранить',
- 
     'untitled': 'Безымянный',
 	'infoTextVersions': 'Впервые на OpenRouteService? Включите расширенные опции в меню Настройки.',
- 
     'routePlanner': 'Маршрут',
     'search': 'Поиск',
     'routeOptions': 'Настройки маршрута',
     'routeExtras': 'Дополнительные опции маршрута',
+	
+	//Map Layernames
+	'layer1' : 'OpenMapSurfer',
+	'layer2' : 'OSM-WMS Мировой',
+	'layer3' : 'Openstreetmap',
+	'layer4' : 'OpenCycleMap',
+	'layer5' : 'Stamen карта',
+	'layer6' : 'отмывка',
+	'layer7' : 'информация о движении',
  
     //Routing
     'planRoute': 'План маршрута',
@@ -21,6 +27,7 @@ var lang_ru = {
     'routeFromTo': 'Маршрут в ',
     'resetRoute': 'Сбросить весь маршрут',
     'TotalTime': 'Общее время',
+	'TotalWarnings':  'информация трафика',
     'TotalDistance': 'Вся дистанция',
     'zoomToRoute': 'Весь Маршрут',
     'routeSummary': 'Сводка',

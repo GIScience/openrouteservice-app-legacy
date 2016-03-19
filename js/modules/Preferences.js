@@ -70,6 +70,18 @@ var Preferences = (function(w) {
      * @param {Object} term: the key to translate to the given language based on the language files (dictionary)
      */
     function translate(term) {
+        var lang = readCookie(prefNames[this.languageIdx]);
+        if (!lang) {
+            var userLang = (navigator.language) ? navigator.language : navigator.userLanguage;
+            if (userLang.indexOf("de") != -1) {
+                //use German for browser language codes that contain "de"
+                lang = 'de';
+            } else {
+                //everything else is set to English
+                lang = 'en';
+            }
+        }
+        this.dictionaryLang = window['lang_' + lang];
         return this.dictionaryLang[term] || '';
     }
     /**

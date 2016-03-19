@@ -1,18 +1,24 @@
 var lang_cn = {
 	'serverError' : '很抱歉，伺服器端發生計算錯誤。請稍候再試。',
-
 	'contact' : '連絡我們',
-
+	'maxSpeed': '最大速率',
 	'closeBtn' : '關閉',
 	'saveBtn' : '存檔',
-
 	'untitled' : '新文件',
 	'infoTextVersions' : '新使用者？請在偏好選單中啟動擴展選項。',
-
 	'routePlanner' : '路徑規劃工具',
 	'search' : '搜索',
 	'routeOptions' : '路徑選項',
 	'routeExtras' : '其他',
+	
+	//Map Layernames
+	'layer1' : 'OpenMapSurfer',
+	'layer2' : 'OSM-WMS 全世界',
+	'layer3' : 'Openstreetmap',
+	'layer4' : 'OpenCycleMap',
+	'layer5' : 'Stamen 地圖',
+	'layer6' : '山體陰影',
+	'layer7' : 'Traffic Information',
 
 	//Routing
 	'planRoute' : '規劃路徑',
@@ -21,6 +27,7 @@ var lang_cn = {
 	'routeFromTo' : '導航至 ',
 	'resetRoute' : '重設路徑',
 	'TotalTime' : '總花費時間',
+	'TotalWarnings':  '交通信息',
 	'TotalDistance' : '總距離',
 	'zoomToRoute' : '縮小至全部路線',
 	'routeSummary' : '路徑概況',

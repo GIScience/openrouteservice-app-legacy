@@ -139,6 +139,9 @@ var Languages = (function(w) {'use strict';
 		$('#importGpxError').html(p.translate('gpxUploadError'));
 		$('.fileUploadNewLabel').html(p.translate('selectFile'));
 		$('.fileUploadExistsLabel').html(p.translate('changeFile'));
+		
+		//Route optimization option
+		$('#viaOptimizeLabel').html(p.translate('viaOptimize'));
 
 		//geolocation
 		$('#geolocationHead').html(p.translate('currentLocation'));

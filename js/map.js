@@ -57,23 +57,39 @@ var Map = (function() {
             zoom: 13,
             attributionControl: true,
             crs: L.CRS.EPSG900913,
-            layers: [this.openmapsurfer],
+            //layers: [this.openmapsurfer],
             editable: true,
             editOptions: {
                 skipMiddleMarkers: false,
                 featuresLayer: this.layerAvoid
             }
         });
-        this.baseLayers = {
-            "OpenMapSurfer": this.openmapsurfer,
-            "OSM-WMS worldwide": this.ors_osm_worldwide,
-            "Openstreetmap": this.openstreetmap,
-            "OpenCycleMap": this.opencyclemap,
-            "Stamen Maps": this.stamen
-        };
-        this.overlays = {
-            "Hillshade": this.aster_hillshade
-        };
+        this.baseLayers = {};
+        var layerName1 = Preferences.translate('layer1');
+        var layerName2 = Preferences.translate('layer2');
+        var layerName3 = Preferences.translate('layer3');
+        var layerName4 = Preferences.translate('layer4');
+        var layerName5 = Preferences.translate('layer5');
+        this.baseLayers[layerName1] = this.openmapsurfer;
+        this.baseLayers[layerName2] = this.ors_osm_worldwide;
+        this.baseLayers[layerName3] = this.openstreetmap;
+        this.baseLayers[layerName4] = this.opencyclemap;
+        this.baseLayers[layerName5] = this.stamen;
+        // add openmapsurfer as base
+        this.baseLayers[layerName1].addTo(this.theMap);
+        // this.baseLayers = {
+        //     layerName1: this.openmapsurfer,
+        //     layerName2: this.ors_osm_worldwide,
+        //     layerName3: this.openstreetmap,
+        //     layerName4: this.opencyclemap,
+        //     layerName5: this.stamen
+        // };
+        this.overlays = {};
+        // var overlays = {
+        //     layerName6: this.aster_hillshade,
+        // };
+        var layerName6 = Preferences.translate('layer6');
+        this.overlays[layerName6] = this.aster_hillshade;
         L.control.mousePosition({
             position: 'topright',
             separator: ', '
@@ -118,13 +134,17 @@ var Map = (function() {
         this.layerSearch = L.featureGroup().addTo(this.theMap);
         this.layerTrack = L.featureGroup().addTo(this.theMap);
         this.layerAccessibility = L.featureGroup().addTo(this.theMap);
-        this.layerTMC = L.featureGroup().addTo(this.theMap);
-        this.layerControls.addOverlay(this.layerTMC, 'Traffic Information');
+        this.layerTMC = L.featureGroup();
+        var layerName7 = Preferences.translate('layer7');
+        this.overlays[layerName7] = this.layerTMC;
+        this.layerControls.addOverlay(this.layerTMC, layerName7);
         this.layerRestriction = L.featureGroup().addTo(this.theMap);
         this.layerAvoid.addTo(this.theMap);
-        /* *********************************************************************
-         * MAP CONTROLS
-         * *********************************************************************/
+        this.serializedLayersString = 'B0000';
+        this.serializedOverlaysString = '';
+            /* *********************************************************************
+             * MAP CONTROLS
+             * *********************************************************************/
         this.theMap.on('contextmenu', function(e) {
             var displayPos = e.latlng;
             $('.leaflet-popup-content').remove();
@@ -147,10 +167,10 @@ var Map = (function() {
                 self.theMap.closePopup(popup);
             };
             options[1].onclick = function(e) {
-				//prevent double clicking
-				if($(this).attr("disabled")) return;
-				$(this).attr("disabled", true);
-				//click on via point
+                //prevent double clicking
+                if ($(this).attr("disabled")) return;
+                $(this).attr("disabled", true);
+                //click on via point
                 self.emit('map:addWaypoint', {
                     pos: displayPos,
                     type: Waypoint.type.VIA
@@ -303,13 +323,26 @@ var Map = (function() {
         function emitMapChangeBaseMap(e) {
             // without this condition map zoom lat/lon isnt loaded from cookies
             if (!initMap) {
+                var idx;
+                if (e.overlay === true) {
+                    // get index of overlay
+                    var overlay, i = 0;
+                    for (overlay in self.overlays) {
+                        if (overlay == e.name) {
+                            idx = i;
+                        }
+                        i++;
+                    }
+                }
                 var changedLayer = e.name;
                 self.emit('map:basemapChanged', {
-                    layer: self.serializeLayers(changedLayer)
+                    layer: self.serializeLayers(changedLayer, idx)
                 });
             }
         }
         this.theMap.on('baselayerchange', emitMapChangeBaseMap);
+        this.theMap.on('overlayadd', emitMapChangeBaseMap);
+        this.theMap.on('overlayremove', emitMapChangeBaseMap);
         this.theMap.on('zoomend', emitMapChangedEvent);
         this.theMap.on('moveend', emitMapChangedEvent);
         this.theMap.on('zoomend', emitMapChangedZoom);
@@ -430,20 +463,41 @@ var Map = (function() {
     /**
      * returns one single string with the layers of the given map that can be used in HTTP GET vars
      * if layer is undefined return and use saved active layer
+     * @param layer: name of layer
+     * @param isOverlay: bool if layer is overlay
      */
-    function serializeLayers(layer) {
-        var baseLayer;
-        baseLayer = layer;
-        var str = '';
+    function serializeLayers(layer, isOverlayIdx) {
+        var thisLayer;
+        thisLayer = layer;
         var baseLayers = this.baseLayers;
-        for (var i in baseLayers) {
-            if (i == baseLayer) {
-                str += "B";
+        var overlays = this.overlays;
+        // are we dealing with an overlay
+        if (isOverlayIdx >= 0) {
+            // overlayString = overlayString.charAt(isOverlayIdx) == '0' ? overlayString.substr(0, isOverlayIdx) + 'T' + overlayString.substr(isOverlayIdx + 1) : overlayString.substr(0, isOverlayIdx) + '0' + overlayString.substr(isOverlayIdx + 1);
+            this.serializedOverlaysString = permaInfo[Preferences.layerIdx].substr(Object.keys(this.baseLayers).length, permaInfo[Preferences.layerIdx].length-1);
+            //if permalink is empty for the first time for overlays then set it
+            if (this.serializedOverlaysString.length == '0') {
+                this.serializedOverlaysString = '00';
+                this.serializedOverlaysString = this.serializedOverlaysString.substr(0, isOverlayIdx) + 'T' + this.serializedOverlaysString.substr(isOverlayIdx + 1);
             } else {
-                str += "0";
+                if (this.serializedOverlaysString.charAt(isOverlayIdx) == '0') {
+                    this.serializedOverlaysString = this.serializedOverlaysString.substr(0, isOverlayIdx) + 'T' + this.serializedOverlaysString.substr(isOverlayIdx + 1);
+                } else {
+                    this.serializedOverlaysString = this.serializedOverlaysString.substr(0, isOverlayIdx) + '0' + this.serializedOverlaysString.substr(isOverlayIdx + 1);
+                }
+            }
+        } else {
+            this.serializedLayersString = '';
+            for (var i in baseLayers) {
+                if (i == thisLayer) {
+                    this.serializedLayersString += "B";
+                } else {
+                    this.serializedLayersString += "0";
+                }
             }
         }
-        return str;
+        layerString = this.serializedLayersString + this.serializedOverlaysString;
+        return layerString;
     }
     /**
      * restores the given previously selected layers in the map that can be used in HTTP GET vars
@@ -457,16 +511,13 @@ var Map = (function() {
         var baseLayerIdx = params.indexOf('B') >= 0 ? params.indexOf('B') : 0;
         baseLayer = Object.keys(layers)[baseLayerIdx];
         this.theMap.addLayer(layers[baseLayer]);
-        //TODO determine which overlays to set active
-        // var regex = /T/gi;
-        // while ((result = regex.exec(params))) {
-        //     indices.push(result.index);
-        // }
-        // for (var i = 0; i < indices.length; i++) {
-        //     if (layers[indices[i]]) {
-        //         layers[indices[i]].setVisibility(true);
-        //     }
-        // }
+        //determine which overlays to set active, cut baselayers from params
+        params = params.substr(Object.keys(this.baseLayers).length, params.length);
+        for (var i = 0; i < params.length; i++) {
+            if (params[i] == 'T') {
+                this.theMap.addLayer(this.overlays[Object.keys(this.overlays)[i]]);
+            }
+        }
     }
     /* *********************************************************************
      * GENERAL
@@ -519,12 +570,13 @@ var Map = (function() {
                         this.theMap.setView(vectors.getLatLng(), zoom);
                     }
                 }
+            } else {
+                //get coordinates of the waypoint if a waypoint icon was clicked
+                var cM = this.theMap.project(vectors.getLatLng());
+                this.theMap.setView(this.theMap.unproject(cM), zoom, {
+                    animate: true
+                });
             }
-			else {
-				//get coordinates of the waypoint if a waypoint icon was clicked
-				var cM = this.theMap.project(vectors.getLatLng());
-				this.theMap.setView(this.theMap.unproject(cM), zoom, {animate: true});
-			}
         }
     }
     /**
@@ -1065,7 +1117,9 @@ var Map = (function() {
         var route;
         if (singleRouteLineString) {
             route = L.polyline(singleRouteLineString).toGeoJSON();
-            route = togpx(route, {creator: 'OpenRouteService.org'});
+            route = togpx(route, {
+                creator: 'OpenRouteService.org'
+            });
             //insert line breaks for nicely readable code
             route = route.replace(/></g, '>\n<');
             // this has to be done because xmlserializer used in
@@ -1074,7 +1128,7 @@ var Map = (function() {
             // break the textblock into an array of lines
             var lines = route.split('\n');
             // remove one line, starting at the first position
-            lines.splice(0,1);
+            lines.splice(0, 1);
             lines = lines.join("");
             header = '<?xml version="1.0"?>';
             meta = '<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" version="1.1" creator="OpenRouteService.org">';

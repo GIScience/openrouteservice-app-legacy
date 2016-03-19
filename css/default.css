@@ -107,6 +107,7 @@
     z-index: 999;
     display:none;
     width:200px;
+    font-family: 'Roboto', sans-serif;
 }
 
 .elevation-collapsed {

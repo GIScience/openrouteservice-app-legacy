@@ -1399,6 +1399,12 @@ var Ui = (function(w) {
             var timeDiv = container.querySelector('#route_totalTime');
             var distanceDiv = container.querySelector('#route_totalDistance');
             var actualDistanceDiv = container.querySelector('#route_actualDistance');
+            var warningDiv = container.querySelector('#route_trafficWarnings');
+            // number of warnings on route
+            var warningnumber;
+            if (warningnumber !== undefined && warningnumber !== 0) {
+                $(warningDiv)[0].update(preferences.translate('TotalWarnings') + ': ' + warningnumber);
+            }
             $(actualDistanceDiv).hide();
             // actual distance
             var actualDistance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'ActualDistance')[0];
@@ -1603,6 +1609,7 @@ var Ui = (function(w) {
                                 break;
                             }
                         }
+                        var warningnumber = tmcMessage.length;
                         // if codes not in dict return default
                         warningLink = warningLink !== undefined ? warningLink : './img/warning_undefined.png';
                         var noticeDiv = new Element('div', {
