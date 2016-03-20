@@ -1433,6 +1433,167 @@ var Ui = (function(w) {
         }
     }
     /**
+     * calculates way and surface type information for horizontal barcharts
+     * @param results: response of the service
+     * @param mapFeatureIds: list of IDs of Leaflet elements containing BOTH - ids for route line segments AND corner points: [routeLineSegment_0, cornerPoint_0, routeLineSegment_1, cornerPoint_1,...]
+     * @param mapLayer: map layer containing these features
+     */
+    function updateSurfaceInformation(results, mapFeatureIds, mapLayer, totalDistance) {
+        // Calculate Chart information for WayType and WaySurface Type
+        // get Information of xls data (Distance, Segments)
+        var WayTypeResult = calculateChart(results, mapFeatureIds, "WayType", totalDistance);
+        var WaySurfaceResult = calculateChart(results, mapFeatureIds, "WaySurface", totalDistance);
+        horizontalBarchart(list.divWayTypes, list.listWayTypesContainer, WayTypeResult, list.WayTypeColors);
+        horizontalBarchart(list.divSurfaceTypes, list.listSurfaceTypesContainer, WaySurfaceResult, list.SurfaceTypeColors);
+        var container = $('#routeTypesContainer').get(0);
+        container.show();
+    }
+    /**
+     * displays way and surface type in horizontal barcharts
+     * @param data: calculate type information for way and surface types
+     * @param types: div element
+     * @param list: div list element for type
+     */
+    function horizontalBarchart(types, list, data, colors) {
+        d3.select(types).selectAll("svg").remove();
+        var tip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) {
+            return d.type + " " + Math.round(d.y1 - d.y0, 0) + "%";
+        });
+        var margin = {
+                top: 0,
+                right: 20,
+                bottom: 0,
+                left: 0
+            },
+            width = 350 - margin.left - margin.right,
+            height = 24 - margin.top - margin.bottom;
+        var y = d3.scale.ordinal().rangeRoundBands([height, 0]);
+        var x = d3.scale.linear().rangeRound([0, width]);
+        var color = d3.scale.ordinal().range(colors);
+        var yAxis = d3.svg.axis().scale(y).orient("left");
+        var xAxis = d3.svg.axis().scale(x).orient("bottom");
+        var svg = d3.select(types).append("svg").attr("width", width).attr("height", height).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        color.domain(d3.keys(data).filter(function(key) {
+            return key;
+        }));
+        y.domain([0]);
+        x.domain([0, data[Object.keys(data)[Object.keys(data).length - 1]].y1]);
+        svg.selectAll("rect").data(data).enter().append("rect").attr("height", 24).attr("x", function(d) {
+            return x(d.y0) / 1.2;
+        }).attr("width", function(d) {
+            return x(d.y1) / 1.2 - x(d.y0) / 1.2;
+        }).attr("title", function(d) {
+            return Math.round(d.y1 - d.y0, 0) + "% " + d.type;
+        }).style("fill", function(d) {
+            return color(d.type);
+        }).on('mouseover', function(d) {
+            handleHighlightTypes(d.ids);
+            tip.show(d);
+        }).on('mouseout', function(d) {
+            handleResetTypes(d.ids);
+            tip.hide(d);
+        });
+        $(list).empty();
+        $(list).append("<ul></ul>");
+        for (var i = 0; i < data.length; i++) {
+            var li = $('<li>');
+            li.text(Math.round(data[i].percentage, 0) + "% " + data[i].type);
+            li.wrapInner('<span />');
+            li.css('color', colors[i]);
+            li.css('margin-left', '25px');
+            li.css('margin-top', '-10px');
+            li.css('font-size', '26px');
+            if (i !== "type" && i !== "total") $(list + "> ul").append(li);
+            li.find('span').css('color', "black");
+            li.find('span').css('font-size', "11px");
+            li.find('span').css('position', 'relative');
+            li.find('span').css('top', '-4px');
+            li.find('span').css('left', '-10px');
+        }
+        svg.call(tip);
+    }
+    /** 
+     * calculates percentages for waytypes and waysurfaces
+     * @param types: either waytype or waysurface
+     * @return WayTypesObject: Object containing Names and Percetages
+     */
+    function calculateChart(results, featureIds, types, distArrAll) {
+        var information, typelist, type;
+        // keep route ids remove corner ids
+        featureIds = featureIds.filter(function(el, index) {
+            return index % 2 === 0;
+        });
+        if (types == "WayType") {
+            information = util.getElementsByTagNameNS(results, namespaces.xls, 'WayTypeList')[0];
+            information = util.getElementsByTagNameNS(results, namespaces.xls, 'WayType');
+            typelist = [];
+            for (type in list.WayType) {
+                typelist.push({
+                    type: list.WayType[type],
+                    distance: 0,
+                    ids: [],
+                    segments: [],
+                    percentage: 0,
+                    y0: 0,
+                    y1: 0
+                });
+            }
+        } else {
+            information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySurfaceList')[0];
+            information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySurface');
+            typelist = [];
+            for (type in list.SurfaceType) {
+                typelist.push({
+                    type: list.SurfaceType[type],
+                    distance: 0,
+                    ids: [],
+                    segments: [],
+                    percentage: 0,
+                    y0: 0,
+                    y1: 0
+                });
+            }
+        }
+        var totaldistance = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteSummary')[1];
+        totaldistance = util.getElementsByTagNameNS(results, namespaces.xls, 'TotalDistance')[0];
+        var totaldistancevalue = totaldistance.getAttribute('value');
+        var informationlength = information.length;
+        $A(information).each(function(WayType) {
+            var from = util.getElementsByTagNameNS(WayType, namespaces.xls, 'From')[0];
+            from = from.textContent;
+            var to = util.getElementsByTagNameNS(WayType, namespaces.xls, 'To')[0];
+            to = to.textContent;
+            var typenumber = util.getElementsByTagNameNS(WayType, namespaces.xls, 'Type')[0];
+            typenumber = typenumber.textContent;
+            if (from == to) {
+                typelist[typenumber].distance += distArrAll[from];
+                typelist[typenumber].segments.push(parseInt(from));
+                typelist[typenumber].ids.push(featureIds[from]);
+            } else {
+                for (from; from <= to; from++) {
+                    typelist[typenumber].distance += distArrAll[from];
+                    typelist[typenumber].segments.push(parseInt(from));
+                    typelist[typenumber].ids.push(featureIds[from]);
+                }
+            }
+        });
+        var a = 0;
+        var WayTypePercentList = [];
+        var y0 = 0;
+        for (type in typelist) {
+            if (typelist[type].distance !== 0) {
+                typelist[type].percentage = (typelist[type].distance / totaldistancevalue) * 100;
+                typelist[type].y0 = y0;
+                typelist[type].y1 = y0 += +typelist[type].percentage;
+            }
+        }
+        // remove elements without distance
+        var typelistCleaned = typelist.filter(function(el) {
+            return el.distance !== 0;
+        });
+        return typelistCleaned;
+    }
+    /**
      * displays instructions for the route
      * @param results: response of the service
      * @param mapFeatureIds: list of IDs of Leaflet elements containing BOTH - ids for route line segments AND corner points: [routeLineSegment_0, cornerPoint_0, routeLineSegment_1, cornerPoint_1,...]
@@ -1634,71 +1795,9 @@ var Ui = (function(w) {
                     $(directionTextDiv).click(handleClickRouteCorner);
                 }
             });
-            // Calculate Chart information for WayType and WaySurface Type
-            // get Information of xls data (Distance, Segments)
-            var types = ["WayType", "WaySurface"];
-            var WayTypeResult = CalculateChart(types[0]);
-            var WaySurfaceResult = CalculateChart(types[1]);
-
-            function CalculateChart(types) {
-                if (types == "WayType") {
-                    var information = util.getElementsByTagNameNS(results, namespaces.xls, 'WayTypeList')[0];
-                    information = util.getElementsByTagNameNS(results, namespaces.xls, 'WayType');
-                    var typelist = Array.apply(null, Array(11)).map(function() {
-                        return 0
-                    });
-                } else {
-                    var information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySurfaceList')[0];
-                    information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySurface');
-                    var typelist = Array.apply(null, Array(19)).map(function() {
-                        return 0
-                    });
-                }
-                var totaldistance = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteSummary')[1];
-                totaldistance = util.getElementsByTagNameNS(results, namespaces.xls, 'TotalDistance')[0];
-                var totaldistancevalue = totaldistance.getAttribute('value');
-                var informationlength = information.length;
-                $A(information).each(function(WayType) {
-                    var from = util.getElementsByTagNameNS(WayType, namespaces.xls, 'From')[0];
-                    from = from.textContent;
-                    var to = util.getElementsByTagNameNS(WayType, namespaces.xls, 'To')[0];
-                    to = to.textContent;
-                    var typenumber = util.getElementsByTagNameNS(WayType, namespaces.xls, 'Type')[0];
-                    typenumber = typenumber.textContent;
-                    if (from == to) {
-                        typelist[typenumber] += distArrAll[from];
-                    } else {
-                        for (from; from <= to; from++) {
-                            typelist[typenumber] += distArrAll[from];
-                        }
-                    }
-                });
-                var a = 0;
-                var WayTypePercentList = [];
-                var unknown = 0;
-                //var TypeListpercent = [];
-                for (a; a < typelist.length; a++) {
-                    if (typelist[a] != 0) {
-                        WayTypePercentList[a] = (typelist[a] / totaldistancevalue) * 100;
-                        unknown += WayTypePercentList[a];
-                    } else {
-                        WayTypePercentList[a] = 0;
-                    }
-                }
-                var WayTypesObject = {};
-                for (var b = 0; b < WayTypePercentList.length; b++) {
-                    if (WayTypePercentList[b] != 0 && types == "WayType") {
-                        WayTypesObject[list.WayType[b]] = WayTypePercentList[b];
-                    }
-                    if (WayTypePercentList[b] != 0 && types == "WaySurface") {
-                        WayTypesObject[list.SurfaceType[b]] = WayTypePercentList[b];
-                    }
-                }
-                return WayTypesObject;
-            }
-            // Container for WayType
             directionsContainer = buildWaypoint('layerRoutePoints', 'end', endpoint, getWaypoints().length - 1, stopoverDistance, stopoverTime);
             directionsMain.appendChild(directionsContainer);
+            return distArrAll;
             // TODO tmc messages expand collapse function
         }
         /** 
@@ -1758,62 +1857,74 @@ var Ui = (function(w) {
             directionsContainer.appendChild(directionsModeContainer);
             return directionsContainer;
         }
-        /**
-         * called when the user moves over the distance part of a route instruction. Triggers highlighting the corresponding route part
-         */
-        function handleMouseOverDist(e) {
-            e.currentTarget.addClassName('active');
-            var parent = $(e.currentTarget).parent().parent().get(0);
-            theInterface.emit('ui:emphElement', {
-                id: e.currentTarget.getAttribute('id'),
-                layer: parent.getAttribute('data-layer')
-            });
-        }
-        /**
-         * called when the user moves out of the distance part of a route instruction. Triggers un-highlighting the corresponding route part
-         */
-        function handleMouseOutDist(e) {
-            e.currentTarget.removeClassName('active');
-            var parent = $(e.currentTarget).parent().parent().get(0);
-            theInterface.emit('ui:deEmphElement', {
-                id: e.currentTarget.getAttribute('id'),
-                layer: parent.getAttribute('data-layer')
-            });
-        }
-        /**
-         * called when the user moves over the instruction part of the route instruction. Trigger highlighting the corresponding route point
-         */
-        function handleMouseOverText(e) {
-            e.currentTarget.addClassName('active');
-            var parent = $(e.currentTarget).parent().get(0);
-            theInterface.emit('ui:emphElement', {
-                id: e.currentTarget.getAttribute('id'),
-                layer: parent.getAttribute('data-layer')
-            });
-        }
-        /**
-         * called when the user moves out of the instruction part of a route instruction. Triggers un-highlighting the corresponding route point
-         */
-        function handleMouseOutText(e) {
-            e.currentTarget.removeClassName('active');
-            var parent = $(e.currentTarget).parent().get(0);
-            theInterface.emit('ui:deEmphElement', {
-                id: e.currentTarget.getAttribute('id'),
-                layer: parent.getAttribute('data-layer')
-            });
-        }
-        /**
-         * when the distance or text part of the route instruction is clicked, triggers zooming to that part of the route
-         */
-        function handleClickRouteInstr(e) {
-            theInterface.emit('ui:zoomToRouteInstruction', e.currentTarget.id);
-        }
-        /**
-         * when the distance or text part of the route instruction is clicked, triggers zooming to that part of the route
-         */
-        function handleClickRouteCorner(e) {
-            theInterface.emit('ui:zoomToRouteCorner', e.currentTarget.id);
-        }
+    }
+    /**
+     * called when the user moves over the distance part of a route instruction. Triggers highlighting the corresponding route part
+     */
+    function handleMouseOverDist(e) {
+        e.currentTarget.addClassName('active');
+        var parent = $(e.currentTarget).parent().parent().get(0);
+        theInterface.emit('ui:emphElement', {
+            id: e.currentTarget.getAttribute('id'),
+            layer: parent.getAttribute('data-layer')
+        });
+    }
+    /**
+     * called when the user moves out of the distance part of a route instruction. Triggers un-highlighting the corresponding route part
+     */
+    function handleMouseOutDist(e) {
+        e.currentTarget.removeClassName('active');
+        var parent = $(e.currentTarget).parent().parent().get(0);
+        theInterface.emit('ui:deEmphElement', {
+            id: e.currentTarget.getAttribute('id'),
+            layer: parent.getAttribute('data-layer')
+        });
+    }
+    /**
+     * called when the user moves over the instruction part of the route instruction. Trigger highlighting the corresponding route point
+     */
+    function handleMouseOverText(e) {
+        e.currentTarget.addClassName('active');
+        var parent = $(e.currentTarget).parent().get(0);
+        theInterface.emit('ui:emphElement', {
+            id: e.currentTarget.getAttribute('id'),
+            layer: parent.getAttribute('data-layer')
+        });
+    }
+    /**
+     * called when the user moves out of the instruction part of a route instruction. Triggers un-highlighting the corresponding route point
+     */
+    function handleMouseOutText(e) {
+        e.currentTarget.removeClassName('active');
+        var parent = $(e.currentTarget).parent().get(0);
+        theInterface.emit('ui:deEmphElement', {
+            id: e.currentTarget.getAttribute('id'),
+            layer: parent.getAttribute('data-layer')
+        });
+    }
+    /**
+     * when the way or surface types are clicked highlight segments on map
+     */
+    function handleHighlightTypes(ids) {
+        theInterface.emit('ui:hightlightTypes', ids);
+    }
+    /** reset way our surface style
+     *
+     */
+    function handleResetTypes(ids) {
+        theInterface.emit('ui:resetTypes', ids);
+    }
+    /**
+     * when the distance or text part of the route instruction is clicked, triggers zooming to that part of the route
+     */
+    function handleClickRouteInstr(e) {
+        theInterface.emit('ui:zoomToRouteInstruction', e.currentTarget.id);
+    }
+    /**
+     * when the distance or text part of the route instruction is clicked, triggers zooming to that part of the route
+     */
+    function handleClickRouteCorner(e) {
+        theInterface.emit('ui:zoomToRouteCorner', e.currentTarget.id);
     }
     /**
      * hides the route summary pane, e.g. when no route is available
@@ -3140,6 +3251,7 @@ var Ui = (function(w) {
     Ui.prototype.startRouteCalculation = startRouteCalculation;
     Ui.prototype.endRouteCalculation = endRouteCalculation;
     Ui.prototype.updateRouteInstructions = updateRouteInstructions;
+    Ui.prototype.updateSurfaceInformation = updateSurfaceInformation;
     Ui.prototype.hideRouteSummary = hideRouteSummary;
     Ui.prototype.hideRouteInstructions = hideRouteInstructions;
     Ui.prototype.showRoutingError = showRoutingError;
