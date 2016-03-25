@@ -553,15 +553,25 @@ var Map = (function() {
         this.theMap.setView(position, zoom);
     }
     /**
-     * zoom to a given feature vector defined by its vector id.
+     * zoom to a given feature vector defined by its vector id or given features 
+     * defined by their vector ids.
      * @param mapLayer: layer of the map where the feature is located
+     * @param params: vector id or list of vector ids
      * @param zoom: optional zoom level
      */
-    function zoomToFeature(mapLayer, vectorId, zoom) {
+    function zoomToFeature(mapLayer, params, zoom) {
+        var vector;
         if (mapLayer) {
-            var vectors = mapLayer.getLayer(vectorId);
+            if (params instanceof Array) {
+                vectors = mapLayer.getLayers(params);
+            } else {
+                vectors = mapLayer.getLayer(params);
+            }
             if (!zoom) {
-                if (vectors.getBounds) {
+                if (vectors instanceof Array) {
+                    var vectorGroup = new L.featureGroup(vectors);
+                    this.theMap.fitBounds(vectorGroup.getBounds());
+                } else if (vectors.getBounds) {
                     this.theMap.fitBounds(vectors.getBounds());
                 } else {
                     if (!zoom) {

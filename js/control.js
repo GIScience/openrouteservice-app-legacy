@@ -442,10 +442,10 @@ var Controller = (function(w) {
     }
     /**
      * map is zoomed to the selected part of the route (route instruction)
-     * @param vectorId: id of the map feature to zoom to
+     * @param params: id or ids of the map feature to zoom to
      */
-    function handleZoomToRouteInstruction(vectorId) {
-        map.zoomToFeature(map.layerRouteLines, vectorId);
+    function handleZoomToRouteInstruction(params) {
+        map.zoomToFeature(map.layerRouteLines, params);
     }
     /**
      * map is zoomed to the selected part of the route (route instruction)
@@ -859,6 +859,7 @@ var Controller = (function(w) {
                     ui.updateRouteSummary(results, routePref);
                     var totalDistance = ui.updateRouteInstructions(results, featureIds, 'layerRouteLines');
                     if ($.inArray(routePref, list.elevationProfiles) >= 0) {
+                        console.log('1')
                         ui.updateSurfaceInformation(results, featureIds, 'layerRouteLines', totalDistance);
                     } else {
                         var container = $('#routeTypesContainer').get(0);

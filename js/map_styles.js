@@ -103,8 +103,8 @@ styles = {
     routeBase: function() {
         return {
             opacity: '0',
-            color: '#fff',
-            weight: routeSettings.lineWeight
+            color: '#f39c12',
+            weight: routeSettings.lineWeight-1
         };
     },
     routeOutline: function(zoomlvl, hide) {

@@ -66,7 +66,7 @@ list = {
         9: 'Ferry',
         10: 'Construction'
     },
-    WayTypeColors: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#6b486b"],
+    WayTypeColors: ['#7d7de5','#7070ce','#6464b7','#5757a0','#4b4b89','#3e3e72','#32325b','#252544','#19192d','#0c0c16'],
     divWayTypes: '#wayType',
     listWayTypesContainer: '#wayTypeList',
     SurfaceType: {
@@ -90,7 +90,7 @@ list = {
         17: 'Grass',
         18: 'GrassPaver'
     },
-    SurfaceTypeColors: ["#CF822B", "#E3BC78", "#8B602E", "#EDAF30", "#B88A56", "#B2882A", "#E5A156", "#DF7D38"],
+    SurfaceTypeColors: ['#8be57d','#7dce70','#6fb764','#61a057','#53894b','#45723e','#375b32','#294425','#1b2d19','#0d160c'],
     divSurfaceTypes: '#surfaceType',
     listSurfaceTypesContainer: '#surfaceTypeList'
 };

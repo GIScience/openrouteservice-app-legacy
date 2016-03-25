@@ -407,7 +407,7 @@ util = (function() {
             if (distance > 2000) {
                 precision = -2;
             }
-            var p = Math.pow(10, precision)
+            var p = Math.pow(10, precision);
             return Math.round(distance * p) / p;
         },
         /**
@@ -453,6 +453,7 @@ util = (function() {
          */
         convertDistanceFormat: function(distance, uom) {
             uom = uom.toLowerCase();
+            var origDistance = parseFloat(distance)
             distance = parseFloat(distance);
             if (uom == list.distanceUnitsPreferences[0]) {
                 if (distance >= 1000) {
@@ -463,7 +464,7 @@ util = (function() {
                     uom = 'm';
                 }
                 distance = util.round(distance);
-                return [distance, uom];
+                return [origDistance, distance, uom];
             } else if (uom == list.distanceUnitsPreferences[1]) {
                 if (distance >= 1760) {
                     uom = 'mi';
@@ -472,7 +473,7 @@ util = (function() {
                 } else {
                     uom = 'yd';
                 }
-                return [distance, uom];
+                return [origDistance, distance, uom];
             }
         }
     }

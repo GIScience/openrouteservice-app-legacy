@@ -1424,12 +1424,12 @@ var Ui = (function(w) {
                         actualdistArr = util.convertDistanceFormat(actualDistMeasure, preferences.distanceUnit);
                     }
                     var actualDistanceDiv = container.querySelector('#route_actualDistance');
-                    $(actualDistanceDiv)[0].update(preferences.translate('ActualDistance') + ': ' + actualdistArr[0] + ' ' + actualdistArr[1]);
+                    $(actualDistanceDiv)[0].update(preferences.translate('ActualDistance') + ': ' + actualdistArr[1] + ' ' + actualdistArr[2]);
                     $(actualDistanceDiv).show();
                 }
             }
             $(timeDiv)[0].update(preferences.translate('TotalTime') + ': ' + totalTime);
-            $(distanceDiv)[0].update(preferences.translate('TotalDistance') + ': ' + distArr[0] + ' ' + distArr[1]);
+            $(distanceDiv)[0].update(preferences.translate('TotalDistance') + ': ' + distArr[1] + ' ' + distArr[2]);
         }
     }
     /**
@@ -1439,10 +1439,10 @@ var Ui = (function(w) {
      * @param mapLayer: map layer containing these features
      */
     function updateSurfaceInformation(results, mapFeatureIds, mapLayer, totalDistance) {
-        // Calculate Chart information for WayType and WaySurface Type
-        // get Information of xls data (Distance, Segments)
         var WayTypeResult = calculateChart(results, mapFeatureIds, "WayType", totalDistance);
         var WaySurfaceResult = calculateChart(results, mapFeatureIds, "WaySurface", totalDistance);
+        console.log(WayTypeResult)
+        console.log(WaySurfaceResult)
         horizontalBarchart(list.divWayTypes, list.listWayTypesContainer, WayTypeResult, list.WayTypeColors);
         horizontalBarchart(list.divSurfaceTypes, list.listSurfaceTypesContainer, WaySurfaceResult, list.SurfaceTypeColors);
         var container = $('#routeTypesContainer').get(0);
@@ -1457,7 +1457,7 @@ var Ui = (function(w) {
     function horizontalBarchart(types, list, data, colors) {
         d3.select(types).selectAll("svg").remove();
         var tip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) {
-            return d.type + " " + Math.round(d.y1 - d.y0, 0) + "%";
+            return d.type + " " + Number((d.y1 - d.y0).toFixed(2)) + "%";
         });
         var margin = {
                 top: 0,
@@ -1469,13 +1469,9 @@ var Ui = (function(w) {
             height = 24 - margin.top - margin.bottom;
         var y = d3.scale.ordinal().rangeRoundBands([height, 0]);
         var x = d3.scale.linear().rangeRound([0, width]);
-        var color = d3.scale.ordinal().range(colors);
         var yAxis = d3.svg.axis().scale(y).orient("left");
         var xAxis = d3.svg.axis().scale(x).orient("bottom");
         var svg = d3.select(types).append("svg").attr("width", width).attr("height", height).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-        color.domain(d3.keys(data).filter(function(key) {
-            return key;
-        }));
         y.domain([0]);
         x.domain([0, data[Object.keys(data)[Object.keys(data).length - 1]].y1]);
         svg.selectAll("rect").data(data).enter().append("rect").attr("height", 24).attr("x", function(d) {
@@ -1484,20 +1480,22 @@ var Ui = (function(w) {
             return x(d.y1) / 1.2 - x(d.y0) / 1.2;
         }).attr("title", function(d) {
             return Math.round(d.y1 - d.y0, 0) + "% " + d.type;
-        }).style("fill", function(d) {
-            return color(d.type);
+        }).style("fill", function(d,i) {
+            return colors[i];
         }).on('mouseover', function(d) {
             handleHighlightTypes(d.ids);
             tip.show(d);
         }).on('mouseout', function(d) {
             handleResetTypes(d.ids);
             tip.hide(d);
+        }).on('click', function(d) {
+            handleClickRouteIds(d.ids);
         });
         $(list).empty();
         $(list).append("<ul></ul>");
         for (var i = 0; i < data.length; i++) {
             var li = $('<li>');
-            li.text(Math.round(data[i].percentage, 0) + "% " + data[i].type);
+            li.text(data[i].percentage + "% " + data[i].type);
             li.wrapInner('<span />');
             li.css('color', colors[i]);
             li.css('margin-left', '25px');
@@ -1518,11 +1516,13 @@ var Ui = (function(w) {
      * @return WayTypesObject: Object containing Names and Percetages
      */
     function calculateChart(results, featureIds, types, distArrAll) {
+        console.log(results, featureIds, types, distArrAll)
         var information, typelist, type;
-        // keep route ids remove corner ids
+        // keep route feature ids remove corner ids
         featureIds = featureIds.filter(function(el, index) {
             return index % 2 === 0;
         });
+        console.log(featureIds)
         if (types == "WayType") {
             information = util.getElementsByTagNameNS(results, namespaces.xls, 'WayTypeList')[0];
             information = util.getElementsByTagNameNS(results, namespaces.xls, 'WayType');
@@ -1559,21 +1559,25 @@ var Ui = (function(w) {
         var totaldistancevalue = totaldistance.getAttribute('value');
         var informationlength = information.length;
         $A(information).each(function(WayType) {
-            var from = util.getElementsByTagNameNS(WayType, namespaces.xls, 'From')[0];
-            from = from.textContent;
+            console.log(WayType)
+            var fr = util.getElementsByTagNameNS(WayType, namespaces.xls, 'From')[0];
+            fr = parseInt(fr.textContent);
             var to = util.getElementsByTagNameNS(WayType, namespaces.xls, 'To')[0];
-            to = to.textContent;
+            to = parseInt(to.textContent);
             var typenumber = util.getElementsByTagNameNS(WayType, namespaces.xls, 'Type')[0];
             typenumber = typenumber.textContent;
-            if (from == to) {
-                typelist[typenumber].distance += distArrAll[from];
-                typelist[typenumber].segments.push(parseInt(from));
-                typelist[typenumber].ids.push(featureIds[from]);
+            console.log(typenumber, fr, to)
+            if (fr == to) {
+                console.log('dist', distArrAll[fr], 'from', fr, 'to', to)
+                typelist[typenumber].distance += distArrAll[fr];
+                typelist[typenumber].segments.push(parseInt(fr));
+                typelist[typenumber].ids.push(featureIds[fr]);
             } else {
-                for (from; from <= to; from++) {
-                    typelist[typenumber].distance += distArrAll[from];
-                    typelist[typenumber].segments.push(parseInt(from));
-                    typelist[typenumber].ids.push(featureIds[from]);
+                for (fr; fr <= to; fr++) {
+                    console.log('dist', distArrAll[fr], 'from', fr, 'to', to)
+                    typelist[typenumber].distance += distArrAll[fr];
+                    typelist[typenumber].segments.push(parseInt(fr));
+                    typelist[typenumber].ids.push(featureIds[fr]);
                 }
             }
         });
@@ -1581,12 +1585,13 @@ var Ui = (function(w) {
         var WayTypePercentList = [];
         var y0 = 0;
         for (type in typelist) {
-            if (typelist[type].distance !== 0) {
-                typelist[type].percentage = (typelist[type].distance / totaldistancevalue) * 100;
+            if (typelist[type].distance > 0) {
+                typelist[type].percentage = Math.round((typelist[type].distance / totaldistancevalue) * 100 *10) / 10;
                 typelist[type].y0 = y0;
                 typelist[type].y1 = y0 += +typelist[type].percentage;
             }
         }
+        console.log(typelist)
         // remove elements without distance
         var typelistCleaned = typelist.filter(function(el) {
             return el.distance !== 0;
@@ -1690,10 +1695,10 @@ var Ui = (function(w) {
                         distArr = util.convertDistanceFormat(distMeasure, preferences.distanceUnit);
                     }
                     // add to stopoverDistance
-                    if (distArr[1] == 'km') {
-                        stopoverDistance += Number(distArr[0]) * 1000;
+                    if (distArr[2] == 'km') {
+                        stopoverDistance += Number(distArr[1]) * 1000;
                     } else {
-                        stopoverDistance += Number(distArr[0]);
+                        stopoverDistance += Number(distArr[1]);
                     }
                     //arrow direction
                     var direction;
@@ -1753,7 +1758,7 @@ var Ui = (function(w) {
                     var distanceDiv = new Element('div', {
                         'class': 'directions-mode-distance clickable',
                         'id': mapFeatureIds[2 * (numInstructions - 1)],
-                    }).update(distArr[0] + ' ' + distArr[1]);
+                    }).update(distArr[1] + ' ' + distArr[2]);
                     directionsContainer.appendChild(directionsImgDiv);
                     directionsContainer.appendChild(directionTextDiv);
                     var tmcMessage = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Message')[0];
@@ -1919,6 +1924,12 @@ var Ui = (function(w) {
      */
     function handleClickRouteInstr(e) {
         theInterface.emit('ui:zoomToRouteInstruction', e.currentTarget.id);
+    }
+    /**
+     * when the distance or text part of the route instruction is clicked, triggers zooming to that part of the route
+     */
+    function handleClickRouteIds(arr) {
+        theInterface.emit('ui:zoomToRouteInstruction', arr);
     }
     /**
      * when the distance or text part of the route instruction is clicked, triggers zooming to that part of the route
