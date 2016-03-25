@@ -570,6 +570,7 @@ var Ui = (function(w) {
      * @return: the index of the wayoint
      */
     function addWaypointResultByRightclick(typeOfWaypoint, index, results, latlon) {
+        console.warn(true)
         var numWaypoints = $('.waypoint').length - 1;
         while (index >= numWaypoints) {
             addWaypointAfter(numWaypoints - 1);
@@ -1455,7 +1456,7 @@ var Ui = (function(w) {
     function horizontalBarchart(types, list, data, colors) {
         d3.select(types).selectAll("svg").remove();
         var tip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) {
-            return d.type + " " + Math.round(d.y1 - d.y0) + "%";
+            return d.type + " " + (d.y1 - d.y0) + "%";
         });
         var margin = {
                 top: 0,
@@ -1477,7 +1478,7 @@ var Ui = (function(w) {
         }).attr("width", function(d) {
             return x(d.y1) / 1 - x(d.y0) / 1;
         }).attr("title", function(d) {
-            return Math.round(d.y1 - d.y0) + "% " + d.type;
+            return (d.y1 - d.y0) + "% " + d.type;
         }).style("fill", function(d, i) {
             return colors[i];
         }).on('mouseover', function(d) {
@@ -1493,7 +1494,7 @@ var Ui = (function(w) {
         $(list).append("<ul></ul>");
         for (var i = 0; i < data.length; i++) {
             var li = $('<li>');
-            li.text(Math.round(data[i].percentage) + "% " + data[i].type);
+            li.text(data[i].percentage + "% " + data[i].type);
             li.wrapInner('<span />');
             li.css('color', colors[i]);
             li.css('margin-left', '25px');
@@ -1559,12 +1560,10 @@ var Ui = (function(w) {
         $A(information).each(function(WayType, i) {
             var fr = util.getElementsByTagNameNS(WayType, namespaces.xls, 'From')[0];
             fr = parseInt(fr.textContent);
-
             // stopovers are counted as segments and have to be filtered
             if (i > 0) {
                 if (fr > (toPrev + 1)) {
-
-                    stopoverDiff = stopoverDiff + (fr - toPrev - 1);   
+                    stopoverDiff = stopoverDiff + (fr - toPrev - 1);
                 }
             }
             //1-2    5-6     10-11
@@ -1572,9 +1571,7 @@ var Ui = (function(w) {
             //so:0   so: 2   so: 5 
             var to = util.getElementsByTagNameNS(WayType, namespaces.xls, 'To')[0];
             to = parseInt(to.textContent);
-
             toPrev = to;
-
             var typenumber = util.getElementsByTagNameNS(WayType, namespaces.xls, 'Type')[0];
             typenumber = typenumber.textContent;
             if (fr == to) {
@@ -1594,7 +1591,12 @@ var Ui = (function(w) {
         var y0 = 0;
         for (type in typelist) {
             if (typelist[type].distance > 0) {
-                typelist[type].percentage = Math.round((typelist[type].distance / totaldistancevalue) * 100 * 100) / 100;
+                // consider percentages less than 1
+                if (Math.round(typelist[type].distance / totaldistancevalue) * 100 < 1) {
+                    typelist[type].percentage = Math.round(typelist[type].distance / totaldistancevalue * 100 * 10) / 10;
+                } else {
+                    typelist[type].percentage = Math.round(typelist[type].distance / totaldistancevalue * 100);
+                }
                 typelist[type].y0 = y0;
                 typelist[type].y1 = y0 += +typelist[type].percentage;
             }
