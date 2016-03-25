@@ -859,7 +859,6 @@ var Controller = (function(w) {
                     ui.updateRouteSummary(results, routePref);
                     var totalDistance = ui.updateRouteInstructions(results, featureIds, 'layerRouteLines');
                     if ($.inArray(routePref, list.elevationProfiles) >= 0) {
-                        console.log('1')
                         ui.updateSurfaceInformation(results, featureIds, 'layerRouteLines', totalDistance);
                     } else {
                         var container = $('#routeTypesContainer').get(0);

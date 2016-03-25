@@ -1441,8 +1441,6 @@ var Ui = (function(w) {
     function updateSurfaceInformation(results, mapFeatureIds, mapLayer, totalDistance) {
         var WayTypeResult = calculateChart(results, mapFeatureIds, "WayType", totalDistance);
         var WaySurfaceResult = calculateChart(results, mapFeatureIds, "WaySurface", totalDistance);
-        console.log(WayTypeResult)
-        console.log(WaySurfaceResult)
         horizontalBarchart(list.divWayTypes, list.listWayTypesContainer, WayTypeResult, list.WayTypeColors);
         horizontalBarchart(list.divSurfaceTypes, list.listSurfaceTypesContainer, WaySurfaceResult, list.SurfaceTypeColors);
         var container = $('#routeTypesContainer').get(0);
@@ -1480,7 +1478,7 @@ var Ui = (function(w) {
             return x(d.y1) / 1.2 - x(d.y0) / 1.2;
         }).attr("title", function(d) {
             return Math.round(d.y1 - d.y0, 0) + "% " + d.type;
-        }).style("fill", function(d,i) {
+        }).style("fill", function(d, i) {
             return colors[i];
         }).on('mouseover', function(d) {
             handleHighlightTypes(d.ids);
@@ -1516,13 +1514,11 @@ var Ui = (function(w) {
      * @return WayTypesObject: Object containing Names and Percetages
      */
     function calculateChart(results, featureIds, types, distArrAll) {
-        console.log(results, featureIds, types, distArrAll)
         var information, typelist, type;
         // keep route feature ids remove corner ids
         featureIds = featureIds.filter(function(el, index) {
             return index % 2 === 0;
         });
-        console.log(featureIds)
         if (types == "WayType") {
             information = util.getElementsByTagNameNS(results, namespaces.xls, 'WayTypeList')[0];
             information = util.getElementsByTagNameNS(results, namespaces.xls, 'WayType');
@@ -1557,27 +1553,39 @@ var Ui = (function(w) {
         var totaldistance = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteSummary')[1];
         totaldistance = util.getElementsByTagNameNS(results, namespaces.xls, 'TotalDistance')[0];
         var totaldistancevalue = totaldistance.getAttribute('value');
-        var informationlength = information.length;
-        $A(information).each(function(WayType) {
-            console.log(WayType)
+        var stopoverCnt = 0;
+        var stopoverDiff = 0;
+        var toPrev;
+        $A(information).each(function(WayType, i) {
             var fr = util.getElementsByTagNameNS(WayType, namespaces.xls, 'From')[0];
             fr = parseInt(fr.textContent);
+
+            // stopovers are counted as segments and have to be filtered
+            if (i > 0) {
+                if (fr > (toPrev + 1)) {
+
+                    stopoverDiff = stopoverDiff + (fr - toPrev - 1);   
+                }
+            }
+            //1-2    5-6     10-11
+            //       3-4     5-6
+            //so:0   so: 2   so: 5 
             var to = util.getElementsByTagNameNS(WayType, namespaces.xls, 'To')[0];
             to = parseInt(to.textContent);
+
+            toPrev = to;
+
             var typenumber = util.getElementsByTagNameNS(WayType, namespaces.xls, 'Type')[0];
             typenumber = typenumber.textContent;
-            console.log(typenumber, fr, to)
             if (fr == to) {
-                console.log('dist', distArrAll[fr], 'from', fr, 'to', to)
-                typelist[typenumber].distance += distArrAll[fr];
-                typelist[typenumber].segments.push(parseInt(fr));
-                typelist[typenumber].ids.push(featureIds[fr]);
+                typelist[typenumber].distance += distArrAll[fr - stopoverDiff];
+                typelist[typenumber].segments.push(parseInt(fr - stopoverDiff));
+                typelist[typenumber].ids.push(featureIds[fr - stopoverDiff]);
             } else {
                 for (fr; fr <= to; fr++) {
-                    console.log('dist', distArrAll[fr], 'from', fr, 'to', to)
-                    typelist[typenumber].distance += distArrAll[fr];
-                    typelist[typenumber].segments.push(parseInt(fr));
-                    typelist[typenumber].ids.push(featureIds[fr]);
+                    typelist[typenumber].distance += distArrAll[fr - stopoverDiff];
+                    typelist[typenumber].segments.push(parseInt(fr - stopoverDiff));
+                    typelist[typenumber].ids.push(featureIds[fr - stopoverDiff]);
                 }
             }
         });
@@ -1586,12 +1594,11 @@ var Ui = (function(w) {
         var y0 = 0;
         for (type in typelist) {
             if (typelist[type].distance > 0) {
-                typelist[type].percentage = Math.round((typelist[type].distance / totaldistancevalue) * 100 *10) / 10;
+                typelist[type].percentage = Math.round((typelist[type].distance / totaldistancevalue) * 100 * 100) / 100;
                 typelist[type].y0 = y0;
                 typelist[type].y1 = y0 += +typelist[type].percentage;
             }
         }
-        console.log(typelist)
         // remove elements without distance
         var typelistCleaned = typelist.filter(function(el) {
             return el.distance !== 0;
