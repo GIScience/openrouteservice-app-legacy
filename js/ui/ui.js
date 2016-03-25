@@ -1592,11 +1592,14 @@ var Ui = (function(w) {
         for (type in typelist) {
             if (typelist[type].distance > 0) {
                 // consider percentages less than 1
-                if (Math.round(typelist[type].distance / totaldistancevalue) * 100 < 1) {
+                console.log(typelist[type].distance / totaldistancevalue * 100)
+                if (Math.round(typelist[type].distance / totaldistancevalue * 100) < 1) {
+                    console.log(true)
                     typelist[type].percentage = Math.round(typelist[type].distance / totaldistancevalue * 100 * 10) / 10;
                 } else {
                     typelist[type].percentage = Math.round(typelist[type].distance / totaldistancevalue * 100);
                 }
+                console.log(typelist[type].percentage)
                 typelist[type].y0 = y0;
                 typelist[type].y1 = y0 += +typelist[type].percentage;
             }

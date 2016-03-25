@@ -1275,6 +1275,10 @@ img {
     float: left;
 }
 
+#routeTypesBody {
+    overflow: auto;
+}
+
 #wayType, #surfaceType {
     margin-top: 20px;
     padding-left: 15px;
