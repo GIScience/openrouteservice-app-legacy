@@ -1455,7 +1455,7 @@ var Ui = (function(w) {
     function horizontalBarchart(types, list, data, colors) {
         d3.select(types).selectAll("svg").remove();
         var tip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) {
-            return d.type + " " + Number((d.y1 - d.y0).toFixed(2)) + "%";
+            return d.type + " " + Math.round(d.y1 - d.y0) + "%";
         });
         var margin = {
                 top: 0,
@@ -1473,11 +1473,11 @@ var Ui = (function(w) {
         y.domain([0]);
         x.domain([0, data[Object.keys(data)[Object.keys(data).length - 1]].y1]);
         svg.selectAll("rect").data(data).enter().append("rect").attr("height", 24).attr("x", function(d) {
-            return x(d.y0) / 1.2;
+            return x(d.y0) / 1;
         }).attr("width", function(d) {
-            return x(d.y1) / 1.2 - x(d.y0) / 1.2;
+            return x(d.y1) / 1 - x(d.y0) / 1;
         }).attr("title", function(d) {
-            return Math.round(d.y1 - d.y0, 0) + "% " + d.type;
+            return Math.round(d.y1 - d.y0) + "% " + d.type;
         }).style("fill", function(d, i) {
             return colors[i];
         }).on('mouseover', function(d) {
@@ -1493,7 +1493,7 @@ var Ui = (function(w) {
         $(list).append("<ul></ul>");
         for (var i = 0; i < data.length; i++) {
             var li = $('<li>');
-            li.text(data[i].percentage + "% " + data[i].type);
+            li.text(Math.round(data[i].percentage) + "% " + data[i].type);
             li.wrapInner('<span />');
             li.css('color', colors[i]);
             li.css('margin-left', '25px');

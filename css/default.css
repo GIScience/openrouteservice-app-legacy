@@ -1286,6 +1286,10 @@ img {
     padding-left: 15px;
 }
 
+#wayTypeList li, #surfaceTypeList li {
+    float: left;
+}
+
 .d3-tip {
     line-height: 1;
     font-weight: bold;

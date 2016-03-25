@@ -598,7 +598,7 @@ var Map = (function() {
         for (var i = 0; i < vectorIds.length; i++) {
             mapLayer.getLayer(vectorIds[i]).bringToFront();
             mapLayer.getLayer(vectorIds[i]).setStyle({
-                opacity: 1,
+                opacity: 0.85,
             });
         }
     }
@@ -989,7 +989,7 @@ var Map = (function() {
             var routeString = [];
             var routeStringCorners = [];
             for (var i = 0; i < routeLineSegments.length; i++) {
-                //"lines" of the route, these are invisible and only used for 
+                //lines of the route, these are invisible and only used for 
                 // click to segment
                 var segment = [];
                 for (var j = 0; j < routeLineSegments[i].length; j++) {
@@ -999,7 +999,7 @@ var Map = (function() {
                 // invisible route segment for clicking
                 var segmentBase = L.polyline(segment, styles.routeBase());
                 segmentBase.addTo(self.layerRouteLines);
-                //"corner points" of the route where direction changes
+                //corner points of the route where direction changes
                 var cornerPoint = routeLinePoints[i];
                 var routeCornerBase = L.circle(cornerPoint, styles.routeCornersBase());
                 routeCornerBase.addTo(self.layerCornerPoints);
