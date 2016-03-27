@@ -476,6 +476,6 @@ util = (function() {
                 return [origDistance, distance, uom];
             }
         }
-    }
+    };
     return util;
 }());
