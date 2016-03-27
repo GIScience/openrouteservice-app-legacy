@@ -570,7 +570,6 @@ var Ui = (function(w) {
      * @return: the index of the wayoint
      */
     function addWaypointResultByRightclick(typeOfWaypoint, index, results, latlon) {
-        console.warn(true)
         var numWaypoints = $('.waypoint').length - 1;
         while (index >= numWaypoints) {
             addWaypointAfter(numWaypoints - 1);
@@ -1456,7 +1455,7 @@ var Ui = (function(w) {
     function horizontalBarchart(types, list, data, colors) {
         d3.select(types).selectAll("svg").remove();
         var tip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) {
-            return d.type + " " + (d.y1 - d.y0) + "%";
+            return d.type + " " + (d.percentage) + "%";
         });
         var margin = {
                 top: 0,
@@ -1592,14 +1591,11 @@ var Ui = (function(w) {
         for (type in typelist) {
             if (typelist[type].distance > 0) {
                 // consider percentages less than 1
-                console.log(typelist[type].distance / totaldistancevalue * 100)
                 if (Math.round(typelist[type].distance / totaldistancevalue * 100) < 1) {
-                    console.log(true)
                     typelist[type].percentage = Math.round(typelist[type].distance / totaldistancevalue * 100 * 10) / 10;
                 } else {
                     typelist[type].percentage = Math.round(typelist[type].distance / totaldistancevalue * 100);
                 }
-                console.log(typelist[type].percentage)
                 typelist[type].y0 = y0;
                 typelist[type].y1 = y0 += +typelist[type].percentage;
             }

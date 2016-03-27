@@ -27,7 +27,7 @@ list = {
         'heavyvehicle': ['HeavyVehicle'],
         'wheelchair': ['wheelchair', 'Wheelchair']
     }),
-    elevationProfiles: ['Bicycle', 'BicycleTour', 'Pedestrian', 'BicycleSafety'],
+    elevationProfiles: ['Bicycle', 'BicycleRacer', 'BicycleMTB', 'BicycleTour', 'Pedestrian', 'BicycleSafety'],
     //please make sure that each category contains at least one element. all names in the hash have to be unique.
     routePreferencesTypes: new Hash({
         'heavyvehicle': ['goods', 'hgv', 'bus', 'agricultural', 'forestry', 'delivery'],
