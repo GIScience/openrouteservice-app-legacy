@@ -142,9 +142,9 @@ var Map = (function() {
         this.layerAvoid.addTo(this.theMap);
         this.serializedLayersString = 'B0000';
         this.serializedOverlaysString = '';
-            /* *********************************************************************
-             * MAP CONTROLS
-             * *********************************************************************/
+        /* *********************************************************************
+         * MAP CONTROLS
+         * *********************************************************************/
         this.theMap.on('contextmenu', function(e) {
             var displayPos = e.latlng;
             $('.leaflet-popup-content').remove();
@@ -474,7 +474,7 @@ var Map = (function() {
         // are we dealing with an overlay
         if (isOverlayIdx >= 0) {
             // overlayString = overlayString.charAt(isOverlayIdx) == '0' ? overlayString.substr(0, isOverlayIdx) + 'T' + overlayString.substr(isOverlayIdx + 1) : overlayString.substr(0, isOverlayIdx) + '0' + overlayString.substr(isOverlayIdx + 1);
-            this.serializedOverlaysString = permaInfo[Preferences.layerIdx].substr(Object.keys(this.baseLayers).length, permaInfo[Preferences.layerIdx].length-1);
+            this.serializedOverlaysString = permaInfo[Preferences.layerIdx].substr(Object.keys(this.baseLayers).length, permaInfo[Preferences.layerIdx].length - 1);
             //if permalink is empty for the first time for overlays then set it
             if (this.serializedOverlaysString.length == '0') {
                 this.serializedOverlaysString = '00';
@@ -553,15 +553,25 @@ var Map = (function() {
         this.theMap.setView(position, zoom);
     }
     /**
-     * zoom to a given feature vector defined by its vector id.
+     * zoom to a given feature vector defined by its vector id or given features 
+     * defined by their vector ids.
      * @param mapLayer: layer of the map where the feature is located
+     * @param params: vector id or list of vector ids
      * @param zoom: optional zoom level
      */
-    function zoomToFeature(mapLayer, vectorId, zoom) {
+    function zoomToFeature(mapLayer, params, zoom) {
+        var vector;
         if (mapLayer) {
-            var vectors = mapLayer.getLayer(vectorId);
+            if (params instanceof Array) {
+                vectors = mapLayer.getLayers(params);
+            } else {
+                vectors = mapLayer.getLayer(params);
+            }
             if (!zoom) {
-                if (vectors.getBounds) {
+                if (vectors instanceof Array) {
+                    var vectorGroup = new L.featureGroup(vectors);
+                    this.theMap.fitBounds(vectorGroup.getBounds());
+                } else if (vectors.getBounds) {
                     this.theMap.fitBounds(vectors.getBounds());
                 } else {
                     if (!zoom) {
@@ -577,6 +587,32 @@ var Map = (function() {
                     animate: true
                 });
             }
+        }
+    }
+    /**
+     * highlight given feature vectors defined by their ids
+     * @param mapLayer: layer of the map where the feature is located
+     * @param vectorIds: array of vectorIds
+     */
+    function highlightFeatures(mapLayer, vectorIds) {
+        for (var i = 0; i < vectorIds.length; i++) {
+            mapLayer.getLayer(vectorIds[i]).bringToFront();
+            mapLayer.getLayer(vectorIds[i]).setStyle({
+                opacity: 0.85,
+            });
+        }
+    }
+    /**
+     * reset highlight given feature vectors defined by their ids
+     * @param mapLayer: layer of the map where the feature is located
+     * @param vectorIds: array of vectorIds
+     */
+    function resetFeatures(mapLayer, vectorIds) {
+        for (var i = 0; i < vectorIds.length; i++) {
+            mapLayer.getLayer(vectorIds[i]).bringToBack();
+            mapLayer.getLayer(vectorIds[i]).setStyle({
+                opacity: 0,
+            });
         }
     }
     /**
@@ -953,7 +989,7 @@ var Map = (function() {
             var routeString = [];
             var routeStringCorners = [];
             for (var i = 0; i < routeLineSegments.length; i++) {
-                //"lines" of the route, these are invisible and only used for 
+                //lines of the route, these are invisible and only used for 
                 // click to segment
                 var segment = [];
                 for (var j = 0; j < routeLineSegments[i].length; j++) {
@@ -963,7 +999,7 @@ var Map = (function() {
                 // invisible route segment for clicking
                 var segmentBase = L.polyline(segment, styles.routeBase());
                 segmentBase.addTo(self.layerRouteLines);
-                //"corner points" of the route where direction changes
+                //corner points of the route where direction changes
                 var cornerPoint = routeLinePoints[i];
                 var routeCornerBase = L.circle(cornerPoint, styles.routeCornersBase());
                 routeCornerBase.addTo(self.layerCornerPoints);
@@ -1269,6 +1305,8 @@ var Map = (function() {
     // map.prototype.zoomToPoiResults = zoomToPoiResults;
     map.prototype.zoomToMarker = zoomToMarker;
     map.prototype.zoomToFeature = zoomToFeature;
+    map.prototype.highlightFeatures = highlightFeatures;
+    map.prototype.resetFeatures = resetFeatures;
     map.prototype.zoomToRoute = zoomToRoute;
     map.prototype.updateRoute = updateRoute;
     map.prototype.updateSize = updateSize;

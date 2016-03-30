@@ -427,11 +427,25 @@ var Controller = (function(w) {
         map.zoomToFeature(map.layerRoutePoints, ui.getFeatureIdOfWaypoint(vectorId), 16);
     }
     /**
-     * map is zoomed to the selected part of the route (route instruction)
-     * @param vectorId: id of the map feature to zoom to
+     * way or surface types are clicked
+     * @param ids: array of feature ids to hightlight
      */
-    function handleZoomToRouteInstruction(vectorId) {
-        map.zoomToFeature(map.layerRouteLines, vectorId);
+    function handleHighlightTypes(ids) {
+        map.highlightFeatures(map.layerRouteLines, ids);
+    }
+    /**
+     * reset styles
+     * @param ids: array of features ids to reset highlight
+     */
+    function handleResetTypes(ids) {
+        map.resetFeatures(map.layerRouteLines, ids);
+    }
+    /**
+     * map is zoomed to the selected part of the route (route instruction)
+     * @param params: id or ids of the map feature to zoom to
+     */
+    function handleZoomToRouteInstruction(params) {
+        map.zoomToFeature(map.layerRouteLines, params);
     }
     /**
      * map is zoomed to the selected part of the route (route instruction)
@@ -843,7 +857,13 @@ var Controller = (function(w) {
                 var errors = route.hasRoutingErrors(results);
                 if (!errors) {
                     ui.updateRouteSummary(results, routePref);
-                    ui.updateRouteInstructions(results, featureIds, 'layerRouteLines');
+                    var totalDistance = ui.updateRouteInstructions(results, featureIds, 'layerRouteLines');
+                    if ($.inArray(routePref, list.elevationProfiles) >= 0) {
+                        ui.updateSurfaceInformation(results, featureIds, 'layerRouteLines', totalDistance);
+                    } else {
+                        var container = $('#routeTypesContainer').get(0);
+                        container.hide();
+                    }
                     ui.endRouteCalculation();
                     map.zoomToRoute();
                 } else {
@@ -1449,6 +1469,8 @@ var Controller = (function(w) {
         ui.register('ui:searchAgainWaypoint', handleSearchAgainWaypoint);
         ui.register('ui:resetRoute', handleResetRoute);
         ui.register('ui:zoomToRouteInstruction', handleZoomToRouteInstruction);
+        ui.register('ui:hightlightTypes', handleHighlightTypes);
+        ui.register('ui:resetTypes', handleResetTypes);
         ui.register('ui:zoomToRouteCorner', handleZoomToRouteCorner);
         ui.register('ui:geolocationRequest', handleGeolocationRequest);
         ui.register('ui:searchAddressRequest', handleSearchAddressRequest);

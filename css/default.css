@@ -105,8 +105,8 @@
     margin-left: 33px;
     top: 123px;
     z-index: 999;
-    display:none;
-    width:200px;
+    display: none;
+    width: 200px;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -150,7 +150,7 @@
 }
 
 .waypointResult {
-	padding-left: 32px;
+    padding-left: 32px;
     margin-bottom: 10px;
 }
 
@@ -233,12 +233,14 @@
     background-size: 16px;
     background-position: 8px 3px;*/
 }
+
 .waypoint.end {
     /*background-image: url('../img/marker-end.png');
     background-repeat: no-repeat;
     background-size: 16px;
     background-position: 8px 3px;*/
 }
+
 .waypoint.unset {
     /*background-image: url('../img/marker.png');
     background-repeat: no-repeat;*/
@@ -247,32 +249,38 @@
     /*background-size: 16px;
     background-position: 8px 3px;*/
 }
+
 .waypoint-icon {
-	display: inline;
+    display: inline;
     float: left;
     width: 33px;
     height: 25px;
 }
+
 .waypoint-icon.start {
     background: url(../img/marker-start.png) no-repeat;
-	background-size: 16px;
-	background-position: 8px 3px;
+    background-size: 16px;
+    background-position: 8px 3px;
 }
+
 .waypoint-icon.via {
     background: url(../img/marker-via.png) no-repeat;
-	background-size: 16px;
-	background-position: 8px 3px;
+    background-size: 16px;
+    background-position: 8px 3px;
 }
+
 .waypoint-icon.end {
     background: url(../img/marker-end.png) no-repeat;
-	background-size: 16px;
-	background-position: 8px 3px;
+    background-size: 16px;
+    background-position: 8px 3px;
 }
+
 .waypoint-icon.unset {
     background: url(../img/marker.png) no-repeat;
-	background-size: 16px;
-	background-position: 8px 3px;
+    background-size: 16px;
+    background-position: 8px 3px;
 }
+
 
 /* route instructions styles */
 
@@ -371,10 +379,11 @@
 
 #printRouteInstructions {
     float: right;
-	padding-bottom: 0px;
-	position: relative;
-	top: -4px;
+    padding-bottom: 0px;
+    position: relative;
+    top: -4px;
 }
+
 
 /* gpx upload styles */
 
@@ -1259,4 +1268,62 @@ img {
 
 #maxSpeedInput {
     font-size: 12px;
+}
+
+/* surface information */
+#routeTypesHead {
+    float: left;
+}
+
+#routeTypesBody {
+    overflow: auto;
+}
+
+#wayType, #surfaceType {
+    margin-top: 20px;
+    padding-left: 15px;
+    width: 200px;
+}
+
+#wayTypeList ul, #surfaceTypeList ul {
+    margin: 10px; 
+    padding-left: 15px;
+}
+
+#wayTypeList li, #surfaceTypeList li {
+    float: left;
+}
+
+.d3-tip {
+    line-height: 1;
+    font-weight: bold;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 5px;
+    font-size: 10px;
+}
+
+
+/* Creates a small triangle extender for the tooltip */
+
+.d3-tip:after {
+    box-sizing: border-box;
+    display: inline;
+    font-size: 11px;
+    width: 100%;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.8);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
+}
+
+
+/* Style northward tooltips differently */
+
+.d3-tip.n:after {
+    margin: -1px 0 0 0;
+    top: 100%;
+    left: 0;
 }
