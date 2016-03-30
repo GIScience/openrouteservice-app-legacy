@@ -107,12 +107,12 @@ var Map = (function() {
             position: "topright",
             theme: "steelblue-theme", //default: lime-theme
             width: 400,
-            height: 125,
+            height: 145,
             margins: {
-                top: 10,
+                top: 50,
                 right: 20,
                 bottom: 30,
-                left: 50
+                left: 70
             },
             useHeightIndicator: true, //if false a marker is drawn at map position
             interpolation: "basis", //see https://github.com/mbostock/d3/wiki/SVG-Shapes#wiki-area_interpolate
