@@ -1645,13 +1645,13 @@ var Ui = (function(w) {
                     var information = util.getElementsByTagNameNS(results, namespaces.xls, 'WayTypeList')[0];
                     information = util.getElementsByTagNameNS(results, namespaces.xls, 'WayType');
                     var typelist = Array.apply(null, Array(11)).map(function() {
-                        return 0
+                        return 0;
                     });
                 } else {
                     var information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySurfaceList')[0];
                     information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySurface');
                     var typelist = Array.apply(null, Array(19)).map(function() {
-                        return 0
+                        return 0;
                     });
                 }
                 var totaldistance = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteSummary')[1];
