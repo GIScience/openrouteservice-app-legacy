@@ -1645,6 +1645,7 @@ var Ui = (function(w) {
             //var endpoint = waypoints.splice(-1, 1);
             var startpoint = waypoints[0];
             var endpoint = waypoints[(waypoints.length) - 1];
+			
             //add startpoint
             directionsContainer = buildWaypoint('layerRoutePoints', 'start', startpoint, 0);
             directionsMain.appendChild(directionsContainer);
@@ -1812,6 +1813,11 @@ var Ui = (function(w) {
 
             directionsContainer = buildWaypoint('layerRoutePoints', 'end', endpoint, getWaypoints().length - 1, stopoverDistance, stopoverTime);
             directionsMain.appendChild(directionsContainer);
+			var pointInfo = new Element('div', {
+                'class': 'directions-summary-info'
+            }).update(Number(stopoverTime / 60).toFixed() + ' min' + ' / ' + Number(stopoverDistance / 1000).toFixed(2) + ' km');
+            directionsMain.insertBefore(pointInfo, directionsMain.firstChild);
+			pointInfo.hide();
             return distArrAll;
             // TODO tmc messages expand collapse function
         }
@@ -1995,9 +2001,12 @@ var Ui = (function(w) {
                     type: 'text/css',
                     html: data
                 }).appendTo("head");
+				//TODO: properly display route summary information on top while printing
+				// $('.directions-summary-info').show();
                 routeInstructions.show();
                 window.print();
                 style.remove();
+				// $('.directions-summary-info').hide();
             }
         });
     }
