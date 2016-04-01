@@ -1497,15 +1497,7 @@ var Ui = (function(w) {
             li.text(data[i].percentage + "% " + data[i].type);
             li.wrapInner('<span />');
             li.css('color', colors[i]);
-            li.css('margin-left', '25px');
-            li.css('margin-top', '-10px');
-            li.css('font-size', '26px');
             if (i !== "type" && i !== "total") $(list + "> ul").append(li);
-            li.find('span').css('color', "black");
-            li.find('span').css('font-size', "11px");
-            li.find('span').css('position', 'relative');
-            li.find('span').css('top', '-4px');
-            li.find('span').css('left', '-10px');
         }
         svg.call(tip);
     }
