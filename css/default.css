@@ -329,6 +329,14 @@
     color: #777777;
 }
 
+.directions-summary-info {
+    padding: 6px 5px 0 75px;
+    position: absolute;
+    right: 16px;
+    font-size: 14px;
+    color: #777777;
+}
+
 .directions-img {
     margin-left: 3px;
     position: absolute;
