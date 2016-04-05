@@ -329,6 +329,14 @@
     color: #777777;
 }
 
+.directions-summary-info {
+    padding: 6px 5px 0 75px;
+    position: absolute;
+    right: 16px;
+    font-size: 14px;
+    color: #777777;
+}
+
 .directions-img {
     margin-left: 3px;
     position: absolute;
@@ -1270,13 +1278,15 @@ img {
     font-size: 12px;
 }
 
+
 /* surface information */
+
 #routeTypesHead {
     float: left;
 }
 
 #routeTypesBody {
-    overflow: auto;
+    position: relative;
 }
 
 #wayType, #surfaceType {
@@ -1285,13 +1295,28 @@ img {
     width: 200px;
 }
 
+#wayTypeList, #surfaceTypeList {
+    min-height: 25px;
+}
+
 #wayTypeList ul, #surfaceTypeList ul {
-    margin: 10px; 
+    margin: 10px;
     padding-left: 15px;
 }
 
 #wayTypeList li, #surfaceTypeList li {
     float: left;
+    margin-left: 25px;
+    margin-top: -10px;
+    font-size: 26px;
+}
+
+#wayTypeList li span, #surfaceTypeList li span {
+    color: black;
+    font-size: 11px;
+    position: relative;
+    top: -4px;
+    left: -10px;
 }
 
 .d3-tip {
