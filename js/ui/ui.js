@@ -1439,8 +1439,9 @@ var Ui = (function(w) {
      * @param mapLayer: map layer containing these features
      */
     function updateSurfaceInformation(results, mapFeatureIds, mapLayer, totalDistance) {
-        var WayTypeResult = calculateChart(results, mapFeatureIds, "WayType", totalDistance);
-        var WaySurfaceResult = calculateChart(results, mapFeatureIds, "WaySurface", totalDistance);
+        var lang = preferences.language;
+        var WayTypeResult = calculateChart(results, mapFeatureIds, "WayType", totalDistance, lang);
+        var WaySurfaceResult = calculateChart(results, mapFeatureIds, "WaySurface", totalDistance, lang);
         horizontalBarchart(list.divWayTypes, list.listWayTypesContainer, WayTypeResult, list.WayTypeColors);
         horizontalBarchart(list.divSurfaceTypes, list.listSurfaceTypesContainer, WaySurfaceResult, list.SurfaceTypeColors);
         var container = $('#routeTypesContainer').get(0);
@@ -1478,7 +1479,7 @@ var Ui = (function(w) {
         }).attr("width", function(d) {
             return x(d.y1) / 1 - x(d.y0) / 1;
         }).attr("title", function(d) {
-            return (d.y1 - d.y0) + "% " + d.type;
+            return (d.y1 - d.y0) + "% " + d.typetranslated;
         }).style("fill", function(d, i) {
             return colors[i];
         }).on('mouseover', function(d) {
@@ -1494,7 +1495,7 @@ var Ui = (function(w) {
         $(list).append("<ul></ul>");
         for (var i = 0; i < data.length; i++) {
             var li = $('<li>');
-            li.text(data[i].percentage + "% " + data[i].type);
+            li.text(data[i].percentage + "% " + data[i].typetranslated);
             li.wrapInner('<span />');
             li.css('color', colors[i]);
             li.css('margin-left', '25px');
@@ -1514,7 +1515,7 @@ var Ui = (function(w) {
      * @param types: either waytype or waysurface
      * @return WayTypesObject: Object containing Names and Percetages
      */
-    function calculateChart(results, featureIds, types, distArrAll) {
+    function calculateChart(results, featureIds, types, distArrAll, lang) {
         var information, typelist, type;
         // keep route feature ids remove corner ids
         featureIds = featureIds.filter(function(el, index) {
@@ -1527,6 +1528,7 @@ var Ui = (function(w) {
             for (type in list.WayType) {
                 typelist.push({
                     type: list.WayType[type],
+                    typetranslated: list.WayTypeTranslation[list.WayType[type]][lang],
                     distance: 0,
                     ids: [],
                     segments: [],
@@ -1542,6 +1544,7 @@ var Ui = (function(w) {
             for (type in list.SurfaceType) {
                 typelist.push({
                     type: list.SurfaceType[type],
+                    typetranslated: list.SurfaceTranslation[list.SurfaceType[type]][lang],
                     distance: 0,
                     ids: [],
                     segments: [],
