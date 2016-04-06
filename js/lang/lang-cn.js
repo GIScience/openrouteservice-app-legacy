@@ -34,6 +34,7 @@ var lang_cn = {
 	'routeInstructions' : '路徑說明',
 	'routeLinkText' : '輸出目前路徑為文字',
 	'permalinkButton' : '連結',
+	'routeSurface': '方式和表面信息',
 
 	//Geolocation
 	'geolocationNotification' : '路徑規劃工具正努力找尋您的當前位置。若您不同意，幾秒鐘後將會被重新導向。',

@@ -34,6 +34,7 @@ var lang_cz = {
     'routeInstructions':'Pokyny trasy',
     'routeLinkText':'Permalink k aktu&aacute;ln&iacute;trase',
     'permalinkButton':'Permalink',
+	'routeSurface': 'Way a povrchov&aacute; informace',
     
 	//Geolocation
     'geolocationNotification':'Smerov&aacute;n&iacute;pl&aacute;novac se sna&#382;&iacute;zjistit vasi polohu. Pokud nechcete prij&iacute;mat &#382;&aacute;dosti budete presmerov&aacute;ni na chv&iacute;li. ',

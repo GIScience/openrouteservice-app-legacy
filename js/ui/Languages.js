@@ -115,6 +115,7 @@ var Languages = (function(w) {'use strict';
 		$('#addWaypoint').html(p.translate('addWaypoint'));
 		$('#routeSummaryHead').html(p.translate('routeSummary') + ':');
 		$('#routeInstructionHead').html(p.translate('routeInstructions') + ':');
+		$('#routeTypesHead').html(p.translate('routeSurface') + ':');
 
 		//route extras
 		$('#routeExtrasHead').html(p.translate('routeExtras') + ':');

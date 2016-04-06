@@ -34,6 +34,7 @@ var lang_nl = {
     'routeInstructions':'Route-instructies',
     'routeLinkText':'Permanente link voor de huidige route',
     'permalinkButton':'Permanente',
+	'routeSurface': 'Weg en oppervlakte informatie',
     
 	//Geolocation
     'geolocationNotification':'De routing planner probeert uit te vinden uw locatie. Als u niet wilt dat het verzoek accepteert, wordt u doorgestuurd in een moment. ',

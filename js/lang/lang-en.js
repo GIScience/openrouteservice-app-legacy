@@ -36,6 +36,7 @@ var lang_en = {
     'routeInstructions': 'Route instructions',
     'routeLinkText': 'Permalink for current route',
     'permalinkButton': 'Permalink',
+	'routeSurface': ' Way and surface information',
     //Geolocation
     'geolocationNotification': 'The routing planner tries to find out your location. If you do not want to accept the request, you will be redirected in a moment.',
     'currentLocation': 'My current location',

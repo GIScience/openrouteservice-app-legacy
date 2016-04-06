@@ -21,19 +21,20 @@ var lang_fr = {
 	'layer7' : 'Infromation du trafic',
 	
     //Routing
-    'planRoute':'Pr&eacute;voir l\'itin&eacute;raire',
-    'calculatingRoute':'Calcul de l\'itin&eacute;raire...',
-    'noRouteAvailable':'D&eacute;sol&eacute;aucun itin&eacute;raire n\'a &eacute;t&eacute;trouv&eacute;entre les points s&eacute;lectionn&eacute;s. Merci de choisir vos points plus pr&egrave;s d\'une route.',
-    'routeFromTo':'Itin&eacute;raire vers',
-    'resetRoute':'Remettre &agrave;  z&eacute;ro l\'itin&eacute;aire',
-    'TotalTime':'Dur&eacute;e totale',
+	'planRoute':'Pr&eacute;voir l\'itin&eacute;raire',
+	'calculatingRoute':'Calcul de l\'itin&eacute;raire...',
+	'noRouteAvailable':'D&eacute;sol&eacute;aucun itin&eacute;raire n\'a &eacute;t&eacute;trouv&eacute;entre les points s&eacute;lectionn&eacute;s.'Merci de choisir vos points plus pr&egrave;s d\'une route.',
+	'routeFromTo':'Itin&eacute;raire vers',
+	'resetRoute':'Remettre &agrave;  z&eacute;ro l\'itin&eacute;aire',
+	'TotalTime':'Dur&eacute;e totale',
 	'TotalWarnings':  'Informations du trafic',
-    'TotalDistance':'Distance totale',
+	'TotalDistance':'Distance totale',
     'zoomToRoute':'Itin&eacute;raire complet',
     'routeSummary':'R&eacute;sum&eacute;de l\'itin&eacute;raire',
     'routeInstructions':'Instructions de l\'itin&eacute;raire',
     'routeLinkText':'  Lien permanent pour l\'itin&eacute;raire actuel',
     'permalinkButton':'Permalien',
+	'routeSurface': 'Information routiere et la surface',
    
    //Geolocation
     'geolocationNotification':'Le planificateur de routage essaie de trouver votre emplacement. Si vous ne voulez pas accepter la demande vous allez &ecirc;tre redirig&eacute;dans un instant. ',

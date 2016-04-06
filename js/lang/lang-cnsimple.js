@@ -34,6 +34,7 @@ var lang_cnsimple = {
 	'routeInstructions' : '路径说明',
 	'routeLinkText' : '当前路径导出链接',
 	'permalinkButton' : '链接',
+	'routeSurface': '方式和表面信息',
 
 	//Geolocation
 	'geolocationNotification' : '浏览器正努力定位您的位置。若您不允许定位，几秒钟之后您会被重定向。',
