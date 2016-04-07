@@ -1627,6 +1627,8 @@ var Ui = (function(w) {
             var stopoverTime = 0;
             var waypoints;
             var distArrAll = [];
+			var totalDistance = 0;
+			var totalTime = 0;
             // get stopovers which are viapoints
             if ($('.waypoint').length > 2) {
                 waypoints = getWaypoints();
@@ -1646,6 +1648,8 @@ var Ui = (function(w) {
                 if (directionCode == '100') {
                     directionsContainer = buildWaypoint('layerRoutePoints', 'via', waypoints[numStopovers], numStopovers, stopoverDistance, stopoverTime);
                     directionsMain.appendChild(directionsContainer);
+					totalDistance += stopoverDistance;
+					totalTime += stopoverTime;
                     stopoverDistance = 0;
                     stopoverTime = 0;
                     directionsMain.appendChild(directionsContainer);
@@ -1809,14 +1813,63 @@ var Ui = (function(w) {
                     $(directionTextDiv).click(handleClickRouteCorner);
                 }
             });
-
+			totalDistance += stopoverDistance;
+			totalTime += stopoverTime;
             directionsContainer = buildWaypoint('layerRoutePoints', 'end', endpoint, getWaypoints().length - 1, stopoverDistance, stopoverTime);
-            directionsMain.appendChild(directionsContainer);
-			var pointInfo = new Element('div', {
-                'class': 'directions-summary-info'
-            }).update(Number(stopoverTime / 60).toFixed() + ' min' + ' / ' + Number(stopoverDistance / 1000).toFixed(2) + ' km');
-            directionsMain.insertBefore(pointInfo, directionsMain.firstChild);
-			pointInfo.hide();
+			directionsMain.appendChild(directionsContainer);
+			var summaryContainer = new Element('div', {
+                'class': 'directions-summary-info-container'
+            });
+			var hours = Math.floor(totalTime/3600);
+			var minutes = totalTime/60 - hours*60;
+			if (hours > 0){
+				var pointInfo = new Element('div', {
+					'class': 'directions-summary-info-time'
+				}).update('<i class="icon-time" style="margin: 7px 5px 0 0;"></i>' + Number(hours).toFixed() + ' ');
+				var unit = new Element('div', {
+					'class': 'directions-summary-info-units'
+				}).update('h');
+				pointInfo.appendChild(unit);
+				summaryContainer.appendChild(pointInfo);
+				pointInfo = new Element('div', {
+					'class': 'directions-summary-info-time',
+					'style': 'padding-left: 4px'
+				}).update(' ' + Number(minutes).toFixed() + ' ');
+				unit = new Element('div', {
+					'class': 'directions-summary-info-units'
+				}).update('min');
+				pointInfo.appendChild(unit);
+				summaryContainer.appendChild(pointInfo);
+			}
+			else {
+				var pointInfo = new Element('div', {
+					'class': 'directions-summary-info-time'
+				}).update('<i class="icon-time" style="margin: 7px 5px 0 0;"></i>' + Number(minutes).toFixed() + ' ');
+            // }).update('<i class="icon-time" style="margin: 7px 5px 0 0;"></i>' + Math.floor(totalTime/3600) == 0 ? (totalTime / 3600).toFixed() + ' ' : Math.floor(totalTime / 3600).toFixed() + ' ' + (totalTime / 3600).toFixed() - Math.floor(totalTime / 3600).toFixed());
+				var unit = new Element('div', {
+					'class': 'directions-summary-info-units'
+				}).update('min');
+				pointInfo.appendChild(unit);
+				summaryContainer.appendChild(pointInfo);
+			}
+			
+			pointInfo = new Element('div', {
+                'class': 'directions-summary-info-distance'
+            }).update('<i class="icon-resize-horizontal" style="margin: 5px 5px 0 0;"></i>' + Number(totalDistance / 1000).toFixed(1) + ' ');
+			unit = new Element('div', {
+                'class': 'directions-summary-info-units'
+            }).update('km');
+            pointInfo.appendChild(unit);
+			summaryContainer.appendChild(pointInfo);
+			
+			var directionsBorder = new Element('div', {
+				'style': 'width: 90%; margin: 0 auto;',
+                'class': 'directions-mode-line'
+            });
+			
+            directionsMain.insertBefore(directionsBorder, directionsMain.firstChild);
+            directionsMain.insertBefore(summaryContainer, directionsMain.firstChild);
+			// pointInfo.hide();
             return distArrAll;
             // TODO tmc messages expand collapse function
         }
@@ -2000,10 +2053,19 @@ var Ui = (function(w) {
                     type: 'text/css',
                     html: data
                 }).appendTo("head");
-				//TODO: properly display route summary information on top while printing
-				// $('.directions-summary-info').show();
                 routeInstructions.show();
+				//Replace the bold font with normal font for printing
+				var originalText = [];
+				$('.directions-text').each(function(i, obj) {
+					originalText[i] = obj.innerHTML;
+					obj.innerHTML = obj.innerHTML.replace(new RegExp('<b>', 'g'), '');
+					obj.innerHTML = obj.innerHTML.replace(new RegExp('</b>', 'g'), '');
+				});
                 window.print();
+				//After printing, use the bold font again
+				$('.directions-text').each(function(i, obj) {
+					obj.innerHTML = originalText[i];
+				});
                 style.remove();
 				// $('.directions-summary-info').hide();
             }

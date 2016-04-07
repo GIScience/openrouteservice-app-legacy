@@ -329,11 +329,33 @@
     color: #777777;
 }
 
-.directions-summary-info {
-    padding: 6px 5px 0 75px;
-    position: absolute;
-    right: 16px;
+.directions-summary-info-container {
+    width: 65%;
+	margin: 0 auto;
+	padding: 5px 0 15px 0;
+}
+
+.directions-summary-info-time {
+    float: left;
+    font-size: 20px;
+    color: #000000;
+	font-weight: bold;
+	display: inline;
+}
+.directions-summary-info-distance {
+    float: right;
+    font-size: 20px;
+    color: #000000;
+	font-weight: bold;
+	display: inline;
+}
+
+.directions-summary-info-units {
+	/*margin: 0 auto;
+	width: 50%;*/
+	display: inline;
     font-size: 14px;
+	font-weight: normal;
     color: #777777;
 }
 
