@@ -1398,13 +1398,7 @@ var Ui = (function(w) {
             container.show();
             var timeDiv = container.querySelector('#route_totalTime');
             var distanceDiv = container.querySelector('#route_totalDistance');
-            var actualDistanceDiv = container.querySelector('#route_actualDistance');
-            var warningDiv = container.querySelector('#route_trafficWarnings');
-            // number of warnings on route
-            var warningnumber;
-            if (warningnumber !== undefined && warningnumber !== 0) {
-                $(warningDiv)[0].update(preferences.translate('TotalWarnings') + ': ' + warningnumber);
-            }
+            var actualDistanceDiv = container.querySelector('#route_actualDistance');          
             $(actualDistanceDiv).hide();
             // actual distance
             var actualDistance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'ActualDistance')[0];
@@ -1608,6 +1602,7 @@ var Ui = (function(w) {
      * @param mapFeatureIds: list of IDs of Leaflet elements containing BOTH - ids for route line segments AND corner points: [routeLineSegment_0, cornerPoint_0, routeLineSegment_1, cornerPoint_1,...]
      * @param mapLayer: map layer containing these features
      */
+	
     function updateRouteInstructions(results, mapFeatureIds, mapLayer) {
         var container, directionsContainer;
         if (!results) {
@@ -1767,20 +1762,29 @@ var Ui = (function(w) {
                     directionsContainer.appendChild(directionsImgDiv);
                     directionsContainer.appendChild(directionTextDiv);
                     var tmcMessage = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Message')[0];
-                    if (tmcMessage) {
+                    var warning=0;
+					if (tmcMessage) {
                         // add icons and jquery collapsible stuff
                         tmcMessage = tmcMessage.text || tmcMessage.textContent;
                         var tmcWarning, warningLink;
                         var tmcText = tmcMessage.split(" | ")[1];
                         var tmcCode = tmcMessage.split(" | ")[0];
                         tmcCode = tmcCode.split(',');
+						warning=warning + 1;
                         for (var i = 0; i < tmcCode.length; i++) {
                             if (tmcCode[i] in list.tmc) {
                                 warningLink = list.tmc[tmcCode[i]][0];
+								
                                 break;
                             }
                         }
-                        var warningnumber = tmcMessage.length;
+						// display number of warnings on route
+						var container = $('#routeSummaryContainer').get(0);
+						container.show();
+						var warningDiv = container.querySelector('#route_trafficWarnings');
+							if (warning !== undefined && warning !== 0) {
+							$(warningDiv)[0].update(preferences.translate('TotalWarnings') + ': ' + warning);
+						}
                         // if codes not in dict return default
                         warningLink = warningLink !== undefined ? warningLink : './img/warning_undefined.png';
                         var noticeDiv = new Element('div', {
