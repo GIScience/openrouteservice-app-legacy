@@ -549,6 +549,12 @@
 													<span class="label" id="viaOptimizeLabel">Optimize waypoint order</span></label>
 												</div>
 											</div>
+											<div class="radioContainer">
+												<div class="checkbox"><label>
+													<input type="checkbox" id="roundtrip" name="Roundtrip"  value="Roundtrip">
+													<span class="label" id="roundtripLabel">Roundtrip</span></label>
+												</div>
+											</div>
 										</table>
 									</div>
 								</div>
@@ -607,6 +613,11 @@
 		<!-- Popup for service timeouts -->
 		<div class="alert alert-error" id="serviceTimeout">
 			<button type="button" class="close" data-dismiss="alert">
+				×
+			</button>
+		</div>
+		<div class="alert alert-warning hideable-alert" id="endAsViaWaypoint_info">
+			<button type="button" class="close" data-hide="hideable-alert">
 				×
 			</button>
 		</div>

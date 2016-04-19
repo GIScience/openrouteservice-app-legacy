@@ -1278,6 +1278,21 @@ img {
     line-height: 1.1;
 }
 
+/* popup with information that an END-Waypoint was added as VIA because round-trip is specified */
+
+#endAsViaWaypoint_info {
+    display: none;
+	position: absolute;
+	z-index: 9999;
+	top: 0px;
+	left: 0px;
+}
+
+#endAsViaWaypoint_info > label {
+    width: 220px;
+    line-height: 1.1;
+}
+
 #accessibilityDistance, #accessibilityAnalysisIsochronesIntervall {
     width: 30px;
     /*overwrite settings from bootstrap for input fields*/

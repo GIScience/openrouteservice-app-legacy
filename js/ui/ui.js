@@ -112,6 +112,24 @@ var Ui = (function(w) {
         $('#serviceTimeout').append(label);
         $('#serviceTimeout').show();
     }
+	
+	function showEndAsViaWaypointPopup(wpIndex) {
+		var label = new Element('label');
+        label.insert(preferences.translate('infoAboutAvoidables'));
+        $('#endAsViaWaypoint_info').find('label').remove();
+        $('#endAsViaWaypoint_info').append(label);
+		$('#endAsViaWaypoint_info').css('left', $('#' + wpIndex).offset().left + $('#' + wpIndex).width() + 50 + 'px');
+		$('#endAsViaWaypoint_info').css('top', $('#' + wpIndex).offset().top + 'px');
+        $('#endAsViaWaypoint_info').show();
+    }
+	
+	$(function(){
+		$("[data-hide]").on("click", function(){
+			$("." + $(this).attr("data-hide")).hide();
+        // -or-, see below
+        // $(this).closest("." + $(this).attr("data-hide")).hide();
+		});
+	});
     /* *********************************************************************
      * ALL MARKER ELEMENTS
      * *********************************************************************/
@@ -857,6 +875,14 @@ var Ui = (function(w) {
             inputElement.removeClassName('searching');
         }
     }
+	/**
+	 * activates roundtrip handler
+     */
+    function handleSpecifyRoundtripClick() {
+		var newStatus = $('#roundtrip')[0].checked; 
+        theInterface.emit('ui:specifyRoundtrip', newStatus);
+    }
+	
     /* *********************************************************************
      * GEOLOCATION
      * *********************************************************************/
@@ -3252,6 +3278,7 @@ var Ui = (function(w) {
         $('.searchAgainButton').click(handleSearchAgainWaypointClick);
         $('#orderRoute').click(handleReorderWaypoints);
         $('.waypoint-icon').click(handleZoomToWaypointClick);
+        $('#roundtrip').click(handleSpecifyRoundtripClick);
         //route
         $('#zoomToRouteButton').click(handleZoomToRouteClick);
         //route instructions print
@@ -3309,6 +3336,7 @@ var Ui = (function(w) {
     Ui.prototype.constructor = Ui;
     Ui.prototype.showNewToOrsPopup = showNewToOrsPopup;
     Ui.prototype.showAvoidablesInfoPopup = showAvoidablesInfoPopup;
+	Ui.prototype.showEndAsViaWaypointPopup = showEndAsViaWaypointPopup;
     Ui.prototype.showServiceTimeoutPopup = showServiceTimeoutPopup;
     Ui.prototype.emphElement = emphElement;
     Ui.prototype.deEmphElement = deEmphElement;
@@ -3321,6 +3349,7 @@ var Ui = (function(w) {
     Ui.prototype.setWaypointType = setWaypointType;
     Ui.prototype.addWaypointAfter = addWaypointAfter;
     Ui.prototype.addWaypointResultByRightclick = addWaypointResultByRightclick;
+    Ui.prototype.handleSpecifyRoundtripClick = handleSpecifyRoundtripClick;
     Ui.prototype.invalidateWaypointSearch = invalidateWaypointSearch;
     Ui.prototype.setMoveDownButton = setMoveDownButton;
     Ui.prototype.setMoveUpButton = setMoveUpButton;
