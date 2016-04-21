@@ -173,7 +173,6 @@ var Controller = (function(w) {
             //adding a waypoint internally is not necessary. this is done via the call in ui.addWaypointAfter(...).
             ui.addWaypointAfter(wpIndex, waypoint.getNumWaypoints());
             wpIndex++;
-			console.log(endAsVia);
 			if(endAsVia) ui.showEndAsViaWaypointPopup(wpIndex);
         }
         ui.showSearchingAtWaypoint(wpIndex, true);
@@ -191,7 +190,7 @@ var Controller = (function(w) {
         var newIndex = ui.addWaypointResultByRightclick(wpType, wpIndex, position, true);
         ui.setWaypointFeatureId(newIndex, newFeatureId, position, 'layerRoutePoints');
 		//If roundtrip: relocate the last waypoint as well
-		if (wpType == Waypoint.type.START) handleSpecifyRoundtrip($('#roundtrip')[0].checked);
+		if (wpType == Waypoint.type.START) handleSpecifyRoundtrip($('#roundtrip')[0].checked, false);
         if (!noRouteRequest) {
             handleWaypointChanged();
         }
@@ -468,17 +467,16 @@ var Controller = (function(w) {
      * roundtrip ist set by user. Copy the first waypoint and add it as the last waypoint again
      * @param newStatus: boolean to set roundtrip on/off
      */
-    function handleSpecifyRoundtrip(newStatus) {
+    function handleSpecifyRoundtrip(newStatus, copy = true) {
         if(newStatus == true){
 			var rP = ui.getRoutePoints();
 			var coordinates;
 			var numWaypoints = $('.waypoint').length - 1;
-			console.log(numWaypoints);
 			if($('#0').hasClass('start')){
-				//If the last waypoint is an end point, copy it as a via point so that it does not vanish when adding a via point
-				if($('#' + (numWaypoints - 1)).hasClass('end')){
-					coordinates = rP[numWaypoints - 1].split(' ');
+				//If the last waypoint is an end point, copy it as a via point so that it does not vanish when adding an end point
+				if($('#' + (numWaypoints - 1)).hasClass('end') && copy){
 					//if the last and first waypoint are not the same
+					coordinates = rP[numWaypoints - 1].split(' ');
 					if (coordinates[0] != rP[0].split(' ')[0] && coordinates[1] != rP[0].split(' ')[1]){
 						handleAddWaypointByRightclick({pos: {lat: coordinates[0], lng: coordinates[1]}, type: 'via'}, false, false);
 					}
@@ -497,7 +495,6 @@ var Controller = (function(w) {
 			
 				coordinates = rP[numWaypoints - 1].split(' ');
 				if (coordinates[0] == rP[0].split(' ')[0] && coordinates[1] == rP[0].split(' ')[1]){
-					console.log($('#' + (numWaypoints - 1)).children(".removeWaypoint")[0]);
 					eventFire($('#' + (numWaypoints - 1)).children(".removeWaypoint")[0], 'click');
 				}
 			}

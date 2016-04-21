@@ -119,10 +119,9 @@ var Ui = (function(w) {
 		$('#endAsViaWaypoint_info').css('opacity', '1');
         $('#endAsViaWaypoint_info').find('label').remove();
         $('#endAsViaWaypoint_info').append(label);
-		$('#endAsViaWaypoint_info').css('left', $('#' + wpIndex).offset().left + $('#' + wpIndex).width() + 50 + 'px');
+		$('#endAsViaWaypoint_info').css('left', $('#' + wpIndex).offset().left + $('#' + wpIndex).width() + 20 + 'px');
 		$('#endAsViaWaypoint_info').css('top', $('#' + wpIndex).offset().top + 'px');
         $('#endAsViaWaypoint_info').show();
-		// window.setTimeout(function() { $("#endAsViaWaypoint_info").alert('close'); }, 2000);
 		window.setTimeout(function() {
 			$("#endAsViaWaypoint_info").fadeTo(500, 0).slideUp(500, function(){
 				$(this).hide(); 
@@ -133,8 +132,6 @@ var Ui = (function(w) {
 	$(function(){
 		$("[data-hide]").on("click", function(){
 			$("." + $(this).attr("data-hide")).hide();
-        // -or-, see below
-        // $(this).closest("." + $(this).attr("data-hide")).hide();
 		});
 	});
     /* *********************************************************************
