@@ -426,15 +426,25 @@
 							<div class="addWaypoint clickable" id="addWaypoint">
 								add waypoint
 							</div>
-							<div class="buttonHolder">
-								<button id="orderRoute" class="btn btn-small" type="button" title="Reorder Waypoints"><i class="icon-refresh"></i></button>
+							<div class="panel panelMedium" style="position: relative">
+								<div class="radioContainer">
+									<div class="checkbox"><label>
+										<input type="checkbox" id="roundtrip" name="Roundtrip"  value="Roundtrip">
+										<span class="label" id="roundtripLabel">Roundtrip</span></label>
+									</div>
+								</div>
+								<div class="buttonHolder">
+									<button id="orderRoute" class="btn btn-small" type="button" title="Reorder Waypoints"><i class="icon-refresh"></i></button>
+								</div>
+								<div class="buttonHolder">
+									<button id="resetRoute" class="btn btn-small" type="button" title="Reset Route"><i class="icon-trash"></i></button>
+								</div>
+								<div class="buttonHolder">
+									<button id="zoomToRouteButton" class="btn btn-small" type="button" title="Zoom to Route"><i class="icon-resize-full"></i></button>
+								</div>
 							</div>
-							<div class="buttonHolder">
-								<button id="resetRoute" class="btn btn-small" type="button" title="Reset Route"><i class="icon-trash"></i></button>
-							</div>
-							<div class="buttonHolder">
-								<button id="zoomToRouteButton" class="btn btn-small" type="button" title="Zoom to Route"><i class="icon-resize-full"></i></button>
-							</div>
+							
+							
 						</div>
 						<div id="routeCalculate" style="display:none" class="alert alert-info searchingBlue"></div>
 						<div id="routeError" style="display:none" class="alert alert-error"></div>
@@ -547,12 +557,6 @@
 												<div class="checkbox"><label>
 													<input type="checkbox" id="viaOptimize" name="Via"  value="Via" checked>
 													<span class="label" id="viaOptimizeLabel">Optimize waypoint order</span></label>
-												</div>
-											</div>
-											<div class="radioContainer">
-												<div class="checkbox"><label>
-													<input type="checkbox" id="roundtrip" name="Roundtrip"  value="Roundtrip">
-													<span class="label" id="roundtripLabel">Roundtrip</span></label>
 												</div>
 											</div>
 										</table>
