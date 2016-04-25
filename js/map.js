@@ -276,6 +276,8 @@ var Map = (function() {
             if (e.layer instanceof L.Path) e.layer.on('click', L.DomEvent.stop).on('click', deleteShape, e.layer);
             if (e.layer instanceof L.Path) e.layer.on('dblclick', L.DomEvent.stop).on('dblclick', e.layer.toggleEdit);
         });
+		//add eventlistener for creating routepoints by dragging from routeLineSegments
+		this.layerRouteLines.on('click', function(e){console.log("added");});
         var shapeListener = function(e) {
             // var errorous = self.checkAvoidAreasIntersectThemselves();
             // if (errorous) self.emit('map:errorsInAvoidAreas', true);
@@ -1006,6 +1008,7 @@ var Map = (function() {
                 routeStringCorners.push(routeLinePoints[i]);
                 ftIds.push(segmentBase._leaflet_id, routeCornerBase._leaflet_id);
             }
+			console.log(routeString);
             // this is a combined linestring of all sub segments with a border
             L.polyline(routeString, styles.routeOutline(self.theMap.getZoom())).addTo(self.layerRouteLines);
             L.polyline(routeString, styles.routePadding(self.theMap.getZoom())).addTo(self.layerRouteLines);
