@@ -27,7 +27,7 @@
 	// start=7.040837,50.723612&end=7.040036,50.72591&via=7.026576,50.720379
 	// &routepref=Shortest&weighting=Car&lang=de&noMotorways=true&noTollways=true&distunit=M&instructions=true
 	if(isset($_GET["start"]) && isset($_GET["end"]) && isset($_GET["via"])&& isset($_GET["lang"]) && isset($_GET["distunit"]) 
-			&& isset($_GET["routepref"]) && isset($_GET["weighting"]) && isset($_GET["noMotorways"]) && isset($_GET["noTollways"]) && isset($_GET["noFerries"])&& isset($_GET["noSteps"])&& isset($_GET["noUnpavedroads"]) && isset($_GET["instructions"])){
+		&& isset($_GET["routepref"]) && isset($_GET["weighting"]) && isset($_GET["noMotorways"]) && isset($_GET["noTollways"]) && isset($_GET["noFerries"])&& isset($_GET["noSteps"])&& isset($_GET["noUnpavedroads"]) && isset($_GET["instructions"])){
 		$startcoordinate = $_GET["start"];
 		$endcoordinate = $_GET["end"];
 		$viaPoints_xml = $_GET["via"];
@@ -43,7 +43,6 @@
 		$noSteps = $_GET["noSteps"];
 		$instructions = $_GET["instructions"];
 		
-	
 		
 		$avoidFeatures = '';
 		if($noMotorways == 'true'){
@@ -110,6 +109,105 @@
 
 			echo $sExplodeParam . $aResponse[1];
 		}
+	}
+		elseif(isset($_GET["start"]) && isset($_GET["end"]) && isset($_GET["via"])&& isset($_GET["lang"]) && isset($_GET["distunit"]) 
+		&& isset($_GET["routepref"]) && isset($_GET["weighting"]) && isset($_GET["noMotorways"]) && isset($_GET["noTollways"]) && isset($_GET["noFerries"])&& isset($_GET["noSteps"])&& isset($_GET["noUnpavedroads"])&& isset($_GET["surface"])&& isset($_GET["elevation"]) && isset($_GET["instructions"])){
+		$startcoordinate = $_GET["start"];
+		$endcoordinate = $_GET["end"];
+		$viaPoints_xml = $_GET["via"];
+		$language = $_GET["lang"];
+		$distanceunit = $_GET["distunit"];
+		$routepref = $_GET["routepref"];
+		$weighting = $_GET["weighting"];
+		$avoidAreas = '';
+		$noMotorways = $_GET["noMotorways"];
+		$noTollways = $_GET["noTollways"];
+		$noFerries = $_GET["noFerries"];
+		$noUnpavedroads = $_GET["noUnpavedroads"];
+		$noSteps = $_GET["noSteps"];
+		$instructions = $_GET["instructions"];
+		$surface = $_GET["surface"];
+		$elevation = $_GET["elevation"];
+		$sur = '';
+		$ele = '';
+		if(($routepref == 'Bicycle')||($routepref == 'BicycleSafety')||($routepref == 'BicycleTour')||($routepref == 'BicycleMTB')||($routepref == 'BicycleRacer')){
+			if ($surface == 'true'){
+			$sur= 'true';
+			}else{
+			$sur='false';
+			}
+			if ($elevation == 'true'){
+			$ele= 'true';
+			}else{
+			$ele='false';
+			}
+		}
+		
+		$avoidFeatures = '';
+		if($noMotorways == 'true'){
+			$avoidFeatures = '<xls:AvoidFeature>Highway</xls:AvoidFeature>';
+		}
+		if($noTollways == 'true'){
+			$avoidFeatures = $avoidFeatures.'<xls:AvoidFeature>Tollway</xls:AvoidFeature>';
+		}
+		if($noFerries == 'true'){
+			$avoidFeatures = $avoidFeatures.'<xls:AvoidFeature>Ferry</xls:AvoidFeature>';
+		}
+		if($noUnpavedroads == 'true'){
+			$avoidFeatures = $avoidFeatures.'<xls:AvoidFeature>Unpavedroads</xls:AvoidFeature>';
+		}
+		if($noSteps == 'true'){
+			$avoidFeatures = $avoidFeatures.'<xls:AvoidFeature>Steps</xls:AvoidFeature>';
+		}
+		
+		if($instructions == 'true'){
+			$instructions = '<xls:RouteInstructionsRequest format="text/plain" provideGeometry="true"/>';
+		}
+		else{
+			$instructions = '';
+		}
+		
+		
+		
+				
+		$startcoordinate = str_replace(",", " ", $startcoordinate);
+		$endcoordinate = str_replace(",", " ", $endcoordinate);
+		
+		if(strlen($viaPoints_xml) > 0){
+			$points = explode(" ", $viaPoints_xml);
+			$viaPoints_xml = "";
+			for($i = 0; $i < count($points) ; $i++){
+				$p = explode(",", $points[$i]);
+				$viaPoints_xml = $viaPoints_xml."<xls:ViaPoint><xls:Position><gml:Point><gml:pos>".$p[0]." ".$p[1]."</gml:pos></gml:Point></xls:Position></xls:ViaPoint>";
+			}
+		}
+		else
+			$viaPoints_xml = "";
+	
+
+		///////////////////////////////////////////////////
+		//*** Sende Request an Web Service ***
+		$request = createRequest($startcoordinate, $endcoordinate, $viaPoints_xml, $language, $distanceunit, $routepref, $weighting,
+				$avoidAreas, $avoidFeatures, $sur, $ele, $instructions);
+
+		//Server
+		$http_response = post('openls.geog.uni-heidelberg.de', '/osm/routing', $request, 20, 80);
+		
+		///////////////////////////////////////////////////
+		//*** Request auswerten ***
+		//Header entfernen
+		$sExplodeParam = '<?xml';
+		if (strchr($http_response, $sExplodeParam)){
+		   $aResponse = explode($sExplodeParam,$http_response);
+
+			//Response XML
+			$doc = new DOMDocument();
+			$doc->loadXML($sExplodeParam . $aResponse[1]);
+
+			header('Content-Type: text/xml');
+
+			echo $sExplodeParam . $aResponse[1];
+		}
 	}	
 		else if(isset($_GET["start"]) && isset($_GET["end"]) && isset($_GET["via"])&& isset($_GET["lang"]) && isset($_GET["distunit"]) 
 			&& isset($_GET["routepref"]) && isset($_GET["weighting"])&& isset($_GET["value_width"])&& isset($_GET["value_height"])&& isset($_GET["value_weight"])&& isset($_GET["value_length"])&& isset($_GET["value_axleload"])&& isset($_GET["value"])&& isset($_GET["hazardous"]) && isset($_GET["noMotorways"]) && isset($_GET["noTollways"]) && isset($_GET["noFerries"])&& isset($_GET["noSteps"])&& isset($_GET["noUnpavedroads"]) && isset($_GET["instructions"])){
@@ -149,7 +247,6 @@
 				 </xls:LoadCharacteristics>';	
 			}
 		}
-		
 		$avoidFeatures = '';
 		if($noMotorways == 'true'){
 			$avoidFeatures = '<xls:AvoidFeature>Highway</xls:AvoidFeature>';
@@ -194,7 +291,7 @@
 		///////////////////////////////////////////////////
 		//*** Sende Request an Web Service ***
 		$request = createRequest($startcoordinate, $endcoordinate, $viaPoints_xml, $language, $distanceunit, $routepref, $weighting,
-				$avoidAreas, $avoidFeatures, $instructions);
+				$avoidAreas, $avoidFeatures, $hgv, $haz, $instructions);
 
 		//Server
 		$http_response = post('openls.geog.uni-heidelberg.de', '/osm/routing', $request, 20, 80);
