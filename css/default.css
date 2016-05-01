@@ -1,4 +1,5 @@
-service/*|-----------------------------------------------------------------------------------
+service
+/*|-----------------------------------------------------------------------------------
  *|                                                     University of Heidelberg
  *|   _____ _____  _____      _                         Department of Geography
  *|  / ____|_   _|/ ____|    (_)                        Chair of GIScience
@@ -331,31 +332,32 @@ service/*|----------------------------------------------------------------------
 
 .directions-summary-info-container {
     width: 65%;
-	margin: 0 auto;
-	padding: 5px 0 15px 0;
+    margin: 0 auto;
+    padding: 5px 0 15px 0;
 }
 
 .directions-summary-info-time {
     float: left;
     font-size: 20px;
     color: #000000;
-	font-weight: bold;
-	display: inline;
+    font-weight: bold;
+    display: inline;
 }
+
 .directions-summary-info-distance {
     float: right;
     font-size: 20px;
     color: #000000;
-	font-weight: bold;
-	display: inline;
+    font-weight: bold;
+    display: inline;
 }
 
 .directions-summary-info-units {
-	/*margin: 0 auto;
-	width: 50%;*/
-	display: inline;
+    /*margin: 0 auto;
+    width: 50%;*/
+    display: inline;
     font-size: 14px;
-	font-weight: normal;
+    font-weight: normal;
     color: #777777;
 }
 
@@ -1268,9 +1270,12 @@ img {
 
 #serviceTimeout {
     display: none;
-    position: absolute;
-    left: 20px;
-    top: 70px;
+    position: fixed;
+    margin-left: 33px;
+    top: 60px;
+    z-index: 999;
+    width: 200px;
+    font-family: 'Roboto', sans-serif;
 }
 
 #serviceTimeout > label {

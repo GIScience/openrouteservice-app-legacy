@@ -1416,10 +1416,6 @@ var Controller = (function(w) {
         map.theMap.on('moveend', map.emitloadTMC);
         //set Interval for ServerTimeOut control
         setInterval(function(){
-            $('#serviceTimeout').children('label').empty();
-            $('#serviceTimeout').children('button').click(function(){
-                 $('#serviceTimeout').hide();
-            });
             map.graphInfo();
         }, 3000);
     }

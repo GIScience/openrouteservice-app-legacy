@@ -511,17 +511,15 @@ var Map = (function() {
             crossDomain: false,
             success: function(data){
                 self.updateInfoPanel(data);
-                Ui.showServiceTimeoutPopup();
+                Ui.showServiceTimeoutPopup(false);
             },
             error: function(data){
-                self.updateInfoPanel(data);
-                Ui.showServiceTimeoutPopup();
+                Ui.showServiceTimeoutPopup(true);
             }
         });
     }
 
     function updateInfoPanel(results) {
-        console.log(results);
         var infoPanel = document.getElementById("infoPanel");
         var lastUpdate = new Date(results.profiles['profile 1'].import_date);
         lastUpdate = lastUpdate.getUTCDate() + '.' + (parseInt(lastUpdate.getMonth()) + parseInt(1)) + '.';
