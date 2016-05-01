@@ -351,4 +351,38 @@ var lang_fr = {
     'team_handball':'handball',
     'tennis':'  tennis',
     'volleyball':'volley',
-};			
+
+    //Way Types
+    'Other': 'Autre',
+    'StateRoad': 'Route nationale',
+    'Road': 'Route',
+    'Street': 'Rue',
+    'Path': 'Chemin',
+    'Track': 'Piste',
+    'Cycleway': 'Piste cyclable',
+    'Footway': 'Sentier',
+    'Steps':  'Étagée',
+    'Ferry': 'Traversier',
+    'Construction': 'Construction',
+
+    //Surface Types
+    //'Other': 'Other',
+    'Paved': 'Pavé',
+    'Unpaved': 'Non pavé',
+    'Asphalt': 'Asphalte',
+    'Concrete':'Béton',
+    'Cobblestone': 'Pavé',
+    'Metal':  'Métal',
+    'Wood':'Bois',
+    'CompactedGravel': 'Gravier compacté',
+    'FineGravel': 'Gravier fine',
+    'Gravel': 'Gravier',
+    'Dirt': 'Saleté',
+    'Ground': 'Sol',
+    'Ice': 'Glace',
+    'Salt': 'Sel',
+    'Sand': 'Sable',
+    'Woodchips': 'Copeaux de bois',
+    'Grass': 'Herbe',
+    'GrassPaver': 'Herbe finisseur'
+};	

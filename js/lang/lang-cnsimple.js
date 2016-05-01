@@ -357,4 +357,38 @@ var lang_cnsimple = {
 	'team_handball' : '手球',
 	'tennis' : '网球',
 	'volleyball' : '排球',
+
+	//Way Types
+    'Other': '其他',
+    'StateRoad': '国道',
+    'Road': '路',
+    'Street': '街',
+    'Path': '路径',
+    'Track': '跟踪',
+    'Cycleway': '自行车道',
+    'Footway': '人行道',
+    'Steps':  '脚步',
+    'Ferry': '渡船',
+    'Construction': '施工',
+
+    //Surface Types
+    //'Other': 'Other',
+    'Paved': '铺就',
+    'Unpaved': '未铺砌',
+    'Asphalt': '沥青',
+    'Concrete':'具体',
+    'Cobblestone': '鹅卵石',
+    'Metal':  '金属',
+    'Wood':'木',
+    'CompactedGravel': '密实的砾石',
+    'FineGravel': '细砾',
+    'Gravel': '碎石',
+    'Dirt': '污垢',
+    'Ground': '地面',
+    'Ice': '冰',
+    'Salt': '盐',
+    'Sand': '砂',
+    'Woodchips': '木屑',
+    'Grass': '草',
+    'GrassPaver': '草摊铺机'
 };

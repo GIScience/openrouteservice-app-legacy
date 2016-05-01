@@ -1,4 +1,4 @@
-/*|-----------------------------------------------------------------------------------
+service/*|-----------------------------------------------------------------------------------
  *|                                                     University of Heidelberg
  *|   _____ _____  _____      _                         Department of Geography
  *|  / ____|_   _|/ ____|    (_)                        Chair of GIScience
@@ -1247,7 +1247,7 @@ img {
 #serviceTimeout {
     display: none;
     position: absolute;
-    left: 430px;
+    left: 20px;
     top: 70px;
 }
 

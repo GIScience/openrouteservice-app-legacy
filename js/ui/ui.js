@@ -1439,9 +1439,9 @@ var Ui = (function(w) {
      * @param mapLayer: map layer containing these features
      */
     function updateSurfaceInformation(results, mapFeatureIds, mapLayer, totalDistance) {
-        var lang = preferences.language;
-        var WayTypeResult = calculateChart(results, mapFeatureIds, "WayType", totalDistance, lang);
-        var WaySurfaceResult = calculateChart(results, mapFeatureIds, "WaySurface", totalDistance, lang);
+        //var lang = preferences.language;
+        var WayTypeResult = calculateChart(results, mapFeatureIds, "WayType", totalDistance);
+        var WaySurfaceResult = calculateChart(results, mapFeatureIds, "WaySurface", totalDistance);
         horizontalBarchart(list.divWayTypes, list.listWayTypesContainer, WayTypeResult, list.WayTypeColors);
         horizontalBarchart(list.divSurfaceTypes, list.listSurfaceTypesContainer, WaySurfaceResult, list.SurfaceTypeColors);
         var container = $('#routeTypesContainer').get(0);
@@ -1507,7 +1507,7 @@ var Ui = (function(w) {
      * @param types: either waytype or waysurface
      * @return WayTypesObject: Object containing Names and Percetages
      */
-    function calculateChart(results, featureIds, types, distArrAll, lang) {
+    function calculateChart(results, featureIds, types, distArrAll) {
         var information, typelist, type;
         // keep route feature ids remove corner ids
         featureIds = featureIds.filter(function(el, index) {
@@ -1520,7 +1520,8 @@ var Ui = (function(w) {
             for (type in list.WayType) {
                 typelist.push({
                     type: list.WayType[type],
-                    typetranslated: list.WayTypeTranslation[list.WayType[type]][lang],
+                    //typetranslated: list.WayTypeTranslation[list.WayType[type]][lang],
+                    typetranslated: preferences.translate(list.WayType[type]),
                     distance: 0,
                     ids: [],
                     segments: [],
@@ -1536,7 +1537,8 @@ var Ui = (function(w) {
             for (type in list.SurfaceType) {
                 typelist.push({
                     type: list.SurfaceType[type],
-                    typetranslated: list.SurfaceTranslation[list.SurfaceType[type]][lang],
+                    //typetranslated: list.SurfaceTranslation[list.SurfaceType[type]][lang],
+                    typetranslated: preferences.translate(list.SurfaceType[type]),
                     distance: 0,
                     ids: [],
                     segments: [],
@@ -1546,6 +1548,7 @@ var Ui = (function(w) {
                 });
             }
         }
+        console.log(typelist);
         var totaldistance = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteSummary')[1];
         totaldistance = util.getElementsByTagNameNS(results, namespaces.xls, 'TotalDistance')[0];
         var totaldistancevalue = totaldistance.getAttribute('value');

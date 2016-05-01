@@ -352,4 +352,38 @@ var lang_es = {
     'team_handball':'balonmano equipo',
     'tennis':'tenis',
     'volleyball':'voleibol',
+
+    //Way Types
+    'Other': 'Otro',
+    'StateRoad': 'Carretera estatal',
+    'Road': 'Carretera',
+    'Street': 'Calle',
+    'Path': 'Camino',
+    'Track': 'Pista',
+    'Cycleway': 'Carril bici',
+    'Footway': 'Senda',
+    'Steps':  'Pasos',
+    'Ferry': 'Transportar',
+    'Construction': 'Construcción',
+
+    //Surface Types
+    //'Other': 'Other',
+    'Paved': 'Pavimentado',
+    'Unpaved': 'Sin pavimentar',
+    'Asphalt': 'Asfalto',
+    'Concrete':'Hormigón',
+    'Cobblestone': 'Adoquines y mejor',
+    'Metal':  'Metal',
+    'Wood':'Madera',
+    'CompactedGravel': 'Grava compactada',
+    'FineGravel': 'Grava fina',
+    'Gravel': 'Grava',
+    'Dirt': 'Suciedad',
+    'Ground': 'Suelo',
+    'Ice': 'Hielo',
+    'Salt': 'Sal',
+    'Sand': 'Arena',
+    'Woodchips': 'Astillas de madera',
+    'Grass': 'Césped',
+    'GrassPaver': 'Pavimentadora hierba'
 };

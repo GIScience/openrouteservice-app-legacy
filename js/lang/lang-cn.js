@@ -357,4 +357,38 @@ var lang_cn = {
 	'team_handball' : '手球',
 	'tennis' : '網球',
 	'volleyball' : '排球',
+
+	//Way Types
+    'Other': '其他',
+    'StateRoad': '國道',
+    'Road': '路',
+    'Street': '街',
+    'Path': '路徑',
+    'Track': '跟踪',
+    'Cycleway': '自行車道',
+    'Footway': '人行道',
+    'Steps':  '腳步',
+    'Ferry': '渡船',
+    'Construction': '施工',
+
+    //Surface Types
+    //'Other': 'Other',
+    'Paved': '鋪就',
+    'Unpaved': '未鋪砌',
+    'Asphalt': '瀝青',
+    'Concrete':'具體',
+    'Cobblestone': '鵝卵石',
+    'Metal':  '金屬',
+    'Wood':'木',
+    'CompactedGravel': '密實的礫石',
+    'FineGravel': '細礫',
+    'Gravel': '碎石',
+    'Dirt': '污垢',
+    'Ground': '地面',
+    'Ice': '冰',
+    'Salt': '鹽',
+    'Sand': '砂',
+    'Woodchips': '木屑',
+    'Grass': '草',
+    'GrassPaver': '草攤舖機'
 };

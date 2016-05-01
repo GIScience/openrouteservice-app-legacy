@@ -809,7 +809,7 @@ var Controller = (function(w) {
             //      //if no response has been received after the defined interval, show a timeout error.
             //      ui.showServiceTimeoutPopup();  //TODO use for other service calls as well
             //  }
-            // }, SERVICE_TIMEOUT_INTERVAL);
+            // }, SERVICE_TIMEOUT_INTERVAL);            
         } else {
             //internal
             route.routePresent = false;
@@ -1414,6 +1414,14 @@ var Controller = (function(w) {
         compareBoundingBoxes(generateUrl(namespaces.services.tmc), true);
         // this listener is added here, otherwise tmc service will be requested several times during map init
         map.theMap.on('moveend', map.emitloadTMC);
+        //set Interval for ServerTimeOut control
+        setInterval(function(){
+            $('#serviceTimeout').children('label').empty();
+            $('#serviceTimeout').children('button').click(function(){
+                 $('#serviceTimeout').hide();
+            });
+            map.graphInfo();
+        }, 3000);
     }
     /**
      * apply selected site language, load dynamic menus, etc.
@@ -1499,6 +1507,7 @@ var Controller = (function(w) {
         ui.register('ui:saveUserPreferences', updateUserPreferences);
         ui.register('ui:generatePermalinkRequest', handlePermalinkRequest);
         ui.register('ui:clearFromGpx', handleRemoveTrack);
+        map.register('map:graphInfo');
         initializeOrs();
         loadDynamicUiData();
     }

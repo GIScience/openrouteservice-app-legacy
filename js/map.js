@@ -186,31 +186,6 @@ var Map = (function() {
                 self.theMap.closePopup(popup);
             };
         });
-        // load graph info when map loaded
-        var url;
-        if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
-            url = "cgi-bin/proxy.cgi?url=" + namespaces.services.routing + "?info";
-        } else {
-            url = namespaces.services.routing + "?info";
-        }
-        jQuery.ajax({
-            url: url,
-            dataType: 'json',
-            type: 'GET',
-            crossDomain: false,
-            success: updateInfoPanel,
-            error: updateInfoPanel
-        });
-
-        function updateInfoPanel(results) {
-            var infoPanel = document.getElementById("infoPanel");
-            var lastUpdate = new Date(results.profiles['profile 1'].import_date);
-            lastUpdate = lastUpdate.getUTCDate() + '.' + (parseInt(lastUpdate.getMonth()) + parseInt(1)) + '.';
-            var nextUpdate = results.next_update !== undefined ? results.next_update : '?';
-            nextUpdate = new Date(nextUpdate);
-            nextUpdate = nextUpdate.getUTCDate() + '.' + (parseInt(nextUpdate.getMonth()) + parseInt(1)) + '.';
-            infoPanel.innerHTML += '(' + '<b>Last/Next Update</b> ' + lastUpdate + '/' + nextUpdate + ')';
-        }
         // create a new contextMenu
         function createMapContextMenu() {
             var mapContextMenuContainer = new Element('div', {
@@ -285,7 +260,7 @@ var Map = (function() {
             self.layerControls.addOverlay(self.layerAvoid, 'Avoidable Regions');
         };
         //this.theMap.on('editable:drawing:end', addTooltip);
-        //this.theMap.on('editable:shape:deleted', shapeListener);
+        //this.theMap.on('editable:shape:deleted', shapeListener);813
         this.theMap.on('editable:drawing:commit', shapeListener);
         this.theMap.on('editable:vertex:deleted', shapeListener);
         this.theMap.on('editable:vertex:dragend', shapeListener);
@@ -522,6 +497,41 @@ var Map = (function() {
     /* *********************************************************************
      * GENERAL
      * *********************************************************************/
+    // load graph info when map loaded
+    function graphInfo(){
+        var url;
+        if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
+            url = "cgi-bin/proxy.cgi?url=" + namespaces.services.routing + "?info";
+        } else {
+            url = namespaces.services.routing + "?info";
+        }
+        jQuery.ajax({
+            url: url,
+            dataType: 'json',
+            type: 'GET',
+            crossDomain: false,
+            success: function(data){
+                //self.updateInfoPanel(data);
+                Ui.showServiceTimeoutPopup();
+            },
+            error: function(data){
+               // self.updateInfoPanel(data);
+                Ui.showServiceTimeoutPopup();
+            }
+        });
+    }
+
+    function updateInfoPanel(results) {
+        console.log(results);
+        var infoPanel = document.getElementById("infoPanel");
+        var lastUpdate = new Date(results.profiles['profile 1'].import_date);
+        lastUpdate = lastUpdate.getUTCDate() + '.' + (parseInt(lastUpdate.getMonth()) + parseInt(1)) + '.';
+        var nextUpdate = results.next_update !== undefined ? results.next_update : '?';
+        nextUpdate = new Date(nextUpdate);
+        nextUpdate = nextUpdate.getUTCDate() + '.' + (parseInt(nextUpdate.getMonth()) + parseInt(1)) + '.';
+        infoPanel.innerHTML += '(' + '<b>Last/Next Update</b> ' + lastUpdate + '/' + nextUpdate + ')';
+    }
+
     function updateSize() {
         this.theMap.invalidateSize();
     }
@@ -1325,5 +1335,7 @@ var Map = (function() {
     map.prototype.panMapOnEdges = panMapOnEdges;
     map.prototype.updateHeightprofiles = updateHeightprofiles;
     map.prototype.emitloadTMC = emitloadTMC;
+    map.prototype.graphInfo = graphInfo;
+    map.prototype.updateInfoPanel = updateInfoPanel;
     return map;
 }());

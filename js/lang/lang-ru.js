@@ -357,4 +357,38 @@ var lang_ru = {
     'team_handball': 'гандбол',
     'tennis': 'теннис',
     'volleyball': 'воллейбол',
+
+    //Way Types
+    'Other': 'Другие',
+    'StateRoad': 'государственная дорога',
+    'Road': 'Дорога',
+    'Street': 'улица',
+    'Path': 'дорожка',
+    'Track': 'трек',
+    'Cycleway': 'цикл путь',
+    'Footway': 'пешеходная дорожка',
+    'Steps':  'меры',
+    'Ferry': 'паром',
+    'Construction': 'строительство',
+
+    //Surface Types
+    //'Other': 'Other',
+    'Paved': 'мощеный',
+    'Unpaved': 'грунтовой',
+    'Asphalt': 'асфальт',
+    'Concrete':'бетон',
+    'Cobblestone': 'булыжник',
+    'Metal':  'металл',
+    'Wood':'дерево',
+    'CompactedGravel': 'уплотненный гравий',
+    'FineGravel': 'мелкий гравий',
+    'Gravel': 'гравий',
+    'Dirt': 'грязь',
+    'Ground': 'земля',
+    'Ice': 'лед',
+    'Salt': 'поваренная соль',
+    'Sand': 'песок',
+    'Woodchips': 'щепки',
+    'Grass': 'трава',
+    'GrassPaver': 'трава асфальтоукладчик'
 };
