@@ -1417,7 +1417,7 @@ var Controller = (function(w) {
         //set Interval for ServerTimeOut control
         setInterval(function(){
             map.graphInfo();
-        }, 3000);
+        }, 300000);
     }
     /**
      * apply selected site language, load dynamic menus, etc.
