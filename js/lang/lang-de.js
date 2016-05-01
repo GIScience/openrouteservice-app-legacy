@@ -35,6 +35,7 @@ var lang_de = {
 	'routeInstructions':  'Wegbeschreibung',
 	'routeLinkText' :  'Permalink zur aktuellen Route',
 	'permalinkButton' : 'Permalink',
+	'routeSurface': ' Wege und Oberflächeninformation:',
 	
 	//Geolocation
 	'geolocationNotification' : 'Der Routenplaner versucht Ihren Standort zu bestimmen. Wenn Sie die Anfrage nicht best&auml;tigen, werden Sie in K&uuml;rze weitergeleitet.',

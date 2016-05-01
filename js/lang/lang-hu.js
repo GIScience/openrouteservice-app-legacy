@@ -34,6 +34,7 @@ var lang_hu = {
     'routeInstructions':'&Uacute;tvonal utas&iacute;t&aacute;sokat',
     'routeLinkText':'Permalink aktu&aacute;lis &uacute;tvonal',
     'permalinkButton':'Permalink',
+	'routeSurface': 'Ut &eacute;s a felsz&iacute;ni inform&aacute;ci&oacute;k',
    
    //Geolocation
     'geolocationNotification':'Az &uacute;tvonal tervezo megpr&oacute;b&aacute;lja kider&iacute;teni a tart&oacute;zkod&aacute;si hely&eacute;t. Ha nem akarja hogy elfogadja a k&eacute;r&eacute;st akkor &aacute;tir&aacute;ny&iacute;tja egy pillanat. ',

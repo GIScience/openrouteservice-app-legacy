@@ -34,6 +34,7 @@ var lang_es = {
     'routeInstructions':'Instrucciones de Ruta',
     'routeLinkText':'Permalink for ruta actual',
     'permalinkButton':'Permalink',
+	'routeSurface': 'Carretera y superficie de informaci&oacute;n',
     
 	//Geolocation
     'geolocationNotification':'El planificador de enrutamiento intenta averiguar su ubicaci&oacute;n. Si usted no desea aceptar la solicitud se le redirige en un momento.',

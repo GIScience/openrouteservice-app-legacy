@@ -33,7 +33,8 @@ var lang_pl = {
 	'routeSummary' : 'Podsumowanie',
 	'routeInstructions' : 'Instrukcje do trasy',
 	'routeLinkText' : 'Trwa&#x0142;y odno&#x015B;nik do bie&#x017C;&#x0105;cej trasy',
-	'permalinkButton' : '',
+	'permalinkButton' : 'Permalink',
+	'routeSurface': 'Informacje drogowe i nawierzchnia',
 
 	//Geolocation
 	'geolocationNotification' : 'Serwis pr&oacute;buje znale&#x017A;&#x0107; twoje po&#x0142;o&#x017C;enie. Je&#x015B;li nie chcesz zaakceptowa&#x0107; tego zapytania, za chwil&#x0119; zostaniesz przekierowany.',
