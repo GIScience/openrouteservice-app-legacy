@@ -510,11 +510,11 @@ var Map = (function() {
             type: 'GET',
             crossDomain: false,
             success: function(data){
-                //self.updateInfoPanel(data);
+                self.updateInfoPanel(data);
                 Ui.showServiceTimeoutPopup();
             },
             error: function(data){
-               // self.updateInfoPanel(data);
+                self.updateInfoPanel(data);
                 Ui.showServiceTimeoutPopup();
             }
         });
