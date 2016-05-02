@@ -1008,7 +1008,6 @@ var Map = (function() {
                 routeStringCorners.push(routeLinePoints[i]);
                 ftIds.push(segmentBase._leaflet_id, routeCornerBase._leaflet_id);
             }
-			console.log(routeString);
             // this is a combined linestring of all sub segments with a border
             L.polyline(routeString, styles.routeOutline(self.theMap.getZoom())).addTo(self.layerRouteLines);
             L.polyline(routeString, styles.routePadding(self.theMap.getZoom())).addTo(self.layerRouteLines);
@@ -1028,7 +1027,7 @@ var Map = (function() {
      * zooms the map so that the whole route becomes visible (i.e. all features of the route line layer)
      */
     function zoomToRoute() {
-        this.theMap.fitBounds(this.layerRoutePoints.getBounds());
+        this.theMap.fitBounds(new L.featureGroup([this.layerRouteLines, this.layerRoutePoints]).getBounds());
     }
     /*
      * AVOID AREAS
