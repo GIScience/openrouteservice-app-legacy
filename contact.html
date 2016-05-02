@@ -362,8 +362,10 @@
 						<tr>
 						<td ><b>optional Parameters</b><br>(only Bicycle route profile)</td>
 						<td>
-						*surface = retrieve way surface information? e.g. 'surface=true' OR 'surface=false'
-						<br>*elevation = retrieve elevation information for each waypoint (in meters above NHN)? e.g. 'elevation=true' OR 'elevation=false'
+						*elevation = retrieve elevation information for each waypoint (in meters above NHN)? e.g. 'elevation=true' OR 'elevation=false'
+						<br>*surface = retrieve way surface information? e.g. 'surface=true' OR 'surface=false' -> requires 'instruction=true'
+						<br>Response surface list {Unknown = 0, Paved = 1, Unpaved = 2, Asphalt = 3, Concrete = 4, Cobblestone = 5, Metal = 6, Wood = 7, CompactedGravel = 8, FineGravel = 9, Gravel = 10, Dirt = 11, Ground = 12,  Ice = 13, Salt = 14, Sand = 15, Woodchips = 16, Grass = 17,  GrassPavel = 18 }
+						<br>Response waytype list {Unknown = 0, StateRoad = 1, Road = 2, Street = 3, Path = 4, Track = 5, Cycleway = 6, Footway = 7, Steps = 8, Ferry = 9, Construction = 10} 
 						</td>
 						</tr>
 						</tr>
@@ -371,10 +373,10 @@
 						<tr>
 						<td><b>Example URL</b></td>
 						<td>
-						<a href="http://openls.geog.uni-heidelberg.de/route?start=9.256506,49.240011&end=8.72083,49.7606&via=&lang=de&distunit=KM&routepref=Bicycle&weighting=Shortest&avoidAreas=&useTMC=false&noMotorways=false&noTollways=false&noUnpavedroads=false&noSteps=false&noFerries=false&instructions=false" target="_blank">Bicycle & Shortest path</a><br>
-						<a href="http://openls.geog.uni-heidelberg.de/route?start=9.256506,49.240011&end=8.72083,49.7606&via=&lang=de&distunit=KM&routepref=Bicycle&weighting=Shortest&avoidAreas=&useTMC=false&noMotorways=false&noTollways=false&noUnpavedroads=false&noSteps=false&noFerries=false&elevation=true&surface=true&instructions=false" target="_blank">Bicycle & Shortest path & Elevation (optional) & Surface information (optional)</a><br>
-						<a href="http://openls.geog.uni-heidelberg.de/route?start=9.256506,49.240011&end=8.72083,49.7606&via=&lang=de&distunit=KM&routepref=Car&weighting=Fastest&avoidAreas=&useTMC=false&noMotorways=false&noTollways=false&noUnpavedroads=false&noSteps=false&noFerries=false&instructions=false" target="_blank">Car & Fastest path</a><br>
-						<a href="http://openls.geog.uni-heidelberg.de/route?start=9.256506,49.240011&end=8.72083,49.7606&via=&lang=de&distunit=KM&routepref=HeavyVehicle&weighting=Fastest&noMotorways=false&noTollways=false&noUnpavedroads=false&noSteps=false&noFerries=false&instructions=false&value_length=15&value_height=4&value_weight=7&value_width=4&value_axleload=2&hazardous=true" target="_blank">Heavy Vehicle & Fastest path</a><br> 
+						<a href="http://openls.geog.uni-heidelberg.de/route?start=9.256506,49.240011&end=9.156506,49.230011&via=&lang=de&distunit=KM&routepref=Bicycle&weighting=Shortest&avoidAreas=&useTMC=false&noMotorways=false&noTollways=false&noUnpavedroads=false&noSteps=false&noFerries=false&instructions=false" target="_blank">Bicycle & Shortest path</a><br>
+						<a href="http://openls.geog.uni-heidelberg.de/route?start=9.256506,49.240011&end=9.156506,49.230011&via=&lang=de&distunit=KM&routepref=Bicycle&weighting=Shortest&avoidAreas=&useTMC=false&noMotorways=false&noTollways=false&noUnpavedroads=false&noSteps=false&noFerries=false&elevation=true&surface=true&instructions=true" target="_blank">Bicycle & Shortest path & Elevation (optional) & Surface information (optional)</a><br>
+						<a href="http://openls.geog.uni-heidelberg.de/route?start=9.256506,49.240011&end=9.156506,49.230011&via=&lang=de&distunit=KM&routepref=Car&weighting=Fastest&avoidAreas=&useTMC=false&noMotorways=false&noTollways=false&noUnpavedroads=false&noSteps=false&noFerries=false&instructions=false" target="_blank">Car & Fastest path</a><br>
+						<a href="http://openls.geog.uni-heidelberg.de/route?start=9.256506,49.240011&end=9.156506,49.230011&via=&lang=de&distunit=KM&routepref=HeavyVehicle&weighting=Fastest&noMotorways=false&noTollways=false&noUnpavedroads=false&noSteps=false&noFerries=false&instructions=false&value_length=15&value_height=4&value_weight=7&value_width=4&value_axleload=2&hazardous=true" target="_blank">Heavy Vehicle & Fastest path</a><br> 
 						</td>
 						</tr>
 					</table></p>
@@ -386,7 +388,7 @@
 						<td style="width:50%"><b>Parameters</b></td>
 						<td>*FreeFormAdress = free text search of adress
 						<br>*MaxResponse = maximum amount of search results
-						<br>*lang = language (optional only for free form adress search default is 'en', e.g.'de' (Deutsch), 'en' (English), etc., all supported languagse see <a href="https://github.com/GIScience/openrouteservice/blob/master/js/lang/RouteService.languages.xml" target="_blank">here</a>)
+						<br>*lang = language (optional only for free form adress search default is 'de', e.g.'de' (Deutsch), 'en' (English), etc., all supported languagse see <a href="https://github.com/GIScience/openrouteservice/blob/master/js/lang/RouteService.languages.xml" target="_blank">here</a>)
 						<br>*lon = longitude 
 						<br>*lat = latitude
 						</td>
