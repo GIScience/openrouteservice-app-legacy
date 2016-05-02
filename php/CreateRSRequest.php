@@ -33,10 +33,10 @@ function createRequest($startcoord, $endcoord, $viaPoints_XML, $language, $dista
 						<xls:RoutePreference>$routepref</xls:RoutePreference>
 							<xls:ExtendedRoutePreference>
 									<xls:WeightingMethod>$weighting</xls:WeightingMethod>
+									$sur
+									$ele
 									$hgv
 									$haz
-									<xls:SurfaceInformation>true</xls:SurfaceInformation>
-									<xls:ElevationInformation>true</xls:ElevationInformation>
 							</xls:ExtendedRoutePreference>
 								<xls:WayPointList>
 								<xls:StartPoint>
