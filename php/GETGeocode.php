@@ -29,8 +29,13 @@
 	if(isset($_GET["FreeFormAdress"]) && isset($_GET["MaxResponse"])){
 		$freeform = $_GET["FreeFormAdress"];
 		$maxresponse = $_GET["MaxResponse"];
+		$lang = $_GET["lang"];
+		
+		if (isset($_GET["lang"])==''){
+		$lang='de';
+		}
 
-		$request = createGeocodeRequest($freeform, $maxresponse);
+		$request = createGeocodeRequest($freeform, $maxresponse, $lang);
 
 		//*** Sende Request an Web Service ***
 		
