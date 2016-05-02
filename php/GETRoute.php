@@ -89,6 +89,15 @@
 			}
 		}
 		
+		if(isset($_GET["maxspeed"])){
+		$speed = $_GET["maxspeed"];
+			if ($speed > 0){
+			$maxspeed=$maxspeed.'<xls:MaxSpeed>';
+			$maxspeed=$maxspeed.+$speed;
+			$maxspeed=$maxspeed.'</xls:MaxSpeed>';
+			}
+		}
+		
 		$avoidFeatures = '';
 		if($noMotorways == 'true'){
 			$avoidFeatures = '<xls:AvoidFeature>Highway</xls:AvoidFeature>';
@@ -134,7 +143,7 @@
 		///////////////////////////////////////////////////
 		//*** Sende Request an Web Service ***
 		$request = createRequest($startcoordinate, $endcoordinate, $viaPoints_xml, $language, $distanceunit, $routepref, $weighting,
-				$avoidAreas, $avoidFeatures, $hgv, $haz, $sur, $ele, $instructions);
+				$avoidAreas, $avoidFeatures, $hgv, $haz, $sur, $ele, $maxspeed, $instructions);
 
 		//Server
 		$http_response = post('openls.geog.uni-heidelberg.de', '/osm/routing', $request, 20, 80);
