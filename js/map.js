@@ -497,7 +497,7 @@ var Map = (function() {
      * GENERAL
      * *********************************************************************/
     // load graph info when map loaded
-    function graphInfo(){
+    function graphInfo() {
         var url;
         if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
             url = "cgi-bin/proxy.cgi?url=" + namespaces.services.routing + "?info";
@@ -506,14 +506,13 @@ var Map = (function() {
         }
         jQuery.ajax({
             url: url,
-            dataType: 'json',
             type: 'GET',
             crossDomain: false,
-            success: function(data){
+            success: function(data) {
                 self.updateInfoPanel(data);
                 Ui.showServiceTimeoutPopup(false);
             },
-            error: function(data){
+            error: function(data) {
                 Ui.showServiceTimeoutPopup(true);
             }
         });
@@ -521,11 +520,15 @@ var Map = (function() {
 
     function updateInfoPanel(results) {
         var infoPanel = document.getElementById("infoPanel");
-        var lastUpdate = new Date(results.profiles['profile 1'].import_date);
-        lastUpdate = lastUpdate.getUTCDate() + '.' + (parseInt(lastUpdate.getMonth()) + parseInt(1)) + '.';
+        var lastUpdate = results.profiles !== undefined ? new Date(results.profiles['profile 1'].import_date) : '?';
+        if (lastUpdate !== '?') {
+            lastUpdate = lastUpdate.getUTCDate() + '.' + (parseInt(lastUpdate.getMonth()) + parseInt(1)) + '.';
+        }
         var nextUpdate = results.next_update !== undefined ? results.next_update : '?';
-        nextUpdate = new Date(nextUpdate);
-        nextUpdate = nextUpdate.getUTCDate() + '.' + (parseInt(nextUpdate.getMonth()) + parseInt(1)) + '.';
+        if (nextUpdate !== '?') {
+            nextUpdate = new Date(nextUpdate);
+            nextUpdate = nextUpdate.getUTCDate() + '.' + (parseInt(nextUpdate.getMonth()) + parseInt(1)) + '.';
+        }
         infoPanel.innerHTML += '(' + '<b>Last/Next Update</b> ' + lastUpdate + '/' + nextUpdate + ')';
     }
 

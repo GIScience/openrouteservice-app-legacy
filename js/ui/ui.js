@@ -107,13 +107,13 @@ var Ui = (function(w) {
     }
 
     function showServiceTimeoutPopup(arg) {
-        if (arg == true) {
+        if (arg === true) {
             $('#serviceTimeout').children('label').empty();
             var label = new Element('label');
             label.insert(preferences.translate('serverError'));
             $('#serviceTimeout').append(label);
             $('#serviceTimeout').show();
-        } else if (arg == false) {
+        } else if (arg === false) {
             $('#serviceTimeout').hide();
         }
     }

@@ -1415,6 +1415,7 @@ var Controller = (function(w) {
         // this listener is added here, otherwise tmc service will be requested several times during map init
         map.theMap.on('moveend', map.emitloadTMC);
         //set Interval for ServerTimeOut control
+        map.graphInfo();
         setInterval(function(){
             map.graphInfo();
         }, 300000);
