@@ -529,6 +529,7 @@ var Map = (function() {
             nextUpdate = new Date(nextUpdate);
             nextUpdate = nextUpdate.getUTCDate() + '.' + (parseInt(nextUpdate.getMonth()) + parseInt(1)) + '.';
         }
+        infoPanel.innerHTML = '';
         infoPanel.innerHTML += '(' + '<b>Last/Next Update</b> ' + lastUpdate + '/' + nextUpdate + ')';
     }
 
