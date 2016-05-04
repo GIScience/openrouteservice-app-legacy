@@ -1547,7 +1547,6 @@ var Ui = (function(w) {
                 });
             }
         }
-        console.log(typelist);
         var totaldistance = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteSummary')[1];
         totaldistance = util.getElementsByTagNameNS(results, namespaces.xls, 'TotalDistance')[0];
         var totaldistancevalue = totaldistance.getAttribute('value');

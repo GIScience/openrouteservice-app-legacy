@@ -290,7 +290,7 @@ service
 }
 
 .directions-container {
-    padding: 13px 0;
+    padding: 8px 0;
 }
 
 .directions-text {
@@ -367,7 +367,7 @@ service
 }
 
 .directions-mode-distance {
-    top: 8px;
+    top: 2px;
     right: 15px;
     padding-left: .5em;
     padding-right: .5em;
@@ -391,7 +391,7 @@ service
 
 .directions-mode-line {
     border-bottom: 1px solid #e6e6e6;
-    padding-top: 16px;
+    padding-top: 8px;
     margin: 0 2em 0 0;
 }
 
