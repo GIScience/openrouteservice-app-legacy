@@ -275,6 +275,12 @@
     background-position: 8px 3px;
 }
 
+.waypoint-icon.roundtrip {
+    background: url(../img/marker-roundtrip.png) no-repeat;
+    background-size: 16px;
+    background-position: 8px 3px;
+}
+
 .waypoint-icon.unset {
     background: url(../img/marker.png) no-repeat;
     background-size: 16px;

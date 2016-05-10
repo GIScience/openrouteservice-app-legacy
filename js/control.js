@@ -110,6 +110,7 @@ var Controller = (function(w) {
             searchIds = searchIds.split(' ');
         }
         var type = selectWaypointType(wpIndex);
+		if($('#roundtrip')[0].checked && (type == Waypoint.type.START || type == Waypoint.type.END)) type = Waypoint.type.ROUNDTRIP;
         var waypointResultId = map.addWaypointMarker(wpIndex, featureId, type);
         map.clearMarkers(map.layerSearch, searchIds);
         waypoint.setWaypoint(wpIndex, true);
@@ -155,8 +156,9 @@ var Controller = (function(w) {
         //index of the waypoint to set (start at the beginning, end at the end, via in the middle)
         var wpIndex = 0;
 		var endAsVia = false;
+		var roundtrip = $('#roundtrip')[0].checked;
 		//if END and roundtrip==true, change to VIA instead
-		if (wpType == Waypoint.type.END && $('#roundtrip')[0].checked && !forceENDType){ 
+		if (wpType == Waypoint.type.END && roundtrip && !forceENDType){ 
 			wpType = Waypoint.type.VIA;
 			endAsVia = true;			
 		}
@@ -183,14 +185,15 @@ var Controller = (function(w) {
             map.clearMarkers(map.layerRoutePoints, [featureId]);
         }
         //add the new marker
-        var newFeatureId = map.addWaypointAtPos(pos, wpIndex, wpType);
+		// if(roundtrip && wpType == Waypoint.type.VIA) wpType = Waypoint.type.ROUNDTRIP;
+        var newFeatureId = map.addWaypointAtPos(pos, wpIndex, roundtrip && (wpType == Waypoint.type.START || wpType == Waypoint.type.END) ? Waypoint.type.ROUNDTRIP : wpType);
         //add lat lon to input field 
         waypoint.setWaypoint(wpIndex, true);
         var position = map.convertFeatureIdToPositionString(newFeatureId, map.layerRoutePoints);
         var newIndex = ui.addWaypointResultByRightclick(wpType, wpIndex, position, true);
         ui.setWaypointFeatureId(newIndex, newFeatureId, position, 'layerRoutePoints');
 		//If roundtrip: relocate the last waypoint as well
-		if (wpType == Waypoint.type.START) handleSpecifyRoundtrip($('#roundtrip')[0].checked, false);
+		if (wpType == Waypoint.type.START) handleSpecifyRoundtrip(roundtrip, false);
         if (!noRouteRequest) {
             handleWaypointChanged();
         }
@@ -473,6 +476,9 @@ var Controller = (function(w) {
 			var coordinates;
 			var numWaypoints = $('.waypoint').length - 1;
 			if($('#0').hasClass('start')){
+				var startMarkerId = Ui.getFeatureIdOfWaypoint(0);
+				var startMarker = map.layerRoutePoints.getLayer(startMarkerId);
+				startMarker.remove();
 				//If the last waypoint is an end point, copy it as a via point so that it does not vanish when adding an end point
 				if($('#' + (numWaypoints - 1)).hasClass('end') && copy){
 					//if the last and first waypoint are not the same
@@ -482,7 +488,14 @@ var Controller = (function(w) {
 					}
 				}
 				coordinates = rP[0].split(' ');
-				handleAddWaypointByRightclick({pos: {lat: coordinates[0], lng: coordinates[1]}, type: 'end'}, false, false, true);
+				var coordinatesEnd = rP[numWaypoints - 1].split(' ');
+				
+				//Remove the original start
+				eventFire($('#0').children(".removeWaypoint")[0], 'click');
+				eventFire($('#' + (numWaypoints - 1)).children(".removeWaypoint")[0], 'click');
+				//add new waypoints for roundtrip start and end
+				handleAddWaypointByRightclick({pos: {lat: coordinates[0], lng: coordinates[1]}, type: 'roundtrip'}, false, false, true);
+				handleAddWaypointByRightclick({pos: {lat: coordinatesEnd[0], lng: coordinatesEnd[1]}, type: 'roundtrip'}, false, false, true);
 			}
 		}
 		
@@ -510,6 +523,59 @@ var Controller = (function(w) {
 			}
 		}
     }
+    // function handleSpecifyRoundtrip(newStatus, copy = true) {
+        // if(newStatus == true){
+			// var rP = ui.getRoutePoints();
+			// var coordinates;
+			// var numWaypoints = $('.waypoint').length - 1;
+			// if($('#0').hasClass('start')){
+				// var startMarkerId = Ui.getFeatureIdOfWaypoint(0);
+				// var startMarker = map.layerRoutePoints.getLayer(startMarkerId);
+				// startMarker.remove();
+				// If the last waypoint is an end point, copy it as a via point so that it does not vanish when adding an end point
+				// if($('#' + (numWaypoints - 1)).hasClass('end') && copy){
+					// if the last and first waypoint are not the same
+					// coordinates = rP[numWaypoints - 1].split(' ');
+					// if (coordinates[0] != rP[0].split(' ')[0] && coordinates[1] != rP[0].split(' ')[1]){
+						// handleAddWaypointByRightclick({pos: {lat: coordinates[0], lng: coordinates[1]}, type: 'via'}, false, false);
+					// }
+				// }
+				// If the first waypoint is a start point, remove it
+				// if($('#0').hasClass('start') && copy){
+					// eventFire($('#0').children(".removeWaypoint")[0], 'click');
+				// }
+				// add new waypoints for roundtrip start and end
+				// coordinates = rP[0].split(' ');
+				// var coordinatesEnd = rP[numWaypoints - 1].split(' ');
+				// handleAddWaypointByRightclick({pos: {lat: coordinates[0], lng: coordinates[1]}, type: 'roundtrip'}, false, false, true);
+				// handleAddWaypointByRightclick({pos: {lat: coordinatesEnd[0], lng: coordinatesEnd[1]}, type: 'roundtrip'}, false, false, true);
+			// }
+		// }
+		
+		// remove the last waypoint if it is the same as the first
+		// if(newStatus == false){
+			// var rP = ui.getRoutePoints();
+			// var coordinates;
+			// var numWaypoints = $('.waypoint').length - 1;
+			// if($('#' + (numWaypoints - 1)).hasClass('end')){
+			
+				// coordinates = rP[numWaypoints - 1].split(' ');
+				// if (coordinates[0] == rP[0].split(' ')[0] && coordinates[1] == rP[0].split(' ')[1]){
+					// eventFire($('#' + (numWaypoints - 1)).children(".removeWaypoint")[0], 'click');
+				// }
+			// }
+		// }
+		// function eventFire(el, etype){
+			// if (el.fireEvent) {
+				// el.fireEvent('on' + etype);
+			// }
+			// else {
+				// var evObj = document.createEvent('Events');
+				// evObj.initEvent(etype, true, false);
+				// el.dispatchEvent(evObj);
+			// }
+		// }
+    // }
     /* *********************************************************************
      * GEOLOCATION
      * *********************************************************************/

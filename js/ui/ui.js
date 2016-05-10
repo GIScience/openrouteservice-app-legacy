@@ -810,13 +810,16 @@ var Ui = (function(w) {
         el.removeClass('start');
         el.removeClass('via');
         el.removeClass('end');
+		el.removeClass('roundtrip');
         el.addClass(type);
         el = $('#' + wpIndex).children('.waypoint-icon');
+		if($('#roundtrip')[0].checked && (type == 'start' || type == 'end')) type = 'roundtrip';
         // var el = $('#' + wpIndex);
         el.removeClass('unset');
         el.removeClass('start');
         el.removeClass('via');
         el.removeClass('end');
+        el.removeClass('roundtrip');
         el.addClass(type);
     }
     /**
@@ -3417,6 +3420,11 @@ Ui.markerIcons = {
     end: L.MakiMarkers.icon({
         icon: "circle-stroked",
         color: "#ff714d",
+        size: "m"
+    }),
+	roundtrip: L.MakiMarkers.icon({
+        icon: "circle-stroked",
+        color: "#1500CC",
         size: "m"
     }),
     unset: L.MakiMarkers.icon({

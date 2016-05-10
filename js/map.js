@@ -721,9 +721,22 @@ var Map = (function() {
                 icon_emph: Ui.markerIcons.emph
             });
             newMarker.addTo(this.layerRoutePoints);
-            newMarker.on('dragend', function(e) {
-                self.emit('map:waypointMoved', e.target);
-            });
+			if(type == Waypoint.type.ROUNDTRIP){
+				newMarker.on('dragend', function(e) {
+					self.emit('map:waypointMoved', e.target);
+					console.log(e.target);
+					console.log(Ui.getFeatureIdOfWaypoint(0));
+					var startMarkerId = Ui.getFeatureIdOfWaypoint(0);
+					var startMarker = self.layerRoutePoints.getLayer(startMarkerId);
+					startMarker.setLatLng(e.target.getLatLng());
+					self.emit('map:waypointMoved', startMarker);
+					});
+			}
+			else{
+				newMarker.on('dragend', function(e) {
+					self.emit('map:waypointMoved', e.target);
+				});
+			}
             newMarker.on('drag', function(e) {
                 panMapOnEdges(e);
             });
@@ -744,9 +757,22 @@ var Map = (function() {
             icon_emph: Ui.markerIcons.emph
         });
         newMarker.addTo(this.layerRoutePoints);
-        newMarker.on('dragend', function(e) {
-            self.emit('map:waypointMoved', e.target);
-        });
+		if(type == Waypoint.type.ROUNDTRIP){
+			newMarker.on('dragend', function(e) {
+				self.emit('map:waypointMoved', e.target);
+				console.log(e.target);
+				console.log(Ui.getFeatureIdOfWaypoint(0));
+				var startMarkerId = Ui.getFeatureIdOfWaypoint(0);
+				var startMarker = self.layerRoutePoints.getLayer(startMarkerId);
+				startMarker.setLatLng(e.target.getLatLng());
+				self.emit('map:waypointMoved', startMarker);
+			});
+		}
+		else{
+			newMarker.on('dragend', function(e) {
+				self.emit('map:waypointMoved', e.target);
+			});
+		}
         newMarker.on('drag', function(e) {
             panMapOnEdges(e);
         });

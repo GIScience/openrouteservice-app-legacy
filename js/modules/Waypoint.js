@@ -254,5 +254,6 @@ Waypoint.type = {
     START: 'start',
     VIA: 'via',
     END: 'end',
+	ROUNDTRIP: 'roundtrip',
     UNSET: 'unset'
 };
