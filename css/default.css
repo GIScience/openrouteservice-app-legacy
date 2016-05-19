@@ -332,26 +332,22 @@ service
 
 .directions-summary-info-container {
     height: 20px;
-    padding: 5px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid #e6e6e6;
+    margin-bottom: 15px;
+
 }
 
 .directions-summary-info {
     float: left;
     font-size: 20px;
-    color: #000000;
+    color: #444;
     font-weight: bold;
     margin-right: 15px;
-}
-
-.directions-summary-info-line {
-    border-bottom: 1px solid #e6e6e6;
-    margin-top: 8px;
-    margin-bottom: 8px;
+    font-size: 16px;
 }
 
 .directions-summary-info-digit {
-    font-size: 18px;
-    color: #000000;
     display: inline;
     padding-right: 0px;
 }
@@ -359,8 +355,6 @@ service
 .directions-summary-info-units {
     margin-right: 5px; 
     display: inline;
-    font-size: 14px;
-    color: #777777;
 }
 
 .directions-img {

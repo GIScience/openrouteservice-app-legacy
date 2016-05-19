@@ -1411,8 +1411,14 @@ var Ui = (function(w) {
             }
         }
         
+        // empty old summary
+        
+        $('.directions-summary-info-container').remove();
+
         var routeSummary = [totalTime, distArr, actualdistArr];
         var pointInfo, unit, time, distanceInfo;
+
+
 
         // time summary array
         var summaryContainer = new Element('div', {
@@ -1420,7 +1426,7 @@ var Ui = (function(w) {
         });
         pointInfo = new Element('span', {
             'class': 'directions-summary-info'
-        }).update('<i class="icon-time" style="margin: 7px 0 0 0;"></i>' + ' ');
+        }).update('<i class="icon-time" style="margin: 2px 0 0 0;"></i>' + ' ');
 
         var len;
         if (routeSummary[0].length > 2) {
@@ -1443,7 +1449,7 @@ var Ui = (function(w) {
         // distance summary
         pointInfo = new Element('span', {
             'class': 'directions-summary-info'
-        }).update('<i class="icon-resize-horizontal" style="margin: 5px 0 0 0;"></i>' + ' ');
+        }).update('<i class="icon-resize-horizontal" style="margin: 2px 0 0 0;"></i>' + ' ');
 
         distanceInfo = new Element('div', {
             'class': 'directions-summary-info-digit'
@@ -1455,12 +1461,9 @@ var Ui = (function(w) {
         pointInfo.appendChild(unit);
 
         summaryContainer.appendChild(pointInfo);
-        var directionsBorder = new Element('div', {
-            'class': 'directions-summary-info-line'
-        });
+      
         var container = $('#routeInstructionsContainer').get(0);
 
-        container.insertBefore(directionsBorder, container.firstChild);
         container.insertBefore(summaryContainer, container.firstChild);
 
 
