@@ -1111,25 +1111,16 @@ button.weightOptions {
     margin-top: 5px;
 }
 
-#resetRoute {
+.controlButton {
+    float: right;
     height: 25px;
-    position: absolute;
-    right: 5px;
-    bottom: 4px;
+    margin-right: 5px;
 }
 
-#orderRoute {
-    height: 25px;
-    position: absolute;
-    right: 45px;
-    bottom: 4px;
-}
-
-#zoomToRouteButton {
-    height: 25px;
-    position: absolute;
-    right: 85px;
-    bottom: 4px;
+.panelTransparent {
+    background-color: transparent;
+    border: transparent;
+    box-shadow: none;
 }
 
 #hazardOptions {

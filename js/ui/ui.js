@@ -2491,6 +2491,15 @@ var Ui = (function(w) {
             jQuery('#maxSpeedInput').val(maxspeed);
         }
     }
+    /** 
+     * set viaoptimize
+     * @params viaoptimize: is either true or false
+     */
+    function setOptimizeVia(bool) {
+        if (bool == 'true' ||  bool === true) {
+            $('#viaOptimize').prop('checked', true);
+        }
+    }
     /**
      * when the user wants to switch between route options
      * @param activeRouteOption: the active route option, i.e. one of car,bicycle,pedestrian,wheelchair
@@ -2519,6 +2528,7 @@ var Ui = (function(w) {
      * @param e: the event
      */
     function handleOptionsChanged(e) {
+        var boolVar;
         e = e || window.event;
         var target = e.target || e.srcElement;
         var itemId = target.id;
@@ -2529,9 +2539,9 @@ var Ui = (function(w) {
             if (itemId === list.routeAvoidables[0]) {
                 //if the avoidable is set, remove it (and vice versa)
                 if (permaInfo[preferences.avoidHighwayIdx] == "true" || permaInfo[preferences.avoidHighwayIdx] == true) {
-                    var boolVar = false;
+                    boolVar = false;
                 } else {
-                    var boolVar = true;
+                    boolVar = true;
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidHighwayIdx,
@@ -2541,9 +2551,9 @@ var Ui = (function(w) {
             if (itemId === list.routeAvoidables[1]) {
                 //if the avoidable is set, remove it (and vice versa)
                 if (permaInfo[preferences.avoidTollwayIdx] == "true" || permaInfo[preferences.avoidTollwayIdx] == true) {
-                    var boolVar = false;
+                    boolVar = false;
                 } else {
-                    var boolVar = true;
+                    boolVar = true;
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidTollwayIdx,
@@ -2553,9 +2563,9 @@ var Ui = (function(w) {
             if (itemId === list.routeAvoidables[2]) {
                 //if the avoidable is set, remove it (and vice versa)
                 if (permaInfo[preferences.avoidUnpavedIdx] == "true" || permaInfo[preferences.avoidUnpavedIdx] == true) {
-                    var boolVar = false;
+                    boolVar = false;
                 } else {
-                    var boolVar = true;
+                    boolVar = true;
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidUnpavedIdx,
@@ -2564,9 +2574,9 @@ var Ui = (function(w) {
             }
             if (itemId === list.routeAvoidables[3]) {
                 if (permaInfo[preferences.avoidFerryIdx] == "true" || permaInfo[preferences.avoidFerryIdx] == true) {
-                    var boolVar = false;
+                    boolVar = false;
                 } else {
-                    var boolVar = true;
+                    boolVar = true;
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidFerryIdx,
@@ -2574,9 +2584,9 @@ var Ui = (function(w) {
                 });
             } else if (itemId === list.routeAvoidables[4]) {
                 if (permaInfo[preferences.avoidStepsIdx] == "true" || permaInfo[preferences.avoidStepsIdx] == true) {
-                    var boolVar = false;
+                    boolVar = false;
                 } else {
-                    var boolVar = true;
+                    boolVar = true;
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidStepsIdx,
@@ -2584,9 +2594,9 @@ var Ui = (function(w) {
                 });
             } else if (itemId === list.routeAvoidables[5]) {
                 if (permaInfo[preferences.avoidFordsIdx] == "true" || permaInfo[preferences.avoidFordsIdx] == true) {
-                    var boolVar = false;
+                    boolVar = false;
                 } else {
-                    var boolVar = true;
+                    boolVar = true;
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidFordsIdx,
@@ -2594,9 +2604,9 @@ var Ui = (function(w) {
                 });
             } else if (itemId === list.routeAvoidables[6]) {
                 if (permaInfo[preferences.avoidPavedIdx] == "true" || permaInfo[preferences.avoidPavedIdx] == true) {
-                    var boolVar = false;
+                    boolVar = false;
                 } else {
-                    var boolVar = true;
+                    boolVar = true;
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidPavedIdx,
@@ -2604,9 +2614,9 @@ var Ui = (function(w) {
                 });
             } else if (itemId === list.routeAvoidables[7]) {
                 if (permaInfo[preferences.avoidTunnelIdx] == "true" || permaInfo[preferences.avoidTunnelIdx] == true) {
-                    var boolVar = false;
+                    boolVar = false;
                 } else {
-                    var boolVar = true;
+                    boolVar = true;
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidTunnelIdx,
@@ -2706,14 +2716,26 @@ var Ui = (function(w) {
             }
         } else if (itemId == 'Hazardous') {
             if (permaInfo[preferences.hazardousIdx] == "hazmat") {
-                var boolVar = null;
+                boolVar = null;
             } else {
-                var boolVar = "hazmat";
+                boolVar = "hazmat";
             }
             theInterface.emit('ui:prefsChanged', {
                 key: preferences.hazardousIdx,
                 value: boolVar
             });
+        } else if (itemId == 'viaOptimize') {
+            if (permaInfo[preferences.optimizeViaIdx] == "true" || permaInfo[preferences.optimizeViaIdx] === true) {
+                boolVar = false;
+            } else {
+                boolVar = true;
+            }
+            console.log(boolVar)
+            theInterface.emit('ui:prefsChanged', {
+                key: preferences.optimizeViaIdx,
+                value: boolVar
+            });
+            console.log(itemId)
         } else if (itemId != 'maxSpeedInput') {
             // update route type if not maxspeedinput updated
             theInterface.emit('ui:prefsChanged', {
@@ -2722,7 +2744,11 @@ var Ui = (function(w) {
             });
         }
         // update route except when user has updated maxspeed
-        if (itemId != "maxSpeedInput") theInterface.emit('ui:routingParamsChanged');
+        if ($.inArray(itemId, list.dontUpdateRoute) < 0) {
+            console.log('update')
+            theInterface.emit('ui:routingParamsChanged');
+        }
+        //if (itemId != "maxSpeedInput") theInterface.emit('ui:routingParamsChanged');
     }
     /** 
      * The user inserts maximum speed into the form when route profile fastest is selected
@@ -3274,6 +3300,7 @@ var Ui = (function(w) {
         $('#heavyvehicle').click(switchRouteOptionsPane);
         $('#wheelchair').click(switchRouteOptionsPane);
         $('.routeOptions').change(handleOptionsChanged);
+        $('#viaOptimize').click(handleOptionsChanged);
         //permalink
         $('#infoPermalink').click(handleOpenPermaOptions);
         $('#open').click(handleGeneratePerma);
@@ -3308,6 +3335,10 @@ var Ui = (function(w) {
         $('#serviceTimeout').children('button').click(function() {
             $('#serviceTimeout').hide();
         });
+        // tooltips
+        $('#orderRoute').tooltip();
+        $('#resetRoute').tooltip();
+        $('#zoomToRouteButton').tooltip();
     }
     Ui.prototype = new EventEmitter();
     Ui.prototype.constructor = Ui;
@@ -3364,6 +3395,7 @@ var Ui = (function(w) {
     Ui.prototype.setTruckParameters = setTruckParameters;
     Ui.prototype.setHazardousParameter = setHazardousParameter;
     Ui.prototype.setMaxspeedParameter = setMaxspeedParameter;
+    Ui.prototype.setOptimizeVia = setOptimizeVia;
     Ui.prototype.handleGpxFiles = handleGpxFiles;
     Ui.prototype.handleResetRoute = handleResetRoute;
     Ui.prototype.handleMaxspeed = handleMaxspeed;

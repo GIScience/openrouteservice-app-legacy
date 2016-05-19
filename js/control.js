@@ -1309,6 +1309,7 @@ var Controller = (function(w) {
         var hazardous = getVars[preferences.getPrefName(preferences.hazardousIdx)];
         var fords = getVars[preferences.getPrefName(preferences.avoidFordsIdx)];
         var maxspeed = getVars[preferences.getPrefName(preferences.maxspeedIdx)];
+        var viaoptimize = getVars[preferences.getPrefName(preferences.optimizeViaIdx)];
         // either layer, pos or zoom is read, as soon as one is read the eventlistener on map
         // updates the other two and overwrites the cookie info
         pos = preferences.loadMapPosition(pos);
@@ -1343,6 +1344,8 @@ var Controller = (function(w) {
         ui.setRouteWeight(routeWeight);
         maxspeed = preferences.loadMaxspeed(maxspeed);
         ui.setMaxspeedParameter(maxspeed);
+        viaoptimize = preferences.loadViaOptimize(viaoptimize);
+        ui.setOptimizeVia(viaoptimize);
         var avSettings = preferences.loadAvoidables(motorways, tollways, unpaved, ferry, steps, fords, paved, tunnels);
         motorways = avSettings[0];
         tollways = avSettings[1];
