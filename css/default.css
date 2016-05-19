@@ -331,33 +331,35 @@ service
 }
 
 .directions-summary-info-container {
-    width: 65%;
-    margin: 0 auto;
-    padding: 5px 0 15px 0;
+    height: 20px;
+    padding: 5px;
 }
 
-.directions-summary-info-time {
+.directions-summary-info {
     float: left;
     font-size: 20px;
     color: #000000;
     font-weight: bold;
-    display: inline;
+    margin-right: 15px;
 }
 
-.directions-summary-info-distance {
-    float: right;
-    font-size: 20px;
+.directions-summary-info-line {
+    border-bottom: 1px solid #e6e6e6;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.directions-summary-info-digit {
+    font-size: 18px;
     color: #000000;
-    font-weight: bold;
     display: inline;
+    padding-right: 0px;
 }
 
 .directions-summary-info-units {
-    /*margin: 0 auto;
-    width: 50%;*/
+    margin-right: 5px; 
     display: inline;
     font-size: 14px;
-    font-weight: normal;
     color: #777777;
 }
 

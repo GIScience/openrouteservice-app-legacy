@@ -1364,72 +1364,106 @@ var Ui = (function(w) {
     /**
      * displays general route information as a route summary
      * @param results: response of the service containing the route summary information
-     * @param routePref: route type selected: car, bicycle etc..
      */
-    function updateRouteSummary(results, routePref) {
-        if (!results) {
-            //hide container
-            $('#routeSummaryContainer').get(0).hide();
-        } else {
-            //parse results and show them in the container
-            var summaryElement = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteSummary')[0];
-            var totalTime = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'TotalTime')[0];
-            totalTime = totalTime.textContent || totalTime.text;
-            //<period>PT5Y2M10D15H18M43S</period>
+    function updateRouteSummary(results) {
+        var yardsUnit, totalTimeArr = [];
+        var summaryElement = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteSummary')[0];
+        var totalTime = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'TotalTime')[0];
+        totalTime = totalTime.textContent || totalTime.text;
+        console.log(totalTime)
+            //<period>PT 5Y 2M 10D 15H 18M 43S</period>
             //The example above indicates a period of five years, two months, 10 days, 15 hours, a8 minutes and 43 seconds
-            totalTime = totalTime.replace('P', '');
-            totalTime = totalTime.replace('T', '');
-            totalTime = totalTime.replace('D', ' ' + preferences.translate('days') + ' ');
-            totalTime = totalTime.replace('H', ' ' + preferences.translate('hours') + ' ');
-            totalTime = totalTime.replace('M', ' ' + preferences.translate('minutes') + ' ');
-            totalTime = totalTime.slice(0, -1);
-            totalTime = totalTime + (' ' + preferences.translate('seconds') + ' ');
-            //totalTime = totalTime.replace('S', ' ' + preferences.translate('seconds') + ' ');
-            // total distance
-            var distance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'TotalDistance')[0];
-            var distanceValue = distance.getAttribute('value');
-            var distanceUnit = distance.getAttribute('uom');
-            var distArr = [];
+        totalTime = totalTime.replace('P', '');
+        totalTime = totalTime.replace('T', '');
+        totalTime = totalTime.replace('D', preferences.translate('days'));
+        totalTime = totalTime.replace('H', preferences.translate('hours'));
+        totalTime = totalTime.replace('M', preferences.translate('minutes'));
+        totalTime = totalTime.replace('S', preferences.translate('seconds'));
+        totalTime = totalTime.match(/(\d+|[^\d]+)/g).join(',');
+        totalTime = totalTime.split(',');
+        console.log(totalTime);
+        var distance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'TotalDistance')[0];
+        var distanceValue = distance.getAttribute('value');
+        var distanceUnit = distance.getAttribute('uom');
+        var distArr = [];
+        if (preferences.distanceUnit == list.distanceUnitsPreferences[0]) {
+            //use mixture of km and m
+            distArr = util.convertDistanceFormat(distanceValue, preferences.distanceUnit);
+        } else {
+            //use mixture of miles and yards
+            yardsUnit = 'yd';
+            var distMeasure = util.convertDistToDist(distanceValue, distanceUnit, yardsUnit);
+            distArr = util.convertDistanceFormat(distMeasure, preferences.distanceUnit);
+        }
+        var actualdistArr = [];
+        var actualDistance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'ActualDistance')[0];
+        if (actualDistance !== undefined) {
+            var actualDistanceValue = actualDistance.getAttribute('value');
+            var actualDistanceUnit = actualDistance.getAttribute('uom');
             if (preferences.distanceUnit == list.distanceUnitsPreferences[0]) {
                 //use mixture of km and m
-                distArr = util.convertDistanceFormat(distanceValue, preferences.distanceUnit);
+                actualdistArr = util.convertDistanceFormat(actualDistanceValue, preferences.distanceUnit);
             } else {
                 //use mixture of miles and yards
-                var yardsUnit = 'yd';
-                var distMeasure = util.convertDistToDist(distanceValue, distanceUnit, yardsUnit);
-                distArr = util.convertDistanceFormat(distMeasure, preferences.distanceUnit);
+                yardsUnit = 'yd';
+                var actualDistMeasure = util.convertDistToDist(actualDistanceValue, distanceUnit, yardsUnit);
+                actualdistArr = util.convertDistanceFormat(actualDistMeasure, preferences.distanceUnit);
             }
-            var container = $('#routeSummaryContainer').get(0);
-            container.show();
-            var timeDiv = container.querySelector('#route_totalTime');
-            var distanceDiv = container.querySelector('#route_totalDistance');
-            var actualDistanceDiv = container.querySelector('#route_actualDistance');
-            $(actualDistanceDiv).hide();
-            // actual distance
-            var actualDistance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'ActualDistance')[0];
-            if (actualDistance !== undefined) {
-                // only show actual distance for bicycle
-                if (routePref == 'Bicycle' || routePref == 'Pedestrian' || routePref == 'Wheelchair') {
-                    var actualDistanceValue = actualDistance.getAttribute('value');
-                    var actualDistanceUnit = actualDistance.getAttribute('uom');
-                    var actualdistArr = [];
-                    if (preferences.distanceUnit == list.distanceUnitsPreferences[0]) {
-                        //use mixture of km and m
-                        actualdistArr = util.convertDistanceFormat(actualDistanceValue, preferences.distanceUnit);
-                    } else {
-                        //use mixture of miles and yards
-                        var yardsUnit = 'yd';
-                        var actualDistMeasure = util.convertDistToDist(actualDistanceValue, distanceUnit, yardsUnit);
-                        actualdistArr = util.convertDistanceFormat(actualDistMeasure, preferences.distanceUnit);
-                    }
-                    var actualDistanceDiv = container.querySelector('#route_actualDistance');
-                    $(actualDistanceDiv)[0].update(preferences.translate('ActualDistance') + ': ' + actualdistArr[1] + ' ' + actualdistArr[2]);
-                    $(actualDistanceDiv).show();
-                }
-            }
-            $(timeDiv)[0].update(preferences.translate('TotalTime') + ': ' + totalTime);
-            $(distanceDiv)[0].update(preferences.translate('TotalDistance') + ': ' + distArr[1] + ' ' + distArr[2]);
         }
+        
+        var routeSummary = [totalTime, distArr, actualdistArr];
+        var pointInfo, unit, time, distanceInfo;
+
+        // time summary array
+        var summaryContainer = new Element('div', {
+            'class': 'directions-summary-info-container'
+        });
+        pointInfo = new Element('span', {
+            'class': 'directions-summary-info'
+        }).update('<i class="icon-time" style="margin: 7px 0 0 0;"></i>' + ' ');
+
+        var len;
+        if (routeSummary[0].length > 2) {
+            len = 4;
+        } else {
+            len = 2;
+        }
+        for (var ts = 0; ts < len; ts += 2) {
+            console.log(routeSummary[0][ts]);
+            time = new Element('div', {
+                'class': 'directions-summary-info-digit'
+            }).update(routeSummary[0][ts]);
+            unit = new Element('div', {
+                'class': 'directions-summary-info-units'
+            }).update(routeSummary[0][ts + 1][0]);
+            pointInfo.appendChild(time);
+            pointInfo.appendChild(unit);
+            summaryContainer.appendChild(pointInfo);
+        }
+        // distance summary
+        pointInfo = new Element('span', {
+            'class': 'directions-summary-info'
+        }).update('<i class="icon-resize-horizontal" style="margin: 5px 0 0 0;"></i>' + ' ');
+
+        distanceInfo = new Element('div', {
+            'class': 'directions-summary-info-digit'
+        }).update(routeSummary[1][1]);
+        unit = new Element('div', {
+                'class': 'directions-summary-info-units'
+        }).update(routeSummary[1][2]);
+        pointInfo.appendChild(distanceInfo);
+        pointInfo.appendChild(unit);
+
+        summaryContainer.appendChild(pointInfo);
+        var directionsBorder = new Element('div', {
+            'class': 'directions-summary-info-line'
+        });
+        var container = $('#routeInstructionsContainer').get(0);
+
+        container.insertBefore(directionsBorder, container.firstChild);
+        container.insertBefore(summaryContainer, container.firstChild);
+
+
     }
     /**
      * calculates way and surface type information for horizontal barcharts
@@ -1821,55 +1855,12 @@ var Ui = (function(w) {
             totalTime += stopoverTime;
             directionsContainer = buildWaypoint('layerRoutePoints', 'end', endpoint, getWaypoints().length - 1, stopoverDistance, stopoverTime);
             directionsMain.appendChild(directionsContainer);
-            var summaryContainer = new Element('div', {
-                'class': 'directions-summary-info-container'
-            });
-            var hours = Math.floor(totalTime / 3600);
-            var minutes = totalTime / 60 - hours * 60;
-            if (hours > 0) {
-                var pointInfo = new Element('div', {
-                    'class': 'directions-summary-info-time'
-                }).update('<i class="icon-time" style="margin: 7px 5px 0 0;"></i>' + Number(hours).toFixed() + ' ');
-                var unit = new Element('div', {
-                    'class': 'directions-summary-info-units'
-                }).update('h');
-                pointInfo.appendChild(unit);
-                summaryContainer.appendChild(pointInfo);
-                pointInfo = new Element('div', {
-                    'class': 'directions-summary-info-time',
-                    'style': 'padding-left: 4px'
-                }).update(' ' + Number(minutes).toFixed() + ' ');
-                unit = new Element('div', {
-                    'class': 'directions-summary-info-units'
-                }).update('min');
-                pointInfo.appendChild(unit);
-                summaryContainer.appendChild(pointInfo);
-            } else {
-                var pointInfo = new Element('div', {
-                    'class': 'directions-summary-info-time'
-                }).update('<i class="icon-time" style="margin: 7px 5px 0 0;"></i>' + Number(minutes).toFixed() + ' ');
-                // }).update('<i class="icon-time" style="margin: 7px 5px 0 0;"></i>' + Math.floor(totalTime/3600) == 0 ? (totalTime / 3600).toFixed() + ' ' : Math.floor(totalTime / 3600).toFixed() + ' ' + (totalTime / 3600).toFixed() - Math.floor(totalTime / 3600).toFixed());
-                var unit = new Element('div', {
-                    'class': 'directions-summary-info-units'
-                }).update('min');
-                pointInfo.appendChild(unit);
-                summaryContainer.appendChild(pointInfo);
-            }
-            pointInfo = new Element('div', {
-                'class': 'directions-summary-info-distance'
-            }).update('<i class="icon-resize-horizontal" style="margin: 5px 5px 0 0;"></i>' + Number(totalDistance / 1000).toFixed(1) + ' ');
-            unit = new Element('div', {
-                'class': 'directions-summary-info-units'
-            }).update('km');
-            pointInfo.appendChild(unit);
-            summaryContainer.appendChild(pointInfo);
-            var directionsBorder = new Element('div', {
-                'style': 'width: 90%; margin: 0 auto;',
-                'class': 'directions-mode-line'
-            });
-            directionsMain.insertBefore(directionsBorder, directionsMain.firstChild);
-            directionsMain.insertBefore(summaryContainer, directionsMain.firstChild);
-            // pointInfo.hide();
+            
+            /* Route Summary */
+            
+            var routeSummary = updateRouteSummary(results);
+
+            
             return distArrAll;
             // TODO tmc messages expand collapse function
         }

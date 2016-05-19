@@ -817,7 +817,6 @@ var Controller = (function(w) {
             //add features to map
             map.updateRoute();
             //add DOM elements
-            ui.updateRouteSummary();
             ui.updateRouteInstructions();
             route.routeString = null;
         }
@@ -856,7 +855,6 @@ var Controller = (function(w) {
                 var featureIds = map.updateRoute(routeLinestring, routePoints, routePref);
                 var errors = route.hasRoutingErrors(results);
                 if (!errors) {
-                    ui.updateRouteSummary(results, routePref);
                     var totalDistance = ui.updateRouteInstructions(results, featureIds, 'layerRouteLines');
                     if ($.inArray(routePref, list.elevationProfiles) >= 0) {
                         ui.updateSurfaceInformation(results, featureIds, 'layerRouteLines', totalDistance);
