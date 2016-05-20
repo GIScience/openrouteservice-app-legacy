@@ -1867,6 +1867,35 @@ var Ui = (function(w) {
                 'style': 'width: 90%; margin: 0 auto;',
                 'class': 'directions-mode-line'
             });
+
+            //
+            var resultSummary = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteSummary');
+            if (resultSummary[0].children.length>3){ // check if ascent/ descent information is available (bike, wheelchair, pedestrian)
+                
+                var ascent = util.getElementsByTagNameNS(results, namespaces.xls, 'Ascent')[0];
+                var ascentvalue = ascent.getAttribute('value');
+                var descent = util.getElementsByTagNameNS(results, namespaces.xls, 'Descent')[0];
+                var descentvalue = descent.getAttribute('value');
+                pointInfo = new Element('div', {
+                    'class': 'directions-summary-info-distance'
+                }).update('<i class="icon-arrow-up" style="margin: 6px 5px 0 0;"></i>' + ascentvalue + ' ');
+                unit = new Element('div', {
+                'class': 'directions-summary-info-units'
+                }).update('m');
+                pointInfo.appendChild(unit);
+                summaryContainer.appendChild(pointInfo);
+                pointInfo = new Element('div', {
+                    'class': 'directions-summary-info-distance'
+                }).update('<i class="icon-arrow-down" style="margin: 6px 4px 0 0;"></i>' + descentvalue + ' ');
+                unit = new Element('div', {
+                'class': 'directions-summary-info-units'
+                }).update('m');
+                pointInfo.appendChild(unit);
+                summaryContainer.appendChild(pointInfo);
+            }
+            //
+
+
             directionsMain.insertBefore(directionsBorder, directionsMain.firstChild);
             directionsMain.insertBefore(summaryContainer, directionsMain.firstChild);
             // pointInfo.hide();
