@@ -106,16 +106,11 @@ var Ui = (function(w) {
         $('#avoidables_info').show();
     }
 
-    function showServiceTimeoutPopup(arg) {
-        if (arg === true) {
-            $('#serviceTimeout').children('label').empty();
-            var label = new Element('label');
-            label.insert(preferences.translate('serverError'));
-            $('#serviceTimeout').append(label);
-            $('#serviceTimeout').show();
-        } else if (arg === false) {
-            $('#serviceTimeout').hide();
-        }
+    function showServiceTimeoutPopup() {
+        var label = new Element('label');
+        label.insert(preferences.translate('serverError'));
+        $('#serviceTimeout').append(label);
+        $('#serviceTimeout').show();
     }
     /* *********************************************************************
      * ALL MARKER ELEMENTS
@@ -1403,7 +1398,7 @@ var Ui = (function(w) {
             container.show();
             var timeDiv = container.querySelector('#route_totalTime');
             var distanceDiv = container.querySelector('#route_totalDistance');
-            var actualDistanceDiv = container.querySelector('#route_actualDistance');
+            var actualDistanceDiv = container.querySelector('#route_actualDistance');          
             $(actualDistanceDiv).hide();
             // actual distance
             var actualDistance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'ActualDistance')[0];
@@ -1438,9 +1433,9 @@ var Ui = (function(w) {
      * @param mapLayer: map layer containing these features
      */
     function updateSurfaceInformation(results, mapFeatureIds, mapLayer, totalDistance) {
-        //var lang = preferences.language;
-        var WayTypeResult = calculateChart(results, mapFeatureIds, "WayType", totalDistance);
-        var WaySurfaceResult = calculateChart(results, mapFeatureIds, "WaySurface", totalDistance);
+        var lang = preferences.language;
+        var WayTypeResult = calculateChart(results, mapFeatureIds, "WayType", totalDistance, lang);
+        var WaySurfaceResult = calculateChart(results, mapFeatureIds, "WaySurface", totalDistance, lang);
         horizontalBarchart(list.divWayTypes, list.listWayTypesContainer, WayTypeResult, list.WayTypeColors);
         horizontalBarchart(list.divSurfaceTypes, list.listSurfaceTypesContainer, WaySurfaceResult, list.SurfaceTypeColors);
         var container = $('#routeTypesContainer').get(0);
@@ -1506,7 +1501,7 @@ var Ui = (function(w) {
      * @param types: either waytype or waysurface
      * @return WayTypesObject: Object containing Names and Percetages
      */
-    function calculateChart(results, featureIds, types, distArrAll) {
+    function calculateChart(results, featureIds, types, distArrAll, lang) {
         var information, typelist, type;
         // keep route feature ids remove corner ids
         featureIds = featureIds.filter(function(el, index) {
@@ -1519,8 +1514,7 @@ var Ui = (function(w) {
             for (type in list.WayType) {
                 typelist.push({
                     type: list.WayType[type],
-                    //typetranslated: list.WayTypeTranslation[list.WayType[type]][lang],
-                    typetranslated: preferences.translate(list.WayType[type]),
+                    typetranslated: list.WayTypeTranslation[list.WayType[type]][lang],
                     distance: 0,
                     ids: [],
                     segments: [],
@@ -1536,8 +1530,7 @@ var Ui = (function(w) {
             for (type in list.SurfaceType) {
                 typelist.push({
                     type: list.SurfaceType[type],
-                    //typetranslated: list.SurfaceTranslation[list.SurfaceType[type]][lang],
-                    typetranslated: preferences.translate(list.SurfaceType[type]),
+                    typetranslated: list.SurfaceTranslation[list.SurfaceType[type]][lang],
                     distance: 0,
                     ids: [],
                     segments: [],
@@ -1609,6 +1602,7 @@ var Ui = (function(w) {
      * @param mapFeatureIds: list of IDs of Leaflet elements containing BOTH - ids for route line segments AND corner points: [routeLineSegment_0, cornerPoint_0, routeLineSegment_1, cornerPoint_1,...]
      * @param mapLayer: map layer containing these features
      */
+	
     function updateRouteInstructions(results, mapFeatureIds, mapLayer) {
         var container, directionsContainer;
         if (!results) {
@@ -1633,8 +1627,8 @@ var Ui = (function(w) {
             var stopoverTime = 0;
             var waypoints;
             var distArrAll = [];
-            var totalDistance = 0;
-            var totalTime = 0;
+			var totalDistance = 0;
+			var totalTime = 0;
             // get stopovers which are viapoints
             if ($('.waypoint').length > 2) {
                 waypoints = getWaypoints();
@@ -1643,6 +1637,7 @@ var Ui = (function(w) {
             //var endpoint = waypoints.splice(-1, 1);
             var startpoint = waypoints[0];
             var endpoint = waypoints[(waypoints.length) - 1];
+			
             //add startpoint
             directionsContainer = buildWaypoint('layerRoutePoints', 'start', startpoint, 0);
             directionsMain.appendChild(directionsContainer);
@@ -1653,8 +1648,8 @@ var Ui = (function(w) {
                 if (directionCode == '100') {
                     directionsContainer = buildWaypoint('layerRoutePoints', 'via', waypoints[numStopovers], numStopovers, stopoverDistance, stopoverTime);
                     directionsMain.appendChild(directionsContainer);
-                    totalDistance += stopoverDistance;
-                    totalTime += stopoverTime;
+					totalDistance += stopoverDistance;
+					totalTime += stopoverTime;
                     stopoverDistance = 0;
                     stopoverTime = 0;
                     directionsMain.appendChild(directionsContainer);
@@ -1771,28 +1766,29 @@ var Ui = (function(w) {
                     directionsContainer.appendChild(directionsImgDiv);
                     directionsContainer.appendChild(directionTextDiv);
                     var tmcMessage = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Message')[0];
-                    var warning = 0;
-                    if (tmcMessage) {
+                    var warning=0;
+					if (tmcMessage) {
                         // add icons and jquery collapsible stuff
                         tmcMessage = tmcMessage.text || tmcMessage.textContent;
                         var tmcWarning, warningLink;
                         var tmcText = tmcMessage.split(" | ")[1];
                         var tmcCode = tmcMessage.split(" | ")[0];
                         tmcCode = tmcCode.split(',');
-                        warning = warning + 1;
+						warning=warning + 1;
                         for (var i = 0; i < tmcCode.length; i++) {
                             if (tmcCode[i] in list.tmc) {
                                 warningLink = list.tmc[tmcCode[i]][0];
+								
                                 break;
                             }
                         }
-                        // display number of warnings on route
-                        var container = $('#routeSummaryContainer').get(0);
-                        container.show();
-                        var warningDiv = container.querySelector('#route_trafficWarnings');
-                        if (warning !== undefined && warning !== 0) {
-                            $(warningDiv)[0].update(preferences.translate('TotalWarnings') + ': ' + warning);
-                        }
+						// display number of warnings on route
+						var container = $('#routeSummaryContainer').get(0);
+						container.show();
+						var warningDiv = container.querySelector('#route_trafficWarnings');
+							if (warning !== undefined && warning !== 0) {
+							$(warningDiv)[0].update(preferences.translate('TotalWarnings') + ': ' + warning);
+						}
                         // if codes not in dict return default
                         warningLink = warningLink !== undefined ? warningLink : './img/warning_undefined.png';
                         var noticeDiv = new Element('div', {
@@ -1817,59 +1813,63 @@ var Ui = (function(w) {
                     $(directionTextDiv).click(handleClickRouteCorner);
                 }
             });
-            totalDistance += stopoverDistance;
-            totalTime += stopoverTime;
+			totalDistance += stopoverDistance;
+			totalTime += stopoverTime;
             directionsContainer = buildWaypoint('layerRoutePoints', 'end', endpoint, getWaypoints().length - 1, stopoverDistance, stopoverTime);
-            directionsMain.appendChild(directionsContainer);
-            var summaryContainer = new Element('div', {
+			directionsMain.appendChild(directionsContainer);
+			var summaryContainer = new Element('div', {
                 'class': 'directions-summary-info-container'
             });
-            var hours = Math.floor(totalTime / 3600);
-            var minutes = totalTime / 60 - hours * 60;
-            if (hours > 0) {
-                var pointInfo = new Element('div', {
-                    'class': 'directions-summary-info-time'
-                }).update('<i class="icon-time" style="margin: 7px 5px 0 0;"></i>' + Number(hours).toFixed() + ' ');
-                var unit = new Element('div', {
-                    'class': 'directions-summary-info-units'
-                }).update('h');
-                pointInfo.appendChild(unit);
-                summaryContainer.appendChild(pointInfo);
-                pointInfo = new Element('div', {
-                    'class': 'directions-summary-info-time',
-                    'style': 'padding-left: 4px'
-                }).update(' ' + Number(minutes).toFixed() + ' ');
-                unit = new Element('div', {
-                    'class': 'directions-summary-info-units'
-                }).update('min');
-                pointInfo.appendChild(unit);
-                summaryContainer.appendChild(pointInfo);
-            } else {
-                var pointInfo = new Element('div', {
-                    'class': 'directions-summary-info-time'
-                }).update('<i class="icon-time" style="margin: 7px 5px 0 0;"></i>' + Number(minutes).toFixed() + ' ');
-                // }).update('<i class="icon-time" style="margin: 7px 5px 0 0;"></i>' + Math.floor(totalTime/3600) == 0 ? (totalTime / 3600).toFixed() + ' ' : Math.floor(totalTime / 3600).toFixed() + ' ' + (totalTime / 3600).toFixed() - Math.floor(totalTime / 3600).toFixed());
-                var unit = new Element('div', {
-                    'class': 'directions-summary-info-units'
-                }).update('min');
-                pointInfo.appendChild(unit);
-                summaryContainer.appendChild(pointInfo);
-            }
-            pointInfo = new Element('div', {
+			var hours = Math.floor(totalTime/3600);
+			var minutes = totalTime/60 - hours*60;
+			if (hours > 0){
+				var pointInfo = new Element('div', {
+					'class': 'directions-summary-info-time'
+				}).update('<i class="icon-time" style="margin: 7px 5px 0 0;"></i>' + Number(hours).toFixed() + ' ');
+				var unit = new Element('div', {
+					'class': 'directions-summary-info-units'
+				}).update('h');
+				pointInfo.appendChild(unit);
+				summaryContainer.appendChild(pointInfo);
+				pointInfo = new Element('div', {
+					'class': 'directions-summary-info-time',
+					'style': 'padding-left: 4px'
+				}).update(' ' + Number(minutes).toFixed() + ' ');
+				unit = new Element('div', {
+					'class': 'directions-summary-info-units'
+				}).update('min');
+				pointInfo.appendChild(unit);
+				summaryContainer.appendChild(pointInfo);
+			}
+			else {
+				var pointInfo = new Element('div', {
+					'class': 'directions-summary-info-time'
+				}).update('<i class="icon-time" style="margin: 7px 5px 0 0;"></i>' + Number(minutes).toFixed() + ' ');
+            // }).update('<i class="icon-time" style="margin: 7px 5px 0 0;"></i>' + Math.floor(totalTime/3600) == 0 ? (totalTime / 3600).toFixed() + ' ' : Math.floor(totalTime / 3600).toFixed() + ' ' + (totalTime / 3600).toFixed() - Math.floor(totalTime / 3600).toFixed());
+				var unit = new Element('div', {
+					'class': 'directions-summary-info-units'
+				}).update('min');
+				pointInfo.appendChild(unit);
+				summaryContainer.appendChild(pointInfo);
+			}
+			
+			pointInfo = new Element('div', {
                 'class': 'directions-summary-info-distance'
             }).update('<i class="icon-resize-horizontal" style="margin: 5px 5px 0 0;"></i>' + Number(totalDistance / 1000).toFixed(1) + ' ');
-            unit = new Element('div', {
+			unit = new Element('div', {
                 'class': 'directions-summary-info-units'
             }).update('km');
             pointInfo.appendChild(unit);
-            summaryContainer.appendChild(pointInfo);
-            var directionsBorder = new Element('div', {
-                'style': 'width: 90%; margin: 0 auto;',
+			summaryContainer.appendChild(pointInfo);
+			
+			var directionsBorder = new Element('div', {
+				'style': 'width: 90%; margin: 0 auto;',
                 'class': 'directions-mode-line'
             });
+			
             directionsMain.insertBefore(directionsBorder, directionsMain.firstChild);
             directionsMain.insertBefore(summaryContainer, directionsMain.firstChild);
-            // pointInfo.hide();
+			// pointInfo.hide();
             return distArrAll;
             // TODO tmc messages expand collapse function
         }
@@ -2054,20 +2054,20 @@ var Ui = (function(w) {
                     html: data
                 }).appendTo("head");
                 routeInstructions.show();
-                //Replace the bold font with normal font for printing
-                var originalText = [];
-                $('.directions-text').each(function(i, obj) {
-                    originalText[i] = obj.innerHTML;
-                    obj.innerHTML = obj.innerHTML.replace(new RegExp('<b>', 'g'), '');
-                    obj.innerHTML = obj.innerHTML.replace(new RegExp('</b>', 'g'), '');
-                });
+				//Replace the bold font with normal font for printing
+				var originalText = [];
+				$('.directions-text').each(function(i, obj) {
+					originalText[i] = obj.innerHTML;
+					obj.innerHTML = obj.innerHTML.replace(new RegExp('<b>', 'g'), '');
+					obj.innerHTML = obj.innerHTML.replace(new RegExp('</b>', 'g'), '');
+				});
                 window.print();
-                //After printing, use the bold font again
-                $('.directions-text').each(function(i, obj) {
-                    obj.innerHTML = originalText[i];
-                });
+				//After printing, use the bold font again
+				$('.directions-text').each(function(i, obj) {
+					obj.innerHTML = originalText[i];
+				});
                 style.remove();
-                // $('.directions-summary-info').hide();
+				// $('.directions-summary-info').hide();
             }
         });
     }
@@ -3304,10 +3304,6 @@ var Ui = (function(w) {
         });
         //maxspeed button listener
         $('#maxSpeedBtn').click(handleMaxspeed);
-        //close serviceTimeout Label
-        $('#serviceTimeout').children('button').click(function() {
-            $('#serviceTimeout').hide();
-        });
     }
     Ui.prototype = new EventEmitter();
     Ui.prototype.constructor = Ui;

@@ -21,7 +21,7 @@
 ///////////////////////////////////////////////////
 //Function die XML Request an OpenLS RS erstellt
 
-function createRequest($startcoord, $endcoord, $viaPoints_XML, $language, $distanceunit, $routepref, $weighting, $avoidAreas, $avoidFeatures, $hgv, $haz, $sur, $ele, $maxspeed, $instructions) {
+function createRequest($startcoord, $endcoord, $viaPoints_XML, $language, $distanceunit, $routepref,$weighting, $avoidAreas, $avoidFeatures, $instructions) {
 
 	$request = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 					<xls:XLS xmlns:xls=\"http://www.opengis.net/xls\" xmlns:sch=\"http://www.ascc.net/xml/schematron\" xmlns:gml=\"http://www.opengis.net/gml\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/xls
@@ -33,11 +33,8 @@ function createRequest($startcoord, $endcoord, $viaPoints_XML, $language, $dista
 						<xls:RoutePreference>$routepref</xls:RoutePreference>
 							<xls:ExtendedRoutePreference>
 									<xls:WeightingMethod>$weighting</xls:WeightingMethod>
-									$sur
-									$ele
 									$hgv
 									$haz
-									$maxspeed
 							</xls:ExtendedRoutePreference>
 								<xls:WayPointList>
 								<xls:StartPoint>
@@ -57,7 +54,7 @@ function createRequest($startcoord, $endcoord, $viaPoints_XML, $language, $dista
 								</xls:EndPoint>
 							</xls:WayPointList>
 							<xls:AvoidList>
-								$avoidAreas
+								$avArea
 								$avoidFeatures
 							</xls:AvoidList>
 						</xls:RoutePlan>

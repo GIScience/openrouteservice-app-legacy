@@ -352,37 +352,4 @@ var lang_hu = {
     'team_handball':'team k&eacute;zilabda',
     'tennis':'tenisz',
     'volleyball':'r&ouml;plabda ',
-
-    //Way Types
-    'Other': 'Más',
-    'StateRoad': 'Állami út',
-    'Road': 'Út',
-    'Street': 'Utca',
-    'Path': 'Pálya',
-    'Track': 'Nyomon követni',
-    'Cycleway': 'Bicikliút',
-    'Footway': 'Járda',
-    'Steps':  'Lépéseks',
-    'Ferry': 'Komp',
-    'Construction': 'Építés',
-    //Surface Types
-    //'Other': 'Other',
-    'Paved': 'Kikövezett',
-    'Unpaved': 'Burkolatlan',
-    'Asphalt': 'Aszfalt',
-    'Concrete':'Beton',
-    'Cobblestone': 'Macskaköves',
-    'Metal':  'Fém',
-    'Wood':'Faipari',
-    'CompactedGravel': 'Tömörített kavics',
-    'FineGravel': 'Aprókavicsos',
-    'Gravel': 'Kavics',
-    'Dirt': 'Piszok',
-    'Ground': 'Föld',
-    'Ice': 'Jég',
-    'Salt': 'Só',
-    'Sand': 'Homok',
-    'Woodchips': 'Faforgács',
-    'Grass': 'Fű',
-    'GrassPaver': 'Gyep rács kövek'
-};		
+};			

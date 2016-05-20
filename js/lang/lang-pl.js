@@ -358,38 +358,4 @@ var lang_pl = {
 	'team_handball' : 'pi&#x0142;ka r&#x0119;czna',
 	'tennis' : 'tenis',
 	'volleyball' : 'pi&#x0142;ka siatkowa',
-
-	    //Way Types
-    'Other': 'Inny',
-    'StateRoad': 'Droga krajowa',
-    'Road': 'Droga',
-    'Street': 'Ulica',
-    'Path': 'ścieżka',
-    'Track': 'Tor',
-    'Cycleway': 'ścieżka rowerowa',
-    'Footway': 'Chodnik',
-    'Steps':  'Kroki',
-    'Ferry': 'Prom',
-    'Construction': 'Budowa',
-
-    //Surface Types
-    //'Other': 'Other',
-    'Paved': 'Wybrukowany',
-    'Unpaved': 'Nieutwardzonych',
-    'Asphalt': 'Asfalt',
-    'Concrete':'Beton',
-    'Cobblestone': 'Brukowiec',
-    'Metal':  'Metal',
-    'Wood':'Drewno',
-    'CompactedGravel': 'Ubity żwir',
-    'FineGravel': 'Drobnego żwiru',
-    'Gravel': 'żwir',
-    'Dirt': 'Brud',
-    'Ground': 'Ziemia',
-    'Ice': 'Lód',
-    'Salt': 'Sól',
-    'Sand': 'Piasek',
-    'Woodchips': 'Trociny',
-    'Grass': 'Trawa',
-    'GrassPaver': 'Trawa układarka'
 };

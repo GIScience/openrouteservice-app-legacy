@@ -1,4 +1,3 @@
-service
 /*|-----------------------------------------------------------------------------------
  *|                                                     University of Heidelberg
  *|   _____ _____  _____      _                         Department of Geography
@@ -290,7 +289,7 @@ service
 }
 
 .directions-container {
-    padding: 8px 0;
+    padding: 13px 0;
 }
 
 .directions-text {
@@ -332,32 +331,31 @@ service
 
 .directions-summary-info-container {
     width: 65%;
-    margin: 0 auto;
-    padding: 5px 0 15px 0;
+	margin: 0 auto;
+	padding: 5px 0 15px 0;
 }
 
 .directions-summary-info-time {
     float: left;
     font-size: 20px;
     color: #000000;
-    font-weight: bold;
-    display: inline;
+	font-weight: bold;
+	display: inline;
 }
-
 .directions-summary-info-distance {
     float: right;
     font-size: 20px;
     color: #000000;
-    font-weight: bold;
-    display: inline;
+	font-weight: bold;
+	display: inline;
 }
 
 .directions-summary-info-units {
-    /*margin: 0 auto;
-    width: 50%;*/
-    display: inline;
+	/*margin: 0 auto;
+	width: 50%;*/
+	display: inline;
     font-size: 14px;
-    font-weight: normal;
+	font-weight: normal;
     color: #777777;
 }
 
@@ -367,7 +365,7 @@ service
 }
 
 .directions-mode-distance {
-    top: 2px;
+    top: 8px;
     right: 15px;
     padding-left: .5em;
     padding-right: .5em;
@@ -391,7 +389,7 @@ service
 
 .directions-mode-line {
     border-bottom: 1px solid #e6e6e6;
-    padding-top: 8px;
+    padding-top: 16px;
     margin: 0 2em 0 0;
 }
 
@@ -1270,12 +1268,9 @@ img {
 
 #serviceTimeout {
     display: none;
-    position: fixed;
-    margin-left: 33px;
-    top: 60px;
-    z-index: 999;
-    width: 200px;
-    font-family: 'Roboto', sans-serif;
+    position: absolute;
+    left: 430px;
+    top: 70px;
 }
 
 #serviceTimeout > label {
@@ -1379,3 +1374,7 @@ img {
     top: 100%;
     left: 0;
 }
+
+
+
+

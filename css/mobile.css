@@ -1,0 +1,290 @@
+/*|-----------------------------------------------------------------------------------
+ *|                                                     University of Heidelberg
+ *|   _____ _____  _____      _                         Department of Geography
+ *|  / ____|_   _|/ ____|    (_)                        Chair of GIScience
+ *| | |  __  | | | (___   ___ _  ___ _ __   ___ ___     (C) 2016
+ *| | | |_ | | |  \___ \ / __| |/ _ \ '_ \ / __/ _ \
+ *| | |__| |_| |_ ____) | (__| |  __/ | | | (_|  __/    Im Neuenheimer Feld 368
+ *|  \_____|_____|_____/ \___|_|\___|_| |_|\___\___|    D-69120 Heidelberg, Germany
+ *|                                                     http://www.giscience.uni-hd.de
+ *|------------------------------------------------------------------------------------*/
+
+
+/**
+ * @author: Rui Nunes, timothy.ellersiek@geog.uni-heidelberg.de 
+ * @version: 0.1
+ */
+
+
+/**
+ *  info link disclaimer, license,... at the bottom
+ */
+ 
+ /**
+ * CSS Styles for mobile devices 
+ */
+ 
+ 
+ /* Style for Smart Phones */
+ 
+/* ----------- iPhone 4 and 4S ----------- */
+
+/* Portrait and Landscape */
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+	/* Hide some original elements */
+	#map {left: 0px !important;}
+	#navbar {padding: 0px 0px 0px 0px !important;}
+	#sidebar {display: none;}
+	#toggleSidebar {display: none;}
+	#topMenu {display: none;}
+	#infoPermalink{display: none;}
+	.leaflet-top.leaflet-left {display: none;}
+	.leaflet-top.leaflet-right {display: none;}
+	.disclaimer {display: none;}
+	.brand {display: none;}
+	.feedback {display: none;}
+	
+	/* TOP BAR */
+	/* Show Menu Button */
+	#MobileMenuButton {
+		height: 50px;
+		width: 50px;
+		float: left;
+		left: 0px;
+		position: absolute;
+		display: flex;
+		background: url(../img/menu-icon.png) no-repeat center center;
+		background-size: 30px 30px;
+	}
+	
+	/* Show Layers Button */
+	#MobileLayerButton {
+		height: 50px;
+		width: 50px;
+		float: right;
+		right: 0px;
+		position: absolute;
+		display: flex;
+		background: url(../img/layers-icon.png) no-repeat center center;
+		background-size: 30px 30px;
+		
+	}
+	
+	/* Title and logo for App */
+	#navbar{
+		position:relative;
+		overflow: hidden;
+	}
+	
+	#navbar #title {
+		margin-left: 50px;
+		position: absolute;
+		height: 50%;
+		font-size: 15px;
+		float: right;
+		margin-left: 90px;
+		pointer-events: none;
+		cursor: default;
+	}
+	
+	#navbar #logo {
+		height: 100%;
+		width: 50px;
+		position: absolute;
+		margin-left: 40px;
+		top: 0;
+		pointer-events: none;
+		cursor: default;
+	}
+	
+	#navbar #logo img {
+		height: 40px;
+		width: 40px;
+	}
+	
+	/* Style for Mobile Side Bar Left */
+	#MobileSideBarLeft {
+		display: none;
+		height: calc(100%-50px); /*To prevent bar overflow */
+		width: 50px;
+		float: left;
+		left: 0px;
+		top: 50px;
+		bottom: 0px;
+		position: absolute;
+		z-index: 99999;
+		background-color: #121212;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;	
+		border-right: 3px solid white;
+	}
+	
+	/* Styles for options inside Mobile Side Bar Left */
+	.MobileMenuButton {
+		width: 50px;
+		height: 50px;
+		margin-top: 2px;
+		margin-bottom: 2px;
+		background-size: 70%;
+		background-repeat: no-repeat;
+		background-position: center center;
+	}
+
+	#MobileRoutePlanning{ background-image: url(../img/menuRoute-big.png);}
+	#MobileSearchAdress{background-image: url(../img/menuSearchAddress-big.png);}
+	#MobileSearchPOI{background-image: url(../img/menuSearchPOI-big.png);}
+	#MobileGlobalSettings {background-image: url(../img/reload-big.png);border-top: 1px solid white; border-bottom: 1px solid white;}
+	#MobileInfoContact{background-image: url(../img/info-big.png);}
+	#MobileFeeback{background-image: url(../img/feedback-big.png);}
+	#MobileDisclaimer{background-image: url(../img/disclaimer-big.png);}
+
+	/* Style for Mobile Side Bar Left - Right*/
+	#MobileSideBarLeft-Right{ 
+		height: calc(100% - 50px); /*To prevent bar overflow */
+		width:  calc(100% - 53px);
+		position: absolute;
+		background-color: #121212;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+		margin-top: 50px;
+		left: 50px;
+		z-index: 9999;
+		float: left;
+		display: none; /*flex*/
+		/*border-left: 1px solid white;*/
+	}
+	
+	/*Styles for divs inside Left-Right Menu */
+	.MobileOptionTitle {
+		width: calc(100% - 53px);
+		height: 30px;
+		border-bottom: 3px solid white;
+		position: fixed;
+		background-color: #121212;
+		display: inline-block;
+	}
+	
+	.MobileOptionTitle p{
+		text-align: center;
+		margin: 0 auto;
+		color: #ddd8d8;
+		font-size: 20px;
+		line-height:30px;
+	}
+	
+	.MobileOptionOptions{
+		width: 100%; 
+		height: auto;
+		display:inline-block;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+		margin-top: 30px;
+	}
+	
+	/*Styles for Route Options */
+	#WaypointPanel {
+		background-color: transparent;
+		
+	}
+	
+	/*Styles for Address Search */
+	
+	/*Styles for POI Search */
+	
+	
+	/*Styles for Global Settings */
+	.modal-body{
+		display:inline-block;
+		width: calc(100%-50px);
+		border: 1px solid green;
+	}
+	
+	.modal-footer {
+		background-color: transparent;
+		border-color: transparent;
+		height: 10px;
+		
+	}
+	.modal-footer #preferencesClose {
+		display: none;
+		float: left;
+		
+		
+	}
+	
+	/* Style for Mobile Side Bar Right */
+	#MobileSideBarRight {
+		display: none;
+		height: calc(100%-50px);
+		width: 50%;
+		float: right;
+		top: 50px;
+		bottom: 0px;
+		right: 0px;
+		position: absolute;
+		z-index: 9999;
+		background-color: #121212;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+		border-left: 3px solid white;
+	}
+	
+	/*Styles for Base Maps */
+	#Mobile-BaseLayers {
+		display: inline-block;
+		width: 100%;
+		border-bottom: 3px solid white;
+	}
+	
+	.basemapchooser {
+		text-align: center;
+		color: #ddd8d8;
+		display: inline-block;
+		width: 100%;
+		position: relative;
+		float: left;
+		margin: 0 auto;
+	}
+	
+	.basemapchooser p {
+		/*margin-top: 5px;*/
+		padding-top: 5px;
+		width:150px;
+		margin: 0 auto;
+	}
+	
+	.mobilebasemapimage {
+		height: 90px;
+	}
+	
+	.basemapchooser label > input{ /* hide the radio button */
+		display:none;
+	}
+	
+	.basemapchooser label > input + img{ /* style the border when invisible radio is not selected */
+		border:5px solid transparent;
+	}
+	
+	.basemapchooser label > input:checked + img{ /* style the border when invisible radio is selected */
+		border:5px solid #ddd8d8;
+	}
+	
+	/*Styles for Overlay Layers */
+	#Mobile-OverlayLayers{
+		display: inline-block;
+		width: 200px;
+		height: auto;
+		color: #ddd8d8;
+	}
+	
+	#Mobile-OverlayLayers input{
+		width: 80px;
+		margin: auto;
+		
+	}
+	
+	
+	
+	
+}
+

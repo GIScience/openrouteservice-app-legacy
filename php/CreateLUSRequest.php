@@ -21,7 +21,7 @@
 ///////////////////////////////////////////////////
 //Function die XML Request an OpenLS LUS erstellt
 
-function createGeocodeRequest($freeform, $maxresponse, $lang) {
+function createGeocodeRequest($freeform, $maxresponse) {
 	$request = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 					<xls:XLS xmlns:xls=\"http://www.opengis.net/xls\" xmlns:sch=\"http://www.ascc.net/xml/schematron\" 
 					xmlns:gml=\"http://www.opengis.net/gml\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" 
@@ -31,7 +31,7 @@ function createGeocodeRequest($freeform, $maxresponse, $lang) {
 						<xls:RequestHeader/>
 						<xls:Request methodName=\"GeocodeRequest\" requestID=\"123456789\" version=\"1.1\" maximumResponses=\"$maxresponse\">
 							<xls:GeocodeRequest>
-								<xls:Address countryCode=\"$lang\">
+								<xls:Address countryCode=\"de,en\">
 								    <xls:freeFormAddress>$freeform</xls:freeFormAddress>
 								</xls:Address>
 							</xls:GeocodeRequest>

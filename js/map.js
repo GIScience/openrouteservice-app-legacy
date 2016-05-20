@@ -12,6 +12,7 @@ var Map = (function() {
      * @param  {[type]} container [description]
      */
     function map(container) {
+		
         self = this;
         /* *********************************************************************
          * MAP LAYERS
@@ -64,6 +65,9 @@ var Map = (function() {
                 featuresLayer: this.layerAvoid
             }
         });
+		
+
+		
         this.baseLayers = {};
         var layerName1 = Preferences.translate('layer1');
         var layerName2 = Preferences.translate('layer2');
@@ -97,7 +101,56 @@ var Map = (function() {
         this.layerControls = L.control.layers(this.baseLayers, this.overlays);
         this.layerControls.addTo(this.theMap);
         L.control.scale().addTo(this.theMap);
-        var markers = [{
+
+		/* *********************************************************************
+		* FOR MOBILE LAYER CHOOSER
+		* *********************************************************************/
+		var test = this.theMap;
+		var test2 = this;
+		jQuery(document).ready(function(){
+			jQuery('div.basemapchooser input[type="radio"]').on('change', function() {
+				var radio = $(this);
+				if(radio.is(':checked') && this.value == 'oms') {
+					test.removeLayer(test2.baseLayers[layerName2]);
+					test.removeLayer(test2.baseLayers[layerName3]);
+					test.removeLayer(test2.baseLayers[layerName4]);
+					test.removeLayer(test2.baseLayers[layerName5]);
+					test.addLayer(test2.baseLayers[layerName1]);
+				}
+				else if(radio.is(':checked') && this.value == 'osmwms') {
+					test.removeLayer(test2.baseLayers[layerName1]);
+					test.removeLayer(test2.baseLayers[layerName3]);
+					test.removeLayer(test2.baseLayers[layerName4]);
+					test.removeLayer(test2.baseLayers[layerName5]);
+					test.addLayer(test2.baseLayers[layerName2]);
+				}
+				else if(radio.is(':checked') && this.value == 'osm') {
+					test.removeLayer(test2.baseLayers[layerName2]);
+					test.removeLayer(test2.baseLayers[layerName1]);
+					test.removeLayer(test2.baseLayers[layerName4]);
+					test.removeLayer(test2.baseLayers[layerName5]);
+					test.addLayer(test2.baseLayers[layerName3]);
+				}
+				else if(radio.is(':checked') && this.value == 'ocm') {
+					test.removeLayer(test2.baseLayers[layerName2]);
+					test.removeLayer(test2.baseLayers[layerName3]);
+					test.removeLayer(test2.baseLayers[layerName1]);
+					test.removeLayer(test2.baseLayers[layerName5]);
+					test.addLayer(test2.baseLayers[layerName4]);
+				}
+				else if(radio.is(':checked') && this.value == 'sm') {
+					test.removeLayer(test2.baseLayers[layerName2]);
+					test.removeLayer(test2.baseLayers[layerName3]);
+					test.removeLayer(test2.baseLayers[layerName4]);
+					test.removeLayer(test2.baseLayers[layerName1]);
+					test.addLayer(test2.baseLayers[layerName5]);
+				}
+			});
+		});
+		
+		/* ********************************************************************/
+		
+		var markers = [{
             "name": "Canada",
             "url": "https://en.wikipedia.org/wiki/Canada",
             "lat": 49.409445,
@@ -124,6 +177,7 @@ var Map = (function() {
             xTicks: undefined, //number of ticks in x axis, calculated by default according to width
             yTicks: undefined, //number of ticks on y axis, calculated by default according to height
             collapsed: true, //collapsed mode, show chart on click or mouseover,
+            yAxisMin: 0
         });
         this.layerRoutePoints = L.featureGroup().addTo(this.theMap);
         this.layerRouteLines = L.featureGroup().addTo(this.theMap);
@@ -185,6 +239,31 @@ var Map = (function() {
                 self.theMap.closePopup(popup);
             };
         });
+        // load graph info when map loaded
+        var url;
+        if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
+            url = "cgi-bin/proxy.cgi?url=" + namespaces.services.routing + "?info";
+        } else {
+            url = namespaces.services.routing + "?info";
+        }
+        jQuery.ajax({
+            url: url,
+            dataType: 'json',
+            type: 'GET',
+            crossDomain: false,
+            success: updateInfoPanel,
+            error: updateInfoPanel
+        });
+
+        function updateInfoPanel(results) {
+            var infoPanel = document.getElementById("infoPanel");
+            var lastUpdate = new Date(results.profiles['profile 1'].import_date);
+            lastUpdate = lastUpdate.getUTCDate() + '.' + (parseInt(lastUpdate.getMonth()) + parseInt(1)) + '.';
+            var nextUpdate = results.next_update !== undefined ? results.next_update : '?';
+            nextUpdate = new Date(nextUpdate);
+            nextUpdate = nextUpdate.getUTCDate() + '.' + (parseInt(nextUpdate.getMonth()) + parseInt(1)) + '.';
+            infoPanel.innerHTML += '(' + '<b>Last/Next Update</b> ' + lastUpdate + '/' + nextUpdate + ')';
+        }
         // create a new contextMenu
         function createMapContextMenu() {
             var mapContextMenuContainer = new Element('div', {
@@ -259,7 +338,7 @@ var Map = (function() {
             self.layerControls.addOverlay(self.layerAvoid, 'Avoidable Regions');
         };
         //this.theMap.on('editable:drawing:end', addTooltip);
-        //this.theMap.on('editable:shape:deleted', shapeListener);813
+        //this.theMap.on('editable:shape:deleted', shapeListener);
         this.theMap.on('editable:drawing:commit', shapeListener);
         this.theMap.on('editable:vertex:deleted', shapeListener);
         this.theMap.on('editable:vertex:dragend', shapeListener);
@@ -330,7 +409,9 @@ var Map = (function() {
         disableClusteringAtZoom: 12
     });
 
-    function emitloadTMC(forceUpdate) {
+    
+	
+	function emitloadTMC(forceUpdate) {
         // reload TMC Layer when map paned
         Controller.loadTMC();
     }
@@ -496,43 +577,6 @@ var Map = (function() {
     /* *********************************************************************
      * GENERAL
      * *********************************************************************/
-    // load graph info when map loaded
-    function graphInfo() {
-        var url;
-        if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
-            url = "cgi-bin/proxy.cgi?url=" + namespaces.services.routing + "?info";
-        } else {
-            url = namespaces.services.routing + "?info";
-        }
-        jQuery.ajax({
-            url: url,
-            type: 'GET',
-            crossDomain: false,
-            success: function(data) {
-                self.updateInfoPanel(data);
-                Ui.showServiceTimeoutPopup(false);
-            },
-            error: function(data) {
-                Ui.showServiceTimeoutPopup(true);
-            }
-        });
-    }
-
-    function updateInfoPanel(results) {
-        var infoPanel = document.getElementById("infoPanel");
-        var lastUpdate = results.profiles !== undefined ? new Date(results.profiles['profile 1'].import_date) : '?';
-        if (lastUpdate !== '?') {
-            lastUpdate = lastUpdate.getUTCDate() + '.' + (parseInt(lastUpdate.getMonth()) + parseInt(1)) + '.';
-        }
-        var nextUpdate = results.next_update !== undefined ? results.next_update : '?';
-        if (nextUpdate !== '?') {
-            nextUpdate = new Date(nextUpdate);
-            nextUpdate = nextUpdate.getUTCDate() + '.' + (parseInt(nextUpdate.getMonth()) + parseInt(1)) + '.';
-        }
-        infoPanel.innerHTML = '';
-        infoPanel.innerHTML += '(' + '<b>Last/Next Update</b> ' + lastUpdate + '/' + nextUpdate + ')';
-    }
-
     function updateSize() {
         this.theMap.invalidateSize();
     }
@@ -1292,6 +1336,9 @@ var Map = (function() {
             self.theMap.panBy(panMagnitude.scaleBy(L.point(Math.cos(panAngle), Math.sin(panAngle))));
         }
     }
+	
+	
+	
     map.prototype = new EventEmitter();
     map.prototype.constructor = map;
     map.prototype.serializeLayers = serializeLayers;
@@ -1336,7 +1383,109 @@ var Map = (function() {
     map.prototype.panMapOnEdges = panMapOnEdges;
     map.prototype.updateHeightprofiles = updateHeightprofiles;
     map.prototype.emitloadTMC = emitloadTMC;
-    map.prototype.graphInfo = graphInfo;
-    map.prototype.updateInfoPanel = updateInfoPanel;
+	
+	
+	
+	/*
+	 this.openmapsurfer = L.tileLayer(namespaces.layerMapSurfer, {
+            id: 'openmapsurfer',
+            attribution: 'Map data &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> contributors, powered by <a href="http://mapsurfernet.com/">MapSurfer.NET</a>'
+        });
+        this.openstreetmap = L.tileLayer(namespaces.layerOSM, {
+            id: 'openstreetmap',
+            attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+        });
+        this.ors_osm_worldwide = L.tileLayer.wms(namespaces.layerWms, {
+            id: 'openstreetmap_worldwide',
+            layers: 'osm_auto:all',
+            format: 'image/png',
+            maxZoom: 19,
+            attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+        });
+        this.opencyclemap = L.tileLayer(namespaces.layerOSMCycle, {
+            id: 'opencyclemap',
+            attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+        });
+        this.aster_hillshade = L.tileLayer.wms(namespaces.layerHs, {
+            format: 'image/png',
+            opacity: 0.45,
+            transparent: true,
+            attribution: '<a href="http://srtm.csi.cgiar.org/">SRTM</a>; ASTER GDEM is a product of <a href="http://www.meti.go.jp/english/press/data/20090626_03.html">METI</a> and <a href="https://lpdaac.usgs.gov/products/aster_policies">NASA</a>',
+            crs: L.CRS.EPSG900913
+        });
+        this.stamen = L.tileLayer(namespaces.stamenUrl, {
+            id: 'stamen',
+            attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.'
+        });
+        /* *********************************************************************
+         * MAP INIT & MAP LOCATION
+         * *********************************************************************/
+        // avoid polygons layer has to be defined before map is created
+        /*this.layerAvoid = new L.featureGroup();
+        this.theMap = new L.map(container, {
+            center: [49.409445, 8.692953],
+            minZoom: 2,
+            zoom: 13,
+            attributionControl: true,
+            crs: L.CRS.EPSG900913,
+            //layers: [this.openmapsurfer],
+            editable: true,
+            editOptions: {
+                skipMiddleMarkers: false,
+                featuresLayer: this.layerAvoid
+            }
+        });
+        
+		
+		
+		
+		this.baseLayers = {};
+        var layerName1 = Preferences.translate('layer1');
+        var layerName2 = Preferences.translate('layer2');
+        var layerName3 = Preferences.translate('layer3');
+        var layerName4 = Preferences.translate('layer4');
+        var layerName5 = Preferences.translate('layer5');
+        this.baseLayers[layerName1] = this.openmapsurfer;
+        this.baseLayers[layerName2] = this.ors_osm_worldwide;
+        this.baseLayers[layerName3] = this.openstreetmap;
+        this.baseLayers[layerName4] = this.opencyclemap;
+        this.baseLayers[layerName5] = this.stamen;
+        // add openmapsurfer as base
+        this.baseLayers[layerName1].addTo(this.theMap);
+        // this.baseLayers = {
+        //     layerName1: this.openmapsurfer,
+        //     layerName2: this.ors_osm_worldwide,
+        //     layerName3: this.openstreetmap,
+        //     layerName4: this.opencyclemap,
+        //     layerName5: this.stamen
+        // };
+        this.overlays = {};
+        // var overlays = {
+        //     layerName6: this.aster_hillshade,
+        // };
+        var layerName6 = Preferences.translate('layer6');
+        this.overlays[layerName6] = this.aster_hillshade;
+        L.control.mousePosition({
+            position: 'topright',
+            separator: ', '
+        }).addTo(this.theMap);*/
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
     return map;
 }());

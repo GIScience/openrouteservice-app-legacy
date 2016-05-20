@@ -2,28 +2,67 @@
 <html lang="de">
 	<head>
 		<title>OpenRouteService</title>
+		
+		<!-- Website metadata -->
 		<meta name="robots" content="index, follow">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> <!-- For mobile visualization -->
+		
+		<!-- Website icon -->
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+		
+		<!-- Website Style Sheets (CSS) -->
 		<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" type="text/css" href="css/bootstrap-ext.min.css"><!-- for file upload -->
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"> 
 		<link rel="stylesheet" type="text/css" href="css/contact_form.css">
 		<link rel="stylesheet" type="text/css" href="css/leaflet.css">
+		<link rel="stylesheet" type="text/css" href="css/mobile.css"> <!-- For mobile visualization -->
 		<link rel="stylesheet" type="text/css" href="css/default.css">
 		<link rel="stylesheet" type="text/css" href="css/leaflet.elevation-0.0.4.css">
 		<!-- css for leaflet cluster -->
 		<link rel="stylesheet" type="text/css" href="css/MarkerCluster.css" />
 		<link rel="stylesheet" type="text/css" href="css/MarkerCluster.Default.css" />
 		<link rel="stylesheet" type="text/css" href="css/L.Control.MousePosition.css" />
+		
+		
+		
  	</head>
 	<body id="main">
+		<div id="MobileSideBarLeft" style="display: none;"> 
+			<div class="MobileMenuButton" id="MobileRoutePlanning">  </div>
+			<div class="MobileMenuButton" id="MobileSearchAdress"> </div>
+			<div class="MobileMenuButton" id="MobileSearchPOI">  </div>
+			<div class="MobileMenuButton" id="MobileGlobalSettings">  </div>
+			<div class="MobileMenuButton" id="MobileInfoContact">  </div>
+			<div class="MobileMenuButton" id="MobileFeeback">  </div>
+			<div class="MobileMenuButton" id="MobileDisclaimer">  </div>
+		</div>	<!-- For mobile visualization -->
+		<div id="MobileSideBarLeft-Right" style="display: none;"> 
+				<div class="MobileOptionTitle" id="MobileRoutePlanningOptionsTitle"> </div>
+				<div class="MobileOptionOptions" id="MobileRoutePlanningOptionsOptions"> </div>
+		</div> <!-- For mobile visualization -->
+		<div id="MobileSideBarRight" style="display: none;"> 
+			<div id="Mobile-BaseLayers"> 
+				<div class="basemapchooser" id="openmapsurfer"> <label> <p> <b>OpenMapSurfer</b> </p> <input type="radio" name="baselayerchoose" value="oms" /> <img src="img/openmapsurfer.png" class="mobilebasemapimage" alt="ORS"> </label> </div>
+				<div class="basemapchooser" id="OSM-WMS"> <label> <p> <b>OSM-WMS Worldwide </b> </p> <input type="radio" name="baselayerchoose" value="osmwms" /> <img src="img/OSM-WMSWorldWide.png" class="mobilebasemapimage" alt="ORS"> </label>  </div>
+				<div class="basemapchooser" id="openstreetmap"> <label> <p> <b>OpenStreetMap </b> </p> <input type="radio" name="baselayerchoose" value="osm" /> <img src="img/openstreetmap.png" class="mobilebasemapimage" alt="ORS"> </label> </div>
+				<div class="basemapchooser" id="opencyclemap"> <label> <p> <b>OpenCycleMap </b> </p> <input type="radio" name="baselayerchoose" value="ocm" /> <img src="img/opencyclemap.png" class="mobilebasemapimage" alt="ORS"> </label> </div>
+				<div class="basemapchooser" id="stamenmap"> <label> <p> <b>Stamen Map (B&W) </b> </p> <input type="radio" name="baselayerchoose" value="sm" /> <img src="img/stamenmap.png" class="mobilebasemapimage" alt="ORS"> </label> </div>
+			</div>
+			<div id="Mobile-OverlayLayers"> 
+				<label> <input type="checkbox" name="baselayerchoose" value="hillshade" /> <b> Hillshade </b>  </label>
+				<label> <input type="checkbox" name="baselayerchoose" value="traffic" /> <b> Traffic </b> </label>
+			</div>
+		</div> <!-- For mobile visualization -->
 		<!-- navigation bar on top -->
-		<div class="navbar navbar-fixed-top" id="navbar">
-			<a class="brand" href="http://www.openrouteservice.org"> <img src="img/logo.png" class="logo" alt="ORS"></a>
+		<div class="navbar navbar-fixed-top" id="navbar" >
+			<div id="MobileMenuButton" > </div> <!-- For mobile visualization -->
+			<div id="MobileLayerButton" > </div> <!-- For mobile visualization -->
+			<a class="brand" id ="logo" href="http://www.openrouteservice.org"> <img src="img/logo.png" class="logo" alt="ORS"></a>
 			<a class="brand" id="title" href="http://www.openrouteservice.org">OpenRouteService.org</a>
 <!-- 			<a href="https://github.com/GIScience/openrouteservice/blob/bugfixes-3.0/release_notes/v3.0.md" style="cursor:pointer;" target="_blank" id="info" class="btn btn-large btn-success disabled">ORS successfully updated to version 3.0 - Routing temporarily available only within Germany.</a>
- -->			<ul id="topMenu">
+ -->		<ul id="topMenu">
 				<li>
 					<div class="alert alert-info" id="newToOrs">
 						<button type="button" class="close" data-dismiss="alert">
@@ -41,7 +80,9 @@
 					<a href="http://www.geog.uni-heidelberg.de/giscience.html" target="_blank"><img src="img/logo_giscience.png" alt="GIScience" class="links"></a>
 				</li>
 			</ul>
+			
 		</div>
+		
 		<div id="sidebar">
 			<ul id="functionMenu" class="nav nav-tabs">
 				<li class="active">
@@ -374,7 +415,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="panel panelLight" style="position: relative;">
+						<div class="panel panelLight" id="WaypointPanel" style="position: relative;">
 							<div class="guiComponent waypoint unset" draggable="draggable" id="Draft" style="display: none">
 								<span class="clickable waypoint-icon unset" title="Zoom to waypoint"> </span>
 								<span class="clickable removeWaypoint" title="Remove waypoint"> </span>
@@ -545,7 +586,7 @@
 										<table class="optionsTable" style="width:100%">
 											<div class="radioContainer">
 												<div class="checkbox"><label>
-													<input type="checkbox" id="viaOptimize" name="Via"  value="Via">
+													<input type="checkbox" id="viaOptimize" name="Via"  value="Via" checked>
 													<span class="label" id="viaOptimizeLabel">Optimize waypoint order</span></label>
 												</div>
 											</div>
@@ -603,14 +644,14 @@
 					×
 				</button>
 			</div>
-			<!-- Popup for service timeouts -->
-			<div class="alert alert-error" id="serviceTimeout">
-				<button type="button" class="close">
-					×
-				</button>
-			</div>
 		</div>
-		<div class="disclaimer" style="position: fixed;bottom: 2px;left: 5px;background-color: rgba(255, 255, 255, 0.75);padding: 1px;font-size: 83%;">
+		<!-- Popup for service timeouts -->
+		<div class="alert alert-error" id="serviceTimeout">
+			<button type="button" class="close" data-dismiss="alert">
+				×
+			</button>
+		</div>
+		<div class="disclaimer">
 			<a id="debug">debug - </a>
 			<a href="contact.html" class="inlineLink">(c) 2008-2016 &nbsp; -</a>
 			<a href="contact.html#disclaimer" class="inlineLink">Disclaimer &nbsp; -</a>
@@ -703,9 +744,10 @@
 		<script type="text/javascript" src="js/modules/Restrictions.js"></script>
 		<script type="text/javascript" src="js/ui/ui.js"></script>
 		<script type="text/javascript" src="js/ui/Versions.js"></script>
-		<script type="text/javascript" src="js/ui/Languages.js"></script>	
+		<script type="text/javascript" src="js/ui/Languages.js"></script>
 		<script type="text/javascript" src="js/map_styles.js"></script>				
 		<script type="text/javascript" src="js/map.js"></script>
+		<script type="text/javascript" src="js/MobileFuncJS.js"></script>
 		<script type="text/javascript" src="js/control.js"></script>
 		<script type="text/javascript" src="js/contact_form.js"></script>
 		<script type="text/javascript" src="js/lang/lang-cz.js"></script>
