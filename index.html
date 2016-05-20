@@ -467,36 +467,32 @@
 							<div class="addWaypoint clickable" id="addWaypoint">
 								add waypoint
 							</div>
-							<div class="buttonHolder">
-								<button id="orderRoute" class="btn btn-small" type="button" title="Reorder Waypoints"><i class="icon-refresh"></i></button>
+							<div class="panel panelMedium" id="viaOptimizePanel">
+								<div class="radioContainer">
+									<div class="checkbox"><label>
+										<input type="checkbox" id="viaOptimize" name="Via" value="Via">
+										<span class="label" id="viaOptimizeLabel">Optimize waypoint order</span></label>
+									</div>
+								</div>
 							</div>
-							<div class="buttonHolder">
-								<button id="resetRoute" class="btn btn-small" type="button" title="Reset Route"><i class="icon-trash"></i></button>
-							</div>
-							<div class="buttonHolder">
-								<button id="zoomToRouteButton" class="btn btn-small" type="button" title="Zoom to Route"><i class="icon-resize-full"></i></button>
+							<div class="panel panelTransparent">
+								<div class="controlButton">
+									<button id="orderRoute" class="btn btn-small" type="button" data-toggle="tooltip" title="Reorder Waypoints"><i class="icon-refresh"></i></button>
+								</div>
+								<div class="controlButton">
+									<button id="resetRoute" class="btn btn-small" type="button" data-toggle="tooltip" title="Reset Route"><i class="icon-trash"></i></button>
+								</div>
+								<div class="controlButton">
+									<button id="zoomToRouteButton" class="btn btn-small" type="button" data-toggle="tooltip" title="Zoom to Route"><i class="icon-resize-full"></i></button>
+								</div>
 							</div>
 						</div>
 						<div id="routeCalculate" style="display:none" class="alert alert-info searchingBlue"></div>
 						<div id="routeError" style="display:none" class="alert alert-error"></div>
-						<div class="routeSummaryContainer panel panelLight" style="display: none;"></div><div class="routeInstructionsContainer panel panelLight" style="display: none;"></div>
-						<div class="panel panelLight" id="routeSummaryContainer" style="display:none">
-							<div class="collapsible guiComponent">
-								<div class="collapsibleHead clickable" id="routeSummaryHead">
-									Summary:
-								</div>
-								<div class="collapsibleBody">
-									<span id ="route_totalTime" class="label label-info"></span>
-									<br/>
-									<span id ="route_totalDistance" class="label label-info"></span>
-									<br/>
-									<span id ="route_actualDistance" class="label label-info"></span>
-									<br/>
-									<span id ="route_trafficWarnings" class="label label-danger"></span>
-								</div>
-							</div>
-						</div>
+						
 						<div class="panel panelLight" id="routeInstructionsContainer" style="display:none">
+							
+							
 							<div class="collapsible guiComponent">
 								<div class="collapsibleHead clickable collapsed" id="routeInstructionHead">
 									Route instructions:
@@ -582,6 +578,7 @@
 											</div>
 										</div>
 									</div>
+<<<<<<< HEAD
 									<div class="panel panelMedium" id="viaOptimizePanel" style="">
 										<table class="optionsTable" style="width:100%">
 											<div class="radioContainer">
@@ -592,6 +589,8 @@
 											</div>
 										</table>
 									</div>
+=======
+>>>>>>> origin/bugfixes-3.0
 								</div>
 							</div>
 						</div>
@@ -709,7 +708,7 @@
 		</div>
 		<!-- 	important: jQuery must be included before prototype	 -->
 		<script type="text/javascript" src="lib/jquery-1.7.2.min.js"></script>
-		<script type="text/javascript" src="lib/bootstrap/bootstrap.min.js"></script>
+		<script type="text/javascript" src="lib/bootstrap/bootstrap.js"></script>
 		<script type="text/javascript" src="lib/bootstrap/bootstrap-typeahead.js"></script>
 		<script type="text/javascript" src="lib/bootstrap/bootstrap-ext.min.js"></script><!-- for file upload -->
 		<script type="text/javascript" src="lib/bootstrap/bootstrap-hover-dropdown.js"></script><!-- for hover dropdowns -->
