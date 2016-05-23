@@ -1359,48 +1359,37 @@ var Ui = (function(w) {
     /**
      * displays general route information as a route summary
      * @param results: response of the service containing the route summary information
+     * @param routePref: route type selected: car, bicycle etc..
      */
-    function updateRouteSummary(results) {
-        var yardsUnit, totalTimeArr = [];
-        var summaryElement = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteSummary')[0];
-        var totalTime = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'TotalTime')[0];
-        totalTime = totalTime.textContent || totalTime.text;
-        console.log(totalTime)
-            //<period>PT 5Y 2M 10D 15H 18M 43S</period>
-            //The example above indicates a period of five years, two months, 10 days, 15 hours, a8 minutes and 43 seconds
-        totalTime = totalTime.replace('P', '');
-        totalTime = totalTime.replace('T', '');
-        totalTime = totalTime.replace('D', preferences.translate('days'));
-        totalTime = totalTime.replace('H', preferences.translate('hours'));
-        totalTime = totalTime.replace('M', preferences.translate('minutes'));
-        totalTime = totalTime.replace('S', preferences.translate('seconds'));
-        totalTime = totalTime.match(/(\d+|[^\d]+)/g).join(',');
-        totalTime = totalTime.split(',');
-        console.log(totalTime);
-        var distance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'TotalDistance')[0];
-        var distanceValue = distance.getAttribute('value');
-        var distanceUnit = distance.getAttribute('uom');
-        var distArr = [];
-        if (preferences.distanceUnit == list.distanceUnitsPreferences[0]) {
-            //use mixture of km and m
-            distArr = util.convertDistanceFormat(distanceValue, preferences.distanceUnit);
+    function updateRouteSummary(results, routePref) {
+        if (!results) {
+            //hide container
+            $('#routeSummaryContainer').get(0).hide();
         } else {
-            //use mixture of miles and yards
-            yardsUnit = 'yd';
-            var distMeasure = util.convertDistToDist(distanceValue, distanceUnit, yardsUnit);
-            distArr = util.convertDistanceFormat(distMeasure, preferences.distanceUnit);
-        }
-        var actualdistArr = [];
-        var actualDistance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'ActualDistance')[0];
-        if (actualDistance !== undefined) {
-            var actualDistanceValue = actualDistance.getAttribute('value');
-            var actualDistanceUnit = actualDistance.getAttribute('uom');
+            //parse results and show them in the container
+            var summaryElement = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteSummary')[0];
+            var totalTime = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'TotalTime')[0];
+            totalTime = totalTime.textContent || totalTime.text;
+            //<period>PT5Y2M10D15H18M43S</period>
+            //The example above indicates a period of five years, two months, 10 days, 15 hours, a8 minutes and 43 seconds
+            totalTime = totalTime.replace('P', '');
+            totalTime = totalTime.replace('T', '');
+            totalTime = totalTime.replace('D', ' ' + preferences.translate('days') + ' ');
+            totalTime = totalTime.replace('H', ' ' + preferences.translate('hours') + ' ');
+            totalTime = totalTime.replace('M', ' ' + preferences.translate('minutes') + ' ');
+            totalTime = totalTime.slice(0, -1);
+            totalTime = totalTime + (' ' + preferences.translate('seconds') + ' ');
+            //totalTime = totalTime.replace('S', ' ' + preferences.translate('seconds') + ' ');
+            // total distance
+            var distance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'TotalDistance')[0];
+            var distanceValue = distance.getAttribute('value');
+            var distanceUnit = distance.getAttribute('uom');
+            var distArr = [];
             if (preferences.distanceUnit == list.distanceUnitsPreferences[0]) {
                 //use mixture of km and m
-                actualdistArr = util.convertDistanceFormat(actualDistanceValue, preferences.distanceUnit);
+                distArr = util.convertDistanceFormat(distanceValue, preferences.distanceUnit);
             } else {
                 //use mixture of miles and yards
-<<<<<<< HEAD
                 var yardsUnit = 'yd';
                 var distMeasure = util.convertDistToDist(distanceValue, distanceUnit, yardsUnit);
                 distArr = util.convertDistanceFormat(distMeasure, preferences.distanceUnit);
@@ -1432,70 +1421,10 @@ var Ui = (function(w) {
                     $(actualDistanceDiv)[0].update(preferences.translate('ActualDistance') + ': ' + actualdistArr[1] + ' ' + actualdistArr[2]);
                     $(actualDistanceDiv).show();
                 }
-=======
-                yardsUnit = 'yd';
-                var actualDistMeasure = util.convertDistToDist(actualDistanceValue, distanceUnit, yardsUnit);
-                actualdistArr = util.convertDistanceFormat(actualDistMeasure, preferences.distanceUnit);
->>>>>>> origin/bugfixes-3.0
             }
+            $(timeDiv)[0].update(preferences.translate('TotalTime') + ': ' + totalTime);
+            $(distanceDiv)[0].update(preferences.translate('TotalDistance') + ': ' + distArr[1] + ' ' + distArr[2]);
         }
-        
-        // empty old summary
-        
-        $('.directions-summary-info-container').remove();
-
-        var routeSummary = [totalTime, distArr, actualdistArr];
-        var pointInfo, unit, time, distanceInfo;
-
-
-
-        // time summary array
-        var summaryContainer = new Element('div', {
-            'class': 'directions-summary-info-container'
-        });
-        pointInfo = new Element('span', {
-            'class': 'directions-summary-info'
-        }).update('<i class="icon-time" style="margin: 2px 0 0 0;"></i>' + ' ');
-
-        var len;
-        if (routeSummary[0].length > 2) {
-            len = 4;
-        } else {
-            len = 2;
-        }
-        for (var ts = 0; ts < len; ts += 2) {
-            console.log(routeSummary[0][ts]);
-            time = new Element('div', {
-                'class': 'directions-summary-info-digit'
-            }).update(routeSummary[0][ts]);
-            unit = new Element('div', {
-                'class': 'directions-summary-info-units'
-            }).update(routeSummary[0][ts + 1][0]);
-            pointInfo.appendChild(time);
-            pointInfo.appendChild(unit);
-            summaryContainer.appendChild(pointInfo);
-        }
-        // distance summary
-        pointInfo = new Element('span', {
-            'class': 'directions-summary-info'
-        }).update('<i class="icon-resize-horizontal" style="margin: 2px 0 0 0;"></i>' + ' ');
-
-        distanceInfo = new Element('div', {
-            'class': 'directions-summary-info-digit'
-        }).update(routeSummary[1][1]);
-        unit = new Element('div', {
-                'class': 'directions-summary-info-units'
-        }).update(routeSummary[1][2]);
-        pointInfo.appendChild(distanceInfo);
-        pointInfo.appendChild(unit);
-
-        summaryContainer.appendChild(pointInfo);
-      
-        var container = $('#routeInstructionsContainer').get(0);
-
-        container.insertBefore(summaryContainer, container.firstChild);
-
-
     }
     /**
      * calculates way and surface type information for horizontal barcharts
@@ -1887,7 +1816,6 @@ var Ui = (function(w) {
 			totalDistance += stopoverDistance;
 			totalTime += stopoverTime;
             directionsContainer = buildWaypoint('layerRoutePoints', 'end', endpoint, getWaypoints().length - 1, stopoverDistance, stopoverTime);
-<<<<<<< HEAD
 			directionsMain.appendChild(directionsContainer);
 			var summaryContainer = new Element('div', {
                 'class': 'directions-summary-info-container'
@@ -1942,15 +1870,6 @@ var Ui = (function(w) {
             directionsMain.insertBefore(directionsBorder, directionsMain.firstChild);
             directionsMain.insertBefore(summaryContainer, directionsMain.firstChild);
 			// pointInfo.hide();
-=======
-            directionsMain.appendChild(directionsContainer);
-            
-            /* Route Summary */
-            
-            var routeSummary = updateRouteSummary(results);
-
-            
->>>>>>> origin/bugfixes-3.0
             return distArrAll;
             // TODO tmc messages expand collapse function
         }
@@ -2572,15 +2491,6 @@ var Ui = (function(w) {
             jQuery('#maxSpeedInput').val(maxspeed);
         }
     }
-    /** 
-     * set viaoptimize
-     * @params viaoptimize: is either true or false
-     */
-    function setOptimizeVia(bool) {
-        if (bool == 'true' ||  bool === true) {
-            $('#viaOptimize').prop('checked', true);
-        }
-    }
     /**
      * when the user wants to switch between route options
      * @param activeRouteOption: the active route option, i.e. one of car,bicycle,pedestrian,wheelchair
@@ -2609,7 +2519,6 @@ var Ui = (function(w) {
      * @param e: the event
      */
     function handleOptionsChanged(e) {
-        var boolVar;
         e = e || window.event;
         var target = e.target || e.srcElement;
         var itemId = target.id;
@@ -2620,9 +2529,9 @@ var Ui = (function(w) {
             if (itemId === list.routeAvoidables[0]) {
                 //if the avoidable is set, remove it (and vice versa)
                 if (permaInfo[preferences.avoidHighwayIdx] == "true" || permaInfo[preferences.avoidHighwayIdx] == true) {
-                    boolVar = false;
+                    var boolVar = false;
                 } else {
-                    boolVar = true;
+                    var boolVar = true;
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidHighwayIdx,
@@ -2632,9 +2541,9 @@ var Ui = (function(w) {
             if (itemId === list.routeAvoidables[1]) {
                 //if the avoidable is set, remove it (and vice versa)
                 if (permaInfo[preferences.avoidTollwayIdx] == "true" || permaInfo[preferences.avoidTollwayIdx] == true) {
-                    boolVar = false;
+                    var boolVar = false;
                 } else {
-                    boolVar = true;
+                    var boolVar = true;
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidTollwayIdx,
@@ -2644,9 +2553,9 @@ var Ui = (function(w) {
             if (itemId === list.routeAvoidables[2]) {
                 //if the avoidable is set, remove it (and vice versa)
                 if (permaInfo[preferences.avoidUnpavedIdx] == "true" || permaInfo[preferences.avoidUnpavedIdx] == true) {
-                    boolVar = false;
+                    var boolVar = false;
                 } else {
-                    boolVar = true;
+                    var boolVar = true;
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidUnpavedIdx,
@@ -2655,9 +2564,9 @@ var Ui = (function(w) {
             }
             if (itemId === list.routeAvoidables[3]) {
                 if (permaInfo[preferences.avoidFerryIdx] == "true" || permaInfo[preferences.avoidFerryIdx] == true) {
-                    boolVar = false;
+                    var boolVar = false;
                 } else {
-                    boolVar = true;
+                    var boolVar = true;
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidFerryIdx,
@@ -2665,9 +2574,9 @@ var Ui = (function(w) {
                 });
             } else if (itemId === list.routeAvoidables[4]) {
                 if (permaInfo[preferences.avoidStepsIdx] == "true" || permaInfo[preferences.avoidStepsIdx] == true) {
-                    boolVar = false;
+                    var boolVar = false;
                 } else {
-                    boolVar = true;
+                    var boolVar = true;
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidStepsIdx,
@@ -2675,9 +2584,9 @@ var Ui = (function(w) {
                 });
             } else if (itemId === list.routeAvoidables[5]) {
                 if (permaInfo[preferences.avoidFordsIdx] == "true" || permaInfo[preferences.avoidFordsIdx] == true) {
-                    boolVar = false;
+                    var boolVar = false;
                 } else {
-                    boolVar = true;
+                    var boolVar = true;
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidFordsIdx,
@@ -2685,9 +2594,9 @@ var Ui = (function(w) {
                 });
             } else if (itemId === list.routeAvoidables[6]) {
                 if (permaInfo[preferences.avoidPavedIdx] == "true" || permaInfo[preferences.avoidPavedIdx] == true) {
-                    boolVar = false;
+                    var boolVar = false;
                 } else {
-                    boolVar = true;
+                    var boolVar = true;
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidPavedIdx,
@@ -2695,9 +2604,9 @@ var Ui = (function(w) {
                 });
             } else if (itemId === list.routeAvoidables[7]) {
                 if (permaInfo[preferences.avoidTunnelIdx] == "true" || permaInfo[preferences.avoidTunnelIdx] == true) {
-                    boolVar = false;
+                    var boolVar = false;
                 } else {
-                    boolVar = true;
+                    var boolVar = true;
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidTunnelIdx,
@@ -2797,26 +2706,14 @@ var Ui = (function(w) {
             }
         } else if (itemId == 'Hazardous') {
             if (permaInfo[preferences.hazardousIdx] == "hazmat") {
-                boolVar = null;
+                var boolVar = null;
             } else {
-                boolVar = "hazmat";
+                var boolVar = "hazmat";
             }
             theInterface.emit('ui:prefsChanged', {
                 key: preferences.hazardousIdx,
                 value: boolVar
             });
-        } else if (itemId == 'viaOptimize') {
-            if (permaInfo[preferences.optimizeViaIdx] == "true" || permaInfo[preferences.optimizeViaIdx] === true) {
-                boolVar = false;
-            } else {
-                boolVar = true;
-            }
-            console.log(boolVar)
-            theInterface.emit('ui:prefsChanged', {
-                key: preferences.optimizeViaIdx,
-                value: boolVar
-            });
-            console.log(itemId)
         } else if (itemId != 'maxSpeedInput') {
             // update route type if not maxspeedinput updated
             theInterface.emit('ui:prefsChanged', {
@@ -2825,11 +2722,7 @@ var Ui = (function(w) {
             });
         }
         // update route except when user has updated maxspeed
-        if ($.inArray(itemId, list.dontUpdateRoute) < 0) {
-            console.log('update')
-            theInterface.emit('ui:routingParamsChanged');
-        }
-        //if (itemId != "maxSpeedInput") theInterface.emit('ui:routingParamsChanged');
+        if (itemId != "maxSpeedInput") theInterface.emit('ui:routingParamsChanged');
     }
     /** 
      * The user inserts maximum speed into the form when route profile fastest is selected
@@ -3381,7 +3274,6 @@ var Ui = (function(w) {
         $('#heavyvehicle').click(switchRouteOptionsPane);
         $('#wheelchair').click(switchRouteOptionsPane);
         $('.routeOptions').change(handleOptionsChanged);
-        $('#viaOptimize').click(handleOptionsChanged);
         //permalink
         $('#infoPermalink').click(handleOpenPermaOptions);
         $('#open').click(handleGeneratePerma);
@@ -3412,17 +3304,6 @@ var Ui = (function(w) {
         });
         //maxspeed button listener
         $('#maxSpeedBtn').click(handleMaxspeed);
-<<<<<<< HEAD
-=======
-        //close serviceTimeout Label
-        $('#serviceTimeout').children('button').click(function() {
-            $('#serviceTimeout').hide();
-        });
-        // tooltips
-        $('#orderRoute').tooltip();
-        $('#resetRoute').tooltip();
-        $('#zoomToRouteButton').tooltip();
->>>>>>> origin/bugfixes-3.0
     }
     Ui.prototype = new EventEmitter();
     Ui.prototype.constructor = Ui;
@@ -3479,7 +3360,6 @@ var Ui = (function(w) {
     Ui.prototype.setTruckParameters = setTruckParameters;
     Ui.prototype.setHazardousParameter = setHazardousParameter;
     Ui.prototype.setMaxspeedParameter = setMaxspeedParameter;
-    Ui.prototype.setOptimizeVia = setOptimizeVia;
     Ui.prototype.handleGpxFiles = handleGpxFiles;
     Ui.prototype.handleResetRoute = handleResetRoute;
     Ui.prototype.handleMaxspeed = handleMaxspeed;

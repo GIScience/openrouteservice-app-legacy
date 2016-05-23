@@ -53,7 +53,7 @@ var Map = (function() {
         // avoid polygons layer has to be defined before map is created
         this.layerAvoid = new L.featureGroup();
         this.theMap = new L.map(container, {
-            center: [49.409445, 8.692953],
+            center:  [49.409445, 8.692953],
             minZoom: 2,
             zoom: 13,
             attributionControl: true,
@@ -101,54 +101,6 @@ var Map = (function() {
         this.layerControls = L.control.layers(this.baseLayers, this.overlays);
         this.layerControls.addTo(this.theMap);
         L.control.scale().addTo(this.theMap);
-
-		/* *********************************************************************
-		* FOR MOBILE LAYER CHOOSER
-		* *********************************************************************/
-		var test = this.theMap;
-		var test2 = this;
-		jQuery(document).ready(function(){
-			jQuery('div.basemapchooser input[type="radio"]').on('change', function() {
-				var radio = $(this);
-				if(radio.is(':checked') && this.value == 'oms') {
-					test.removeLayer(test2.baseLayers[layerName2]);
-					test.removeLayer(test2.baseLayers[layerName3]);
-					test.removeLayer(test2.baseLayers[layerName4]);
-					test.removeLayer(test2.baseLayers[layerName5]);
-					test.addLayer(test2.baseLayers[layerName1]);
-				}
-				else if(radio.is(':checked') && this.value == 'osmwms') {
-					test.removeLayer(test2.baseLayers[layerName1]);
-					test.removeLayer(test2.baseLayers[layerName3]);
-					test.removeLayer(test2.baseLayers[layerName4]);
-					test.removeLayer(test2.baseLayers[layerName5]);
-					test.addLayer(test2.baseLayers[layerName2]);
-				}
-				else if(radio.is(':checked') && this.value == 'osm') {
-					test.removeLayer(test2.baseLayers[layerName2]);
-					test.removeLayer(test2.baseLayers[layerName1]);
-					test.removeLayer(test2.baseLayers[layerName4]);
-					test.removeLayer(test2.baseLayers[layerName5]);
-					test.addLayer(test2.baseLayers[layerName3]);
-				}
-				else if(radio.is(':checked') && this.value == 'ocm') {
-					test.removeLayer(test2.baseLayers[layerName2]);
-					test.removeLayer(test2.baseLayers[layerName3]);
-					test.removeLayer(test2.baseLayers[layerName1]);
-					test.removeLayer(test2.baseLayers[layerName5]);
-					test.addLayer(test2.baseLayers[layerName4]);
-				}
-				else if(radio.is(':checked') && this.value == 'sm') {
-					test.removeLayer(test2.baseLayers[layerName2]);
-					test.removeLayer(test2.baseLayers[layerName3]);
-					test.removeLayer(test2.baseLayers[layerName4]);
-					test.removeLayer(test2.baseLayers[layerName1]);
-					test.addLayer(test2.baseLayers[layerName5]);
-				}
-			});
-		});
-		
-		/* ********************************************************************/
 		
 		var markers = [{
             "name": "Canada",
@@ -195,6 +147,80 @@ var Map = (function() {
         this.layerAvoid.addTo(this.theMap);
         this.serializedLayersString = 'B0000';
         this.serializedOverlaysString = '';
+		
+				/* *********************************************************************
+		* FOR MOBILE BASE MAP LAYER CHOOSER
+		* *********************************************************************/
+		var test = this.theMap;
+		var test2 = this;
+		jQuery(document).ready(function(){
+			jQuery('div.basemapchooser input[type="radio"]').on('change', function() {
+				var radio = $(this);
+				if(radio.is(':checked') && this.value == 'oms') {
+					test.removeLayer(test2.baseLayers[layerName2]);
+					test.removeLayer(test2.baseLayers[layerName3]);
+					test.removeLayer(test2.baseLayers[layerName4]);
+					test.removeLayer(test2.baseLayers[layerName5]);
+					test.addLayer(test2.baseLayers[layerName1]);
+				}
+				else if(radio.is(':checked') && this.value == 'osmwms') {
+					test.removeLayer(test2.baseLayers[layerName1]);
+					test.removeLayer(test2.baseLayers[layerName3]);
+					test.removeLayer(test2.baseLayers[layerName4]);
+					test.removeLayer(test2.baseLayers[layerName5]);
+					test.addLayer(test2.baseLayers[layerName2]);
+				}
+				else if(radio.is(':checked') && this.value == 'osm') {
+					test.removeLayer(test2.baseLayers[layerName2]);
+					test.removeLayer(test2.baseLayers[layerName1]);
+					test.removeLayer(test2.baseLayers[layerName4]);
+					test.removeLayer(test2.baseLayers[layerName5]);
+					test.addLayer(test2.baseLayers[layerName3]);
+				}
+				else if(radio.is(':checked') && this.value == 'ocm') {
+					test.removeLayer(test2.baseLayers[layerName2]);
+					test.removeLayer(test2.baseLayers[layerName3]);
+					test.removeLayer(test2.baseLayers[layerName1]);
+					test.removeLayer(test2.baseLayers[layerName5]);
+					test.addLayer(test2.baseLayers[layerName4]);
+				}
+				else if(radio.is(':checked') && this.value == 'sm') {
+					test.removeLayer(test2.baseLayers[layerName2]);
+					test.removeLayer(test2.baseLayers[layerName3]);
+					test.removeLayer(test2.baseLayers[layerName4]);
+					test.removeLayer(test2.baseLayers[layerName1]);
+					test.addLayer(test2.baseLayers[layerName5]);
+				}
+			});
+		});
+		
+		/* *********************************************************************
+		* FOR MOBILE OVERLAY LAYER CHOOSER
+		* *********************************************************************/
+		//var test = this.theMap;
+		//var test2 = this;
+		jQuery(document).ready(function(){
+			jQuery('div.overlaychooser input[type="checkbox"]').on('change', function() {
+				var check = $(this);
+				if(check.is(':checked') && this.value == 'hillshade') {
+					test.addLayer(test2.overlays[layerName6]);
+				}
+				else if(check.is(':checked') && this.value == 'traffic') {
+					test.addLayer(test2.overlays[layerName7]);
+				}
+				else if (!check.is(':checked') && this.value == 'hillshade') {
+					test.removeLayer(test2.overlays[layerName6]);
+				}
+				else if(! check.is(':checked') && this.value == 'traffic') {
+					test.removeLayer(test2.overlays[layerName7]);
+				} 
+			});
+		});
+		
+		
+		/* ********************************************************************/
+		
+
         /* *********************************************************************
          * MAP CONTROLS
          * *********************************************************************/
@@ -342,6 +368,21 @@ var Map = (function() {
         this.theMap.on('editable:drawing:commit', shapeListener);
         this.theMap.on('editable:vertex:deleted', shapeListener);
         this.theMap.on('editable:vertex:dragend', shapeListener);
+		
+		/* *********************************************************************
+		* CONTROLLERS FOR MOBILE
+		* *********************************************************************/
+		
+		//COMPASS CONTROLLER
+		
+		//this.theMap.addControl( new L.Control.Compass({position: 'bottomleft'}) );
+		
+		// LOCATE USER CONTROLLER
+		L.control.locate({position: 'bottomleft',clickBehavior:{inView: 'setView', outOfView: 'setView'}}).addTo(this.theMap);
+		
+		/* ********************************************************************* */
+		
+		
         /* *********************************************************************
          * MAP EVENTS
          * *********************************************************************/

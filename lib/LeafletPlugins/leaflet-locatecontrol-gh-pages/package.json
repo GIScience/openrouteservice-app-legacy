@@ -1,0 +1,35 @@
+{
+  "name": "leaflet.locatecontrol",
+  "version": "0.52.0",
+  "homepage": "https://github.com/domoritz/leaflet-locatecontrol",
+  "description": "A useful control to geolocate the user with many options. Used by osm.org and mapbox among many others.",
+  "main": "src/L.Control.Locate.js",
+  "author": "Dominik Moritz <domoritz@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:domoritz/leaflet-locatecontrol.git"
+  },
+  "keywords": [
+    "leaflet",
+    "locate",
+    "plugin"
+  ],
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "font-awesome": "^4.5.0",
+    "leaflet": "^0.7.7"
+  },
+  "scripts": {
+    "build": "grunt",
+    "bump:minor": "grunt bump-only:minor && grunt && grunt bump-commit",
+    "start": "grunt serve"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-bump": "0.7.0",
+    "grunt-contrib-sass": "^1.0.0",
+    "grunt-contrib-uglify": "^1.0.1",
+    "grunt-serve": "^0.1.6"
+  }
+}

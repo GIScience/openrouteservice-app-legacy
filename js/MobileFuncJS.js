@@ -109,6 +109,60 @@ function PopulateOptionDiv(id){
 	else if (id=="MobileInfoContact"){
 		jQuery("#MobileSideBarLeft-Right #MobileRoutePlanningOptionsOptions").empty(); /*Empty the DIV element before writing something new*/
 		jQuery( "#MobileRoutePlanningOptionsTitle" ).append( "<p> <b> Info & Contacts </b> </p>" );
+		jQuery( "#MobileRoutePlanningOptionsOptions" ).append("<section id=\"contact\">\
+				<div class=\"space\">\
+					&nbsp;\
+				</div>\
+				<p>\
+				In case you have any further questions, concerns or feedback about this service agreement, please contact us via Email:<br>\
+				<b>openrouteservice at geog.uni-heidelberg.de</b>\
+				</p>\
+				<p><br>\
+					<a href=\"http://www.geog.uni-heidelberg.de/giscience.html\" target=\"_blank\"><img src=\"img/logo_giscience.png\" class=\"logo_big\" alt=\"logo GIScience\" />\
+					<img src=\"img/siegel_uni_hd_mittel.gif\" class=\"logo_big\" alt=\"logo University of Heidelberg\" /></a>\
+				</p>\
+				<div class=\"space_small\">\
+					&nbsp;\
+				</div>\
+				<dl class=\"dl-horizontal\" id=\"dl-horizontal_mod\">\
+					<dt>\
+						Idea\
+					</dt>\
+					<dd>\
+						Pascal Neis &amp; Alexander Zipf\
+					</dd>\
+					<dt>\
+						Backend Development\
+					</dt>\
+					<dd>\
+						Maxim Rylov, Enrico Steiger &amp; Timothy Ellersiek\
+					</dd>\
+					<dt>\
+						Website\
+					</dt>\
+					<dd>\
+						Timothy Ellersiek, Enrico Steiger, Maxim Rylov &amp; Oliver Roick\
+					</dd>\
+					<dt>\
+						Web Mapping Service (WMS) &amp; TileCache\
+					</dt>\
+					<dd>\
+						Pascal Neis, Michael Auer &amp; Steffen Neubauer\
+					</dd>\
+					<dt>\
+						OpenMapSurfer Tiles\
+					</dt>\
+					<dd>\
+						<a href=\"http://openmapsurfer.uni-hd.de/\" target=\"_blank\">Maxim Rylov</a>\
+					</dd>\
+					<dt>\
+						Hillshade processing\
+					</dt>\
+					<dd>\
+						Michael Auer &amp; Magnus Fees\
+					</dd>\
+				</dl>\
+			</section>");
 	}
 	else if (id=="MobileFeeback"){
 		jQuery("#MobileSideBarLeft-Right #MobileRoutePlanningOptionsOptions").empty(); /*Empty the DIV element before writing something new*/
@@ -122,10 +176,6 @@ function PopulateOptionDiv(id){
 				<div class=\"space\">\
 					&nbsp;\
 				</div>\
-				<div class=\"space\">\
-					&nbsp;\
-				</div>\
-				<h2><a name=\"disclaimer\">Disclaimer</a></h2>\
 				<p>\
 					The data sources for routing and mapping are based on free and open and even collaborative volunteered data collection efforts. Therefore we cannot guarantee any quality of the displayed data and the routing results. We are not responsible for any errors, mistakes, omissions or other problems with the used data and occurring from using this service.\
 				</p>\
@@ -146,9 +196,6 @@ function PopulateOptionDiv(id){
 				<li>Transmitting viruses, trojan horses, or any other malicious code or program; or</li>\
 				<li>Engaging in any other activity deemed by OpenRouteService to be in conflict with the spirit or intent of these Terms.</li>\
 				</p>\
-				<div class=\"topOfPage\">\
-					<a href=\"#top\">Top of page &nbsp;<i class=\"icon-chevron-up\">&nbsp;</i></a>\
-				</div>\
 			</section>" );
 		
 	}

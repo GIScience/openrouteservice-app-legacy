@@ -173,18 +173,21 @@
 	}
 	
 	.MobileOptionOptions{
-		width: 100%; 
+		width: 98%; 
 		height: auto;
 		display:inline-block;
 		overflow-y: auto;
 		-webkit-overflow-scrolling: touch;
 		margin-top: 30px;
+		margin-left: 5px;
+		margin-right: 5px !important;
+		color: #ddd8d8;
+
 	}
 	
 	/*Styles for Route Options */
 	#WaypointPanel {
 		background-color: transparent;
-		
 	}
 	
 	/*Styles for Address Search */
@@ -208,8 +211,6 @@
 	.modal-footer #preferencesClose {
 		display: none;
 		float: left;
-		
-		
 	}
 	
 	/* Style for Mobile Side Bar Right */
@@ -272,15 +273,64 @@
 	/*Styles for Overlay Layers */
 	#Mobile-OverlayLayers{
 		display: inline-block;
-		width: 200px;
-		height: auto;
+		width: 100%;
+		height: 70px;
 		color: #ddd8d8;
+		border-bottom: 3px solid white;
 	}
 	
-	#Mobile-OverlayLayers input{
-		width: 80px;
-		margin: auto;
-		
+	.overlaychooser {
+		height: 50px;
+		text-align: center;
+		color: #ddd8d8;
+		display: inline-block;
+		width: 60px;
+		margin-top: 5px;
+	}
+	
+	#MobileHillshadeDiv {
+		float: left;
+		margin-left: 15px;
+	}
+	
+	#MobileTrafficDiv{
+		float: right;
+		margin-right: 15px;
+	}
+	
+	.overlaychooser p {
+		/*margin-top: 5px;*/
+		/*padding-top: 5px;*/
+		width:60px;
+		margin: 0 auto;
+	}
+	
+	.mobileoverlayimage {
+		height: 40px;
+		width: 40px;
+		border-radius: 5px;
+	}
+	
+	.overlaychooser label > input{ /* hide the checkbox box */
+		display:none;
+	}
+	
+	.overlaychooser label > input + img{ /* style the border when invisible checkbox is not selected */
+		background-color: transparent;
+	}
+	
+	.overlaychooser label > input:checked + img{ /* style the border when invisible checkbox is selected */
+		background-color:#ddd8d8;
+	}
+	
+	/* Locate user control aditional style */
+
+	.leaflet-control-locate a{
+		background-image: url(../img/picto-locate.png);
+		background-size: 80%;
+		background-repeat: no-repeat;
+		background-position: center center;
+		visibility: visible;
 	}
 	
 	

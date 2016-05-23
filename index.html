@@ -24,7 +24,10 @@
 		<link rel="stylesheet" type="text/css" href="css/MarkerCluster.css" />
 		<link rel="stylesheet" type="text/css" href="css/MarkerCluster.Default.css" />
 		<link rel="stylesheet" type="text/css" href="css/L.Control.MousePosition.css" />
-		
+		<!-- css for leaflet compass -->
+		<link rel="stylesheet" type="text/css" href="lib/LeafletPlugins/leaflet-compass-master/src/leaflet-compass.css" />
+		<!-- css for leaflet locate control -->
+		<link rel="stylesheet" type="text/css" href="lib/LeafletPlugins/leaflet-locatecontrol-gh-pages/dist/L.Control.Locate.css" />
 		
 		
  	</head>
@@ -44,15 +47,57 @@
 		</div> <!-- For mobile visualization -->
 		<div id="MobileSideBarRight" style="display: none;"> 
 			<div id="Mobile-BaseLayers"> 
-				<div class="basemapchooser" id="openmapsurfer"> <label> <p> <b>OpenMapSurfer</b> </p> <input type="radio" name="baselayerchoose" value="oms" /> <img src="img/openmapsurfer.png" class="mobilebasemapimage" alt="ORS"> </label> </div>
-				<div class="basemapchooser" id="OSM-WMS"> <label> <p> <b>OSM-WMS Worldwide </b> </p> <input type="radio" name="baselayerchoose" value="osmwms" /> <img src="img/OSM-WMSWorldWide.png" class="mobilebasemapimage" alt="ORS"> </label>  </div>
-				<div class="basemapchooser" id="openstreetmap"> <label> <p> <b>OpenStreetMap </b> </p> <input type="radio" name="baselayerchoose" value="osm" /> <img src="img/openstreetmap.png" class="mobilebasemapimage" alt="ORS"> </label> </div>
-				<div class="basemapchooser" id="opencyclemap"> <label> <p> <b>OpenCycleMap </b> </p> <input type="radio" name="baselayerchoose" value="ocm" /> <img src="img/opencyclemap.png" class="mobilebasemapimage" alt="ORS"> </label> </div>
-				<div class="basemapchooser" id="stamenmap"> <label> <p> <b>Stamen Map (B&W) </b> </p> <input type="radio" name="baselayerchoose" value="sm" /> <img src="img/stamenmap.png" class="mobilebasemapimage" alt="ORS"> </label> </div>
+				<div class="basemapchooser" id="openmapsurfer"> 
+					<label> 
+						<p> <b>OpenMapSurfer</b> </p> 
+						<input type="radio" name="baselayerchoose" value="oms" /> 
+						<img src="img/openmapsurfer.png" class="mobilebasemapimage" alt="ORS"> 
+					</label> 
+				</div>
+				<div class="basemapchooser" id="OSM-WMS"> 
+					<label> 
+						<p> <b>OSM-WMS Worldwide </b> </p> 
+						<input type="radio" name="baselayerchoose" value="osmwms" /> 
+						<img src="img/OSM-WMSWorldWide.png" class="mobilebasemapimage" alt="ORS"> 
+					</label>  
+				</div>
+				<div class="basemapchooser" id="openstreetmap"> 
+					<label> 
+						<p> <b>OpenStreetMap </b> </p> 
+						<input type="radio" name="baselayerchoose" value="osm" /> 
+						<img src="img/openstreetmap.png" class="mobilebasemapimage" alt="ORS"> 
+					</label> 
+				</div>
+				<div class="basemapchooser" id="opencyclemap"> 
+					<label> 
+						<p> <b>OpenCycleMap </b> </p> 
+						<input type="radio" name="baselayerchoose" value="ocm" /> 
+						<img src="img/opencyclemap.png" class="mobilebasemapimage" alt="ORS"> 
+					</label> 
+				</div>
+				<div class="basemapchooser" id="stamenmap"> 
+					<label> 
+						<p> <b>Stamen Map (B&W) </b> </p> 
+						<input type="radio" name="baselayerchoose" value="sm" /> 
+						<img src="img/stamenmap.png" class="mobilebasemapimage" alt="ORS"> 
+					</label> 
+				</div>
 			</div>
-			<div id="Mobile-OverlayLayers"> 
-				<label> <input type="checkbox" name="baselayerchoose" value="hillshade" /> <b> Hillshade </b>  </label>
-				<label> <input type="checkbox" name="baselayerchoose" value="traffic" /> <b> Traffic </b> </label>
+			<div id="Mobile-OverlayLayers">
+				<div class="overlaychooser" id="MobileHillshadeDiv">  
+					<label> 
+						<p> <b> Hillshade </b> </p>
+						<input type="checkbox" name="overlaychoose" value="hillshade" />
+						<img src="img/picto-mountain.png" class="mobileoverlayimage" alt="ORS"> 						
+					</label> 
+				</div>
+				<div class="overlaychooser" id="MobileTrafficDiv">
+					<label> 
+						<p> <b> Traffic </b> </p>
+						<input type="checkbox" name="overlaychoose" value="traffic" />
+						<img src="img/picto-traffic.png" class="mobileoverlayimage" alt="ORS"> 
+					</label>
+				</div>
 			</div>
 		</div> <!-- For mobile visualization -->
 		<!-- navigation bar on top -->
@@ -467,32 +512,36 @@
 							<div class="addWaypoint clickable" id="addWaypoint">
 								add waypoint
 							</div>
-							<div class="panel panelMedium" id="viaOptimizePanel">
-								<div class="radioContainer">
-									<div class="checkbox"><label>
-										<input type="checkbox" id="viaOptimize" name="Via" value="Via">
-										<span class="label" id="viaOptimizeLabel">Optimize waypoint order</span></label>
-									</div>
-								</div>
+							<div class="buttonHolder">
+								<button id="orderRoute" class="btn btn-small" type="button" title="Reorder Waypoints"><i class="icon-refresh"></i></button>
 							</div>
-							<div class="panel panelTransparent">
-								<div class="controlButton">
-									<button id="orderRoute" class="btn btn-small" type="button" data-toggle="tooltip" title="Reorder Waypoints"><i class="icon-refresh"></i></button>
-								</div>
-								<div class="controlButton">
-									<button id="resetRoute" class="btn btn-small" type="button" data-toggle="tooltip" title="Reset Route"><i class="icon-trash"></i></button>
-								</div>
-								<div class="controlButton">
-									<button id="zoomToRouteButton" class="btn btn-small" type="button" data-toggle="tooltip" title="Zoom to Route"><i class="icon-resize-full"></i></button>
-								</div>
+							<div class="buttonHolder">
+								<button id="resetRoute" class="btn btn-small" type="button" title="Reset Route"><i class="icon-trash"></i></button>
+							</div>
+							<div class="buttonHolder">
+								<button id="zoomToRouteButton" class="btn btn-small" type="button" title="Zoom to Route"><i class="icon-resize-full"></i></button>
 							</div>
 						</div>
 						<div id="routeCalculate" style="display:none" class="alert alert-info searchingBlue"></div>
 						<div id="routeError" style="display:none" class="alert alert-error"></div>
-						
+						<div class="routeSummaryContainer panel panelLight" style="display: none;"></div><div class="routeInstructionsContainer panel panelLight" style="display: none;"></div>
+						<div class="panel panelLight" id="routeSummaryContainer" style="display:none">
+							<div class="collapsible guiComponent">
+								<div class="collapsibleHead clickable" id="routeSummaryHead">
+									Summary:
+								</div>
+								<div class="collapsibleBody">
+									<span id ="route_totalTime" class="label label-info"></span>
+									<br/>
+									<span id ="route_totalDistance" class="label label-info"></span>
+									<br/>
+									<span id ="route_actualDistance" class="label label-info"></span>
+									<br/>
+									<span id ="route_trafficWarnings" class="label label-danger"></span>
+								</div>
+							</div>
+						</div>
 						<div class="panel panelLight" id="routeInstructionsContainer" style="display:none">
-							
-							
 							<div class="collapsible guiComponent">
 								<div class="collapsibleHead clickable collapsed" id="routeInstructionHead">
 									Route instructions:
@@ -578,7 +627,6 @@
 											</div>
 										</div>
 									</div>
-<<<<<<< HEAD
 									<div class="panel panelMedium" id="viaOptimizePanel" style="">
 										<table class="optionsTable" style="width:100%">
 											<div class="radioContainer">
@@ -589,8 +637,6 @@
 											</div>
 										</table>
 									</div>
-=======
->>>>>>> origin/bugfixes-3.0
 								</div>
 							</div>
 						</div>
@@ -708,7 +754,7 @@
 		</div>
 		<!-- 	important: jQuery must be included before prototype	 -->
 		<script type="text/javascript" src="lib/jquery-1.7.2.min.js"></script>
-		<script type="text/javascript" src="lib/bootstrap/bootstrap.js"></script>
+		<script type="text/javascript" src="lib/bootstrap/bootstrap.min.js"></script>
 		<script type="text/javascript" src="lib/bootstrap/bootstrap-typeahead.js"></script>
 		<script type="text/javascript" src="lib/bootstrap/bootstrap-ext.min.js"></script><!-- for file upload -->
 		<script type="text/javascript" src="lib/bootstrap/bootstrap-hover-dropdown.js"></script><!-- for hover dropdowns -->
@@ -718,6 +764,8 @@
 		<script type="text/javascript" src="lib/leaflet.ajax.js"></script>
 		<script type="text/javascript" src="lib/leaflet.markercluster-src.js"></script>
 		<script type="text/javascript" src="lib/L.Control.MousePosition.js"></script>
+		<script type="text/javascript" src="lib/LeafletPlugins/leaflet-compass-master/src/leaflet-compass.js"></script> <!-- Compass controller for leaflet -->
+		<script type="text/javascript" src="lib/LeafletPlugins/leaflet-locatecontrol-gh-pages/dist/L.Control.Locate.min.js"></script> <!-- Locate user controller for leaflet -->
 		<script type="text/javascript" src="lib/togpx.js"></script>
 		<script type="text/javascript" src="lib/togeojson.js"></script>
 		<script type="text/javascript" src="lib/leaflet-drag-marker-edges.js"></script>
@@ -746,7 +794,7 @@
 		<script type="text/javascript" src="js/ui/Languages.js"></script>
 		<script type="text/javascript" src="js/map_styles.js"></script>				
 		<script type="text/javascript" src="js/map.js"></script>
-		<script type="text/javascript" src="js/MobileFuncJS.js"></script>
+		<script type="text/javascript" src="js/MobileFuncJS.js"></script> <!-- Functions for mobile visualization -->
 		<script type="text/javascript" src="js/control.js"></script>
 		<script type="text/javascript" src="js/contact_form.js"></script>
 		<script type="text/javascript" src="js/lang/lang-cz.js"></script>
