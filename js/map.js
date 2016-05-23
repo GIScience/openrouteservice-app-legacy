@@ -1036,6 +1036,7 @@ var Map = (function() {
      * zooms the map so that the whole route becomes visible (i.e. all features of the route line layer)
      */
     function zoomToRoute() {
+        console.log('zooming')
         this.theMap.fitBounds(this.layerRoutePoints.getBounds());
     }
     /*

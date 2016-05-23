@@ -863,7 +863,8 @@ var Controller = (function(w) {
                         container.hide();
                     }
                     ui.endRouteCalculation();
-                    map.zoomToRoute();
+                    // zoom to route if 2 waypoints
+                    if (waypoint.getNumWaypoints() <= 2) map.zoomToRoute();
                 } else {
                     routeCalculationError();
                 }
