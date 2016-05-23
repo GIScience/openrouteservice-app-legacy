@@ -436,13 +436,13 @@
 							</div>
 							<div class="panel panelTransparent">
 								<div class="controlButton">
-									<button id="orderRoute" class="btn btn-small" type="button" data-toggle="tooltip" title="Reorder Waypoints"><i class="icon-refresh"></i></button>
+									<button id="orderRoute" class="btn btn-small" type="button" id="tt-reorder" data-toggle="tooltip" title="Reorder Waypoints"><i class="icon-refresh"></i></button>
 								</div>
 								<div class="controlButton">
-									<button id="resetRoute" class="btn btn-small" type="button" data-toggle="tooltip" title="Reset Route"><i class="icon-trash"></i></button>
+									<button id="resetRoute" class="btn btn-small" type="button" id="tt-reset" data-toggle="tooltip" title="Reset Route"><i class="icon-trash"></i></button>
 								</div>
 								<div class="controlButton">
-									<button id="zoomToRouteButton" class="btn btn-small" type="button" data-toggle="tooltip" title="Zoom to Route"><i class="icon-resize-full"></i></button>
+									<button id="zoomToRouteButton" class="btn btn-small" type="button"  id="tt-zoom"data-toggle="tooltip" title="Zoom to Route"><i class="icon-resize-full"></i></button>
 								</div>
 							</div>
 						</div>
@@ -450,8 +450,6 @@
 						<div id="routeError" style="display:none" class="alert alert-error"></div>
 						
 						<div class="panel panelLight" id="routeInstructionsContainer" style="display:none">
-							
-							
 							<div class="collapsible guiComponent">
 								<div class="collapsibleHead clickable collapsed" id="routeInstructionHead">
 									Route instructions:

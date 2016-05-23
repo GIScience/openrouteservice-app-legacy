@@ -337,11 +337,10 @@ service
 
 .directions-summary-info {
     float: left;
-    padding-right:5px;
     font-size: 20px;
     color: #3a3a3a;
     font-weight: bold;
-    margin-right: 15px;
+    margin-right: 10px;
     font-size: 13px;
 }
 

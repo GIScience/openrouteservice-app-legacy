@@ -1366,9 +1366,7 @@ var Ui = (function(w) {
      * @param results: response of the service containing the route summary information
      */
     function updateRouteSummary(results) {
-        // empty old summary
-        $('.directions-summary-info-container').remove();
-
+       
         function getSummaryInformation() {
             var yardsUnit, totalTimeArr = [],
                 distArr = [],
@@ -1426,20 +1424,27 @@ var Ui = (function(w) {
             return [totalTime, distArr, actualdistArr, gradientArr];
         }
         var routeSummary = getSummaryInformation();
+         // empty old summary
+        $('.directions-summary-info-container').remove();
         var pointInfo, unit, time, distanceInfo, actualDistanceInfo, gradientInfo;
-        // time summary array
         var summaryContainer = new Element('div', {
             'class': 'directions-summary-info-container'
         });
+        // time summary
         pointInfo = new Element('span', {
-            'class': 'directions-summary-info'
+            'class': 'directions-summary-info',
+            'data-toggle' : 'tooltip',
+            'id': 'tt-time',
+            'title': 'Time'
         }).update('<i class="icon-time"></i>' + ' ');
         var len;
+        // if the route is only seconds
         if (routeSummary[0].length > 2) {
             len = 4;
         } else {
             len = 2;
         }
+        // we just need the first two time slots each chunk consists of time and unit
         for (var ts = 0; ts < len; ts += 2) {
             console.log(routeSummary[0][ts]);
             time = new Element('div', {
@@ -1454,8 +1459,11 @@ var Ui = (function(w) {
         }
         // distance summary
         pointInfo = new Element('span', {
-            'class': 'directions-summary-info'
-        }).update('<i class="icon-resize-horizontal"></i>' + ' ');
+            'class': 'directions-summary-info',
+            'data-toggle' : 'tooltip',
+            'id': 'tt-distance',
+            'title': 'Distance'
+        }).update('<i class="icon-resize-horizontal" style="opacity: 0.6"></i>' + ' ');
         distanceInfo = new Element('div', {
             'class': 'directions-summary-info-digit'
         }).update(routeSummary[1][1]);
@@ -1468,8 +1476,11 @@ var Ui = (function(w) {
         // check if actual distance info is available
         if (routeSummary[2].length > 0) {
             pointInfo = new Element('span', {
-                'class': 'directions-summary-info'
-            }).update('<i class="icon-long-arrow-right"></i>' + ' ');
+                'class': 'directions-summary-info',
+                'data-toggle' : 'tooltip',
+                'id': 'tt-actdistance',
+                'title': 'Actual Distance'
+            }).update('<i class="icon-resize-horizontal"></i>' + ' ');
             actualDistanceInfo = new Element('div', {
                 'class': 'directions-summary-info-digit'
             }).update(routeSummary[2][1]);
@@ -1483,7 +1494,10 @@ var Ui = (function(w) {
         // check if ascent descent information is available
         if (routeSummary[3].length > 0) {
             pointInfo = new Element('span', {
-                'class': 'directions-summary-info'
+                'class': 'directions-summary-info',
+                'data-toggle' : 'tooltip',
+                'id': 'tt-ascent',
+                'title': 'Ascent'
             }).update('<i class="icon-arrow-up"></i>' + ' ');
             var ascentInfo = new Element('div', {
                 'class': 'directions-summary-info-digit'
@@ -1495,7 +1509,10 @@ var Ui = (function(w) {
             pointInfo.appendChild(unit);
             summaryContainer.appendChild(pointInfo);
             pointInfo = new Element('span', {
-                'class': 'directions-summary-info'
+                'class': 'directions-summary-info',
+                'data-toggle' : 'tooltip',
+                'id': 'tt-descent',
+                'title': 'Descent'
             }).update('<i class="icon-arrow-down"></i>' + ' ');
             var descentInfo = new Element('div', {
                 'class': 'directions-summary-info-digit'
@@ -1509,6 +1526,8 @@ var Ui = (function(w) {
         }
         var container = $('#routeInstructionsContainer').get(0);
         container.insertBefore(summaryContainer, container.firstChild);
+        // initiate tooltips
+        $('[data-toggle="tooltip"]').tooltip(); 
     }
     /**
      * calculates way and surface type information for horizontal barcharts
@@ -3368,9 +3387,7 @@ var Ui = (function(w) {
             $('#serviceTimeout').hide();
         });
         // tooltips
-        $('#orderRoute').tooltip();
-        $('#resetRoute').tooltip();
-        $('#zoomToRouteButton').tooltip();
+        $('[data-toggle="tooltip"]').tooltip(); 
     }
     Ui.prototype = new EventEmitter();
     Ui.prototype.constructor = Ui;
