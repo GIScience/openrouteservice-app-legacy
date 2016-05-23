@@ -331,36 +331,30 @@ service
 }
 
 .directions-summary-info-container {
-    width: 85%;
-    margin: 0 auto;
-    padding: 5px 0 15px 0;
+    height: 20px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid #e6e6e6;
+    margin-bottom: 15px;
 }
 
-.directions-summary-info-time {
+.directions-summary-info {
     float: left;
     padding-right:5px;
     font-size: 20px;
-    color: #000000;
+    color: #444;
     font-weight: bold;
-    display: inline;
+    margin-right: 15px;
+    font-size: 16px;
 }
 
-.directions-summary-info-distance {
-    float: left;
-    padding-right:5px;
-    font-size: 20px;
-    color: #000000;
-    font-weight: bold;
+.directions-summary-info-digit {
     display: inline;
+    padding-right: 0px;
 }
 
 .directions-summary-info-units {
-    /*margin: 0 auto;
-    width: 50%;*/
+    margin-right: 5px; 
     display: inline;
-    font-size: 14px;
-    font-weight: normal;
-    color: #777777;
 }
 
 .directions-img {
@@ -1113,25 +1107,16 @@ button.weightOptions {
     margin-top: 5px;
 }
 
-#resetRoute {
+.controlButton {
+    float: right;
     height: 25px;
-    position: absolute;
-    right: 5px;
-    bottom: 4px;
+    margin-right: 5px;
 }
 
-#orderRoute {
-    height: 25px;
-    position: absolute;
-    right: 45px;
-    bottom: 4px;
-}
-
-#zoomToRouteButton {
-    height: 25px;
-    position: absolute;
-    right: 85px;
-    bottom: 4px;
+.panelTransparent {
+    background-color: transparent;
+    border: transparent;
+    box-shadow: none;
 }
 
 #hazardOptions {
