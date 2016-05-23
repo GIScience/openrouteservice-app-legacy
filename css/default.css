@@ -332,19 +332,17 @@ service
 
 .directions-summary-info-container {
     height: 20px;
-    padding-bottom: 7px;
-    border-bottom: 1px solid #e6e6e6;
-    margin-bottom: 15px;
+    margin: 5px 0 15px 0;
 }
 
 .directions-summary-info {
     float: left;
     padding-right:5px;
     font-size: 20px;
-    color: #444;
+    color: #3a3a3a;
     font-weight: bold;
     margin-right: 15px;
-    font-size: 16px;
+    font-size: 13px;
 }
 
 .directions-summary-info-digit {
