@@ -633,6 +633,7 @@ var Preferences = (function(w) {
         document.cookie = prefNames[this.layerIdx] + "=" + escape(layerCode) + ";expires=" + exdate.toUTCString();
         permaInfo[this.layerIdx] = escape(layerCode);
         cookiesAvailable = true;
+
     }
     /**
      * Used to write all information at once; e.g. if no cookies ara available so far

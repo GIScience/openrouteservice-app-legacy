@@ -1446,7 +1446,6 @@ var Ui = (function(w) {
         }
         // we just need the first two time slots each chunk consists of time and unit
         for (var ts = 0; ts < len; ts += 2) {
-            console.log(routeSummary[0][ts]);
             time = new Element('div', {
                 'class': 'directions-summary-info-digit'
             }).update(routeSummary[0][ts]);
@@ -2781,12 +2780,10 @@ var Ui = (function(w) {
             } else {
                 boolVar = true;
             }
-            console.log(boolVar)
             theInterface.emit('ui:prefsChanged', {
                 key: preferences.optimizeViaIdx,
                 value: boolVar
             });
-            console.log(itemId)
         } else if (itemId != 'maxSpeedInput') {
             // update route type if not maxspeedinput updated
             theInterface.emit('ui:prefsChanged', {
@@ -2796,7 +2793,6 @@ var Ui = (function(w) {
         }
         // update route except when user has updated maxspeed
         if ($.inArray(itemId, list.dontUpdateRoute) < 0) {
-            console.log('update')
             theInterface.emit('ui:routingParamsChanged');
         }
         //if (itemId != "maxSpeedInput") theInterface.emit('ui:routingParamsChanged');

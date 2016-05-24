@@ -139,8 +139,6 @@ var Map = (function() {
         this.layerControls.addOverlay(this.layerTMC, layerName7);
         this.layerRestriction = L.featureGroup().addTo(this.theMap);
         this.layerAvoid.addTo(this.theMap);
-        this.serializedLayersString = 'B0000';
-        this.serializedOverlaysString = '';
         /* *********************************************************************
          * MAP CONTROLS
          * *********************************************************************/
@@ -295,28 +293,37 @@ var Map = (function() {
         }
 
         function emitMapChangeBaseMap(e) {
-            // without this condition map zoom lat/lon isnt loaded from cookies
+            var thisLayer = e.name;
+            var layer;
+            // set active true or false for baselayers
+            for (layer in self.baseLayers) {
+                self.baseLayers[layer].active = (layer == thisLayer) ? true : false;
+            }
             if (!initMap) {
-                var idx;
-                if (e.overlay === true) {
-                    // get index of overlay
-                    var overlay, i = 0;
-                    for (overlay in self.overlays) {
-                        if (overlay == e.name) {
-                            idx = i;
-                        }
-                        i++;
-                    }
-                }
-                var changedLayer = e.name;
                 self.emit('map:basemapChanged', {
-                    layer: self.serializeLayers(changedLayer, idx)
+                    layer: self.serializeLayers()
+                });
+            }
+        }
+
+        function emitMapChangeOverlay(e) {
+            var thisLayer = e.name;
+            var layer;
+            // set active true or false for overlays
+            for (layer in self.overlays) {
+                if (layer == thisLayer) {
+                    self.overlays[layer].active = self.overlays[layer].active === true ? false : true;
+                }
+            }
+            if (!initMap) {
+                self.emit('map:basemapChanged', {
+                    layer: self.serializeLayers()
                 });
             }
         }
         this.theMap.on('baselayerchange', emitMapChangeBaseMap);
-        this.theMap.on('overlayadd', emitMapChangeBaseMap);
-        this.theMap.on('overlayremove', emitMapChangeBaseMap);
+        this.theMap.on('overlayadd', emitMapChangeOverlay);
+        this.theMap.on('overlayremove', emitMapChangeOverlay);
         this.theMap.on('zoomend', emitMapChangedEvent);
         this.theMap.on('moveend', emitMapChangedEvent);
         this.theMap.on('zoomend', emitMapChangedZoom);
@@ -440,37 +447,15 @@ var Map = (function() {
      * @param layer: name of layer
      * @param isOverlay: bool if layer is overlay
      */
-    function serializeLayers(layer, isOverlayIdx) {
-        var thisLayer;
-        thisLayer = layer;
-        var baseLayers = this.baseLayers;
-        var overlays = this.overlays;
-        // are we dealing with an overlay
-        if (isOverlayIdx >= 0) {
-            // overlayString = overlayString.charAt(isOverlayIdx) == '0' ? overlayString.substr(0, isOverlayIdx) + 'T' + overlayString.substr(isOverlayIdx + 1) : overlayString.substr(0, isOverlayIdx) + '0' + overlayString.substr(isOverlayIdx + 1);
-            this.serializedOverlaysString = permaInfo[Preferences.layerIdx].substr(Object.keys(this.baseLayers).length, permaInfo[Preferences.layerIdx].length - 1);
-            //if permalink is empty for the first time for overlays then set it
-            if (this.serializedOverlaysString.length == '0') {
-                this.serializedOverlaysString = '00';
-                this.serializedOverlaysString = this.serializedOverlaysString.substr(0, isOverlayIdx) + 'T' + this.serializedOverlaysString.substr(isOverlayIdx + 1);
-            } else {
-                if (this.serializedOverlaysString.charAt(isOverlayIdx) == '0') {
-                    this.serializedOverlaysString = this.serializedOverlaysString.substr(0, isOverlayIdx) + 'T' + this.serializedOverlaysString.substr(isOverlayIdx + 1);
-                } else {
-                    this.serializedOverlaysString = this.serializedOverlaysString.substr(0, isOverlayIdx) + '0' + this.serializedOverlaysString.substr(isOverlayIdx + 1);
-                }
-            }
-        } else {
-            this.serializedLayersString = '';
-            for (var i in baseLayers) {
-                if (i == thisLayer) {
-                    this.serializedLayersString += "B";
-                } else {
-                    this.serializedLayersString += "0";
-                }
-            }
+    function serializeLayers() {
+        var layer;
+        var layerString = '';
+        for (layer in this.baseLayers) {
+            layerString += (this.baseLayers[layer].active === true) ? "B" : "0";
         }
-        layerString = this.serializedLayersString + this.serializedOverlaysString;
+        for (layer in this.overlays) {
+            layerString += (this.overlays[layer].active === true) ? "T" : "0";
+        }
         return layerString;
     }
     /**

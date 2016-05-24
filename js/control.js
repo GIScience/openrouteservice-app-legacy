@@ -1110,6 +1110,7 @@ var Controller = (function(w) {
      */
     function handleBaseMapChanged(mapState) {
         //update cookies
+        console.log(mapState)
         updateBaseMapCookies(mapState.layer);
     }
     /**
@@ -1326,6 +1327,7 @@ var Controller = (function(w) {
         if (zoom) {
             map.theMap.setZoom(zoom);
         }
+        console.log(layer)
         layer = preferences.loadMapLayer(layer);
         if (layer) {
             map.restoreLayerPrefs(layer);
