@@ -465,6 +465,9 @@ var Ui = (function(w) {
             //the waypoint which has been moved down is the last waypoint: hide the move down button
             $(previousElement.get(0).querySelector('.moveUpWaypoint')).show();
             $(previousElement.get(0).querySelector('.moveDownWaypoint')).hide();
+			console.log("last wp");
+			$('#roundtrip').attr('checked', false);
+			theInterface.emit('ui:specifyRoundtrip', false);
         } else {
             //show both
             $(previousElement.get(0).querySelector('.moveUpWaypoint')).show();
@@ -501,6 +504,9 @@ var Ui = (function(w) {
             //the waypoint which has been moved down is the last waypoint: hide move down button
             $(waypointElement.get(0).querySelector('.moveUpWaypoint')).show();
             $(waypointElement.get(0).querySelector('.moveDownWaypoint')).hide();
+			console.log("last wp");
+			$('#roundtrip').attr('checked', false);
+			theInterface.emit('ui:specifyRoundtrip', false);
         } else {
             //show both
             $(waypointElement.get(0).querySelector('.moveUpWaypoint')).show();
@@ -618,6 +624,7 @@ var Ui = (function(w) {
         }
         //insert information as waypoint
         var rootElement = $('#' + index);
+		console.log(index);
         rootElement.removeClass('unset');
         address.setAttribute('data-shortAddress', shortAddress);
         var children = rootElement.children();
@@ -667,6 +674,11 @@ var Ui = (function(w) {
         } else {
             featureId = null;
         }
+		var wpElement = $(e.currentTarget).parent();
+		if (wpElement.hasClass('roundtrip')){
+			$('#roundtrip').attr('checked', false);
+			// theInterface.emit('ui:specifyRoundtrip', false);
+		}
         //we want to show at least 2 waypoints
         if (numWaypoints > 2) {
             //'move' all successor waypoints up from currentId to currentId-1
@@ -676,7 +688,9 @@ var Ui = (function(w) {
             }
             $(e.currentTarget).parent().remove();
         } else {
+			console.log("called");
             var wpElement = $(e.currentTarget).parent();
+			console.log(wpElement);
             var wpIndex = wpElement.attr('id');
             //delete waypoint
             wpElement.remove();
@@ -812,15 +826,16 @@ var Ui = (function(w) {
         el.removeClass('end');
 		el.removeClass('roundtrip');
         el.addClass(type);
+		if($('#roundtrip')[0].checked && (type == 'start' || type == 'end')) el.addClass('roundtrip');
+		
         el = $('#' + wpIndex).children('.waypoint-icon');
-		if($('#roundtrip')[0].checked && (type == 'start' || type == 'end')) type = 'roundtrip';
-        // var el = $('#' + wpIndex);
         el.removeClass('unset');
         el.removeClass('start');
         el.removeClass('via');
         el.removeClass('end');
         el.removeClass('roundtrip');
         el.addClass(type);
+		if($('#roundtrip')[0].checked && (type == 'start' || type == 'end')) el.addClass('roundtrip');
     }
     /**
      * The whole route is removed, waypoints are emptied or deleted (if more than two exist)
@@ -3285,7 +3300,7 @@ var Ui = (function(w) {
         $('.searchAgainButton').click(handleSearchAgainWaypointClick);
         $('#orderRoute').click(handleReorderWaypoints);
         $('.waypoint-icon').click(handleZoomToWaypointClick);
-        $('#roundtrip').click(handleSpecifyRoundtripClick);
+        $('#roundtrip').change(handleSpecifyRoundtripClick);
         //route
         $('#zoomToRouteButton').click(handleZoomToRouteClick);
         //route instructions print

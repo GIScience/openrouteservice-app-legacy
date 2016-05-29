@@ -713,6 +713,7 @@ var Map = (function() {
         var layerSearchResults = this.layerSearch;
         var layerWaypoints = this.layerRoutePoints;
         var oldMarker = layerSearchResults.getLayer(featureId);
+		console.log(type);
         if (oldMarker) {
             newMarker = new L.marker(oldMarker.getLatLng(), {
                 draggable: true,
@@ -750,22 +751,41 @@ var Map = (function() {
      * @param type: type of the waypoint (start, via, end)
      */
     function addWaypointAtPos(position, wpIndex, type) {
-        newMarker = new L.marker(position, {
-            draggable: true,
-            icon: Ui.markerIcons[type],
-            icon_orig: Ui.markerIcons[type],
-            icon_emph: Ui.markerIcons.emph
-        });
+		newMarker = new L.marker(position, {
+			draggable: true,
+			icon: Ui.markerIcons[type],
+			icon_orig: Ui.markerIcons[type],
+			icon_emph: Ui.markerIcons.emph
+		});
         newMarker.addTo(this.layerRoutePoints);
-		if(type == Waypoint.type.ROUNDTRIP){
+		console.log(newMarker);
+		
+		if (type == Waypoint.type.ROUNDTRIP && wpIndex == 0){
+			newMarker.setOpacity(0);
+			numWaypoints = $('.waypoint').length - 2;
+			console.log($('#' + numWaypoints));
+			if($('#' + numWaypoints).hasClass('end')){
+				var endMarkerId = Ui.getFeatureIdOfWaypoint(numWaypoints);
+				var endMarker = self.layerRoutePoints.getLayer(endMarkerId);
+				console.log(endMarker);
+				endMarker.setLatLng(position);
+				endMarker.setZIndexOffset(newMarker._zIndex + 1);
+				self.emit('map:waypointMoved', endMarker);
+			}
+			// newMarker.dragging.disable();
+		}
+		
+		if(type == Waypoint.type.ROUNDTRIP && wpIndex != 0){
 			newMarker.on('dragend', function(e) {
-				self.emit('map:waypointMoved', e.target);
-				console.log(e.target);
+				console.log($('#0'));
 				console.log(Ui.getFeatureIdOfWaypoint(0));
 				var startMarkerId = Ui.getFeatureIdOfWaypoint(0);
 				var startMarker = self.layerRoutePoints.getLayer(startMarkerId);
+				console.log(self.layerRoutePoints);
 				startMarker.setLatLng(e.target.getLatLng());
+				e.target.setZIndexOffset(startMarker._zIndex + 1);
 				self.emit('map:waypointMoved', startMarker);
+				self.emit('map:waypointMoved', e.target);
 			});
 		}
 		else{
@@ -776,14 +796,16 @@ var Map = (function() {
         newMarker.on('drag', function(e) {
             panMapOnEdges(e);
         });
+		console.log(newMarker._leaflet_id);
         return newMarker._leaflet_id;
     }
     /**
      * sets the type of the given waypoint identified by its feature ID
      * @param featureId: Leaflet feature ID as string
-     * @param type: type of the waypoint (start, via, end)
+     * @param type: type of the waypoint (start, via, end, roundtrip)
+	 * @param wpIndex: waypoint index of the corresponding waypoint
      */
-    function setWaypointType(featureId, type) {
+    function setWaypointType(featureId, type, wpIndex) {
         var feature = this.layerRoutePoints.getLayer(featureId);
         if (feature) {
             var newFeature = new L.marker(feature.getLatLng(), {
@@ -792,9 +814,39 @@ var Map = (function() {
                 icon_orig: Ui.markerIcons[type],
                 icon_emph: Ui.markerIcons.emph
             });
-            newFeature.on('dragend', function(e) {
-                self.emit('map:waypointMoved', e.target);
-            });
+			console.log(wpIndex); 
+            if (type == Waypoint.type.ROUNDTRIP && wpIndex == 0){
+				newFeature.setOpacity(0);
+				numWaypoints = $('.waypoint').length - 2;
+				console.log($('#' + numWaypoints));
+				if($('#' + numWaypoints).hasClass('end')){
+					var endMarkerId = Ui.getFeatureIdOfWaypoint(numWaypoints);
+					var endMarker = self.layerRoutePoints.getLayer(endMarkerId);
+					console.log(endMarker);
+					endMarker.setLatLng(feature.getLatLng());
+					endMarker.setZIndexOffset(newFeature._zIndex + 1);
+					self.emit('map:waypointMoved', endMarker);
+				}
+			}
+		
+			if(type == Waypoint.type.ROUNDTRIP && wpIndex != 0){
+				newFeature.on('dragend', function(e) {
+					console.log($('#0'));
+					console.log(Ui.getFeatureIdOfWaypoint(0));
+					var startMarkerId = Ui.getFeatureIdOfWaypoint(0);
+					var startMarker = self.layerRoutePoints.getLayer(startMarkerId);
+					console.log(self.layerRoutePoints);
+					startMarker.setLatLng(e.target.getLatLng());
+					e.target.setZIndexOffset(startMarker._zIndex + 1);
+					self.emit('map:waypointMoved', startMarker);
+					self.emit('map:waypointMoved', e.target);
+				});
+			}
+			else{
+				newFeature.on('dragend', function(e) {
+					self.emit('map:waypointMoved', e.target);
+				});
+			}
             newFeature.on('drag', function(e) {
                 panMapOnEdges(e);
             });
