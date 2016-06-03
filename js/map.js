@@ -55,6 +55,7 @@ var Map = (function() {
             center: [49.409445, 8.692953],
             minZoom: 2,
             zoom: 13,
+			zoomControl:false, 
             attributionControl: true,
             crs: L.CRS.EPSG900913,
             layers: [this.openmapsurfer],
@@ -64,6 +65,13 @@ var Map = (function() {
                 featuresLayer: this.layerAvoid
             }
         });
+		
+		/* ZOOM CONTROL */
+		var ZoomControl = new L.Control.Zoom({
+			position: 'topright' 
+		});
+		
+		
         this.baseLayers = {
             "OpenMapSurfer": this.openmapsurfer,
             "OSM-WMS worldwide": this.ors_osm_worldwide,
@@ -78,6 +86,7 @@ var Map = (function() {
             position: 'topright',
             separator: ', '
         }).addTo(this.theMap);
+		ZoomControl.addTo(this.theMap); //Must be added before layers control, to look nicer!!!
         this.layerControls = L.control.layers(this.baseLayers, this.overlays);
         this.layerControls.addTo(this.theMap);
         L.control.scale().addTo(this.theMap);
@@ -125,7 +134,28 @@ var Map = (function() {
         /* *********************************************************************
          * MAP CONTROLS
          * *********************************************************************/
-        this.theMap.on('contextmenu', function(e) {
+		
+		/* ****************** TOGGLE NAVIGATION MENU CONROL *****************************/
+		/* TO OPEN AND CLOSE LEFT SIDEBAR */
+		var NavMenuToggle = L.Control.extend({
+			options: {
+					position: 'topleft'
+			},
+			onAdd: function () {
+				var container = L.DomUtil.create('div','leaflet-bar leaflet-control leaflet-control-customNavMenuToggle');
+				container.title = "Toggle navigation menu"
+				container.onclick = function(){
+					jQuery(document).ready(function(){
+						jQuery("#sidebar").toggle();
+					});
+				}
+				return container;
+			},
+		});
+		this.theMap.addControl(new NavMenuToggle());
+		/* *****************************************************************************/
+		
+		this.theMap.on('contextmenu', function(e) {
             var displayPos = e.latlng;
             $('.leaflet-popup-content').remove();
             var menuObject = createMapContextMenu();
