@@ -826,6 +826,7 @@ var Controller = (function(w) {
      * @param results: XML route service results
      */
     function routeCalculationSuccess(results, routeID, routePref) {
+        var viaPoints;
         // only fire if returned routeID from callback is same as current global calcRouteID
         if (routeID == calcRouteID) {
             //var zoomToMap = !route.routePresent;
@@ -842,11 +843,18 @@ var Controller = (function(w) {
                 var routeLineString = route.writeRouteToSingleLineString(results);
                 var routeString = map.writeRouteToString(routeLineString);
                 route.routeString = routeString;
+                
+                if (ui.getRoutePoints().length > 2)  {
+                    var wayPoints = ui.getRoutePoints();
+                    wayPoints.shift();
+                    wayPoints.pop(); 
+                    viaPoints = wayPoints;
+                } 
                 // each route instruction has a part of this lineString as geometry for this instruction           
                 // get height profile update height profile widget if elevation profile type selected
                 if ($.inArray(routePref, list.elevationProfiles) >= 0) {
                     var routeLineHeights = route.parseResultsToHeights(results);
-                    map.updateHeightprofiles(routeLineHeights);
+                    map.updateHeightprofiles(routeLineHeights, viaPoints);
                 }
                 var routeLinestring = route.parseResultsToLineStrings(results);
                 var routePoints = route.parseResultsToCornerPoints(results);

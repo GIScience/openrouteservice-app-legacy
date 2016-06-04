@@ -949,12 +949,26 @@ var Map = (function() {
      * route is hidden with opacity 0
      * @param {Object} routeLineSegments: array of Leaflet Linestrings with height information
      */
-    function updateHeightprofiles(routeLineHeights) {
+    function updateHeightprofiles(routeLineHeights, viaPoints) {
+        console.log(viaPoints)
         var el = this.elevationControl;
         el.addTo(this.theMap);
         this.layerRouteLines.clearLayers();
         el.clear();
         var polyline = L.polyline(routeLineHeights).toGeoJSON();
+        // add waypoints in elevation diagram
+        if (viaPoints) {
+            for (var i = 0; i < viaPoints.length; i++) {
+                viaPoints[i] = viaPoints[i].split(" ");
+                var lat = parseFloat(viaPoints[i][1])
+                var lng = parseFloat(viaPoints[i][0])
+                viaPoints[i][0] = lat;
+                viaPoints[i][1] = lng;
+            }
+            console.log(viaPoints)
+            polyline.properties.waypoint_coordinates = viaPoints;
+        }
+        console.log(polyline)
         var gjl = L.geoJson(polyline, {
             opacity: '0',
             onEachFeature: el.addData.bind(el)
