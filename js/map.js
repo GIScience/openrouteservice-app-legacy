@@ -55,6 +55,7 @@ var Map = (function() {
             center: [49.409445, 8.692953],
             minZoom: 2,
             zoom: 13,
+			zoomControl: false, /* By setting this value to false we remove the default zoom control from the map. This is needed to be able to change the position of the control on the map (default: topleft).This control will be added later. */
             attributionControl: true,
             crs: L.CRS.EPSG900913,
             //layers: [this.openmapsurfer],
@@ -90,10 +91,79 @@ var Map = (function() {
         // };
         var layerName6 = Preferences.translate('layer6');
         this.overlays[layerName6] = this.aster_hillshade;
+		
+		/* MOUSE POSITION CONTROL */
         L.control.mousePosition({
             position: 'topright',
             separator: ', '
         }).addTo(this.theMap);
+		
+		/* ZOOM CONTROL */
+		var ZoomControl = new L.Control.Zoom({
+			position: 'topright' 
+		});
+		ZoomControl.addTo(this.theMap);
+		
+		/* LOCATE CONTROL */
+		
+			/* Set up the control functions */
+			var marker = null;
+			var circle = null;	
+			function onLocationFound(e) {
+				var radius = e.accuracy;
+				
+				/* To add a marker on user's location (TODO) */
+				var marker = L.marker(e.latlng,{icon: geolocateIcon})/*.bindPopup("user's location description here").openPopup()*/;
+				var circle = L.circle(e.latlng, radius);
+					
+				// add marker and accuracy circle
+				marker.addTo(map);
+				circle.addTo(map);
+			}
+			
+			//Function to set what happen when the user location is not found 	
+			function onLocationError(e) {
+				alert(e.message + ": User location was not found. Check your location settings.");
+				setView([49.409445, 8.692953]);
+			}
+		
+			/* Set up the map controller */
+			var LocateControl = L.Control.extend({
+				options: {
+						position: 'topright' 
+				},
+				onAdd: function (map) {
+					var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-customLocate');
+					container.title = "Zoom to current location"
+					container.onclick = function(){
+						map.locate({setView : true,
+									maxZoom: 20});
+						map.on('locationfound', onLocationFound);
+						map.on('locationerror', onLocationError);
+					}
+					return container;
+				},
+			});
+			//this.theMap.addControl(new LocateControl()); /* don't add this control for now */
+	
+		/* TOGGLE NAVIGATION MENU CONROL */
+		var NavMenuToggle = L.Control.extend({
+			options: {
+					position: 'topleft'
+			},
+			onAdd: function () {
+				var container = L.DomUtil.create('div','leaflet-bar leaflet-control leaflet-control-customNavMenuToggle');
+				container.title = "Toggle navigation menu"
+				container.onclick = function(){
+					jQuery("#sidebar").toggle();
+				}
+				return container;
+			},
+		});
+		this.theMap.addControl(new NavMenuToggle());
+		
+		
+		
         this.layerControls = L.control.layers(this.baseLayers, this.overlays);
         this.layerControls.addTo(this.theMap);
         L.control.scale().addTo(this.theMap);
