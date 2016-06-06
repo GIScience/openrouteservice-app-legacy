@@ -1523,8 +1523,8 @@ var Ui = (function(w) {
             pointInfo.appendChild(unit);
             summaryContainer.appendChild(pointInfo);
         }
-        var container = $('#routeInstructionsContainer').get(0);
-        container.insertBefore(summaryContainer, container.firstChild);
+        var container = $('#routeSummary');
+        container.append(summaryContainer);
         // initiate tooltips
         $('[data-toggle="tooltip"]').tooltip(); 
     }

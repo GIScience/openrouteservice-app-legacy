@@ -332,7 +332,7 @@ service
 
 .directions-summary-info-container {
     height: 20px;
-    margin: 5px 0 15px 0;
+    margin: 5px 0 0 0;
 }
 
 .directions-summary-info {
@@ -342,6 +342,7 @@ service
     font-weight: bold;
     margin-right: 10px;
     font-size: 13px;
+    padding-bottom: 5px;
 }
 
 .directions-summary-info-digit {
