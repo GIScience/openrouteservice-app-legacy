@@ -986,7 +986,7 @@ a.options.active {
     list-style-type: none;
 }
 
-/*button.routeOptionsButton, {
+button.routeOptionsButton, {
     height: 30px;
     width: 44px;
     padding: 2px 2px 2px 2px;
@@ -1000,7 +1000,7 @@ button.routeOptionsButton > img {
 button.routeOptionsButtonBeta > img {
     width: 30px;
     height: auto;
-}*/
+}
 
 button.weightOptions {
     height: 30px;
