@@ -1,4 +1,3 @@
-service
 /*|-----------------------------------------------------------------------------------
  *|                                                     University of Heidelberg
  *|   _____ _____  _____      _                         Department of Geography
@@ -16,7 +15,290 @@ service
  * @version: 0.1
  */
 
+/* LEAFLET CUSTOM STYLES FOR DEFAULT CONTROLLERS AND CUSTOM ONES */
+.leaflet-control-customNavMenuToggle {
+    background-color: white;
+    background-image: url(../img/menu-icon.png);
+    background-size: 20px 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
+}
 
+/*.leaflet-control-layers a.leaflet-control-layers-toggle{
+    width: 30px;
+    height:30px;
+    border-radius: 5px;
+    background-color: white;
+    background-image: url(../img/layers-icon.png);
+    background-size: 20px 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+}*/
+ 
+ /* BASE LAYOUT */
+.ORS {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+} 
+
+.ORS-body {
+    display: flex;
+    flex-grow: 1;   /*A number specifying how much the item will grow relative to the rest of the flexible items*/
+    flex-shrink: 0; /*A number specifying how much the item will shrink relative to the rest of the flexible items*/
+    flex-basis: auto;   /*The length of the item. Legal values: "auto", "inherit", or a number followed by "%", "px", "em" or any other length unit*/
+    flex-direction: row;
+}
+
+.ORS-sidebar {
+    display: flex;
+    flex-grow: 0;   
+    flex-shrink: 1; 
+    /*flex-basis: 390px;*/
+    order: 1;
+    flex-direction: row;
+    overflow-y:auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1ps solid black;
+}
+
+.ORS-map {
+    display: flex;
+    flex-grow: 1;   
+    flex-shrink: 1; 
+    flex-basis: auto;
+    order: 2;   
+}
+
+.ORS-header {
+    display: flex;
+    flex-grow: 0;   
+    flex-shrink: 0; 
+    flex-basis: 50px;
+}
+
+/* STYLES FOR THE HEADER AND HEADER ELEMENTS */
+    /* GENERAL HEADER STYLE */
+    #navbar {
+        background-color:#383838;
+        /*position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        height: 50px;
+        padding: 0px 10px 0px 20px;
+        background-color: #FFFFFF;
+        /*#f0f0f0;*/
+        /*-border-bottom: 1px solid #888;*/
+    }
+    
+    /* HEADER STYLES FOR ORS ICON AND TYTLE */
+    #navbar a.brand {
+        /*padding-right: 10px;*/
+        font-weight: bold;
+    }
+
+    #navbar #title {
+        color: rgba(255,255,255,0.66);;
+        line-height: 25px;
+        font-size:25px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center; /* align horizontal */
+        align-items: center; /* align vertical */
+    }
+
+    #ORS-headIcon {
+        background: url(../img/logo.png) no-repeat center center;
+        background-size: 40px 40px;
+        width:50px;
+        height:50px;
+    }
+
+    /* STYLES FOR LINKS WITHIN THE HEADER */
+    #topMenu {
+        /* contains link to Uni Heidelberg, etc. */
+        position: absolute;
+        top: 5px;
+        right: 4px;
+        float: right;
+        list-style: none;
+    }
+    
+    #topMenu > li {
+        height: 40px;
+        float: left;
+        margin: 0px 10px 0px 0;
+        line-height: 40px;
+        padding: 0px 5px 0px 5px;
+        color:white;
+    }
+    
+    /*#topMenu > .extendedInactive {
+        padding: 0px 5px 0px 5px;
+    }*/
+    
+    /*#topMenu > .extendedActive {
+        padding: 0px 5px 0px 5px;
+        /*background-color: #fafafa;*/
+        /*background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
+        background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f2f2f2));
+        background-image: -webkit-linear-gradient(top, #ffffff, #f2f2f2);
+        background-image: -o-linear-gradient(top, #ffffff, #f2f2f2);
+        background-image: linear-gradient(to bottom, #ffffff, #f2f2f2);
+        background-repeat: repeat-x;
+        filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#fff2f2f2', GradientType=0);
+        border: 1px solid #d4d4d4;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+        -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+        *zoom: 1;
+    }*/
+    
+    #topMenu > li > a/*, #title*/, #info {
+        /*padding-top: 15px;*/
+        /*font-weight: normal;*/
+        color:white;
+    }
+
+    #info {
+        margin-left: 112px;
+        height: 13px;
+        font-weight: normal;
+        text-align: center;
+        line-height: 11px;
+    }
+    
+    /*#topMenu > li > a:hover, #title:hover {
+        text-decoration: none;
+        color: #333333;
+    }
+    
+    #topMenu > li > a:focus, #title:focus {
+        background-color: #FFFFFF;
+    }*/
+
+/* STYLES FOR THE SIDEBAR AND SIDEBAR CONTENT */
+    /* STYLES FOR LEFT CONTENT OF THE SIDEBAR */
+    #AppSidebarLeft{
+        display:none;/*display:block;*/
+        background-color: #F7F7F7;
+        border-right:1px solid #E0E0E0;
+        width:50px;
+        min-width: 50px;
+        overflow-y:auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        float:left;
+    }
+    
+    #AppSidebarLeft div button{
+        display: block;
+        width: 50px;
+        height: 50px;
+        margin-top: 1px;
+        margin-bottom: 1px;
+        border: none;
+        outline:none;
+        background-color: transparent;
+    }
+    
+    .spacer {
+        width: 50px;
+        height:3px;
+        background-color: #E0E0E0;
+    }
+    
+    /* STYLES FOR RIGHT CONTENT OF THE SIDEBAR */
+    #AppSidebarRight{
+        width: 380px;
+        overflow-y:auto;
+        -webkit-overflow-scrolling: touch;
+        /*overflow-x: hidden;*/
+        
+        position:relative;
+    }
+
+    /* TABS AT THE TOP */
+    #functionMenu {
+        /* contains search and route */
+        /*padding-left: 10px;*/
+        /*display: flex;*/
+        /*overflow: visible;*/
+        background-color:#F7F7F7;
+        height:38px;
+        /*top: 60px;
+        width: 400px;*/
+        position:relative;
+        margin-bottom:0px;
+    }
+    
+    /*#functionMenu > li > a {
+        /* show non-active tabs in grey */
+        /*color: #555555;
+    }*/
+    
+    #functionMenu > .active > a, .nav-tabs > .active > a:hover {
+        /* show active tabs in black with border */
+        color: black;
+        background-color: #E0E0E0;
+        border-radius:0px;
+        /*border: 1px solid #ddd;*/
+        /*border-bottom-color: transparent;
+        cursor: default;*/
+    }
+    
+    #routingButton {
+        top: 215px;
+        background-image: url('../img/route.png');
+    }
+
+    #searchButton {
+        top: 270px;
+        background-image: url('../img/marker-blue.png');
+    }
+    
+    .menuIcon {
+        margin-right: 5px;
+        width: 15px;
+        vertical-align: middle;
+    }
+    
+    
+/* Styles for responsive behaviour on mobilde devices */
+    @media screen and (min-width: 320px) and (max-width: 720px)  {
+        .ORS-body {
+            flex-direction: column;
+        }
+        
+        .ORS-sidebar {
+            order: 2; 
+            flex-basis: 50vh;
+        }
+
+        .ORS-map {
+            order: 1;   
+        }
+        
+        #topMenu {
+            display:none; /* To hide the links in the top menu */
+        }
+        
+        .leaflet-container .leaflet-control-mouseposition {
+            display:none; /* To hide the mouse position controller */
+        }
+        
+        #AppSidebarRight{
+            width:100%;
+        }
+        
+    }
+ 
 /**
  *  info link disclaimer, license,... at the bottom
  */
@@ -101,16 +383,6 @@ service
     cursor: pointer;
 }
 
-#avoidables_info {
-    position: fixed;
-    margin-left: 33px;
-    top: 123px;
-    z-index: 999;
-    display: none;
-    width: 200px;
-    font-family: 'Roboto', sans-serif;
-}
-
 .elevation-collapsed {
     background: #fff;
     border-radius: 5px;
@@ -151,7 +423,6 @@ service
 }
 
 .waypointResult {
-    padding-left: 32px;
     margin-bottom: 10px;
 }
 
@@ -215,69 +486,38 @@ service
 }
 
 .waypoint {
-    padding-left: 0px;
+    padding-left: 32px;
     padding-top: 0;
     min-height: 25px;
     margin-bottom: 10px !important;
 }
 
 .waypoint.start {
-    /*background-image: url('../img/marker-start.png');
+    background-image: url('../img/marker-start.png');
     background-repeat: no-repeat;
     background-size: 16px;
-    background-position: 8px 3px;*/
+    background-position: 8px 3px;
 }
 
 .waypoint.via {
-    /*background-image: url('../img/marker-via.png');
+    background-image: url('../img/marker-via.png');
     background-repeat: no-repeat;
     background-size: 16px;
-    background-position: 8px 3px;*/
+    background-position: 8px 3px;
 }
 
 .waypoint.end {
-    /*background-image: url('../img/marker-end.png');
+    background-image: url('../img/marker-end.png');
     background-repeat: no-repeat;
     background-size: 16px;
-    background-position: 8px 3px;*/
+    background-position: 8px 3px;
 }
 
 .waypoint.unset {
-    /*background-image: url('../img/marker.png');
-    background-repeat: no-repeat;*/
+    background-image: url('../img/marker.png');
+    background-repeat: no-repeat;
     padding-top: 0;
     margin-bottom: 0 !important;
-    /*background-size: 16px;
-    background-position: 8px 3px;*/
-}
-
-.waypoint-icon {
-    display: inline;
-    float: left;
-    width: 33px;
-    height: 25px;
-}
-
-.waypoint-icon.start {
-    background: url(../img/marker-start.png) no-repeat;
-    background-size: 16px;
-    background-position: 8px 3px;
-}
-
-.waypoint-icon.via {
-    background: url(../img/marker-via.png) no-repeat;
-    background-size: 16px;
-    background-position: 8px 3px;
-}
-
-.waypoint-icon.end {
-    background: url(../img/marker-end.png) no-repeat;
-    background-size: 16px;
-    background-position: 8px 3px;
-}
-
-.waypoint-icon.unset {
-    background: url(../img/marker.png) no-repeat;
     background-size: 16px;
     background-position: 8px 3px;
 }
@@ -409,7 +649,6 @@ service
     position: relative;
     top: -4px;
 }
-
 
 /* gpx upload styles */
 
@@ -562,15 +801,6 @@ service
     margin-top: 3px;
 }
 
-#routingButton {
-    top: 215px;
-    background-image: url('../img/route.png');
-}
-
-#searchButton {
-    top: 270px;
-    background-image: url('../img/marker-blue.png');
-}
 
 #removeAccessibility {
     margin-top: 10px;
@@ -756,7 +986,7 @@ a.options.active {
     list-style-type: none;
 }
 
-button.routeOptionsButton, {
+/*button.routeOptionsButton, {
     height: 30px;
     width: 44px;
     padding: 2px 2px 2px 2px;
@@ -770,7 +1000,7 @@ button.routeOptionsButton > img {
 button.routeOptionsButtonBeta > img {
     width: 30px;
     height: auto;
-}
+}*/
 
 button.weightOptions {
     height: 30px;
@@ -861,109 +1091,6 @@ button.weightOptions {
 
 /* main components of the layout: */
 
-#navbar {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    height: 50px;
-    padding: 0px 10px 0px 20px;
-    background-color: #FFFFFF;
-    /*#f0f0f0;*/
-    -border-bottom: 1px solid #888;
-}
-
-#topMenu {
-    /* contains link to Uni Heidelberg, etc. */
-    position: absolute;
-    top: 5px;
-    right: 4px;
-    float: right;
-    list-style: none;
-}
-
-#topMenu > li {
-    height: 40px;
-    float: left;
-    margin: 0px 10px 0px 0;
-    line-height: 40px;
-    padding: 0px 5px 0px 5px;
-}
-
-#topMenu > .extendedInactive {
-    padding: 0px 5px 0px 5px;
-}
-
-#topMenu > .extendedActive {
-    padding: 0px 5px 0px 5px;
-    background-color: #fafafa;
-    background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f2f2f2));
-    background-image: -webkit-linear-gradient(top, #ffffff, #f2f2f2);
-    background-image: -o-linear-gradient(top, #ffffff, #f2f2f2);
-    background-image: linear-gradient(to bottom, #ffffff, #f2f2f2);
-    background-repeat: repeat-x;
-    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#fff2f2f2', GradientType=0);
-    border: 1px solid #d4d4d4;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
-    -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
-    *zoom: 1;
-}
-
-#topMenu > li > a, #title, #info {
-    padding-top: 15px;
-    font-weight: normal;
-}
-
-#navbar a.brand {
-    padding-right: 10px;
-    font-weight: bold;
-}
-
-#title {
-    color: #000;
-}
-
-#info {
-    margin-left: 112px;
-    height: 13px;
-    font-weight: normal;
-    text-align: center;
-    line-height: 11px;
-}
-
-#topMenu > li > a:hover, #title:hover {
-    text-decoration: none;
-    color: #333333;
-}
-
-#topMenu > li > a:focus, #title:focus {
-    background-color: #FFFFFF;
-}
-
-#sidebar {
-    position: absolute;
-    margin-top: 10px;
-    top: 95px;
-    left: 0px;
-    bottom: 22px;
-    width: 400px;
-    overflow: auto;
-}
-
-#map {
-    position: absolute;
-    top: 50px;
-    left: 400px;
-    right: 0px;
-    /*bottom: 25px;   uncomment for height pofile */
-    bottom: 0px;
-}
-
 #geolocationNotification {
     width: 80%;
     margin-left: auto;
@@ -971,36 +1098,8 @@ button.weightOptions {
     margin-top: 200px;
 }
 
-#functionMenu {
-    /* contains search and route */
-    padding-left: 10px;
-    overflow: visible;
-    position: fixed;
-    top: 60px;
-    width: 400px;
-}
 
-#functionMenu > li > a {
-    /* show non-active tabs in grey */
-    color: #555555;
-}
-
-#functionMenu > .active > a, .nav-tabs > .active > a:hover {
-    /* show active tabs in black with border */
-    color: black;
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-bottom-color: transparent;
-    cursor: default;
-}
-
-.menuIcon {
-    margin-right: 5px;
-    width: 15px;
-    vertical-align: middle;
-}
-
-#toggleSidebar {
+/*#toggleSidebar {
     position: absolute;
     z-index: 1040;
     background-color: #FFFFFF;
@@ -1024,7 +1123,7 @@ button.weightOptions {
     transform: scaleX(-1);
     filter: fliph;
     /*IE*/
-}
+/*}*/
 
 .panel {
     /* panels in the sidebar
@@ -1111,6 +1210,7 @@ button.weightOptions {
     margin-right: 5px;
 }
 
+
 .panelTransparent {
     background-color: transparent;
     border: transparent;
@@ -1120,12 +1220,6 @@ button.weightOptions {
 #hazardOptions {
     margin-top: 10px;
     background-color: #d8d8d8;
-}
-
-#routingPanel {
-    border: 0;
-    background-color: #fff;
-    padding: 0 7px;
 }
 
 #currentLocation, #searchPlace, #searchPoi, #geoloc {
@@ -1255,12 +1349,9 @@ img {
 
 #serviceTimeout {
     display: none;
-    position: fixed;
-    margin-left: 33px;
-    top: 60px;
-    z-index: 999;
-    width: 200px;
-    font-family: 'Roboto', sans-serif;
+    position: absolute;
+    left: 430px;
+    top: 70px;
 }
 
 #serviceTimeout > label {
@@ -1290,77 +1381,3 @@ img {
     font-size: 12px;
 }
 
-
-/* surface information */
-
-#routeTypesHead {
-    float: left;
-}
-
-#routeTypesBody {
-    position: relative;
-}
-
-#wayType, #surfaceType {
-    margin-top: 20px;
-    padding-left: 15px;
-    width: 200px;
-}
-
-#wayTypeList, #surfaceTypeList {
-    min-height: 25px;
-}
-
-#wayTypeList ul, #surfaceTypeList ul {
-    margin: 10px;
-    padding-left: 15px;
-}
-
-#wayTypeList li, #surfaceTypeList li {
-    float: left;
-    margin-left: 25px;
-    margin-top: -10px;
-    font-size: 26px;
-}
-
-#wayTypeList li span, #surfaceTypeList li span {
-    color: black;
-    font-size: 11px;
-    position: relative;
-    top: -4px;
-    left: -10px;
-}
-
-.d3-tip {
-    line-height: 1;
-    font-weight: bold;
-    padding: 12px;
-    background: rgba(0, 0, 0, 0.8);
-    color: #fff;
-    border-radius: 5px;
-    font-size: 10px;
-}
-
-
-/* Creates a small triangle extender for the tooltip */
-
-.d3-tip:after {
-    box-sizing: border-box;
-    display: inline;
-    font-size: 11px;
-    width: 100%;
-    line-height: 1;
-    color: rgba(0, 0, 0, 0.8);
-    content: "\25BC";
-    position: absolute;
-    text-align: center;
-}
-
-
-/* Style northward tooltips differently */
-
-.d3-tip.n:after {
-    margin: -1px 0 0 0;
-    top: 100%;
-    left: 0;
-}
