@@ -61,29 +61,6 @@ var Ui = (function(w) {
             }
         }
     }
-    /**
-     * makes the sidebar visible or invisible (larger map)
-     * @param e: the event
-     */
-    function handleToggleSidebar(e) {
-        var side = document.getElementById('sidebar');
-        //when calling this for the first time on page startup, style.display attribute will be empty which corresponds to the default case of "visible"
-        if (side.style.display == 'none') {
-            //sidebar is not visible, show it
-            $('#sidebar').css('display', 'inline');
-            $('#map').css('left', '415px');
-            $('#toggleSidebar').attr('class', 'sidebarVisible');
-            //trigger map update
-            theInterface.emit('ui:mapPositionChanged');
-        } else {
-            //sidebar is visible, hide it
-            $('#sidebar').css('display', 'none');
-            $('#map').css('left', '25px');
-            $('#toggleSidebar').attr('class', 'sidebarInvisible');
-            //trigger map update
-            theInterface.emit('ui:mapPositionChanged');
-        }
-    }
     /* *********************************************************************
      * LANGUAGE-SPECIFIC
      * *********************************************************************/
@@ -3312,9 +3289,7 @@ var Ui = (function(w) {
         //switch views
         $('.fnct_switchTab').click(handleSwitchTabs);
         //open & close collapsibles
-        $('.collapsibleHead').click(handleToggleCollapsibles);
-        //hide & view sidebar
-        $('#toggleSidebar').click(handleToggleSidebar);
+        $('.collapsibleHead').click(handleToggleCollapsibles);;
         //waypoints
         $('.searchWaypoint').keyup(handleSearchWaypointInput);
         $('#addWaypoint').click(handleAddWaypointClick);
