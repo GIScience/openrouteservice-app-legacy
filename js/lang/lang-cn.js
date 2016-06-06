@@ -1,18 +1,24 @@
 var lang_cn = {
 	'serverError' : '很抱歉，伺服器端發生計算錯誤。請稍候再試。',
-
 	'contact' : '連絡我們',
-
+	'maxSpeed': '最大速率',
 	'closeBtn' : '關閉',
 	'saveBtn' : '存檔',
-
 	'untitled' : '新文件',
 	'infoTextVersions' : '新使用者？請在偏好選單中啟動擴展選項。',
-
 	'routePlanner' : '路徑規劃工具',
 	'search' : '搜索',
 	'routeOptions' : '路徑選項',
 	'routeExtras' : '其他',
+	
+	//Map Layernames
+	'layer1' : 'OpenMapSurfer',
+	'layer2' : 'OSM-WMS 全世界',
+	'layer3' : 'Openstreetmap',
+	'layer4' : 'OpenCycleMap',
+	'layer5' : 'Stamen 地圖',
+	'layer6' : '山體陰影',
+	'layer7' : 'Traffic Information',
 
 	//Routing
 	'planRoute' : '規劃路徑',
@@ -21,12 +27,14 @@ var lang_cn = {
 	'routeFromTo' : '導航至 ',
 	'resetRoute' : '重設路徑',
 	'TotalTime' : '總花費時間',
+	'TotalWarnings':  '交通信息',
 	'TotalDistance' : '總距離',
 	'zoomToRoute' : '縮小至全部路線',
 	'routeSummary' : '路徑概況',
 	'routeInstructions' : '路徑說明',
 	'routeLinkText' : '輸出目前路徑為文字',
 	'permalinkButton' : '連結',
+	'routeSurface': '方式和表面信息',
 
 	//Geolocation
 	'geolocationNotification' : '路徑規劃工具正努力找尋您的當前位置。若您不同意，幾秒鐘後將會被重新導向。',
@@ -99,20 +107,24 @@ var lang_cn = {
 	'avoidTollways' : '避開收费站',
 	'avoidunpavedRoads':  '避開未鋪砌道路',
 	'avoidFerry':  '避開渡船',
+	'avoidTunnel' : '隧道',
+	'avoidFord': '渡口',
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;避免道路類型 &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;避免道路類型 &nbsp;&nbsp;<span class="caret">',
 	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;避免地區&nbsp;&nbsp;<span class="caret">',
 	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;避免道路類型 &nbsp;&nbsp;<span class="caret">',
 	
-	'avoidFerryPedes' : '避開渡船' ,
 	'avoidFerryBike' : '避開渡船' ,
 	'avoidunpavedRoadsBike' : '避開未鋪砌道路',
+	'avoidpavedRoadsBike' : '避免鋪設道路',
 	'avoidStepsBike' : '步驟',
+	'avoidFordsBike' : '渡口',
+	
+	'avoidFerryPedestrian' : '避開渡船' ,
 	'avoidStepsPedestrian': '步驟',
- 	'avoidFords' : '渡口',
- 	'avoidFordsBike' : '渡口',
  	'avoidFordsPedestrian' : '渡口',
+	'avoidpavedRoadsPedestrian': '避免鋪設道路',
 	
 	//Surfaces:
 	'surface': '路面品質',
@@ -346,4 +358,38 @@ var lang_cn = {
 	'team_handball' : '手球',
 	'tennis' : '網球',
 	'volleyball' : '排球',
+
+	//Way Types
+    'Other': '其他',
+    'StateRoad': '國道',
+    'Road': '路',
+    'Street': '街',
+    'Path': '路徑',
+    'Track': '跟踪',
+    'Cycleway': '自行車道',
+    'Footway': '人行道',
+    'Steps':  '腳步',
+    'Ferry': '渡船',
+    'Construction': '施工',
+
+    //Surface Types
+    //'Other': 'Other',
+    'Paved': '鋪就',
+    'Unpaved': '未鋪砌',
+    'Asphalt': '瀝青',
+    'Concrete':'具體',
+    'Cobblestone': '鵝卵石',
+    'Metal':  '金屬',
+    'Wood':'木',
+    'CompactedGravel': '密實的礫石',
+    'FineGravel': '細礫',
+    'Gravel': '碎石',
+    'Dirt': '污垢',
+    'Ground': '地面',
+    'Ice': '冰',
+    'Salt': '鹽',
+    'Sand': '砂',
+    'Woodchips': '木屑',
+    'Grass': '草',
+    'GrassPaver': '草攤舖機'
 };

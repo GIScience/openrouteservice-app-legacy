@@ -57,23 +57,39 @@ var Map = (function() {
             zoom: 13,
             attributionControl: true,
             crs: L.CRS.EPSG900913,
-            layers: [this.openmapsurfer],
+            //layers: [this.openmapsurfer],
             editable: true,
             editOptions: {
                 skipMiddleMarkers: false,
                 featuresLayer: this.layerAvoid
             }
         });
-        this.baseLayers = {
-            "OpenMapSurfer": this.openmapsurfer,
-            "OSM-WMS worldwide": this.ors_osm_worldwide,
-            "Openstreetmap": this.openstreetmap,
-            "OpenCycleMap": this.opencyclemap,
-            "Stamen Maps": this.stamen
-        };
-        this.overlays = {
-            "Hillshade": this.aster_hillshade
-        };
+        this.baseLayers = {};
+        var layerName1 = Preferences.translate('layer1');
+        var layerName2 = Preferences.translate('layer2');
+        var layerName3 = Preferences.translate('layer3');
+        var layerName4 = Preferences.translate('layer4');
+        var layerName5 = Preferences.translate('layer5');
+        this.baseLayers[layerName1] = this.openmapsurfer;
+        this.baseLayers[layerName2] = this.ors_osm_worldwide;
+        this.baseLayers[layerName3] = this.openstreetmap;
+        this.baseLayers[layerName4] = this.opencyclemap;
+        this.baseLayers[layerName5] = this.stamen;
+        // add openmapsurfer as base
+        this.baseLayers[layerName1].addTo(this.theMap);
+        // this.baseLayers = {
+        //     layerName1: this.openmapsurfer,
+        //     layerName2: this.ors_osm_worldwide,
+        //     layerName3: this.openstreetmap,
+        //     layerName4: this.opencyclemap,
+        //     layerName5: this.stamen
+        // };
+        this.overlays = {};
+        // var overlays = {
+        //     layerName6: this.aster_hillshade,
+        // };
+        var layerName6 = Preferences.translate('layer6');
+        this.overlays[layerName6] = this.aster_hillshade;
         L.control.mousePosition({
             position: 'topright',
             separator: ', '
@@ -91,12 +107,12 @@ var Map = (function() {
             position: "topright",
             theme: "steelblue-theme", //default: lime-theme
             width: 400,
-            height: 125,
+            height: 145,
             margins: {
-                top: 10,
+                top: 50,
                 right: 20,
                 bottom: 30,
-                left: 50
+                left: 70
             },
             useHeightIndicator: true, //if false a marker is drawn at map position
             interpolation: "basis", //see https://github.com/mbostock/d3/wiki/SVG-Shapes#wiki-area_interpolate
@@ -108,7 +124,6 @@ var Map = (function() {
             xTicks: undefined, //number of ticks in x axis, calculated by default according to width
             yTicks: undefined, //number of ticks on y axis, calculated by default according to height
             collapsed: true, //collapsed mode, show chart on click or mouseover,
-            yAxisMin: 0
         });
         this.layerRoutePoints = L.featureGroup().addTo(this.theMap);
         this.layerRouteLines = L.featureGroup().addTo(this.theMap);
@@ -118,8 +133,10 @@ var Map = (function() {
         this.layerSearch = L.featureGroup().addTo(this.theMap);
         this.layerTrack = L.featureGroup().addTo(this.theMap);
         this.layerAccessibility = L.featureGroup().addTo(this.theMap);
-        this.layerTMC = L.featureGroup().addTo(this.theMap);
-        this.layerControls.addOverlay(this.layerTMC, 'Traffic Information');
+        this.layerTMC = L.featureGroup();
+        var layerName7 = Preferences.translate('layer7');
+        this.overlays[layerName7] = this.layerTMC;
+        this.layerControls.addOverlay(this.layerTMC, layerName7);
         this.layerRestriction = L.featureGroup().addTo(this.theMap);
         this.layerAvoid.addTo(this.theMap);
         /* *********************************************************************
@@ -147,6 +164,9 @@ var Map = (function() {
                 self.theMap.closePopup(popup);
             };
             options[1].onclick = function(e) {
+                //prevent double clicking
+                if ($(this).attr("disabled")) return;
+                $(this).attr("disabled", true);
                 //click on via point
                 self.emit('map:addWaypoint', {
                     pos: displayPos,
@@ -163,31 +183,6 @@ var Map = (function() {
                 self.theMap.closePopup(popup);
             };
         });
-        // load graph info when map loaded
-        var url;
-        if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
-            url = "cgi-bin/proxy.cgi?url=" + namespaces.services.routing + "?info";
-        } else {
-            url = namespaces.services.routing + "?info";
-        }
-        jQuery.ajax({
-            url: url,
-            dataType: 'json',
-            type: 'GET',
-            crossDomain: false,
-            success: updateInfoPanel,
-            error: updateInfoPanel
-        });
-
-        function updateInfoPanel(results) {
-            var infoPanel = document.getElementById("infoPanel");
-            var lastUpdate = new Date(results.profiles['profile 1'].import_date);
-            lastUpdate = lastUpdate.getUTCDate() + '.' + (parseInt(lastUpdate.getMonth()) + parseInt(1)) + '.';
-            var nextUpdate = results.next_update !== undefined ? results.next_update : '?';
-            nextUpdate = new Date(nextUpdate);
-            nextUpdate = nextUpdate.getUTCDate() + '.' + (parseInt(nextUpdate.getMonth()) + parseInt(1)) + '.';
-            infoPanel.innerHTML += '(' + '<b>Last/Next Update</b> ' + lastUpdate + '/' + nextUpdate + ')';
-        }
         // create a new contextMenu
         function createMapContextMenu() {
             var mapContextMenuContainer = new Element('div', {
@@ -248,7 +243,8 @@ var Map = (function() {
                 if (self.layerAvoid.getLayers().length === 0) self.layerControls.removeLayer(self.layerAvoid);
             }
         };
-        this.theMap.on('layeradd', function(e) {
+        // add eventlisteners for layeravoidables only
+        this.layerAvoid.on('layeradd', function(e) {
             if (e.layer instanceof L.Path) e.layer.on('click', L.DomEvent.stop).on('click', deleteShape, e.layer);
             if (e.layer instanceof L.Path) e.layer.on('dblclick', L.DomEvent.stop).on('dblclick', e.layer.toggleEdit);
         });
@@ -261,7 +257,7 @@ var Map = (function() {
             self.layerControls.addOverlay(self.layerAvoid, 'Avoidable Regions');
         };
         //this.theMap.on('editable:drawing:end', addTooltip);
-        //this.theMap.on('editable:shape:deleted', shapeListener);
+        //this.theMap.on('editable:shape:deleted', shapeListener);813
         this.theMap.on('editable:drawing:commit', shapeListener);
         this.theMap.on('editable:vertex:deleted', shapeListener);
         this.theMap.on('editable:vertex:dragend', shapeListener);
@@ -297,15 +293,37 @@ var Map = (function() {
         }
 
         function emitMapChangeBaseMap(e) {
-            // without this condition map zoom lat/lon isnt loaded from cookies
+            var thisLayer = e.name;
+            var layer;
+            // set active true or false for baselayers
+            for (layer in self.baseLayers) {
+                self.baseLayers[layer].active = (layer == thisLayer) ? true : false;
+            }
             if (!initMap) {
-                var changedLayer = e.name;
                 self.emit('map:basemapChanged', {
-                    layer: self.serializeLayers(changedLayer)
+                    layer: self.serializeLayers()
+                });
+            }
+        }
+
+        function emitMapChangeOverlay(e) {
+            var thisLayer = e.name;
+            var layer;
+            // set active true or false for overlays
+            for (layer in self.overlays) {
+                if (layer == thisLayer) {
+                    self.overlays[layer].active = self.overlays[layer].active === true ? false : true;
+                }
+            }
+            if (!initMap) {
+                self.emit('map:basemapChanged', {
+                    layer: self.serializeLayers()
                 });
             }
         }
         this.theMap.on('baselayerchange', emitMapChangeBaseMap);
+        this.theMap.on('overlayadd', emitMapChangeOverlay);
+        this.theMap.on('overlayremove', emitMapChangeOverlay);
         this.theMap.on('zoomend', emitMapChangedEvent);
         this.theMap.on('moveend', emitMapChangedEvent);
         this.theMap.on('zoomend', emitMapChangedZoom);
@@ -426,20 +444,19 @@ var Map = (function() {
     /**
      * returns one single string with the layers of the given map that can be used in HTTP GET vars
      * if layer is undefined return and use saved active layer
+     * @param layer: name of layer
+     * @param isOverlay: bool if layer is overlay
      */
-    function serializeLayers(layer) {
-        var baseLayer;
-        baseLayer = layer;
-        var str = '';
-        var baseLayers = this.baseLayers;
-        for (var i in baseLayers) {
-            if (i == baseLayer) {
-                str += "B";
-            } else {
-                str += "0";
-            }
+    function serializeLayers() {
+        var layer;
+        var layerString = '';
+        for (layer in this.baseLayers) {
+            layerString += (this.baseLayers[layer].active === true) ? "B" : "0";
         }
-        return str;
+        for (layer in this.overlays) {
+            layerString += (this.overlays[layer].active === true) ? "T" : "0";
+        }
+        return layerString;
     }
     /**
      * restores the given previously selected layers in the map that can be used in HTTP GET vars
@@ -453,20 +470,54 @@ var Map = (function() {
         var baseLayerIdx = params.indexOf('B') >= 0 ? params.indexOf('B') : 0;
         baseLayer = Object.keys(layers)[baseLayerIdx];
         this.theMap.addLayer(layers[baseLayer]);
-        //TODO determine which overlays to set active
-        // var regex = /T/gi;
-        // while ((result = regex.exec(params))) {
-        //     indices.push(result.index);
-        // }
-        // for (var i = 0; i < indices.length; i++) {
-        //     if (layers[indices[i]]) {
-        //         layers[indices[i]].setVisibility(true);
-        //     }
-        // }
+        //determine which overlays to set active, cut baselayers from params
+        params = params.substr(Object.keys(this.baseLayers).length, params.length);
+        for (var i = 0; i < params.length; i++) {
+            if (params[i] == 'T') {
+                this.theMap.addLayer(this.overlays[Object.keys(this.overlays)[i]]);
+            }
+        }
     }
     /* *********************************************************************
      * GENERAL
      * *********************************************************************/
+    // load graph info when map loaded
+    function graphInfo() {
+        var url;
+        if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
+            url = "cgi-bin/proxy.cgi?url=" + namespaces.services.routing + "?info";
+        } else {
+            url = namespaces.services.routing + "?info";
+        }
+        jQuery.ajax({
+            url: url,
+            type: 'GET',
+            crossDomain: false,
+            success: function(data) {
+                self.updateInfoPanel(data);
+                Ui.showServiceTimeoutPopup(false);
+            },
+            error: function(data) {
+                Ui.showServiceTimeoutPopup(true);
+            }
+        });
+    }
+
+    function updateInfoPanel(results) {
+        var infoPanel = document.getElementById("infoPanel");
+        var lastUpdate = results.profiles !== undefined ? new Date(results.profiles['profile 1'].import_date) : '?';
+        if (lastUpdate !== '?') {
+            lastUpdate = lastUpdate.getUTCDate() + '.' + (parseInt(lastUpdate.getMonth()) + parseInt(1)) + '.';
+        }
+        var nextUpdate = results.next_update !== undefined ? results.next_update : '?';
+        if (nextUpdate !== '?') {
+            nextUpdate = new Date(nextUpdate);
+            nextUpdate = nextUpdate.getUTCDate() + '.' + (parseInt(nextUpdate.getMonth()) + parseInt(1)) + '.';
+        }
+        infoPanel.innerHTML = '';
+        infoPanel.innerHTML += '(' + '<b>Last/Next Update</b> ' + lastUpdate + '/' + nextUpdate + ')';
+    }
+
     function updateSize() {
         this.theMap.invalidateSize();
     }
@@ -498,15 +549,25 @@ var Map = (function() {
         this.theMap.setView(position, zoom);
     }
     /**
-     * zoom to a given feature vector defined by its vector id.
+     * zoom to a given feature vector defined by its vector id or given features 
+     * defined by their vector ids.
      * @param mapLayer: layer of the map where the feature is located
+     * @param params: vector id or list of vector ids
      * @param zoom: optional zoom level
      */
-    function zoomToFeature(mapLayer, vectorId, zoom) {
+    function zoomToFeature(mapLayer, params, zoom) {
+        var vector;
         if (mapLayer) {
-            var vectors = mapLayer.getLayer(vectorId);
+            if (params instanceof Array) {
+                vectors = mapLayer.getLayers(params);
+            } else {
+                vectors = mapLayer.getLayer(params);
+            }
             if (!zoom) {
-                if (vectors.getBounds) {
+                if (vectors instanceof Array) {
+                    var vectorGroup = new L.featureGroup(vectors);
+                    this.theMap.fitBounds(vectorGroup.getBounds());
+                } else if (vectors.getBounds) {
                     this.theMap.fitBounds(vectors.getBounds());
                 } else {
                     if (!zoom) {
@@ -515,7 +576,39 @@ var Map = (function() {
                         this.theMap.setView(vectors.getLatLng(), zoom);
                     }
                 }
+            } else {
+                //get coordinates of the waypoint if a waypoint icon was clicked
+                var cM = this.theMap.project(vectors.getLatLng());
+                this.theMap.setView(this.theMap.unproject(cM), zoom, {
+                    animate: true
+                });
             }
+        }
+    }
+    /**
+     * highlight given feature vectors defined by their ids
+     * @param mapLayer: layer of the map where the feature is located
+     * @param vectorIds: array of vectorIds
+     */
+    function highlightFeatures(mapLayer, vectorIds) {
+        for (var i = 0; i < vectorIds.length; i++) {
+            mapLayer.getLayer(vectorIds[i]).bringToFront();
+            mapLayer.getLayer(vectorIds[i]).setStyle({
+                opacity: 0.85,
+            });
+        }
+    }
+    /**
+     * reset highlight given feature vectors defined by their ids
+     * @param mapLayer: layer of the map where the feature is located
+     * @param vectorIds: array of vectorIds
+     */
+    function resetFeatures(mapLayer, vectorIds) {
+        for (var i = 0; i < vectorIds.length; i++) {
+            mapLayer.getLayer(vectorIds[i]).bringToBack();
+            mapLayer.getLayer(vectorIds[i]).setStyle({
+                opacity: 0,
+            });
         }
     }
     /**
@@ -856,12 +949,26 @@ var Map = (function() {
      * route is hidden with opacity 0
      * @param {Object} routeLineSegments: array of Leaflet Linestrings with height information
      */
-    function updateHeightprofiles(routeLineHeights) {
+    function updateHeightprofiles(routeLineHeights, viaPoints) {
+        console.log(viaPoints)
         var el = this.elevationControl;
         el.addTo(this.theMap);
         this.layerRouteLines.clearLayers();
         el.clear();
         var polyline = L.polyline(routeLineHeights).toGeoJSON();
+        // add waypoints in elevation diagram
+        if (viaPoints) {
+            for (var i = 0; i < viaPoints.length; i++) {
+                viaPoints[i] = viaPoints[i].split(" ");
+                var lat = parseFloat(viaPoints[i][1])
+                var lng = parseFloat(viaPoints[i][0])
+                viaPoints[i][0] = lat;
+                viaPoints[i][1] = lng;
+            }
+            console.log(viaPoints)
+            polyline.properties.waypoint_coordinates = viaPoints;
+        }
+        console.log(polyline)
         var gjl = L.geoJson(polyline, {
             opacity: '0',
             onEachFeature: el.addData.bind(el)
@@ -892,7 +999,7 @@ var Map = (function() {
             var routeString = [];
             var routeStringCorners = [];
             for (var i = 0; i < routeLineSegments.length; i++) {
-                //"lines" of the route, these are invisible and only used for 
+                //lines of the route, these are invisible and only used for 
                 // click to segment
                 var segment = [];
                 for (var j = 0; j < routeLineSegments[i].length; j++) {
@@ -902,9 +1009,9 @@ var Map = (function() {
                 // invisible route segment for clicking
                 var segmentBase = L.polyline(segment, styles.routeBase());
                 segmentBase.addTo(self.layerRouteLines);
-                //"corner points" of the route where direction changes
+                //corner points of the route where direction changes
                 var cornerPoint = routeLinePoints[i];
-                var routeCornerBase = L.marker(cornerPoint, styles.routeCornersBase());
+                var routeCornerBase = L.circle(cornerPoint, styles.routeCornersBase());
                 routeCornerBase.addTo(self.layerCornerPoints);
                 routeStringCorners.push(routeLinePoints[i]);
                 ftIds.push(segmentBase._leaflet_id, routeCornerBase._leaflet_id);
@@ -920,6 +1027,8 @@ var Map = (function() {
         }
         // bring tmc layer to front
         this.layerTMC.bringToFront();
+        // bring route markers to front
+        this.layerRoutePoints.bringToFront();
         return ftIds;
     }
     /**
@@ -1054,10 +1163,23 @@ var Map = (function() {
         var route;
         if (singleRouteLineString) {
             route = L.polyline(singleRouteLineString).toGeoJSON();
-            route = togpx(route);
+            route = togpx(route, {
+                creator: 'OpenRouteService.org'
+            });
             //insert line breaks for nicely readable code
             route = route.replace(/></g, '>\n<');
-            //note: doesn't include namespaces in every tag any more
+            // this has to be done because xmlserializer used in
+            // togpx() removes the xmlns attribute we have to
+            // add it manually here
+            // break the textblock into an array of lines
+            var lines = route.split('\n');
+            // remove one line, starting at the first position
+            lines.splice(0, 1);
+            lines = lines.join("");
+            header = '<?xml version="1.0"?>';
+            meta = '<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" version="1.1" creator="OpenRouteService.org">';
+            route = header + meta + lines;
+            route = route.replace(/></g, '>\n<');
         }
         return route;
     }
@@ -1193,6 +1315,8 @@ var Map = (function() {
     // map.prototype.zoomToPoiResults = zoomToPoiResults;
     map.prototype.zoomToMarker = zoomToMarker;
     map.prototype.zoomToFeature = zoomToFeature;
+    map.prototype.highlightFeatures = highlightFeatures;
+    map.prototype.resetFeatures = resetFeatures;
     map.prototype.zoomToRoute = zoomToRoute;
     map.prototype.updateRoute = updateRoute;
     map.prototype.updateSize = updateSize;
@@ -1211,5 +1335,7 @@ var Map = (function() {
     map.prototype.panMapOnEdges = panMapOnEdges;
     map.prototype.updateHeightprofiles = updateHeightprofiles;
     map.prototype.emitloadTMC = emitloadTMC;
+    map.prototype.graphInfo = graphInfo;
+    map.prototype.updateInfoPanel = updateInfoPanel;
     return map;
 }());

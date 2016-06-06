@@ -1,6 +1,7 @@
 var lang_hu = {			
     'serverError':'Sajn&aacute;ljuk. Hiba t&ouml;rt&eacute;nt a sz&aacute;m&iacute;t&aacute;s sor&aacute;n a szerveren. K&eacute;rj&uuml;k pr&oacute;b&aacute;lkozzon k&eacute;sobb. ',
     'contact':'Inform&aacute;ci&oacute;&eacute;s kapcsolat',
+	'maxSpeed': 'Maximalis sebesseg',
     'closeBtn':'Bez&aacute;r&aacute;s',
     'saveBtn':'A Ment&eacute;s',
     'untitled':'Untitled',
@@ -9,6 +10,15 @@ var lang_hu = {
     'search':'Keres&eacute;s',
     'routeOptions':'&Uacute;tvonal-opci&oacute;k',
     'routeExtras':'&Uacute;tvonal extr&aacute;k',
+	
+	//Map Layernames
+	'layer1' : 'OpenMapSurfer',
+	'layer2' : 'OSM-WMS vil&aacute;gszerte',
+	'layer3' : 'Openstreetmap',
+	'layer4' : 'OpenCycleMap',
+	'layer5' : 'Stamen t&eacute;rk&eacute;p',
+	'layer6' : 'Hillshade',
+	'layer7' : 'Forgalmi infromation',
     
 	//Routing
     'planRoute':'&Uacute;tvonal',
@@ -17,12 +27,14 @@ var lang_hu = {
     'routeFromTo':'&Uacute;tvonal',
     'resetRoute':'Reset teljes &uacute;tvonal ',
     'TotalTime':'&Ouml;sszes ido',
+	'TotalWarnings':  'forgalmi inform&aacute;ci&oacute;k',
     'TotalDistance':'Teljes t&aacute;vols&aacute;g',
     'zoomToRoute':'Eg&eacute;sz Route',
     'routeSummary':'&Ouml;sszegz&eacute;s',
     'routeInstructions':'&Uacute;tvonal utas&iacute;t&aacute;sokat',
     'routeLinkText':'Permalink aktu&aacute;lis &uacute;tvonal',
     'permalinkButton':'Permalink',
+	'routeSurface': 'Ut &eacute;s a felsz&iacute;ni inform&aacute;ci&oacute;k',
    
    //Geolocation
     'geolocationNotification':'Az &uacute;tvonal tervezo megpr&oacute;b&aacute;lja kider&iacute;teni a tart&oacute;zkod&aacute;si hely&eacute;t. Ha nem akarja hogy elfogadja a k&eacute;r&eacute;st akkor &aacute;tir&aacute;ny&iacute;tja egy pillanat. ',
@@ -78,26 +90,28 @@ var lang_hu = {
     'BicycleRacer':'versenyker&eacute;kp&aacute;r',
 	'Wheelchair' : 'megk&ouml;zel&iacute;thet&#337 &#250;tvonalon',
 	
-    'avoidMotorways':'Ker&uuml;lje aut&oacute;p&aacute;ly&aacute;k',
-    'avoidTollways':'Ker&uuml;lje a fizetos utak',
-	'avoidunpavedRoads':  'Ker&uuml;lje a f&ouml;ldutakat',
-	'avoidFerry':  'Ker&uuml;lje a kompj&aacute;rat',
+    'avoidMotorways':'aut&oacute;p&aacute;ly&aacute;k',
+    'avoidTollways':'fizetos utak',
+	'avoidunpavedRoads':  ' f&ouml;ldutakat',
+	'avoidFerry':  'kompj&aacute;rat',
+	'avoidFord': 'g&aacute;zl&oacute;k',
+	'avoidTunnel' : 'alag&uacute;t',
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Elker&uuml;l&eacute;se road t&iacute;pusok &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Elker&uuml;l&eacute;se road t&iacute;pusok &nbsp;&nbsp;<span class="caret">',
 	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Elker&uuml;l&eacute;se ter&uuml;letek &nbsp;&nbsp;<span class="caret">',
 	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;Elker&uuml;l&eacute;se road t&iacute;pusok  &nbsp;&nbsp;<span class="caret">',
 	
-	'avoidFerryPedes' : 'Ker&uuml;lje a kompj&aacute;rat' ,	
-	'avoidFerryBike' : 'Ker&uuml;lje a kompj&aacute;rat' ,
-	'avoidunpavedRoadsBike' : 'Ker&uuml;lje a f&ouml;ldutakat',
-	'avoidStepsBike' : 'Elker&uuml;l&eacute;se l&eacute;p&eacute;sek',
-
-    'avoidStepsPedestrian' : 'Elker&uuml;l&eacute;se l&eacute;p&eacute;sek',
-   
-    'avoidFords' : 'g&aacute;zl&oacute;k',
-    'avoidFordsBike' : 'g&aacute;zl&oacute;k',
+	'avoidFerryBike' : 'kompj&aacute;rat' ,
+	'avoidunpavedRoadsBike' : 'f&ouml;ldutakat',
+	'avoidpavedRoadsBike' : 'ker&uuml;lje a burkolt utak',
+	'avoidStepsBike' : 'l&eacute;p&eacute;sek',
+	'avoidFordsBike' : 'g&aacute;zl&oacute;k',
+	
+	'avoidFerryPedestrian' : 'kompj&aacute;rat' ,
+    'avoidStepsPedestrian' : 'l&eacute;p&eacute;sek',
     'avoidFordsPedestrian' : 'g&aacute;zl&oacute;k',
+	'avoidpavedRoadsPedestrian' : 'ker&uuml;lje a burkolt utak',
 	
 	'TruckLength' : 'maxim&aacute;lis hossza',
 	'TruckHeight' : 'maxim&aacute;lis magass&aacute;g',
@@ -338,4 +352,37 @@ var lang_hu = {
     'team_handball':'team k&eacute;zilabda',
     'tennis':'tenisz',
     'volleyball':'r&ouml;plabda ',
-};			
+
+    //Way Types
+    'Other': 'Más',
+    'StateRoad': 'Állami út',
+    'Road': 'Út',
+    'Street': 'Utca',
+    'Path': 'Pálya',
+    'Track': 'Nyomon követni',
+    'Cycleway': 'Bicikliút',
+    'Footway': 'Járda',
+    'Steps':  'Lépéseks',
+    'Ferry': 'Komp',
+    'Construction': 'Építés',
+    //Surface Types
+    //'Other': 'Other',
+    'Paved': 'Kikövezett',
+    'Unpaved': 'Burkolatlan',
+    'Asphalt': 'Aszfalt',
+    'Concrete':'Beton',
+    'Cobblestone': 'Macskaköves',
+    'Metal':  'Fém',
+    'Wood':'Faipari',
+    'CompactedGravel': 'Tömörített kavics',
+    'FineGravel': 'Aprókavicsos',
+    'Gravel': 'Kavics',
+    'Dirt': 'Piszok',
+    'Ground': 'Föld',
+    'Ice': 'Jég',
+    'Salt': 'Só',
+    'Sand': 'Homok',
+    'Woodchips': 'Faforgács',
+    'Grass': 'Fű',
+    'GrassPaver': 'Gyep rács kövek'
+};		

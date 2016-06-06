@@ -1,6 +1,7 @@
 var lang_fr = {			
     'serverError':'Nous sommes d&eacute;sol&eacute;s. Une erreur est survenue lors du calcul sur le serveur. Merci de r&eacute;essayer ult&eacute;rieurement.',
     'contact':'Info & Contact',
+	'maxSpeed': 'Vitesse de pointe',
     'closeBtn':'Fermer',
     'saveBtn':'Sauvegarger',
     'untitled':'Sans titre',
@@ -9,19 +10,31 @@ var lang_fr = {
     'search':'Recherche',
     'routeOptions':'Options d\'itin&eacute;raire',
     'routeExtras':'Extras d\'itin&eacute;aires',
+	
+	//Map Layernames
+	'layer1' : 'OpenMapSurfer',
+	'layer2' : 'OSM-WMS mondial',
+	'layer3' : 'Openstreetmap',
+	'layer4' : 'OpenCycleMap',
+	'layer5' : 'Stamen carte',
+	'layer6' : 'Ombrage',
+	'layer7' : 'Infromation du trafic',
+	
     //Routing
-    'planRoute':'Pr&eacute;voir l\'itin&eacute;raire',
-    'calculatingRoute':'Calcul de l\'itin&eacute;raire...',
-    'noRouteAvailable':'D&eacute;sol&eacute;aucun itin&eacute;raire n\'a &eacute;t&eacute;trouv&eacute;entre les points s&eacute;lectionn&eacute;s. Merci de choisir vos points plus pr&egrave;s d\'une route.',
-    'routeFromTo':'Itin&eacute;raire vers',
-    'resetRoute':'Remettre &agrave;  z&eacute;ro l\'itin&eacute;aire',
-    'TotalTime':'Dur&eacute;e totale',
-    'TotalDistance':'Distance totale',
+	'planRoute':'Pr&eacute;voir l\'itin&eacute;raire',
+	'calculatingRoute':'Calcul de l\'itin&eacute;raire...',
+	'noRouteAvailable':'D&eacute;sol&eacute;aucun itin&eacute;raire n\'a &eacute;t&eacute;trouv&eacute;entre les points s&eacute;lectionn&eacute;s. Merci de choisir vos points plus pr&egrave;s d\'une route.',
+	'routeFromTo':'Itin&eacute;raire vers',
+	'resetRoute':'Remettre &agrave;  z&eacute;ro l\'itin&eacute;aire',
+	'TotalTime':'Dur&eacute;e totale',
+	'TotalWarnings':  'Informations du trafic',
+	'TotalDistance':'Distance totale',
     'zoomToRoute':'Itin&eacute;raire complet',
     'routeSummary':'R&eacute;sum&eacute;de l\'itin&eacute;raire',
     'routeInstructions':'Instructions de l\'itin&eacute;raire',
     'routeLinkText':'  Lien permanent pour l\'itin&eacute;raire actuel',
     'permalinkButton':'Permalien',
+	'routeSurface': 'Information routiere et la surface',
    
    //Geolocation
     'geolocationNotification':'Le planificateur de routage essaie de trouver votre emplacement. Si vous ne voulez pas accepter la demande vous allez &ecirc;tre redirig&eacute;dans un instant. ',
@@ -77,26 +90,28 @@ var lang_fr = {
     'BicycleRacer':'v&eacute;lo de course',
 	'Wheelchair' : 'voie accessible',
 	
-    'avoidMotorways':'&Eacute;viter les autoroutes',
-    'avoidTollways':'&Eacute;viter les routes &agrave;  p&eacute;age',
-	'avoidunpavedRoads':  'Eviter les routes non rev&ecirc;tues',
-	'avoidFerry':  'Eviter les liaisons maritimes',
+    'avoidMotorways':'autoroutes',
+    'avoidTollways':'routes &agrave;  p&eacute;age',
+	'avoidunpavedRoads':  'routes non rev&ecirc;tues',
+	'avoidFerry':  'liaisons maritimes',
+	'avoidFord':  'gu&eacute;s',
+	'avoidTunnel' : 'tunnel',
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Eviter les types de route &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Eviter les types de route &nbsp;&nbsp;<span class="caret">',
 	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Eviter les zones &nbsp;&nbsp;<span class="caret">',
 	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;Eviter les types de route  &nbsp;&nbsp;<span class="caret">',
-	
-	'avoidFerryPedes' : 'Eviter les liaisons maritimes' ,
-	'avoidFerryBike' : 'Eviter les liaisons maritimes' ,
-	'avoidunpavedRoadsBike' : 'Eviter les routes non rev&ecirc;tues',
-	'avoidStepsBike' : 'Eviter les &eacute;tapes',
 
-    'avoidStepsPedestrian' : 'Eviter les &eacute;tapes',
-   
-    'avoidFords' : 'gu&eacute;s',
+	'avoidFerryBike' : 'liaisons maritimes' ,
+	'avoidunpavedRoadsBike' : 'routes non rev&ecirc;tues',
+	'avoidpavedRoadsBike' : 'routes rev&ecirc;tues',
+	'avoidStepsBike' : '&eacute;tapes',
     'avoidFordsBike' : 'gu&eacute;s',
+	
     'avoidFordsPedestrian' : 'gu&eacute;s',
+	'avoidStepsPedestrian' : '&eacute;tapes',
+	'avoidFerryPedestrian' : 'liaisons maritimes',
+	'avoidpavedRoadsPedestrian' : 'routes rev&ecirc;tues',
 	
 	'TruckLength' : 'longueur maximale',
 	'TruckHeight' : 'hauteur maximale',
@@ -337,4 +352,38 @@ var lang_fr = {
     'team_handball':'handball',
     'tennis':'  tennis',
     'volleyball':'volley',
-};			
+
+    //Way Types
+    'Other': 'Autre',
+    'StateRoad': 'Route nationale',
+    'Road': 'Route',
+    'Street': 'Rue',
+    'Path': 'Chemin',
+    'Track': 'Piste',
+    'Cycleway': 'Piste cyclable',
+    'Footway': 'Sentier',
+    'Steps':  'Étagée',
+    'Ferry': 'Traversier',
+    'Construction': 'Construction',
+
+    //Surface Types
+    //'Other': 'Other',
+    'Paved': 'Pavé',
+    'Unpaved': 'Non pavé',
+    'Asphalt': 'Asphalte',
+    'Concrete':'Béton',
+    'Cobblestone': 'Pavé',
+    'Metal':  'Métal',
+    'Wood':'Bois',
+    'CompactedGravel': 'Gravier compacté',
+    'FineGravel': 'Gravier fine',
+    'Gravel': 'Gravier',
+    'Dirt': 'Saleté',
+    'Ground': 'Sol',
+    'Ice': 'Glace',
+    'Salt': 'Sel',
+    'Sand': 'Sable',
+    'Woodchips': 'Copeaux de bois',
+    'Grass': 'Herbe',
+    'GrassPaver': 'Herbe finisseur'
+};	

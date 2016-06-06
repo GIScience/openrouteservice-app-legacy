@@ -1,18 +1,24 @@
 var lang_ru = {
     'serverError': 'Нам очень жаль, но на сервере во время расчёта произошла ошибка. Пожалуйста попробуйте позже.',
- 
     'contact': 'Информация&nbsp;&amp;&nbsp;Контакты',
- 
+	'maxSpeed': 'максимальная скорость',
     'closeBtn': 'Закрыть',
     'saveBtn': 'Сохранить',
- 
     'untitled': 'Безымянный',
 	'infoTextVersions': 'Впервые на OpenRouteService? Включите расширенные опции в меню Настройки.',
- 
     'routePlanner': 'Маршрут',
     'search': 'Поиск',
     'routeOptions': 'Настройки маршрута',
     'routeExtras': 'Дополнительные опции маршрута',
+	
+	//Map Layernames
+	'layer1' : 'OpenMapSurfer',
+	'layer2' : 'OSM-WMS Мировой',
+	'layer3' : 'Openstreetmap',
+	'layer4' : 'OpenCycleMap',
+	'layer5' : 'Stamen карта',
+	'layer6' : 'отмывка',
+	'layer7' : 'информация о движении',
  
     //Routing
     'planRoute': 'План маршрута',
@@ -21,12 +27,14 @@ var lang_ru = {
     'routeFromTo': 'Маршрут в ',
     'resetRoute': 'Сбросить весь маршрут',
     'TotalTime': 'Общее время',
+	'TotalWarnings':  'информация трафика',
     'TotalDistance': 'Вся дистанция',
     'zoomToRoute': 'Весь Маршрут',
     'routeSummary': 'Сводка',
     'routeInstructions': 'Инструкции по маршруту',
     'routeLinkText': 'Постоянная ссылка на текущий маршрут',
     'permalinkButton': 'Постоянная ссылка',
+	'routeSurface': 'дорога и поверхность информация',
  
     //Geolocation
     'geolocationNotification': 'Планировщик маршрута попытается определить ваше положение. Если вы не хотите принимать запрос, вы будете перенаправлены сейчас.',
@@ -86,23 +94,25 @@ var lang_ru = {
     'avoidTollways': 'Избегать платных дорог',
 	'avoidunpavedRoads':  'Избегайте грунтовые дороги',
 	'avoidFerry':  'Избегайте паромы',
+	'avoidFord': 'броды',
+	'avoidTunnel' : 'тоннель',	
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;избежать типы дорог &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;избежать типы дорог &nbsp;&nbsp;<span class="caret">',
 	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;избегать районов &nbsp;&nbsp;<span class="caret">',
 	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;избежать типы дорог  &nbsp;&nbsp;<span class="caret">',
 	
-	'avoidFerryPedes' : 'Избегайте паромы' ,
 	'avoidFerryBike' : 'Избегайте паромы' ,
 	'avoidunpavedRoadsBike' : 'Избегайте грунтовые дороги',
+	'avoidpavedRoadsBike' : 'Во избежание дороги с твердым покрытием',
 	'avoidStepsBike' : 'меры',
-
-    'avoidStepsPedestrian' : 'меры',
-   
-    'avoidFords' : 'броды',
     'avoidFordsBike' : 'броды',
-    'avoidFordsPedestrian' : 'броды',
 	
+    'avoidStepsPedestrian' : 'меры',
+    'avoidFordsPedestrian' : 'броды',
+	'avoidpavedRoadsPedestrian' : 'Во избежание дороги с твердым покрытием',
+	'avoidFerryPedestrian' : 'Избегайте паромы' ,
+
 	'TruckLength' : 'максимальная длина',
 	'TruckHeight' : 'максимальная высота',
 	'TruckWeight' : 'максимальный вес',
@@ -348,4 +358,38 @@ var lang_ru = {
     'team_handball': 'гандбол',
     'tennis': 'теннис',
     'volleyball': 'воллейбол',
+
+    //Way Types
+    'Other': 'Другие',
+    'StateRoad': 'государственная дорога',
+    'Road': 'Дорога',
+    'Street': 'улица',
+    'Path': 'дорожка',
+    'Track': 'трек',
+    'Cycleway': 'цикл путь',
+    'Footway': 'пешеходная дорожка',
+    'Steps':  'меры',
+    'Ferry': 'паром',
+    'Construction': 'строительство',
+
+    //Surface Types
+    //'Other': 'Other',
+    'Paved': 'мощеный',
+    'Unpaved': 'грунтовой',
+    'Asphalt': 'асфальт',
+    'Concrete':'бетон',
+    'Cobblestone': 'булыжник',
+    'Metal':  'металл',
+    'Wood':'дерево',
+    'CompactedGravel': 'уплотненный гравий',
+    'FineGravel': 'мелкий гравий',
+    'Gravel': 'гравий',
+    'Dirt': 'грязь',
+    'Ground': 'земля',
+    'Ice': 'лед',
+    'Salt': 'поваренная соль',
+    'Sand': 'песок',
+    'Woodchips': 'щепки',
+    'Grass': 'трава',
+    'GrassPaver': 'трава асфальтоукладчик'
 };

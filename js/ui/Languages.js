@@ -54,23 +54,24 @@ var Languages = (function(w) {'use strict';
 		$('#truckLabelMain').html(p.translate('truckMain'));
 		$('#WheelchairLabel').html(p.translate('Wheelchair'));
 		
+		$('#test').html(p.translate('layer'));
+		
 		//avoidables
 		$('#avoidFerryLabelBike').html(p.translate('avoidFerryBike'));
 		$('#avoidunpavedRoadsLabelBike').html(p.translate('avoidunpavedRoadsBike'));
 		$('#avoidStepsLabelBike').html(p.translate('avoidStepsBike'));
-		//$('#avoidpavedRoadsLabelBike').html(p.translate('avoidpavedRoadsBike'));
-		$('#avoidStepsLabelPedestrian').html(p.translate('avoidStepsBike'));
-		$('#avoidFerryLabelPedestrian').html(p.translate('avoidFerryPedes'));
-		
-		$('#avoidFordsLabel').html(p.translate('avoidFords'));
+		$('#avoidpavedRoadsLabelBike').html(p.translate('avoidpavedRoadsBike'));
  		$('#avoidFordsLabelBike').html(p.translate('avoidFordsBike'));
+			
  		$('#avoidFordsLabelPedestrian').html(p.translate('avoidFordsPedestrian'));
-
+		$('#avoidpavedRoadsLabelPedestrian').html(p.translate('avoidpavedRoadsPedestrian'));
+		$('#avoidStepsLabelPedestrian').html(p.translate('avoidStepsBike'));
+		$('#avoidFerryLabelPedestrian').html(p.translate('avoidFerryPedestrian'));
+		
 		$('#avoidRoadsBtn').html(p.translate('avoidRoadMain'));
 		$('#avoidAreasBtn').html(p.translate('avoidAreasMain'));
 		$('#avoidBikesBtn').html(p.translate('avoidBikeMain'));
 		$('#avoidPedesBtn').html(p.translate('avoidPedesMain'));
-
 
 		$('#avoidMotorLabel').html(p.translate('avoidMotorways'));
 		$('#avoidTollLabel').html(p.translate('avoidTollways'));
@@ -80,7 +81,7 @@ var Languages = (function(w) {'use strict';
 		$('#avoidFerryLabel').html(p.translate('avoidFerry'));
 		$('#avoidTunnelLabel').html(p.translate('avoidTunnel'));
 		$('#avoidFordsLabel').html(p.translate('avoidFord'));
-		
+			
 		//wheelchair parameters
 		$('#surfaceLabel').html(p.translate('surface'));
 		$('#asphaltOption').html(p.translate('asphalt'));
@@ -114,6 +115,7 @@ var Languages = (function(w) {'use strict';
 		$('#addWaypoint').html(p.translate('addWaypoint'));
 		$('#routeSummaryHead').html(p.translate('routeSummary') + ':');
 		$('#routeInstructionHead').html(p.translate('routeInstructions') + ':');
+		$('#routeTypesHead').html(p.translate('routeSurface') + ':');
 
 		//route extras
 		$('#routeExtrasHead').html(p.translate('routeExtras') + ':');
@@ -138,6 +140,9 @@ var Languages = (function(w) {'use strict';
 		$('#importGpxError').html(p.translate('gpxUploadError'));
 		$('.fileUploadNewLabel').html(p.translate('selectFile'));
 		$('.fileUploadExistsLabel').html(p.translate('changeFile'));
+		
+		//Route optimization option
+		$('#viaOptimizeLabel').html(p.translate('viaOptimize'));
 
 		//geolocation
 		$('#geolocationHead').html(p.translate('currentLocation'));

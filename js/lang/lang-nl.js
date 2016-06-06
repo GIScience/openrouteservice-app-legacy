@@ -1,6 +1,7 @@
 var lang_nl = {			
     'serverError':'Spijtig. Er is een fout opgetreden tijdens de berekening op de server. Probeer het later opnieuw. ',
     'contact':'Info & Contact',
+	'maxSpeed': 'Maximumsnelheid',
     'closeBtn':'Sluit',
     'saveBtn':'Opslaan',
     'untitled':'Untitled',
@@ -9,6 +10,15 @@ var lang_nl = {
     'search':'Zoeken',
     'routeOptions':'Route-opties',
     'routeExtras':'Route extras',
+	
+	//Map Layernames
+	'layer1' : 'OpenMapSurfer',
+	'layer2' : 'OSM-WMS wereldwijd',
+	'layer3' : 'Openstreetmap',
+	'layer4' : 'OpenCycleMap',
+	'layer5' : 'Stamen kaart',
+	'layer6' : 'Hillshade',
+	'layer7' : 'Verkeersinformatie',
    
    //Routing
     'planRoute':'Plan route',
@@ -17,12 +27,14 @@ var lang_nl = {
     'routeFromTo':'Route naar',
     'resetRoute':'Reset hele route',
     'TotalTime':'Totale tijd',
+	'TotalWarnings':  'verkeersinformatie',
     'TotalDistance':'Totale afstand',
     'zoomToRoute':'Whole Route',
     'routeSummary':'Samenvatting',
     'routeInstructions':'Route-instructies',
     'routeLinkText':'Permanente link voor de huidige route',
     'permalinkButton':'Permanente',
+	'routeSurface': 'Weg en oppervlakte informatie',
     
 	//Geolocation
     'geolocationNotification':'De routing planner probeert uit te vinden uw locatie. Als u niet wilt dat het verzoek accepteert, wordt u doorgestuurd in een moment. ',
@@ -78,27 +90,29 @@ var lang_nl = {
     'BicycleRacer':'racefiets',
 	'Wheelchair' : 'toegankelijke route',
 	
-    'avoidMotorways':'Vermijd snelwegen',
-    'avoidTollways':'Vermijd tolwegen',
-	'avoidunpavedRoads':  'Vermijd onverharde wegen',
-	'avoidFerry':  'Vermijd veerverbindingen',
+    'avoidMotorways':'snelwegen',
+    'avoidTollways':'tolwegen',
+	'avoidunpavedRoads':  'onverharde wegen',
+	'avoidFerry':  'veerverbindingen',
+	'avoidFord': 'doorwaadbare plaats',
+	'avoidTunnel' : 'tunnel',
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Vermijden wegtypen &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Vermijden wegtypen &nbsp;&nbsp;<span class="caret">',
 	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Vermijden gebieden &nbsp;&nbsp;<span class="caret">',
 	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;Vermijden wegtypen  &nbsp;&nbsp;<span class="caret">',
 	
-	'avoidFerryPedes' : 'Vermijd veerverbindingen' ,
-	'avoidFerryBike' : 'Vermijd veerverbindingen' ,
-	'avoidunpavedRoadsBike' : 'Vermijd onverharde wegen',
-	'avoidStepsBike' : 'Vermijd stappen',
-
-    'avoidStepsPedestrian' : 'Vermijd stappen',
-   
-    'avoidFords' : 'fords',
+	'avoidFerryBike' : 'veerverbindingen' ,
+	'avoidunpavedRoadsBike' : 'onverharde wegen',
+	'avoidpavedRoadsBike' : 'verharde wegen',
+	'avoidStepsBike' : 'stappen',
     'avoidFordsBike' : 'fords',
-    'avoidFordsPedestrian' : 'fords',
 	
+    'avoidStepsPedestrian' : 'stappen',
+    'avoidFordsPedestrian' : 'fords',
+	'avoidFerryPedestrian' : 'veerverbindingen' ,
+	'avoidpavedRoadsPedestrian' : 'verharde wegen',
+		
 	'TruckLength' : 'maximumlengte',
 	'TruckHeight' : 'maximale hoogte',
 	'TruckWeight' : 'maximum gewicht',
@@ -344,4 +358,37 @@ var lang_nl = {
     'team_handball':'handbal',
     'tennis':'tennis',
     'volleyball':'volleybal',
+
+    //Way Types
+    'Other': 'Anders',
+    'StateRoad': 'Provinciale weg',
+    'Road': 'Weg',
+    'Street': 'Straat',
+    'Path': 'Pad',
+    'Track': 'Spoor',
+    'Cycleway': 'Fietspad',
+    'Footway': 'trottoir',
+    'Steps':  'Stappen',
+    'Ferry': 'Veerboot',
+    'Construction': 'Bouw',
+    //Surface Types
+    //'Other': 'Other',
+    'Paved': 'Geplaveid',
+    'Unpaved': 'Ongeplaveid',
+    'Asphalt': 'Asfalt',
+    'Concrete':'Betonnen',
+    'Cobblestone': 'Straatkei',
+    'Metal':  'Metaal',
+    'Wood':'Hout',
+    'CompactedGravel': 'Verdicht grind',
+    'FineGravel': 'Fijn grind',
+    'Gravel': 'Grind',
+    'Dirt': 'Vuil',
+    'Ground': 'Grond',
+    'Ice': 'Ijs-',
+    'Salt': 'Zout',
+    'Sand': 'Zand',
+    'Woodchips': 'Houtsnippers',
+    'Grass': 'Gras',
+    'GrassPaver': 'Gras betonmolen'
 };			

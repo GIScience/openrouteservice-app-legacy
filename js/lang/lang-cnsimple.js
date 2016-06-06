@@ -1,18 +1,24 @@
 var lang_cnsimple = {
 	'serverError' : '很抱歉，服务器端发生计算错误。请稍后再试。',
-
 	'contact' : '联系我们',
-
+	'maxSpeed': '最大速率',
 	'closeBtn' : '关闭',
 	'saveBtn' : '保存',
-
 	'untitled' : '新文档',
 	'infoTextVersions' : '新用户？请在偏好设置菜单中激活扩展选项。',
-
 	'routePlanner' : '路径规划器',
 	'search' : '搜索',
 	'routeOptions' : '路径选项',
 	'routeExtras' : '其他',
+	
+	//Map Layernames
+	'layer1' : 'OpenMapSurfer',
+	'layer2' : 'OSM-WMS 全世界',
+	'layer3' : 'Openstreetmap',
+	'layer4' : 'OpenCycleMap',
+	'layer5' : 'Stamen 地圖',
+	'layer6' : '山體陰影',
+	'layer7' : '交通信息',
 
 	//Routing
 	'planRoute' : '规划路径',
@@ -21,12 +27,14 @@ var lang_cnsimple = {
 	'routeFromTo' : '导航至 ',
 	'resetRoute' : '重置路径',
 	'TotalTime' : '总时间',
+	'TotalWarnings':  '交通信息',
 	'TotalDistance' : '总距离',
 	'zoomToRoute' : '观察全部',
 	'routeSummary' : '路径概述',
 	'routeInstructions' : '路径说明',
 	'routeLinkText' : '当前路径导出链接',
 	'permalinkButton' : '链接',
+	'routeSurface': '方式和表面信息',
 
 	//Geolocation
 	'geolocationNotification' : '浏览器正努力定位您的位置。若您不允许定位，几秒钟之后您会被重定向。',
@@ -99,21 +107,24 @@ var lang_cnsimple = {
 	'avoidTollways' : '避开收费站',
 	'avoidunpavedRoads':  '避开未铺砌道路',
 	'avoidFerry':  '避开渡船',
+	'avoidTunnel' : '隧道',
+	'avoidFord': '渡口',
 	
 	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;避免道路类型 &nbsp;&nbsp;<span class="caret">',
 	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;避免道路类型 &nbsp;&nbsp;<span class="caret">',
 	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;避免地区 &nbsp;&nbsp;<span class="caret">',
 	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;避免道路类型  &nbsp;&nbsp;<span class="caret">',
 	
-	'avoidFerryPedes' : '避开渡船' ,
 	'avoidFerryBike' : '避开渡船' ,
 	'avoidunpavedRoadsBike' : '避开未铺砌道路',
+	'avoidpavedRoadsBike' : '避免铺设道路',
 	'avoidStepsBike' : '步骤',
-	'avoidStepsPedestrian': '步骤',
- 	
- 	'avoidFords' : '渡口',
  	'avoidFordsBike' : '渡口',
+ 	
  	'avoidFordsPedestrian' : '渡口',
+	'avoidStepsPedestrian': '步骤',	
+	'avoidFerryPedestrian' : '避开渡船' ,
+	'avoidpavedRoadsPedstrian' : '避免铺设道路',
 	
 	//Surfaces:
 	'surface': '表面',
@@ -347,4 +358,38 @@ var lang_cnsimple = {
 	'team_handball' : '手球',
 	'tennis' : '网球',
 	'volleyball' : '排球',
+
+	//Way Types
+    'Other': '其他',
+    'StateRoad': '国道',
+    'Road': '路',
+    'Street': '街',
+    'Path': '路径',
+    'Track': '跟踪',
+    'Cycleway': '自行车道',
+    'Footway': '人行道',
+    'Steps':  '脚步',
+    'Ferry': '渡船',
+    'Construction': '施工',
+
+    //Surface Types
+    //'Other': 'Other',
+    'Paved': '铺就',
+    'Unpaved': '未铺砌',
+    'Asphalt': '沥青',
+    'Concrete':'具体',
+    'Cobblestone': '鹅卵石',
+    'Metal':  '金属',
+    'Wood':'木',
+    'CompactedGravel': '密实的砾石',
+    'FineGravel': '细砾',
+    'Gravel': '碎石',
+    'Dirt': '污垢',
+    'Ground': '地面',
+    'Ice': '冰',
+    'Salt': '盐',
+    'Sand': '砂',
+    'Woodchips': '木屑',
+    'Grass': '草',
+    'GrassPaver': '草摊铺机'
 };

@@ -61,29 +61,6 @@ var Ui = (function(w) {
             }
         }
     }
-    /**
-     * makes the sidebar visible or invisible (larger map)
-     * @param e: the event
-     */
-    function handleToggleSidebar(e) {
-        var side = document.getElementById('sidebar');
-        //when calling this for the first time on page startup, style.display attribute will be empty which corresponds to the default case of "visible"
-        if (side.style.display == 'none') {
-            //sidebar is not visible, show it
-            $('#sidebar').css('display', 'inline');
-            $('#map').css('left', '415px');
-            $('#toggleSidebar').attr('class', 'sidebarVisible');
-            //trigger map update
-            theInterface.emit('ui:mapPositionChanged');
-        } else {
-            //sidebar is visible, hide it
-            $('#sidebar').css('display', 'none');
-            $('#map').css('left', '25px');
-            $('#toggleSidebar').attr('class', 'sidebarInvisible');
-            //trigger map update
-            theInterface.emit('ui:mapPositionChanged');
-        }
-    }
     /* *********************************************************************
      * LANGUAGE-SPECIFIC
      * *********************************************************************/
@@ -96,12 +73,26 @@ var Ui = (function(w) {
         $('#newToOrs').append(label);
         $('#newToOrs').show();
     }
-
-    function showServiceTimeoutPopup() {
+    /**
+     * if it is the user's first visit to ORS show a popup with information about the avoidables
+     */
+    function showAvoidablesInfoPopup() {
         var label = new Element('label');
-        label.insert(preferences.translate('serverError'));
-        $('#serviceTimeout').append(label);
-        $('#serviceTimeout').show();
+        label.insert(preferences.translate('infoAboutAvoidables'));
+        $('#avoidables_info').append(label);
+        $('#avoidables_info').show();
+    }
+
+    function showServiceTimeoutPopup(arg) {
+        if (arg === true) {
+            $('#serviceTimeout').children('label').empty();
+            var label = new Element('label');
+            label.insert(preferences.translate('serverError'));
+            $('#serviceTimeout').append(label);
+            $('#serviceTimeout').show();
+        } else if (arg === false) {
+            $('#serviceTimeout').hide();
+        }
     }
     /* *********************************************************************
      * ALL MARKER ELEMENTS
@@ -157,7 +148,6 @@ var Ui = (function(w) {
      * @param e: the event
      */
     function handleSearchWaypointInput(e) {
-        console.log(e)
         var waypointElement = $(e.currentTarget).parent().parent();
         //index of the waypoint (0st, 1st 2nd,...)
         var index = waypointElement.attr('id');
@@ -233,21 +223,19 @@ var Ui = (function(w) {
         //show number of results and link to zoom
         var numResults = $('#zoomToWaypointResults_' + wpIndex);
         numResults.html(preferences.translate('numPoiResults1') + allAddress.length + preferences.translate('numPoiResults2') + '<br/>' + preferences.translate('selectResult'));
-        // $('.address').mouseover(handleMouseOverElement);
-        // $('.address').mouseout(handleMouseOutElement);
-        // $('.address').click(handleSearchWaypointResultClick);
         //if one result is found then select it automatically
         if (listOfFeatures.length == 1) {
             var featureID = listOfFeatures[0]._leaflet_id;
-            $(".address").click(function(event, a) {
+            //$(".address").click(function(event, a) {
+            $(rootElement.querySelectorAll('.address')).click(function(event, a) {
                 // for a trigger like below a refers to featureID
                 handleSearchWaypointResultClickHelper(event, a);
             }).trigger("click", featureID);
         } else {
             //event handling
-            $('.address').mouseover(handleMouseOverElement);
-            $('.address').mouseout(handleMouseOutElement);
-            $('.address').click(handleSearchWaypointResultClickHelper);
+            $(rootElement.querySelectorAll('.address')).mouseover(handleMouseOverElement);
+            $(rootElement.querySelectorAll('.address')).mouseout(handleMouseOutElement);
+            $(rootElement.querySelectorAll('.address')).click(handleSearchWaypointResultClickHelper);
         }
     }
     /**
@@ -401,7 +389,7 @@ var Ui = (function(w) {
         $('#' + lastWp + '> .moveUpWaypoint').show();
         $('#' + lastWp + '> .moveDownWaypoint').hide();
         //adapt marker-IDs, decide about wpType
-        theInterface.emit('ui:movedWaypoints', indices);
+        theInterface.emit('ui:inverseWaypoints', indices);
         theInterface.emit('ui:routingParamsChanged');
     }
     /**
@@ -514,15 +502,14 @@ var Ui = (function(w) {
     function addWaypointAfter(idx, numWaypoints) {
         //for the current element, show the move down button (will later be at least the next to last one)
         var previous = $('#' + idx);
-        previous.children()[2].show();
+        previous.children()[3].show();
         //'move' all successor waypoints down from idx+1 to numWaypoints
-        for (var i = idx + 1; i < numWaypoints; i++) {
+        for (var i = numWaypoints - 1; i >= idx + 1; i--) {
             var wpElement = $('#' + i);
             if (i < numWaypoints - 1) {
                 //this is not the last waypoint, show move down button
-                wpElement.children()[2].show();
+                wpElement.children()[3].show();
             }
-            var wpId = wpElement.attr('id');
             wpElement.attr('id', i + 1);
         }
         //generate new id
@@ -538,14 +525,14 @@ var Ui = (function(w) {
         //decide which buttons to show
         var buttons = newWp.children();
         //show remove waypoint + move up button
-        buttons[0].show();
         buttons[1].show();
+        buttons[2].show();
         //including our new waypoint we are constructing here, we have one more waypoint. So we count to numWaypoints, not numWaypoints-1
         if (newIndex < numWaypoints) {
             //not the last waypoint, allow moving down
-            buttons[2].show();
+            buttons[3].show();
         } else {
-            buttons[2].hide();
+            buttons[3].hide();
         }
         //add event handling
         newWp = newWp.get(0);
@@ -554,6 +541,7 @@ var Ui = (function(w) {
         newWp.querySelector('.moveDownWaypoint').addEventListener('click', handleMoveDownWaypointClick);
         newWp.querySelector('.removeWaypoint').addEventListener('click', handleRemoveWaypointClick);
         newWp.querySelector('.searchAgainButton').addEventListener('click', handleSearchAgainWaypointClick);
+        newWp.querySelector('.waypoint-icon').addEventListener('click', handleZoomToWaypointClick);
         theInterface.emit('ui:addWaypoint', newIndex);
     }
     /**
@@ -571,7 +559,7 @@ var Ui = (function(w) {
         }
         //checks whether latlon is passed in first call
         //for geocoding shortaddress is updated in second call
-        var address, shortAddress, stopover, addressResult, lat, lon;
+        var address, shortAddress, stopover, addressResult, posResult, lat, lon;
         if (latlon === true) {
             address = util.parseLatlon(results);
             shortAddress = results.toString();
@@ -580,8 +568,10 @@ var Ui = (function(w) {
         } else {
             addressResult = util.getElementsByTagNameNS(results, namespaces.xls, 'Address');
             addressResult = addressResult ? addressResult[0] : null;
+            posResult = util.getElementsByTagNameNS(results, namespaces.gml, 'pos')[0];
+            posResult = posResult.text || posResult.textContent;
             address = util.parseAddress(addressResult);
-            shortAddress = util.parseAddressShort(addressResult);
+            shortAddress = util.parseAddressShort(addressResult, posResult);
             //update stopover info from latlon to address
             stopover = $(".directions-main").find("[waypoint-id=" + index + "]");
             stopover.html(shortAddress);
@@ -593,14 +583,14 @@ var Ui = (function(w) {
         var children = rootElement.children();
         //show waypoint result and searchAgain button
         //children[3].show();
-        var waypointResultElement = children[4];
+        var waypointResultElement = children[5];
         while (waypointResultElement.hasChildNodes()) {
             waypointResultElement.removeChild(waypointResultElement.lastChild);
         }
         waypointResultElement.appendChild(address);
         waypointResultElement.show();
         //hide input field with search result list
-        children[5].hide();
+        children[6].hide();
         //remove the search result markers
         invalidateWaypointSearch(index);
         //event handling
@@ -663,15 +653,15 @@ var Ui = (function(w) {
             //decide which buttons to show
             var buttons = newWp.children();
             //show remove waypoint
-            buttons[0].show();
+            buttons[1].show();
             if (wpIndex == 1) {
                 //show only move down button
-                buttons[2].hide();
-                buttons[1].show();
+                buttons[3].hide();
+                buttons[2].show();
             } else if (wpIndex == 0) {
                 //show only move up button
-                buttons[1].hide();
-                buttons[2].show();
+                buttons[2].hide();
+                buttons[3].show();
             }
             //add event handling
             newWp = newWp.get(0);
@@ -680,6 +670,7 @@ var Ui = (function(w) {
             newWp.querySelector('.moveDownWaypoint').addEventListener('click', handleMoveDownWaypointClick);
             newWp.querySelector('.removeWaypoint').addEventListener('click', handleRemoveWaypointClick);
             newWp.querySelector('.searchAgainButton').addEventListener('click', handleSearchAgainWaypointClick);
+            newWp.querySelector('.waypoint-icon').addEventListener('click', handleZoomToWaypointClick);
         }
         theInterface.emit('ui:removeWaypoint', {
             wpIndex: currentId,
@@ -772,7 +763,16 @@ var Ui = (function(w) {
      * @param type: type of the wayoint, one of START, VIA, END or UNSET
      */
     function setWaypointType(wpIndex, type) {
+        //Keep this in order to not cause any bugs in functions relying on this
         var el = $('#' + wpIndex);
+        // var el = $('#' + wpIndex);
+        el.removeClass('unset');
+        el.removeClass('start');
+        el.removeClass('via');
+        el.removeClass('end');
+        el.addClass(type);
+        el = $('#' + wpIndex).children('.waypoint-icon');
+        // var el = $('#' + wpIndex);
         el.removeClass('unset');
         el.removeClass('start');
         el.removeClass('via');
@@ -804,15 +804,15 @@ var Ui = (function(w) {
             //decide which buttons to show
             var buttons = newWp.children();
             //show remove waypoint
-            buttons[0].show();
+            buttons[1].show();
             if (j == 1) {
                 //show only move down button
-                buttons[2].hide();
-                buttons[1].show();
+                buttons[3].hide();
+                buttons[2].show();
             } else if (j == 0) {
                 //show only move up button
-                buttons[1].hide();
-                buttons[2].show();
+                buttons[2].hide();
+                buttons[3].show();
             }
             //add event handling
             newWp = newWp.get(0);
@@ -821,6 +821,7 @@ var Ui = (function(w) {
             newWp.querySelector('.moveDownWaypoint').addEventListener('click', handleMoveDownWaypointClick);
             newWp.querySelector('.removeWaypoint').addEventListener('click', handleRemoveWaypointClick);
             newWp.querySelector('.searchAgainButton').addEventListener('click', handleSearchAgainWaypointClick);
+            newWp.querySelector('.waypoint-icon').addEventListener('click', handleZoomToWaypointClick);
         }
     }
     /**
@@ -1340,72 +1341,341 @@ var Ui = (function(w) {
     /**
      * displays general route information as a route summary
      * @param results: response of the service containing the route summary information
-     * @param routePref: route type selected: car, bicycle etc..
      */
-    function updateRouteSummary(results, routePref) {
-        if (!results) {
-            //hide container
-            $('#routeSummaryContainer').get(0).hide();
-        } else {
-            //parse results and show them in the container
+    function updateRouteSummary(results) {
+       
+        function getSummaryInformation() {
+            var yardsUnit, totalTimeArr = [],
+                distArr = [],
+                actualdistArr = [],
+                gradientArr = [];
             var summaryElement = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteSummary')[0];
             var totalTime = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'TotalTime')[0];
             totalTime = totalTime.textContent || totalTime.text;
-            //<period>PT5Y2M10D15H18M43S</period>
+            //<period>PT 5Y 2M 10D 15H 18M 43S</period>
             //The example above indicates a period of five years, two months, 10 days, 15 hours, a8 minutes and 43 seconds
             totalTime = totalTime.replace('P', '');
             totalTime = totalTime.replace('T', '');
-            totalTime = totalTime.replace('D', ' ' + preferences.translate('days') + ' ');
-            totalTime = totalTime.replace('H', ' ' + preferences.translate('hours') + ' ');
-            totalTime = totalTime.replace('M', ' ' + preferences.translate('minutes') + ' ');
-            totalTime = totalTime.slice(0, -1);
-            totalTime = totalTime + (' ' + preferences.translate('seconds') + ' ');
-            //totalTime = totalTime.replace('S', ' ' + preferences.translate('seconds') + ' ');
-            // total distance
+            totalTime = totalTime.replace('D', preferences.translate('days'));
+            totalTime = totalTime.replace('H', preferences.translate('hours'));
+            totalTime = totalTime.replace('M', preferences.translate('minutes'));
+            totalTime = totalTime.replace('S', preferences.translate('seconds'));
+            totalTime = totalTime.match(/(\d+|[^\d]+)/g).join(',');
+            totalTime = totalTime.split(',');
+            // get distance
             var distance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'TotalDistance')[0];
             var distanceValue = distance.getAttribute('value');
             var distanceUnit = distance.getAttribute('uom');
-            var distArr = [];
             if (preferences.distanceUnit == list.distanceUnitsPreferences[0]) {
                 //use mixture of km and m
                 distArr = util.convertDistanceFormat(distanceValue, preferences.distanceUnit);
             } else {
                 //use mixture of miles and yards
-                var yardsUnit = 'yd';
+                yardsUnit = 'yd';
                 var distMeasure = util.convertDistToDist(distanceValue, distanceUnit, yardsUnit);
                 distArr = util.convertDistanceFormat(distMeasure, preferences.distanceUnit);
             }
-            var container = $('#routeSummaryContainer').get(0);
-            container.show();
-            var timeDiv = container.querySelector('#route_totalTime');
-            var distanceDiv = container.querySelector('#route_totalDistance');
-            var actualDistanceDiv = container.querySelector('#route_actualDistance');
-            $(actualDistanceDiv).hide();
-            // actual distance
+            // get actual distance
             var actualDistance = util.getElementsByTagNameNS(summaryElement, namespaces.xls, 'ActualDistance')[0];
             if (actualDistance !== undefined) {
-                // only show actual distance for bicycle
-                if (routePref == 'Bicycle' || routePref == 'Pedestrian' || routePref == 'Wheelchair') {
-                    var actualDistanceValue = actualDistance.getAttribute('value');
-                    var actualDistanceUnit = actualDistance.getAttribute('uom');
-                    var actualdistArr = [];
-                    if (preferences.distanceUnit == list.distanceUnitsPreferences[0]) {
-                        //use mixture of km and m
-                        actualdistArr = util.convertDistanceFormat(actualDistanceValue, preferences.distanceUnit);
-                    } else {
-                        //use mixture of miles and yards
-                        var yardsUnit = 'yd';
-                        var actualDistMeasure = util.convertDistToDist(actualDistanceValue, distanceUnit, yardsUnit);
-                        actualdistArr = util.convertDistanceFormat(actualDistMeasure, preferences.distanceUnit);
-                    }
-                    var actualDistanceDiv = container.querySelector('#route_actualDistance');
-                    $(actualDistanceDiv)[0].update(preferences.translate('ActualDistance') + ': ' + actualdistArr[0] + ' ' + actualdistArr[1]);
-                    $(actualDistanceDiv).show();
+                var actualDistanceValue = actualDistance.getAttribute('value');
+                var actualDistanceUnit = actualDistance.getAttribute('uom');
+                if (preferences.distanceUnit == list.distanceUnitsPreferences[0]) {
+                    //use mixture of km and m
+                    actualdistArr = util.convertDistanceFormat(actualDistanceValue, preferences.distanceUnit);
+                } else {
+                    //use mixture of miles and yards
+                    yardsUnit = 'yd';
+                    var actualDistMeasure = util.convertDistToDist(actualDistanceValue, distanceUnit, yardsUnit);
+                    actualdistArr = util.convertDistanceFormat(actualDistMeasure, preferences.distanceUnit);
                 }
             }
-            $(timeDiv)[0].update(preferences.translate('TotalTime') + ': ' + totalTime);
-            $(distanceDiv)[0].update(preferences.translate('TotalDistance') + ': ' + distArr[0] + ' ' + distArr[1]);
+            // get ascent descent summary
+            var ascent = util.getElementsByTagNameNS(results, namespaces.xls, 'Ascent')[0];
+            var descent = util.getElementsByTagNameNS(results, namespaces.xls, 'Descent')[0];
+            if (ascent !== undefined && descent !== undefined) {
+                var ascentvalue = ascent.getAttribute('value');
+                var descentvalue = descent.getAttribute('value');
+                gradientArr = [ascentvalue, descentvalue];
+            }
+            return [totalTime, distArr, actualdistArr, gradientArr];
         }
+        var routeSummary = getSummaryInformation();
+         // empty old summary
+        $('.directions-summary-info-container').remove();
+        var pointInfo, unit, time, distanceInfo, actualDistanceInfo, gradientInfo;
+        var summaryContainer = new Element('div', {
+            'class': 'directions-summary-info-container'
+        });
+        // time summary
+        pointInfo = new Element('span', {
+            'class': 'directions-summary-info',
+            'data-toggle' : 'tooltip',
+            'id': 'tt-time',
+            'title': 'Time'
+        }).update('<i class="icon-time"></i>' + ' ');
+        var len;
+        // if the route is only seconds
+        if (routeSummary[0].length > 2) {
+            len = 4;
+        } else {
+            len = 2;
+        }
+        // we just need the first two time slots each chunk consists of time and unit
+        for (var ts = 0; ts < len; ts += 2) {
+            time = new Element('div', {
+                'class': 'directions-summary-info-digit'
+            }).update(routeSummary[0][ts]);
+            unit = new Element('div', {
+                'class': 'directions-summary-info-units'
+            }).update(routeSummary[0][ts + 1][0].toLowerCase());
+            pointInfo.appendChild(time);
+            pointInfo.appendChild(unit);
+            summaryContainer.appendChild(pointInfo);
+        }
+        // distance summary
+        pointInfo = new Element('span', {
+            'class': 'directions-summary-info',
+            'data-toggle' : 'tooltip',
+            'id': 'tt-distance',
+            'title': 'Distance'
+        }).update('<i class="icon-resize-horizontal" style="opacity: 0.6"></i>' + ' ');
+        distanceInfo = new Element('div', {
+            'class': 'directions-summary-info-digit'
+        }).update(routeSummary[1][1]);
+        unit = new Element('div', {
+            'class': 'directions-summary-info-units'
+        }).update(routeSummary[1][2]);
+        pointInfo.appendChild(distanceInfo);
+        pointInfo.appendChild(unit);
+        summaryContainer.appendChild(pointInfo);
+        // check if actual distance info is available
+        if (routeSummary[2].length > 0) {
+            pointInfo = new Element('span', {
+                'class': 'directions-summary-info',
+                'data-toggle' : 'tooltip',
+                'id': 'tt-actdistance',
+                'title': 'Actual Distance'
+            }).update('<i class="icon-resize-horizontal"></i>' + ' ');
+            actualDistanceInfo = new Element('div', {
+                'class': 'directions-summary-info-digit'
+            }).update(routeSummary[2][1]);
+            unit = new Element('div', {
+                'class': 'directions-summary-info-units'
+            }).update(routeSummary[2][2]);
+            pointInfo.appendChild(actualDistanceInfo);
+            pointInfo.appendChild(unit);
+            summaryContainer.appendChild(pointInfo);
+        }
+        // check if ascent descent information is available
+        if (routeSummary[3].length > 0) {
+            pointInfo = new Element('span', {
+                'class': 'directions-summary-info',
+                'data-toggle' : 'tooltip',
+                'id': 'tt-ascent',
+                'title': 'Ascent'
+            }).update('<i class="icon-arrow-up"></i>' + ' ');
+            var ascentInfo = new Element('div', {
+                'class': 'directions-summary-info-digit'
+            }).update(routeSummary[3][0]);
+            unit = new Element('div', {
+                'class': 'directions-summary-info-units'
+            }).update('m');
+            pointInfo.appendChild(ascentInfo);
+            pointInfo.appendChild(unit);
+            summaryContainer.appendChild(pointInfo);
+            pointInfo = new Element('span', {
+                'class': 'directions-summary-info',
+                'data-toggle' : 'tooltip',
+                'id': 'tt-descent',
+                'title': 'Descent'
+            }).update('<i class="icon-arrow-down"></i>' + ' ');
+            var descentInfo = new Element('div', {
+                'class': 'directions-summary-info-digit'
+            }).update(routeSummary[3][1]);
+            unit = new Element('div', {
+                'class': 'directions-summary-info-units'
+            }).update('m');
+            pointInfo.appendChild(descentInfo);
+            pointInfo.appendChild(unit);
+            summaryContainer.appendChild(pointInfo);
+        }
+        var container = $('#routeSummary');
+        container.append(summaryContainer);
+        // initiate tooltips
+        $('[data-toggle="tooltip"]').tooltip(); 
+    }
+    /**
+     * calculates way and surface type information for horizontal barcharts
+     * @param results: response of the service
+     * @param mapFeatureIds: list of IDs of Leaflet elements containing BOTH - ids for route line segments AND corner points: [routeLineSegment_0, cornerPoint_0, routeLineSegment_1, cornerPoint_1,...]
+     * @param mapLayer: map layer containing these features
+     */
+    function updateSurfaceInformation(results, mapFeatureIds, mapLayer, totalDistance) {
+        //var lang = preferences.language;
+        var WayTypeResult = calculateChart(results, mapFeatureIds, "WayType", totalDistance);
+        var WaySurfaceResult = calculateChart(results, mapFeatureIds, "WaySurface", totalDistance);
+        horizontalBarchart(list.divWayTypes, list.listWayTypesContainer, WayTypeResult, list.WayTypeColors);
+        horizontalBarchart(list.divSurfaceTypes, list.listSurfaceTypesContainer, WaySurfaceResult, list.SurfaceTypeColors);
+        var container = $('#routeTypesContainer').get(0);
+        container.show();
+    }
+    /**
+     * displays way and surface type in horizontal barcharts
+     * @param data: calculate type information for way and surface types
+     * @param types: div element
+     * @param list: div list element for type
+     */
+    function horizontalBarchart(types, list, data, colors) {
+        d3.select(types).selectAll("svg").remove();
+        var tip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) {
+            var dist = util.convertDistanceFormat(d.distance, preferences.distanceUnit);
+            return d.type + " " + d.percentage + "% " + '(' + dist[1] + ' ' + dist[2] + ')';
+        });
+        var margin = {
+                top: 0,
+                right: 20,
+                bottom: 0,
+                left: 0
+            },
+            width = 350 - margin.left - margin.right,
+            height = 24 - margin.top - margin.bottom;
+        var y = d3.scale.ordinal().rangeRoundBands([height, 0]);
+        var x = d3.scale.linear().rangeRound([0, width]);
+        var yAxis = d3.svg.axis().scale(y).orient("left");
+        var xAxis = d3.svg.axis().scale(x).orient("bottom");
+        var svg = d3.select(types).append("svg").attr("width", width).attr("height", height).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        y.domain([0]);
+        x.domain([0, data[Object.keys(data)[Object.keys(data).length - 1]].y1]);
+        svg.selectAll("rect").data(data).enter().append("rect").attr("height", 24).attr("x", function(d) {
+            return x(d.y0) / 1;
+        }).attr("width", function(d) {
+            return x(d.y1) / 1 - x(d.y0) / 1;
+        }).attr("title", function(d) {
+            return (d.y1 - d.y0) + "% " + d.typetranslated;
+        }).style("fill", function(d, i) {
+            return colors[i];
+        }).on('mouseover', function(d) {
+            handleHighlightTypes(d.ids);
+            tip.show(d);
+        }).on('mouseout', function(d) {
+            handleResetTypes(d.ids);
+            tip.hide(d);
+        }).on('click', function(d) {
+            handleClickRouteIds(d.ids);
+        });
+        $(list).empty();
+        $(list).append("<ul></ul>");
+        for (var i = 0; i < data.length; i++) {
+            var li = $('<li>');
+            li.text(data[i].percentage + "% " + data[i].typetranslated);
+            li.wrapInner('<span />');
+            li.css('color', colors[i]);
+            if (i !== "type" && i !== "total") $(list + "> ul").append(li);
+        }
+        svg.call(tip);
+    }
+    /** 
+     * calculates percentages for waytypes and waysurfaces
+     * @param types: either waytype or waysurface
+     * @return WayTypesObject: Object containing Names and Percetages
+     */
+    function calculateChart(results, featureIds, types, distArrAll) {
+        var information, typelist, type;
+        // keep route feature ids remove corner ids
+        featureIds = featureIds.filter(function(el, index) {
+            return index % 2 === 0;
+        });
+        if (types == "WayType") {
+            information = util.getElementsByTagNameNS(results, namespaces.xls, 'WayTypeList')[0];
+            information = util.getElementsByTagNameNS(results, namespaces.xls, 'WayType');
+            typelist = [];
+            for (type in list.WayType) {
+                typelist.push({
+                    type: list.WayType[type],
+                    //typetranslated: list.WayTypeTranslation[list.WayType[type]][lang],
+                    typetranslated: preferences.translate(list.WayType[type]),
+                    distance: 0,
+                    ids: [],
+                    segments: [],
+                    percentage: 0,
+                    y0: 0,
+                    y1: 0
+                });
+            }
+        } else {
+            information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySurfaceList')[0];
+            information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySurface');
+            typelist = [];
+            for (type in list.SurfaceType) {
+                typelist.push({
+                    type: list.SurfaceType[type],
+                    //typetranslated: list.SurfaceTranslation[list.SurfaceType[type]][lang],
+                    typetranslated: preferences.translate(list.SurfaceType[type]),
+                    distance: 0,
+                    ids: [],
+                    segments: [],
+                    percentage: 0,
+                    y0: 0,
+                    y1: 0
+                });
+            }
+        }
+        var totaldistance = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteSummary')[1];
+        totaldistance = util.getElementsByTagNameNS(results, namespaces.xls, 'TotalDistance')[0];
+        var totaldistancevalue = totaldistance.getAttribute('value');
+        var stopoverCnt = 0;
+        var stopoverDiff = 0;
+        var toPrev;
+        $A(information).each(function(WayType, i) {
+            var fr = util.getElementsByTagNameNS(WayType, namespaces.xls, 'From')[0];
+            fr = parseInt(fr.textContent);
+            // stopovers are counted as segments and have to be filtered
+            if (i > 0) {
+                if (fr > (toPrev + 1)) {
+                    stopoverDiff = stopoverDiff + (fr - toPrev - 1);
+                }
+            }
+            //1-2    5-6     10-11
+            //       3-4     5-6
+            //so:0   so: 2   so: 5 
+            var to = util.getElementsByTagNameNS(WayType, namespaces.xls, 'To')[0];
+            to = parseInt(to.textContent);
+            toPrev = to;
+            var typenumber = util.getElementsByTagNameNS(WayType, namespaces.xls, 'Type')[0];
+            typenumber = typenumber.textContent;
+            if (fr == to) {
+                typelist[typenumber].distance += distArrAll[fr - stopoverDiff];
+                typelist[typenumber].segments.push(parseInt(fr - stopoverDiff));
+                typelist[typenumber].ids.push(featureIds[fr - stopoverDiff]);
+            } else {
+                for (fr; fr <= to; fr++) {
+                    typelist[typenumber].distance += distArrAll[fr - stopoverDiff];
+                    typelist[typenumber].segments.push(parseInt(fr - stopoverDiff));
+                    typelist[typenumber].ids.push(featureIds[fr - stopoverDiff]);
+                }
+            }
+        });
+        var a = 0;
+        var WayTypePercentList = [];
+        var y0 = 0;
+        for (type in typelist) {
+            if (typelist[type].distance > 0) {
+                // consider percentages less than 1
+                if (Math.round(typelist[type].distance / totaldistancevalue * 100) < 1) {
+                    typelist[type].percentage = Math.round(typelist[type].distance / totaldistancevalue * 100 * 10) / 10;
+                } else {
+                    typelist[type].percentage = Math.round(typelist[type].distance / totaldistancevalue * 100);
+                }
+                typelist[type].y0 = y0;
+                typelist[type].y1 = y0 += +typelist[type].percentage;
+            }
+        }
+        // remove elements without distance
+        var typelistCleaned = typelist.filter(function(el) {
+            return el.distance !== 0;
+        });
+        return typelistCleaned;
     }
     /**
      * displays instructions for the route
@@ -1436,6 +1706,9 @@ var Ui = (function(w) {
             var distArr;
             var stopoverTime = 0;
             var waypoints;
+            var distArrAll = [];
+            var totalDistance = 0;
+            var totalTime = 0;
             // get stopovers which are viapoints
             if ($('.waypoint').length > 2) {
                 waypoints = getWaypoints();
@@ -1454,6 +1727,8 @@ var Ui = (function(w) {
                 if (directionCode == '100') {
                     directionsContainer = buildWaypoint('layerRoutePoints', 'via', waypoints[numStopovers], numStopovers, stopoverDistance, stopoverTime);
                     directionsMain.appendChild(directionsContainer);
+                    totalDistance += stopoverDistance;
+                    totalTime += stopoverTime;
                     stopoverDistance = 0;
                     stopoverTime = 0;
                     directionsMain.appendChild(directionsContainer);
@@ -1503,10 +1778,10 @@ var Ui = (function(w) {
                         distArr = util.convertDistanceFormat(distMeasure, preferences.distanceUnit);
                     }
                     // add to stopoverDistance
-                    if (distArr[1] == 'km') {
-                        stopoverDistance += Number(distArr[0]) * 1000;
+                    if (distArr[2] == 'km') {
+                        stopoverDistance += Number(distArr[1]) * 1000;
                     } else {
-                        stopoverDistance += Number(distArr[0]);
+                        stopoverDistance += Number(distArr[1]);
                     }
                     //arrow direction
                     var direction;
@@ -1566,10 +1841,11 @@ var Ui = (function(w) {
                     var distanceDiv = new Element('div', {
                         'class': 'directions-mode-distance clickable',
                         'id': mapFeatureIds[2 * (numInstructions - 1)],
-                    }).update(distArr[0] + ' ' + distArr[1]);
+                    }).update(distArr[1] + ' ' + distArr[2]);
                     directionsContainer.appendChild(directionsImgDiv);
                     directionsContainer.appendChild(directionTextDiv);
                     var tmcMessage = util.getElementsByTagNameNS(instruction, namespaces.xls, 'Message')[0];
+                    var warning = 0;
                     if (tmcMessage) {
                         // add icons and jquery collapsible stuff
                         tmcMessage = tmcMessage.text || tmcMessage.textContent;
@@ -1577,11 +1853,19 @@ var Ui = (function(w) {
                         var tmcText = tmcMessage.split(" | ")[1];
                         var tmcCode = tmcMessage.split(" | ")[0];
                         tmcCode = tmcCode.split(',');
+                        warning = warning + 1;
                         for (var i = 0; i < tmcCode.length; i++) {
                             if (tmcCode[i] in list.tmc) {
                                 warningLink = list.tmc[tmcCode[i]][0];
                                 break;
                             }
+                        }
+                        // display number of warnings on route
+                        var container = $('#routeSummaryContainer').get(0);
+                        container.show();
+                        var warningDiv = container.querySelector('#route_trafficWarnings');
+                        if (warning !== undefined && warning !== 0) {
+                            $(warningDiv)[0].update(preferences.translate('TotalWarnings') + ': ' + warning);
                         }
                         // if codes not in dict return default
                         warningLink = warningLink !== undefined ? warningLink : './img/warning_undefined.png';
@@ -1593,6 +1877,7 @@ var Ui = (function(w) {
                         }).update('<thead><tbody><tr><td>' + '<img src="' + warningLink + '" />' + '</td><td>' + tmcText + '</td></tr></tbody>');
                         directionsContainer.appendChild(directionsWarningTable);
                     }
+                    distArrAll.push(distArr[0]);
                     directionsModeContainer.appendChild(directionsBorder);
                     directionsModeContainer.appendChild(distanceDiv);
                     directionsContainer.appendChild(directionsModeContainer);
@@ -1606,9 +1891,13 @@ var Ui = (function(w) {
                     $(directionTextDiv).click(handleClickRouteCorner);
                 }
             });
-            //add endpoint
+            totalDistance += stopoverDistance;
+            totalTime += stopoverTime;
             directionsContainer = buildWaypoint('layerRoutePoints', 'end', endpoint, getWaypoints().length - 1, stopoverDistance, stopoverTime);
             directionsMain.appendChild(directionsContainer);
+            /* Route Summary */
+            var routeSummary = updateRouteSummary(results);
+            return distArrAll;
             // TODO tmc messages expand collapse function
         }
         /** 
@@ -1668,62 +1957,80 @@ var Ui = (function(w) {
             directionsContainer.appendChild(directionsModeContainer);
             return directionsContainer;
         }
-        /**
-         * called when the user moves over the distance part of a route instruction. Triggers highlighting the corresponding route part
-         */
-        function handleMouseOverDist(e) {
-            e.currentTarget.addClassName('active');
-            var parent = $(e.currentTarget).parent().parent().get(0);
-            theInterface.emit('ui:emphElement', {
-                id: e.currentTarget.getAttribute('id'),
-                layer: parent.getAttribute('data-layer')
-            });
-        }
-        /**
-         * called when the user moves out of the distance part of a route instruction. Triggers un-highlighting the corresponding route part
-         */
-        function handleMouseOutDist(e) {
-            e.currentTarget.removeClassName('active');
-            var parent = $(e.currentTarget).parent().parent().get(0);
-            theInterface.emit('ui:deEmphElement', {
-                id: e.currentTarget.getAttribute('id'),
-                layer: parent.getAttribute('data-layer')
-            });
-        }
-        /**
-         * called when the user moves over the instruction part of the route instruction. Trigger highlighting the corresponding route point
-         */
-        function handleMouseOverText(e) {
-            e.currentTarget.addClassName('active');
-            var parent = $(e.currentTarget).parent().get(0);
-            theInterface.emit('ui:emphElement', {
-                id: e.currentTarget.getAttribute('id'),
-                layer: parent.getAttribute('data-layer')
-            });
-        }
-        /**
-         * called when the user moves out of the instruction part of a route instruction. Triggers un-highlighting the corresponding route point
-         */
-        function handleMouseOutText(e) {
-            e.currentTarget.removeClassName('active');
-            var parent = $(e.currentTarget).parent().get(0);
-            theInterface.emit('ui:deEmphElement', {
-                id: e.currentTarget.getAttribute('id'),
-                layer: parent.getAttribute('data-layer')
-            });
-        }
-        /**
-         * when the distance or text part of the route instruction is clicked, triggers zooming to that part of the route
-         */
-        function handleClickRouteInstr(e) {
-            theInterface.emit('ui:zoomToRouteInstruction', e.currentTarget.id);
-        }
-        /**
-         * when the distance or text part of the route instruction is clicked, triggers zooming to that part of the route
-         */
-        function handleClickRouteCorner(e) {
-            theInterface.emit('ui:zoomToRouteCorner', e.currentTarget.id);
-        }
+    }
+    /**
+     * called when the user moves over the distance part of a route instruction. Triggers highlighting the corresponding route part
+     */
+    function handleMouseOverDist(e) {
+        e.currentTarget.addClassName('active');
+        var parent = $(e.currentTarget).parent().parent().get(0);
+        theInterface.emit('ui:emphElement', {
+            id: e.currentTarget.getAttribute('id'),
+            layer: parent.getAttribute('data-layer')
+        });
+    }
+    /**
+     * called when the user moves out of the distance part of a route instruction. Triggers un-highlighting the corresponding route part
+     */
+    function handleMouseOutDist(e) {
+        e.currentTarget.removeClassName('active');
+        var parent = $(e.currentTarget).parent().parent().get(0);
+        theInterface.emit('ui:deEmphElement', {
+            id: e.currentTarget.getAttribute('id'),
+            layer: parent.getAttribute('data-layer')
+        });
+    }
+    /**
+     * called when the user moves over the instruction part of the route instruction. Trigger highlighting the corresponding route point
+     */
+    function handleMouseOverText(e) {
+        e.currentTarget.addClassName('active');
+        var parent = $(e.currentTarget).parent().get(0);
+        theInterface.emit('ui:emphElement', {
+            id: e.currentTarget.getAttribute('id'),
+            layer: parent.getAttribute('data-layer')
+        });
+    }
+    /**
+     * called when the user moves out of the instruction part of a route instruction. Triggers un-highlighting the corresponding route point
+     */
+    function handleMouseOutText(e) {
+        e.currentTarget.removeClassName('active');
+        var parent = $(e.currentTarget).parent().get(0);
+        theInterface.emit('ui:deEmphElement', {
+            id: e.currentTarget.getAttribute('id'),
+            layer: parent.getAttribute('data-layer')
+        });
+    }
+    /**
+     * when the way or surface types are clicked highlight segments on map
+     */
+    function handleHighlightTypes(ids) {
+        theInterface.emit('ui:hightlightTypes', ids);
+    }
+    /** reset way our surface style
+     *
+     */
+    function handleResetTypes(ids) {
+        theInterface.emit('ui:resetTypes', ids);
+    }
+    /**
+     * when the distance or text part of the route instruction is clicked, triggers zooming to that part of the route
+     */
+    function handleClickRouteInstr(e) {
+        theInterface.emit('ui:zoomToRouteInstruction', e.currentTarget.id);
+    }
+    /**
+     * when the distance or text part of the route instruction is clicked, triggers zooming to that part of the route
+     */
+    function handleClickRouteIds(arr) {
+        theInterface.emit('ui:zoomToRouteInstruction', arr);
+    }
+    /**
+     * when the distance or text part of the route instruction is clicked, triggers zooming to that part of the route
+     */
+    function handleClickRouteCorner(e) {
+        theInterface.emit('ui:zoomToRouteCorner', e.currentTarget.id);
     }
     /**
      * hides the route summary pane, e.g. when no route is available
@@ -1744,12 +2051,52 @@ var Ui = (function(w) {
         theInterface.emit('ui:zoomToRoute');
     }
     /**
+     * triggers zooming to the selected waypoint
+     * @param e: the event containing the clicked waypoint icon
+     */
+    function handleZoomToWaypointClick(e) {
+        //make sure the waypoint is not empty
+        if ($(e.currentTarget).parent().children(".waypointResult").children().length > 0) {
+            theInterface.emit('ui:zoomToWaypoint', $(e.currentTarget).parent().attr("id"));
+        }
+    }
+    /**
      * displays an error message when no route between the selected waypoints could be found or another error happened during route calculation
      */
     function showRoutingError() {
         var el = $('#routeError');
         el.html(preferences.translate('noRouteAvailable'));
         el.show();
+    }
+    /**
+     * opens the print dialogue
+     */
+    function handlePrintRouteInstructionsClick() {
+        $.ajax({
+            url: "css/printRouteInstructions.css",
+            success: function(data) {
+                var style = $("<style />", {
+                    id: 'printCss',
+                    type: 'text/css',
+                    html: data
+                }).appendTo("head");
+                routeInstructions.show();
+                //Replace the bold font with normal font for printing
+                var originalText = [];
+                $('.directions-text').each(function(i, obj) {
+                    originalText[i] = obj.innerHTML;
+                    obj.innerHTML = obj.innerHTML.replace(new RegExp('<b>', 'g'), '');
+                    obj.innerHTML = obj.innerHTML.replace(new RegExp('</b>', 'g'), '');
+                });
+                window.print();
+                //After printing, use the bold font again
+                $('.directions-text').each(function(i, obj) {
+                    obj.innerHTML = originalText[i];
+                });
+                style.remove();
+                // $('.directions-summary-info').hide();
+            }
+        });
     }
     /* *********************************************************************
      * ROUTE OPTIONS
@@ -2171,6 +2518,15 @@ var Ui = (function(w) {
             jQuery('#maxSpeedInput').val(maxspeed);
         }
     }
+    /** 
+     * set viaoptimize
+     * @params viaoptimize: is either true or false
+     */
+    function setOptimizeVia(bool) {
+        if (bool == 'true' ||  bool === true) {
+            $('#viaOptimize').prop('checked', true);
+        }
+    }
     /**
      * when the user wants to switch between route options
      * @param activeRouteOption: the active route option, i.e. one of car,bicycle,pedestrian,wheelchair
@@ -2199,6 +2555,7 @@ var Ui = (function(w) {
      * @param e: the event
      */
     function handleOptionsChanged(e) {
+        var boolVar;
         e = e || window.event;
         var target = e.target || e.srcElement;
         var itemId = target.id;
@@ -2209,9 +2566,9 @@ var Ui = (function(w) {
             if (itemId === list.routeAvoidables[0]) {
                 //if the avoidable is set, remove it (and vice versa)
                 if (permaInfo[preferences.avoidHighwayIdx] == "true" || permaInfo[preferences.avoidHighwayIdx] == true) {
-                    var boolVar = false;
+                    boolVar = false;
                 } else {
-                    var boolVar = true;
+                    boolVar = true;
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidHighwayIdx,
@@ -2221,9 +2578,9 @@ var Ui = (function(w) {
             if (itemId === list.routeAvoidables[1]) {
                 //if the avoidable is set, remove it (and vice versa)
                 if (permaInfo[preferences.avoidTollwayIdx] == "true" || permaInfo[preferences.avoidTollwayIdx] == true) {
-                    var boolVar = false;
+                    boolVar = false;
                 } else {
-                    var boolVar = true;
+                    boolVar = true;
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidTollwayIdx,
@@ -2233,9 +2590,9 @@ var Ui = (function(w) {
             if (itemId === list.routeAvoidables[2]) {
                 //if the avoidable is set, remove it (and vice versa)
                 if (permaInfo[preferences.avoidUnpavedIdx] == "true" || permaInfo[preferences.avoidUnpavedIdx] == true) {
-                    var boolVar = false;
+                    boolVar = false;
                 } else {
-                    var boolVar = true;
+                    boolVar = true;
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidUnpavedIdx,
@@ -2244,9 +2601,9 @@ var Ui = (function(w) {
             }
             if (itemId === list.routeAvoidables[3]) {
                 if (permaInfo[preferences.avoidFerryIdx] == "true" || permaInfo[preferences.avoidFerryIdx] == true) {
-                    var boolVar = false;
+                    boolVar = false;
                 } else {
-                    var boolVar = true;
+                    boolVar = true;
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidFerryIdx,
@@ -2254,9 +2611,9 @@ var Ui = (function(w) {
                 });
             } else if (itemId === list.routeAvoidables[4]) {
                 if (permaInfo[preferences.avoidStepsIdx] == "true" || permaInfo[preferences.avoidStepsIdx] == true) {
-                    var boolVar = false;
+                    boolVar = false;
                 } else {
-                    var boolVar = true;
+                    boolVar = true;
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidStepsIdx,
@@ -2264,9 +2621,9 @@ var Ui = (function(w) {
                 });
             } else if (itemId === list.routeAvoidables[5]) {
                 if (permaInfo[preferences.avoidFordsIdx] == "true" || permaInfo[preferences.avoidFordsIdx] == true) {
-                    var boolVar = false;
+                    boolVar = false;
                 } else {
-                    var boolVar = true;
+                    boolVar = true;
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidFordsIdx,
@@ -2274,9 +2631,9 @@ var Ui = (function(w) {
                 });
             } else if (itemId === list.routeAvoidables[6]) {
                 if (permaInfo[preferences.avoidPavedIdx] == "true" || permaInfo[preferences.avoidPavedIdx] == true) {
-                    var boolVar = false;
+                    boolVar = false;
                 } else {
-                    var boolVar = true;
+                    boolVar = true;
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidPavedIdx,
@@ -2284,9 +2641,9 @@ var Ui = (function(w) {
                 });
             } else if (itemId === list.routeAvoidables[7]) {
                 if (permaInfo[preferences.avoidTunnelIdx] == "true" || permaInfo[preferences.avoidTunnelIdx] == true) {
-                    var boolVar = false;
+                    boolVar = false;
                 } else {
-                    var boolVar = true;
+                    boolVar = true;
                 }
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.avoidTunnelIdx,
@@ -2386,12 +2743,22 @@ var Ui = (function(w) {
             }
         } else if (itemId == 'Hazardous') {
             if (permaInfo[preferences.hazardousIdx] == "hazmat") {
-                var boolVar = null;
+                boolVar = null;
             } else {
-                var boolVar = "hazmat";
+                boolVar = "hazmat";
             }
             theInterface.emit('ui:prefsChanged', {
                 key: preferences.hazardousIdx,
+                value: boolVar
+            });
+        } else if (itemId == 'viaOptimize') {
+            if (permaInfo[preferences.optimizeViaIdx] == "true" || permaInfo[preferences.optimizeViaIdx] === true) {
+                boolVar = false;
+            } else {
+                boolVar = true;
+            }
+            theInterface.emit('ui:prefsChanged', {
+                key: preferences.optimizeViaIdx,
                 value: boolVar
             });
         } else if (itemId != 'maxSpeedInput') {
@@ -2402,7 +2769,10 @@ var Ui = (function(w) {
             });
         }
         // update route except when user has updated maxspeed
-        if (itemId != "maxSpeedInput") theInterface.emit('ui:routingParamsChanged');
+        if ($.inArray(itemId, list.dontUpdateRoute) < 0) {
+            theInterface.emit('ui:routingParamsChanged');
+        }
+        //if (itemId != "maxSpeedInput") theInterface.emit('ui:routingParamsChanged');
     }
     /** 
      * The user inserts maximum speed into the form when route profile fastest is selected
@@ -2919,9 +3289,7 @@ var Ui = (function(w) {
         //switch views
         $('.fnct_switchTab').click(handleSwitchTabs);
         //open & close collapsibles
-        $('.collapsibleHead').click(handleToggleCollapsibles);
-        //hide & view sidebar
-        $('#toggleSidebar').click(handleToggleSidebar);
+        $('.collapsibleHead').click(handleToggleCollapsibles);;
         //waypoints
         $('.searchWaypoint').keyup(handleSearchWaypointInput);
         $('#addWaypoint').click(handleAddWaypointClick);
@@ -2931,8 +3299,11 @@ var Ui = (function(w) {
         $('.removeWaypoint').click(handleRemoveWaypointClick);
         $('.searchAgainButton').click(handleSearchAgainWaypointClick);
         $('#orderRoute').click(handleReorderWaypoints);
+        $('.waypoint-icon').click(handleZoomToWaypointClick);
         //route
         $('#zoomToRouteButton').click(handleZoomToRouteClick);
+        //route instructions print
+        $('#printRouteInstructions').click(handlePrintRouteInstructionsClick);
         //geolocation
         $('#geolocation').click(handleGeolocationClick);
         //search address
@@ -2951,6 +3322,7 @@ var Ui = (function(w) {
         $('#heavyvehicle').click(switchRouteOptionsPane);
         $('#wheelchair').click(switchRouteOptionsPane);
         $('.routeOptions').change(handleOptionsChanged);
+        $('#viaOptimize').click(handleOptionsChanged);
         //permalink
         $('#infoPermalink').click(handleOpenPermaOptions);
         $('#open').click(handleGeneratePerma);
@@ -2981,10 +3353,17 @@ var Ui = (function(w) {
         });
         //maxspeed button listener
         $('#maxSpeedBtn').click(handleMaxspeed);
+        //close serviceTimeout Label
+        $('#serviceTimeout').children('button').click(function() {
+            $('#serviceTimeout').hide();
+        });
+        // tooltips
+        $('[data-toggle="tooltip"]').tooltip(); 
     }
     Ui.prototype = new EventEmitter();
     Ui.prototype.constructor = Ui;
     Ui.prototype.showNewToOrsPopup = showNewToOrsPopup;
+    Ui.prototype.showAvoidablesInfoPopup = showAvoidablesInfoPopup;
     Ui.prototype.showServiceTimeoutPopup = showServiceTimeoutPopup;
     Ui.prototype.emphElement = emphElement;
     Ui.prototype.deEmphElement = deEmphElement;
@@ -3018,6 +3397,7 @@ var Ui = (function(w) {
     Ui.prototype.startRouteCalculation = startRouteCalculation;
     Ui.prototype.endRouteCalculation = endRouteCalculation;
     Ui.prototype.updateRouteInstructions = updateRouteInstructions;
+    Ui.prototype.updateSurfaceInformation = updateSurfaceInformation;
     Ui.prototype.hideRouteSummary = hideRouteSummary;
     Ui.prototype.hideRouteInstructions = hideRouteInstructions;
     Ui.prototype.showRoutingError = showRoutingError;
@@ -3035,6 +3415,7 @@ var Ui = (function(w) {
     Ui.prototype.setTruckParameters = setTruckParameters;
     Ui.prototype.setHazardousParameter = setHazardousParameter;
     Ui.prototype.setMaxspeedParameter = setMaxspeedParameter;
+    Ui.prototype.setOptimizeVia = setOptimizeVia;
     Ui.prototype.handleGpxFiles = handleGpxFiles;
     Ui.prototype.handleResetRoute = handleResetRoute;
     Ui.prototype.handleMaxspeed = handleMaxspeed;

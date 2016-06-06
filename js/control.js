@@ -148,7 +148,7 @@ var Controller = (function(w) {
      * @param atts: pos: position of the new waypoint, type: type of the waypoint
      * @param noRouteRequest: if noRouteRequest is true, then no route request is fired
      */
-    function handleAddWaypointByRightclick(atts, noRouteRequest) {
+    function handleAddWaypointByRightclick(atts, noRouteRequest, staticOrder) {
         var pos = atts.pos;
         var wpType = atts.type;
         var featureId;
@@ -156,8 +156,12 @@ var Controller = (function(w) {
         var wpIndex = 0;
         //if END: use index of last waypoint
         wpIndex = wpType == Waypoint.type.END ? waypoint.getNumWaypoints() - 1 : wpIndex;
-        //if VIA: use index of prior to last waypoint, insert the new via point after this element
-        wpIndex = wpType == Waypoint.type.VIA ? waypoint.getNumWaypoints() - 2 : wpIndex;
+        //if VIA: calculate the line segment which is closest to the newly added waypoint and add it there
+        staticOrder = staticOrder === undefined ? !$("#viaOptimize")[0].checked : staticOrder;
+        if (staticOrder === undefined) staticOrder = false;
+        if (staticOrder) {
+            wpIndex = wpType == Waypoint.type.VIA ? waypoint.getNumWaypoints() - 2 : wpIndex;
+        } else wpIndex = wpType == Waypoint.type.VIA ? reindexViaWaypoint(waypoint.getNumWaypoints() - 2, atts) : wpIndex;
         //in case of a newly added VIA, the additional waypoint is added in ui.addWaypintAfter(...)
         if (wpType == Waypoint.type.VIA) {
             ui.addWaypointAfter(wpIndex, waypoint.getNumWaypoints());
@@ -223,7 +227,7 @@ var Controller = (function(w) {
     /**
      * after waypoints have been moved, re-calculations are necessary: update of internal variables, waypoint type exchange,...
      */
-    function handleMovedWaypoints(atts) {
+    function handleInverseWaypoints(atts) {
         var j = 0;
         var i = Object.keys(atts).length - 1;
         while (j < i) {
@@ -249,6 +253,30 @@ var Controller = (function(w) {
             //update preferences
             handleWaypointChanged(true);
         }
+    }
+    /**
+     * after waypoints have been moved, re-calculations are necessary: update of internal variables, waypoint type exchange,...
+     */
+    function handleMovedWaypoints(atts) {
+        var wp1 = atts[Object.keys(atts)[0]];
+        var wp2 = atts[Object.keys(atts)[1]];
+        //waypoint-internal:
+        var set1 = waypoint.getWaypointSet(wp1);
+        var set2 = waypoint.getWaypointSet(wp2);
+        waypoint.setWaypoint(wp1, set2);
+        waypoint.setWaypoint(wp2, set1);
+        var type = selectWaypointType(wp1);
+        var ftId = ui.getFeatureIdOfWaypoint(wp1);
+        var newFtId = map.setWaypointType(ftId, type);
+        var position = map.convertFeatureIdToPositionString(newFtId, map.layerRoutePoints);
+        ui.setWaypointFeatureId(wp1, newFtId, position, 'layerRoutePoints');
+        type = selectWaypointType(wp2);
+        ftId = ui.getFeatureIdOfWaypoint(wp2);
+        newFtId = map.setWaypointType(ftId, type);
+        position = map.convertFeatureIdToPositionString(newFtId, map.layerRoutePoints);
+        ui.setWaypointFeatureId(wp2, newFtId, position, 'layerRoutePoints');
+        //update preferences
+        handleWaypointChanged(true);
     }
     /**
      * the user removed a waypoint. Internal variables are updated, waypoint types checked,...
@@ -350,11 +378,74 @@ var Controller = (function(w) {
         }
     }
     /**
-     * map is zoomed to the selected part of the route (route instruction)
+     * the users adds a VIA-type wayoint. Calculate the line segment with minimal distance to the waypoint and add the waypoint in between the two corresponding waypoints.
+     * @param index: initial index of the waypoint
+     * @param atts: attributes of the new waypoint
+     * @return: new index of the waypoint
+     */
+    function reindexViaWaypoint(initIndex, atts) {
+        var rP = ui.getRoutePoints();
+        //There's not much to calculate if theres not even 3 points yet
+        if (rP.length < 3) return initIndex;
+        for (var i = 0; i < rP.length; i++) {
+            rP[i] = rP[i].split(' ');
+            if (rP[i].length == 2) {
+                rP[i] = {
+                    'lat': rP[i][0],
+                    'lon': rP[i][1]
+                };
+            }
+        }
+        var pos = atts.pos;
+        var addDist = [];
+        var distAB;
+        var distAC;
+        var distBC;
+        for (var i = 0; i < rP.length - 1; i++) {
+            //for each pair of sequent waypoints, calculate the aerial distance. Then calculate the difference in aerial distance if the new waypoint were added there. 
+            distAB = Math.sqrt(Math.pow(rP[i + 1].lat - rP[i].lat, 2) + Math.pow(rP[i + 1].lon - rP[i].lon, 2));
+            distAC = Math.sqrt(Math.pow(rP[i].lon - pos.lng, 2) + Math.pow(rP[i].lat - pos.lat, 2));
+            distBC = Math.sqrt(Math.pow(rP[i + 1].lon - pos.lng, 2) + Math.pow(rP[i + 1].lat - pos.lat, 2));
+            addDist[i] = distAC + distBC - distAB;
+        }
+        var index = 0;
+        var value = addDist[0];
+        //Find the lowest additional aerial route distance and set the index accordingly
+        for (var i = 1; i < addDist.length; i++) {
+            if (addDist[i] < value) {
+                value = addDist[i];
+                index = i;
+            }
+        }
+        return index;
+    }
+    /**
+     * map is zoomed to the selected waypoint
      * @param vectorId: id of the map feature to zoom to
      */
-    function handleZoomToRouteInstruction(vectorId) {
-        map.zoomToFeature(map.layerRouteLines, vectorId);
+    function handleZoomToWaypoint(vectorId) {
+        map.zoomToFeature(map.layerRoutePoints, ui.getFeatureIdOfWaypoint(vectorId), 16);
+    }
+    /**
+     * way or surface types are clicked
+     * @param ids: array of feature ids to hightlight
+     */
+    function handleHighlightTypes(ids) {
+        map.highlightFeatures(map.layerRouteLines, ids);
+    }
+    /**
+     * reset styles
+     * @param ids: array of features ids to reset highlight
+     */
+    function handleResetTypes(ids) {
+        map.resetFeatures(map.layerRouteLines, ids);
+    }
+    /**
+     * map is zoomed to the selected part of the route (route instruction)
+     * @param params: id or ids of the map feature to zoom to
+     */
+    function handleZoomToRouteInstruction(params) {
+        map.zoomToFeature(map.layerRouteLines, params);
     }
     /**
      * map is zoomed to the selected part of the route (route instruction)
@@ -718,7 +809,7 @@ var Controller = (function(w) {
             //      //if no response has been received after the defined interval, show a timeout error.
             //      ui.showServiceTimeoutPopup();  //TODO use for other service calls as well
             //  }
-            // }, SERVICE_TIMEOUT_INTERVAL);
+            // }, SERVICE_TIMEOUT_INTERVAL);            
         } else {
             //internal
             route.routePresent = false;
@@ -726,7 +817,6 @@ var Controller = (function(w) {
             //add features to map
             map.updateRoute();
             //add DOM elements
-            ui.updateRouteSummary();
             ui.updateRouteInstructions();
             route.routeString = null;
         }
@@ -736,9 +826,10 @@ var Controller = (function(w) {
      * @param results: XML route service results
      */
     function routeCalculationSuccess(results, routeID, routePref) {
+        var viaPoints;
         // only fire if returned routeID from callback is same as current global calcRouteID
         if (routeID == calcRouteID) {
-            var zoomToMap = !route.routePresent;
+            //var zoomToMap = !route.routePresent;
             route.routePresent = true;
             ui.setRouteIsPresent(true);
             //results = results.responseXML ? results.responseXML : util.parseStringToDOM(results.responseText);
@@ -752,11 +843,18 @@ var Controller = (function(w) {
                 var routeLineString = route.writeRouteToSingleLineString(results);
                 var routeString = map.writeRouteToString(routeLineString);
                 route.routeString = routeString;
+                
+                if (ui.getRoutePoints().length > 2)  {
+                    var wayPoints = ui.getRoutePoints();
+                    wayPoints.shift();
+                    wayPoints.pop(); 
+                    viaPoints = wayPoints;
+                } 
                 // each route instruction has a part of this lineString as geometry for this instruction           
                 // get height profile update height profile widget if elevation profile type selected
                 if ($.inArray(routePref, list.elevationProfiles) >= 0) {
                     var routeLineHeights = route.parseResultsToHeights(results);
-                    map.updateHeightprofiles(routeLineHeights);
+                    map.updateHeightprofiles(routeLineHeights, viaPoints);
                 }
                 var routeLinestring = route.parseResultsToLineStrings(results);
                 var routePoints = route.parseResultsToCornerPoints(results);
@@ -765,10 +863,16 @@ var Controller = (function(w) {
                 var featureIds = map.updateRoute(routeLinestring, routePoints, routePref);
                 var errors = route.hasRoutingErrors(results);
                 if (!errors) {
-                    ui.updateRouteSummary(results, routePref);
-                    ui.updateRouteInstructions(results, featureIds, 'layerRouteLines');
+                    var totalDistance = ui.updateRouteInstructions(results, featureIds, 'layerRouteLines');
+                    if ($.inArray(routePref, list.elevationProfiles) >= 0) {
+                        ui.updateSurfaceInformation(results, featureIds, 'layerRouteLines', totalDistance);
+                    } else {
+                        var container = $('#routeTypesContainer').get(0);
+                        container.hide();
+                    }
                     ui.endRouteCalculation();
-                    if (zoomToMap) map.zoomToRoute();
+                    // zoom to route if 2 waypoints
+                    if (waypoint.getNumWaypoints() <= 2) map.zoomToRoute();
                 } else {
                     routeCalculationError();
                 }
@@ -941,7 +1045,7 @@ var Controller = (function(w) {
                             handleAddWaypointByRightclick({
                                 pos: wps[i],
                                 type: type
-                            }, true);
+                            }, true, true);
                         }
                         if (wps.length >= 2) {
                             handleRoutePresent();
@@ -960,8 +1064,8 @@ var Controller = (function(w) {
      */
     function handleGpxTrack(fileTarget) {
         ui.showImportRouteError(false);
-        //clean old track from map (at the moment only one track is supported)
-        map.clearMarkers(map.layerTrack);
+        //clean old track from map
+        //map.clearMarkers(map.layerTrack);
         if (fileTarget[0]) {
             if (!window.FileReader) {
                 // File APIs are not supported, e.g. IE
@@ -1014,6 +1118,7 @@ var Controller = (function(w) {
      */
     function handleBaseMapChanged(mapState) {
         //update cookies
+        console.log(mapState)
         updateBaseMapCookies(mapState.layer);
     }
     /**
@@ -1212,6 +1317,7 @@ var Controller = (function(w) {
         var hazardous = getVars[preferences.getPrefName(preferences.hazardousIdx)];
         var fords = getVars[preferences.getPrefName(preferences.avoidFordsIdx)];
         var maxspeed = getVars[preferences.getPrefName(preferences.maxspeedIdx)];
+        var viaoptimize = getVars[preferences.getPrefName(preferences.optimizeViaIdx)];
         // either layer, pos or zoom is read, as soon as one is read the eventlistener on map
         // updates the other two and overwrites the cookie info
         pos = preferences.loadMapPosition(pos);
@@ -1229,6 +1335,7 @@ var Controller = (function(w) {
         if (zoom) {
             map.theMap.setZoom(zoom);
         }
+        console.log(layer)
         layer = preferences.loadMapLayer(layer);
         if (layer) {
             map.restoreLayerPrefs(layer);
@@ -1246,6 +1353,8 @@ var Controller = (function(w) {
         ui.setRouteWeight(routeWeight);
         maxspeed = preferences.loadMaxspeed(maxspeed);
         ui.setMaxspeedParameter(maxspeed);
+        viaoptimize = preferences.loadViaOptimize(viaoptimize);
+        ui.setOptimizeVia(viaoptimize);
         var avSettings = preferences.loadAvoidables(motorways, tollways, unpaved, ferry, steps, fords, paved, tunnels);
         motorways = avSettings[0];
         tollways = avSettings[1];
@@ -1308,6 +1417,7 @@ var Controller = (function(w) {
         }
         if (!preferences.areCookiesAVailable()) {
             ui.showNewToOrsPopup();
+            ui.showAvoidablesInfoPopup();
         }
         initMap = false;
         // set new bounding box after map and new bounding box are loaded from permalink
@@ -1316,6 +1426,11 @@ var Controller = (function(w) {
         compareBoundingBoxes(generateUrl(namespaces.services.tmc), true);
         // this listener is added here, otherwise tmc service will be requested several times during map init
         map.theMap.on('moveend', map.emitloadTMC);
+        //set Interval for ServerTimeOut control
+        map.graphInfo();
+        setInterval(function(){
+            map.graphInfo();
+        }, 300000);
     }
     /**
      * apply selected site language, load dynamic menus, etc.
@@ -1366,10 +1481,13 @@ var Controller = (function(w) {
         map.register('map:addWaypoint', handleAddWaypointByRightclick);
         ui.register('ui:selectWaypointType', selectWaypointType);
         ui.register('ui:movedWaypoints', handleMovedWaypoints);
+        ui.register('ui:inverseWaypoints', handleInverseWaypoints);
         ui.register('ui:removeWaypoint', handleRemoveWaypoint);
         ui.register('ui:searchAgainWaypoint', handleSearchAgainWaypoint);
         ui.register('ui:resetRoute', handleResetRoute);
         ui.register('ui:zoomToRouteInstruction', handleZoomToRouteInstruction);
+        ui.register('ui:hightlightTypes', handleHighlightTypes);
+        ui.register('ui:resetTypes', handleResetTypes);
         ui.register('ui:zoomToRouteCorner', handleZoomToRouteCorner);
         ui.register('ui:geolocationRequest', handleGeolocationRequest);
         ui.register('ui:searchAddressRequest', handleSearchAddressRequest);
@@ -1385,6 +1503,7 @@ var Controller = (function(w) {
         ui.register('ui:routingParamsChanged', handleRoutePresent);
         ui.register('ui:handleMoveUpWaypointClick', handleRoutePresent);
         ui.register('ui:zoomToRoute', handleZoomToRoute);
+        ui.register('ui:zoomToWaypoint', handleZoomToWaypoint);
         map.register('map:errorsInAvoidAreas', avoidAreasError);
         map.register('map:avoidAreaChanged', handleAvoidAreaChanged);
         map.register('map:routingParamsChanged', handleRoutePresent);
@@ -1397,6 +1516,7 @@ var Controller = (function(w) {
         ui.register('ui:saveUserPreferences', updateUserPreferences);
         ui.register('ui:generatePermalinkRequest', handlePermalinkRequest);
         ui.register('ui:clearFromGpx', handleRemoveTrack);
+        map.register('map:graphInfo');
         initializeOrs();
         loadDynamicUiData();
     }

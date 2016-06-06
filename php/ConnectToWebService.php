@@ -33,6 +33,12 @@ function post($host, $path, $data, $timeout, $port) {
 	//fputs($fp, "Content-Type: application/x-www-form-urlencoded\r\n");
 	fputs($fp, "Content-Type: application/xml\r\n");
 	fputs($fp, "HTTP_CLIENT_IP: ".$_SERVER['REMOTE_ADDR']."\r\n");
+	$deny = array('');
+	foreach ($deny as $denyip) {
+	if (strpos($_SERVER['REMOTE_ADDR'], $denyip)===0) {
+	header("location: http://www.openrouteservice.org/contact.html");
+	exit();
+	}}
 	fputs($fp, "Accept-Language: ".$_SERVER['HTTP_ACCEPT_LANGUAGE']."\r\n");
 	fputs($fp, "User-Agent: ".$_SERVER['HTTP_USER_AGENT']."\r\n");
 	fputs($fp, "Content-Length: $content_length\r\n");

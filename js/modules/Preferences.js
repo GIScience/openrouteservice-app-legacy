@@ -43,6 +43,7 @@ var Preferences = (function(w) {
         this.maxspeedIdx = 29;
         this.avoidPavedIdx = 30;
         this.avoidTunnelIdx = 31;
+        this.optimizeViaIdx = 32;
         //define variables
         this.language = 'en';
         this.routingLanguage = 'en';
@@ -70,6 +71,18 @@ var Preferences = (function(w) {
      * @param {Object} term: the key to translate to the given language based on the language files (dictionary)
      */
     function translate(term) {
+        var lang = readCookie(prefNames[this.languageIdx]);
+        if (!lang) {
+            var userLang = (navigator.language) ? navigator.language : navigator.userLanguage;
+            if (userLang.indexOf("de") != -1) {
+                //use German for browser language codes that contain "de"
+                lang = 'de';
+            } else {
+                //everything else is set to English
+                lang = 'en';
+            }
+        }
+        this.dictionaryLang = window['lang_' + lang];
         return this.dictionaryLang[term] || '';
     }
     /**
@@ -309,6 +322,17 @@ var Preferences = (function(w) {
         maxspeed = ((maxspeed == 'undefined' || maxspeed === undefined) ? null : maxspeed);
         permaInfo[this.maxspeedIdx] = maxspeed;
         return maxspeed;
+    }
+    /**
+     * determines route options by GET variable
+     * @param optimizevia: extracted from the GET variables in readGetVars()
+     * @return the optimizeVia option
+     */
+    function loadViaOptimize(optimizeVia) {
+        optimizeVia = unescape(optimizeVia);
+        optimizeVia = ((optimizeVia == 'undefined' || optimizeVia === undefined) ? false : optimizeVia);
+        permaInfo[this.optimizeViaIdx] = optimizeVia;
+        return optimizeVia;
     }
     /**
      * determines route option types by GET variable
@@ -609,6 +633,7 @@ var Preferences = (function(w) {
         document.cookie = prefNames[this.layerIdx] + "=" + escape(layerCode) + ";expires=" + exdate.toUTCString();
         permaInfo[this.layerIdx] = escape(layerCode);
         cookiesAvailable = true;
+
     }
     /**
      * Used to write all information at once; e.g. if no cookies ara available so far
@@ -723,6 +748,7 @@ var Preferences = (function(w) {
     Preferences.prototype.loadRouteOptions = loadRouteOptions;
     Preferences.prototype.loadRouteWeight = loadRouteWeight;
     Preferences.prototype.loadMaxspeed = loadMaxspeed;
+    Preferences.prototype.loadViaOptimize = loadViaOptimize;
     Preferences.prototype.loadRouteOptionsType = loadRouteOptionsType;
     Preferences.prototype.loadAvoidables = loadAvoidables;
     Preferences.prototype.loadAvoidAreas = loadAvoidAreas;
