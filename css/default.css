@@ -79,6 +79,36 @@
     flex-basis: 50px;
 }
 
+/* Styles for responsive behaviour on mobilde devices */
+    @media screen and (min-width: 320px) and (max-width: 720px)  {
+        .ORS-body {
+            flex-direction: column;
+        }
+        
+        .ORS-sidebar {
+            order: 2; 
+            flex-basis: 50vh;
+        }
+
+        .ORS-map {
+            order: 1;   
+        }
+        
+        #topMenu {
+            display:none; /* To hide the links in the top menu */
+        }
+        
+        .leaflet-container .leaflet-control-mouseposition {
+            display:none; /* To hide the mouse position controller */
+        }
+        
+        #AppSidebarRight{
+            width:100%;
+        }
+        
+    }
+
+
 /* STYLES FOR THE HEADER AND HEADER ELEMENTS */
     /* GENERAL HEADER STYLE */
     #navbar {
@@ -226,31 +256,27 @@
 
     /* TABS AT THE TOP */
     #functionMenu {
-        /* contains search and route */
-        /*padding-left: 10px;*/
-        /*display: flex;*/
-        /*overflow: visible;*/
         background-color:#F7F7F7;
         height:38px;
-        /*top: 60px;
-        width: 400px;*/
         position:relative;
         margin-bottom:0px;
     }
     
-    /*#functionMenu > li > a {
-        /* show non-active tabs in grey */
-        /*color: #555555;
-    }*/
+    #functionMenu > li > a {
+        color: #555555;
+    }
     
     #functionMenu > .active > a, .nav-tabs > .active > a:hover {
         /* show active tabs in black with border */
         color: black;
-        background-color: #E0E0E0;
-        border-radius:0px;
-        /*border: 1px solid #ddd;*/
-        /*border-bottom-color: transparent;
-        cursor: default;*/
+        border-bottom: 2px solid black;
+        border-left: none;
+        border-right: none;
+        border-top: none;
+
+        cursor: default;
+        border-radius: 0;
+        background-color: #F7F7F7 !important;
     }
     
     #routingButton {
@@ -269,36 +295,7 @@
         vertical-align: middle;
     }
     
-    
-/* Styles for responsive behaviour on mobilde devices */
-    @media screen and (min-width: 320px) and (max-width: 720px)  {
-        .ORS-body {
-            flex-direction: column;
-        }
-        
-        .ORS-sidebar {
-            order: 2; 
-            flex-basis: 50vh;
-        }
-
-        .ORS-map {
-            order: 1;   
-        }
-        
-        #topMenu {
-            display:none; /* To hide the links in the top menu */
-        }
-        
-        .leaflet-container .leaflet-control-mouseposition {
-            display:none; /* To hide the mouse position controller */
-        }
-        
-        #AppSidebarRight{
-            width:100%;
-        }
-        
-    }
- 
+     
 /**
  *  info link disclaimer, license,... at the bottom
  */
