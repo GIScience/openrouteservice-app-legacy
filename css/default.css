@@ -113,20 +113,10 @@
     /* GENERAL HEADER STYLE */
     #navbar {
         background-color:#383838;
-        /*position: absolute;
-        top: 0px;
-        left: 0px;
-        right: 0px;
-        height: 50px;
-        padding: 0px 10px 0px 20px;
-        background-color: #FFFFFF;
-        /*#f0f0f0;*/
-        /*-border-bottom: 1px solid #888;*/
     }
     
     /* HEADER STYLES FOR ORS ICON AND TYTLE */
     #navbar a.brand {
-        /*padding-right: 10px;*/
         font-weight: bold;
     }
 
@@ -165,34 +155,8 @@
         padding: 0px 5px 0px 5px;
         color:white;
     }
-    
-    /*#topMenu > .extendedInactive {
-        padding: 0px 5px 0px 5px;
-    }*/
-    
-    /*#topMenu > .extendedActive {
-        padding: 0px 5px 0px 5px;
-        /*background-color: #fafafa;*/
-        /*background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
-        background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f2f2f2));
-        background-image: -webkit-linear-gradient(top, #ffffff, #f2f2f2);
-        background-image: -o-linear-gradient(top, #ffffff, #f2f2f2);
-        background-image: linear-gradient(to bottom, #ffffff, #f2f2f2);
-        background-repeat: repeat-x;
-        filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#fff2f2f2', GradientType=0);
-        border: 1px solid #d4d4d4;
-        -webkit-border-radius: 4px;
-        -moz-border-radius: 4px;
-        border-radius: 4px;
-        -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
-        -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
-        *zoom: 1;
-    }*/
-    
-    #topMenu > li > a/*, #title*/, #info {
-        /*padding-top: 15px;*/
-        /*font-weight: normal;*/
+        
+    #topMenu > li > a, #info {
         color:white;
     }
 
