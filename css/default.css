@@ -35,67 +35,108 @@
 
 .ORS-body {
     display: flex;
-    flex-grow: 1;   /*A number specifying how much the item will grow relative to the rest of the flexible items*/
-    flex-shrink: 0; /*A number specifying how much the item will shrink relative to the rest of the flexible items*/
-    flex-basis: auto;   /*The length of the item. Legal values: "auto", "inherit", or a number followed by "%", "px", "em" or any other length unit*/
+    flex: 1 0 auto;
     flex-direction: row;
 }
 
 .ORS-sidebar {
-    display: flex;
-    flex-grow: 0;   
-    flex-shrink: 1; 
-    /*flex-basis: 390px;*/
+    flex: 0 1 388px;
     order: 1;
     flex-direction: row;
-    overflow-y:auto;
-    -webkit-overflow-scrolling: touch;
-    border: 1ps solid black;
+    position: relative;
 }
 
 .ORS-map {
     display: flex;
-    flex-grow: 1;   
-    flex-shrink: 1; 
-    flex-basis: auto;
+    flex: 1 1 auto;
     order: 2;   
 }
 
 .ORS-header {
     display: flex;
-    flex-grow: 0;   
-    flex-shrink: 0; 
-    flex-basis: 50px;
+    flex: 0 0 50px;
 }
 
-/* Styles for responsive behaviour on mobilde devices */
-    @media screen and (min-width: 320px) and (max-width: 720px)  {
-        .ORS-body {
-            flex-direction: column;
-        }
-        
-        .ORS-sidebar {
-            order: 2; 
-            flex-basis: 50vh;
-        }
+.ORS-sidebarContent{
+    position: relative;
+}
 
-        .ORS-map {
-            order: 1;   
-        }
-        
-        #topMenu {
-            display:none; /* To hide the links in the top menu */
-        }
-        
-        .leaflet-container .leaflet-control-mouseposition {
-            display:none; /* To hide the mouse position controller */
-        }
-        
-        #AppSidebarRight{
-            width:100%;
-        }
-        
+.ORS-routePanel {
+    top: 38px;
+    position: absolute;
+    overflow: auto;
+    width: 100%;
+    bottom: 0;
+    background-color: #ffffff;
+}
+
+#ORS-functionMenu ul {
+    background-color:#F7F7F7;
+    height: 38px;
+}
+
+#ORS-functionMenu ul {
+    border-bottom: 5px solid #EBEBEB;
+}
+
+/* TABS AT THE TOP */    
+#ORS-functionMenu > li > a {
+    color: #555555;
+    border: none;
+}
+
+#ORS-functionMenu > li > a:hover {
+    /* show active tabs in black with border */
+    color: black;
+    border-bottom: 1.5px solid black;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    cursor: default;
+    border-radius: 0;
+    background-color: transparent;
+}
+
+#ORS-functionMenu > li.active > a,
+#ORS-functionMenu > li.active > a:hover,
+#ORS-functionMenu > li.active > a:focus {
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        color: black;
+        cursor: default;
+        border-bottom: 1px solid black;
+} 
+
+
+/* Styles for responsive behaviour on mobile devices */
+@media only screen and (max-width: 720px)  {
+    .ORS-body {
+        flex-direction: column;
     }
+    
+    .ORS-sidebar {
+        order: 2; 
+        flex-basis: 50vh;
+    }
+
+    .ORS-map {
+        order: 1;   
+    }
+    
+    #topMenu {
+        display:none; /* To hide the links in the top menu */
+    }
+    
+    .leaflet-container .leaflet-control-mouseposition {
+        display:none; /* To hide the mouse position controller */
+    }
+    
+    .ORS-sidebarContent{
+        width:100%;
+    }
+    
+}
 
 
 /* STYLES FOR THE HEADER AND HEADER ELEMENTS */
@@ -119,6 +160,14 @@
         align-items: center; /* align vertical */
     }
 
+    .ORS-panel {
+        border-bottom: 1px solid #EBEBEB;
+    }
+
+    .ORS-panel-sub {
+        padding: 8px;
+
+    }
     #ORS-headIcon {
         background: url(../img/logo.png) no-repeat center center;
         background-size: 40px 40px;
@@ -157,71 +206,8 @@
         line-height: 11px;
     }
 
-/* STYLES FOR THE SIDEBAR AND SIDEBAR CONTENT */
-    /* STYLES FOR LEFT CONTENT OF THE SIDEBAR */
-    #AppSidebarLeft{
-        display:none;/*display:block;*/
-        background-color: #F7F7F7;
-        border-right:1px solid #E0E0E0;
-        width:50px;
-        min-width: 50px;
-        overflow-y:auto;
-        overflow-x: hidden;
-        -webkit-overflow-scrolling: touch;
-        float:left;
-    }
-    
-    #AppSidebarLeft div button{
-        display: block;
-        width: 50px;
-        height: 50px;
-        margin-top: 1px;
-        margin-bottom: 1px;
-        border: none;
-        outline:none;
-        background-color: transparent;
-    }
-    
-    .spacer {
-        width: 50px;
-        height:3px;
-        background-color: #E0E0E0;
-    }
-    
-    /* STYLES FOR RIGHT CONTENT OF THE SIDEBAR */
-    #AppSidebarRight{
-        width: 380px;
-        overflow-y:auto;
-        -webkit-overflow-scrolling: touch;
-        /*overflow-x: hidden;*/
-        
-        position:relative;
-    }
-
-    /* TABS AT THE TOP */
-    #functionMenu {
-        background-color:#F7F7F7;
-        height:38px;
-        position:relative;
-        margin-bottom:0px;
-    }
-    
-    #functionMenu > li > a {
-        color: #555555;
-    }
-    
-    #functionMenu > .active > a, .nav-tabs > .active > a:hover {
-        /* show active tabs in black with border */
-        color: black;
-        border-bottom: 2px solid black;
-        border-left: none;
-        border-right: none;
-        border-top: none;
-
-        cursor: default;
-        border-radius: 0;
-        background-color: #F7F7F7 !important;
-    }
+/* STYLES FOR THE SIDEBAR AND SIDEBAR CONTENT */    
+    /* STYLES FOR RIGHT CONTENT OF THE SIDEBAR */  
     
     #routingButton {
         top: 215px;
@@ -246,11 +232,12 @@
 
 .disclaimer {
     position: fixed;
-    bottom: 2px;
-    left: 5px;
-    background-color: rgba(255, 255, 255, 0.75);
+    bottom: 0;
+    padding-left: 5px;
+    background-color: rgba(255, 255, 255, 1);
     padding: 1px;
     font-size: 83%;
+    border-top: 1px solid #EBEBEB;
 }
 
 #infoPanel {
@@ -322,6 +309,16 @@
     margin-top: 5px;
     font-weight: bold;
     cursor: pointer;
+}
+
+#avoidables_info {
+    position: fixed;
+    margin-left: 43px;
+    top: 123px;
+    z-index: 999;
+    display: none;
+    width: 200px;
+    font-family: 'Roboto', sans-serif;
 }
 
 .elevation-collapsed {
@@ -732,10 +729,6 @@
     background: url(../img/routelinkGPX.png) no-repeat 0% 50%;
 }
 
-.guiComponent {
-    margin: 1px;
-}
-
 .prompt {}
 
 .prompt.selectSearchResult {
@@ -1040,32 +1033,6 @@ button.weightOptions {
 }
 
 
-/*#toggleSidebar {
-    position: absolute;
-    z-index: 1040;
-    background-color: #FFFFFF;
-    opacity: 1;
-    padding: 2px 5px 0px 0px;
-}
-
-.sidebarVisible {
-    cursor: pointer;
-    top: 65px;
-    left: 380px;
-}
-
-.sidebarInvisible {
-    cursor: pointer;
-    left: 5px;
-    top: 65px;
-    -moz-transform: scaleX(-1);
-    -webkit-transform: scaleX(-1);
-    -o-transform: scaleX(-1);
-    transform: scaleX(-1);
-    filter: fliph;
-    /*IE*/
-/*}*/
-
 .panel {
     /* panels in the sidebar
      * (similar to class 'well' from bootstrap but with other margins and color)*/
@@ -1169,7 +1136,7 @@ button.weightOptions {
 }
 
 .panelLight {
-    background-color: #F8F8F8;
+    background-color: #fff;
 }
 
 .panelMedium {
@@ -1278,11 +1245,12 @@ img {
 
 #newToOrs {
     display: none;
-}
-
-#newToOrs > label {
     width: 220px;
     line-height: 1.1;
+    z-index: 999;
+    position: absolute;
+    margin-left: 543px;
+    top: 10px;
 }
 
 
@@ -1291,14 +1259,16 @@ img {
 #serviceTimeout {
     display: none;
     position: absolute;
-    left: 430px;
+    margin-left: 250px;
     top: 70px;
+    z-index: 999;
 }
 
 #serviceTimeout > label {
     width: 220px;
     line-height: 1.1;
 }
+
 
 #accessibilityDistance, #accessibilityAnalysisIsochronesIntervall {
     width: 30px;
