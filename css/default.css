@@ -105,7 +105,7 @@
         border-top: none;
         color: black;
         cursor: default;
-        border-bottom: 1px solid black;
+        border-bottom: 1.5px solid black;
 } 
 
 
@@ -140,6 +140,7 @@
 
 
 /* STYLES FOR THE HEADER AND HEADER ELEMENTS */
+    
     /* GENERAL HEADER STYLE */
     #navbar {
         background-color:#383838;
@@ -233,10 +234,11 @@
 .disclaimer {
     position: fixed;
     bottom: 0;
-    padding-left: 5px;
+    margin-left: 5px;
     background-color: rgba(255, 255, 255, 1);
     padding: 1px;
     font-size: 83%;
+    width: 100%;
     border-top: 1px solid #EBEBEB;
 }
 
@@ -254,7 +256,7 @@
 
 #infoPermalink {
     position: fixed;
-    bottom: 10px;
+    bottom: 2px;
     cursor: pointer;
     width: 80px;
     text-align: center;
@@ -273,7 +275,7 @@
     margin-left: 100px;
     height: 50px;
     padding: 0px;
-    bottom: 13px;
+    bottom: 3px;
     background: rgba(255, 255, 255, 0.5);
     z-index: 999;
     -webkit-border-radius: 5px;
@@ -326,6 +328,55 @@
     border-radius: 5px;
 }
 
+.mapContextMenu .contextWaypoint {
+    padding: 3px 10px 3px 10px;
+    white-space: nowrap;
+    cursor: pointer;
+    margin-bottom: 3px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border-left: 2px solid rgba(1, 11, 30, 0.8);
+    color: white;
+    min-height: 10px;
+    -o-transition: .2s;
+    -ms-transition: .2s;
+    -moz-transition: .2s;
+    -webkit-transition: .2s;
+    transition: .2s;
+}
+
+.mapContextMenu .contextWaypoint:hover {
+    background-color: rgba(0, 0, 0, 1);
+    border-left: 2px solid #0DD5FC;
+}
+
+.mapContextMenu .leaflet-popup-content {
+    -position: absolute;
+    left: 2.5em;
+    bottom: 0.7em;
+}
+
+.mapContextMenu .leaflet-popup-content-wrapper {
+    background: transparent;
+    box-shadow: none;
+}
+
+.mapContextMenu .leaflet-popup-tip-container {
+    margin: 0 auto;
+    position: relative;
+    overflow: visible;
+    width: 100px;
+    height: 20px;
+}
+
+.mapContextMenu .leaflet-popup-tip {
+    border: 2px solid black;
+    box-shadow: none;
+    background-color: transparent;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+}
 
 /**
  * CSS for non-map elements
@@ -763,57 +814,6 @@
     font-family: 'Roboto', sans-serif;
 }
 
-.mapContextMenu .contextWaypoint {
-    padding: 3px 10px 3px 10px;
-    white-space: nowrap;
-    cursor: pointer;
-    margin-bottom: 3px;
-    background-color: rgba(0, 0, 0, 0.8);
-    border-radius: 4px;
-    border-left: 2px solid rgba(1, 11, 30, 0.8);
-    color: white;
-    min-height: 10px;
-    -o-transition: .2s;
-    -ms-transition: .2s;
-    -moz-transition: .2s;
-    -webkit-transition: .2s;
-    transition: .2s;
-}
-
-.mapContextMenu .contextWaypoint:hover {
-    background-color: rgba(0, 0, 0, 1);
-    border-left: 2px solid #0DD5FC;
-}
-
-.mapContextMenu .leaflet-popup-content {
-    -position: absolute;
-    left: 2.5em;
-    bottom: 0.7em;
-}
-
-.mapContextMenu .leaflet-popup-content-wrapper {
-    background: transparent;
-    box-shadow: none;
-}
-
-.mapContextMenu .leaflet-popup-tip-container {
-    margin: 0 auto;
-    position: relative;
-    overflow: visible;
-    width: 100px;
-    height: 20px;
-}
-
-.mapContextMenu .leaflet-popup-tip {
-    border: 2px solid black;
-    box-shadow: none;
-    background-color: transparent;
-    border-radius: 50%;
-    width: 10px;
-    height: 10px;
-}
-
-
 /*preferences popup*/
 
 #sitePrefsModal label {
@@ -867,6 +867,8 @@ input, textarea {
 /*input[type=text] {
     height: 30px;
 }*/
+
+/* OVERWRITING BOOTSTRAP STYLES */
 
 input[type='checkbox'], input[type='radio'] {
     vertical-align: baseline;
@@ -942,6 +944,26 @@ button.weightOptions {
     padding: 2px 2px 2px 2px;
 }
 
+
+.btn {
+    border-radius: 0px;
+    cursor: pointer;
+}
+
+.primary {
+    background: #F7F7F7;
+}
+
+.btn:hover {
+    background: #D4D4D4 !important; 
+}
+
+.btn.active, .dropdown-toggle {
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+}
+
 #weightingDropdown {
     margin-bottom: 3px;
     float: right;
@@ -954,7 +976,6 @@ button.weightOptions {
 .divAroundButtons {
     float: left;
 }
-
 
 /* avoid area controls*/
 
@@ -1100,9 +1121,6 @@ button.weightOptions {
     background-position: -96px -118px;
 }
 
-#importRouteInfoLabel, #accessibilityAnalysisLabel {
-    margin-top: 15px;
-}
 
 #route_totalDistance {
     margin-top: 5px;

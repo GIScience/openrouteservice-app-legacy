@@ -54,19 +54,19 @@
 					<div id="routingPanel" class="ORS-panel route">
 						<div class="guiComponent ORS-panel-sub">
 							<div class="btn-group routePreferenceBtns">
-								<button id="car" class="btn routeOptionsButton active"><img src="img/picto-car.png">
+								<button id="car" class="btn primary routeOptionsButton active"><img src="img/picto-car.png">
 								</button>
-								<button id="bicycle" class="btn routeOptionsButton"><img src="img/picto-bike.png">
+								<button id="bicycle" class="btn primary routeOptionsButton"><img src="img/picto-bike.png">
 								</button>
-								<button id="pedestrian" class="btn routeOptionsButton"><img src="img/picto-dude.png">
+								<button id="pedestrian" class="btn primary routeOptionsButton"><img src="img/picto-dude.png">
 								</button>
-								<button id="wheelchair" class="btn routeOptionsButtonBeta"><img src="img/picto-wheelchair_beta.png">
+								<button id="wheelchair" class="btn primary routeOptionsButtonBeta"><img src="img/picto-wheelchair_beta.png">
 								</button>
-								<button id="heavyvehicle" class="btn routeOptionsButton"><img src="img/picto-truck.png">
+								<button id="heavyvehicle" class="btn primary routeOptionsButton"><img src="img/picto-truck.png">
 								</button>
 							</div>
 							<div class="btn-group" id="weightingDropdown">
-						        <button class="btn btn-mini weightOptions dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" aria-expanded="false" id="weightOptions"><img src="img/reload.png"></button>
+						        <button class="btn primary weightOptions dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" aria-expanded="false" id="weightOptions"><img src="img/reload.png"></button>
 						          	<ul class="dropdown-menu" id="dropdown_weighting">
 										<label class="radio">
 											<input type="radio" id="Fastest" name="weighting" checked="checked">
@@ -277,7 +277,7 @@
 							<div class="ORS-panel-sub" id="maxSpeed">
 								<div class="input-append">
 									<input class="span3" id="maxSpeedInput" type="text" placeholder="maximum speed">
-									<button class="btn" type="button" id="maxSpeedBtn">set</button>
+									<button class="btn primary" type="button" id="maxSpeedBtn">set</button>
 								</div>
 							</div>
 							<div class="ORS-panel-sub">
@@ -439,7 +439,7 @@
 						<div class="ORS-panel-sub">
 							<div id="routeCalculate" style="display:none" class="alert alert-info searchingBlue"></div>
 							<div id="routeError" style="display:none" class="alert alert-error"></div>
-							<div class="panel panelLight" id="routeInstructionsContainer" style="display:none">
+							<div id="routeInstructionsContainer" style="display:none">
 								<div class="collapsible guiComponent">
 									<div class="panel panelMedium" id="routeSummary">
 									</div>
@@ -455,7 +455,9 @@
 								</div>
 								&nbsp;
 							</div>
-							<div class="panel panelLight" id="routeTypesContainer" style="display: none;">
+						</div>
+						<div class="ORS-panel-sub">
+							<div id="routeTypesContainer" style="display: none;">
 								<div class="collapsible guiComponent">
 									<div class="collapsibleHead clickable collapsed" id="routeTypesHead">
 										Way and Surface Information:
@@ -473,7 +475,6 @@
 								</div>
 								&nbsp;
 							</div>
-							
 						</div>
 					</div>
 					<div class="routeExtrasContainer ORS-panel">
@@ -484,50 +485,43 @@
 							</div>
 							<div class="collapsibleBody" style="display: none;">
 								<div class="alert alert-error" style="display: none;"></div>
-								<div class="panel panelMedium" style="position: relative;">	
-									<select id="accessibilityAnalysisMethodList">
-										<option id="Default" value="RecursiveGrid">Recursive Grid</option>
-										<option id="Default2" value="TIN">TIN</option>
-									</select>
-									<span id ="accessibilityAnalysisMethod" class="label">Select Isochrone method</span>
-									<br/>
-									<input type="text" id="accessibilityDistance" class="textfield" value="15">
-									<span id ="accessibilityAnalysisMinutes" class="label">Select Minutes</span>
-									<br/>						
-									<input type="text" id="accessibilityAnalysisIsochronesIntervall" class="textfield" value="3">
-									<span id ="accessibilityAnalysisIsochrones" class="label">Select Isochrone Interval</span>
-									<br/>	
-									<btn class="btn btn-small" id="analyzeAccessibility"><i class="icon-picture"></i>&nbsp;&nbsp;Analyze</btn>	
-									<br/>
-									<btn class="btn btn-small" id="removeAccessibility" style="display:none">
-										Remove
-									</btn>
-									<div class="alert alert-info searchingBlue" id="accessibilityCalculation" style="display: none;">
-										The accessibility is being analyzed...
-									</div>
-									<div class="alert alert-error" id="accessibilityError" style="display: none;">
-										An error occured during the accessibility analysis. Did you forget to set a start point?
-									</div>
-									<br/>
-									<span id="accessibilityAnalysisLabel" class="label label-descrip">Accessibility analysis</span>
+								<select id="accessibilityAnalysisMethodList">
+									<option id="Default" value="RecursiveGrid">Recursive Grid</option>
+									<option id="Default2" value="TIN">TIN</option>
+								</select>
+								<span id ="accessibilityAnalysisMethod" class="label">Select Isochrone method</span>
+								<br/>
+								<input type="text" id="accessibilityDistance" class="textfield" value="15">
+								<span id ="accessibilityAnalysisMinutes" class="label">Select Minutes</span>
+								<br/>						
+								<input type="text" id="accessibilityAnalysisIsochronesIntervall" class="textfield" value="3">
+								<span id ="accessibilityAnalysisIsochrones" class="label">Select Isochrone Interval</span>
+								<br/>	
+								<btn class="btn btn-small" id="analyzeAccessibility"><i class="icon-picture"></i>&nbsp;&nbsp;Analyze</btn>	
+								<br/>
+								<btn class="btn btn-small" id="removeAccessibility" style="display:none">
+									Remove
+								</btn>
+								<div class="alert alert-info searchingBlue" id="accessibilityCalculation" style="display: none;">
+									The accessibility is being analyzed...
+								</div>
+								<div class="alert alert-error" id="accessibilityError" style="display: none;">
+									An error occured during the accessibility analysis. Did you forget to set a start point?
 								</div>
 								<div id="exportImport">
 									<label id="imExportLabel"><b>Import/ Export</b></label>
-									<div class="panel panelMedium">
-										<a id="export-gpx" class="btn btn-small" download="map.gpx" title="Download of current route in GPX format"><i class="icon-download"></i>&nbsp;&nbsp;Export GPX</a>
-										<br/>
-										<div class="alert alert-error" style="display:none" id="exportGpxError">
-											Unfortunately an error occured while downloading the route.
-										</div>
-										<br/>
-										<div id="GPXcontainer">
-											<span class="btn btn-file" id="import-gpx" title="Upload multiple tracks from a GPX-files"><i class="icon-upload"></i>&nbsp;&nbsp;Upload GPX files<input type="file" id="files" multiple /></span>	
-												<div id="fileContainerMain" style="display: none;"></div>		
-										</div>
-										<span id ="importRouteInfoLabel" class="label label-descrip">GPX-Features</span>
-										<div id="importGpxError" class="alert alert-error" style="display:none">
-											Unfortunately an error occured while uploading the route.
-										</div>
+									<a id="export-gpx" class="btn btn-small" download="map.gpx" title="Download of current route in GPX format"><i class="icon-download"></i>&nbsp;&nbsp;Export GPX</a>
+									<br/>
+									<div class="alert alert-error" style="display:none" id="exportGpxError">
+										Unfortunately an error occured while downloading the route.
+									</div>
+									<br/>
+									<div id="GPXcontainer">
+										<span class="btn btn-file" id="import-gpx" title="Upload multiple tracks from a GPX-files"><i class="icon-upload"></i>&nbsp;&nbsp;Upload GPX files<input type="file" id="files" multiple /></span>	
+											<div id="fileContainerMain" style="display: none;"></div>		
+									</div>
+									<div id="importGpxError" class="alert alert-error" style="display:none">
+										Unfortunately an error occured while uploading the route.
 									</div>
 								</div>
 							</div>
@@ -565,6 +559,13 @@
 							</div>
 						</div>
 					</div>
+					<div class="disclaimer">
+						<a id="debug">debug - </a>
+						<a href="contact.html" class="inlineLink">(c) 2008-2016 &nbsp; -</a>
+						<a href="contact.html#disclaimer" class="inlineLink">Disclaimer &nbsp; -</a>
+						<a href="contact.html#license" class="inlineLink">License</a>
+						<div id="infoPanel"></div>
+					</div>
 				</div>
 			</div>
 			<div id="map" class="ORS-map">
@@ -592,13 +593,6 @@
 					</button>
 				</div>
 			</div>
-		</div>
-		<div class="disclaimer">
-			<a id="debug">debug - </a>
-			<a href="contact.html" class="inlineLink">(c) 2008-2016 &nbsp; -</a>
-			<a href="contact.html#disclaimer" class="inlineLink">Disclaimer &nbsp; -</a>
-			<a href="contact.html#license" class="inlineLink">License</a>
-			<div id="infoPanel"></div>
 		</div>
 		<!-- popup for user preferences (language, distance unit,...) -->
 		<div id="sitePrefsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sitePrefs">
