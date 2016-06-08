@@ -84,6 +84,7 @@ var Ui = (function(w) {
     }
 
     function showServiceTimeoutPopup(arg) {
+        console.log('show')
         if (arg === true) {
             $('#serviceTimeout').children('label').empty();
             var label = new Element('label');
@@ -1327,16 +1328,15 @@ var Ui = (function(w) {
      * shows a spinner for the route calculation process and hides previously displayed error messages
      */
     function startRouteCalculation() {
-        var el = $('#routeCalculate');
+        var el = $('#ORS-loading');
         el.show();
-        el.html(preferences.translate('calculatingRoute'));
-        $('#routeError').hide();
+        $('#ORS-routeError').hide();
     }
     /**
      * hides the spinner for the route calculation process
      */
     function endRouteCalculation() {
-        $('#routeCalculate').hide();
+        $('#ORS-loading').hide();
     }
     /**
      * displays general route information as a route summary
@@ -1413,7 +1413,7 @@ var Ui = (function(w) {
             'data-toggle' : 'tooltip',
             'id': 'tt-time',
             'title': 'Time'
-        }).update('<i class="icon-time"></i>' + ' ');
+        }).update('<i class="fa fa-clock-o"></i>' + ' ');
         var len;
         // if the route is only seconds
         if (routeSummary[0].length > 2) {
@@ -1439,7 +1439,7 @@ var Ui = (function(w) {
             'data-toggle' : 'tooltip',
             'id': 'tt-distance',
             'title': 'Distance'
-        }).update('<i class="icon-resize-horizontal" style="opacity: 0.6"></i>' + ' ');
+        }).update('<i class="fa fa-long-arrow-right"></i>' + ' ');
         distanceInfo = new Element('div', {
             'class': 'directions-summary-info-digit'
         }).update(routeSummary[1][1]);
@@ -1456,7 +1456,7 @@ var Ui = (function(w) {
                 'data-toggle' : 'tooltip',
                 'id': 'tt-actdistance',
                 'title': 'Actual Distance'
-            }).update('<i class="icon-resize-horizontal"></i>' + ' ');
+            }).update('<i class="fa fa-arrows-h"></i>' + ' ');
             actualDistanceInfo = new Element('div', {
                 'class': 'directions-summary-info-digit'
             }).update(routeSummary[2][1]);
@@ -1474,7 +1474,7 @@ var Ui = (function(w) {
                 'data-toggle' : 'tooltip',
                 'id': 'tt-ascent',
                 'title': 'Ascent'
-            }).update('<i class="icon-arrow-up"></i>' + ' ');
+            }).update('<i class="fa fa-long-arrow-up"></i>' + ' ');
             var ascentInfo = new Element('div', {
                 'class': 'directions-summary-info-digit'
             }).update(routeSummary[3][0]);
@@ -1489,7 +1489,7 @@ var Ui = (function(w) {
                 'data-toggle' : 'tooltip',
                 'id': 'tt-descent',
                 'title': 'Descent'
-            }).update('<i class="icon-arrow-down"></i>' + ' ');
+            }).update('<i class="fa fa-long-arrow-down"></i>' + ' ');
             var descentInfo = new Element('div', {
                 'class': 'directions-summary-info-digit'
             }).update(routeSummary[3][1]);
@@ -1501,6 +1501,7 @@ var Ui = (function(w) {
             summaryContainer.appendChild(pointInfo);
         }
         var container = $('#routeSummary');
+        container.parent().parent().show();
         container.append(summaryContainer);
         // initiate tooltips
         $('[data-toggle="tooltip"]').tooltip(); 
@@ -1534,11 +1535,11 @@ var Ui = (function(w) {
         });
         var margin = {
                 top: 0,
-                right: 20,
+                right: 0,
                 bottom: 0,
                 left: 0
             },
-            width = 350 - margin.left - margin.right,
+            width = 348 - margin.left - margin.right,
             height = 24 - margin.top - margin.bottom;
         var y = d3.scale.ordinal().rangeRoundBands([height, 0]);
         var x = d3.scale.linear().rangeRound([0, width]);
@@ -2055,6 +2056,7 @@ var Ui = (function(w) {
      * @param e: the event containing the clicked waypoint icon
      */
     function handleZoomToWaypointClick(e) {
+        console.log(e)
         //make sure the waypoint is not empty
         if ($(e.currentTarget).parent().children(".waypointResult").children().length > 0) {
             theInterface.emit('ui:zoomToWaypoint', $(e.currentTarget).parent().attr("id"));
@@ -2064,7 +2066,7 @@ var Ui = (function(w) {
      * displays an error message when no route between the selected waypoints could be found or another error happened during route calculation
      */
     function showRoutingError() {
-        var el = $('#routeError');
+        var el = $('#ORS-routeError');
         el.html(preferences.translate('noRouteAvailable'));
         el.show();
     }
@@ -2114,9 +2116,6 @@ var Ui = (function(w) {
             var btn = allBtn[i];
             if (btn == e.currentTarget) {
                 btn.addClassName('active');
-                //adapt image
-                var imgElement = btn.querySelector('img');
-                imgElement.setAttribute('src', list.routePreferencesImages.get(btn.id)[0]);
                 //set the selected entry as currently selected route option
                 var options = $('#' + btn.id + 'Options').get(0).querySelector('input[checked="checked"]');
                 /* adapt global settings information */
@@ -2124,9 +2123,6 @@ var Ui = (function(w) {
                 theInterface.emit('ui:routingParamsChanged');
             } else {
                 btn.removeClassName('active');
-                //adapt image
-                var imgElement = btn.querySelector('img');
-                imgElement.setAttribute('src', list.routePreferencesImages.get(btn.id)[0]);
             }
         }
         //switch the content
@@ -2539,14 +2535,8 @@ var Ui = (function(w) {
             var btn = allBtn[i];
             if (btn.id == activeRouteOption) {
                 btn.addClassName('active');
-                //adapt image
-                var imgElement = btn.querySelector('img');
-                imgElement.setAttribute('src', list.routePreferencesImages.get(btn.id)[0]);
             } else {
                 btn.removeClassName('active');
-                //adapt image
-                var imgElement = btn.querySelector('img');
-                imgElement.setAttribute('src', list.routePreferencesImages.get(btn.id)[0]);
             }
         }
     }
@@ -2555,6 +2545,7 @@ var Ui = (function(w) {
      * @param e: the event
      */
     function handleOptionsChanged(e) {
+        console.log(e)
         var boolVar;
         e = e || window.event;
         var target = e.target || e.srcElement;
@@ -2757,6 +2748,7 @@ var Ui = (function(w) {
             } else {
                 boolVar = true;
             }
+            console.log(boolVar)
             theInterface.emit('ui:prefsChanged', {
                 key: preferences.optimizeViaIdx,
                 value: boolVar
@@ -3138,13 +3130,13 @@ var Ui = (function(w) {
             fileContainer.appendChild(calcGpx);
             fileContainer.appendChild(deleteGpx);
             fileContainer.appendChild(calcGranularity);
-            fileContainerMain.appendChild(fileContainer)
+            fileContainerMain.appendChild(fileContainer);
             $(showGpx).click(handleShowGpx);
             $(calcGpx).click(handleRecalcGpx);
             $(deleteGpx).click(handleDeleteFromMapGpx);
         }
         container.appendChild(fileContainerMain);
-    };
+    }
     /**
      * handles the clicked gpx file and shows it on map
      */
@@ -3153,7 +3145,7 @@ var Ui = (function(w) {
         var iterator = thisTarget.getAttribute('data');
         var gpxFile = fileInput[iterator];
         // get sibling remove element
-        var thisTarget = $(e.currentTarget).siblings(".delete")[0];
+        thisTarget = $(e.currentTarget).siblings(".delete")[0];
         theInterface.emit('ui:uploadTrack', [gpxFile, thisTarget]);
     }
     /**
@@ -3347,10 +3339,6 @@ var Ui = (function(w) {
             }
         });
         $('.btn-group').button();
-        //feedback slide
-        $("#feedback_button").click(function() {
-            $('.form').slideToggle();
-        });
         //maxspeed button listener
         $('#maxSpeedBtn').click(handleMaxspeed);
         //close serviceTimeout Label

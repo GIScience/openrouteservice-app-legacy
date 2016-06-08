@@ -11,7 +11,8 @@ var lang_de = {
 	'search':  'Suche',
 	'routeOptions':  'Art der Route',
 	'routeExtras':  'Route-Extras',
-		
+	'feedback': 'Feedback',
+	
 	//Map Layernames
 	'layer1' : 'OpenMapSurfer Karte',
 	'layer2' : 'OSM-WMS weltweit',
@@ -99,15 +100,15 @@ var lang_de = {
 	'busHeavyTruck' : 'Bus',
 	'hgvHeavyTruck' : 'Schwerlasttransport',
 	'deliveryHeavyTruck' : 'Lieferverkehr',
-	'hazardMaterial' : '<i class="icon-tint icon-white"></i>&nbsp;Gefahrguttransport',
+	'hazardMaterial' : '<i class="icon-tint "></i>&nbsp;Gefahrguttransport',
 	'truckMain' : 'Truck Einstellungen (in meter/tonnen)',
 	'agriculturalHeavyTruck' : 'Agrarfahrzeug',
 	'forestryHeavyTruck' : 'Forstfahrzeug',
 
-	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Stra&szlig;en vermeiden &nbsp;&nbsp;<span class="caret">',
-	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Stra&szlig;en vermeiden &nbsp;&nbsp;<span class="caret">',
-	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Gebiete vermeiden &nbsp;&nbsp;<span class="caret">',
-	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;Stra&szlig;en vermeiden  &nbsp;&nbsp;<span class="caret">',
+	'avoidRoadMain' : '<i class="fa fa-road "></i>&nbsp;&nbsp;Stra&szlig;en vermeiden &nbsp;&nbsp;<span class="caret">',
+	'avoidBikeMain' : '<i class="fa fa-road "></i>&nbsp;&nbsp;Stra&szlig;en vermeiden &nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil "></i>&nbsp;&nbsp;Gebiete vermeiden &nbsp;&nbsp;<span class="caret">',
+	'avoidPedesMain' : '<i class="icon-ban-circle "></i>&nbsp;&nbsp;Stra&szlig;en vermeiden  &nbsp;&nbsp;<span class="caret">',
 
 	'avoidMotorways':  'Autobahnen',
 	'avoidTollways':  'Mautstra&szlig;en',
@@ -215,7 +216,7 @@ var lang_de = {
 	//accessibility Analysis
 	'accessibilityAnalysis' : 'Erreichbarkeits-Analyse',
 	'setAccessibilityMinutes' : 'Minuten ausw&auml;hlen',
-	'analyze' : 'Analysieren',
+	//'analyze' : 'Analysieren',
 	'accessibilityAnalysisIsochrones' : 'Isochronenintervall in Minuten ausw&auml;hlen',
 	'accessibilityAnalysisMethod' : 'Isochronenmethode ausw&auml;hlen',
 	'calculatingAccessibility' : 'Die Erreichbarkeit wird analysiert...',

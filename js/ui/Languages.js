@@ -113,12 +113,16 @@ var Languages = (function(w) {'use strict';
 		//routing
 		$('.searchWaypoint').attr('placeholder', p.translate('enterAddress'));
 		$('#addWaypoint').html(p.translate('addWaypoint'));
-		$('#routeSummaryHead').html(p.translate('routeSummary') + ':');
-		$('#routeInstructionHead').html(p.translate('routeInstructions') + ':');
-		$('#routeTypesHead').html(p.translate('routeSurface') + ':');
+		$('#routeSummaryHead').html(p.translate('routeSummary'));
+		$('#routeInstructionHead').html(p.translate('routeInstructions'));
+		$('#routeTypesHead').html(p.translate('routeSurface'));
 
 		//route extras
-		$('#routeExtrasHead').html(p.translate('routeExtras') + ':');
+		$('#routeExtrasHead').html(p.translate('routeExtras'));
+
+		//feedback
+		$('#feedbackHead').html(p.translate('feedback'));
+
 		//permalink
 		$('#permalinkLabel').html(p.translate('routeLinkText'));
 		$('#fnct_permalink').html(p.translate('permalinkButton'));
@@ -126,11 +130,11 @@ var Languages = (function(w) {'use strict';
 		//accessibility
 		$('#accessibilityAnalysisLabel').html(p.translate('accessibilityAnalysis'));
 		$('#accessibilityAnalysisMinutes').html(p.translate('setAccessibilityMinutes'));
-		$('#analyzeAccessibility').html(p.translate('analyze'));
+		$('#analyzeAccessibilityLabel').html(p.translate('analyze'));
 		$('#accessibilityAnalysisIsochrones').html(p.translate('accessibilityAnalysisIsochrones'));
 		$('#accessibilityAnalysisMethod').html(p.translate('accessibilityAnalysisMethod'));
-		$('#accessibilityCalculation').html(p.translate('calculatingAccessibility'));
-		$('#accessibilityError').html(p.translate('accessibilityError'));
+		$('#accessibilityCalculationLabel').html(p.translate('calculatingAccessibility'));
+		$('#accessibilityErrorLabel').html(p.translate('accessibilityError'));
 		//export/ import
 		$('#imExportLabel').html('<b>' + p.translate('imExport') + '</b>');
 		$('#exportInfoLabel').html(p.translate('gpxDownloadText'));

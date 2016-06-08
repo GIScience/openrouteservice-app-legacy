@@ -92,10 +92,10 @@ var lang_it = {
 	'avoidFord': 'guadi',
 	'avoidTunnel' : 'tunnel',
 	
-	'avoidRoadMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Evitare tipi di strade &nbsp;&nbsp;<span class="caret">',
-	'avoidBikeMain' : '<i class="icon-road icon-white"></i>&nbsp;&nbsp;Evitare tipi di strade &nbsp;&nbsp;<span class="caret">',
-	'avoidAreasMain' : '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;Evitare le zone &nbsp;&nbsp;<span class="caret">',
-	'avoidPedesMain' : '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;Evitare tipi di strade  &nbsp;&nbsp;<span class="caret">',
+	'avoidRoadMain' : '<i class="icon-road"></i>&nbsp;&nbsp;Evitare tipi di strade &nbsp;&nbsp;<span class="caret">',
+	'avoidBikeMain' : '<i class="icon-road"></i>&nbsp;&nbsp;Evitare tipi di strade &nbsp;&nbsp;<span class="caret">',
+	'avoidAreasMain' : '<i class="icon-pencil"></i>&nbsp;&nbsp;Evitare le zone &nbsp;&nbsp;<span class="caret">',
+	'avoidPedesMain' : '<i class="icon-ban-circle"></i>&nbsp;&nbsp;Evitare tipi di strade  &nbsp;&nbsp;<span class="caret">',
 	
 	'avoidFerryBike' : 'collegamenti marittimi' ,
 	'avoidunpavedRoadsBike' : 'strade non asfaltate',

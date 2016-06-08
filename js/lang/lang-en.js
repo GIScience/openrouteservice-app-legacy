@@ -11,6 +11,7 @@ var lang_en = {
     'search': 'Search',
     'routeOptions': 'Route options',
     'routeExtras': 'Route extras',
+    'feedback': 'Feedback',
 	
 	//Map Layernames
 	'layer1' : 'OpenMapSurfer',
@@ -27,7 +28,7 @@ var lang_en = {
     'calculatingRoute': 'Calculating Route...',
     'noRouteAvailable': 'Sorry, no route was found between the selected points. Please choose your points closer to a road.',
     'routeFromTo': 'Route to ',
-    'resetRoute': '<i class="icon-remove-sign"></i>&nbsp;Reset whole route',
+    'resetRoute': 'Reset whole route',
     'TotalTime': 'Total time',
 	'TotalWarnings':  'Warnings',
     'TotalDistance': 'Total distance',
@@ -93,7 +94,7 @@ var lang_en = {
     'busHeavyTruck': 'Bus',
     'hgvHeavyTruck': 'HGV',
     'deliveryHeavyTruck': 'Delivery',
-    'hazardMaterial': '<i class="icon-tint icon-white"></i>&nbsp;Hazardous Materials',
+    'hazardMaterial': 'Hazardous Materials',
     'truckMain': 'Truck Parameters (in meters/tons)',
     'agriculturalHeavyTruck': 'Agricultural vehicle',
     'forestryHeavyTruck': 'Forestry vehicly',
@@ -107,10 +108,10 @@ var lang_en = {
 
     'viaOptimize' : 'Optimize waypoint arrangement',
 
-    'avoidRoadMain': '<i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types &nbsp;&nbsp;<span class="caret">',
-    'avoidBikeMain': '<i class="icon-road icon-white"></i>&nbsp;&nbsp;avoid road types &nbsp;&nbsp;<span class="caret">',
-    'avoidAreasMain': '<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;avoid areas &nbsp;&nbsp;<span class="caret">',
-    'avoidPedesMain': '<i class="icon-ban-circle icon-white"></i>&nbsp;&nbsp;avoid road types  &nbsp;&nbsp;<span class="caret">',
+    'avoidRoadMain': '<i class="fa fa-road"></i>&nbsp;&nbsp;avoid road types &nbsp;&nbsp;<span class="caret">',
+    'avoidBikeMain': '<i class="fa fa-road"></i>&nbsp;&nbsp;avoid road types &nbsp;&nbsp;<span class="caret">',
+    'avoidAreasMain': '<i class="icon-pencil"></i>&nbsp;&nbsp;avoid areas &nbsp;&nbsp;<span class="caret">',
+    'avoidPedesMain': '<i class="icon-ban-circle"></i>&nbsp;&nbsp;avoid road types  &nbsp;&nbsp;<span class="caret">',
    
     'avoidFerryBike': 'ferry connections',
     'avoidunpavedRoadsBike': 'unpaved roads',
@@ -161,7 +162,7 @@ var lang_en = {
     //Accessibility Analysis
     'accessibilityAnalysis': 'Accessibility analysis',
     'setAccessibilityMinutes': 'Select minutes',
-    'analyze': '<i class="icon-eye-open"></i>&nbsp;&nbsp;Analyze',
+    'analyze': 'analyze',
     'accessibilityAnalysisIsochrones': 'Isochrone intervall in minutes',
     'accessibilityAnalysisMethod': 'Isochrone method',
     'calculatingAccessibility': 'The accessibility is being analyzed...',

@@ -1,17 +1,7 @@
 /*feedback/contact form*/
 
-#mainform {
-    width: 960px;
-    margin: 20px auto;
-    padding-top: 20px;
-    font-family: 'Fauna One', serif;
-}
-
 .feedback {
-    position: absolute;
-    right: 5px;
-    bottom: 28px;
-    z-index: 9999;
+    width: 100%;
 }
 
 .feedback a {
@@ -19,8 +9,6 @@
     height: 20px;
     text-align: center;
     background: black;
-    border: 1px solid #123456;
-    border-radius: 3px;
     opacity: 0.9;
     clear: both;
     padding-right: 5px;
@@ -35,60 +23,39 @@
 
 .feedback .form {
     clear: both;
-    box-shadow: 0 0 15px;
-    -height: 280px;
-    width: 350px;
-    border-radius: 2px;
     background: #fff;
-    padding: 15px;
-    display: none;
-}
-
-h3 {
-    text-align: center;
-    font-size: 20px;
 }
 
 .feedback input {
     width: 100%;
-    height: 35px;
-    margin-top: 5px;
-    border: 1px solid #999;
-    border-radius: 3px;
+    border: 1px solid #ccc;
+    border-radius: 0;
     padding: 5px;
 }
 
 .feedback input[type=text] {
-    height: 30px;
+    height: 25px;
 }
 
 .feedback input[type=button] {
-    background-color: black;
+    background-color: #F7F7F7;
     border: 0px solid white;
-    font-family: 'Roboto', sans-serif;
-    font-weight: bold;
-    font-size: 14px;
-    opacity: 0.8;
-    color: white;
-    border-radius: 3px;
+    border-radius: 0;
+    margin-top: 5px;
 }
 
 .feedback textarea {
     width: 100%;
-    height: 130px;
+    height: 80px;
     margin-top: 5px;
-    border-radius: 3px;
+    border-radius: 0px;
     padding: 5px;
     resize: none;
+    border-color: #F0F0F0;
 }
 
 .feedback span {
     color: red
-}
-
-#note {
-    color: black;
-    font-weight: 400;
 }
 
 #returnmessage {

@@ -187,6 +187,9 @@ var Controller = (function(w) {
         }
         //start geocoding process and replace lat lon in input if response
         geolocator.reverseGeolocate(pos, reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, wpType, wpIndex, newFeatureId);
+        // show loading
+        var el = $('#ORS-loading');
+        el.show();
     }
     /**
      * handles the results of the reverse geolocation service call by showing/removing features on the map, calling the Ui,...
@@ -197,6 +200,9 @@ var Controller = (function(w) {
      * @param addWaypointAt: index where to add the waypoint
      */
     function reverseGeocodeSuccess(addressResult, wpType, wpIndex, featureId, addWaypointAt) {
+         // show loading
+        var el = $('#ORS-loading');
+        el.hide();
         //when the service gives response but contains an error the response is handeled as success, not error. We have to check for an error tag here:
         var responseError = util.getElementsByTagNameNS(addressResult, namespaces.xls, 'ErrorList').length;
         if (parseInt(responseError) > 0) {
@@ -802,14 +808,7 @@ var Controller = (function(w) {
             wheelChairParams[4] = wheelchairSmoothness;
             route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferencesType, wheelChairParams, truckParams, avoidableParams, avoidAreas, extendedRoutePreferencesWeight, extendedRoutePreferencesMaxspeed, calcRouteID);
             //try to read a variable that is set after the service response was received. If this variable is not set after a while -> timeout.
-            clearTimeout(timerRoute);
-            // Took that out for now, seems not to work properly, needs more investigation (Oliver Roick, 21 Feb 2015)
-            // timerRoute = setTimeout(function() {
-            //  if (!route.routePresent) {
-            //      //if no response has been received after the defined interval, show a timeout error.
-            //      ui.showServiceTimeoutPopup();  //TODO use for other service calls as well
-            //  }
-            // }, SERVICE_TIMEOUT_INTERVAL);            
+            clearTimeout(timerRoute);          
         } else {
             //internal
             route.routePresent = false;
@@ -936,6 +935,9 @@ var Controller = (function(w) {
             ui.showSearchingAtAccessibility(true);
             map.eraseAccessibilityFeatures();
             analyse.analyze(pos, dist, aasRoutePref, aasMethod, aasIntervallSeconds, accessibilitySuccessCallback, accessibilityFailureCallback);
+            // show loading
+            var el = $('#ORS-loading');
+            el.show();
         } else {
             //no position, no analyse!
             ui.showAccessibilityError(true);
@@ -946,6 +948,9 @@ var Controller = (function(w) {
      * @param result: XML response from the service
      */
     function accessibilitySuccessCallback(result) {
+        // hide loading
+        var el = $('#ORS-loading');
+        el.hide();
         //when the service gives response but contains an error the response is handeled as success, not error. We have to check for an error tag here:
         var responseError = util.getElementsByTagNameNS(result, namespaces.xls, 'ErrorList').length;
         if (parseInt(responseError) > 0) {
