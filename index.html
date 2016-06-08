@@ -17,13 +17,11 @@
 		<link rel="stylesheet" type="text/css" href="css/MarkerCluster.Default.css" />
 		<link rel="stylesheet" type="text/css" href="css/L.Control.MousePosition.css" />
  	</head>
-	<body class="ORS" id="main">
+	<body class="ORS">
 		<!-- navigation bar on top -->
 		<header class="ORS-header" id="navbar">
 			<a class="brand" id="ORS-headIcon" href="http://www.geog.uni-heidelberg.de/giscience.html"></a>
 			<a class="brand" id="title" href="http://www.openrouteservice.org">OpenRouteService.org</a>
-<!-- 			<a href="https://github.com/GIScience/openrouteservice/blob/bugfixes-3.0/release_notes/v3.0.md" style="cursor:pointer;" target="_blank" id="info" class="btn btn-large btn-success disabled">ORS successfully updated to version 3.0 - Routing temporarily available only within Germany.</a>
- -->		
  			<ul id="topMenu">
 				<li>
 					<a href="#sitePrefsModal" data-toggle="modal" id="menuLinkSitePrefs">Site Preferences</a>
@@ -33,7 +31,7 @@
 				</li>
 			</ul>
 		</header>
-		<div class="ORS-body">
+		<div class="ORS-main">
 			<div class="ORS-sidebar" id="sidebar">
 				<div id="ORS-functionMenu">
 					<ul class="nav nav-tabs">
@@ -528,16 +526,13 @@
 							</div>
 						</div>
 					</div>	
-
-					<div class="routeExtrasContainer ORS-panel">
+					<div class="routeExtrasContainer ORS-panel ORS-feedback">
 						<div class="collapsible guiComponent ORS-panel-sub">
 							<div class="collapsibleHead clickable collapsed" id="feedbackHead">
 								Feedback
 							</div>
 							<div class="collapsibleBody" style="display: none;">
 								<div class="ORS-panel-sub">
-									
-									<!-- popup for contact form -->
 									<div class="feedback">
 										<div class="form">
 										<p id="returnmessage"></p>
@@ -550,17 +545,10 @@
 											<input class="btn primary" type="button" id="submit_feedback" value="Send Message"/>
 										</div>
 									</div>
-
-
-
 	    						</div>
 							</div>
 						</div>
 					</div>
-
-
-
-
 					<div id="searchPanel" style="display: none;">
 						<div id="searchPoi" class="ORS-panel">
 							<div class="toolHeading" id="searchPoiHead">
@@ -611,18 +599,18 @@
 						<div id="open">open</div>
 					</div>
 				</div>
-				<div class="alert alert-info" id="avoidables_info">
+				<div class="alert alert-info ORS-info" id="avoidables_info">
 					<button type="button" class="close" data-dismiss="alert">
 						×
 					</button>
 				</div>
 				<!-- Popup for service timeouts -->
-				<div class="alert alert-error" id="serviceTimeout">
+				<div class="alert alert-error ORS-alert" id="serviceTimeout">
 					<button type="button" class="close">
 						×
 					</button>
 				</div>
-				<div class="alert alert-info" id="newToOrs">
+				<div class="alert alert-info ORS-info" id="newToOrs">
 					<button type="button" class="close" data-dismiss="alert">
 						×
 					</button>
