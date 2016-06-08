@@ -854,6 +854,9 @@ var Controller = (function(w) {
                 if ($.inArray(routePref, list.elevationProfiles) >= 0) {
                     var routeLineHeights = route.parseResultsToHeights(results);
                     map.updateHeightprofiles(routeLineHeights, viaPoints);
+                    var routeHeight = map.writeRouteToString(routeLineHeights);
+                    route.routeString = routeHeight;
+
                 }
                 var routeLinestring = route.parseResultsToLineStrings(results);
                 var routePoints = route.parseResultsToCornerPoints(results);
@@ -870,8 +873,7 @@ var Controller = (function(w) {
                         container.hide();
                     }
                     ui.endRouteCalculation();
-                    // zoom to route if 2 waypoints
-                    if (waypoint.getNumWaypoints() <= 2) map.zoomToRoute();
+                    map.zoomToRoute();
                 } else {
                     routeCalculationError();
                 }
@@ -1123,7 +1125,6 @@ var Controller = (function(w) {
      */
     function handleBaseMapChanged(mapState) {
         //update cookies
-        console.log(mapState)
         updateBaseMapCookies(mapState.layer);
     }
     /**
@@ -1340,7 +1341,6 @@ var Controller = (function(w) {
         if (zoom) {
             map.theMap.setZoom(zoom);
         }
-        console.log(layer)
         layer = preferences.loadMapLayer(layer);
         if (layer) {
             map.restoreLayerPrefs(layer);
@@ -1433,7 +1433,7 @@ var Controller = (function(w) {
         map.theMap.on('moveend', map.emitloadTMC);
         //set Interval for ServerTimeOut control
         map.graphInfo();
-        setInterval(function(){
+        setInterval(function() {
             map.graphInfo();
         }, 300000);
     }
