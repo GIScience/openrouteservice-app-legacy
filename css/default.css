@@ -1,4 +1,3 @@
-service
 /*|-----------------------------------------------------------------------------------
  *|                                                     University of Heidelberg
  *|   _____ _____  _____      _                         Department of Geography
@@ -16,18 +15,231 @@ service
  * @version: 0.1
  */
 
+/* LEAFLET CUSTOM STYLES FOR DEFAULT CONTROLLERS AND CUSTOM ONES */
+.leaflet-control-customNavMenuToggle {
+    background-color: white;
+    background-image: url(../img/menu-icon.png);
+    background-size: 20px 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
+}
+ 
+ /* BASE LAYOUT */
+.ORS {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+} 
 
+.ORS-body {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: row;
+}
+
+.ORS-sidebar {
+    flex: 0 1 388px;
+    order: 1;
+    flex-direction: row;
+    position: relative;
+}
+
+.ORS-map {
+    display: flex;
+    flex: 1 1 auto;
+    order: 2;   
+}
+
+.ORS-header {
+    display: flex;
+    flex: 0 0 50px;
+}
+
+.ORS-sidebarContent{
+    position: relative;
+}
+
+.ORS-routePanel {
+    top: 38px;
+    position: absolute;
+    overflow: auto;
+    width: 100%;
+    bottom: 0;
+    background-color: #ffffff;
+}
+
+#ORS-functionMenu ul {
+    background-color:#F7F7F7;
+    height: 38px;
+}
+
+#ORS-functionMenu ul {
+    border-bottom: 5px solid #EBEBEB;
+}
+
+/* TABS AT THE TOP */    
+#ORS-functionMenu > li > a {
+    color: #555555;
+    border: none;
+}
+
+#ORS-functionMenu > li > a:hover {
+    /* show active tabs in black with border */
+    color: black;
+    border-bottom: 1.5px solid black;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    cursor: default;
+    border-radius: 0;
+    background-color: transparent;
+}
+
+#ORS-functionMenu > li.active > a,
+#ORS-functionMenu > li.active > a:hover,
+#ORS-functionMenu > li.active > a:focus {
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        color: black;
+        cursor: default;
+        border-bottom: 1.5px solid black;
+} 
+
+
+/* Styles for responsive behaviour on mobile devices */
+@media only screen and (max-width: 720px)  {
+    .ORS-body {
+        flex-direction: column;
+    }
+    
+    .ORS-sidebar {
+        order: 2; 
+        flex-basis: 50vh;
+    }
+
+    .ORS-map {
+        order: 1;   
+    }
+    
+    #topMenu {
+        display:none; /* To hide the links in the top menu */
+    }
+    
+    .leaflet-container .leaflet-control-mouseposition {
+        display:none; /* To hide the mouse position controller */
+    }
+    
+    .ORS-sidebarContent{
+        width:100%;
+    }
+    
+}
+
+
+/* STYLES FOR THE HEADER AND HEADER ELEMENTS */
+    
+    /* GENERAL HEADER STYLE */
+    #navbar {
+        background-color:#383838;
+    }
+    
+    /* HEADER STYLES FOR ORS ICON AND TYTLE */
+    #navbar a.brand {
+        font-weight: bold;
+    }
+
+    #navbar #title {
+        color: rgba(255,255,255,0.66);;
+        line-height: 25px;
+        font-size:25px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center; /* align horizontal */
+        align-items: center; /* align vertical */
+    }
+
+    .ORS-panel {
+        border-bottom: 1px solid #EBEBEB;
+    }
+
+    .ORS-panel-sub {
+        padding: 8px;
+
+    }
+    #ORS-headIcon {
+        background: url(../img/logo.png) no-repeat center center;
+        background-size: 40px 40px;
+        width:50px;
+        height:50px;
+    }
+
+    /* STYLES FOR LINKS WITHIN THE HEADER */
+    #topMenu {
+        /* contains link to Uni Heidelberg, etc. */
+        position: absolute;
+        top: 5px;
+        right: 4px;
+        float: right;
+        list-style: none;
+    }
+    
+    #topMenu > li {
+        height: 40px;
+        float: left;
+        margin: 0px 10px 0px 0;
+        line-height: 40px;
+        padding: 0px 5px 0px 5px;
+        color:white;
+    }
+        
+    #topMenu > li > a, #info {
+        color:white;
+    }
+
+    #info {
+        margin-left: 112px;
+        height: 13px;
+        font-weight: normal;
+        text-align: center;
+        line-height: 11px;
+    }
+
+/* STYLES FOR THE SIDEBAR AND SIDEBAR CONTENT */    
+    /* STYLES FOR RIGHT CONTENT OF THE SIDEBAR */  
+    
+    #routingButton {
+        top: 215px;
+        background-image: url('../img/route.png');
+    }
+
+    #searchButton {
+        top: 270px;
+        background-image: url('../img/marker-blue.png');
+    }
+    
+    .menuIcon {
+        margin-right: 5px;
+        width: 15px;
+        vertical-align: middle;
+    }
+    
+     
 /**
  *  info link disclaimer, license,... at the bottom
  */
 
 .disclaimer {
     position: fixed;
-    bottom: 2px;
-    left: 5px;
-    background-color: rgba(255, 255, 255, 0.75);
+    bottom: 0;
+    margin-left: 5px;
+    background-color: rgba(255, 255, 255, 1);
     padding: 1px;
     font-size: 83%;
+    width: 100%;
+    border-top: 1px solid #EBEBEB;
 }
 
 #infoPanel {
@@ -44,7 +256,7 @@ service
 
 #infoPermalink {
     position: fixed;
-    bottom: 10px;
+    bottom: 2px;
     cursor: pointer;
     width: 80px;
     text-align: center;
@@ -63,7 +275,7 @@ service
     margin-left: 100px;
     height: 50px;
     padding: 0px;
-    bottom: 13px;
+    bottom: 3px;
     background: rgba(255, 255, 255, 0.5);
     z-index: 999;
     -webkit-border-radius: 5px;
@@ -103,7 +315,7 @@ service
 
 #avoidables_info {
     position: fixed;
-    margin-left: 33px;
+    margin-left: 43px;
     top: 123px;
     z-index: 999;
     display: none;
@@ -116,6 +328,55 @@ service
     border-radius: 5px;
 }
 
+.mapContextMenu .contextWaypoint {
+    padding: 3px 10px 3px 10px;
+    white-space: nowrap;
+    cursor: pointer;
+    margin-bottom: 3px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border-left: 2px solid rgba(1, 11, 30, 0.8);
+    color: white;
+    min-height: 10px;
+    -o-transition: .2s;
+    -ms-transition: .2s;
+    -moz-transition: .2s;
+    -webkit-transition: .2s;
+    transition: .2s;
+}
+
+.mapContextMenu .contextWaypoint:hover {
+    background-color: rgba(0, 0, 0, 1);
+    border-left: 2px solid #0DD5FC;
+}
+
+.mapContextMenu .leaflet-popup-content {
+    -position: absolute;
+    left: 2.5em;
+    bottom: 0.7em;
+}
+
+.mapContextMenu .leaflet-popup-content-wrapper {
+    background: transparent;
+    box-shadow: none;
+}
+
+.mapContextMenu .leaflet-popup-tip-container {
+    margin: 0 auto;
+    position: relative;
+    overflow: visible;
+    width: 100px;
+    height: 20px;
+}
+
+.mapContextMenu .leaflet-popup-tip {
+    border: 2px solid black;
+    box-shadow: none;
+    background-color: transparent;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+}
 
 /**
  * CSS for non-map elements
@@ -151,7 +412,6 @@ service
 }
 
 .waypointResult {
-    padding-left: 32px;
     margin-bottom: 10px;
 }
 
@@ -215,69 +475,38 @@ service
 }
 
 .waypoint {
-    padding-left: 0px;
+    padding-left: 32px;
     padding-top: 0;
     min-height: 25px;
     margin-bottom: 10px !important;
 }
 
 .waypoint.start {
-    /*background-image: url('../img/marker-start.png');
+    background-image: url('../img/marker-start.png');
     background-repeat: no-repeat;
     background-size: 16px;
-    background-position: 8px 3px;*/
+    background-position: 8px 3px;
 }
 
 .waypoint.via {
-    /*background-image: url('../img/marker-via.png');
+    background-image: url('../img/marker-via.png');
     background-repeat: no-repeat;
     background-size: 16px;
-    background-position: 8px 3px;*/
+    background-position: 8px 3px;
 }
 
 .waypoint.end {
-    /*background-image: url('../img/marker-end.png');
+    background-image: url('../img/marker-end.png');
     background-repeat: no-repeat;
     background-size: 16px;
-    background-position: 8px 3px;*/
+    background-position: 8px 3px;
 }
 
 .waypoint.unset {
-    /*background-image: url('../img/marker.png');
-    background-repeat: no-repeat;*/
+    background-image: url('../img/marker.png');
+    background-repeat: no-repeat;
     padding-top: 0;
     margin-bottom: 0 !important;
-    /*background-size: 16px;
-    background-position: 8px 3px;*/
-}
-
-.waypoint-icon {
-    display: inline;
-    float: left;
-    width: 33px;
-    height: 25px;
-}
-
-.waypoint-icon.start {
-    background: url(../img/marker-start.png) no-repeat;
-    background-size: 16px;
-    background-position: 8px 3px;
-}
-
-.waypoint-icon.via {
-    background: url(../img/marker-via.png) no-repeat;
-    background-size: 16px;
-    background-position: 8px 3px;
-}
-
-.waypoint-icon.end {
-    background: url(../img/marker-end.png) no-repeat;
-    background-size: 16px;
-    background-position: 8px 3px;
-}
-
-.waypoint-icon.unset {
-    background: url(../img/marker.png) no-repeat;
     background-size: 16px;
     background-position: 8px 3px;
 }
@@ -332,7 +561,7 @@ service
 
 .directions-summary-info-container {
     height: 20px;
-    margin: 5px 0 15px 0;
+    margin: 5px 0 0 0;
 }
 
 .directions-summary-info {
@@ -342,6 +571,7 @@ service
     font-weight: bold;
     margin-right: 10px;
     font-size: 13px;
+    padding-bottom: 5px;
 }
 
 .directions-summary-info-digit {
@@ -408,7 +638,6 @@ service
     position: relative;
     top: -4px;
 }
-
 
 /* gpx upload styles */
 
@@ -551,25 +780,12 @@ service
     background: url(../img/routelinkGPX.png) no-repeat 0% 50%;
 }
 
-.guiComponent {
-    margin: 1px;
-}
-
 .prompt {}
 
 .prompt.selectSearchResult {
     margin-top: 3px;
 }
 
-#routingButton {
-    top: 215px;
-    background-image: url('../img/route.png');
-}
-
-#searchButton {
-    top: 270px;
-    background-image: url('../img/marker-blue.png');
-}
 
 #removeAccessibility {
     margin-top: 10px;
@@ -597,57 +813,6 @@ service
 .leaflet-control-container {
     font-family: 'Roboto', sans-serif;
 }
-
-.mapContextMenu .contextWaypoint {
-    padding: 3px 10px 3px 10px;
-    white-space: nowrap;
-    cursor: pointer;
-    margin-bottom: 3px;
-    background-color: rgba(0, 0, 0, 0.8);
-    border-radius: 4px;
-    border-left: 2px solid rgba(1, 11, 30, 0.8);
-    color: white;
-    min-height: 10px;
-    -o-transition: .2s;
-    -ms-transition: .2s;
-    -moz-transition: .2s;
-    -webkit-transition: .2s;
-    transition: .2s;
-}
-
-.mapContextMenu .contextWaypoint:hover {
-    background-color: rgba(0, 0, 0, 1);
-    border-left: 2px solid #0DD5FC;
-}
-
-.mapContextMenu .leaflet-popup-content {
-    -position: absolute;
-    left: 2.5em;
-    bottom: 0.7em;
-}
-
-.mapContextMenu .leaflet-popup-content-wrapper {
-    background: transparent;
-    box-shadow: none;
-}
-
-.mapContextMenu .leaflet-popup-tip-container {
-    margin: 0 auto;
-    position: relative;
-    overflow: visible;
-    width: 100px;
-    height: 20px;
-}
-
-.mapContextMenu .leaflet-popup-tip {
-    border: 2px solid black;
-    box-shadow: none;
-    background-color: transparent;
-    border-radius: 50%;
-    width: 10px;
-    height: 10px;
-}
-
 
 /*preferences popup*/
 
@@ -702,6 +867,8 @@ input, textarea {
 /*input[type=text] {
     height: 30px;
 }*/
+
+/* OVERWRITING BOOTSTRAP STYLES */
 
 input[type='checkbox'], input[type='radio'] {
     vertical-align: baseline;
@@ -777,6 +944,26 @@ button.weightOptions {
     padding: 2px 2px 2px 2px;
 }
 
+
+.btn {
+    border-radius: 0px;
+    cursor: pointer;
+}
+
+.primary {
+    background: #F7F7F7;
+}
+
+.btn:hover {
+    background: #D4D4D4 !important; 
+}
+
+.btn.active, .dropdown-toggle {
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+}
+
 #weightingDropdown {
     margin-bottom: 3px;
     float: right;
@@ -789,7 +976,6 @@ button.weightOptions {
 .divAroundButtons {
     float: left;
 }
-
 
 /* avoid area controls*/
 
@@ -860,109 +1046,6 @@ button.weightOptions {
 
 /* main components of the layout: */
 
-#navbar {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    height: 50px;
-    padding: 0px 10px 0px 20px;
-    background-color: #FFFFFF;
-    /*#f0f0f0;*/
-    -border-bottom: 1px solid #888;
-}
-
-#topMenu {
-    /* contains link to Uni Heidelberg, etc. */
-    position: absolute;
-    top: 5px;
-    right: 4px;
-    float: right;
-    list-style: none;
-}
-
-#topMenu > li {
-    height: 40px;
-    float: left;
-    margin: 0px 10px 0px 0;
-    line-height: 40px;
-    padding: 0px 5px 0px 5px;
-}
-
-#topMenu > .extendedInactive {
-    padding: 0px 5px 0px 5px;
-}
-
-#topMenu > .extendedActive {
-    padding: 0px 5px 0px 5px;
-    background-color: #fafafa;
-    background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f2f2f2));
-    background-image: -webkit-linear-gradient(top, #ffffff, #f2f2f2);
-    background-image: -o-linear-gradient(top, #ffffff, #f2f2f2);
-    background-image: linear-gradient(to bottom, #ffffff, #f2f2f2);
-    background-repeat: repeat-x;
-    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#fff2f2f2', GradientType=0);
-    border: 1px solid #d4d4d4;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
-    -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
-    *zoom: 1;
-}
-
-#topMenu > li > a, #title, #info {
-    padding-top: 15px;
-    font-weight: normal;
-}
-
-#navbar a.brand {
-    padding-right: 10px;
-    font-weight: bold;
-}
-
-#title {
-    color: #000;
-}
-
-#info {
-    margin-left: 112px;
-    height: 13px;
-    font-weight: normal;
-    text-align: center;
-    line-height: 11px;
-}
-
-#topMenu > li > a:hover, #title:hover {
-    text-decoration: none;
-    color: #333333;
-}
-
-#topMenu > li > a:focus, #title:focus {
-    background-color: #FFFFFF;
-}
-
-#sidebar {
-    position: absolute;
-    margin-top: 10px;
-    top: 95px;
-    left: 0px;
-    bottom: 22px;
-    width: 400px;
-    overflow: auto;
-}
-
-#map {
-    position: absolute;
-    top: 50px;
-    left: 400px;
-    right: 0px;
-    /*bottom: 25px;   uncomment for height pofile */
-    bottom: 0px;
-}
-
 #geolocationNotification {
     width: 80%;
     margin-left: auto;
@@ -970,60 +1053,6 @@ button.weightOptions {
     margin-top: 200px;
 }
 
-#functionMenu {
-    /* contains search and route */
-    padding-left: 10px;
-    overflow: visible;
-    position: fixed;
-    top: 60px;
-    width: 400px;
-}
-
-#functionMenu > li > a {
-    /* show non-active tabs in grey */
-    color: #555555;
-}
-
-#functionMenu > .active > a, .nav-tabs > .active > a:hover {
-    /* show active tabs in black with border */
-    color: black;
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-bottom-color: transparent;
-    cursor: default;
-}
-
-.menuIcon {
-    margin-right: 5px;
-    width: 15px;
-    vertical-align: middle;
-}
-
-#toggleSidebar {
-    position: absolute;
-    z-index: 1040;
-    background-color: #FFFFFF;
-    opacity: 1;
-    padding: 2px 5px 0px 0px;
-}
-
-.sidebarVisible {
-    cursor: pointer;
-    top: 65px;
-    left: 380px;
-}
-
-.sidebarInvisible {
-    cursor: pointer;
-    left: 5px;
-    top: 65px;
-    -moz-transform: scaleX(-1);
-    -webkit-transform: scaleX(-1);
-    -o-transform: scaleX(-1);
-    transform: scaleX(-1);
-    filter: fliph;
-    /*IE*/
-}
 
 .panel {
     /* panels in the sidebar
@@ -1092,9 +1121,6 @@ button.weightOptions {
     background-position: -96px -118px;
 }
 
-#importRouteInfoLabel, #accessibilityAnalysisLabel {
-    margin-top: 15px;
-}
 
 #route_totalDistance {
     margin-top: 5px;
@@ -1110,6 +1136,7 @@ button.weightOptions {
     margin-right: 5px;
 }
 
+
 .panelTransparent {
     background-color: transparent;
     border: transparent;
@@ -1121,19 +1148,13 @@ button.weightOptions {
     background-color: #d8d8d8;
 }
 
-#routingPanel {
-    border: 0;
-    background-color: #fff;
-    padding: 0 7px;
-}
-
 #currentLocation, #searchPlace, #searchPoi, #geoloc {
     margin: 10px;
     padding-bottom: 0px;
 }
 
 .panelLight {
-    background-color: #F8F8F8;
+    background-color: #fff;
 }
 
 .panelMedium {
@@ -1242,11 +1263,12 @@ img {
 
 #newToOrs {
     display: none;
-}
-
-#newToOrs > label {
     width: 220px;
     line-height: 1.1;
+    z-index: 999;
+    position: absolute;
+    margin-left: 543px;
+    top: 10px;
 }
 
 
@@ -1254,18 +1276,17 @@ img {
 
 #serviceTimeout {
     display: none;
-    position: fixed;
-    margin-left: 33px;
-    top: 60px;
+    position: absolute;
+    margin-left: 250px;
+    top: 70px;
     z-index: 999;
-    width: 200px;
-    font-family: 'Roboto', sans-serif;
 }
 
 #serviceTimeout > label {
     width: 220px;
     line-height: 1.1;
 }
+
 
 #accessibilityDistance, #accessibilityAnalysisIsochronesIntervall {
     width: 30px;
@@ -1289,77 +1310,3 @@ img {
     font-size: 12px;
 }
 
-
-/* surface information */
-
-#routeTypesHead {
-    float: left;
-}
-
-#routeTypesBody {
-    position: relative;
-}
-
-#wayType, #surfaceType {
-    margin-top: 20px;
-    padding-left: 15px;
-    width: 200px;
-}
-
-#wayTypeList, #surfaceTypeList {
-    min-height: 25px;
-}
-
-#wayTypeList ul, #surfaceTypeList ul {
-    margin: 10px;
-    padding-left: 15px;
-}
-
-#wayTypeList li, #surfaceTypeList li {
-    float: left;
-    margin-left: 25px;
-    margin-top: -10px;
-    font-size: 26px;
-}
-
-#wayTypeList li span, #surfaceTypeList li span {
-    color: black;
-    font-size: 11px;
-    position: relative;
-    top: -4px;
-    left: -10px;
-}
-
-.d3-tip {
-    line-height: 1;
-    font-weight: bold;
-    padding: 12px;
-    background: rgba(0, 0, 0, 0.8);
-    color: #fff;
-    border-radius: 5px;
-    font-size: 10px;
-}
-
-
-/* Creates a small triangle extender for the tooltip */
-
-.d3-tip:after {
-    box-sizing: border-box;
-    display: inline;
-    font-size: 11px;
-    width: 100%;
-    line-height: 1;
-    color: rgba(0, 0, 0, 0.8);
-    content: "\25BC";
-    position: absolute;
-    text-align: center;
-}
-
-
-/* Style northward tooltips differently */
-
-.d3-tip.n:after {
-    margin: -1px 0 0 0;
-    top: 100%;
-    left: 0;
-}
