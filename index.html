@@ -4,6 +4,7 @@
 		<title>OpenRouteService</title>
 		<meta name="robots" content="index, follow">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 		<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
@@ -55,7 +56,7 @@
 					</ul>
 				</div>
 				<!-- sidebar content -->
-				<div class="ORS-routePanel">
+				<div class="ORS-routePanel" id="routePanel">
 					<div id="routingPanel" class="ORS-panel route">
 						<div class="guiComponent ORS-panel-sub">
 							<div class="btn-group routePreferenceBtns">
@@ -355,13 +356,11 @@
 									</label>
 								</ul>
 					    	</div>
-
 							<div id="avoidAreas">
 					         	<div class="alert alert-error" id="avoidAreasError" style="display: none;">
 									Polygons are overlapping. Please refit!
 								</div>
 							</div>
-						
 						</div>
 					</div>		
 					<div class="ORS-panel">
@@ -549,45 +548,45 @@
 							</div>
 						</div>
 					</div>
-					<div id="searchPanel" style="display: none;">
-						<div id="searchPoi" class="ORS-panel">
-							<div class="toolHeading" id="searchPoiHead">
-								Search for a POI
-							</div><span id="poiNearRoute">
-								<input type="checkbox" class="checkbox poisNearRoute" id="fnct_searchPoi_nearRoute">
-								<label id="searchPoiWithin1" class="poisNearRoute">&nbsp;find POIs within&nbsp;</label>
-								<input type="text" id="fnct_searchPoi_distance" class="textfield poisNearRoute" value="100">
-								<select class="distMeasurePoi poisNearRoute" id="fnct_searchPoi_distanceUnit"></select><label id="searchPoiWithin2" class="poisNearRoute">&nbsp; next to the route</label></span>
-							<div class="guiComponent">
-								<div id="inputWarn" class="alert alert-error" style="display: none;"></div><div id="checkboxWarn" class="alert alert-error" style="display: none;"></div>
-								<input type="text" class="searchField" id="fnct_searchPoi" placeholder="enter a POI" data-provide="typeahead" data-items="6">
-								<div class="clickable zoomToSearchResults" id="zoomToPoiResults" title="zoom to search results"></div>
-								<ul class="guiComponent resultList SearchPoi" id="fnct_searchPoiResults"></ul>
-								<div id="searchPoiError" class="alert alert-error" style="display:none"></div>
-							</div>
-							<div class="responseContainer panel panelMedium" id="poiResponseContainer" style="display: none;">
-								<div class="clickable zoomToSearchResults" id="zoomToPoiResults" title="Zoom to search results"></div>
-							</div>
+				</div>
+				<div id="searchPanel" style="display: none;">
+					<div id="searchPoi" class="ORS-panel">
+						<div class="toolHeading" id="searchPoiHead">
+							Search for a POI
+						</div><span id="poiNearRoute">
+							<input type="checkbox" class="checkbox poisNearRoute" id="fnct_searchPoi_nearRoute">
+							<label id="searchPoiWithin1" class="poisNearRoute">&nbsp;find POIs within&nbsp;</label>
+							<input type="text" id="fnct_searchPoi_distance" class="textfield poisNearRoute" value="100">
+							<select class="distMeasurePoi poisNearRoute" id="fnct_searchPoi_distanceUnit"></select><label id="searchPoiWithin2" class="poisNearRoute">&nbsp; next to the route</label></span>
+						<div class="guiComponent">
+							<div id="inputWarn" class="alert alert-error" style="display: none;"></div><div id="checkboxWarn" class="alert alert-error" style="display: none;"></div>
+							<input type="text" class="searchField" id="fnct_searchPoi" placeholder="enter a POI" data-provide="typeahead" data-items="6">
+							<div class="clickable zoomToSearchResults" id="zoomToPoiResults" title="zoom to search results"></div>
+							<ul class="guiComponent resultList SearchPoi" id="fnct_searchPoiResults"></ul>
+							<div id="searchPoiError" class="alert alert-error" style="display:none"></div>
+						</div>
+						<div class="responseContainer panel panelMedium" id="poiResponseContainer" style="display: none;">
+							<div class="clickable zoomToSearchResults" id="zoomToPoiResults" title="Zoom to search results"></div>
 						</div>
 					</div>
-					<div id="geolocationPanel" style="display: none;">
-						<div id="geoloc" class="panel panelLight">
-							<div class="toolHeading" id="geolocationHead">
-								My current location
-							</div>
-							<div class="guiComponent">
-								<div class="alert alert-error" id="geolocationError" style="display: none;"></div>
-								<div id="geolocationResult"></div>
-							</div>
+				</div>
+				<div id="geolocationPanel" style="display: none;">
+					<div id="geoloc" class="panel panelLight">
+						<div class="toolHeading" id="geolocationHead">
+							My current location
+						</div>
+						<div class="guiComponent">
+							<div class="alert alert-error" id="geolocationError" style="display: none;"></div>
+							<div id="geolocationResult"></div>
 						</div>
 					</div>
-					<div class="disclaimer">
-						<a id="debug">debug - </a>
-						<a href="contact.html" class="inlineLink">(c) 2008-2016 &nbsp; -</a>
-						<a href="contact.html#disclaimer" class="inlineLink">Disclaimer &nbsp; -</a>
-						<a href="contact.html#license" class="inlineLink">License</a>
-						<div id="infoPanel"></div>
-					</div>
+				</div>
+				<div class="disclaimer">
+					<a id="debug">debug - </a>
+					<a href="contact.html" class="inlineLink">(c) 2008-2016 &nbsp; -</a>
+					<a href="contact.html#disclaimer">Disclaimer &nbsp; -</a>
+					<a href="contact.html#license">License &nbsp; -</a>
+					<a href="" id="infoPanel">LOL</a>
 				</div>
 			</div>
 			<div id="map" class="ORS-map">

@@ -494,6 +494,7 @@ var Map = (function() {
             type: 'GET',
             crossDomain: false,
             success: function(data) {
+                console.log(data)
                 self.updateInfoPanel(data);
                 Ui.showServiceTimeoutPopup(false);
             },

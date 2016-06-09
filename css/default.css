@@ -104,7 +104,7 @@
 
 .disclaimer {
     bottom: 0;
-    position: fixed;
+    position: absolute;
     background-color: #F7F7F7;
     height: 20px;
     width: 100%;
@@ -112,10 +112,14 @@
     padding-left: 5px;
 }
 
+.disclaimer a, .disclaimer div {
+    font-size: 80%;
+    margin-right: 10px;
+}
 
 /* Styles for responsive behaviour on mobile devices */
 
-@media screen and (min-device-width: 320px) and (max-device-width: 480px) {
+@media screen and (min-device-width: 320px) and (max-device-width: 680px) {
     .ORS-main {
         flex-direction: column;
     }
@@ -253,13 +257,6 @@
     margin-right: 5px;
     width: 15px;
     vertical-align: middle;
-}
-
-#infoPanel {
-    float: right;
-    font-size: 90%;
-    margin-top: 1px;
-    margin-left: 10px;
 }
 
 
@@ -821,11 +818,6 @@
     padding-bottom: 2px;
 }
 
-.inlineLink {
-    font-size: 90%;
-    margin-right: 10px;
-}
-
 a img {
     border: none;
 }
@@ -834,8 +826,8 @@ a img {
 /*avoid layer names too close to radio button */
 
 body {
-    font-size: 13px;
-    line-height: 1.3;
+    font-size: 90%;
+    line-height: 1.4;
     color: rgba(0, 0, 0, 0.8);
     background-color: #fff;
     color: #444;
@@ -849,7 +841,7 @@ input, .form-inline input, textarea, .form-inline select, .guiComponent > input 
     border-radius: 0;
     margin-bottom: 0px;
     border-color: 1px solid #ccc;
-    font-size: 13px;
+    font-size: 90%;
     webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
@@ -883,7 +875,7 @@ input[type="text"] {
     -moz-box-shadow: none;
     box-shadow: none;
     border-color: #F0F0F0;
-    font-size: 12px;
+    font-size: 90%;
 }
 
 h3 {
@@ -921,7 +913,7 @@ a.options.active {
 
 .address {
     list-style-type: none;
-    font-size: 13px;
+    font-size: 90%;
 }
 
 .poi {
@@ -952,12 +944,8 @@ button.weightOptions {
     border-radius: 0px;
 }
 
-.btn-group>.primary {
-    font-size: 12px;
-}
-
 .btn-group>.primary i {
-    font-size: 14px;
+    font-size: 95%;
 }
 
 .primary {
@@ -980,7 +968,6 @@ button.weightOptions {
     box-shadow: none !important;
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;
-    background: #F0F0F0 !important;
     border: none;
 }
 
@@ -1098,7 +1085,7 @@ button.weightOptions {
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
-    font-size: 13px;
+    font-size: 90%;
 }
 
 .ORS-label {
@@ -1143,7 +1130,7 @@ button.weightOptions {
     width: 45px;
     font-weight: bold;
     margin-left: 10px;
-    font-size: 13px;
+    font-size: 90%;
 }
 
 .mySlider input[type="range"] {
@@ -1240,7 +1227,7 @@ button.weightOptions {
     padding-left: 5px;
     padding-right: 5px;
     padding-top: 5px;
-    font-size: 11px;
+    font-size: 90%;
     border-radius: 0;
 }
 
@@ -1250,7 +1237,6 @@ button.weightOptions {
 #dropdown_weighting {
     padding-left: 5px;
     padding-right: 10px;
-    margin-left: -85px;
     min-width: 100px;
     overflow: auto;
     overflow-x: auto;
@@ -1259,7 +1245,7 @@ button.weightOptions {
 }
 
 #dropdown_weighting label {
-    font-size: 11px;
+    font-size: 85%;
     margin-bottom: 0px;
 }
 
@@ -1268,7 +1254,7 @@ button.weightOptions {
 }
 
 #dropdown_avoid_roads label, #dropdown_weighting label {
-    font-size: 11px;
+    font-size: 85%;
 }
 
 
@@ -1340,7 +1326,7 @@ img {
     margin-right: 10px;
     vertical-align: baseline;
     text-align: center;
-    font-size: 13px;
+    font-size: 90%;
 }
 
 #accessibilityAnalysisMethodList {
@@ -1352,7 +1338,7 @@ img {
 }
 
 #maxSpeedInput {
-    font-size: 12px;
+    font-size: 90%;
 }
 
 
@@ -1372,25 +1358,25 @@ img {
 
 #wayTypeList, #surfaceTypeList {
     min-height: 25px;
+    padding-bottom: 5px;
 }
 
 #wayTypeList ul, #surfaceTypeList ul {
-    margin: 10px;
+    margin-left: 10px;
+    margin-top: -10px;
 }
 
 #wayTypeList li, #surfaceTypeList li {
     float: left;
     margin-left: 25px;
-    margin-top: -10px;
-    font-size: 26px;
+    font-size: 90%;
 }
 
 #wayTypeList li span, #surfaceTypeList li span {
     color: #707070;
-    font-size: 11px;
+    font-size: 90%;
     position: relative;
-    top: -4px;
-    left: -10px;
+    left: -8px;
 }
 
 .d3-tip {
@@ -1458,7 +1444,6 @@ img {
 
 .feedback input {
     width: 100%;
-    border: 1px solid #ccc;
     border-radius: 0;
     padding: 5px;
 }
