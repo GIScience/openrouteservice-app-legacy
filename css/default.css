@@ -92,6 +92,10 @@
     border-left: 1px solid #CCC;
 }
 
+.ORS-light {
+    background-color: #e6e6e6;
+}
+
 .disclaimer {
     bottom: 0;
     position: absolute;
@@ -99,7 +103,7 @@
     height: 20px;
     width: 388px;
     border-top: 1px solid #EBEBEB;
-    -padding-left: 5px;
+    padding-left: 5px;
 }
 
 .disclaimer a, .disclaimer div {
@@ -155,6 +159,9 @@
     .disclaimer {
         width: 100%;
     }
+    .tooltip {
+        display: none !important;
+    }
 }
 
 #navbar {
@@ -183,8 +190,16 @@
     padding-top: 10px;
 }
 
+.ORS-padding {
+    padding-top: 20px;
+}
+
 .ORS-hr {
     border-bottom: 1px solid #F0F0F0;
+}
+
+.ORS-hr-dark {
+    border-bottom: 1px solid #DDD;
 }
 
 #ORS-loading, #ORS-error {
