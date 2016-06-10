@@ -1768,32 +1768,32 @@ var Ui = (function(w) {
                     //arrow direction
                     var direction;
                     if (directionCode == '-2') {
-                        direction = new Element('img', {
-                            'src': './img/left.png'
+                        direction = new Element('i', {
+                            'class': 'fa fa-arrow-left'
                         });
                     } else if (directionCode == '2') {
-                        direction = new Element('img', {
-                            'src': './img/right.png'
+                        direction = new Element('i', {
+                            'class': 'fa fa-arrow-right'
                         });
                     } else if (directionCode == '1') {
-                        direction = new Element('img', {
-                            'src': './img/half-right.png'
+                        direction = new Element('i', {
+                            'class': 'fa fa-arrow-right fa-rotate-315'
                         });
                     } else if (directionCode == '-1') {
-                        direction = new Element('img', {
-                            'src': './img/half-left.png'
+                        direction = new Element('i', {
+                            'class': 'fa fa-arrow-left fa-rotate-45'
                         });
                     } else if (directionCode == '0') {
-                        direction = new Element('img', {
-                            'src': './img/straight.png'
+                        direction = new Element('i', {
+                            'class': 'fa fa-arrow-up'
                         });
                     } else if (directionCode == '-3') {
-                        direction = new Element('img', {
-                            'src': './img/sharp_left.png'
+                        direction = new Element('i', {
+                            'class': 'fa fa-arrow-left fa-rotate-315'
                         });
                     } else if (directionCode == '3') {
-                        direction = new Element('img', {
-                            'src': './img/sharp_right.png'
+                        direction = new Element('i', {
+                            'class': 'fa fa-arrow-right fa-rotate-45'
                         });
                         // directionCode == '100'
                     } else {}
@@ -1899,16 +1899,16 @@ var Ui = (function(w) {
             });
             var icon;
             if (wpType == 'start') {
-                icon = new Element('img', {
-                    'src': './img/startWaypoint.png'
+                icon = new Element('i', {
+                    'class': 'fa fa-map-marker'
                 });
             } else if (wpType == 'via') {
                 icon = new Element('span', {
                     'class': 'badge badge-inverse'
                 }).update(numStopovers);
             } else {
-                icon = new Element('img', {
-                    'src': './img/endWaypoint.png'
+                icon = new Element('i', {
+                    'class': 'fa fa-flag'
                 });
             }
             var wayPoint = new Element('div', {
@@ -2092,7 +2092,6 @@ var Ui = (function(w) {
         if ($('#optionsContainer').is(':hidden')) {
             $('#optionsContainer').show();
             $(e).addClass('active');
-
         } else {
             $('#optionsContainer').hide();
         }
@@ -2757,12 +2756,10 @@ var Ui = (function(w) {
         for (var i = 0; i < parentOptions.length; i++) {
             if (list.routePreferences.get(parentOptions[i]).indexOf(routeOption) != -1) {
                 console.log(parentOptions[i])
-                //activate corresponding option panel
+                    //activate corresponding option panel
                 switchRouteOptionsButton(parentOptions[i]);
-            } 
+            }
         }
-
-
     }
     /**
      * used to set the routeOptionType if set

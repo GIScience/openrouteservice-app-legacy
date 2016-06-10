@@ -50,7 +50,7 @@
     position: relative;
     color: #707070;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-    z-index: 9999;
+    z-index: 100;
 }
 
 .ORS-map {
@@ -90,6 +90,7 @@
     width: 348px;
     position: absolute;
     border-left: 1px solid #CCC;
+    background-color: #F0F0F0;
 }
 
 .ORS-light {
@@ -103,12 +104,12 @@
     height: 20px;
     width: 388px;
     border-top: 1px solid #EBEBEB;
-    padding-left: 5px;
 }
 
 .disclaimer a, .disclaimer div {
     font-size: 80%;
     margin-right: 10px;
+    padding-left: 5px;
 }
 
 
@@ -553,7 +554,7 @@
 }
 
 .directions-text {
-    padding: 3px 5px 0 40px;
+    padding: 3px 5px 0 30px;
     line-height: 16px;
     vertical-align: middle;
 }
@@ -623,11 +624,10 @@
 }
 
 .directions-mode-container {
-    padding: 0 0 0 60px;
+    padding: 0 0 0 40px;
     position: absolute;
     left: 0px;
     right: 0;
-    -bottom: -14px;
     height: 30px;
     line-height: normal;
     font-weight: normal;
@@ -651,6 +651,22 @@
     height: 16px;
     width: auto;
     margin-left: 3px;
+}
+
+.fa-rotate-45 {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.fa-rotate-315 {
+    -webkit-transform: rotate(315deg);
+    -moz-transform: rotate(315deg);
+    -ms-transform: rotate(315deg);
+    -o-transform: rotate(315deg);
+    transform: rotate(315deg);
 }
 
 
@@ -734,6 +750,7 @@
 .routeInstructions {
     padding-top: 5px;
     padding-bottom: 5px;
+    font-size: 90%;
 }
 
 
@@ -837,7 +854,7 @@ a img {
 
 body {
     font-size: 90%;
-    line-height: 1.4;
+    -line-height: 1.4;
     color: rgba(0, 0, 0, 0.8);
     background-color: #fff;
     color: #444;
@@ -1159,9 +1176,6 @@ button.optionsButton {
     margin-top: -5px;
 }
 
-.icon-eye-open {
-    background-position: -96px -118px;
-}
 
 #route_totalDistance {
     margin-top: 5px;

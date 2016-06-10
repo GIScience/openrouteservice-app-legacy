@@ -55,28 +55,26 @@
 					<i class="fa fa-warning" id="ORS-error"></i> -->
 				</div>
 				<div class="ORS-navigation">
-					<div class="guiComponent" style="background-color:#F0F0F0;">
-						<div class="btn-group routePreferenceBtns">
-							<button id="car" class="btn primary routeOptionsButton active">
-								<i class="fa fa-car"></i>
-							</button>
-							<button id="bicycle" class="btn primary routeOptionsButton">
-								<i class="fa fa-bicycle"></i>
-							</button>
-							<button id="pedestrian" class="btn primary routeOptionsButton">
-								<i class="fa fa-male"></i>
-							</button>
-							<button id="wheelchair" class="btn primary routeOptionsButton">
-								<i class="fa fa-wheelchair"></i>
-							</button>
-							<button id="heavyvehicle" class="btn primary routeOptionsButton">
-								<i class="fa fa-truck"></i>
-							</button>
-							<button class="btn primary optionsButton">
-								<i class="fa fa-cog"></i>
-							</button>
-						</div>
-				    </div>
+					<div class="btn-group routePreferenceBtns">
+						<button id="car" class="btn primary routeOptionsButton active">
+							<i class="fa fa-car"></i>
+						</button>
+						<button id="bicycle" class="btn primary routeOptionsButton">
+							<i class="fa fa-bicycle"></i>
+						</button>
+						<button id="pedestrian" class="btn primary routeOptionsButton">
+							<i class="fa fa-male"></i>
+						</button>
+						<button id="wheelchair" class="btn primary routeOptionsButton">
+							<i class="fa fa-wheelchair"></i>
+						</button>
+						<button id="heavyvehicle" class="btn primary routeOptionsButton">
+							<i class="fa fa-truck"></i>
+						</button>
+					</div>
+					<button class="btn primary optionsButton right">
+							<i class="fa fa-cog"></i>
+					</button>
 				</div>
 				<div class="ORS-routePanel" id="routePanel">
 					<div id="routingPanel" class="ORS-panel route">
@@ -417,8 +415,9 @@
 								</div>
 								<div class="collapsibleBody" style="display: none;" id="routeInstructions">
 									<div class="right">
-										<button id="printRouteInstructions" class="btn primary" type="button" title="Print Route Instructions"><i class="fa fa-print"></i></button>
+										<button id="printRouteInstructions" class="btn primary transparent" type="button" title="Print Route Instructions"><i class="fa fa-print"></i></button>
 									</div>
+
 									<div class="directions-main" id="directionsMainContainer"></div>
 								</div>
 							</div>
