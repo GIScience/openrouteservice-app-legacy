@@ -53,6 +53,16 @@ list = {
         'Incline': ['3', '6', '10', '15', '31'],
         'SlopedCurb': ['0.03', '0.06', '0.1', '0.31']
     }),
+    // divs to show or hide for specific profiles
+    showElements: {
+        All: ['.ORS-all'],
+        Car: ['.ORS-car'],
+        Wheelchair: ['.ORS-wc'],
+        Pedestrian: ['.ORS-ped'],
+        Bicycle: ['.ORS-bike'],
+        HeavyVehicle: ['.ORS-hgv']
+    },
+    // waytype and surface type information
     tmc: {},
     WayType: {
         0: 'Other',
@@ -67,7 +77,7 @@ list = {
         9: 'Ferry',
         10: 'Construction'
     },
-    WayTypeColors: ['#7d7de5','#7070ce','#6464b7','#5757a0','#4b4b89','#3e3e72','#32325b','#252544','#19192d','#0c0c16'],
+    WayTypeColors: ['#7d7de5', '#7070ce', '#6464b7', '#5757a0', '#4b4b89', '#3e3e72', '#32325b', '#252544', '#19192d', '#0c0c16'],
     divWayTypes: '#wayType',
     listWayTypesContainer: '#wayTypeList',
     SurfaceType: {
@@ -91,7 +101,7 @@ list = {
         17: 'Grass',
         18: 'GrassPaver'
     },
-    SurfaceTypeColors: ['#8be57d','#7dce70','#6fb764','#61a057','#53894b','#45723e','#375b32','#294425','#1b2d19','#0d160c'],
+    SurfaceTypeColors: ['#8be57d', '#7dce70', '#6fb764', '#61a057', '#53894b', '#45723e', '#375b32', '#294425', '#1b2d19', '#0d160c'],
     divSurfaceTypes: '#surfaceType',
     listSurfaceTypesContainer: '#surfaceTypeList'
 };

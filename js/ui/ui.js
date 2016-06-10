@@ -21,24 +21,6 @@ var Ui = (function(w) {
      * GENERAL
      * *********************************************************************/
     /**
-     * user clicks on e.g. routing tab to view routing functionality
-     * @param e: the event
-     */
-    function handleSwitchTabs(e) {
-        var tab = e.currentTarget.id;
-        for (var i = 0; i < orsTabs.length; i++) {
-            if (orsTabs[i] == tab) {
-                //show
-                $('#' + orsTabs[i]).parent().attr('class', 'active');
-                $('#' + orsTabs[i] + 'Panel').css('display', 'inline');
-            } else {
-                //hide
-                $('#' + orsTabs[i]).parent().attr('class', '');
-                $('#' + orsTabs[i] + 'Panel').css('display', 'none');
-            }
-        }
-    }
-    /**
      * expands or collapses option panels
      * @param e: the event
      */
@@ -1343,7 +1325,6 @@ var Ui = (function(w) {
      * @param results: response of the service containing the route summary information
      */
     function updateRouteSummary(results) {
-       
         function getSummaryInformation() {
             var yardsUnit, totalTimeArr = [],
                 distArr = [],
@@ -1401,7 +1382,7 @@ var Ui = (function(w) {
             return [totalTime, distArr, actualdistArr, gradientArr];
         }
         var routeSummary = getSummaryInformation();
-         // empty old summary
+        // empty old summary
         $('.directions-summary-info-container').remove();
         var pointInfo, unit, time, distanceInfo, actualDistanceInfo, gradientInfo;
         var summaryContainer = new Element('div', {
@@ -1410,7 +1391,7 @@ var Ui = (function(w) {
         // time summary
         pointInfo = new Element('span', {
             'class': 'directions-summary-info',
-            'data-toggle' : 'tooltip',
+            'data-toggle': 'tooltip',
             'id': 'tt-time',
             'title': 'Time'
         }).update('<i class="fa fa-clock-o"></i>' + ' ');
@@ -1436,7 +1417,7 @@ var Ui = (function(w) {
         // distance summary
         pointInfo = new Element('span', {
             'class': 'directions-summary-info',
-            'data-toggle' : 'tooltip',
+            'data-toggle': 'tooltip',
             'id': 'tt-distance',
             'title': 'Distance'
         }).update('<i class="fa fa-long-arrow-right"></i>' + ' ');
@@ -1453,7 +1434,7 @@ var Ui = (function(w) {
         if (routeSummary[2].length > 0) {
             pointInfo = new Element('span', {
                 'class': 'directions-summary-info',
-                'data-toggle' : 'tooltip',
+                'data-toggle': 'tooltip',
                 'id': 'tt-actdistance',
                 'title': 'Actual Distance'
             }).update('<i class="fa fa-arrows-h"></i>' + ' ');
@@ -1471,7 +1452,7 @@ var Ui = (function(w) {
         if (routeSummary[3].length > 0) {
             pointInfo = new Element('span', {
                 'class': 'directions-summary-info',
-                'data-toggle' : 'tooltip',
+                'data-toggle': 'tooltip',
                 'id': 'tt-ascent',
                 'title': 'Ascent'
             }).update('<i class="fa fa-long-arrow-up"></i>' + ' ');
@@ -1486,7 +1467,7 @@ var Ui = (function(w) {
             summaryContainer.appendChild(pointInfo);
             pointInfo = new Element('span', {
                 'class': 'directions-summary-info',
-                'data-toggle' : 'tooltip',
+                'data-toggle': 'tooltip',
                 'id': 'tt-descent',
                 'title': 'Descent'
             }).update('<i class="fa fa-long-arrow-down"></i>' + ' ');
@@ -1504,7 +1485,7 @@ var Ui = (function(w) {
         container.parent().parent().show();
         container.append(summaryContainer);
         // initiate tooltips
-        $('[data-toggle="tooltip"]').tooltip(); 
+        $('[data-toggle="tooltip"]').tooltip();
     }
     /**
      * calculates way and surface type information for horizontal barcharts
@@ -2057,7 +2038,7 @@ var Ui = (function(w) {
      */
     function handleZoomToWaypointClick(e) {
         console.log(e)
-        //make sure the waypoint is not empty
+            //make sure the waypoint is not empty
         if ($(e.currentTarget).parent().children(".waypointResult").children().length > 0) {
             theInterface.emit('ui:zoomToWaypoint', $(e.currentTarget).parent().attr("id"));
         }
@@ -2104,10 +2085,42 @@ var Ui = (function(w) {
      * ROUTE OPTIONS
      * *********************************************************************/
     /**
+     * when the user chooses route options 
+     */
+    function handleShowOptions(e) {
+        // toggle options
+        if ($('#optionsContainer').is(':hidden')) {
+            $('#optionsContainer').show();
+            $(e).addClass('active');
+
+        } else {
+            $('#optionsContainer').hide();
+        }
+        // show profile specific route options
+        var i, el, optionType = permaInfo[preferences.routeOptionsIdx];
+        console.log(optionType)
+        for (var profile in list.showElements) {
+            if (optionType == profile || profile == 'All') {
+                for (i = 0; i < list.showElements[profile].length; i++) {
+                    el = $(list.showElements[profile][i]);
+                    el.show();
+                }
+                // hide all other elements
+            } else {
+                for (i = 0; i < list.showElements[profile].length; i++) {
+                    el = $(list.showElements[profile][i]);
+                    el.hide();
+                }
+            }
+        }
+    }
+    /**
      * when the user wants to switch between route options for cars/bikes/pedestrians and clicks the button to switch views
      * @param e: the event
      */
     function switchRouteOptionsPane(e) {
+        // hide options
+        $('#optionsContainer').hide();
         var parent = $('.routePreferenceBtns').get(0);
         var optionType = e.currentTarget.id;
         //switch the buttons above
@@ -2125,80 +2138,9 @@ var Ui = (function(w) {
                 btn.removeClassName('active');
             }
         }
-        //switch the content
-        var car = $('#carOptions');
-        var bike = $('#bicycleOptions');
-        var ped = $('#pedestrianOptions');
-        var truckparameter = $('#truckOptions_restrict');
-        var truck = $('#heavyvehicleOptions');
-        var avoidables = $('#avoidables');
-        var avoidablesBike = $('#avoidablesBike');
-        var avoidablesPedestrian = $('#avoidablesPedestrian');
-        var wheel = $('#wheelchairOptions');
-        var wheelParameters = $('#wheelchairParameters');
-        if (optionType === 'car') {
-            avoidablesPedestrian.hide();
-            car.show();
-            avoidables.show();
-            avoidablesBike.hide();
-            bike.hide();
-            ped.hide();
-            truck.hide();
-            truckparameter.hide();
-            wheel.hide();
-            wheelParameters.hide();
-            $('#accessibilityAnalysis').show();
-        } else if (optionType === 'bicycle') {
-            avoidablesPedestrian.hide();
-            car.hide();
-            avoidables.hide();
-            bike.show();
-            avoidablesBike.show();
-            ped.hide();
-            truck.hide();
-            truckparameter.hide();
-            wheel.hide();
-            wheelParameters.hide();
-            $('#accessibilityAnalysis').show();
-        } else if (optionType === 'heavyvehicle') {
-            avoidablesPedestrian.hide();
-            car.hide();
-            avoidablesBike.hide();
-            avoidables.show();
-            bike.hide();
-            ped.hide();
-            truck.show();
-            truckparameter.show();
-            wheel.hide();
-            wheelParameters.hide();
-            $('#accessibilityAnalysis').show();
-        } else if (optionType === 'pedestrian') {
-            avoidablesPedestrian.show();
-            car.hide();
-            avoidables.hide();
-            avoidablesBike.hide();
-            bike.hide();
-            ped.show();
-            truck.hide();
-            truckparameter.hide();
-            wheel.hide();
-            wheelParameters.hide();
-        } else if (optionType === 'wheelchair') {
-            car.hide();
-            avoidables.hide();
-            avoidablesBike.hide();
-            avoidablesPedestrian.show();
-            bike.hide();
-            ped.hide();
-            truck.hide();
-            truckparameter.hide();
-            wheel.show();
-            wheelParameters.show();
-        }
     }
     /**
      * when the user switches route options, global settings will be updated
-     * @param optionType: the route profile clicked
      * @param optionType: the route profile clicked
      */
     function updateGlobalSettings(optionType, optionID) {
@@ -2800,61 +2742,7 @@ var Ui = (function(w) {
         //set radioButton with $('#' + routeOption) active
         var el = $('#' + routeOption);
         if (el) {
-            el.attr('checked', true)
-        }
-        // set parent div (with all available options for car/bike/pedestrian/truck/wheelchair visible
-        var parentOptions = list.routePreferences.keys();
-        var parent;
-        var avoidables = $('#avoidables');
-        var avoidablesPed = $('#avoidablesPedestrian');
-        var avoidablesBike = $('#avoidablesBike');
-        var wheelParameters = $('#wheelchairParameters');
-        var truckParameters = $('#truckOptions_restrict');
-        for (var i = 0; i < parentOptions.length; i++) {
-            if (list.routePreferences.get(parentOptions[i]).indexOf(routeOption) != -1) {
-                //show div
-                $('#' + parentOptions[i] + 'Options').show();
-                //activate corresponding option panel
-                $('#' + parentOptions[i]).addClass('active');
-                //show avoidables for car, bike or pedestrian
-                if (parentOptions[i] == 'car') {
-                    avoidables.show();
-                    truckParameters.hide();
-                    avoidablesBike.hide();
-                    avoidablesPed.hide();
-                    wheelParameters.hide();
-                } else if (parentOptions[i] == 'bicycle') {
-                    avoidablesBike.show();
-                    avoidables.hide();
-                    avoidablesPed.hide();
-                    truckParameters.hide();
-                    wheelParameters.hide();
-                } else if (parentOptions[i] == 'pedestrian') {
-                    avoidablesPed.show();
-                    avoidables.hide();
-                    avoidablesBike.hide();
-                    truckParameters.hide();
-                    wheelParameters.hide();
-                } else if (parentOptions[i] == 'heavyvehicle') {
-                    avoidables.show();
-                    truckParameters.show();
-                    avoidablesBike.hide();
-                    avoidablesPed.hide();
-                    wheelParameters.hide();
-                } else if (parentOptions[i] == 'wheelchair') {
-                    avoidables.hide();
-                    avoidablesBike.hide();
-                    avoidablesPed.hide();
-                    truckParameters.hide();
-                    wheelParameters.show();
-                }
-                //switch button
-                switchRouteOptionsButton(parentOptions[i])
-            } else {
-                //deactivate/ hide others
-                $('#' + parentOptions[i] + 'Options').hide();
-                $('#' + parentOptions[i]).removeClass('active');
-            }
+            el.attr('checked', true);
         }
     }
     /**
@@ -3278,8 +3166,6 @@ var Ui = (function(w) {
         //to use debug info, remove the .hide() statement and fill function debug() above
         $('#debug').hide();
         $('#debug').click(debug);
-        //switch views
-        $('.fnct_switchTab').click(handleSwitchTabs);
         //open & close collapsibles
         $('.collapsibleHead').click(handleToggleCollapsibles);;
         //waypoints
@@ -3314,6 +3200,7 @@ var Ui = (function(w) {
         $('#heavyvehicle').click(switchRouteOptionsPane);
         $('#wheelchair').click(switchRouteOptionsPane);
         $('.routeOptions').change(handleOptionsChanged);
+        $('.optionsButton').click(handleShowOptions)
         $('#viaOptimize').click(handleOptionsChanged);
         //permalink
         $('#infoPermalink').click(handleOpenPermaOptions);
@@ -3346,7 +3233,7 @@ var Ui = (function(w) {
             $('#serviceTimeout').hide();
         });
         // tooltips
-        $('[data-toggle="tooltip"]').tooltip(); 
+        $('[data-toggle="tooltip"]').tooltip();
     }
     Ui.prototype = new EventEmitter();
     Ui.prototype.constructor = Ui;

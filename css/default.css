@@ -61,45 +61,19 @@
     flex: 0 0 50px;
 }
 
+.ORS-menuPanel{
+    
+}
+
 .ORS-routePanel {
-    top: 38px;
+    top: 0;
+    float: right;
     position: absolute;
     overflow: auto;
     width: 100%;
     bottom: 20px;
     -padding-bottom: 10px;
     background-color: #ffffff;
-}
-
-#ORS-functionMenu {
-    background-color: #F7F7F7;
-    height: 38px;
-    border: none;
-}
-
-#ORS-functionMenu ul > li > a {
-    border-left: transparent;
-    border-right: transparent;
-    border-top: transparent;
-    border-bottom: 1.5px solid #E0E0E0;
-    border-radius: 0;
-    color: #555555;
-}
-
-#ORS-functionMenu > ul > li > a:hover {
-    /* show active tabs in black with border */
-    color: black;
-    border-bottom: 1.5px solid black;
-    cursor: default;
-    border-radius: 0;
-    background-color: transparent;
-}
-
-#ORS-functionMenu > ul > li.active > a, #ORS-functionMenu > ul > li.active > a:hover, #ORS-functionMenu > ul > li.active > a:focus {
-    color: black;
-    cursor: default;
-    -border-bottom: 1.5px solid black;
-    background-color: transparent;
 }
 
 .disclaimer {
@@ -144,15 +118,15 @@
     .ORS-feedback, .routeExtrasContainer {
         display: none;
     }
+    .ORS-header {
+        display: none;
+    }
 }
 
 #navbar {
     background-color: #383838;
 }
 
-#navbar a.brand {
-    font-weight: bold;
-}
 
 #navbar #title {
     color: rgba(255, 255, 255, 0.66);
@@ -312,13 +286,11 @@
 }
 
 #bubble #permaText #copy {
-    font-weight: bold;
     cursor: pointer;
 }
 
 #bubble #permaText #open {
     margin-top: 5px;
-    font-weight: bold;
     cursor: pointer;
 }
 
@@ -407,7 +379,6 @@
  */
 
 .headingElement {
-    font-weight: bold;
 }
 
 
@@ -415,7 +386,6 @@
 
 .tabLabels {
     float: right;
-    font-weight: bold;
 }
 
 
@@ -443,7 +413,7 @@
     display: block;
     float: right;
     width: 16px;
-    height: 16px;
+    font-size: 85%;
     padding-left: 3px;
     content: "\f00d";
     font-family: FontAwesome;
@@ -453,6 +423,7 @@
     display: block;
     float: right;
     width: 18px;
+    font-size: 85%;
     padding-left: 3px;
     content: "\f062";
     font-family: FontAwesome;
@@ -462,6 +433,7 @@
     display: block;
     float: right;
     width: 18px;
+    font-size: 85%;
     content: "\f063";
     font-family: FontAwesome;
 }
@@ -470,6 +442,7 @@
     display: block;
     float: right;
     width: 18px;
+    font-size: 85%;
     content: "\f021";
     font-family: FontAwesome;
 }
@@ -478,6 +451,7 @@
     display: block;
     float: right;
     width: 18px;
+    font-size: 85%;
     content: "\f041";
     font-family: FontAwesome;
 }
@@ -549,10 +523,6 @@
     margin-left: 75px;
     line-height: 26px;
     font-size: 14px;
-}
-
-.directions-waypoint-address .main {
-    font-weight: bold;
 }
 
 .directions-waypoint-address .submain {
@@ -683,14 +653,6 @@
     padding: 0 0 0 5px;
 }
 
-.optionsTable td:nth-child(2) {
-    border-left: 1px solid #c8c8c8;
-}
-
-.optionsTable td {
-    vertical-align: top;
-}
-
 .clickable {
     cursor: pointer;
 }
@@ -708,6 +670,7 @@
     background-repeat: no-repeat;
     background-size: 16px;
     background-position: 8px 3px;
+    font-size: 90%;
 }
 
 
@@ -883,7 +846,6 @@ h3 {
 }
 
 a:link, a:visited {
-    font-weight: bold;
     text-decoration: none;
     color: #555555;
 }
@@ -921,15 +883,13 @@ a.options.active {
 }
 
 button.routeOptionsButton {
-    height: 30px;
     width: 44px;
-    padding: 2px 2px 2px 2px;
+    padding: 10px 10px 10px 10px;
 }
 
-button.weightOptions {
-    height: 30px;
+button.optionsButton {
     width: 44px;
-    padding: 2px 2px 2px 2px;
+    padding: 10px 10px 10px 10px;
 }
 
 .btn-group+.btn-group {
@@ -942,33 +902,38 @@ button.weightOptions {
 
 .btn-group>.btn:last-child {
     border-radius: 0px;
+    -margin-left: 50px;
 }
 
 .btn-group>.primary i {
-    font-size: 95%;
+    font-size: 105%;
 }
 
 .primary {
     background: #F0F0F0;
     border-radius: 0px;
-    border-color: #F0F0F0;
+    border: none;
     color: #707070;
-    cursor: pointer;
     box-shadow: none;
     text-shadow: none;
     font-family: 'Source Sans Pro', sans-serif;
 }
 
-.primary:hover {
-    background: #D7D7D7 !important;
-    border-color: #D7D7D7 !important;
+.transparent {
+    background-color: transparent !important;
 }
 
-.primary.active, .dropdown-toggle {
+.primary:hover {
+    background: #fff !important;
+    border-color: transparent;
+}
+
+.primary.active {
     box-shadow: none !important;
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;
-    border: none;
+    border: none  !important;
+    background-color: #fff;
 }
 
 .input-append input {
@@ -978,20 +943,6 @@ button.weightOptions {
 .input-append .btn:last-child {
     border-radius: 0;
 }
-
-#weightingDropdown {
-    margin-bottom: 3px;
-    float: right;
-}
-
-#extendedRouteOptions {
-    margin-top: 4px;
-}
-
-.divAroundButtons {
-    float: left;
-}
-
 
 /* avoid area controls*/
 
@@ -1111,10 +1062,6 @@ button.weightOptions {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
-.radio {
-    padding-bottom: 5px;
-}
-
 #TruckTabs>li>a {
     font-size: 90%;
     font-weight: normal;
@@ -1128,7 +1075,6 @@ button.weightOptions {
 
 .mySlider input[type="text"] {
     width: 45px;
-    font-weight: bold;
     margin-left: 10px;
     font-size: 90%;
 }
@@ -1138,16 +1084,10 @@ button.weightOptions {
     width: 130px;
     border: 0;
     color: #6392C2;
-    font-weight: bold;
 }
 
 .mySlider img {
     margin-top: -5px;
-}
-
-.wheelchairSelect {
-    width: 170px;
-    margin-top: 8px;
 }
 
 .icon-eye-open {
@@ -1164,40 +1104,15 @@ button.weightOptions {
 
 .right {
     float: right;
-    margin-left: 5px;
 }
 
 .left {
     float: left;
-    margin-right: 5px;
-}
-
-.panelTransparent {
-    background-color: transparent;
-    border: transparent;
-    box-shadow: none;
-}
-
-#hazardOptions {
-    margin-top: 10px;
-    background-color: #d8d8d8;
 }
 
 #currentLocation, #searchPlace, #searchPoi, #geoloc {
     margin: 10px;
     padding-bottom: 0px;
-}
-
-.panelLight {
-    background-color: #fff;
-}
-
-.panelMedium {
-    background-color: #f3f3f3;
-}
-
-.panelDark {
-    background-color: #eaeaea;
 }
 
 .showCurrentLocation {
@@ -1285,11 +1200,6 @@ img {
 .fileUploadForm > div {
     margin: 0px;
 }
-
-.routePreferenceBtns {
-    margin-bottom: 3px;
-}
-
 
 /*popup with information about customizing ORS*/
 
@@ -1433,7 +1343,6 @@ img {
     cursor: pointer;
     /*Font*/
     color: #fff;
-    font-weight: bold;
     font-size: 14px;
 }
 
