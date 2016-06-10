@@ -35,37 +35,54 @@
 		<div class="ORS-main">
 			<div class="ORS-sidebar" id="sidebar">
 				<!-- sidebar content -->
-				<div class="ORS-menuPanel" id="menuPanel"></div>
+				<div class="ORS-menuPanel" id="menuPanel">
+					<div class="btn-group">
+						<button id="selectRoutePanel" class="btn menuButton primary-menu">
+							<i class="fa fa-road"></i>
+						</button>
+						<button id="selectAccessibility" class="btn menuButton primary-menu">
+							<i class="fa fa-bullseye"></i>
+						</button>
+						<button id="selectFeedback" class="btn menuButton primary-menu">
+							<i class="fa fa-comment"></i>
+						</button>
+						<button id="selectDownload" class="btn menuButton primary-menu">
+							<i class="fa fa-download"></i>
+						</button>
+					</div>
+					<!-- bottom: 0 
+					<i class="fa fa-circle-o-notch fa-spin" id="ORS-loading"></i>
+					<i class="fa fa-warning" id="ORS-error"></i> -->
+				</div>
+				<div class="ORS-navigation">
+					<div class="guiComponent" style="background-color:#F0F0F0;">
+						<div class="btn-group routePreferenceBtns">
+							<button id="car" class="btn primary routeOptionsButton active">
+								<i class="fa fa-car"></i>
+							</button>
+							<button id="bicycle" class="btn primary routeOptionsButton">
+								<i class="fa fa-bicycle"></i>
+							</button>
+							<button id="pedestrian" class="btn primary routeOptionsButton">
+								<i class="fa fa-male"></i>
+							</button>
+							<button id="wheelchair" class="btn primary routeOptionsButton">
+								<i class="fa fa-wheelchair"></i>
+							</button>
+							<button id="heavyvehicle" class="btn primary routeOptionsButton">
+								<i class="fa fa-truck"></i>
+							</button>
+							<button class="btn primary optionsButton">
+								<i class="fa fa-cog"></i>
+							</button>
+						</div>
+				    </div>
+				</div>
 				<div class="ORS-routePanel" id="routePanel">
 					<div id="routingPanel" class="ORS-panel route">
-						<div class="guiComponent" style="background-color:#F0F0F0;">
-							<div class="btn-group routePreferenceBtns">
-								<button id="car" class="btn primary routeOptionsButton active">
-									<i class="fa fa-car"></i>
-								</button>
-								<button id="bicycle" class="btn primary routeOptionsButton">
-									<i class="fa fa-bicycle"></i>
-								</button>
-								<button id="pedestrian" class="btn primary routeOptionsButton">
-									<i class="fa fa-male"></i>
-								</button>
-								<button id="wheelchair" class="btn primary routeOptionsButton">
-									<i class="fa fa-wheelchair"></i>
-								</button>
-								<button id="heavyvehicle" class="btn primary routeOptionsButton">
-									<i class="fa fa-truck"></i>
-								</button>
-								<button class="btn primary optionsButton">
-									<i class="fa fa-cog"></i>
-								</button>
-							</div>
-							
-					    </div>
-					    <!-- <i class="fa fa-circle-o-notch fa-spin" id="ORS-loading"></i>
-						<i class="fa fa-warning" id="ORS-error"></i> -->
 					    <div class="ORS-panel-sub">
-						    <div id="optionsContainer" class="routeOptions" style="display: none;">
-						        <div class="ORS-panel-sub ORS-all" id="weightingOptions" style="display: none;">
+						    <div id="optionsContainer" class="routeOptions ORS-hr" style="display: none;">
+						        <div class="ORS-panel-sub ORS-all ORS-hr" id="weightingOptions" style="display: none;">
 									<h6>Route weight</h6>
 									<label class="radio">
 										<input type="radio" id="Fastest" name="weighting" checked="checked">
@@ -86,7 +103,7 @@
 										<span class="ORS-label label" id="carLabel">car</span>
 									</label>
 								</div>
-								<div class="ORS-panel-sub ORS-bike" id="bicycleOptions" style="display: none;">
+								<div class="ORS-panel-sub ORS-bike ORS-hr" id="bicycleOptions" style="display: none;">
 									<h6>Route preference</h6>
 									<label class="radio">
 										<input type="radio" id="Bicycle" name="bicycle"  value="shortest" checked="checked">
@@ -115,7 +132,7 @@
 										<span class="ORS-label label" id="PedestrianLabel">pedestrian</span>
 									</label>
 								</div>
-								<div class="ORS-panel-sub ORS-hgv" id="heavyvehicleOptions" style="display: none;">
+								<div class="ORS-panel-sub ORS-hgv ORS-hr" id="heavyvehicleOptions" style="display: none;">
 									<h6>Route preference</h6>
 									<label class="radio">
 										<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="goods" checked="checked">
@@ -190,7 +207,7 @@
 								        </div>
 								    </div>
 								</div>
-								<div class="ORS-panel-sub ORS-wc-HIDE" id="wheelchairOptions" style="display: none;"> 	
+								<div class="ORS-panel-sub ORS-wc-HIDE ORS-hr" id="wheelchairOptions" style="display: none;"> 	
 									<h6>Route preference</h6>
 									<label class="radio">
 											<input type="radio" id="Wheelchair" name="wheelchair" checked="checked">
@@ -361,19 +378,19 @@
 							</div>
 							<div class="clear">
 								<div class="left" id="viaOptimizePanel">
-									<label class="btn primary transparent" type="button" id="tt-optimize" data-toggle="tooltip" title="Optimize Waypoints">
+									<label class="btn primary transparent" data-container="body" type="button" id="tt-optimize" data-toggle="tooltip" title="Optimize Waypoints">
 									    <i class="fa fa-wrench"></i>
 									    <input type="checkbox" class="hide" id="viaOptimize" data-toggle="button"/>
 									</label>
 								</div>
 								<div class="right">
-									<button id="orderRoute" class="btn primary transparent" type="button" id="tt-reorder" data-toggle="tooltip" title="Reorder Waypoints"><i class="fa fa-refresh"></i></button>
+									<button id="orderRoute" class="btn primary transparent" data-container="body" type="button" id="tt-reorder" data-toggle="tooltip" title="Reorder Waypoints"><i class="fa fa-refresh"></i></button>
 								</div>
 								<div class="right">
-									<button id="resetRoute" class="btn primary transparent" type="button" id="tt-reset" data-toggle="tooltip" title="Reset Route"><i class="fa fa-remove"></i></button>
+									<button id="resetRoute" class="btn primary transparent" data-container="body" type="button" id="tt-reset" data-toggle="tooltip" title="Reset Route"><i class="fa fa-remove"></i></button>
 								</div>
 								<div class="right">
-									<button id="zoomToRouteButton" class="btn primary transparent" type="button"  id="tt-zoom"data-toggle="tooltip" title="Zoom to Route"><i class="fa fa-arrows-alt"></i></button>
+									<button id="zoomToRouteButton" class="btn primary transparent" data-container="body" type="button"  id="tt-zoom"data-toggle="tooltip" title="Zoom to Route"><i class="fa fa-arrows-alt"></i></button>
 								</div>
 							</div>
 							<div id="ORS-routeError" style="display:none" class="ORS-alert alert alert-error"></div>
@@ -409,7 +426,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="routeExtrasContainer ORS-panel">
+					<div class="routeExtrasContainer ORS-panel" style="display: none;">
 						<div class="collapsible guiComponent ORS-panel-sub">
 							<div class="collapsibleHead clickable collapsed" id="routeExtrasHead">
 								Route extras
@@ -452,10 +469,10 @@
 	    							<div class="clear">
 	    								<h6>GPX</h6>
 										<div class="left">
-											<a id="export-gpx" class="btn primary" download="map.gpx" title="Download of current route in GPX format" data-toggle="tooltip" data-original-title=""><i class="fa fa-download fa-fw"></i><span>download</span></a>
+											<a id="export-gpx" class="btn primary" download="map.gpx" title="Download of current route in GPX format" data-container="body" data-toggle="tooltip" data-original-title=""><i class="fa fa-download fa-fw"></i><span>download</span></a>
 										</div>
 										<div id="GPXcontainer" class="left">
-											<span class="btn btn-file primary" id="import-gpx" title="Upload multiple tracks from a GPX-files" data-toggle="tooltip" data-original-title=""><i class="fa fa-upload fa-fw"></i><span>upload</span><input type="file" id="files" multiple /></span>
+											<span class="btn btn-file primary" id="import-gpx" title="Upload multiple tracks from a GPX-files" data-container="body" data-toggle="tooltip" data-original-title=""><i class="fa fa-upload fa-fw"></i><span>upload</span><input type="file" id="files" multiple /></span>
 												<div id="fileContainerMain" style="display: none;"></div>		
 										</div>
 									</div>
@@ -469,7 +486,7 @@
 							</div>
 						</div>
 					</div>	
-					<div class="ORS-panel ORS-feedback">
+					<div class="ORS-panel ORS-feedback" style="display: none;">
 						<div class="collapsible guiComponent ORS-panel-sub">
 							<div class="collapsibleHead clickable collapsed" id="feedbackHead">
 								Feedback

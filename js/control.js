@@ -1347,11 +1347,12 @@ var Controller = (function(w) {
         }
         // if routeOpt is not in getVars then use Car for init
         routeOpt = preferences.loadRouteOptions(routeOpt);
-        if (routeOpt == undefined || routeOpt == null || routeOpt == 'undefined') {
+        if (routeOpt === undefined || routeOpt === null || routeOpt == 'undefined') {
             ui.setRouteOption(list.routePreferences.get('car'));
         } else {
             ui.setRouteOption(routeOpt);
         }
+        ui.updateProfileOptions();
         routeOptType = preferences.loadRouteOptionsType(routeOptType);
         ui.setRouteOptionType(routeOptType);
         routeWeight = preferences.loadRouteWeight(routeWeight);

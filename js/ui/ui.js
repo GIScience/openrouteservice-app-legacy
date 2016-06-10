@@ -1520,7 +1520,7 @@ var Ui = (function(w) {
                 bottom: 0,
                 left: 0
             },
-            width = 348 - margin.left - margin.right,
+            width = 315 - margin.left - margin.right,
             height = 24 - margin.top - margin.bottom;
         var y = d3.scale.ordinal().rangeRoundBands([height, 0]);
         var x = d3.scale.linear().rangeRound([0, width]);
@@ -2096,23 +2096,6 @@ var Ui = (function(w) {
         } else {
             $('#optionsContainer').hide();
         }
-        // show profile specific route options
-        var i, el, optionType = permaInfo[preferences.routeOptionsIdx];
-        console.log(optionType)
-        for (var profile in list.showElements) {
-            if (optionType == profile || profile == 'All') {
-                for (i = 0; i < list.showElements[profile].length; i++) {
-                    el = $(list.showElements[profile][i]);
-                    el.show();
-                }
-                // hide all other elements
-            } else {
-                for (i = 0; i < list.showElements[profile].length; i++) {
-                    el = $(list.showElements[profile][i]);
-                    el.hide();
-                }
-            }
-        }
     }
     /**
      * when the user wants to switch between route options for cars/bikes/pedestrians and clicks the button to switch views
@@ -2136,6 +2119,30 @@ var Ui = (function(w) {
                 theInterface.emit('ui:routingParamsChanged');
             } else {
                 btn.removeClassName('active');
+            }
+        }
+        // update options 
+        updateProfileOptions();
+    }
+    /**
+     * updates options for specific profiles
+     */
+    function updateProfileOptions() {
+        // show profile specific route options
+        var i, el, optionType = permaInfo[preferences.routeOptionsIdx];
+        console.log(optionType)
+        for (var profile in list.showElements) {
+            if (optionType == profile || profile == 'All') {
+                for (i = 0; i < list.showElements[profile].length; i++) {
+                    el = $(list.showElements[profile][i]);
+                    el.show();
+                }
+                // hide all other elements
+            } else {
+                for (i = 0; i < list.showElements[profile].length; i++) {
+                    el = $(list.showElements[profile][i]);
+                    el.hide();
+                }
             }
         }
     }
@@ -2744,6 +2751,18 @@ var Ui = (function(w) {
         if (el) {
             el.attr('checked', true);
         }
+        // set parent div (with all available options for car/bike/pedestrian/truck/wheelchair visible
+        var parentOptions = list.routePreferences.keys();
+        var parent;
+        for (var i = 0; i < parentOptions.length; i++) {
+            if (list.routePreferences.get(parentOptions[i]).indexOf(routeOption) != -1) {
+                console.log(parentOptions[i])
+                //activate corresponding option panel
+                switchRouteOptionsButton(parentOptions[i]);
+            } 
+        }
+
+
     }
     /**
      * used to set the routeOptionType if set
@@ -3278,6 +3297,7 @@ var Ui = (function(w) {
     Ui.prototype.showRoutingError = showRoutingError;
     Ui.prototype.setRouteOption = setRouteOption;
     Ui.prototype.setRouteWeight = setRouteWeight;
+    Ui.prototype.updateProfileOptions = updateProfileOptions;
     Ui.prototype.setRouteOptionType = setRouteOptionType;
     Ui.prototype.setAvoidables = setAvoidables;
     Ui.prototype.setWheelParameters = setWheelParameters;

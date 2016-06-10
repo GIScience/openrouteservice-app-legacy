@@ -28,6 +28,7 @@
     height: 30px;
 }
 
+
 /* BASE LAYOUT */
 
 .ORS {
@@ -48,6 +49,8 @@
     flex-direction: row;
     position: relative;
     color: #707070;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
 }
 
 .ORS-map {
@@ -61,19 +64,32 @@
     flex: 0 0 50px;
 }
 
-.ORS-menuPanel{
-    
+.ORS-menuPanel {
+    top: 0;
+    position: absolute;
+    overflow: auto;
+    width: 40px;
+    bottom: 20px;
+    background-color: #F0F0F0;
 }
 
 .ORS-routePanel {
-    top: 0;
-    float: right;
+    top: 40px;
     position: absolute;
     overflow: auto;
-    width: 100%;
+    width: 348px;
     bottom: 20px;
-    -padding-bottom: 10px;
-    background-color: #ffffff;
+    left: 40px;
+    border-left: 1px solid #CCC;
+    background-color: #FFF;
+}
+
+.ORS-navigation {
+    top: 0;
+    left: 40px;
+    width: 348px;
+    position: absolute;
+    border-left: 1px solid #CCC;
 }
 
 .disclaimer {
@@ -81,15 +97,16 @@
     position: absolute;
     background-color: #F7F7F7;
     height: 20px;
-    width: 100%;
+    width: 388px;
     border-top: 1px solid #EBEBEB;
-    padding-left: 5px;
+    -padding-left: 5px;
 }
 
 .disclaimer a, .disclaimer div {
     font-size: 80%;
     margin-right: 10px;
 }
+
 
 /* Styles for responsive behaviour on mobile devices */
 
@@ -112,21 +129,37 @@
     .leaflet-container .leaflet-control-mouseposition {
         display: none;
     }
+    .ORS-sidebar {
+        box-shadow: none;
+    }
     .ORS-sidebarContent {
         width: 100%;
     }
-    .ORS-feedback, .routeExtrasContainer {
+    .ORS-feedback, .routeExtrasContainer, .ORS-header, .ORS-menuPanel {
         display: none;
     }
-    .ORS-header {
-        display: none;
+    .ORS-routePanel {
+        top: 40px;
+        position: absolute;
+        overflow: auto;
+        width: 100%;
+        bottom: 20px;
+        left: 0;
+        border-left: 1px solid #CCC;
+        background-color: #FFF;
+    }
+    .ORS-navigation {
+        left: 0;
+        width: 100%;
+    }
+    .disclaimer {
+        width: 100%;
     }
 }
 
 #navbar {
-    background-color: #383838;
+    background-color: rgb(96, 125, 139);
 }
-
 
 #navbar #title {
     color: rgba(255, 255, 255, 0.66);
@@ -378,8 +411,7 @@
  * CSS for non-map elements
  */
 
-.headingElement {
-}
+.headingElement {}
 
 
 /* labels for main tabs (plan route, search)*/
@@ -905,7 +937,7 @@ button.optionsButton {
     -margin-left: 50px;
 }
 
-.btn-group>.primary i {
+.primary i, .primary-menu i {
     font-size: 105%;
 }
 
@@ -919,21 +951,42 @@ button.optionsButton {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
+.primary-menu {
+    background: #F0F0F0;
+    border-radius: 0px;
+    border: none;
+    height: 40px;
+    color: #808080;
+    border-bottom: 1px solid #EBEBEB;
+    display: block;
+    width: 100%;
+    box-shadow: none;
+    text-shadow: none;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
 .transparent {
     background-color: transparent !important;
 }
 
-.primary:hover {
-    background: #fff !important;
+.btn-group>.primary:hover {
+    background: #ccc important;
     border-color: transparent;
+    color: rgb(96, 125, 139);
+}
+
+.primary-menu:hover {
+    background: transparent !important;
+    border-color: transparent;
+    color: rgb(96, 125, 139);
 }
 
 .primary.active {
     box-shadow: none !important;
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;
-    border: none  !important;
-    background-color: #fff;
+    border: none !important;
+    color: rgb(96, 125, 139);
 }
 
 .input-append input {
@@ -943,6 +996,7 @@ button.optionsButton {
 .input-append .btn:last-child {
     border-radius: 0;
 }
+
 
 /* avoid area controls*/
 
@@ -1200,6 +1254,7 @@ img {
 .fileUploadForm > div {
     margin: 0px;
 }
+
 
 /*popup with information about customizing ORS*/
 
