@@ -455,6 +455,11 @@
 
 .waypointResult {
     margin-bottom: 10px;
+    width: 280px;
+}
+
+.waypointResult li span { 
+    position: relative; left: 10px; 
 }
 
 .removeWaypoint:before {
