@@ -1842,13 +1842,14 @@ var Ui = (function(w) {
                                 break;
                             }
                         }
-                        // display number of warnings on route
-                        var container = $('#routeSummaryContainer').get(0);
-                        container.show();
-                        var warningDiv = container.querySelector('#route_trafficWarnings');
-                        if (warning !== undefined && warning !== 0) {
-                            $(warningDiv)[0].update(preferences.translate('TotalWarnings') + ': ' + warning);
-                        }
+                        // TODO change for new Route Summary
+                        // //display number of warnings on route
+                        // var container = $('#routeSummaryContainer').get(0);
+                        // container.show();
+                        // var warningDiv = container.querySelector('#route_trafficWarnings');
+                        // if (warning !== undefined && warning !== 0) {
+                        //     $(warningDiv)[0].update(preferences.translate('TotalWarnings') + ': ' + warning);
+                        // }
                         // if codes not in dict return default
                         warningLink = warningLink !== undefined ? warningLink : './img/warning_undefined.png';
                         var noticeDiv = new Element('div', {
@@ -2091,9 +2092,29 @@ var Ui = (function(w) {
         // toggle options
         if ($('#optionsContainer').is(':hidden')) {
             $('#optionsContainer').show();
-            $(e).addClass('active');
+            $('.optionsButton').addClass('active');
         } else {
             $('#optionsContainer').hide();
+            $('.optionsButton').removeClass('active');
+            $('.optionsButton').blur();
+        }
+    }
+    /**
+     * when the user wants to switch between menu panel items on the left sidebar
+     * @param e: the event
+     */
+    function handleSwitchMenu(e) {
+        var menuId = e.currentTarget.getAttribute('select-id');
+        // add remove active class for button and show hide corresponding divs
+        for (var i = 0; i < list.menuElements.length; i++) {
+            var btn = list.menuElements[i];
+            if (btn == menuId) {
+                $('button[select-id="' + btn + '"]').addClass('active');
+                $('div[data-id="' + btn + '"]').show();
+            } else {
+                $('button[select-id="' + btn + '"]').removeClass('active');
+                $('div[data-id="' + btn + '"]').hide();
+            }
         }
     }
     /**
@@ -3001,16 +3022,16 @@ var Ui = (function(w) {
                 'class': 'delete',
                 'data': i
             });
-            var show = new Element('img', {
-                'src': 'img/menuSearch.png',
+            var show = new Element('i', {
+                'class': 'fa fa-map-marker',
                 'title': 'show track'
             });
-            var calc = new Element('img', {
-                'src': 'img/marker-small.png',
+            var calc = new Element('i', {
+                'class': 'fa fa-cogs',
                 'title': 'recalculate track to route'
             });
-            var del = new Element('img', {
-                'src': 'img/cancel.png',
+            var del = new Element('i', {
+                'class': 'fa fa-remove',
                 'title': 'remove track or route'
             });
             var calcGranularity = new Element('select', {
@@ -3216,6 +3237,7 @@ var Ui = (function(w) {
         $('#heavyvehicle').click(switchRouteOptionsPane);
         $('#wheelchair').click(switchRouteOptionsPane);
         $('.routeOptions').change(handleOptionsChanged);
+        $('#optionsClose').click(handleShowOptions);
         $('.optionsButton').click(handleShowOptions)
         $('#viaOptimize').click(handleOptionsChanged);
         //permalink
@@ -3250,6 +3272,8 @@ var Ui = (function(w) {
         });
         // tooltips
         $('[data-toggle="tooltip"]').tooltip();
+        // menuButtons
+        $('.menuButton').click(handleSwitchMenu)
     }
     Ui.prototype = new EventEmitter();
     Ui.prototype.constructor = Ui;

@@ -568,9 +568,9 @@ var Map = (function() {
                 if (vectors instanceof Array) {
                     var vectorGroup = new L.featureGroup(vectors);
                     this.theMap.fitBounds(vectorGroup.getBounds());
-                } else if (vectors.getBounds) {
+                } else if (vectors._latlngs) {
                     this.theMap.fitBounds(vectors.getBounds());
-                } else {
+                } else if (vectors._latlng) {
                     if (!zoom) {
                         this.theMap.panTo(vectors.getLatLng());
                     } else {

@@ -73,7 +73,7 @@
     background-color: #F0F0F0;
 }
 
-.ORS-routePanel {
+.ORS-mainPanel {
     top: 40px;
     position: absolute;
     overflow: auto;
@@ -91,6 +91,7 @@
     position: absolute;
     border-left: 1px solid #CCC;
     background-color: #F0F0F0;
+    height: 40px;
 }
 
 .ORS-light {
@@ -140,10 +141,10 @@
     .ORS-sidebarContent {
         width: 100%;
     }
-    .ORS-feedback, .routeExtrasContainer, .ORS-header, .ORS-menuPanel {
+    .feedbackContainer, .routeExtrasContainer, .ORS-header, .ORS-menuPanel {
         display: none;
     }
-    .ORS-routePanel {
+    .ORS-mainPanel {
         top: 40px;
         position: absolute;
         overflow: auto;
@@ -204,16 +205,6 @@
 }
 
 #ORS-loading, #ORS-error {
-    padding-top: 8px;
-    padding-bottom: 8px;
-    line-height: 20px;
-    display: none;
-}
-
-#ORS-error {
-    padding-top: 8px;
-    padding-bottom: 8px;
-    line-height: 20px;
     display: none;
 }
 
@@ -377,9 +368,8 @@
     white-space: nowrap;
     cursor: pointer;
     margin-bottom: 3px;
-    background-color: #383838;
-    border-radius: 4px;
-    border-left: 2px solid #383838;
+    background-color: rgba(96, 125, 139, 0.9);
+    border-left: 2px solid #F0F0F0;
     color: white;
     min-height: 10px;
     -o-transition: .2s;
@@ -390,8 +380,8 @@
 }
 
 .mapContextMenu .contextWaypoint:hover {
-    background-color: rgba(0, 0, 0, 1);
-    border-left: 2px solid #0DD5FC;
+    background-color: rgba(96, 125, 139, 1);
+    border-left: 2px solid #444;
 }
 
 .mapContextMenu .leaflet-popup-content {
@@ -414,7 +404,7 @@
 }
 
 .mapContextMenu .leaflet-popup-tip {
-    border: 2px solid black;
+    border: 2px solid rgb(96, 125, 139);
     box-shadow: none;
     background-color: transparent;
     border-radius: 50%;
@@ -455,7 +445,8 @@
 
 .waypointResult {
     margin-bottom: 10px;
-    width: 280px;
+    width: 240px;
+    margin-left: 32px;
 }
 
 .waypointResult li span { 
@@ -830,6 +821,11 @@
     font-family: 'Source Sans Pro', sans-serif;
 }
 
+.leaflet-bar, .leaflet-bar a:last-child, .leaflet-bar a:first-child, .leaflet-control-layers {
+    border-radius: 0px;
+    background-color: #FAFAFA;
+}
+
 
 /*preferences popup*/
 
@@ -868,7 +864,7 @@ body {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
-input, .form-inline input, textarea, .form-inline select, .guiComponent > input {
+input, .form-inline input, textarea, select, .form-inline select, .guiComponent > input {
     font-family: 'Source Sans Pro', sans-serif;
     border-radius: 0;
     margin-bottom: 0px;
@@ -916,7 +912,7 @@ h3 {
 
 a:link, a:visited {
     text-decoration: none;
-    color: #555555;
+    color: #707070;
 }
 
 a:hover, a:active {
@@ -1012,10 +1008,39 @@ button.optionsButton {
     color: rgb(96, 125, 139);
 }
 
-.primary-menu:hover {
-    background: transparent !important;
+.btn-group>.primary-menu:hover {
+    background: transparent;
+    color: #444;
+}
+
+.btn-group>.primary-menu:active {
+    background: transparent;
     border-color: transparent;
+    color: #444;
+    outline: none;
+}
+
+.btn-group>.primary-menu.active, .btn-group>.primary-menu:focus {
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    color: #444;
+    background-color: transparent;
+}
+
+
+.primary:active {
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    border: none !important;
     color: rgb(96, 125, 139);
+}
+
+
+.primary:focus {
+    outline: none;
+    color: #707070;
 }
 
 .primary.active {
@@ -1152,6 +1177,20 @@ button.optionsButton {
 .ORS-info {
     font-family: 'Source Sans Pro', sans-serif;
 }
+
+.ORS-close {
+    display:block;
+    float:right;
+    width:17px;
+    height:29px;
+    color: #707070;
+}
+
+.ORS-center {
+    text-align: center;
+    line-height: 40px;
+}
+
 
 #TruckTabs>li>a {
     font-size: 90%;
