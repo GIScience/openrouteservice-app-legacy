@@ -145,7 +145,8 @@ var Map = (function() {
 				},
 			});
 			//this.theMap.addControl(new LocateControl()); /* don't add this control for now */
-	
+		
+		var timeout = this.theMap;
 		/* TOGGLE NAVIGATION MENU CONROL */
 		var NavMenuToggle = L.Control.extend({
 			options: {
@@ -156,6 +157,7 @@ var Map = (function() {
 				container.title = "Toggle navigation menu"
 				container.onclick = function(){
 					jQuery("#sidebar").toggle();
+					timeout.invalidateSize(true); //Neede to update map visualization after toggling Menu
 				}
 				return container;
 			},

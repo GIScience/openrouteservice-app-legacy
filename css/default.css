@@ -24,13 +24,13 @@
     background-size: 20px 20px;
     background-position: center;
     background-repeat: no-repeat;
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
 }
 
 .leaflet-control-layers a.leaflet-control-layers-toggle{
-    width: 30px;
-    height:30px;
+    width: 26px;
+    height:26px;
     border-radius: 5px;
     background-color: white;
     background-image: url(../img/layers-icon.png);
