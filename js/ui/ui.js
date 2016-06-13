@@ -2085,6 +2085,12 @@ var Ui = (function(w) {
     /* *********************************************************************
      * ROUTE OPTIONS
      * *********************************************************************/
+    
+
+
+
+
+
     /**
      * when the user chooses route options 
      */
@@ -3237,8 +3243,7 @@ var Ui = (function(w) {
         $('#heavyvehicle').click(switchRouteOptionsPane);
         $('#wheelchair').click(switchRouteOptionsPane);
         $('.routeOptions').change(handleOptionsChanged);
-        $('#optionsClose').click(handleShowOptions);
-        $('.optionsButton').click(handleShowOptions)
+        $('.optionsButton').click(handleShowOptions);
         $('#viaOptimize').click(handleOptionsChanged);
         //permalink
         $('#infoPermalink').click(handleOpenPermaOptions);
