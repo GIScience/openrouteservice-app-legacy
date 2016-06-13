@@ -104,19 +104,20 @@ var Map = (function() {
         ZoomControl.addTo(this.theMap);
         /* LOCATE CONTROL */
         /* Set up the control functions */
-        var marker = null;
-        var circle = null;
+        //var marker = null;
+        //var circle = null;
 
         function onLocationFound(e) {
-            var radius = e.accuracy;
+            //var radius = e.accuracy;
             /* To add a marker on user's location (TODO) */
-            var marker = L.marker(e.latlng, {
-                icon: geolocateIcon
-            }) /*.bindPopup("user's location description here").openPopup()*/ ;
-            var circle = L.circle(e.latlng, radius);
+            //var marker = L.marker(e.latlng, {
+            //    icon: geolocateIcon
+            //}) /*.bindPopup("user's location description here").openPopup()*/ ;
+            //var circle = L.circle(e.latlng, radius);
             // add marker and accuracy circle
-            marker.addTo(map);
-            circle.addTo(map);
+            //marker.addTo(map);
+            //circle.addTo(map);
+            createMapContextMenu();
         }
         //Function to set what happen when the user location is not found   
         function onLocationError(e) {
@@ -142,7 +143,8 @@ var Map = (function() {
                 return container;
             },
         });
-        //this.theMap.addControl(new LocateControl()); /* don't add this control for now */
+        this.theMap.addControl(new LocateControl()); /* don't add this control for now */
+
         /* TOGGLE NAVIGATION MENU CONROL */
         var timeout = this.theMap;
         var NavMenuToggle = L.Control.extend({
