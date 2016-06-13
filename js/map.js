@@ -560,7 +560,6 @@ var Map = (function() {
             type: 'GET',
             crossDomain: false,
             success: function(data) {
-                console.log(data)
                 self.updateInfoPanel(data);
                 Ui.showServiceTimeoutPopup(false);
             },
@@ -1017,7 +1016,6 @@ var Map = (function() {
      * @param {Object} routeLineSegments: array of Leaflet Linestrings with height information
      */
     function updateHeightprofiles(routeLineHeights, viaPoints) {
-        console.log(viaPoints)
         var el = this.elevationControl;
         el.addTo(this.theMap);
         this.layerRouteLines.clearLayers();
@@ -1032,10 +1030,8 @@ var Map = (function() {
                 viaPoints[i][0] = lat;
                 viaPoints[i][1] = lng;
             }
-            console.log(viaPoints)
             polyline.properties.waypoint_coordinates = viaPoints;
         }
-        console.log(polyline)
         var gjl = L.geoJson(polyline, {
             opacity: '0',
             onEachFeature: el.addData.bind(el)
