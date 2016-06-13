@@ -21,14 +21,14 @@
 	<body class="ORS">
 		<!-- navigation bar on top -->
 		<header class="ORS-header" id="navbar">
-			<a class="brand" id="ORS-headIcon" href="http://www.geog.uni-heidelberg.de/giscience.html"></a>
-			<a class="brand" id="title" href="http://www.openrouteservice.org">OpenRouteService.org</a>
+			<a id="ORS-headIcon" href="http://www.geog.uni-heidelberg.de/giscience.html"></a>
+			<a id="title" href="http://www.openrouteservice.org">OpenRouteService</a>
  			<ul id="topMenu">
 				<li>
-					<a href="#sitePrefsModal" data-toggle="modal" id="menuLinkSitePrefs">Site Preferences</a>
+					<a href="#sitePrefsModal" data-toggle="modal" id="menuLinkSitePrefs"><i class="fa fa-globe"></i></a>
 				</li>
 				<li>
-					<a href="contact.html#top" target="_blank" id="menuLinkInfo">Info&nbsp;&amp;&nbsp;Contact</a>
+					<a href="contact.html#top" target="_blank" id="menuLinkInfo"><i class="fa fa-info"></i></a>
 				</li>
 			</ul>
 		</header>
@@ -43,11 +43,12 @@
 						<button select-id="ORS-aaContent" class="btn menuButton primary-menu">
 							<i class="fa fa-bullseye"></i>
 						</button>
-						<button select-id="ORS-feedbackContent" class="btn menuButton primary-menu">
-							<i class="fa fa-comment"></i>
-						</button>
+						
 						<button select-id="ORS-cloudContent" class="btn menuButton primary-menu">
 							<i class="fa fa-download"></i>
+						</button>
+						<button select-id="ORS-feedbackContent" class="btn menuButton primary-menu">
+							<i class="fa fa-comment"></i>
 						</button>
 					</div>
 					<div style="bottom: 0px; margin: 12px; position: absolute;">
@@ -92,7 +93,6 @@
 					<div id="routeContainer" data-id="ORS-routeContent" class="ORS-panel route">
 						<div id="routingPanel">
 						    <div id="optionsContainer" class="routeOptions ORS-panel-sub ORS-light" style="display: none;">
-						        <a id="optionsClose" class="ORS-close" href="#"><i class="fa fa-remove"></i></a>
 						        <div class="ORS-panel-sub ORS-all ORS-hr-dark" id="weightingOptions" style="display: none;">
 									<h6>Route weight</h6>
 									<label class="radio">

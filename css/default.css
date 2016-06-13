@@ -11,7 +11,7 @@
 
 
 /**
- * @author: Timothy Ellersiek, timothy.ellersiek@geog.uni-heidelberg.de, Enrico Steiger, enrico.steiger@geog.uni-heidelberg.de , Rui Nunes rui.nunes1985@gmail.com
+ * @author: Timothy Ellersiek, timothy.ellersiek@geog.uni-heidelberg.de, Enrico Steiger, enrico.steiger@geog.uni-heidelberg.de, Rui Nunes, rui.nunes1985@gmail.com
  * @version: 0.1
  */
 
@@ -63,8 +63,6 @@
     flex-direction: row;
     position: relative;
     color: #707070;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-    z-index: 100;
 }
 
 .ORS-map {
@@ -97,7 +95,7 @@
 }
 
 .ORS-mainPanel {
-    top: 40px;
+    top: 41px;
     position: absolute;
     overflow: auto;
     width: 348px;
@@ -108,17 +106,18 @@
 }
 
 .ORS-navigation {
-    top: 0;
+    -top: 0;
     left: 40px;
     width: 348px;
-    position: absolute;
+    position: relative;
     border-left: 1px solid #CCC;
+    border-bottom: 1px solid #CCC;
     background-color: #F0F0F0;
     height: 40px;
 }
 
 .ORS-light {
-    background-color: #e6e6e6;
+    background-color: #fafafa;
 }
 
 
@@ -126,7 +125,7 @@
 .disclaimer {
     bottom: 0;
     position: absolute;
-    background-color: #F7F7F7;
+    background-color: rgb(96, 125, 139);
     height: 20px;
     width: 388px;
     border-top: 1px solid #EBEBEB;
@@ -136,6 +135,7 @@
     font-size: 80%;
     margin-right: 10px;
     padding-left: 5px;
+    color: #F0F0F0;
 }
 
 #navbar {
@@ -216,6 +216,7 @@
 
 #topMenu > li > a, #info {
     color: white;
+    font-size: 18px;
 }
 
 #info {
@@ -561,7 +562,7 @@
 .directions-summary-info {
     float: left;
     margin-right: 10px;
-    font-size: 14px;
+    font-size: 16px;
     padding-bottom: 5px;
 }
 
@@ -884,7 +885,6 @@ h3 {
 
 a:link, a:visited {
     text-decoration: none;
-    color: #707070;
 }
 
 a:hover, a:active {
@@ -919,12 +919,12 @@ a.options.active {
     list-style-type: none;
 }
 
-button.routeOptionsButton {
-    width: 44px;
-    padding: 10px 10px 10px 10px;
+.transparent {
+    background-color: transparent !important;
 }
 
-button.optionsButton {
+/* BUTTON GROUPS */
+button.routeOptionsButton, button.optionsButton {
     width: 44px;
     padding: 10px 10px 10px 10px;
 }
@@ -940,6 +940,12 @@ button.optionsButton {
 .btn-group>.btn:last-child {
     border-radius: 0px;
     -margin-left: 50px;
+}
+
+/* BUTTONS */
+.primary:focus {
+    outline: none;
+    color: #707070;
 }
 
 .primary i, .primary-menu i {
@@ -960,7 +966,7 @@ button.optionsButton {
     background: #F0F0F0;
     border-radius: 0px;
     border: none;
-    height: 40px;
+    height: 41px;
     color: #808080;
     border-bottom: 1px solid #EBEBEB;
     display: block;
@@ -970,16 +976,24 @@ button.optionsButton {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
-.transparent {
-    background-color: transparent !important;
+.primary.active, .primary:active {
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    color: rgb(96, 125, 139);
+    background-color: transparent;
+    border: none;
 }
 
-.btn-group>.primary:hover {
-    background: #ccc important;
-    border-color: transparent;
+
+/* TOP MENU BUTTONS */
+.btn-group>.primary:hover, .btn-group>.primary.active, .btn-group>.primary:active, .optionsButton:hover, .optionsButton.active, .optionsButton:active {
+    background: transparent;
+    border-bottom: 1px solid rgb(96, 125, 139);
     color: rgb(96, 125, 139);
 }
 
+/* LEFT MENU BUTTONS */
 .btn-group>.primary-menu:hover {
     background: transparent;
     color: #444;
@@ -998,29 +1012,6 @@ button.optionsButton {
     -moz-box-shadow: none !important;
     color: #444;
     background-color: transparent;
-}
-
-
-.primary:active {
-    box-shadow: none !important;
-    -webkit-box-shadow: none !important;
-    -moz-box-shadow: none !important;
-    border: none !important;
-    color: rgb(96, 125, 139);
-}
-
-
-.primary:focus {
-    outline: none;
-    color: #707070;
-}
-
-.primary.active {
-    box-shadow: none !important;
-    -webkit-box-shadow: none !important;
-    -moz-box-shadow: none !important;
-    border: none !important;
-    color: rgb(96, 125, 139);
 }
 
 .input-append input {
@@ -1427,7 +1418,7 @@ img {
 /* ORS Contact Form */
 
 .feedback {
-    width: 100%;
+    width: 320px;
 }
 
 .feedback a {

@@ -14,10 +14,6 @@ var Languages = (function(w) {'use strict';
 	 */
 	function applyLanguage() {
 		
-		//nav bar on top
-		$('#menuLinkSitePrefs').html(p.translate('sitePreferences'));
-		$('#menuLinkInfo').html(p.translate('contact'));
-
 		//sidebar left
 		$('#routeLabel').html(p.translate('routePlanner'));
 		$('#searchLabel').html(p.translate('search'));
