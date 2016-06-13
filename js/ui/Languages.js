@@ -177,6 +177,16 @@ var Languages = (function(w) {'use strict';
 		$('#contextEnd').html(p.translate('useAsEndPoint'));
 
 		$("#maxSpeedInput").attr("placeholder", p.translate('maxSpeed')).val("").focus().blur();
+
+		//Tooltips
+		$('#tt-optimize').attr('data-original-title',p.translate('optimizeWP'));
+		$('#orderRoute').attr('data-original-title',p.translate('reorderWP'));
+		$('#resetRoute').attr('data-original-title',p.translate('reset'));
+		$('#zoomToRouteButton').attr('data-original-title',p.translate('zoom'));
+		$('#analyzeAccessibility').attr('data-original-title',p.translate('analyzeAccess'));
+		$('#removeAccessibility').attr('data-original-title',p.translate('removeAccess'));
+		$('#export-gpx').attr('data-original-title',p.translate('exportGPX'));
+		$('#a').attr('data-original-title',p.translate('importGPX'));
 	}
 
 	/**
