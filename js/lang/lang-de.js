@@ -435,5 +435,15 @@ var lang_de = {
     'Sand':  'Sand',
     'Woodchips': 'Holzschnitzel',
     'Grass': 'Gras',
-    'GrassPaver': 'Rasengittersteine'
+    'GrassPaver': 'Rasengittersteine',
+
+    //Tooltips
+    'optimizeWP': 'Wegpunkt-Optimierung',
+    'reorderWP': 'Wegpunkte-Neuordnung',
+    'reset': 'Zurücksetzen',
+    'zoom': 'Zur Route zoomen',
+    'analyzeAccess': 'Erreichbarkeit analysieren',
+    'removeAccess': 'Entfernen',
+    'exportGPX': 'Download der Route im GPX-Format',
+    'importGPX': 'Upload mehrerer Tracks im GPX-Format',
 };

@@ -84,7 +84,6 @@ var Ui = (function(w) {
     }
 
     function showServiceTimeoutPopup(arg) {
-        console.log('show')
         if (arg === true) {
             $('#serviceTimeout').children('label').empty();
             var label = new Element('label');
