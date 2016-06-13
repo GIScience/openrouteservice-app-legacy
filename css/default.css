@@ -15,6 +15,16 @@
  * @version: 0.1
  */
 
+.rotate {
+    transform: rotate(-180deg);
+    /*transform: rotate(180deg);*/
+    transition: .3s;
+}
+.rotate-reset {
+    transform: rotate(0deg);
+    transition: .3s;
+}
+
 /* LEAFLET CUSTOM STYLES FOR DEFAULT CONTROLLERS AND CUSTOM ONES */
 
 .leaflet-control-customNavMenuToggle {
@@ -25,13 +35,12 @@
 	font-size:20px;
 	line-height:26px;
 	color: #70707D;
-    transform: rotate(180deg);
+    /*transform: rotate(180deg);*/
 }
 
 .leaflet-control-customNavMenuToggle:before {
-	content: "\e800";
-	font-family: ruifont;
-
+	content: "\f053";
+	font-family:FontAwesome;
 }
 
 .leaflet-control-customLocate{
@@ -45,8 +54,8 @@
 }
 
 .leaflet-control-customLocate:before{
-    content: "\e802";
-    font-family: ruifont;
+    content: "\f05b";
+    font-family: FontAwesome;
     }
 
 .leaflet-control-layers-toggle {
@@ -72,8 +81,6 @@
     text-decoration: none;
     color: #707070;
 }
-
-
 
 /* BASE LAYOUT */
 .ORS {
