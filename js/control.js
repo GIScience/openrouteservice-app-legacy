@@ -430,6 +430,7 @@ var Controller = (function(w) {
      * @param vectorId: id of the map feature to zoom to
      */
     function handleZoomToWaypoint(vectorId) {
+
         map.zoomToFeature(map.layerRoutePoints, ui.getFeatureIdOfWaypoint(vectorId), 16);
     }
     /**
@@ -451,6 +452,7 @@ var Controller = (function(w) {
      * @param params: id or ids of the map feature to zoom to
      */
     function handleZoomToRouteInstruction(params) {
+        console.log(params)
         map.zoomToFeature(map.layerRouteLines, params);
     }
     /**
@@ -458,6 +460,7 @@ var Controller = (function(w) {
      * @param vectorId: id of the map feature to zoom to
      */
     function handleZoomToRouteCorner(vectorId) {
+        console.log(vectorId)
         map.zoomToFeature(map.layerCornerPoints, vectorId);
     }
     /* *********************************************************************
@@ -1347,11 +1350,12 @@ var Controller = (function(w) {
         }
         // if routeOpt is not in getVars then use Car for init
         routeOpt = preferences.loadRouteOptions(routeOpt);
-        if (routeOpt == undefined || routeOpt == null || routeOpt == 'undefined') {
+        if (routeOpt === undefined || routeOpt === null || routeOpt == 'undefined') {
             ui.setRouteOption(list.routePreferences.get('car'));
         } else {
             ui.setRouteOption(routeOpt);
         }
+        ui.updateProfileOptions();
         routeOptType = preferences.loadRouteOptionsType(routeOptType);
         ui.setRouteOptionType(routeOptType);
         routeWeight = preferences.loadRouteWeight(routeWeight);

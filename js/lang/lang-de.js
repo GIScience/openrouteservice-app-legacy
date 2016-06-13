@@ -12,7 +12,7 @@ var lang_de = {
 	'routeOptions':  'Art der Route',
 	'routeExtras':  'Route-Extras',
 	'feedback': 'Feedback',
-	
+
 	//Map Layernames
 	'layer1' : 'OpenMapSurfer Karte',
 	'layer2' : 'OSM-WMS weltweit',
@@ -100,15 +100,15 @@ var lang_de = {
 	'busHeavyTruck' : 'Bus',
 	'hgvHeavyTruck' : 'Schwerlasttransport',
 	'deliveryHeavyTruck' : 'Lieferverkehr',
-	'hazardMaterial' : '<i class="icon-tint "></i>&nbsp;Gefahrguttransport',
+	'hazardMaterial' : 'Gefahrguttransport',
 	'truckMain' : 'Truck Einstellungen (in meter/tonnen)',
 	'agriculturalHeavyTruck' : 'Agrarfahrzeug',
 	'forestryHeavyTruck' : 'Forstfahrzeug',
 
-	'avoidRoadMain' : '<i class="fa fa-road "></i>&nbsp;&nbsp;Stra&szlig;en vermeiden &nbsp;&nbsp;<span class="caret">',
-	'avoidBikeMain' : '<i class="fa fa-road "></i>&nbsp;&nbsp;Stra&szlig;en vermeiden &nbsp;&nbsp;<span class="caret">',
-	'avoidAreasMain' : '<i class="icon-pencil "></i>&nbsp;&nbsp;Gebiete vermeiden &nbsp;&nbsp;<span class="caret">',
-	'avoidPedesMain' : '<i class="icon-ban-circle "></i>&nbsp;&nbsp;Stra&szlig;en vermeiden  &nbsp;&nbsp;<span class="caret">',
+	'avoidRoadMain' : 'Stra&szlig;en vermeiden',
+	'avoidBikeMain' : 'Stra&szlig;en vermeiden',
+	'avoidAreasMain' : 'Gebiete vermeiden',
+	'avoidPedesMain' : 'Stra&szlig;en vermeiden',
 
 	'avoidMotorways':  'Autobahnen',
 	'avoidTollways':  'Mautstra&szlig;en',

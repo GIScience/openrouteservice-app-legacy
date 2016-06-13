@@ -108,10 +108,10 @@ var lang_en = {
 
     'viaOptimize' : 'Optimize waypoint arrangement',
 
-    'avoidRoadMain': '<i class="fa fa-road"></i>&nbsp;&nbsp;avoid road types &nbsp;&nbsp;<span class="caret">',
-    'avoidBikeMain': '<i class="fa fa-road"></i>&nbsp;&nbsp;avoid road types &nbsp;&nbsp;<span class="caret">',
-    'avoidAreasMain': '<i class="icon-pencil"></i>&nbsp;&nbsp;avoid areas &nbsp;&nbsp;<span class="caret">',
-    'avoidPedesMain': '<i class="icon-ban-circle"></i>&nbsp;&nbsp;avoid road types  &nbsp;&nbsp;<span class="caret">',
+    'avoidRoadMain': 'avoid road types',
+    'avoidBikeMain': 'avoid road types',
+    'avoidAreasMain': 'avoid areas',
+    'avoidPedesMain': 'avoid road types',
    
     'avoidFerryBike': 'ferry connections',
     'avoidunpavedRoadsBike': 'unpaved roads',

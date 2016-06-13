@@ -11,25 +11,40 @@
 
 
 /**
- * @author: Timothy Ellersiek, timothy.ellersiek@geog.uni-heidelberg.de, Enrico Steiger, enrico.steiger@geog.uni-heidelberg.de 
+ * @author: Timothy Ellersiek, timothy.ellersiek@geog.uni-heidelberg.de, Maxim Rylov, rylov@geog.uni-heidelberg.de, Enrico Steiger, enrico.steiger@geog.uni-heidelberg.de, Rui Nunes, rui.nunes1985@gmail.com
  * @version: 0.1
  */
-
 
 /* LEAFLET CUSTOM STYLES FOR DEFAULT CONTROLLERS AND CUSTOM ONES */
 
 .leaflet-control-customNavMenuToggle {
+    width: 26px;
+    height: 26px;
+	position: relative;
+	text-align: center;
+	font-size:20px;
+	line-height:26px;
+	color: #70707D;
+}
+
+.leaflet-control-customNavMenuToggle:before {
+	content: "\f0c9";
+	font-family: FontAwesome;	
+}
+
+.leaflet-control-layers a.leaflet-control-layers-toggle{
+    width: 26px;
+    height:26px;
+    border-radius: 5px;
     background-color: white;
-    background-image: url(../img/menu-icon.png);
+    background-image: url(../img/layers-icon.png);
     background-size: 20px 20px;
     background-position: center;
     background-repeat: no-repeat;
-    width: 30px;
-    height: 30px;
 }
 
-/* BASE LAYOUT */
 
+/* BASE LAYOUT */
 .ORS {
     display: flex;
     min-height: 100vh;
@@ -61,97 +76,70 @@
     flex: 0 0 50px;
 }
 
-.ORS-routePanel {
-    top: 38px;
+
+/* STYLE FOR HEADER AND OBJECTS WITHIN THE HEADER */
+
+/* STYLE FOR SIDEBAR AND OBJECTS WITHIN THE SIDEBAR */
+
+/* STYLE FOR MAP AND OBJECTS WITHIN THE MAP */
+
+
+
+.ORS-menuPanel {
+    top: 0;
     position: absolute;
     overflow: auto;
-    width: 100%;
+    width: 40px;
     bottom: 20px;
-    -padding-bottom: 10px;
-    background-color: #ffffff;
+    background-color: #F0F0F0;
 }
 
-#ORS-functionMenu {
-    background-color: #F7F7F7;
-    height: 38px;
-    border: none;
+.ORS-mainPanel {
+    top: 41px;
+    position: absolute;
+    overflow: auto;
+    width: 348px;
+    bottom: 20px;
+    left: 40px;
+    border-left: 1px solid #CCC;
+    background-color: #FFF;
 }
 
-#ORS-functionMenu ul > li > a {
-    border-left: transparent;
-    border-right: transparent;
-    border-top: transparent;
-    border-bottom: 1.5px solid #E0E0E0;
-    border-radius: 0;
-    color: #555555;
+.ORS-navigation {
+    -top: 0;
+    left: 40px;
+    width: 348px;
+    position: relative;
+    border-left: 1px solid #CCC;
+    border-bottom: 1px solid #CCC;
+    background-color: #F0F0F0;
+    height: 40px;
 }
 
-#ORS-functionMenu > ul > li > a:hover {
-    /* show active tabs in black with border */
-    color: black;
-    border-bottom: 1.5px solid black;
-    cursor: default;
-    border-radius: 0;
-    background-color: transparent;
+.ORS-light {
+    background-color: #fafafa;
 }
 
-#ORS-functionMenu > ul > li.active > a, #ORS-functionMenu > ul > li.active > a:hover, #ORS-functionMenu > ul > li.active > a:focus {
-    color: black;
-    cursor: default;
-    -border-bottom: 1.5px solid black;
-    background-color: transparent;
-}
+
 
 .disclaimer {
     bottom: 0;
     position: absolute;
-    background-color: #F7F7F7;
+    background-color: rgb(96, 125, 139);
     height: 20px;
-    width: 100%;
+    width: 388px;
     border-top: 1px solid #EBEBEB;
-    padding-left: 5px;
 }
 
 .disclaimer a, .disclaimer div {
     font-size: 80%;
     margin-right: 10px;
-}
-
-/* Styles for responsive behaviour on mobile devices */
-
-@media screen and (min-device-width: 320px) and (max-device-width: 680px) {
-    .ORS-main {
-        flex-direction: column;
-    }
-    .ORS-sidebar {
-        order: 2;
-        flex-basis: 50vh;
-    }
-    .ORS-map {
-        order: 1;
-    }
-    /* To hide the links in the top menu */
-    #topMenu {
-        display: none;
-    }
-    /* To hide the mouse position controller */
-    .leaflet-container .leaflet-control-mouseposition {
-        display: none;
-    }
-    .ORS-sidebarContent {
-        width: 100%;
-    }
-    .ORS-feedback, .routeExtrasContainer {
-        display: none;
-    }
+    padding-left: 5px;
+    color: #F0F0F0;
 }
 
 #navbar {
-    background-color: #383838;
-}
-
-#navbar a.brand {
-    font-weight: bold;
+    background-color: rgb(96, 125, 139);
 }
 
 #navbar #title {
@@ -176,21 +164,19 @@
     padding-top: 10px;
 }
 
+.ORS-padding {
+    padding-top: 20px;
+}
+
 .ORS-hr {
     border-bottom: 1px solid #F0F0F0;
 }
 
-#ORS-loading, #ORS-error {
-    padding-top: 8px;
-    padding-bottom: 8px;
-    line-height: 20px;
-    display: none;
+.ORS-hr-dark {
+    border-bottom: 1px solid #DDD;
 }
 
-#ORS-error {
-    padding-top: 8px;
-    padding-bottom: 8px;
-    line-height: 20px;
+#ORS-loading, #ORS-error {
     display: none;
 }
 
@@ -230,6 +216,7 @@
 
 #topMenu > li > a, #info {
     color: white;
+    font-size: 18px;
 }
 
 #info {
@@ -312,13 +299,11 @@
 }
 
 #bubble #permaText #copy {
-    font-weight: bold;
     cursor: pointer;
 }
 
 #bubble #permaText #open {
     margin-top: 5px;
-    font-weight: bold;
     cursor: pointer;
 }
 
@@ -356,9 +341,8 @@
     white-space: nowrap;
     cursor: pointer;
     margin-bottom: 3px;
-    background-color: #383838;
-    border-radius: 4px;
-    border-left: 2px solid #383838;
+    background-color: rgba(96, 125, 139, 0.9);
+    border-left: 2px solid #F0F0F0;
     color: white;
     min-height: 10px;
     -o-transition: .2s;
@@ -369,8 +353,8 @@
 }
 
 .mapContextMenu .contextWaypoint:hover {
-    background-color: rgba(0, 0, 0, 1);
-    border-left: 2px solid #0DD5FC;
+    background-color: rgba(96, 125, 139, 1);
+    border-left: 2px solid #444;
 }
 
 .mapContextMenu .leaflet-popup-content {
@@ -393,7 +377,7 @@
 }
 
 .mapContextMenu .leaflet-popup-tip {
-    border: 2px solid black;
+    border: 2px solid rgb(96, 125, 139);
     box-shadow: none;
     background-color: transparent;
     border-radius: 50%;
@@ -406,16 +390,13 @@
  * CSS for non-map elements
  */
 
-.headingElement {
-    font-weight: bold;
-}
+.headingElement {}
 
 
 /* labels for main tabs (plan route, search)*/
 
 .tabLabels {
     float: right;
-    font-weight: bold;
 }
 
 
@@ -437,13 +418,19 @@
 
 .waypointResult {
     margin-bottom: 10px;
+    width: 240px;
+    margin-left: 32px;
+}
+
+.waypointResult li span { 
+    position: relative; left: 10px; 
 }
 
 .removeWaypoint:before {
     display: block;
     float: right;
     width: 16px;
-    height: 16px;
+    font-size: 85%;
     padding-left: 3px;
     content: "\f00d";
     font-family: FontAwesome;
@@ -453,6 +440,7 @@
     display: block;
     float: right;
     width: 18px;
+    font-size: 85%;
     padding-left: 3px;
     content: "\f062";
     font-family: FontAwesome;
@@ -462,6 +450,7 @@
     display: block;
     float: right;
     width: 18px;
+    font-size: 85%;
     content: "\f063";
     font-family: FontAwesome;
 }
@@ -470,6 +459,7 @@
     display: block;
     float: right;
     width: 18px;
+    font-size: 85%;
     content: "\f021";
     font-family: FontAwesome;
 }
@@ -478,6 +468,7 @@
     display: block;
     float: right;
     width: 18px;
+    font-size: 85%;
     content: "\f041";
     font-family: FontAwesome;
 }
@@ -532,7 +523,7 @@
 }
 
 .directions-text {
-    padding: 3px 5px 0 40px;
+    padding: 3px 5px 0 30px;
     line-height: 16px;
     vertical-align: middle;
 }
@@ -549,10 +540,6 @@
     margin-left: 75px;
     line-height: 26px;
     font-size: 14px;
-}
-
-.directions-waypoint-address .main {
-    font-weight: bold;
 }
 
 .directions-waypoint-address .submain {
@@ -575,7 +562,7 @@
 .directions-summary-info {
     float: left;
     margin-right: 10px;
-    font-size: 14px;
+    font-size: 16px;
     padding-bottom: 5px;
 }
 
@@ -606,11 +593,10 @@
 }
 
 .directions-mode-container {
-    padding: 0 0 0 60px;
+    padding: 0 0 0 40px;
     position: absolute;
     left: 0px;
     right: 0;
-    -bottom: -14px;
     height: 30px;
     line-height: normal;
     font-weight: normal;
@@ -634,6 +620,22 @@
     height: 16px;
     width: auto;
     margin-left: 3px;
+}
+
+.fa-rotate-45 {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.fa-rotate-315 {
+    -webkit-transform: rotate(315deg);
+    -moz-transform: rotate(315deg);
+    -ms-transform: rotate(315deg);
+    -o-transform: rotate(315deg);
+    transform: rotate(315deg);
 }
 
 
@@ -683,14 +685,6 @@
     padding: 0 0 0 5px;
 }
 
-.optionsTable td:nth-child(2) {
-    border-left: 1px solid #c8c8c8;
-}
-
-.optionsTable td {
-    vertical-align: top;
-}
-
 .clickable {
     cursor: pointer;
 }
@@ -708,6 +702,7 @@
     background-repeat: no-repeat;
     background-size: 16px;
     background-position: 8px 3px;
+    font-size: 90%;
 }
 
 
@@ -724,6 +719,7 @@
 .routeInstructions {
     padding-top: 5px;
     padding-bottom: 5px;
+    font-size: 90%;
 }
 
 
@@ -798,6 +794,11 @@
     font-family: 'Source Sans Pro', sans-serif;
 }
 
+.leaflet-bar, .leaflet-bar a:last-child, .leaflet-bar a:first-child, .leaflet-control-layers {
+    border-radius: 0px;
+    background-color: #FAFAFA;
+}
+
 
 /*preferences popup*/
 
@@ -827,7 +828,7 @@ a img {
 
 body {
     font-size: 90%;
-    line-height: 1.4;
+    -line-height: 1.4;
     color: rgba(0, 0, 0, 0.8);
     background-color: #fff;
     color: #444;
@@ -836,7 +837,7 @@ body {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
-input, .form-inline input, textarea, .form-inline select, .guiComponent > input {
+input, .form-inline input, textarea, select, .form-inline select, .guiComponent > input {
     font-family: 'Source Sans Pro', sans-serif;
     border-radius: 0;
     margin-bottom: 0px;
@@ -883,9 +884,7 @@ h3 {
 }
 
 a:link, a:visited {
-    font-weight: bold;
     text-decoration: none;
-    color: #555555;
 }
 
 a:hover, a:active {
@@ -920,16 +919,14 @@ a.options.active {
     list-style-type: none;
 }
 
-button.routeOptionsButton {
-    height: 30px;
-    width: 44px;
-    padding: 2px 2px 2px 2px;
+.transparent {
+    background-color: transparent !important;
 }
 
-button.weightOptions {
-    height: 30px;
+/* BUTTON GROUPS */
+button.routeOptionsButton, button.optionsButton {
     width: 44px;
-    padding: 2px 2px 2px 2px;
+    padding: 10px 10px 10px 10px;
 }
 
 .btn-group+.btn-group {
@@ -942,33 +939,79 @@ button.weightOptions {
 
 .btn-group>.btn:last-child {
     border-radius: 0px;
+    -margin-left: 50px;
 }
 
-.btn-group>.primary i {
-    font-size: 95%;
+/* BUTTONS */
+.primary:focus {
+    outline: none;
+    color: #707070;
+}
+
+.primary i, .primary-menu i {
+    font-size: 105%;
 }
 
 .primary {
     background: #F0F0F0;
     border-radius: 0px;
-    border-color: #F0F0F0;
+    border: none;
     color: #707070;
-    cursor: pointer;
     box-shadow: none;
     text-shadow: none;
     font-family: 'Source Sans Pro', sans-serif;
 }
 
-.primary:hover {
-    background: #D7D7D7 !important;
-    border-color: #D7D7D7 !important;
+.primary-menu {
+    background: #F0F0F0;
+    border-radius: 0px;
+    border: none;
+    height: 41px;
+    color: #808080;
+    border-bottom: 1px solid #EBEBEB;
+    display: block;
+    width: 100%;
+    box-shadow: none;
+    text-shadow: none;
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
-.primary.active, .dropdown-toggle {
+.primary.active, .primary:active {
     box-shadow: none !important;
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;
+    color: rgb(96, 125, 139);
+    background-color: transparent;
     border: none;
+}
+
+
+/* TOP MENU BUTTONS */
+.btn-group>.primary:hover, .btn-group>.primary.active, .btn-group>.primary:active, .optionsButton:hover, .optionsButton.active, .optionsButton:active {
+    background: transparent;
+    border-bottom: 1px solid rgb(96, 125, 139);
+    color: rgb(96, 125, 139);
+}
+
+/* LEFT MENU BUTTONS */
+.btn-group>.primary-menu:hover {
+    background: transparent;
+    color: #444;
+}
+
+.btn-group>.primary-menu:active {
+    background: transparent;
+    border-color: transparent;
+    color: #444;
+    outline: none;
+}
+
+.btn-group>.primary-menu.active, .btn-group>.primary-menu:focus {
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    color: #444;
+    background-color: transparent;
 }
 
 .input-append input {
@@ -977,19 +1020,6 @@ button.weightOptions {
 
 .input-append .btn:last-child {
     border-radius: 0;
-}
-
-#weightingDropdown {
-    margin-bottom: 3px;
-    float: right;
-}
-
-#extendedRouteOptions {
-    margin-top: 4px;
-}
-
-.divAroundButtons {
-    float: left;
 }
 
 
@@ -1111,9 +1141,19 @@ button.weightOptions {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
-.radio {
-    padding-bottom: 5px;
+.ORS-close {
+    display:block;
+    float:right;
+    width:17px;
+    height:29px;
+    color: #707070;
 }
+
+.ORS-center {
+    text-align: center;
+    line-height: 40px;
+}
+
 
 #TruckTabs>li>a {
     font-size: 90%;
@@ -1128,7 +1168,6 @@ button.weightOptions {
 
 .mySlider input[type="text"] {
     width: 45px;
-    font-weight: bold;
     margin-left: 10px;
     font-size: 90%;
 }
@@ -1138,21 +1177,12 @@ button.weightOptions {
     width: 130px;
     border: 0;
     color: #6392C2;
-    font-weight: bold;
 }
 
 .mySlider img {
     margin-top: -5px;
 }
 
-.wheelchairSelect {
-    width: 170px;
-    margin-top: 8px;
-}
-
-.icon-eye-open {
-    background-position: -96px -118px;
-}
 
 #route_totalDistance {
     margin-top: 5px;
@@ -1164,40 +1194,15 @@ button.weightOptions {
 
 .right {
     float: right;
-    margin-left: 5px;
 }
 
 .left {
     float: left;
-    margin-right: 5px;
-}
-
-.panelTransparent {
-    background-color: transparent;
-    border: transparent;
-    box-shadow: none;
-}
-
-#hazardOptions {
-    margin-top: 10px;
-    background-color: #d8d8d8;
 }
 
 #currentLocation, #searchPlace, #searchPoi, #geoloc {
     margin: 10px;
     padding-bottom: 0px;
-}
-
-.panelLight {
-    background-color: #fff;
-}
-
-.panelMedium {
-    background-color: #f3f3f3;
-}
-
-.panelDark {
-    background-color: #eaeaea;
 }
 
 .showCurrentLocation {
@@ -1284,10 +1289,6 @@ img {
 
 .fileUploadForm > div {
     margin: 0px;
-}
-
-.routePreferenceBtns {
-    margin-bottom: 3px;
 }
 
 
@@ -1417,7 +1418,7 @@ img {
 /* ORS Contact Form */
 
 .feedback {
-    width: 100%;
+    width: 320px;
 }
 
 .feedback a {
@@ -1433,7 +1434,6 @@ img {
     cursor: pointer;
     /*Font*/
     color: #fff;
-    font-weight: bold;
     font-size: 14px;
 }
 
@@ -1477,4 +1477,57 @@ img {
     font-size: 14px;
     color: green;
     text-align: center;
+}
+
+
+/* Styles for responsive behaviour on mobile devices */
+
+@media screen and (min-width: 320px) and (max-width: 720px) {
+    .ORS-main {
+        flex-direction: column;
+    }
+    .ORS-sidebar {
+        order: 2;
+        flex-basis: 50vh;
+    }
+    .ORS-map {
+        order: 1;
+    }
+    /* To hide the links in the top menu */
+    #topMenu {
+        display: none;
+    }
+    /* To hide the mouse position controller */
+    .leaflet-container .leaflet-control-mouseposition {
+        display: none;
+    }
+    .ORS-sidebar {
+        box-shadow: none;
+    }
+    .ORS-sidebarContent {
+        width: 100%;
+    }
+    .feedbackContainer, .routeExtrasContainer, .ORS-header, .ORS-menuPanel {
+        display: none;
+    }
+    .ORS-mainPanel {
+        top: 40px;
+        position: absolute;
+        overflow: auto;
+        width: 100%;
+        bottom: 20px;
+        left: 0;
+        border-left: 1px solid #CCC;
+        background-color: #FFF;
+    }
+    .ORS-navigation {
+        left: 0;
+        width: 100%;
+    }
+    .disclaimer {
+        width: 100%;
+    }
+    .tooltip {
+        display: none !important;
+    }
 }
