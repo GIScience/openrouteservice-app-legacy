@@ -66,7 +66,6 @@ var Ui = (function(w) {
     }
 
     function showServiceTimeoutPopup(arg) {
-        console.log('show')
         if (arg === true) {
             $('#serviceTimeout').children('label').empty();
             var label = new Element('label');
@@ -766,6 +765,10 @@ var Ui = (function(w) {
      * The whole route is removed, waypoints are emptied or deleted (if more than two exist)
      */
     function handleResetRoute() {
+        // empty old summary
+        $('.directions-summary-info-container').remove();
+        // empty route types container
+        $('.routeTypesContainer').empty();
         //remove markers on map
         theInterface.emit('ui:resetRoute');
         //remove all existing waypoints
@@ -1384,12 +1387,14 @@ var Ui = (function(w) {
         var routeSummary = getSummaryInformation();
         // empty old summary
         $('.directions-summary-info-container').remove();
+        // empty route types container
+        $('.routeTypesContainer').empty();
         var pointInfo, unit, time, distanceInfo, actualDistanceInfo, gradientInfo;
         var summaryContainer = new Element('div', {
             'class': 'directions-summary-info-container'
         });
         // time summary
-        pointInfo = new Element('span', {
+        pointInfo = new Element('div', {
             'class': 'directions-summary-info',
             'data-toggle': 'tooltip',
             'id': 'tt-time',

@@ -68,6 +68,11 @@
     font-family: ruifont;
 }
 
+.leaflet-control a:link, .leaflet-control a:visited, .leaflet-control a:hover {
+    text-decoration: none;
+    color: #707070;
+}
+
 
 
 /* BASE LAYOUT */
