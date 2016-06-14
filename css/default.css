@@ -995,7 +995,7 @@ a.options.active {
 
 button.routeOptionsButton, button.optionsButton {
     width: 44px;
-    padding: 10px 10px 10px 10px;
+    height: 41px;
 }
 
 .btn-group+.btn-group {
@@ -1024,6 +1024,19 @@ button.routeOptionsButton, button.optionsButton {
 }
 
 .primary {
+    background: #F0F0F0;
+    border-radius: 0px;
+    border-left: transparent;
+    border-right: transparent;
+    border-top: transparent;
+    border-bottom: 1px solid #CCC;
+    color: #707070;
+    box-shadow: none;
+    text-shadow: none;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.primary-control {
     background: #F0F0F0;
     border-radius: 0px;
     border: none;
@@ -1584,7 +1597,7 @@ img {
         display: none;
     }
     .ORS-mainPanel {
-        top: 40px;
+        top: 42px;
         position: absolute;
         overflow: auto;
         width: 100%;
