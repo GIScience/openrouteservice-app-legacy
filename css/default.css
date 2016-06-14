@@ -155,6 +155,39 @@
             }
 
                 /* ROUTE CONTAINER */
+                    /* WEIGHTING OPTIONS */
+                    /*#dropdown_weighting {
+                        padding-left: 5px;
+                        padding-right: 10px;
+                        min-width: 100px;
+                        overflow: auto;
+                        overflow-x: auto;
+                        overflow-y: auto;
+                        border-radius: 0;
+                    }
+                    
+                    #dropdown_weighting label {
+                        font-size: 85%;
+                        margin-bottom: 0px;
+                    }*/
+                    
+                    /* AREAS TO AVOID OPTIONS */
+                    /*#dropdown_avoid_areas {
+                        padding-left: 10px;
+                    }
+                    
+                    #dropdown_avoid_roads label, #dropdown_weighting label {
+                        font-size: 85%;
+                    }*/
+
+                    /* ROADS TO AVOID */
+                    /*.dropdown_avoid {
+                        padding-left: 5px;
+                        padding-right: 5px;
+                        padding-top: 5px;
+                        font-size: 90%;
+                        border-radius: 0;
+                    }*/
 
                 /* ACCESSIBILITY ANALYSIS */
 
@@ -248,8 +281,6 @@
 
     /* STYLE FOR ELEMENTS ON NAV SECTION (MAP SECTION) */
         /* MAP CONTROLLERS */
-        
-        /* LEAFLET CUSTOM STYLES FOR DEFAULT CONTROLLERS AND CUSTOM ONES */
 
         .leaflet-control-customNavMenuToggle, .leaflet-control-customLocate {
             width: 26px;
@@ -260,8 +291,6 @@
             color: #70707D;
             cursor: pointer;
         }
-        
-        
         
         .leaflet-retina .leaflet-control-layers-toggle, .leaflet-control-layers-toggle {
             background-image: none;
@@ -274,6 +303,72 @@
             text-align: center;
             line-height: 26px;
             color: #70707D;
+        }
+
+        .elevation-collapsed {
+            background: #FAFAFA;
+            border-radius: 0;
+        }
+        
+        .steelblue-theme.leaflet-control.elevation .elevation-toggle {
+            border-radius: 0;
+            -webkit-border-radius: 0;
+            width: 26px;
+            height: 26px;
+        }
+        
+        .steelblue-theme.leaflet-control.elevation .elevation-toggle-icon {
+            background-size: 16px 11px;
+        }
+
+        /* CONTEXT MENU STYLES (WHEN CLICKING WITH THE RIGHT MOUSE BUTTON ON THE MAP AREA) */
+        .mapContextMenu .contextWaypoint {
+            padding: 3px 10px 3px 10px;
+            white-space: nowrap;
+            cursor: pointer;
+            margin-bottom: 3px;
+            background-color: rgba(96, 125, 139, 0.9);
+            border-left: 2px solid #F0F0F0;
+            color: white;
+            min-height: 10px;
+            -o-transition: .2s;
+            -ms-transition: .2s;
+            -moz-transition: .2s;
+            -webkit-transition: .2s;
+            transition: .2s;
+        }
+        
+        .mapContextMenu .contextWaypoint:hover {
+            background-color: rgba(96, 125, 139, 1);
+            border-left: 2px solid #444;
+        }
+        
+        .mapContextMenu .leaflet-popup-content {
+            -position: absolute;
+            left: 2.5em;
+            bottom: 0.7em;
+        }
+        
+        .mapContextMenu .leaflet-popup-content-wrapper {
+            background: transparent;
+            box-shadow: none;
+        }
+        
+        .mapContextMenu .leaflet-popup-tip-container {
+            margin: 0 auto;
+            position: relative;
+            overflow: visible;
+            width: 100px;
+            height: 20px;
+        }
+        
+        .mapContextMenu .leaflet-popup-tip {
+            border: 2px solid rgb(96, 125, 139);
+            box-shadow: none;
+            background-color: transparent;
+            border-radius: 50%;
+            width: 10px;
+            height: 10px;
         }
 
         /* PERMALINK */
@@ -355,6 +450,22 @@
             top: 10px;
         }
 
+        /* GISCIENCE LOGO */
+        .ORS-logo {
+            background-image: url('../img/logo_giscience.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 64px;
+            width: 64px;
+            height: 64px;
+            bottom: 15px;
+            text-indent: -9999px;
+            display: block;
+            right: 5px;
+            position: absolute;
+            z-index: 9999;
+        }
+
 
 
 /* ******************************************/
@@ -367,30 +478,31 @@
     
     /* MAP CONTROLLERS */
 
-    
+    /* toggle layers controller */
     .leaflet-control-layers a.leaflet-control-layers-toggle:before{
         content: "\e804";
         font-family: ruifont;
     }
-    
-    .leaflet-control a:link, .leaflet-control a:visited, .leaflet-control a:hover {
-        text-decoration: none;
-        color: #707070;
-    }
 
-
+    /* for toggle menu controller */
     .leaflet-control-customNavMenuToggle:before {
         content: "\f07e";
         font-family: FontAwesome;
     }
     
+    /* for locate controller */
     .leaflet-control-customLocate:before {
         content: "\f05b";
         font-family: FontAwesome;
     }
 
+    /* for all controllers */
+    .leaflet-control a:link, .leaflet-control a:visited, .leaflet-control a:hover {
+        text-decoration: none;
+        color: #707070;
+    }
 
-    /* ELEMENTS ON MAP */
+    /* for elements on permalink */
     #bubble:after {
         content: '';
         position: relative;
@@ -465,11 +577,6 @@
 /* ****************************************************************/
 
 
-
-
-
-
-
 .ORS-light {
     background-color: #fafafa;
 }
@@ -498,8 +605,6 @@
     border-bottom: 1px solid #DDD;
 }
 
-
-
 .clear:after {
     clear: both;
     content: "";
@@ -507,24 +612,22 @@
 }
 
 
-
-
 /* STYLES FOR LINKS WITHIN THE HEADER */
 
 
 
-#info {
+/*#info {
     margin-left: 112px;
     height: 13px;
     font-weight: normal;
     text-align: center;
     line-height: 11px;
-}
+}*/
 
 
 /* STYLES FOR THE SIDEBAR AND SIDEBAR CONTENT */
 
-#routingButton {
+/*#routingButton {
     top: 215px;
     background-image: url('../img/route.png');
 }
@@ -538,7 +641,7 @@
     margin-right: 5px;
     width: 15px;
     vertical-align: middle;
-}
+}*/
 
 
 /**
@@ -547,85 +650,7 @@
 
 
 
-.elevation-collapsed {
-    background: #FAFAFA;
-    border-radius: 0;
-}
 
-.steelblue-theme.leaflet-control.elevation .elevation-toggle {
-    border-radius: 0;
-    -webkit-border-radius: 0;
-    width: 26px;
-    height: 26px;
-}
-
-.steelblue-theme.leaflet-control.elevation .elevation-toggle-icon {
-    background-size: 16px 11px;
-}
-
-.ORS-logo {
-    background-image: url('../img/logo_giscience.png');
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: 64px;
-    width: 64px;
-    height: 64px;
-    bottom: 15px;
-    text-indent: -9999px;
-    display: block;
-    right: 5px;
-    position: absolute;
-    z-index: 9999;
-}
-
-.mapContextMenu .contextWaypoint {
-    padding: 3px 10px 3px 10px;
-    white-space: nowrap;
-    cursor: pointer;
-    margin-bottom: 3px;
-    background-color: rgba(96, 125, 139, 0.9);
-    border-left: 2px solid #F0F0F0;
-    color: white;
-    min-height: 10px;
-    -o-transition: .2s;
-    -ms-transition: .2s;
-    -moz-transition: .2s;
-    -webkit-transition: .2s;
-    transition: .2s;
-}
-
-.mapContextMenu .contextWaypoint:hover {
-    background-color: rgba(96, 125, 139, 1);
-    border-left: 2px solid #444;
-}
-
-.mapContextMenu .leaflet-popup-content {
-    -position: absolute;
-    left: 2.5em;
-    bottom: 0.7em;
-}
-
-.mapContextMenu .leaflet-popup-content-wrapper {
-    background: transparent;
-    box-shadow: none;
-}
-
-.mapContextMenu .leaflet-popup-tip-container {
-    margin: 0 auto;
-    position: relative;
-    overflow: visible;
-    width: 100px;
-    height: 20px;
-}
-
-.mapContextMenu .leaflet-popup-tip {
-    border: 2px solid rgb(96, 125, 139);
-    box-shadow: none;
-    background-color: transparent;
-    border-radius: 50%;
-    width: 10px;
-    height: 10px;
-}
 
 
 /**
@@ -1084,7 +1109,7 @@ a img {
 
 /*avoid layer names too close to radio button */
 
-body {
+/*body {
     font-size: 90%;
     -line-height: 1.4;
     color: rgba(0, 0, 0, 0.8);
@@ -1093,7 +1118,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Source Sans Pro', sans-serif;
-}
+}*/
 
 input, .form-inline input, textarea, select, .form-inline select, .guiComponent > input {
     font-family: 'Source Sans Pro', sans-serif;
@@ -1491,39 +1516,12 @@ button.routeOptionsButton, button.optionsButton {
 
 /* dropdown of road types to avoid */
 
-.dropdown_avoid {
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 5px;
-    font-size: 90%;
-    border-radius: 0;
-}
+
 
 
 /* dropdown of route settings weighting */
 
-#dropdown_weighting {
-    padding-left: 5px;
-    padding-right: 10px;
-    min-width: 100px;
-    overflow: auto;
-    overflow-x: auto;
-    overflow-y: auto;
-    border-radius: 0;
-}
 
-#dropdown_weighting label {
-    font-size: 85%;
-    margin-bottom: 0px;
-}
-
-#dropdown_avoid_areas {
-    padding-left: 10px;
-}
-
-#dropdown_avoid_roads label, #dropdown_weighting label {
-    font-size: 85%;
-}
 
 
 /*fixes broken map tiles with OpenLayer 2.12*/
@@ -1553,11 +1551,6 @@ img {
 .fileUploadForm > div {
     margin: 0px;
 }
-
-
-/*popup with information about customizing ORS*/
-
-
 
 
 /* popup with information about a service timeout */
