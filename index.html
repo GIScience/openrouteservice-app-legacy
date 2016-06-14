@@ -18,10 +18,14 @@
 		
 		<!-- LEAFLET -->
 		<link rel="stylesheet" type="text/css" href="css/leaflet.css">
-		
+
 		<!-- LEAFLET PLUGINS -->
 		<link rel="stylesheet" type="text/css" href="css/leaflet.elevation-0.0.4.css"> <!-- ELEVATION PLUGIN -->
 		<link rel="stylesheet" type="text/css" href="css/MarkerCluster.css" /> <!-- MARKER CLUSTER PLUGIN -->
+
+		<!-- JQUERY PLUGINS -->
+		<link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.min.css">
+
 		<link rel="stylesheet" type="text/css" href="css/MarkerCluster.Default.css" />
 		<link rel="stylesheet" type="text/css" href="css/L.Control.MousePosition.css" /> <!-- MOUSE POSITION PLUGIN -->
 
@@ -108,7 +112,7 @@
 					</div>
 				</div>
 				<div class="ORS-mainPanel">
-					<div id="routeContainer" data-id="ORS-routeContent" class="ORS-panel route">
+					<div id="routeContainer" data-id="ORS-routeContent" class="route">
 						<div id="routingPanel">
 						    <div id="optionsContainer" class="routeOptions ORS-panel-sub ORS-light" style="display: none;">
 						        <div class="ORS-panel-sub ORS-all ORS-hr-dark" id="weightingOptions" style="display: none;">
@@ -474,10 +478,10 @@
 							</form>
 							<div class="clear">
 								<div class="left">
-    								<button class="btn primary" id="analyzeAccessibility" type="button" data-toggle="tooltip" title="" data-original-title="Calculate accessibility"><i class="fa fa-fw fa-bullseye"></i><span id="analyzeAccessibilityLabel"></span></button>
+    								<button class="btn primary" data-container="body" id="analyzeAccessibility" type="button" data-toggle="tooltip" title="" data-original-title="Calculate accessibility"><i class="fa fa-fw fa-bullseye"></i><span id="analyzeAccessibilityLabel"></span></button>
     							</div>
     							<div class="left">
-    								<button class="btn primary" id="removeAccessibility" style="display:none" type="button" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-remove"></i></button>
+    								<button class="btn primary" data-container="body" id="removeAccessibility" style="display:none" type="button" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-remove"></i></button>
     							</div>
     						</div>
 							<div class="ORS-alert alert alert-info" id="accessibilityCalculation" style="display: none;">
@@ -629,6 +633,7 @@
 		<script type="text/javascript" src="lib/javascript.util.min.js"></script>
 		<script type="text/javascript" src="lib/jsts.min.js"></script>
 		<script type="text/javascript" src="lib/OverPassLayer.js"></script>
+		<script type="text/javascript" src="lib/jquery.mCustomScrollbar.concat.min.js"></script>
 		<script type="text/javascript" src="js/namespaces.js"></script>
 		<script type="text/javascript" src="js/util.js"></script>
 		<script type="text/javascript" src="js/list.js"></script>
@@ -661,5 +666,14 @@
 		<script type="text/javascript" src="js/lang/lang-ua.js"></script>
 		<script type="text/javascript" src="js/lang/lang-cn.js"></script>
 		<script type="text/javascript" src="js/lang/lang-cnsimple.js"></script>
+		<script>
+		    (function($){
+				$(window).on("load",function(){
+					$(".ORS-mainPanel").mCustomScrollbar({
+			        	theme:"ors-theme",autoHideScrollbar: true
+			      });
+		        });
+		    })(jQuery);
+		</script>
 	</body>
 </html>

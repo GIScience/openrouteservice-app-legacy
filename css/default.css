@@ -18,6 +18,9 @@
 /* *******************************************/
 /* START OF BLOCK STYLES (BASE LAYOUT STYLE) */
 /* *******************************************/
+
+/* BASE LAYOUT */
+
 .ORS {
     display: flex;
     min-height: 100vh;
@@ -72,6 +75,7 @@
         /* align horizontal */
         align-items: center;
         /* align vertical */
+        font-size: 16px;
     }
 
     #ORS-headIcon {
@@ -80,6 +84,9 @@
         width: 50px;
         height: 50px;
     }
+
+
+/* STYLE FOR SIDEBAR AND OBJECTS WITHIN THE SIDEBAR */
 
     #topMenu {
     /* contains link to Uni Heidelberg, etc. */
@@ -104,6 +111,7 @@
         font-size: 18px;
     }
 
+/* STYLE FOR MAP AND OBJECTS WITHIN THE MAP */
 
     /* STYLE FOR ELEMENTS ON ASIDE SECTION (LEFT NAVIGATION MENU SECTION) */
         /*STYLES FOR MENU PANEL ON THE LEFT */
@@ -213,8 +221,7 @@
             .disclaimer {
                 bottom: 0;
                 position: absolute;
-                background-color: rgb(96, 125, 139);
-                height: 20px;
+                background-color: #F7F7F7;
                 width: 388px;
                 border-top: 1px solid #EBEBEB;
             }
@@ -223,45 +230,49 @@
                 font-size: 80%;
                 margin-right: 10px;
                 padding-left: 5px;
-                color: #F0F0F0;
+                color: #707070;
             }
 
             /* GENERIC ELEMENTS (CLASSES OR ID'S USED FOR VARIOUS ELEMENTS) */
+            .mCS-ors-theme.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+                background-color: #707070;
+            }
+            
+            .mCS-ors-theme.mCSB_scrollTools .mCSB_draggerRail {
+                background-color: #F0F0F0;
+            }
+            
+            .mCS-ors-theme.mCSB_scrollTools .mCustomScrollBox {
+                background-color: #F0F0F0;
+            }
 
     /* STYLE FOR ELEMENTS ON NAV SECTION (MAP SECTION) */
         /* MAP CONTROLLERS */
-        .leaflet-control-customNavMenuToggle {
+        
+        /* LEAFLET CUSTOM STYLES FOR DEFAULT CONTROLLERS AND CUSTOM ONES */
+
+        .leaflet-control-customNavMenuToggle, .leaflet-control-customLocate {
             width: 26px;
             height: 26px;
             position: relative;
             text-align: center;
-            font-size:20px;
-            line-height:26px;
+            line-height: 26px;
             color: #70707D;
-            /*transform: rotate(180deg);*/
+            cursor: pointer;
         }
-    
-        .leaflet-control-customLocate{
-            width: 26px;
-            height: 26px;
-            position: relative;
-            text-align: center;
-            font-size:20px;
-            line-height:26px;
-            color: #70707D; 
-        }
-    
-        .leaflet-control-layers-toggle {
+        
+        
+        
+        .leaflet-retina .leaflet-control-layers-toggle, .leaflet-control-layers-toggle {
             background-image: none;
         }
         
-        .leaflet-control-layers a.leaflet-control-layers-toggle{
+        .leaflet-control-layers a.leaflet-control-layers-toggle {
             width: 26px;
-            height:26px;
+            height: 26px;
             position: relative;
             text-align: center;
-            font-size:20px;
-            line-height:26px;
+            line-height: 26px;
             color: #70707D;
         }
 
@@ -355,15 +366,7 @@
 /* ***********************************************/
     
     /* MAP CONTROLLERS */
-    .leaflet-control-customNavMenuToggle:before {
-        content: "\f053";
-        font-family:FontAwesome;
-    }
 
-    .leaflet-control-customLocate:before{
-        content: "\f05b";
-        font-family: FontAwesome;
-        }
     
     .leaflet-control-layers a.leaflet-control-layers-toggle:before{
         content: "\e804";
@@ -374,6 +377,18 @@
         text-decoration: none;
         color: #707070;
     }
+
+
+    .leaflet-control-customNavMenuToggle:before {
+        content: "\f07e";
+        font-family: FontAwesome;
+    }
+    
+    .leaflet-control-customLocate:before {
+        content: "\f05b";
+        font-family: FontAwesome;
+    }
+
 
     /* ELEMENTS ON MAP */
     #bubble:after {
@@ -460,11 +475,6 @@
 }
 
 
-
-
-
-
-
 .ORS-panel {
     border-bottom: 1px solid #EBEBEB;
 }
@@ -538,8 +548,19 @@
 
 
 .elevation-collapsed {
-    background: #fff;
-    border-radius: 5px;
+    background: #FAFAFA;
+    border-radius: 0;
+}
+
+.steelblue-theme.leaflet-control.elevation .elevation-toggle {
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    width: 26px;
+    height: 26px;
+}
+
+.steelblue-theme.leaflet-control.elevation .elevation-toggle-icon {
+    background-size: 16px 11px;
 }
 
 .ORS-logo {
@@ -643,8 +664,9 @@
     margin-left: 32px;
 }
 
-.waypointResult li span { 
-    position: relative; left: 10px; 
+.waypointResult li span {
+    position: relative;
+    left: 10px;
 }
 
 .removeWaypoint:before {
@@ -776,25 +798,40 @@
     color: #777777;
 }
 
-.directions-summary-info-container {
+.directions-summary-container {
     height: 20px;
+    display: table;
+    table-layout: fixed;
+    width: 330px;
 }
 
-.directions-summary-info {
-    float: left;
-    margin-right: 10px;
-    font-size: 16px;
-    padding-bottom: 5px;
+.directions-summary-container .info {
+    text-align: center;
+    display: table-cell;
+    font-size: 18px;
+    border-left: 1px solid #F0F0F0;
 }
 
-.directions-summary-info-digit {
+.directions-summary-container .info:nth-child(1) {
+    border-left: transparent;
+}
+
+.directions-summary-container .info .icon {
+    font-size: 14px;
+    color: rgb(96, 125, 139);
+}
+
+.directions-summary-container .info .content {}
+
+.directions-summary-container .info .content .digit {
     display: inline;
     padding-right: 0px;
 }
 
-.directions-summary-info-units {
+.directions-summary-container .info .content .units {
     margin-right: 5px;
     display: inline;
+    font-size: 12px;
 }
 
 .directions-img {
@@ -1144,7 +1181,9 @@ a.options.active {
     background-color: transparent !important;
 }
 
+
 /* BUTTON GROUPS */
+
 button.routeOptionsButton, button.optionsButton {
     width: 44px;
     padding: 10px 10px 10px 10px;
@@ -1163,7 +1202,9 @@ button.routeOptionsButton, button.optionsButton {
     -margin-left: 50px;
 }
 
+
 /* BUTTONS */
+
 .primary:focus {
     outline: none;
     color: #707070;
@@ -1208,13 +1249,16 @@ button.routeOptionsButton, button.optionsButton {
 
 
 /* TOP MENU BUTTONS */
+
 .btn-group>.primary:hover, .btn-group>.primary.active, .btn-group>.primary:active, .optionsButton:hover, .optionsButton.active, .optionsButton:active {
     background: transparent;
     border-bottom: 1px solid rgb(96, 125, 139);
     color: rgb(96, 125, 139);
 }
 
+
 /* LEFT MENU BUTTONS */
+
 .btn-group>.primary-menu:hover {
     background: transparent;
     color: #444;
@@ -1363,10 +1407,10 @@ button.routeOptionsButton, button.optionsButton {
 }
 
 .ORS-close {
-    display:block;
-    float:right;
-    width:17px;
-    height:29px;
+    display: block;
+    float: right;
+    width: 17px;
+    height: 29px;
     color: #707070;
 }
 
@@ -1374,7 +1418,6 @@ button.routeOptionsButton, button.optionsButton {
     text-align: center;
     line-height: 40px;
 }
-
 
 #TruckTabs>li>a {
     font-size: 90%;
@@ -1403,7 +1446,6 @@ button.routeOptionsButton, button.optionsButton {
 .mySlider img {
     margin-top: -5px;
 }
-
 
 #route_totalDistance {
     margin-top: 5px;
@@ -1562,6 +1604,7 @@ img {
 #wayTypeList, #surfaceTypeList {
     min-height: 25px;
     padding-bottom: 5px;
+    margin-left: 5px;
 }
 
 #wayTypeList ul, #surfaceTypeList ul {
@@ -1571,15 +1614,15 @@ img {
 
 #wayTypeList li, #surfaceTypeList li {
     float: left;
-    margin-left: 25px;
     font-size: 90%;
+    margin-right: 20px;
 }
 
 #wayTypeList li span, #surfaceTypeList li span {
     color: #707070;
     font-size: 90%;
     position: relative;
-    left: -8px;
+    margin-left: -5px;
 }
 
 .d3-tip {
@@ -1624,4 +1667,3 @@ img {
 }
 
 
-/* Styles for responsive behaviour on mobile devices */
