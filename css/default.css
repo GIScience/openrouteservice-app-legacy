@@ -19,6 +19,76 @@
 /* START OF BLOCK STYLES (BASE LAYOUT STYLE) */
 /* *******************************************/
 
+body {
+    font-size: 90%;
+    -line-height: 1.4;
+    color: rgba(0, 0, 0, 0.8);
+    background-color: #fff;
+    color: #444;
+    margin: 0;
+    padding: 0;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+input, .form-inline input, textarea, select, .form-inline select, .guiComponent > input {
+    font-family: 'Source Sans Pro', sans-serif;
+    border-radius: 0;
+    margin-bottom: 0px;
+    border-color: 1px solid #ccc;
+    font-size: 90%;
+    webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.form-inline select {
+    -webkit-appearance: none;
+}
+
+select:not([multiple]) {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-position: right 50%;
+    background-repeat: no-repeat;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAMCAYAAABSgIzaAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NDZFNDEwNjlGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NDZFNDEwNkFGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0NkU0MTA2N0Y3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo0NkU0MTA2OEY3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuGsgwQAAAA5SURBVHjaYvz//z8DOYCJgUxAf42MQIzTk0D/M+KzkRGPoQSdykiKJrBGpOhgJFYTWNEIiEeAAAMAzNENEOH+do8AAAAASUVORK5CYII=);
+    vertical-align: middle;
+}
+
+select, input[type="file"] {
+    line-height: 1;
+}
+
+input[type='checkbox'], input[type='radio'] {
+    vertical-align: baseline;
+}
+
+input[type="text"] {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    border-color: #F0F0F0;
+    font-size: 90%;
+}
+
+h3 {
+    margin: 0 0 0.5em 0;
+}
+
+a:link, a:visited {
+    text-decoration: none;
+}
+
+a:hover, a:active {
+    text-decoration: none;
+}
+
+a:focus {
+    background-color: none;
+    text-decoration: none;
+}
+
 /* BASE LAYOUT */
 
 .ORS {
@@ -52,6 +122,115 @@
     flex: 1 1 auto;
     order: 2;
 }
+
+/* BUTTON GROUPS */
+
+button.routeOptionsButton, button.optionsButton {
+    width: 44px;
+    height: 41px;
+}
+
+.btn-group+.btn-group {
+    margin-left: 0px;
+}
+
+.btn-group>.btn:first-child {
+    border-radius: 0px;
+}
+
+.btn-group>.btn:last-child {
+    border-radius: 0px;
+    -margin-left: 50px;
+}
+
+
+/* BUTTONS */
+
+.primary:focus {
+    outline: none;
+    color: #707070;
+}
+
+.primary i, .primary-menu i {
+    font-size: 105%;
+}
+
+.primary {
+    background: #F0F0F0;
+    border-radius: 0px;
+    border-left: transparent;
+    border-right: transparent;
+    border-top: transparent;
+    border-bottom: 1px solid #CCC;
+    color: #707070;
+    box-shadow: none;
+    text-shadow: none;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.primary-control {
+    background: #F0F0F0;
+    border-radius: 0px;
+    border: none;
+    color: #707070;
+    box-shadow: none;
+    text-shadow: none;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.primary-menu {
+    background: #F0F0F0;
+    border-radius: 0px;
+    border: none;
+    height: 41px;
+    color: #808080;
+    border-bottom: 1px solid #EBEBEB;
+    display: block;
+    width: 100%;
+    box-shadow: none;
+    text-shadow: none;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.primary.active, .primary:active {
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    color: rgb(96, 125, 139);
+    background-color: transparent;
+    border: none;
+}
+
+/* TOP MENU BUTTONS */
+
+.btn-group>.primary:hover, .btn-group>.primary.active, .btn-group>.primary:active, .optionsButton:hover, .optionsButton.active, .optionsButton:active {
+    background: transparent;
+    border-bottom: 1px solid rgb(96, 125, 139);
+    color: rgb(96, 125, 139);
+}
+
+/* LEFT MENU BUTTONS */
+
+.btn-group>.primary-menu:hover {
+    background: transparent;
+    color: #444;
+}
+
+.btn-group>.primary-menu:active {
+    background: transparent;
+    border-color: transparent;
+    color: #444;
+    outline: none;
+}
+
+.btn-group>.primary-menu.active, .btn-group>.primary-menu:focus {
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    color: #444;
+    background-color: transparent;
+}
+
 /* *******************************************/
 /* END OF BLOCK STYLES (BASE LAYOUT STYLE)   */
 /* *******************************************/
@@ -85,35 +264,72 @@
         height: 50px;
     }
 
-
-/* STYLE FOR SIDEBAR AND OBJECTS WITHIN THE SIDEBAR */
-
-    #topMenu {
-    /* contains link to Uni Heidelberg, etc. */
-        position: absolute;
-        top: 5px;
-        right: 4px;
-        float: right;
-        list-style: none;
-    }
-    
-    #topMenu > li {
-        height: 40px;
-        float: left;
-        margin: 0px 10px 0px 0;
-        line-height: 40px;
-        padding: 0px 5px 0px 5px;
-        color: white;
-    }
-    
-    #topMenu > li > a, #info {
-        color: white;
-        font-size: 18px;
-    }
-
-/* STYLE FOR MAP AND OBJECTS WITHIN THE MAP */
-
     /* STYLE FOR ELEMENTS ON ASIDE SECTION (LEFT NAVIGATION MENU SECTION) */
+        /* STYLE FOR SIDEBAR AND OBJECTS WITHIN THE SIDEBAR */
+
+        #topMenu {
+        /* contains link to Uni Heidelberg, etc. */
+            position: absolute;
+            top: 5px;
+            right: 4px;
+            float: right;
+            list-style: none;
+        }
+        
+        #topMenu > li {
+            height: 40px;
+            float: left;
+            margin: 0px 10px 0px 0;
+            line-height: 40px;
+            padding: 0px 5px 0px 5px;
+            color: white;
+        }
+        
+        #topMenu > li > a, #info {
+            color: white;
+            font-size: 18px;
+        }
+        
+        /*preferences popup*/
+        #sitePrefsModal label {
+            float: left;
+        }
+        
+        .logo {
+            height: 45px;
+            width: 45px;
+            margin-top: -5px;
+            padding-right: 5px;
+        }
+        
+        .links {
+            height: 40px;
+            padding-top: 0px;
+            padding-bottom: 2px;
+        }
+        
+        a img {
+            border: none;
+        }
+    
+        .panel {
+            /* panels in the sidebar
+             * (similar to class 'well' from bootstrap but with other margins and color)*/
+            min-height: 10px;
+            padding: 7px;
+            /*margin-left: 10px;
+             margin-right: 10px;*/
+            margin-bottom: 7px;
+            border: 1px solid #eee;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+            -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+            font-size: 90%;
+        }
         /*STYLES FOR MENU PANEL ON THE LEFT */
         .ORS-menuPanel {
             top: 0;
@@ -127,7 +343,6 @@
         #ORS-loading, #ORS-error {
             display: none;
         }
-
 
         /*STYLES FOR MAIN PANEL ON THE RIGHT */
             /* NAVIGATION PANEL */
@@ -189,9 +404,352 @@
                         border-radius: 0;
                     }*/
 
+                    /* VEHICLE OPTIONS */
+                    #TruckTabs>li>a {
+                        font-size: 90%;
+                        font-weight: normal;
+                        background-color: #f8f8f8;
+                        padding-bottom: 4px;
+                        padding-top: 4px;
+                    }
+
+                    /* SET MAX SPEED */
+                    #maxSpeedInput {
+                        font-size: 90%;
+                    }
+
+                    /* WAYPOINT OPTIONS */
+                    .addWaypoint {
+                        padding-left: 40px;
+                        padding-top: 5px;
+                        min-height: 30px;
+                        background-image: url('../img/marker-plus.png');
+                        background-repeat: no-repeat;
+                        background-size: 16px;
+                        background-position: 8px 3px;
+                        font-size: 90%;
+                    }
+
+                    .guiComponent > input {
+                        margin-bottom: 0px;
+                        font-size: 13px;
+                    }
+                    
+                    .waypointResult {
+                        margin-bottom: 10px;
+                        width: 240px;
+                        margin-left: 32px;
+                    }
+                    
+                    .waypointResult li span {
+                        position: relative;
+                        left: 10px;
+                    }
+                    
+                    .waypoint {
+                        padding-left: 0px;
+                        padding-top: 0;
+                        min-height: 25px;
+                        margin-bottom: 10px !important;
+                    }
+                    
+                    .waypoint-icon {
+                        display: inline;
+                        float: left;
+                        width: 33px;
+                        height: 25px;
+                    }
+                    
+                    .waypoint-icon.start {
+                        background: url(../img/marker-start.png) no-repeat;
+                        background-size: 16px;
+                        background-position: 8px 3px;
+                    }
+                    
+                    .waypoint-icon.via {
+                        background: url(../img/marker-via.png) no-repeat;
+                        background-size: 16px;
+                        background-position: 8px 3px;
+                    }
+                    
+                    .waypoint-icon.end {
+                        background: url(../img/marker-end.png) no-repeat;
+                        background-size: 16px;
+                        background-position: 8px 3px;
+                    }
+                    
+                    .waypoint-icon.unset {
+                        background: url(../img/marker.png) no-repeat;
+                        background-size: 16px;
+                        background-position: 8px 3px;
+                    }
+
+                    /* ROUTE INSTRUCTIONS */
+                    .directions-main {
+                        margin-top: 5px;
+                    }
+                    
+                    .directions-container {
+                        padding: 8px 0;
+                    }
+                    
+                    .directions-text {
+                        padding: 3px 5px 0 30px;
+                        line-height: 16px;
+                        vertical-align: middle;
+                    }
+                    
+                    .directions-waypoint {
+                        margin-top: 25px;
+                        margin-left: 40px;
+                        line-height: 26px;
+                        position: absolute;
+                    }
+                    
+                    .directions-waypoint-address {
+                        margin-top: 21px;
+                        margin-left: 75px;
+                        line-height: 26px;
+                        font-size: 14px;
+                    }
+                    
+                    .directions-waypoint-address .submain {
+                        font-size: 13px;
+                        color: #A0A0A0;
+                    }
+                    
+                    .directions-waypoint-info {
+                        padding: 6px 5px 0 75px;
+                        position: absolute;
+                        right: 16px;
+                        font-size: 12px;
+                        color: #777777;
+                    }
+                    
+                    .directions-summary-container {
+                        height: 20px;
+                        display: table;
+                        table-layout: fixed;
+                        width: 330px;
+                    }
+                    
+                    .directions-summary-container .info {
+                        text-align: center;
+                        display: table-cell;
+                        font-size: 18px;
+                        border-left: 1px solid #F0F0F0;
+                    }
+                    
+                    .directions-summary-container .info:nth-child(1) {
+                        border-left: transparent;
+                    }
+                    
+                    .directions-summary-container .info .icon {
+                        font-size: 14px;
+                        color: rgb(96, 125, 139);
+                    }
+                    
+                    .directions-summary-container .info .content {}
+                    
+                    .directions-summary-container .info .content .digit {
+                        display: inline;
+                        padding-right: 0px;
+                    }
+                    
+                    .directions-summary-container .info .content .units {
+                        margin-right: 5px;
+                        display: inline;
+                        font-size: 12px;
+                    }
+                    
+                    .directions-img {
+                        margin-left: 3px;
+                        position: absolute;
+                    }
+                    
+                    .directions-mode-distance {
+                        top: 1px;
+                        right: 15px;
+                        padding-left: .5em;
+                        padding-right: .5em;
+                        z-index: 1;
+                        position: absolute;
+                        background-color: #fff;
+                        font-size: 12px;
+                    }
+                    
+                    .directions-mode-container {
+                        padding: 0 0 0 40px;
+                        position: absolute;
+                        left: 0px;
+                        right: 0;
+                        height: 30px;
+                        line-height: normal;
+                        font-weight: normal;
+                    }
+                    
+                    .directions-mode-line {
+                        border-bottom: 1px solid #e6e6e6;
+                        padding-top: 8px;
+                        margin: 0 2em 0 0;
+                    }
+                    
+                    .directions-warning-table {
+                        color: red;
+                    }
+                    
+                    .directions-warning-table tr td:first-child {
+                        width: 37px;
+                    }
+                    
+                    .directions-warning-table img {
+                        height: 16px;
+                        width: auto;
+                        margin-left: 3px;
+                    }
+                    
+                    .fa-rotate-45 {
+                        -webkit-transform: rotate(45deg);
+                        -moz-transform: rotate(45deg);
+                        -ms-transform: rotate(45deg);
+                        -o-transform: rotate(45deg);
+                        transform: rotate(45deg);
+                    }
+                    
+                    .fa-rotate-315 {
+                        -webkit-transform: rotate(315deg);
+                        -moz-transform: rotate(315deg);
+                        -ms-transform: rotate(315deg);
+                        -o-transform: rotate(315deg);
+                        transform: rotate(315deg);
+                    }
+
+                    /* SURFACE INFORMATION */
+
+                    #routeTypesHead {
+                        float: left;
+                    }
+                    
+                    #routeTypesBody {
+                        position: relative;
+                    }
+                    
+                    #wayType, #surfaceType {
+                        width: 100%;
+                    }
+                    
+                    #wayTypeList, #surfaceTypeList {
+                        min-height: 25px;
+                        padding-bottom: 5px;
+                        margin-left: 5px;
+                    }
+                    
+                    #wayTypeList ul, #surfaceTypeList ul {
+                        margin-left: 10px;
+                        margin-top: -10px;
+                    }
+                    
+                    #wayTypeList li, #surfaceTypeList li {
+                        float: left;
+                        font-size: 90%;
+                        margin-right: 20px;
+                    }
+                    
+                    #wayTypeList li span, #surfaceTypeList li span {
+                        color: #707070;
+                        font-size: 90%;
+                        position: relative;
+                        margin-left: -5px;
+                    }
+                    
+                    .d3-tip {
+                        line-height: 1;
+                        font-weight: bold;
+                        padding: 12px;
+                        background: rgba(0, 0, 0, 0.8);
+                        color: #fff;
+                        border-radius: 5px;
+                        font-size: 10px;
+                    }
+                    
+                    
+                    /* Creates a small triangle extender for the tooltip */
+                    
+                    .d3-tip:after {
+                        box-sizing: border-box;
+                        display: inline;
+                        font-size: 11px;
+                        width: 100%;
+                        line-height: 1;
+                        color: rgba(0, 0, 0, 0.8);
+                        content: "\25BC";
+                        position: absolute;
+                        text-align: center;
+                    }
+                    
+                    
+                    /* Style northward tooltips differently */
+                    
+                    .d3-tip.n:after {
+                        margin: -1px 0 0 0;
+                        top: 100%;
+                        left: 0;
+                    }
+
                 /* ACCESSIBILITY ANALYSIS */
+                #accessibilityDistance, #accessibilityAnalysisIsochronesIntervall {
+                    width: 30px;
+                    /*overwrite settings from bootstrap for input fields*/
+                    padding: 2px 2px 0px 2px;
+                    margin-right: 10px;
+                    vertical-align: baseline;
+                    text-align: center;
+                    font-size: 90%;
+                }
+                
+                #accessibilityAnalysisMethodList {
+                    width: 140px;
+                }
+
 
                 /* CLOUD CONTENT */
+                .downloadGpx {
+                    width: 60px;
+                    height: 30px;
+                    background-size: 60px 30px;
+                    background: url(../img/routelinkGPX.png) no-repeat 0% 50%;
+                }
+
+                .fileUploadForm {
+                    margin: 0px;
+                }
+                
+                .fileUploadForm > div {
+                    margin: 0px;
+                }
+
+                #fileContainerMain {
+                    margin-top: 10px;
+                    width: 200px;
+                }
+                
+                #fileContainer {
+                    height: 60px;
+                    border-bottom: 1px solid #e6e6e6;
+                    margin: 1em 2em 0 0.5em;
+                }
+                
+                .myfile {
+                    float: left;
+                    padding-left: 13px;
+                    pointer-events: none;
+                }
+                
+                /* popup with information about a service timeout */
+                
+                #exportGpxError {
+                    margin-top: 5px;
+                }
 
                 /* FEEDBACK CONTENT */
                 .feedback {
@@ -267,6 +825,8 @@
             }
 
             /* GENERIC ELEMENTS (CLASSES OR ID'S USED FOR VARIOUS ELEMENTS) */
+            
+            /* generic scrollbar classes */
             .mCS-ors-theme.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
                 background-color: #707070;
             }
@@ -279,8 +839,90 @@
                 background-color: #F0F0F0;
             }
 
+            /* generic ORS classes */
+            .ORS-light {
+                background-color: #fafafa;
+            }
+
+            .ORS-panel {
+                border-bottom: 1px solid #EBEBEB;
+            }
+            
+            .ORS-panel-sub {
+                padding-left: 10px;
+                padding-right: 10px;
+                padding-bottom: 10px;
+                padding-top: 10px;
+            }
+            
+            .ORS-padding {
+                padding-top: 20px;
+            }
+            
+            .ORS-hr {
+                border-bottom: 1px solid #F0F0F0;
+            }
+            
+            .ORS-hr-dark {
+                border-bottom: 1px solid #DDD;
+            }
+
+            .ORS-label {
+                line-height: 16px;
+                font-weight: normal;
+                color: #707070;
+                text-shadow: none;
+                background-color: transparent;
+            }
+            
+            .ORS-form {
+                margin: 0 0 10px;
+            }
+            
+            .ORS-alert {
+                margin-bottom: 0;
+                border-radius: 0;
+                margin-top: 5px;
+                font-family: 'Source Sans Pro', sans-serif;
+            }
+            
+            .ORS-info {
+                font-family: 'Source Sans Pro', sans-serif;
+            }
+            
+            .ORS-close {
+                display: block;
+                float: right;
+                width: 17px;
+                height: 29px;
+                color: #707070;
+            }
+            
+            .ORS-center {
+                text-align: center;
+                line-height: 40px;
+            }
+
     /* STYLE FOR ELEMENTS ON NAV SECTION (MAP SECTION) */
+
+        .leaflet-pane {
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+        
+        .leaflet-control-container {
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+        
+        .leaflet-bar, .leaflet-bar a:last-child, .leaflet-bar a:first-child, .leaflet-control-layers {
+            border-radius: 0px;
+            background-color: #FAFAFA;
+        }
+
         /* MAP CONTROLLERS */
+
+        .leaflet-bottom .leaflet-control-scale {
+            margin-bottom: 23px;
+        }
 
         .leaflet-control-customNavMenuToggle, .leaflet-control-customLocate {
             width: 26px;
@@ -466,8 +1108,6 @@
             z-index: 9999;
         }
 
-
-
 /* ******************************************/
 /* END OF ELEMENT STYLES (CLASSES AND ID's) */
 /* ******************************************/
@@ -514,6 +1154,60 @@
         z-index: 1;
         left: -7px;
         top: 27px;
+    }
+
+    .clear:after {
+        clear: both;
+        content: "";
+        display: table;
+    }
+
+    /* for waypoints */
+    .removeWaypoint:before {
+        display: block;
+        float: right;
+        width: 16px;
+        font-size: 85%;
+        padding-left: 3px;
+        content: "\f00d";
+        font-family: FontAwesome;
+    }
+    
+    .moveUpWaypoint:before {
+        display: block;
+        float: right;
+        width: 18px;
+        font-size: 85%;
+        padding-left: 3px;
+        content: "\f062";
+        font-family: FontAwesome;
+    }
+    
+    .moveDownWaypoint:before {
+        display: block;
+        float: right;
+        width: 18px;
+        font-size: 85%;
+        content: "\f063";
+        font-family: FontAwesome;
+    }
+    
+    .searchAgainButton:before {
+        display: block;
+        float: right;
+        width: 18px;
+        font-size: 85%;
+        content: "\f021";
+        font-family: FontAwesome;
+    }
+    
+    .useAsWaypoint:before {
+        display: block;
+        float: right;
+        width: 18px;
+        font-size: 85%;
+        content: "\f041";
+        font-family: FontAwesome;
     }
 
 /* *********************************************/
@@ -576,45 +1270,7 @@
 /* END OF MOBILE STYLES (MEDIA QUERIES FOR MOBILE VISUALIZATION)  */
 /* ****************************************************************/
 
-
-.ORS-light {
-    background-color: #fafafa;
-}
-
-
-.ORS-panel {
-    border-bottom: 1px solid #EBEBEB;
-}
-
-.ORS-panel-sub {
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    padding-top: 10px;
-}
-
-.ORS-padding {
-    padding-top: 20px;
-}
-
-.ORS-hr {
-    border-bottom: 1px solid #F0F0F0;
-}
-
-.ORS-hr-dark {
-    border-bottom: 1px solid #DDD;
-}
-
-.clear:after {
-    clear: both;
-    content: "";
-    display: table;
-}
-
-
 /* STYLES FOR LINKS WITHIN THE HEADER */
-
-
 
 /*#info {
     margin-left: 112px;
@@ -648,298 +1304,29 @@
  * CSS for elements visible in map area
  */
 
-
-
-
-
-
 /**
  * CSS for non-map elements
  */
 
-.headingElement {}
+/*.headingElement {}*/
 
 
 /* labels for main tabs (plan route, search)*/
 
-.tabLabels {
+/*.tabLabels {
     float: right;
-}
+}*/
 
 
 /* Header in Gui.Tool elements */
 
-.toolHeading {
+/*.toolHeading {
     font-size: 130%;
     padding-top: 5px;
     padding-bottom: 10px;
-}
-
-
-/* for removing waypoints */
-
-.guiComponent > input {
-    margin-bottom: 0px;
-    font-size: 13px;
-}
-
-.waypointResult {
-    margin-bottom: 10px;
-    width: 240px;
-    margin-left: 32px;
-}
-
-.waypointResult li span {
-    position: relative;
-    left: 10px;
-}
-
-.removeWaypoint:before {
-    display: block;
-    float: right;
-    width: 16px;
-    font-size: 85%;
-    padding-left: 3px;
-    content: "\f00d";
-    font-family: FontAwesome;
-}
-
-.moveUpWaypoint:before {
-    display: block;
-    float: right;
-    width: 18px;
-    font-size: 85%;
-    padding-left: 3px;
-    content: "\f062";
-    font-family: FontAwesome;
-}
-
-.moveDownWaypoint:before {
-    display: block;
-    float: right;
-    width: 18px;
-    font-size: 85%;
-    content: "\f063";
-    font-family: FontAwesome;
-}
-
-.searchAgainButton:before {
-    display: block;
-    float: right;
-    width: 18px;
-    font-size: 85%;
-    content: "\f021";
-    font-family: FontAwesome;
-}
-
-.useAsWaypoint:before {
-    display: block;
-    float: right;
-    width: 18px;
-    font-size: 85%;
-    content: "\f041";
-    font-family: FontAwesome;
-}
-
-.waypoint {
-    padding-left: 0px;
-    padding-top: 0;
-    min-height: 25px;
-    margin-bottom: 10px !important;
-}
-
-.waypoint-icon {
-    display: inline;
-    float: left;
-    width: 33px;
-    height: 25px;
-}
-
-.waypoint-icon.start {
-    background: url(../img/marker-start.png) no-repeat;
-    background-size: 16px;
-    background-position: 8px 3px;
-}
-
-.waypoint-icon.via {
-    background: url(../img/marker-via.png) no-repeat;
-    background-size: 16px;
-    background-position: 8px 3px;
-}
-
-.waypoint-icon.end {
-    background: url(../img/marker-end.png) no-repeat;
-    background-size: 16px;
-    background-position: 8px 3px;
-}
-
-.waypoint-icon.unset {
-    background: url(../img/marker.png) no-repeat;
-    background-size: 16px;
-    background-position: 8px 3px;
-}
-
-
-/* route instructions styles */
-
-.directions-main {
-    margin-top: 5px;
-}
-
-.directions-container {
-    padding: 8px 0;
-}
-
-.directions-text {
-    padding: 3px 5px 0 30px;
-    line-height: 16px;
-    vertical-align: middle;
-}
-
-.directions-waypoint {
-    margin-top: 25px;
-    margin-left: 40px;
-    line-height: 26px;
-    position: absolute;
-}
-
-.directions-waypoint-address {
-    margin-top: 21px;
-    margin-left: 75px;
-    line-height: 26px;
-    font-size: 14px;
-}
-
-.directions-waypoint-address .submain {
-    font-size: 13px;
-    color: #A0A0A0;
-}
-
-.directions-waypoint-info {
-    padding: 6px 5px 0 75px;
-    position: absolute;
-    right: 16px;
-    font-size: 12px;
-    color: #777777;
-}
-
-.directions-summary-container {
-    height: 20px;
-    display: table;
-    table-layout: fixed;
-    width: 330px;
-}
-
-.directions-summary-container .info {
-    text-align: center;
-    display: table-cell;
-    font-size: 18px;
-    border-left: 1px solid #F0F0F0;
-}
-
-.directions-summary-container .info:nth-child(1) {
-    border-left: transparent;
-}
-
-.directions-summary-container .info .icon {
-    font-size: 14px;
-    color: rgb(96, 125, 139);
-}
-
-.directions-summary-container .info .content {}
-
-.directions-summary-container .info .content .digit {
-    display: inline;
-    padding-right: 0px;
-}
-
-.directions-summary-container .info .content .units {
-    margin-right: 5px;
-    display: inline;
-    font-size: 12px;
-}
-
-.directions-img {
-    margin-left: 3px;
-    position: absolute;
-}
-
-.directions-mode-distance {
-    top: 1px;
-    right: 15px;
-    padding-left: .5em;
-    padding-right: .5em;
-    z-index: 1;
-    position: absolute;
-    background-color: #fff;
-    font-size: 12px;
-}
-
-.directions-mode-container {
-    padding: 0 0 0 40px;
-    position: absolute;
-    left: 0px;
-    right: 0;
-    height: 30px;
-    line-height: normal;
-    font-weight: normal;
-}
-
-.directions-mode-line {
-    border-bottom: 1px solid #e6e6e6;
-    padding-top: 8px;
-    margin: 0 2em 0 0;
-}
-
-.directions-warning-table {
-    color: red;
-}
-
-.directions-warning-table tr td:first-child {
-    width: 37px;
-}
-
-.directions-warning-table img {
-    height: 16px;
-    width: auto;
-    margin-left: 3px;
-}
-
-.fa-rotate-45 {
-    -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
-    transform: rotate(45deg);
-}
-
-.fa-rotate-315 {
-    -webkit-transform: rotate(315deg);
-    -moz-transform: rotate(315deg);
-    -ms-transform: rotate(315deg);
-    -o-transform: rotate(315deg);
-    transform: rotate(315deg);
-}
-
+}*/
 
 /* gpx upload styles */
-
-#fileContainerMain {
-    margin-top: 10px;
-    width: 200px;
-}
-
-#fileContainer {
-    height: 60px;
-    border-bottom: 1px solid #e6e6e6;
-    margin: 1em 2em 0 0.5em;
-}
-
-.myfile {
-    float: left;
-    padding-left: 13px;
-    pointer-events: none;
-}
 
 .show {
     float: left;
@@ -1212,109 +1599,110 @@ a.options.active {
 button.routeOptionsButton, button.optionsButton {
     width: 44px;
     height: 41px;
+=======
+>>>>>>> c7cb51ae74757ac1895dae7f1eb557c2f55a9122
 }
 
-.btn-group+.btn-group {
-    margin-left: 0px;
+.clickable {
+    cursor: pointer;
 }
 
-.btn-group>.btn:first-child {
-    border-radius: 0px;
+.clickable.active {
+    cursor: pointer;
+    color: rgb(0, 161, 45);
 }
 
-.btn-group>.btn:last-child {
-    border-radius: 0px;
-    -margin-left: 50px;
+/* container for "zoom to route" or "calculate route" when appropriate*/
+
+.zoomToSearchResults {
+    margin-top: 7px;
+    margin-bottom: 7px;
 }
 
+/*contains the route instructions of a calculated route*/
 
-/* BUTTONS */
-
-.primary:focus {
-    outline: none;
-    color: #707070;
+.routeInstructions {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 90%;
 }
 
-.primary i, .primary-menu i {
-    font-size: 105%;
+/*for displaying route instructions in the panel*/
+
+#routeInstructionHead {
+    float: left;
+    width: 60%;
 }
 
-.primary {
-    background: #F0F0F0;
-    border-radius: 0px;
-    border-left: transparent;
-    border-right: transparent;
-    border-top: transparent;
-    border-bottom: 1px solid #CCC;
-    color: #707070;
-    box-shadow: none;
-    text-shadow: none;
-    font-family: 'Source Sans Pro', sans-serif;
+.collapsibleHead:before {
+    padding: 3px;
+    content: "\f0d7";
+    font-family: FontAwesome;
 }
 
-.primary-control {
-    background: #F0F0F0;
-    border-radius: 0px;
-    border: none;
-    color: #707070;
-    box-shadow: none;
-    text-shadow: none;
-    font-family: 'Source Sans Pro', sans-serif;
+.collapsibleHead.collapsed:before {
+    padding: 4px;
+    content: "\f0da";
+    font-family: FontAwesome;
 }
 
-.primary-menu {
-    background: #F0F0F0;
-    border-radius: 0px;
-    border: none;
-    height: 41px;
-    color: #808080;
-    border-bottom: 1px solid #EBEBEB;
-    display: block;
+.collapsibleBody {
+    padding-left: 2px;
+    clear: left;
+}
+
+.collapsibleBody > table {
     width: 100%;
-    box-shadow: none;
-    text-shadow: none;
-    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 13px;
 }
 
-.primary.active, .primary:active {
-    box-shadow: none !important;
-    -webkit-box-shadow: none !important;
-    -moz-box-shadow: none !important;
-    color: rgb(96, 125, 139);
-    background-color: transparent;
-    border: none;
+.odd {
+    background-color: rgb(245, 245, 235);
+    /* fallback for unsupported rgba*/
+    background-color: rgba(235, 235, 225, 0.65);
 }
 
+.prompt {}
 
-/* TOP MENU BUTTONS */
-
-.btn-group>.primary:hover, .btn-group>.primary.active, .btn-group>.primary:active, .optionsButton:hover, .optionsButton.active, .optionsButton:active {
-    background: transparent;
-    border-bottom: 1px solid rgb(96, 125, 139);
-    color: rgb(96, 125, 139);
+.prompt.selectSearchResult {
+    margin-top: 3px;
 }
 
-
-/* LEFT MENU BUTTONS */
-
-.btn-group>.primary-menu:hover {
-    background: transparent;
-    color: #444;
+#accessibilityCalculation {
+    margin-top: 5px;
 }
 
-.btn-group>.primary-menu:active {
-    background: transparent;
-    border-color: transparent;
-    color: #444;
-    outline: none;
+#accessibilityError {
+    margin-top: 5px;
 }
 
-.btn-group>.primary-menu.active, .btn-group>.primary-menu:focus {
-    box-shadow: none !important;
-    -webkit-box-shadow: none !important;
-    -moz-box-shadow: none !important;
-    color: #444;
-    background-color: transparent;
+/*avoid layer names too close to radio button */
+
+/*a.options {
+    clear: both;
+    background: url(../img/arrowRight.png) no-repeat 0 50%;
+    padding-left: 12px;
+    font-size: 0.8em;
+    line-height: 1;
+    color: #5f5f5f;
+    text-decoration: none;
+}
+
+a.options.active {
+    background: url(../img/arrowDown.png) no-repeat 0 50%;
+}*/
+
+.address {
+    list-style-type: none;
+    font-size: 90%;
+}
+
+/*.poi {
+    list-style-type: none;
+}*/
+
+.transparent {
+    background-color: transparent !important;
 }
 
 .input-append input {
@@ -1347,8 +1735,7 @@ button.routeOptionsButton, button.optionsButton {
 
 /* checkbox for POI search to mark all POIs near the route */
 
-#poiNearRoute {
-    /*margin-left: 5px;*/
+/*#poiNearRoute {
     vertical-align: text-top;
     width: 100%;
 }
@@ -1359,28 +1746,28 @@ button.routeOptionsButton, button.optionsButton {
 
 .poisNearRoute {
     float: left;
-}
+}*/
 
 
 /* textfield to define the distance for "next to route" */
 
-#fnct_searchPoi_distance {
+/*#fnct_searchPoi_distance {
     width: 30px;
-    /*overwrite settings from bootstrap for input fields*/
+    overwrite settings from bootstrap for input fields
     padding: 2px 2px 0px 2px;
     vertical-align: baseline;
     text-align: center;
-}
+}*/
 
 
 /* dropdown to define the distance measure for the maxDist (meters, miles,...) */
 
-.distMeasurePoi {
+/*.distMeasurePoi {
     width: 50px;
     height: 1opx;
     vertical-align: baseline;
     padding: 2px 2px 0px 2px;
-}
+}*/
 
 
 /*dropdown to define the distance measure for the routing instructions */
@@ -1395,75 +1782,13 @@ button.routeOptionsButton, button.optionsButton {
 
 /* main components of the layout: */
 
-#geolocationNotification {
+/*#geolocationNotification {
     width: 80%;
     margin-left: auto;
     margin-right: auto;
     margin-top: 200px;
 }
-
-.panel {
-    /* panels in the sidebar
-     * (similar to class 'well' from bootstrap but with other margins and color)*/
-    min-height: 10px;
-    padding: 7px;
-    /*margin-left: 10px;
-     margin-right: 10px;*/
-    margin-bottom: 7px;
-    border: 1px solid #eee;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
-    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
-    font-size: 90%;
-}
-
-.ORS-label {
-    line-height: 16px;
-    font-weight: normal;
-    color: #707070;
-    text-shadow: none;
-    background-color: transparent;
-}
-
-.ORS-form {
-    margin: 0 0 10px;
-}
-
-.ORS-alert {
-    margin-bottom: 0;
-    border-radius: 0;
-    margin-top: 5px;
-    font-family: 'Source Sans Pro', sans-serif;
-}
-
-.ORS-info {
-    font-family: 'Source Sans Pro', sans-serif;
-}
-
-.ORS-close {
-    display: block;
-    float: right;
-    width: 17px;
-    height: 29px;
-    color: #707070;
-}
-
-.ORS-center {
-    text-align: center;
-    line-height: 40px;
-}
-
-#TruckTabs>li>a {
-    font-size: 90%;
-    font-weight: normal;
-    background-color: #f8f8f8;
-    padding-bottom: 4px;
-    padding-top: 4px;
-}
+*/
 
 
 /* bootstrap sliders */
@@ -1501,14 +1826,14 @@ button.routeOptionsButton, button.optionsButton {
     float: left;
 }
 
-#currentLocation, #searchPlace, #searchPoi, #geoloc {
+/*#currentLocation, #searchPlace, #searchPoi, #geoloc {
     margin: 10px;
     padding-bottom: 0px;
 }
 
 .showCurrentLocation {
     margin-bottom: 10px;
-}
+}*/
 
 
 /* address result list */
@@ -1525,17 +1850,6 @@ button.routeOptionsButton, button.optionsButton {
 .resultList li:hover {
     cursor: pointer;
 }
-
-
-/* dropdown of road types to avoid */
-
-
-
-
-/* dropdown of route settings weighting */
-
-
-
 
 /*fixes broken map tiles with OpenLayer 2.12*/
 
@@ -1556,115 +1870,6 @@ img {
 .dl-horizontal dd {
     margin-left: 130px;
 }
-
-.fileUploadForm {
-    margin: 0px;
-}
-
-.fileUploadForm > div {
-    margin: 0px;
-}
-
-
-/* popup with information about a service timeout */
-
-
-
-#accessibilityDistance, #accessibilityAnalysisIsochronesIntervall {
-    width: 30px;
-    /*overwrite settings from bootstrap for input fields*/
-    padding: 2px 2px 0px 2px;
-    margin-right: 10px;
-    vertical-align: baseline;
-    text-align: center;
-    font-size: 90%;
-}
-
-#accessibilityAnalysisMethodList {
-    width: 140px;
-}
-
-#exportGpxError {
-    margin-top: 5px;
-}
-
-#maxSpeedInput {
-    font-size: 90%;
-}
-
-
-/* surface information */
-
-#routeTypesHead {
-    float: left;
-}
-
-#routeTypesBody {
-    position: relative;
-}
-
-#wayType, #surfaceType {
-    width: 100%;
-}
-
-#wayTypeList, #surfaceTypeList {
-    min-height: 25px;
-    padding-bottom: 5px;
-    margin-left: 5px;
-}
-
-#wayTypeList ul, #surfaceTypeList ul {
-    margin-left: 10px;
-    margin-top: -10px;
-}
-
-#wayTypeList li, #surfaceTypeList li {
-    float: left;
-    font-size: 90%;
-    margin-right: 20px;
-}
-
-#wayTypeList li span, #surfaceTypeList li span {
-    color: #707070;
-    font-size: 90%;
-    position: relative;
-    margin-left: -5px;
-}
-
-.d3-tip {
-    line-height: 1;
-    font-weight: bold;
-    padding: 12px;
-    background: rgba(0, 0, 0, 0.8);
-    color: #fff;
-    border-radius: 5px;
-    font-size: 10px;
-}
-
-
-/* Creates a small triangle extender for the tooltip */
-
-.d3-tip:after {
-    box-sizing: border-box;
-    display: inline;
-    font-size: 11px;
-    width: 100%;
-    line-height: 1;
-    color: rgba(0, 0, 0, 0.8);
-    content: "\25BC";
-    position: absolute;
-    text-align: center;
-}
-
-
-/* Style northward tooltips differently */
-
-.d3-tip.n:after {
-    margin: -1px 0 0 0;
-    top: 100%;
-    left: 0;
-}
-
 
 #returnmessage {
     font-size: 14px;
