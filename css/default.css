@@ -15,75 +15,9 @@
  * @version: 0.1
  */
 
-.mCS-ors-theme.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
-    background-color: #707070;
-}
-
-.mCS-ors-theme.mCSB_scrollTools .mCSB_draggerRail {
-    background-color: #F0F0F0;
-}
-
-.mCS-ors-theme.mCSB_scrollTools .mCustomScrollBox {
-    background-color: #F0F0F0;
-}
-
-.rotate {
-    transform: rotate(-180deg);
-    /*transform: rotate(180deg);*/
-    transition: .3s;
-}
-
-.rotate-reset {
-    transform: rotate(0deg);
-    transition: .3s;
-}
-
-
-/* LEAFLET CUSTOM STYLES FOR DEFAULT CONTROLLERS AND CUSTOM ONES */
-
-.leaflet-control-customNavMenuToggle, .leaflet-control-customLocate {
-    width: 26px;
-    height: 26px;
-    position: relative;
-    text-align: center;
-    line-height: 26px;
-    color: #70707D;
-    cursor: pointer;
-}
-
-.leaflet-control-customNavMenuToggle:before {
-    content: "\f07e";
-    font-family: FontAwesome;
-}
-
-.leaflet-control-customLocate:before {
-    content: "\f05b";
-    font-family: FontAwesome;
-}
-
-.leaflet-retina .leaflet-control-layers-toggle, .leaflet-control-layers-toggle {
-    background-image: none;
-}
-
-.leaflet-control-layers a.leaflet-control-layers-toggle {
-    width: 26px;
-    height: 26px;
-    position: relative;
-    text-align: center;
-    line-height: 26px;
-    color: #70707D;
-}
-
-.leaflet-control-layers a.leaflet-control-layers-toggle:before {
-    content: "\e804";
-    font-family: ruifont;
-}
-
-.leaflet-control a:link, .leaflet-control a:visited, .leaflet-control a:hover {
-    text-decoration: none;
-    color: #707070;
-}
-
+/* *******************************************/
+/* START OF BLOCK STYLES (BASE LAYOUT STYLE) */
+/* *******************************************/
 
 /* BASE LAYOUT */
 
@@ -91,6 +25,12 @@
     display: flex;
     min-height: 100vh;
     flex-direction: column;
+}
+
+.ORS-header {
+    display: flex;
+    flex: 0 0 50px;
+
 }
 
 .ORS-main {
@@ -112,86 +52,535 @@
     flex: 1 1 auto;
     order: 2;
 }
+/* *******************************************/
+/* END OF BLOCK STYLES (BASE LAYOUT STYLE)   */
+/* *******************************************/
 
-.ORS-header {
-    display: flex;
-    flex: 0 0 50px;
-}
+/* *********************************************/
+/* START OF ELEMENT STYLES (CLASSES AND ID's)  */
+/* *********************************************/
 
+    /* STYLE FOR ELEMENTS ON HEADER SECTION */
 
-/* STYLE FOR HEADER AND OBJECTS WITHIN THE HEADER */
+    #navbar {
+        background-color: rgb(96, 125, 139);
+    }
+
+    #navbar #title {
+        color: rgba(255, 255, 255, 0.66);
+        line-height: 25px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        /* align horizontal */
+        align-items: center;
+        /* align vertical */
+        font-size: 16px;
+    }
+
+    #ORS-headIcon {
+        background: url(../img/logo.png) no-repeat center center;
+        background-size: 40px 40px;
+        width: 50px;
+        height: 50px;
+    }
 
 
 /* STYLE FOR SIDEBAR AND OBJECTS WITHIN THE SIDEBAR */
 
+    #topMenu {
+    /* contains link to Uni Heidelberg, etc. */
+        position: absolute;
+        top: 5px;
+        right: 4px;
+        float: right;
+        list-style: none;
+    }
+    
+    #topMenu > li {
+        height: 40px;
+        float: left;
+        margin: 0px 10px 0px 0;
+        line-height: 40px;
+        padding: 0px 5px 0px 5px;
+        color: white;
+    }
+    
+    #topMenu > li > a, #info {
+        color: white;
+        font-size: 18px;
+    }
 
 /* STYLE FOR MAP AND OBJECTS WITHIN THE MAP */
 
-.ORS-menuPanel {
-    top: 0;
-    position: absolute;
-    overflow: auto;
-    width: 40px;
-    bottom: 20px;
-    background-color: #F0F0F0;
-}
+    /* STYLE FOR ELEMENTS ON ASIDE SECTION (LEFT NAVIGATION MENU SECTION) */
+        /*STYLES FOR MENU PANEL ON THE LEFT */
+        .ORS-menuPanel {
+            top: 0;
+            position: absolute;
+            overflow: auto;
+            width: 40px;
+            bottom: 20px;
+            background-color: #F0F0F0;
+        }
 
-.ORS-mainPanel {
-    top: 41px;
-    position: absolute;
-    overflow: auto;
-    width: 348px;
-    bottom: 20px;
-    left: 40px;
-    border-left: 1px solid #CCC;
-    background-color: #FFF;
-}
+        #ORS-loading, #ORS-error {
+            display: none;
+        }
 
-.ORS-navigation {
-    -top: 0;
-    left: 40px;
-    width: 348px;
-    position: relative;
-    border-left: 1px solid #CCC;
-    border-bottom: 1px solid #CCC;
-    background-color: #F0F0F0;
-    height: 40px;
+
+        /*STYLES FOR MAIN PANEL ON THE RIGHT */
+            /* NAVIGATION PANEL */
+            .ORS-navigation {
+                -top: 0;
+                left: 40px;
+                width: 348px;
+                position: relative;
+                border-left: 1px solid #CCC;
+                border-bottom: 1px solid #CCC;
+                background-color: #F0F0F0;
+                height: 40px;
+            }
+
+            /* MAIN PANEL */
+            .ORS-mainPanel {
+                top: 41px;
+                position: absolute;
+                overflow: auto;
+                width: 348px;
+                bottom: 20px;
+                left: 40px;
+                border-left: 1px solid #CCC;
+                background-color: #FFF;
+            }
+
+                /* ROUTE CONTAINER */
+                    /* WEIGHTING OPTIONS */
+                    /*#dropdown_weighting {
+                        padding-left: 5px;
+                        padding-right: 10px;
+                        min-width: 100px;
+                        overflow: auto;
+                        overflow-x: auto;
+                        overflow-y: auto;
+                        border-radius: 0;
+                    }
+                    
+                    #dropdown_weighting label {
+                        font-size: 85%;
+                        margin-bottom: 0px;
+                    }*/
+                    
+                    /* AREAS TO AVOID OPTIONS */
+                    /*#dropdown_avoid_areas {
+                        padding-left: 10px;
+                    }
+                    
+                    #dropdown_avoid_roads label, #dropdown_weighting label {
+                        font-size: 85%;
+                    }*/
+
+                    /* ROADS TO AVOID */
+                    /*.dropdown_avoid {
+                        padding-left: 5px;
+                        padding-right: 5px;
+                        padding-top: 5px;
+                        font-size: 90%;
+                        border-radius: 0;
+                    }*/
+
+                /* ACCESSIBILITY ANALYSIS */
+
+                /* CLOUD CONTENT */
+
+                /* FEEDBACK CONTENT */
+                .feedback {
+                    width: 320px;
+                }
+                
+                .feedback a {
+                    display: block;
+                    height: 20px;
+                    text-align: center;
+                    background: black;
+                    opacity: 0.9;
+                    clear: both;
+                    padding-right: 5px;
+                    padding-left: 5px;
+                    float: right;
+                    cursor: pointer;
+                    /*Font*/
+                    color: #fff;
+                    font-size: 14px;
+                }
+                
+                .feedback .form {
+                    clear: both;
+                    background: #fff;
+                }
+                
+                .feedback input {
+                    width: 100%;
+                    border-radius: 0;
+                    padding: 5px;
+                }
+                
+                .feedback input[type=text] {
+                    height: 25px;
+                }
+                
+                .feedback input[type=button] {
+                    background-color: #F7F7F7;
+                    border: 0px solid white;
+                    border-radius: 0;
+                    margin-top: 5px;
+                }
+                
+                .feedback textarea {
+                    width: 100%;
+                    height: 80px;
+                    margin-top: 5px;
+                    border-radius: 0px;
+                    padding: 5px;
+                    resize: none;
+                    border-color: #F0F0F0;
+                }
+                
+                .feedback span {
+                    color: red
+                }
+
+            /* DISCLAIMER */
+            .disclaimer {
+                bottom: 0;
+                position: absolute;
+                background-color: #F7F7F7;
+                width: 388px;
+                border-top: 1px solid #EBEBEB;
+            }
+            
+            .disclaimer a, .disclaimer div {
+                font-size: 80%;
+                margin-right: 10px;
+                padding-left: 5px;
+                color: #707070;
+            }
+
+            /* GENERIC ELEMENTS (CLASSES OR ID'S USED FOR VARIOUS ELEMENTS) */
+            .mCS-ors-theme.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+                background-color: #707070;
+            }
+            
+            .mCS-ors-theme.mCSB_scrollTools .mCSB_draggerRail {
+                background-color: #F0F0F0;
+            }
+            
+            .mCS-ors-theme.mCSB_scrollTools .mCustomScrollBox {
+                background-color: #F0F0F0;
+            }
+
+    /* STYLE FOR ELEMENTS ON NAV SECTION (MAP SECTION) */
+        /* MAP CONTROLLERS */
+
+        .leaflet-control-customNavMenuToggle, .leaflet-control-customLocate {
+            width: 26px;
+            height: 26px;
+            position: relative;
+            text-align: center;
+            line-height: 26px;
+            color: #70707D;
+            cursor: pointer;
+        }
+        
+        .leaflet-retina .leaflet-control-layers-toggle, .leaflet-control-layers-toggle {
+            background-image: none;
+        }
+        
+        .leaflet-control-layers a.leaflet-control-layers-toggle {
+            width: 26px;
+            height: 26px;
+            position: relative;
+            text-align: center;
+            line-height: 26px;
+            color: #70707D;
+        }
+
+        .elevation-collapsed {
+            background: #FAFAFA;
+            border-radius: 0;
+        }
+        
+        .steelblue-theme.leaflet-control.elevation .elevation-toggle {
+            border-radius: 0;
+            -webkit-border-radius: 0;
+            width: 26px;
+            height: 26px;
+        }
+        
+        .steelblue-theme.leaflet-control.elevation .elevation-toggle-icon {
+            background-size: 16px 11px;
+        }
+
+        /* CONTEXT MENU STYLES (WHEN CLICKING WITH THE RIGHT MOUSE BUTTON ON THE MAP AREA) */
+        .mapContextMenu .contextWaypoint {
+            padding: 3px 10px 3px 10px;
+            white-space: nowrap;
+            cursor: pointer;
+            margin-bottom: 3px;
+            background-color: rgba(96, 125, 139, 0.9);
+            border-left: 2px solid #F0F0F0;
+            color: white;
+            min-height: 10px;
+            -o-transition: .2s;
+            -ms-transition: .2s;
+            -moz-transition: .2s;
+            -webkit-transition: .2s;
+            transition: .2s;
+        }
+        
+        .mapContextMenu .contextWaypoint:hover {
+            background-color: rgba(96, 125, 139, 1);
+            border-left: 2px solid #444;
+        }
+        
+        .mapContextMenu .leaflet-popup-content {
+            -position: absolute;
+            left: 2.5em;
+            bottom: 0.7em;
+        }
+        
+        .mapContextMenu .leaflet-popup-content-wrapper {
+            background: transparent;
+            box-shadow: none;
+        }
+        
+        .mapContextMenu .leaflet-popup-tip-container {
+            margin: 0 auto;
+            position: relative;
+            overflow: visible;
+            width: 100px;
+            height: 20px;
+        }
+        
+        .mapContextMenu .leaflet-popup-tip {
+            border: 2px solid rgb(96, 125, 139);
+            box-shadow: none;
+            background-color: transparent;
+            border-radius: 50%;
+            width: 10px;
+            height: 10px;
+        }
+
+        /* PERMALINK */
+        #infoPermalink {
+            position: absolute;
+            bottom: 2px;
+            cursor: pointer;
+            width: 80px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.5);
+            color: black;
+            z-index: 999;
+            margin-left: 5px;
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+        
+        #bubble {
+            display: none;
+            position: fixed;
+            width: 70px;
+            margin-left: 100px;
+            height: 50px;
+            padding: 0px;
+            bottom: 3px;
+            background: rgba(255, 255, 255, 0.5);
+            z-index: 999;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+        
+        #bubble #permaText {
+            position: absolute;
+            padding: 5px 2px 2px 20px;
+        }
+        
+        #bubble #permaText #copy {
+            cursor: pointer;
+        }
+        
+        #bubble #permaText #open {
+            margin-top: 5px;
+            cursor: pointer;
+        }
+    
+        /* AVOIDABLES INFO */
+        #avoidables_info {
+            position: absolute;
+            margin-left: 43px;
+            top: 72px;
+            z-index: 999;
+            display: none;
+            width: 200px;
+        }
+    
+        /* SERVICE TIMEOUT */
+        #serviceTimeout {
+            display: none;
+            position: absolute;
+            margin-left: 40px;
+            top: 5px;
+            z-index: 999;
+        }
+        
+        #serviceTimeout > label {
+            width: 220px;
+            line-height: 1.1;
+        }
+    
+        /* NEW TO ORS */
+        #newToOrs {
+            display: none;
+            width: 220px;
+            line-height: 1.1;
+            z-index: 999;
+            position: absolute;
+            right: 100px;
+            top: 10px;
+        }
+
+        /* GISCIENCE LOGO */
+        .ORS-logo {
+            background-image: url('../img/logo_giscience.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 64px;
+            width: 64px;
+            height: 64px;
+            bottom: 15px;
+            text-indent: -9999px;
+            display: block;
+            right: 5px;
+            position: absolute;
+            z-index: 9999;
+        }
+
+
+
+/* ******************************************/
+/* END OF ELEMENT STYLES (CLASSES AND ID's) */
+/* ******************************************/
+
+/* ***********************************************/
+/* START OF MODIFIER STYLES (FLAGS ON ELEMENTS)  */
+/* ***********************************************/
+    
+    /* MAP CONTROLLERS */
+
+    /* toggle layers controller */
+    .leaflet-control-layers a.leaflet-control-layers-toggle:before{
+        content: "\e804";
+        font-family: ruifont;
+    }
+
+    /* for toggle menu controller */
+    .leaflet-control-customNavMenuToggle:before {
+        content: "\f07e";
+        font-family: FontAwesome;
+    }
+    
+    /* for locate controller */
+    .leaflet-control-customLocate:before {
+        content: "\f05b";
+        font-family: FontAwesome;
+    }
+
+    /* for all controllers */
+    .leaflet-control a:link, .leaflet-control a:visited, .leaflet-control a:hover {
+        text-decoration: none;
+        color: #707070;
+    }
+
+    /* for elements on permalink */
+    #bubble:after {
+        content: '';
+        position: relative;
+        border-style: solid;
+        border-width: 7px 7px 7px 0;
+        border-color: transparent rgba(255, 255, 255, 0.5);
+        display: block;
+        width: 0;
+        z-index: 1;
+        left: -7px;
+        top: 27px;
+    }
+
+/* *********************************************/
+/* END OF MODIFIER STYLES (FLAGS ON ELEMENTS)  */
+/* *********************************************/
+
+/* ******************************************************************/
+/* START OF MOBILE STYLES (MEDIA QUERIES FOR MOBILE VISUALIZATION)  */
+/* ******************************************************************/
+@media screen and (min-width: 320px) and (max-width: 720px) {
+    .ORS-main {
+        flex-direction: column;
+    }
+    .ORS-sidebar {
+        order: 2;
+        flex-basis: 50vh;
+    }
+    .ORS-map {
+        order: 1;
+    }
+    /* To hide the links in the top menu */
+    #topMenu {
+        display: none;
+    }
+    /* To hide the mouse position controller */
+    .leaflet-container .leaflet-control-mouseposition {
+        display: none;
+    }
+    .ORS-sidebar {
+        box-shadow: none;
+    }
+    .ORS-sidebarContent {
+        width: 100%;
+    }
+    .feedbackContainer, .routeExtrasContainer, .ORS-header, .ORS-menuPanel {
+        display: none;
+    }
+    .ORS-mainPanel {
+        top: 40px;
+        position: absolute;
+        overflow: auto;
+        width: 100%;
+        bottom: 20px;
+        left: 0;
+        border-left: 1px solid #CCC;
+        background-color: #FFF;
+    }
+    .ORS-navigation {
+        left: 0;
+        width: 100%;
+    }
+    .disclaimer {
+        width: 100%;
+    }
+    .tooltip {
+        display: none !important;
+    }
 }
+/* ****************************************************************/
+/* END OF MOBILE STYLES (MEDIA QUERIES FOR MOBILE VISUALIZATION)  */
+/* ****************************************************************/
+
 
 .ORS-light {
     background-color: #fafafa;
 }
 
-.disclaimer {
-    bottom: 0;
-    position: absolute;
-    background-color: #F7F7F7;
-    width: 388px;
-    border-top: 1px solid #EBEBEB;
-}
-
-.disclaimer a, .disclaimer div {
-    font-size: 80%;
-    margin-right: 10px;
-    padding-left: 5px;
-    color: #707070;
-}
-
-#navbar {
-    background-color: rgb(96, 125, 139);
-}
-
-#navbar #title {
-    color: rgba(255, 255, 255, 0.66);
-    line-height: 25px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    /* align horizontal */
-    align-items: center;
-    /* align vertical */
-    font-size: 16px;
-}
 
 .ORS-panel {
     border-bottom: 1px solid #EBEBEB;
@@ -216,61 +605,29 @@
     border-bottom: 1px solid #DDD;
 }
 
-#ORS-loading, #ORS-error {
-    display: none;
-}
-
 .clear:after {
     clear: both;
     content: "";
     display: table;
 }
 
-#ORS-headIcon {
-    background: url(../img/logo.png) no-repeat center center;
-    background-size: 40px 40px;
-    width: 50px;
-    height: 50px;
-}
-
 
 /* STYLES FOR LINKS WITHIN THE HEADER */
 
-#topMenu {
-    /* contains link to Uni Heidelberg, etc. */
-    position: absolute;
-    top: 5px;
-    right: 4px;
-    float: right;
-    list-style: none;
-}
 
-#topMenu > li {
-    height: 40px;
-    float: left;
-    margin: 0px 10px 0px 0;
-    line-height: 40px;
-    padding: 0px 5px 0px 5px;
-    color: white;
-}
 
-#topMenu > li > a, #info {
-    color: white;
-    font-size: 18px;
-}
-
-#info {
+/*#info {
     margin-left: 112px;
     height: 13px;
     font-weight: normal;
     text-align: center;
     line-height: 11px;
-}
+}*/
 
 
 /* STYLES FOR THE SIDEBAR AND SIDEBAR CONTENT */
 
-#routingButton {
+/*#routingButton {
     top: 215px;
     background-image: url('../img/route.png');
 }
@@ -284,157 +641,16 @@
     margin-right: 5px;
     width: 15px;
     vertical-align: middle;
-}
+}*/
 
 
 /**
  * CSS for elements visible in map area
  */
 
-#infoPermalink {
-    position: absolute;
-    bottom: 2px;
-    cursor: pointer;
-    width: 80px;
-    text-align: center;
-    background-color: rgba(255, 255, 255, 0.5);
-    color: black;
-    z-index: 999;
-    margin-left: 5px;
-    font-family: 'Source Sans Pro', sans-serif;
-}
 
-#bubble {
-    display: none;
-    position: fixed;
-    width: 70px;
-    margin-left: 100px;
-    height: 50px;
-    padding: 0px;
-    bottom: 3px;
-    background: rgba(255, 255, 255, 0.5);
-    z-index: 999;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    font-family: 'Source Sans Pro', sans-serif;
-}
 
-#bubble:after {
-    content: '';
-    position: relative;
-    border-style: solid;
-    border-width: 7px 7px 7px 0;
-    border-color: transparent rgba(255, 255, 255, 0.5);
-    display: block;
-    width: 0;
-    z-index: 1;
-    left: -7px;
-    top: 27px;
-}
 
-#bubble #permaText {
-    position: absolute;
-    padding: 5px 2px 2px 20px;
-}
-
-#bubble #permaText #copy {
-    cursor: pointer;
-}
-
-#bubble #permaText #open {
-    margin-top: 5px;
-    cursor: pointer;
-}
-
-#avoidables_info {
-    position: absolute;
-    margin-left: 43px;
-    top: 72px;
-    z-index: 999;
-    display: none;
-    width: 200px;
-}
-
-.elevation-collapsed {
-    background: #FAFAFA;
-    border-radius: 0;
-}
-
-.steelblue-theme.leaflet-control.elevation .elevation-toggle {
-    border-radius: 0;
-    -webkit-border-radius: 0;
-    width: 26px;
-    height: 26px;
-}
-
-.steelblue-theme.leaflet-control.elevation .elevation-toggle-icon {
-    background-size: 16px 11px;
-}
-
-.ORS-logo {
-    background-image: url('../img/logo_giscience.png');
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: 64px;
-    width: 64px;
-    height: 64px;
-    bottom: 15px;
-    text-indent: -9999px;
-    display: block;
-    right: 5px;
-    position: absolute;
-    z-index: 9999;
-}
-
-.mapContextMenu .contextWaypoint {
-    padding: 3px 10px 3px 10px;
-    white-space: nowrap;
-    cursor: pointer;
-    margin-bottom: 3px;
-    background-color: rgba(96, 125, 139, 0.9);
-    border-left: 2px solid #F0F0F0;
-    color: white;
-    min-height: 10px;
-    -o-transition: .2s;
-    -ms-transition: .2s;
-    -moz-transition: .2s;
-    -webkit-transition: .2s;
-    transition: .2s;
-}
-
-.mapContextMenu .contextWaypoint:hover {
-    background-color: rgba(96, 125, 139, 1);
-    border-left: 2px solid #444;
-}
-
-.mapContextMenu .leaflet-popup-content {
-    -position: absolute;
-    left: 2.5em;
-    bottom: 0.7em;
-}
-
-.mapContextMenu .leaflet-popup-content-wrapper {
-    background: transparent;
-    box-shadow: none;
-}
-
-.mapContextMenu .leaflet-popup-tip-container {
-    margin: 0 auto;
-    position: relative;
-    overflow: visible;
-    width: 100px;
-    height: 20px;
-}
-
-.mapContextMenu .leaflet-popup-tip {
-    border: 2px solid rgb(96, 125, 139);
-    box-shadow: none;
-    background-color: transparent;
-    border-radius: 50%;
-    width: 10px;
-    height: 10px;
-}
 
 
 /**
@@ -893,7 +1109,7 @@ a img {
 
 /*avoid layer names too close to radio button */
 
-body {
+/*body {
     font-size: 90%;
     -line-height: 1.4;
     color: rgba(0, 0, 0, 0.8);
@@ -902,7 +1118,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Source Sans Pro', sans-serif;
-}
+}*/
 
 input, .form-inline input, textarea, select, .form-inline select, .guiComponent > input {
     font-family: 'Source Sans Pro', sans-serif;
@@ -1313,39 +1529,12 @@ button.routeOptionsButton, button.optionsButton {
 
 /* dropdown of road types to avoid */
 
-.dropdown_avoid {
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 5px;
-    font-size: 90%;
-    border-radius: 0;
-}
+
 
 
 /* dropdown of route settings weighting */
 
-#dropdown_weighting {
-    padding-left: 5px;
-    padding-right: 10px;
-    min-width: 100px;
-    overflow: auto;
-    overflow-x: auto;
-    overflow-y: auto;
-    border-radius: 0;
-}
 
-#dropdown_weighting label {
-    font-size: 85%;
-    margin-bottom: 0px;
-}
-
-#dropdown_avoid_areas {
-    padding-left: 10px;
-}
-
-#dropdown_avoid_roads label, #dropdown_weighting label {
-    font-size: 85%;
-}
 
 
 /*fixes broken map tiles with OpenLayer 2.12*/
@@ -1377,33 +1566,9 @@ img {
 }
 
 
-/*popup with information about customizing ORS*/
-
-#newToOrs {
-    display: none;
-    width: 220px;
-    line-height: 1.1;
-    z-index: 999;
-    position: absolute;
-    right: 100px;
-    top: 10px;
-}
-
-
 /* popup with information about a service timeout */
 
-#serviceTimeout {
-    display: none;
-    position: absolute;
-    margin-left: 40px;
-    top: 5px;
-    z-index: 999;
-}
 
-#serviceTimeout > label {
-    width: 220px;
-    line-height: 1.1;
-}
 
 #accessibilityDistance, #accessibilityAnalysisIsochronesIntervall {
     width: 30px;
@@ -1501,119 +1666,8 @@ img {
 }
 
 
-/* ORS Contact Form */
-
-.feedback {
-    width: 320px;
-}
-
-.feedback a {
-    display: block;
-    height: 20px;
-    text-align: center;
-    background: black;
-    opacity: 0.9;
-    clear: both;
-    padding-right: 5px;
-    padding-left: 5px;
-    float: right;
-    cursor: pointer;
-    /*Font*/
-    color: #fff;
-    font-size: 14px;
-}
-
-.feedback .form {
-    clear: both;
-    background: #fff;
-}
-
-.feedback input {
-    width: 100%;
-    border-radius: 0;
-    padding: 5px;
-}
-
-.feedback input[type=text] {
-    height: 25px;
-}
-
-.feedback input[type=button] {
-    background-color: #F7F7F7;
-    border: 0px solid white;
-    border-radius: 0;
-    margin-top: 5px;
-}
-
-.feedback textarea {
-    width: 100%;
-    height: 80px;
-    margin-top: 5px;
-    border-radius: 0px;
-    padding: 5px;
-    resize: none;
-    border-color: #F0F0F0;
-}
-
-.feedback span {
-    color: red
-}
-
 #returnmessage {
     font-size: 14px;
     color: green;
     text-align: center;
-}
-
-
-/* Styles for responsive behaviour on mobile devices */
-
-@media screen and (min-width: 320px) and (max-width: 720px) {
-    .ORS-main {
-        flex-direction: column;
-    }
-    .ORS-sidebar {
-        order: 2;
-        flex-basis: 50vh;
-    }
-    .ORS-map {
-        order: 1;
-    }
-    /* To hide the links in the top menu */
-    #topMenu {
-        display: none;
-    }
-    /* To hide the mouse position controller */
-    .leaflet-container .leaflet-control-mouseposition {
-        display: none;
-    }
-    .ORS-sidebar {
-        box-shadow: none;
-    }
-    .ORS-sidebarContent {
-        width: 100%;
-    }
-    .feedbackContainer, .routeExtrasContainer, .ORS-header, .ORS-menuPanel {
-        display: none;
-    }
-    .ORS-mainPanel {
-        top: 42px;
-        position: absolute;
-        overflow: auto;
-        width: 100%;
-        bottom: 20px;
-        left: 0;
-        border-left: 1px solid #CCC;
-        background-color: #FFF;
-    }
-    .ORS-navigation {
-        left: 0;
-        width: 100%;
-    }
-    .disclaimer {
-        width: 100%;
-    }
-    .tooltip {
-        display: none !important;
-    }
 }

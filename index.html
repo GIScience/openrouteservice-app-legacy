@@ -1,27 +1,45 @@
 <!DOCTYPE html>
 <html lang="de">
 	<head>
-		<title>OpenRouteService</title>
+		<!-- TITLE AND ICON FOR THE WEBSITE -->
+		<title> OpenRouteService </title>
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+
+		<!-- WEBSITE METADATA -->
 		<meta name="robots" content="index, follow">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
-		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+		
+		<!-- NECESSARY STYLESHEETS FOR THE WEBSITE -->
+
+		<!-- BOOTSTRAP -->
+		<link rel="stylesheet" type="text/css" href="css/bootstrap-ext.min.css">
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"> 
+		
+		<!-- LEAFLET -->
+		<link rel="stylesheet" type="text/css" href="css/leaflet.css">
+
+		<!-- LEAFLET PLUGINS -->
+		<link rel="stylesheet" type="text/css" href="css/leaflet.elevation-0.0.4.css"> <!-- ELEVATION PLUGIN -->
+		<link rel="stylesheet" type="text/css" href="css/MarkerCluster.css" /> <!-- MARKER CLUSTER PLUGIN -->
+
+		<!-- JQUERY PLUGINS -->
+		<link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.min.css">
+
+		<link rel="stylesheet" type="text/css" href="css/MarkerCluster.Default.css" />
+		<link rel="stylesheet" type="text/css" href="css/L.Control.MousePosition.css" /> <!-- MOUSE POSITION PLUGIN -->
+
+		<!-- FONTS -->
 		<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" type="text/css" href="css/font-awesome.css">
 		<link rel="stylesheet" type="text/css" href="css/ruifont.css">
-		<link rel="stylesheet" type="text/css" href="css/bootstrap-ext.min.css"><!-- for file upload -->
-		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"> 
-		<link rel="stylesheet" type="text/css" href="css/leaflet.css">
-		<link rel="stylesheet" type="text/css" href="css/leaflet.elevation-0.0.4.css">
-		<link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.min.css">
-		<link rel="stylesheet" type="text/css" href="css/default.css">
-		<!-- css for leaflet cluster -->
-		<link rel="stylesheet" type="text/css" href="css/MarkerCluster.css" />
-		<link rel="stylesheet" type="text/css" href="css/MarkerCluster.Default.css" />
-		<link rel="stylesheet" type="text/css" href="css/L.Control.MousePosition.css" />
+
+		<!-- MAIN STYLES -->
+		<link rel="stylesheet" type="text/css" href="css/default.css"> <!-- Must come at the end to overwrite other API styles -->
+
  	</head>
 	<body class="ORS">
-		<!-- navigation bar on top -->
+		<!-- START OF HEADER SECTION -->
 		<header class="ORS-header" id="navbar">
 			<a id="ORS-headIcon" href="http://www.geog.uni-heidelberg.de/giscience.html"></a>
 			<a id="title" href="http://www.openrouteservice.org">OpenRouteService</a>
@@ -34,6 +52,9 @@
 				</li>
 			</ul>
 		</header>
+		<!-- END OF HEADER SECTION -->
+
+		<!-- START OF MAIN SECTION -->
 		<div class="ORS-main">
 			<div class="ORS-sidebar" id="sidebar">
 				<!-- sidebar content -->
@@ -45,7 +66,6 @@
 						<button select-id="ORS-aaContent" class="btn menuButton primary-menu">
 							<i class="fa fa-bullseye"></i>
 						</button>
-						
 						<button select-id="ORS-cloudContent" class="btn menuButton primary-menu">
 							<i class="fa fa-download"></i>
 						</button>
@@ -509,7 +529,7 @@
 	    				</div>
 					</div>
 				</div>
-				<div id="geolocationPanel" style="display: none;">
+				<!--<div id="geolocationPanel" style="display: none;">
 					<div id="geoloc" class="panel panelLight">
 						<div class="toolHeading" id="geolocationHead">
 							My current location
@@ -519,7 +539,7 @@
 							<div id="geolocationResult"></div>
 						</div>
 					</div>
-				</div>
+				</div>-->
 				<div class="disclaimer">
 					<a id="debug">debug - </a>
 					<a href="contact.html" class="inlineLink">(c) 2008-2016 &nbsp; -</a>
@@ -527,7 +547,7 @@
 					<a href="" id="infoPanel"></a>
 				</div>
 			</div>
-			<div id="map" class="ORS-map">
+			<div class="ORS-map" id="map">
 				<a href="http://www.geog.uni-heidelberg.de/giscience.html" class="ORS-logo" target="_blank" class="link">GIScience</a>
 				<div id="infoPermalink">Permalink</div>
 				<div id="bubble">
@@ -554,6 +574,7 @@
 				</div>
 			</div>
 		</div>
+		<!-- END OF MAIN SECTION -->
 		<!-- popup for user preferences (language, distance unit,...) -->
 		<div id="sitePrefsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sitePrefs">
 			<div class="modal-header">
@@ -587,7 +608,9 @@
 				</button>
 			</div>
 		</div>
-		<!-- 	important: jQuery must be included before propertiesotype	 -->
+
+		<!-- CALL JAVASCRIPT FUNCTIONS -->
+		<!-- 	important: jQuery must be included before properties type	 -->
 		<script type="text/javascript" src="lib/jquery-1.7.2.min.js"></script>
 		<script type="text/javascript" src="lib/bootstrap/bootstrap.js"></script>
 		<script type="text/javascript" src="lib/bootstrap/bootstrap-typeahead.js"></script>
