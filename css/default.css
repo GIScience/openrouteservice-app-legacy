@@ -112,7 +112,28 @@
     }
 
 /* STYLE FOR MAP AND OBJECTS WITHIN THE MAP */
-
+    
+    /*preferences popup*/
+    #sitePrefsModal label {
+        float: left;
+    }
+    
+    .logo {
+        height: 45px;
+        width: 45px;
+        margin-top: -5px;
+        padding-right: 5px;
+    }
+    
+    .links {
+        height: 40px;
+        padding-top: 0px;
+        padding-bottom: 2px;
+    }
+    
+    a img {
+        border: none;
+    }
     /* STYLE FOR ELEMENTS ON ASIDE SECTION (LEFT NAVIGATION MENU SECTION) */
         /*STYLES FOR MENU PANEL ON THE LEFT */
         .ORS-menuPanel {
@@ -189,9 +210,235 @@
                         border-radius: 0;
                     }*/
 
+                    /* WAYPOINT OPTIONS */
+                    .addWaypoint {
+                        padding-left: 40px;
+                        padding-top: 5px;
+                        min-height: 30px;
+                        background-image: url('../img/marker-plus.png');
+                        background-repeat: no-repeat;
+                        background-size: 16px;
+                        background-position: 8px 3px;
+                        font-size: 90%;
+                    }
+
+                    .guiComponent > input {
+                        margin-bottom: 0px;
+                        font-size: 13px;
+                    }
+                    
+                    .waypointResult {
+                        margin-bottom: 10px;
+                        width: 240px;
+                        margin-left: 32px;
+                    }
+                    
+                    .waypointResult li span {
+                        position: relative;
+                        left: 10px;
+                    }
+                    
+                    .waypoint {
+                        padding-left: 0px;
+                        padding-top: 0;
+                        min-height: 25px;
+                        margin-bottom: 10px !important;
+                    }
+                    
+                    .waypoint-icon {
+                        display: inline;
+                        float: left;
+                        width: 33px;
+                        height: 25px;
+                    }
+                    
+                    .waypoint-icon.start {
+                        background: url(../img/marker-start.png) no-repeat;
+                        background-size: 16px;
+                        background-position: 8px 3px;
+                    }
+                    
+                    .waypoint-icon.via {
+                        background: url(../img/marker-via.png) no-repeat;
+                        background-size: 16px;
+                        background-position: 8px 3px;
+                    }
+                    
+                    .waypoint-icon.end {
+                        background: url(../img/marker-end.png) no-repeat;
+                        background-size: 16px;
+                        background-position: 8px 3px;
+                    }
+                    
+                    .waypoint-icon.unset {
+                        background: url(../img/marker.png) no-repeat;
+                        background-size: 16px;
+                        background-position: 8px 3px;
+                    }
+
+                    /* ROUTE INSTRUCTIONS */
+                    .directions-main {
+                        margin-top: 5px;
+                    }
+                    
+                    .directions-container {
+                        padding: 8px 0;
+                    }
+                    
+                    .directions-text {
+                        padding: 3px 5px 0 30px;
+                        line-height: 16px;
+                        vertical-align: middle;
+                    }
+                    
+                    .directions-waypoint {
+                        margin-top: 25px;
+                        margin-left: 40px;
+                        line-height: 26px;
+                        position: absolute;
+                    }
+                    
+                    .directions-waypoint-address {
+                        margin-top: 21px;
+                        margin-left: 75px;
+                        line-height: 26px;
+                        font-size: 14px;
+                    }
+                    
+                    .directions-waypoint-address .submain {
+                        font-size: 13px;
+                        color: #A0A0A0;
+                    }
+                    
+                    .directions-waypoint-info {
+                        padding: 6px 5px 0 75px;
+                        position: absolute;
+                        right: 16px;
+                        font-size: 12px;
+                        color: #777777;
+                    }
+                    
+                    .directions-summary-container {
+                        height: 20px;
+                        display: table;
+                        table-layout: fixed;
+                        width: 330px;
+                    }
+                    
+                    .directions-summary-container .info {
+                        text-align: center;
+                        display: table-cell;
+                        font-size: 18px;
+                        border-left: 1px solid #F0F0F0;
+                    }
+                    
+                    .directions-summary-container .info:nth-child(1) {
+                        border-left: transparent;
+                    }
+                    
+                    .directions-summary-container .info .icon {
+                        font-size: 14px;
+                        color: rgb(96, 125, 139);
+                    }
+                    
+                    .directions-summary-container .info .content {}
+                    
+                    .directions-summary-container .info .content .digit {
+                        display: inline;
+                        padding-right: 0px;
+                    }
+                    
+                    .directions-summary-container .info .content .units {
+                        margin-right: 5px;
+                        display: inline;
+                        font-size: 12px;
+                    }
+                    
+                    .directions-img {
+                        margin-left: 3px;
+                        position: absolute;
+                    }
+                    
+                    .directions-mode-distance {
+                        top: 1px;
+                        right: 15px;
+                        padding-left: .5em;
+                        padding-right: .5em;
+                        z-index: 1;
+                        position: absolute;
+                        background-color: #fff;
+                        font-size: 12px;
+                    }
+                    
+                    .directions-mode-container {
+                        padding: 0 0 0 40px;
+                        position: absolute;
+                        left: 0px;
+                        right: 0;
+                        height: 30px;
+                        line-height: normal;
+                        font-weight: normal;
+                    }
+                    
+                    .directions-mode-line {
+                        border-bottom: 1px solid #e6e6e6;
+                        padding-top: 8px;
+                        margin: 0 2em 0 0;
+                    }
+                    
+                    .directions-warning-table {
+                        color: red;
+                    }
+                    
+                    .directions-warning-table tr td:first-child {
+                        width: 37px;
+                    }
+                    
+                    .directions-warning-table img {
+                        height: 16px;
+                        width: auto;
+                        margin-left: 3px;
+                    }
+                    
+                    .fa-rotate-45 {
+                        -webkit-transform: rotate(45deg);
+                        -moz-transform: rotate(45deg);
+                        -ms-transform: rotate(45deg);
+                        -o-transform: rotate(45deg);
+                        transform: rotate(45deg);
+                    }
+                    
+                    .fa-rotate-315 {
+                        -webkit-transform: rotate(315deg);
+                        -moz-transform: rotate(315deg);
+                        -ms-transform: rotate(315deg);
+                        -o-transform: rotate(315deg);
+                        transform: rotate(315deg);
+                    }
+
                 /* ACCESSIBILITY ANALYSIS */
+                #accessibilityDistance, #accessibilityAnalysisIsochronesIntervall {
+                    width: 30px;
+                    /*overwrite settings from bootstrap for input fields*/
+                    padding: 2px 2px 0px 2px;
+                    margin-right: 10px;
+                    vertical-align: baseline;
+                    text-align: center;
+                    font-size: 90%;
+                }
+                
+                #accessibilityAnalysisMethodList {
+                    width: 140px;
+                }
+
 
                 /* CLOUD CONTENT */
+                .downloadGpx {
+                    width: 60px;
+                    height: 30px;
+                    background-size: 60px 30px;
+                    background: url(../img/routelinkGPX.png) no-repeat 0% 50%;
+                }
 
                 /* FEEDBACK CONTENT */
                 .feedback {
@@ -267,6 +514,8 @@
             }
 
             /* GENERIC ELEMENTS (CLASSES OR ID'S USED FOR VARIOUS ELEMENTS) */
+            
+            /* generic scrollbar classes */
             .mCS-ors-theme.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
                 background-color: #707070;
             }
@@ -279,8 +528,90 @@
                 background-color: #F0F0F0;
             }
 
+            /* generic ORS classes */
+            .ORS-light {
+                background-color: #fafafa;
+            }
+
+            .ORS-panel {
+                border-bottom: 1px solid #EBEBEB;
+            }
+            
+            .ORS-panel-sub {
+                padding-left: 10px;
+                padding-right: 10px;
+                padding-bottom: 10px;
+                padding-top: 10px;
+            }
+            
+            .ORS-padding {
+                padding-top: 20px;
+            }
+            
+            .ORS-hr {
+                border-bottom: 1px solid #F0F0F0;
+            }
+            
+            .ORS-hr-dark {
+                border-bottom: 1px solid #DDD;
+            }
+
+            .ORS-label {
+                line-height: 16px;
+                font-weight: normal;
+                color: #707070;
+                text-shadow: none;
+                background-color: transparent;
+            }
+            
+            .ORS-form {
+                margin: 0 0 10px;
+            }
+            
+            .ORS-alert {
+                margin-bottom: 0;
+                border-radius: 0;
+                margin-top: 5px;
+                font-family: 'Source Sans Pro', sans-serif;
+            }
+            
+            .ORS-info {
+                font-family: 'Source Sans Pro', sans-serif;
+            }
+            
+            .ORS-close {
+                display: block;
+                float: right;
+                width: 17px;
+                height: 29px;
+                color: #707070;
+            }
+            
+            .ORS-center {
+                text-align: center;
+                line-height: 40px;
+            }
+
     /* STYLE FOR ELEMENTS ON NAV SECTION (MAP SECTION) */
+
+        .leaflet-pane {
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+        
+        .leaflet-control-container {
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+        
+        .leaflet-bar, .leaflet-bar a:last-child, .leaflet-bar a:first-child, .leaflet-control-layers {
+            border-radius: 0px;
+            background-color: #FAFAFA;
+        }
+
         /* MAP CONTROLLERS */
+
+        .leaflet-bottom .leaflet-control-scale {
+            margin-bottom: 23px;
+        }
 
         .leaflet-control-customNavMenuToggle, .leaflet-control-customLocate {
             width: 26px;
@@ -466,8 +797,6 @@
             z-index: 9999;
         }
 
-
-
 /* ******************************************/
 /* END OF ELEMENT STYLES (CLASSES AND ID's) */
 /* ******************************************/
@@ -514,6 +843,60 @@
         z-index: 1;
         left: -7px;
         top: 27px;
+    }
+
+    .clear:after {
+        clear: both;
+        content: "";
+        display: table;
+    }
+
+    /* for waypoints */
+    .removeWaypoint:before {
+        display: block;
+        float: right;
+        width: 16px;
+        font-size: 85%;
+        padding-left: 3px;
+        content: "\f00d";
+        font-family: FontAwesome;
+    }
+    
+    .moveUpWaypoint:before {
+        display: block;
+        float: right;
+        width: 18px;
+        font-size: 85%;
+        padding-left: 3px;
+        content: "\f062";
+        font-family: FontAwesome;
+    }
+    
+    .moveDownWaypoint:before {
+        display: block;
+        float: right;
+        width: 18px;
+        font-size: 85%;
+        content: "\f063";
+        font-family: FontAwesome;
+    }
+    
+    .searchAgainButton:before {
+        display: block;
+        float: right;
+        width: 18px;
+        font-size: 85%;
+        content: "\f021";
+        font-family: FontAwesome;
+    }
+    
+    .useAsWaypoint:before {
+        display: block;
+        float: right;
+        width: 18px;
+        font-size: 85%;
+        content: "\f041";
+        font-family: FontAwesome;
     }
 
 /* *********************************************/
@@ -576,45 +959,7 @@
 /* END OF MOBILE STYLES (MEDIA QUERIES FOR MOBILE VISUALIZATION)  */
 /* ****************************************************************/
 
-
-.ORS-light {
-    background-color: #fafafa;
-}
-
-
-.ORS-panel {
-    border-bottom: 1px solid #EBEBEB;
-}
-
-.ORS-panel-sub {
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    padding-top: 10px;
-}
-
-.ORS-padding {
-    padding-top: 20px;
-}
-
-.ORS-hr {
-    border-bottom: 1px solid #F0F0F0;
-}
-
-.ORS-hr-dark {
-    border-bottom: 1px solid #DDD;
-}
-
-.clear:after {
-    clear: both;
-    content: "";
-    display: table;
-}
-
-
 /* STYLES FOR LINKS WITHIN THE HEADER */
-
-
 
 /*#info {
     margin-left: 112px;
@@ -648,279 +993,27 @@
  * CSS for elements visible in map area
  */
 
-
-
-
-
-
 /**
  * CSS for non-map elements
  */
 
-.headingElement {}
+/*.headingElement {}*/
 
 
 /* labels for main tabs (plan route, search)*/
 
-.tabLabels {
+/*.tabLabels {
     float: right;
-}
+}*/
 
 
 /* Header in Gui.Tool elements */
 
-.toolHeading {
+/*.toolHeading {
     font-size: 130%;
     padding-top: 5px;
     padding-bottom: 10px;
-}
-
-
-/* for removing waypoints */
-
-.guiComponent > input {
-    margin-bottom: 0px;
-    font-size: 13px;
-}
-
-.waypointResult {
-    margin-bottom: 10px;
-    width: 240px;
-    margin-left: 32px;
-}
-
-.waypointResult li span {
-    position: relative;
-    left: 10px;
-}
-
-.removeWaypoint:before {
-    display: block;
-    float: right;
-    width: 16px;
-    font-size: 85%;
-    padding-left: 3px;
-    content: "\f00d";
-    font-family: FontAwesome;
-}
-
-.moveUpWaypoint:before {
-    display: block;
-    float: right;
-    width: 18px;
-    font-size: 85%;
-    padding-left: 3px;
-    content: "\f062";
-    font-family: FontAwesome;
-}
-
-.moveDownWaypoint:before {
-    display: block;
-    float: right;
-    width: 18px;
-    font-size: 85%;
-    content: "\f063";
-    font-family: FontAwesome;
-}
-
-.searchAgainButton:before {
-    display: block;
-    float: right;
-    width: 18px;
-    font-size: 85%;
-    content: "\f021";
-    font-family: FontAwesome;
-}
-
-.useAsWaypoint:before {
-    display: block;
-    float: right;
-    width: 18px;
-    font-size: 85%;
-    content: "\f041";
-    font-family: FontAwesome;
-}
-
-.waypoint {
-    padding-left: 0px;
-    padding-top: 0;
-    min-height: 25px;
-    margin-bottom: 10px !important;
-}
-
-.waypoint-icon {
-    display: inline;
-    float: left;
-    width: 33px;
-    height: 25px;
-}
-
-.waypoint-icon.start {
-    background: url(../img/marker-start.png) no-repeat;
-    background-size: 16px;
-    background-position: 8px 3px;
-}
-
-.waypoint-icon.via {
-    background: url(../img/marker-via.png) no-repeat;
-    background-size: 16px;
-    background-position: 8px 3px;
-}
-
-.waypoint-icon.end {
-    background: url(../img/marker-end.png) no-repeat;
-    background-size: 16px;
-    background-position: 8px 3px;
-}
-
-.waypoint-icon.unset {
-    background: url(../img/marker.png) no-repeat;
-    background-size: 16px;
-    background-position: 8px 3px;
-}
-
-
-/* route instructions styles */
-
-.directions-main {
-    margin-top: 5px;
-}
-
-.directions-container {
-    padding: 8px 0;
-}
-
-.directions-text {
-    padding: 3px 5px 0 30px;
-    line-height: 16px;
-    vertical-align: middle;
-}
-
-.directions-waypoint {
-    margin-top: 25px;
-    margin-left: 40px;
-    line-height: 26px;
-    position: absolute;
-}
-
-.directions-waypoint-address {
-    margin-top: 21px;
-    margin-left: 75px;
-    line-height: 26px;
-    font-size: 14px;
-}
-
-.directions-waypoint-address .submain {
-    font-size: 13px;
-    color: #A0A0A0;
-}
-
-.directions-waypoint-info {
-    padding: 6px 5px 0 75px;
-    position: absolute;
-    right: 16px;
-    font-size: 12px;
-    color: #777777;
-}
-
-.directions-summary-container {
-    height: 20px;
-    display: table;
-    table-layout: fixed;
-    width: 330px;
-}
-
-.directions-summary-container .info {
-    text-align: center;
-    display: table-cell;
-    font-size: 18px;
-    border-left: 1px solid #F0F0F0;
-}
-
-.directions-summary-container .info:nth-child(1) {
-    border-left: transparent;
-}
-
-.directions-summary-container .info .icon {
-    font-size: 14px;
-    color: rgb(96, 125, 139);
-}
-
-.directions-summary-container .info .content {}
-
-.directions-summary-container .info .content .digit {
-    display: inline;
-    padding-right: 0px;
-}
-
-.directions-summary-container .info .content .units {
-    margin-right: 5px;
-    display: inline;
-    font-size: 12px;
-}
-
-.directions-img {
-    margin-left: 3px;
-    position: absolute;
-}
-
-.directions-mode-distance {
-    top: 1px;
-    right: 15px;
-    padding-left: .5em;
-    padding-right: .5em;
-    z-index: 1;
-    position: absolute;
-    background-color: #fff;
-    font-size: 12px;
-}
-
-.directions-mode-container {
-    padding: 0 0 0 40px;
-    position: absolute;
-    left: 0px;
-    right: 0;
-    height: 30px;
-    line-height: normal;
-    font-weight: normal;
-}
-
-.directions-mode-line {
-    border-bottom: 1px solid #e6e6e6;
-    padding-top: 8px;
-    margin: 0 2em 0 0;
-}
-
-.directions-warning-table {
-    color: red;
-}
-
-.directions-warning-table tr td:first-child {
-    width: 37px;
-}
-
-.directions-warning-table img {
-    height: 16px;
-    width: auto;
-    margin-left: 3px;
-}
-
-.fa-rotate-45 {
-    -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
-    transform: rotate(45deg);
-}
-
-.fa-rotate-315 {
-    -webkit-transform: rotate(315deg);
-    -moz-transform: rotate(315deg);
-    -ms-transform: rotate(315deg);
-    -o-transform: rotate(315deg);
-    transform: rotate(315deg);
-}
-
+}*/
 
 /* gpx upload styles */
 
@@ -977,18 +1070,6 @@
     color: rgb(0, 161, 45);
 }
 
-.addWaypoint {
-    padding-left: 40px;
-    padding-top: 5px;
-    min-height: 30px;
-    background-image: url('../img/marker-plus.png');
-    background-repeat: no-repeat;
-    background-size: 16px;
-    background-position: 8px 3px;
-    font-size: 90%;
-}
-
-
 /* container for "zoom to route" or "calculate route" when appropriate*/
 
 .zoomToSearchResults {
@@ -1041,12 +1122,7 @@
     background-color: rgba(235, 235, 225, 0.65);
 }
 
-.downloadGpx {
-    width: 60px;
-    height: 30px;
-    background-size: 60px 30px;
-    background: url(../img/routelinkGPX.png) no-repeat 0% 50%;
-}
+
 
 .prompt {}
 
@@ -1065,51 +1141,15 @@
 
 /* Leaflet styles */
 
-.leaflet-bottom .leaflet-control-scale {
-    margin-bottom: 23px;
-}
-
-.leaflet-pane {
-    font-family: 'Source Sans Pro', sans-serif;
-}
-
-.leaflet-control-container {
-    font-family: 'Source Sans Pro', sans-serif;
-}
-
-.leaflet-bar, .leaflet-bar a:last-child, .leaflet-bar a:first-child, .leaflet-control-layers {
-    border-radius: 0px;
-    background-color: #FAFAFA;
-}
 
 
-/*preferences popup*/
 
-#sitePrefsModal label {
-    float: left;
-}
 
-.logo {
-    height: 45px;
-    width: 45px;
-    margin-top: -5px;
-    padding-right: 5px;
-}
-
-.links {
-    height: 40px;
-    padding-top: 0px;
-    padding-bottom: 2px;
-}
-
-a img {
-    border: none;
-}
 
 
 /*avoid layer names too close to radio button */
 
-/*body {
+body {
     font-size: 90%;
     -line-height: 1.4;
     color: rgba(0, 0, 0, 0.8);
@@ -1118,7 +1158,7 @@ a img {
     margin: 0;
     padding: 0;
     font-family: 'Source Sans Pro', sans-serif;
-}*/
+}
 
 input, .form-inline input, textarea, select, .form-inline select, .guiComponent > input {
     font-family: 'Source Sans Pro', sans-serif;
@@ -1395,13 +1435,13 @@ button.routeOptionsButton, button.optionsButton {
 
 /* main components of the layout: */
 
-#geolocationNotification {
+/*#geolocationNotification {
     width: 80%;
     margin-left: auto;
     margin-right: auto;
     margin-top: 200px;
 }
-
+*/
 .panel {
     /* panels in the sidebar
      * (similar to class 'well' from bootstrap but with other margins and color)*/
@@ -1421,41 +1461,7 @@ button.routeOptionsButton, button.optionsButton {
     font-size: 90%;
 }
 
-.ORS-label {
-    line-height: 16px;
-    font-weight: normal;
-    color: #707070;
-    text-shadow: none;
-    background-color: transparent;
-}
 
-.ORS-form {
-    margin: 0 0 10px;
-}
-
-.ORS-alert {
-    margin-bottom: 0;
-    border-radius: 0;
-    margin-top: 5px;
-    font-family: 'Source Sans Pro', sans-serif;
-}
-
-.ORS-info {
-    font-family: 'Source Sans Pro', sans-serif;
-}
-
-.ORS-close {
-    display: block;
-    float: right;
-    width: 17px;
-    height: 29px;
-    color: #707070;
-}
-
-.ORS-center {
-    text-align: center;
-    line-height: 40px;
-}
 
 #TruckTabs>li>a {
     font-size: 90%;
@@ -1570,19 +1576,7 @@ img {
 
 
 
-#accessibilityDistance, #accessibilityAnalysisIsochronesIntervall {
-    width: 30px;
-    /*overwrite settings from bootstrap for input fields*/
-    padding: 2px 2px 0px 2px;
-    margin-right: 10px;
-    vertical-align: baseline;
-    text-align: center;
-    font-size: 90%;
-}
 
-#accessibilityAnalysisMethodList {
-    width: 140px;
-}
 
 #exportGpxError {
     margin-top: 5px;
