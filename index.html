@@ -347,7 +347,7 @@
 									<h6>Maximum speed</h6>
 									<div class="input-append">
 										<input class="span3" id="maxSpeedInput" type="text" placeholder="maximum speed">
-										<button class="btn primary" type="button" id="maxSpeedBtn">set</button>
+										<button class="btn primary-control" type="button" id="maxSpeedBtn">set</button>
 									</div>
 								</div>
 								<div id="avoidAreas">
@@ -410,19 +410,19 @@
 								</div>
 								<div class="clear">
 									<div class="left" id="viaOptimizePanel">
-										<label class="btn primary transparent" data-container="body" type="button" id="tt-optimize" data-toggle="tooltip" title="Optimize Waypoints">
+										<label class="btn primary-control transparent" data-container="body" type="button" id="tt-optimize" data-toggle="tooltip" title="Optimize Waypoints">
 										    <i class="fa fa-wrench"></i>
 										    <input type="checkbox" class="hide" id="viaOptimize" data-toggle="button"/>
 										</label>
 									</div>
 									<div class="right">
-										<button id="orderRoute" class="btn primary transparent" data-container="body" type="button" id="tt-reorder" data-toggle="tooltip" title="Reorder Waypoints"><i class="fa fa-refresh"></i></button>
+										<button id="orderRoute" class="btn primary-control transparent" data-container="body" type="button" id="tt-reorder" data-toggle="tooltip" title="Reorder Waypoints"><i class="fa fa-refresh"></i></button>
 									</div>
 									<div class="right">
-										<button id="resetRoute" class="btn primary transparent" data-container="body" type="button" id="tt-reset" data-toggle="tooltip" title="Reset Route"><i class="fa fa-remove"></i></button>
+										<button id="resetRoute" class="btn primary-control transparent" data-container="body" type="button" id="tt-reset" data-toggle="tooltip" title="Reset Route"><i class="fa fa-remove"></i></button>
 									</div>
 									<div class="right">
-										<button id="zoomToRouteButton" class="btn primary transparent" data-container="body" type="button"  id="tt-zoom"data-toggle="tooltip" title="Zoom to Route"><i class="fa fa-arrows-alt"></i></button>
+										<button id="zoomToRouteButton" class="btn primary-control transparent" data-container="body" type="button"  id="tt-zoom"data-toggle="tooltip" title="Zoom to Route"><i class="fa fa-arrows-alt"></i></button>
 									</div>
 								</div>
 								<div id="ORS-routeError" style="display:none" class="ORS-alert alert alert-error"></div>
@@ -478,10 +478,10 @@
 							</form>
 							<div class="clear">
 								<div class="left">
-    								<button class="btn primary" data-container="body" id="analyzeAccessibility" type="button" data-toggle="tooltip" title="" data-original-title="Calculate accessibility"><i class="fa fa-fw fa-bullseye"></i><span id="analyzeAccessibilityLabel"></span></button>
+    								<button class="btn primary-control" data-container="body" id="analyzeAccessibility" type="button" data-toggle="tooltip" title="" data-original-title="Calculate accessibility"><i class="fa fa-fw fa-bullseye"></i><span id="analyzeAccessibilityLabel"></span></button>
     							</div>
     							<div class="left">
-    								<button class="btn primary" data-container="body" id="removeAccessibility" style="display:none" type="button" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-remove"></i></button>
+    								<button class="btn primary-control" data-container="body" id="removeAccessibility" style="display:none" type="button" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-remove"></i></button>
     							</div>
     						</div>
 							<div class="ORS-alert alert alert-info" id="accessibilityCalculation" style="display: none;">
@@ -497,10 +497,10 @@
 						<div class="ORS-panel-sub">
 							<div class="clear">
 								<div style="margin-bottom: 10px">
-									<a id="export-gpx" class="btn primary" download="map.gpx" title="Download of current route in GPX format" data-container="body" data-toggle="tooltip" data-original-title=""><i class="fa fa-download fa-fw"></i><span>download GPX</span></a>
+									<a id="export-gpx" class="btn primary-control" download="map.gpx" title="Download of current route in GPX format" data-container="body" data-toggle="tooltip" data-original-title=""><i class="fa fa-download fa-fw"></i><span>download GPX</span></a>
 								</div>
 								<div id="GPXcontainer">
-									<span class="btn btn-file primary" id="import-gpx" title="Upload multiple tracks from a GPX-files" data-container="body" data-toggle="tooltip" data-original-title=""><i class="fa fa-upload fa-fw"></i><span>upload GPX</span><input type="file" id="files" multiple /></span>
+									<span class="btn btn-file primary-control" id="import-gpx" title="Upload multiple tracks from a GPX-files" data-container="body" data-toggle="tooltip" data-original-title=""><i class="fa fa-upload fa-fw"></i><span>upload GPX</span><input type="file" id="files" multiple /></span>
 										<div id="fileContainerMain" style="display: none;"></div>		
 								</div>
 							</div>
@@ -670,7 +670,9 @@
 		    (function($){
 				$(window).on("load",function(){
 					$(".ORS-mainPanel").mCustomScrollbar({
-			        	theme:"ors-theme",autoHideScrollbar: true
+			        	theme:"minimal-dark",
+			        	autoHideScrollbar: true,
+
 			      });
 		        });
 		    })(jQuery);
