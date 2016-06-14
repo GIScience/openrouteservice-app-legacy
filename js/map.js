@@ -106,17 +106,9 @@ var Map = (function() {
         /* Set up the control functions */
         //var marker = null;
         //var circle = null;
-
         function onLocationFound(e) {
-            //var radius = e.accuracy;
-            /* To add a marker on user's location (TODO) */
-            //var marker = L.marker(e.latlng, {
-            //    icon: geolocateIcon
-            //}) /*.bindPopup("user's location description here").openPopup()*/ ;
-            //var circle = L.circle(e.latlng, radius);
-            // add marker and accuracy circle
-            //marker.addTo(map);
-            //circle.addTo(map);
+            console.log(e)
+            $('.leaflet-popup-content').remove();
             var menuObject = createMapContextMenu();
             var popup = L.popup({
                 closeButton: false,
@@ -125,6 +117,7 @@ var Map = (function() {
                 className: 'mapContextMenu'
             }).setContent(menuObject.innerHTML).setLatLng(e.latlng);
             self.theMap.openPopup(popup);
+            contextMenuListeners(e.latlng, popup);
         }
         //Function to set what happen when the user location is not found   
         function onLocationError(e) {
@@ -138,7 +131,7 @@ var Map = (function() {
             },
             onAdd: function(map) {
                 var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-customLocate');
-                container.title = "Zoom to current location"
+                container.title = "Zoom to current location";
                 container.onclick = function() {
                     map.locate({
                         setView: true,
@@ -146,12 +139,11 @@ var Map = (function() {
                     });
                     map.on('locationfound', onLocationFound);
                     map.on('locationerror', onLocationError);
-                }
+                };
                 return container;
             },
         });
         this.theMap.addControl(new LocateControl()); /* don't add this control for now */
-
         /* TOGGLE NAVIGATION MENU CONROL */
         var timeout = this.theMap;
         var NavMenuToggle = L.Control.extend({
@@ -160,16 +152,15 @@ var Map = (function() {
             },
             onAdd: function() {
                 var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-customNavMenuToggle');
-                container.title = "Toggle navigation menu"
+                container.title = "Toggle navigation menu";
                 container.onclick = function() {
                     jQuery("#sidebar").toggle();
                     timeout.invalidateSize(true); //Needed to update map visualization after toggling Menu
-                }
+                };
                 return container;
             },
         });
         this.theMap.addControl(new NavMenuToggle());
-
         /* AVOID AREA CONTROLLER */
         L.NewPolygonControl = L.Control.extend({
             options: {
@@ -216,7 +207,6 @@ var Map = (function() {
         this.theMap.on('editable:drawing:commit', shapeListener);
         this.theMap.on('editable:vertex:deleted', shapeListener);
         this.theMap.on('editable:vertex:dragend', shapeListener);
-
         /* LAYER CONTROLLER */
         this.layerControls = L.control.layers(this.baseLayers, this.overlays);
         this.layerControls.addTo(this.theMap);
@@ -266,17 +256,7 @@ var Map = (function() {
         /* *********************************************************************
          * MAP CONTROLS
          * *********************************************************************/
-        this.theMap.on('contextmenu', function(e) {
-            var displayPos = e.latlng;
-            $('.leaflet-popup-content').remove();
-            var menuObject = createMapContextMenu();
-            var popup = L.popup({
-                closeButton: false,
-                maxHeight: '112px',
-                maxWidth: '120px',
-                className: 'mapContextMenu'
-            }).setContent(menuObject.innerHTML).setLatLng(e.latlng);
-            self.theMap.openPopup(popup);
+        function contextMenuListeners(displayPos, popup) {
             var options = $('.leaflet-popup-content');
             options = options[0].childNodes;
             options[0].onclick = function(e) {
@@ -306,6 +286,19 @@ var Map = (function() {
                 });
                 self.theMap.closePopup(popup);
             };
+        }
+        this.theMap.on('contextmenu', function(e) {
+            var displayPos = e.latlng;
+            $('.leaflet-popup-content').remove();
+            var menuObject = createMapContextMenu();
+            var popup = L.popup({
+                closeButton: false,
+                maxHeight: '112px',
+                maxWidth: '120px',
+                className: 'mapContextMenu'
+            }).setContent(menuObject.innerHTML).setLatLng(e.latlng);
+            self.theMap.openPopup(popup);
+            contextMenuListeners(displayPos, popup);
         });
         // create a new contextMenu
         function createMapContextMenu() {
@@ -339,7 +332,6 @@ var Map = (function() {
             mapContextMenuContainer.appendChild(useAsEndPointContainer);
             return mapContextMenuContainer;
         }
-        
         /* *********************************************************************
          * MAP EVENTS
          * *********************************************************************/
@@ -1029,21 +1021,21 @@ var Map = (function() {
      * @param {Object} routeLineSegments: array of Leaflet Linestrings with height information
      */
     function updateHeightprofiles(routeLineHeights, viaPoints) {
+        console.log(viaPoints)
+        var latLng, viaPointsList = [];
         var el = this.elevationControl;
         el.addTo(this.theMap);
         this.layerRouteLines.clearLayers();
         el.clear();
         var polyline = L.polyline(routeLineHeights).toGeoJSON();
         // add waypoints in elevation diagram
-        if (viaPoints) {
+        if (viaPoints.length > 0) {
             for (var i = 0; i < viaPoints.length; i++) {
-                viaPoints[i] = viaPoints[i].split(" ");
-                var lat = parseFloat(viaPoints[i][1])
-                var lng = parseFloat(viaPoints[i][0])
-                viaPoints[i][0] = lat;
-                viaPoints[i][1] = lng;
+                latLng = [parseFloat(viaPoints[i].lon), parseFloat(viaPoints[i].lat)];
+                viaPointsList.push(latLng);
             }
-            polyline.properties.waypoint_coordinates = viaPoints;
+            console.log(viaPointsList)
+            polyline.properties.waypoint_coordinates = viaPointsList;
         }
         var gjl = L.geoJson(polyline, {
             opacity: '0',
