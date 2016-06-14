@@ -1109,7 +1109,7 @@ a img {
 
 /*avoid layer names too close to radio button */
 
-/*body {
+body {
     font-size: 90%;
     -line-height: 1.4;
     color: rgba(0, 0, 0, 0.8);
@@ -1118,7 +1118,7 @@ a img {
     margin: 0;
     padding: 0;
     font-family: 'Source Sans Pro', sans-serif;
-}*/
+}
 
 input, .form-inline input, textarea, select, .form-inline select, .guiComponent > input {
     font-family: 'Source Sans Pro', sans-serif;
