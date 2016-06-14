@@ -322,13 +322,15 @@ var Ui = (function(w) {
             while (waypointResultElement.firstChild) {
                 waypointResultElement.removeChild(waypointResultElement.firstChild);
             }
+			console.log(rootElement);
             waypointResultElement.insert(e.currentTarget);
             waypointResultElement.show();
             //remove search markers and add a new waypoint marker
             theInterface.emit('ui:waypointResultClick', {
                 wpIndex: index,
                 featureId: e.currentTarget.id,
-                searchIds: rootElement.getAttribute('data-search')
+                searchIds: rootElement.getAttribute('data-search'),
+				currentTarget : e.currentTarget.cloneNode(true)
             });
         } else {
             handleSearchAgainWaypointClick({
@@ -370,6 +372,8 @@ var Ui = (function(w) {
     function getFeatureIdOfWaypoint(wpIndex) {
         var rootElement = $('#' + wpIndex).get(0);
         var address = rootElement.querySelector('.address');
+		console.log(rootElement);
+		console.log(address);
         var id = address ? address.id : null;
         return id;
     }
@@ -380,6 +384,8 @@ var Ui = (function(w) {
      */
     function getWaypiontIndexByFeatureId(featureId) {
         var wpResult = $('#' + featureId);
+		console.log(featureId);
+		console.log(wpResult);
         var wpElement;
         if (wpResult) {
             wpElement = wpResult.parent().parent();
@@ -442,6 +448,10 @@ var Ui = (function(w) {
         var index = parseInt(waypointElement.attr('id'));
         var prevIndex = index - 1;
         var previousElement = $('#' + prevIndex);
+		//If the clicked Waypoint is unset and the previous one is the first one, disable roundtrip
+		if ($(previousElement).hasClass('roundtrip') && $(waypointElement).hasClass('unset')){
+			theInterface.emit('ui:specifyRoundtrip', false);
+		}
         waypointElement.insertBefore(previousElement);
         //adapt IDs...
         previousElement.attr('id', index);
@@ -490,6 +500,11 @@ var Ui = (function(w) {
         var index = parseInt(waypointElement.attr('id'));
         var succElement = $('#' + (index + 1));
         var succIndex = index + 1;
+		//If the clicked Waypoint is the last to next one and the last one is a roundtrip, simply disable roundtrip
+		if ($(succElement).hasClass('roundtrip')){
+			theInterface.emit('ui:specifyRoundtrip', false);
+			return;
+		}
         waypointElement.insertAfter(succElement);
         //adapt IDs... of waypointElement
         waypointElement.attr('id', succIndex);
@@ -504,9 +519,6 @@ var Ui = (function(w) {
             //the waypoint which has been moved down is the last waypoint: hide move down button
             $(waypointElement.get(0).querySelector('.moveUpWaypoint')).show();
             $(waypointElement.get(0).querySelector('.moveDownWaypoint')).hide();
-			console.log("last wp");
-			$('#roundtrip').attr('checked', false);
-			theInterface.emit('ui:specifyRoundtrip', false);
         } else {
             //show both
             $(waypointElement.get(0).querySelector('.moveUpWaypoint')).show();
@@ -536,9 +548,11 @@ var Ui = (function(w) {
         //id of prior to last waypoint:
         var waypointId = $(e.currentTarget).prev().attr('id');
         var oldIndex = parseInt(waypointId);
-        addWaypointAfter(oldIndex, oldIndex + 1);
+		// If roundtrip is enabled, add the waypoint in front of the last (roundtrip) waypoint
+		var numWaypoints = oldIndex + 1;
+		if($('#roundtrip')[0].checked && $('.waypoint.roundtrip').length > 1 && $('#' + oldIndex).hasClass('roundtrip')) oldIndex -= 1;
+        addWaypointAfter(oldIndex, numWaypoints);
         theInterface.emit('ui:selectWaypointType', oldIndex);
-        var numwp = $('.waypoint').length - 1;
     }
     /**
      *adds a new waypoint element after given waypoint index
@@ -625,6 +639,7 @@ var Ui = (function(w) {
         //insert information as waypoint
         var rootElement = $('#' + index);
 		console.log(index);
+		console.log(rootElement);
         rootElement.removeClass('unset');
         address.setAttribute('data-shortAddress', shortAddress);
         var children = rootElement.children();
@@ -1333,7 +1348,7 @@ var Ui = (function(w) {
         var numWaypoints = $('.waypoint').length - 1;
         for (var i = 0; i < numWaypoints; i++) {
             var element = $('#' + i).get(0);
-            element = element.querySelector('.address');
+            if(element) element = element.querySelector('.address');
             if (element) {
                 allRoutePoints.push(element.getAttribute('data-position'));
             }
@@ -1347,13 +1362,15 @@ var Ui = (function(w) {
         var waypoints = [];
         for (var i = 0; i < $('.waypoint').length - 1; i++) {
             var address = $('#' + i).get(0);
-            if (address.querySelector('.address')) {
-                address = $(address).children(".waypointResult");
-                address = $(address).find("li").attr("data-shortaddress");
-                //address = address.match(/[^,]*/).toString();
-                //address = address.replace(/(\r\n|\n|\r)/gm,", ");
-                waypoints.push(address);
-            }
+			if (address){
+				if (address.querySelector('.address')) {
+					address = $(address).children(".waypointResult");
+					address = $(address).find("li").attr("data-shortaddress");
+					//address = address.match(/[^,]*/).toString();
+					//address = address.replace(/(\r\n|\n|\r)/gm,", ");
+					waypoints.push(address);
+				}
+			}
         }
         return waypoints;
     }
