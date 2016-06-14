@@ -2058,8 +2058,7 @@ var Ui = (function(w) {
      * @param e: the event containing the clicked waypoint icon
      */
     function handleZoomToWaypointClick(e) {
-        console.log(e)
-            //make sure the waypoint is not empty
+        //make sure the waypoint is not empty
         if ($(e.currentTarget).parent().children(".waypointResult").children().length > 0) {
             theInterface.emit('ui:zoomToWaypoint', $(e.currentTarget).parent().attr("id"));
         }
@@ -2170,7 +2169,6 @@ var Ui = (function(w) {
     function updateProfileOptions() {
         // show profile specific route options
         var i, el, optionType = permaInfo[preferences.routeOptionsIdx];
-        console.log(optionType)
         for (var profile in list.showElements) {
             if (optionType == profile || profile == 'All') {
                 for (i = 0; i < list.showElements[profile].length; i++) {
@@ -2534,7 +2532,6 @@ var Ui = (function(w) {
      * @param e: the event
      */
     function handleOptionsChanged(e) {
-        console.log(e)
         var boolVar;
         e = e || window.event;
         var target = e.target || e.srcElement;
@@ -2737,7 +2734,6 @@ var Ui = (function(w) {
             } else {
                 boolVar = true;
             }
-            console.log(boolVar)
             theInterface.emit('ui:prefsChanged', {
                 key: preferences.optimizeViaIdx,
                 value: boolVar
@@ -2796,7 +2792,6 @@ var Ui = (function(w) {
         var parent;
         for (var i = 0; i < parentOptions.length; i++) {
             if (list.routePreferences.get(parentOptions[i]).indexOf(routeOption) != -1) {
-                console.log(parentOptions[i])
                     //activate corresponding option panel
                 switchRouteOptionsButton(parentOptions[i]);
             }

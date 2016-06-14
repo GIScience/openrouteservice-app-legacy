@@ -79,17 +79,8 @@ var Map = (function() {
         this.baseLayers[layerName5] = this.stamen;
         // add openmapsurfer as base
         this.baseLayers[layerName1].addTo(this.theMap);
-        // this.baseLayers = {
-        //     layerName1: this.openmapsurfer,
-        //     layerName2: this.ors_osm_worldwide,
-        //     layerName3: this.openstreetmap,
-        //     layerName4: this.opencyclemap,
-        //     layerName5: this.stamen
-        // };
         this.overlays = {};
-        // var overlays = {
-        //     layerName6: this.aster_hillshade,
-        // };
+       
         var layerName6 = Preferences.translate('layer6');
         this.overlays[layerName6] = this.aster_hillshade;
         /* MOUSE POSITION CONTROL */
@@ -103,11 +94,8 @@ var Map = (function() {
         });
         ZoomControl.addTo(this.theMap);
         /* LOCATE CONTROL */
-        /* Set up the control functions */
-        //var marker = null;
-        //var circle = null;
+        
         function onLocationFound(e) {
-            console.log(e)
             $('.leaflet-popup-content').remove();
             var menuObject = createMapContextMenu();
             var popup = L.popup({
@@ -122,7 +110,7 @@ var Map = (function() {
         //Function to set what happen when the user location is not found   
         function onLocationError(e) {
             alert(e.message + ": User location was not found. Check your location settings.");
-            setView([49.409445, 8.692953]);
+            this.theMap.setView([49.409445, 8.692953]);
         }
         /* Set up the map controller */
         var LocateControl = L.Control.extend({
@@ -1021,7 +1009,6 @@ var Map = (function() {
      * @param {Object} routeLineSegments: array of Leaflet Linestrings with height information
      */
     function updateHeightprofiles(routeLineHeights, viaPoints) {
-        console.log(viaPoints)
         var latLng, viaPointsList = [];
         var el = this.elevationControl;
         el.addTo(this.theMap);
@@ -1034,7 +1021,6 @@ var Map = (function() {
                 latLng = [parseFloat(viaPoints[i].lon), parseFloat(viaPoints[i].lat)];
                 viaPointsList.push(latLng);
             }
-            console.log(viaPointsList)
             polyline.properties.waypoint_coordinates = viaPointsList;
         }
         var gjl = L.geoJson(polyline, {
