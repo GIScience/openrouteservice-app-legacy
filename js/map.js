@@ -117,7 +117,14 @@ var Map = (function() {
             // add marker and accuracy circle
             //marker.addTo(map);
             //circle.addTo(map);
-            createMapContextMenu();
+            var menuObject = createMapContextMenu();
+            var popup = L.popup({
+                closeButton: false,
+                maxHeight: '112px',
+                maxWidth: '120px',
+                className: 'mapContextMenu'
+            }).setContent(menuObject.innerHTML).setLatLng(e.latlng);
+            self.theMap.openPopup(popup);
         }
         //Function to set what happen when the user location is not found   
         function onLocationError(e) {
@@ -162,6 +169,55 @@ var Map = (function() {
             },
         });
         this.theMap.addControl(new NavMenuToggle());
+
+        /* AVOID AREA CONTROLLER */
+        L.NewPolygonControl = L.Control.extend({
+            options: {
+                position: 'topright'
+            },
+            onAdd: function(map) {
+                var container = L.DomUtil.create('div', 'leaflet-control leaflet-bar'),
+                    link = L.DomUtil.create('a', '', container);
+                link.href = '#';
+                link.title = 'Create a new polygon';
+                link.innerHTML = '▱';
+                L.DomEvent.on(link, 'click', L.DomEvent.stop).on(link, 'click', function() {
+                    map.editTools.startPolygon();
+                });
+                return container;
+            }
+        });
+        this.theMap.addControl(new L.NewPolygonControl());
+        var deleteShape = function(e) {
+            if ((e.originalEvent.ctrlKey || e.originalEvent.metaKey) && this.editEnabled()) {
+                this.editor.deleteShapeAt(e.latlng);
+                self.layerAvoid.removeLayer(e.target._leaflet_id);
+                self.emit('map:routingParamsChanged');
+                self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
+                // remove overlay in controls if no regions left
+                if (self.layerAvoid.getLayers().length === 0) self.layerControls.removeLayer(self.layerAvoid);
+            }
+        };
+        // add eventlisteners for layeravoidables only
+        this.layerAvoid.on('layeradd', function(e) {
+            if (e.layer instanceof L.Path) e.layer.on('click', L.DomEvent.stop).on('click', deleteShape, e.layer);
+            if (e.layer instanceof L.Path) e.layer.on('dblclick', L.DomEvent.stop).on('dblclick', e.layer.toggleEdit);
+        });
+        var shapeListener = function(e) {
+            // var errorous = self.checkAvoidAreasIntersectThemselves();
+            // if (errorous) self.emit('map:errorsInAvoidAreas', true);
+            // else self.emit('map:errorsInAvoidAreas', false);
+            self.emit('map:routingParamsChanged');
+            self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
+            self.layerControls.addOverlay(self.layerAvoid, 'Avoidable Regions');
+        };
+        //this.theMap.on('editable:drawing:end', addTooltip);
+        //this.theMap.on('editable:shape:deleted', shapeListener);813
+        this.theMap.on('editable:drawing:commit', shapeListener);
+        this.theMap.on('editable:vertex:deleted', shapeListener);
+        this.theMap.on('editable:vertex:dragend', shapeListener);
+
+        /* LAYER CONTROLLER */
         this.layerControls = L.control.layers(this.baseLayers, this.overlays);
         this.layerControls.addTo(this.theMap);
         L.control.scale().addTo(this.theMap);
@@ -283,52 +339,7 @@ var Map = (function() {
             mapContextMenuContainer.appendChild(useAsEndPointContainer);
             return mapContextMenuContainer;
         }
-        //avoid area controls
-        L.NewPolygonControl = L.Control.extend({
-            options: {
-                position: 'topleft'
-            },
-            onAdd: function(map) {
-                var container = L.DomUtil.create('div', 'leaflet-control leaflet-bar'),
-                    link = L.DomUtil.create('a', '', container);
-                link.href = '#';
-                link.title = 'Create a new polygon';
-                link.innerHTML = '▱';
-                L.DomEvent.on(link, 'click', L.DomEvent.stop).on(link, 'click', function() {
-                    map.editTools.startPolygon();
-                });
-                return container;
-            }
-        });
-        this.theMap.addControl(new L.NewPolygonControl());
-        var deleteShape = function(e) {
-            if ((e.originalEvent.ctrlKey || e.originalEvent.metaKey) && this.editEnabled()) {
-                this.editor.deleteShapeAt(e.latlng);
-                self.layerAvoid.removeLayer(e.target._leaflet_id);
-                self.emit('map:routingParamsChanged');
-                self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
-                // remove overlay in controls if no regions left
-                if (self.layerAvoid.getLayers().length === 0) self.layerControls.removeLayer(self.layerAvoid);
-            }
-        };
-        // add eventlisteners for layeravoidables only
-        this.layerAvoid.on('layeradd', function(e) {
-            if (e.layer instanceof L.Path) e.layer.on('click', L.DomEvent.stop).on('click', deleteShape, e.layer);
-            if (e.layer instanceof L.Path) e.layer.on('dblclick', L.DomEvent.stop).on('dblclick', e.layer.toggleEdit);
-        });
-        var shapeListener = function(e) {
-            // var errorous = self.checkAvoidAreasIntersectThemselves();
-            // if (errorous) self.emit('map:errorsInAvoidAreas', true);
-            // else self.emit('map:errorsInAvoidAreas', false);
-            self.emit('map:routingParamsChanged');
-            self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
-            self.layerControls.addOverlay(self.layerAvoid, 'Avoidable Regions');
-        };
-        //this.theMap.on('editable:drawing:end', addTooltip);
-        //this.theMap.on('editable:shape:deleted', shapeListener);813
-        this.theMap.on('editable:drawing:commit', shapeListener);
-        this.theMap.on('editable:vertex:deleted', shapeListener);
-        this.theMap.on('editable:vertex:dragend', shapeListener);
+        
         /* *********************************************************************
          * MAP EVENTS
          * *********************************************************************/
