@@ -49,7 +49,7 @@
     font-family: ruifont;
     }
 
-.leaflet-control-layers-toggle {
+.leaflet-retina .leaflet-control-layers-toggle, .leaflet-control-layers-toggle {
     background-image: none;
 }
 
