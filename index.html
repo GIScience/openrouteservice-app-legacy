@@ -42,13 +42,13 @@
 		<!-- START OF HEADER SECTION -->
 		<header class="ORS-header" id="navbar">
 			<a id="ORS-headIcon" href="http://www.geog.uni-heidelberg.de/giscience.html"></a>
-			<a id="title" href="http://www.openrouteservice.org">OpenRouteService</a>
- 			<ul id="topMenu">
+			<a id="ORS-title" href="http://www.openrouteservice.org">OpenRouteService</a>
+ 			<ul id="ORS-topMenu">
 				<li>
-					<a href="#sitePrefsModal" data-toggle="modal" id="menuLinkSitePrefs"><i class="fa fa-globe"></i></a>
+					<a href="#sitePrefsModal" data-toggle="modal" id="ORS-menuLinkSitePrefs"><i class="fa fa-globe"></i></a>
 				</li>
 				<li>
-					<a href="contact.html#top" target="_blank" id="menuLinkInfo"><i class="fa fa-info"></i></a>
+					<a href="contact.html#top" target="_blank" id="ORS-menuLinkInfo"><i class="fa fa-info"></i></a>
 				</li>
 			</ul>
 		</header>
@@ -584,19 +584,29 @@
 				<h4 id="versionLabel">Version</h4>
 				<p>
 					<label id="versionText">Please choose the number of options:&nbsp;</label>
-					<select id="extendedVersionPrefs"></select>
-				</p><h4 id="languageLabel">Languages</h4>
+					<br class="ORS-mobileBrLine">
+					<select class="ORS-PrefsDropDown" id="extendedVersionPrefs"></select>
+				</p>
+				<br>
+				<h4 id="languageLabel">Languages</h4>
 				<p>
 					<label id="languageText">Please select your language:&nbsp;</label>
-					<select id="languagePrefs"></select>
-				</p><h4 id="routingLanguageLabel">Routing Languages</h4>
+					<br class="ORS-mobileBrLine">
+					<select class="ORS-PrefsDropDown" id="languagePrefs"></select>
+				</p>
+				<br>
+				<h4 id="routingLanguageLabel">Routing Languages</h4>
 				<p>
 					<label id="routingLanguageText">Please select your language:&nbsp;</label>
-					<select id="routingLanguagePrefs"></select>
-				</p><h4 id="distanceUnitLabel">Distance Units</h4>
+					<br class="ORS-mobileBrLine">
+					<select class="ORS-PrefsDropDown" id="routingLanguagePrefs"></select>
+				</p>
+				<br>
+				<h4 id="distanceUnitLabel">Distance Units</h4>
 				<p>
 					<label id="distanceUnitText">Please select your distance unit:&nbsp;</label>
-					<select id="unitPrefs"></select>
+					<br class="ORS-mobileBrLine">
+					<select class="ORS-PrefsDropDown" id="unitPrefs"></select>
 				</p>
 			</div>
 			<div class="modal-footer">
