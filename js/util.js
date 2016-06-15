@@ -4,6 +4,32 @@
 util = (function() {
     'use strict';
     var util = {
+        /** computes standard deviation
+         * @param arr: array of integers
+         * @return: standard deviation
+         */
+        calcStdDev: function(values) {
+            var avg = util.calcAvg(values);
+            var squareDiffs = values.map(function(value) {
+                var diff = value - avg;
+                var sqrDiff = diff * diff;
+                return sqrDiff;
+            });
+            var avgSquareDiff = util.calcAvg(squareDiffs);
+            var stdDev = Math.sqrt(avgSquareDiff);
+            return stdDev;
+        },
+        /** computes standard deviation
+         * @param arr: array of integers
+         * @return: average
+         */
+        calcAvg: function(data) {
+            var sum = data.reduce(function(sum, value) {
+                return sum + value;
+            }, 0);
+            var avg = sum / data.length;
+            return avg;
+        },
         /**
          * positions are often set as data-attributes in the Ui/ HTML file. Converts them to OpenLayers.LonLat position
          * @param positionString: String containing the coordinates
@@ -172,7 +198,7 @@ util = (function() {
                     element.appendChild(new Element('br'));
                     hasStreetElement = true;
                 }
-            } 
+            }
             var separator = '';
             var places = util.getElementsByTagNameNS(xmlAddress, namespaces.xls, 'Place');
             if (places) {

@@ -80,7 +80,6 @@ var Map = (function() {
         // add openmapsurfer as base
         this.baseLayers[layerName1].addTo(this.theMap);
         this.overlays = {};
-       
         var layerName6 = Preferences.translate('layer6');
         this.overlays[layerName6] = this.aster_hillshade;
         /* MOUSE POSITION CONTROL */
@@ -94,7 +93,6 @@ var Map = (function() {
         });
         ZoomControl.addTo(this.theMap);
         /* LOCATE CONTROL */
-        
         function onLocationFound(e) {
             $('.leaflet-popup-content').remove();
             var menuObject = createMapContextMenu();
@@ -1009,6 +1007,12 @@ var Map = (function() {
      * @param {Object} routeLineSegments: array of Leaflet Linestrings with height information
      */
     function updateHeightprofiles(routeLineHeights, viaPoints) {
+        var i, elevationArr = [];
+        // if height difference not more than 50 meters return
+        for (i = 0; i < routeLineHeights.length; i++) {
+            elevationArr.push(routeLineHeights[i].alt);
+        }
+        if (util.calcStdDev(elevationArr) < 50) return;
         var latLng, viaPointsList = [];
         var el = this.elevationControl;
         el.addTo(this.theMap);
@@ -1017,7 +1021,7 @@ var Map = (function() {
         var polyline = L.polyline(routeLineHeights).toGeoJSON();
         // add waypoints in elevation diagram
         if (viaPoints.length > 0) {
-            for (var i = 0; i < viaPoints.length; i++) {
+            for (i = 0; i < viaPoints.length; i++) {
                 latLng = [parseFloat(viaPoints[i].lon), parseFloat(viaPoints[i].lat)];
                 viaPointsList.push(latLng);
             }
