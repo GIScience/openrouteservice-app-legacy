@@ -373,5 +373,19 @@ var lang_en = {
     'Sand': 'Sand',
     'Woodchips': 'Woodchips',
     'Grass': 'Grass',
-    'GrassPaver': 'Grass Paver'
+    'GrassPaver': 'Grass Paver',
+
+    'optimizeWP': 'Optimize Waypoints',
+    'reorderWP': 'Reorder Waypoints',
+    'reset': 'Reset Route',
+    'zoom': 'Zoom to Route',
+    'analyzeAccess': 'Calculate accessibility',
+    'removeAccess': 'Remove',
+    'exportGPX': 'Download of current route in GPX format',
+    'importGPX': 'Upload multiple tracks from a GPX-files',
+    'tt-ascent': 'Ascent',
+    'tt-descent': 'Descent',
+    'tt-time': 'Time',
+    'tt-distance': 'Distance',
+    'tt-actdistance': 'Actual Distance'
 };

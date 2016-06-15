@@ -1392,7 +1392,7 @@ var Ui = (function(w) {
             'class': 'directions-summary-info',
             'data-toggle': 'tooltip',
             'id': 'tt-time',
-            'title': 'Time'
+            'title': preferences.translate('tt-time')
         }).update('<i class="fa fa-clock-o"></i>' + ' ');
         var len;
         // if the route is only seconds
@@ -1418,7 +1418,7 @@ var Ui = (function(w) {
             'class': 'directions-summary-info',
             'data-toggle': 'tooltip',
             'id': 'tt-distance',
-            'title': 'Distance'
+            'title': preferences.translate('tt-distance')
         }).update('<i class="fa fa-long-arrow-right"></i>' + ' ');
         distanceInfo = new Element('div', {
             'class': 'directions-summary-info-digit'
@@ -1435,7 +1435,7 @@ var Ui = (function(w) {
                 'class': 'directions-summary-info',
                 'data-toggle': 'tooltip',
                 'id': 'tt-actdistance',
-                'title': 'Actual Distance'
+                'title': preferences.translate('tt-actdistance')
             }).update('<i class="fa fa-arrows-h"></i>' + ' ');
             actualDistanceInfo = new Element('div', {
                 'class': 'directions-summary-info-digit'
@@ -1453,7 +1453,7 @@ var Ui = (function(w) {
                 'class': 'directions-summary-info',
                 'data-toggle': 'tooltip',
                 'id': 'tt-ascent',
-                'title': 'Ascent'
+                'title': preferences.translate('tt-ascent')
             }).update('<i class="fa fa-long-arrow-up"></i>' + ' ');
             var ascentInfo = new Element('div', {
                 'class': 'directions-summary-info-digit'
@@ -1468,7 +1468,7 @@ var Ui = (function(w) {
                 'class': 'directions-summary-info',
                 'data-toggle': 'tooltip',
                 'id': 'tt-descent',
-                'title': 'Descent'
+                'title': preferences.translate('tt-descent')
             }).update('<i class="fa fa-long-arrow-down"></i>' + ' ');
             var descentInfo = new Element('div', {
                 'class': 'directions-summary-info-digit'
@@ -1511,7 +1511,7 @@ var Ui = (function(w) {
         d3.select(types).selectAll("svg").remove();
         var tip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) {
             var dist = util.convertDistanceFormat(d.distance, preferences.distanceUnit);
-            return d.type + " " + d.percentage + "% " + '(' + dist[1] + ' ' + dist[2] + ')';
+            return d.typetranslated + " " + d.percentage + "% " + '(' + dist[1] + ' ' + dist[2] + ')';
         });
         var margin = {
                 top: 0,

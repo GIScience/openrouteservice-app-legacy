@@ -410,7 +410,7 @@ var lang_de = {
     'Road': 'Landstraße',
     'Street': 'Straße',
     'Path': 'Weg', 
-    'Track': 'Bahngleis',
+    'Track': 'Spur',
     'Cycleway': 'Fahrradweg',
     'Footway': 'Gehweg',
     'Steps': 'Stufen',
@@ -446,4 +446,10 @@ var lang_de = {
     'removeAccess': 'Entfernen',
     'exportGPX': 'Download der Route im GPX-Format',
     'importGPX': 'Upload mehrerer Tracks im GPX-Format',
+    'tt-ascent': 'Anstieg',
+    'tt-descent': 'Abstieg',
+    'tt-time': 'Zeit',
+    'tt-distance': 'Entfernung',
+    'tt-actdistance': 'Tatsächliche Entfernung'
+
 };
