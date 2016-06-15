@@ -184,6 +184,7 @@
         box-shadow: none;
         text-shadow: none;
         font-family: 'Source Sans Pro', sans-serif;
+
     }
     
     .primary-menu {
@@ -1100,9 +1101,7 @@
         .ORS-map {
             order: 1;
         }
-        /*#ORS-title{
-    width:100vw;
-}*/
+        
         /* To hide the mouse position controller */
         .leaflet-container .leaflet-control-mouseposition {
             display: none;
@@ -1129,12 +1128,13 @@
         .ORS-mainPanel {
             width: calc(100% - 41px) !important;
         }
-        #sitePrefsModal {
+        #sitePrefsModal, #feedbackModal {
             z-index: 9999;
             width: 90vw;
             margin: 0 auto;
             left: 5vw;
         }
+
     }
     /* ****************************************************************/
     /* END OF MOBILE STYLES (MEDIA QUERIES FOR MOBILE VISUALIZATION)  */
@@ -1170,6 +1170,7 @@
         }
         .ORS-map {
             order: 1;
+            height:20%;
         }
     }
     /* ***************************************************************/
