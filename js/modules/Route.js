@@ -242,7 +242,7 @@ var Route = (function(w) {
             crossDomain: false,
             data: xmlRequest,
             success: function(response) {
-                successCallback(response, calcRouteID, routePref);
+                successCallback(response, calcRouteID, routePref, routePoints);
             },
             error: function(response) {
                 failureCallback(response);

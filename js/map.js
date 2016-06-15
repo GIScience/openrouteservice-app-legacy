@@ -56,7 +56,8 @@ var Map = (function() {
             minZoom: 2,
             zoom: 13,
             attributionControl: true,
-			zoomControl: false, /* By setting this value to false we remove the default zoom control from the map. This is needed to be able to change the position of the control on the map (default: topleft).This control will be added later. */
+            zoomControl: false,
+            /* By setting this value to false we remove the default zoom control from the map. This is needed to be able to change the position of the control on the map (default: topleft).This control will be added later. */
             crs: L.CRS.EPSG900913,
             //layers: [this.openmapsurfer],
             editable: true,
@@ -78,92 +79,121 @@ var Map = (function() {
         this.baseLayers[layerName5] = this.stamen;
         // add openmapsurfer as base
         this.baseLayers[layerName1].addTo(this.theMap);
-        // this.baseLayers = {
-        //     layerName1: this.openmapsurfer,
-        //     layerName2: this.ors_osm_worldwide,
-        //     layerName3: this.openstreetmap,
-        //     layerName4: this.opencyclemap,
-        //     layerName5: this.stamen
-        // };
         this.overlays = {};
-        // var overlays = {
-        //     layerName6: this.aster_hillshade,
-        // };
         var layerName6 = Preferences.translate('layer6');
         this.overlays[layerName6] = this.aster_hillshade;
-        
-		/* MOUSE POSITION CONTROL */
-		L.control.mousePosition({
+        /* MOUSE POSITION CONTROL */
+        L.control.mousePosition({
             position: 'topright',
             separator: ', '
         }).addTo(this.theMap);
-		
-		/* ZOOM CONTROL */
-		var ZoomControl = new L.Control.Zoom({
-			position: 'topright' 
-		});
-		ZoomControl.addTo(this.theMap);
-		
-		/* LOCATE CONTROL */
-		
-			/* Set up the control functions */
-			var marker = null;
-			var circle = null;	
-			function onLocationFound(e) {
-				var radius = e.accuracy;
-				
-				/* To add a marker on user's location (TODO) */
-				var marker = L.marker(e.latlng,{icon: geolocateIcon})/*.bindPopup("user's location description here").openPopup()*/;
-				var circle = L.circle(e.latlng, radius);
-					
-				// add marker and accuracy circle
-				marker.addTo(map);
-				circle.addTo(map);
-			}
-			
-			//Function to set what happen when the user location is not found 	
-			function onLocationError(e) {
-				alert(e.message + ": User location was not found. Check your location settings.");
-				setView([49.409445, 8.692953]);
-			}
-		
-			/* Set up the map controller */
-			var LocateControl = L.Control.extend({
-				options: {
-						position: 'topright' 
-				},
-				onAdd: function (map) {
-					var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-customLocate');
-					container.title = "Zoom to current location"
-					container.onclick = function(){
-						map.locate({setView : true,
-									maxZoom: 20});
-						map.on('locationfound', onLocationFound);
-						map.on('locationerror', onLocationError);
-					}
-					return container;
-				},
-			});
-			//this.theMap.addControl(new LocateControl()); /* don't add this control for now */
-		
-		/* TOGGLE NAVIGATION MENU CONROL */
-		var timeout = this.theMap;
-		var NavMenuToggle = L.Control.extend({
-			options: {
-					position: 'topleft'
-			},
-			onAdd: function () {
-				var container = L.DomUtil.create('div','leaflet-bar leaflet-control leaflet-control-customNavMenuToggle');
-				container.title = "Toggle navigation menu"
-				container.onclick = function(){
-					jQuery("#sidebar").toggle();
-					timeout.invalidateSize(true); //Needed to update map visualization after toggling Menu
-				}
-				return container;
-			},
-		});
-		this.theMap.addControl(new NavMenuToggle());
-		
+        /* ZOOM CONTROL */
+        var ZoomControl = new L.Control.Zoom({
+            position: 'topright'
+        });
+        ZoomControl.addTo(this.theMap);
+        /* LOCATE CONTROL */
+        function onLocationFound(e) {
+            $('.leaflet-popup-content').remove();
+            var menuObject = createMapContextMenu();
+            var popup = L.popup({
+                closeButton: false,
+                maxHeight: '112px',
+                maxWidth: '120px',
+                className: 'mapContextMenu'
+            }).setContent(menuObject.innerHTML).setLatLng(e.latlng);
+            self.theMap.openPopup(popup);
+            contextMenuListeners(e.latlng, popup);
+        }
+        //Function to set what happen when the user location is not found   
+        function onLocationError(e) {
+            alert(e.message + ": User location was not found. Check your location settings.");
+            this.theMap.setView([49.409445, 8.692953]);
+        }
+        /* Set up the map controller */
+        var LocateControl = L.Control.extend({
+            options: {
+                position: 'topright'
+            },
+            onAdd: function(map) {
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-customLocate');
+                container.title = "Zoom to current location";
+                container.onclick = function() {
+                    map.locate({
+                        setView: true,
+                        maxZoom: 20
+                    });
+                    map.on('locationfound', onLocationFound);
+                    map.on('locationerror', onLocationError);
+                };
+                return container;
+            },
+        });
+        this.theMap.addControl(new LocateControl()); /* don't add this control for now */
+        /* TOGGLE NAVIGATION MENU CONROL */
+        var timeout = this.theMap;
+        var NavMenuToggle = L.Control.extend({
+            options: {
+                position: 'topleft'
+            },
+            onAdd: function() {
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-customNavMenuToggle');
+                container.title = "Toggle navigation menu";
+                container.onclick = function() {
+                    jQuery("#sidebar").toggle();
+                    timeout.invalidateSize(true); //Needed to update map visualization after toggling Menu
+                };
+                return container;
+            },
+        });
+        this.theMap.addControl(new NavMenuToggle());
+        /* AVOID AREA CONTROLLER */
+        L.NewPolygonControl = L.Control.extend({
+            options: {
+                position: 'topright'
+            },
+            onAdd: function(map) {
+                var container = L.DomUtil.create('div', 'leaflet-control leaflet-bar'),
+                    link = L.DomUtil.create('a', '', container);
+                link.href = '#';
+                link.title = 'Create a new polygon';
+                link.innerHTML = '▱';
+                L.DomEvent.on(link, 'click', L.DomEvent.stop).on(link, 'click', function() {
+                    map.editTools.startPolygon();
+                });
+                return container;
+            }
+        });
+        this.theMap.addControl(new L.NewPolygonControl());
+        var deleteShape = function(e) {
+            if ((e.originalEvent.ctrlKey || e.originalEvent.metaKey) && this.editEnabled()) {
+                this.editor.deleteShapeAt(e.latlng);
+                self.layerAvoid.removeLayer(e.target._leaflet_id);
+                self.emit('map:routingParamsChanged');
+                self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
+                // remove overlay in controls if no regions left
+                if (self.layerAvoid.getLayers().length === 0) self.layerControls.removeLayer(self.layerAvoid);
+            }
+        };
+        // add eventlisteners for layeravoidables only
+        this.layerAvoid.on('layeradd', function(e) {
+            if (e.layer instanceof L.Path) e.layer.on('click', L.DomEvent.stop).on('click', deleteShape, e.layer);
+            if (e.layer instanceof L.Path) e.layer.on('dblclick', L.DomEvent.stop).on('dblclick', e.layer.toggleEdit);
+        });
+        var shapeListener = function(e) {
+            // var errorous = self.checkAvoidAreasIntersectThemselves();
+            // if (errorous) self.emit('map:errorsInAvoidAreas', true);
+            // else self.emit('map:errorsInAvoidAreas', false);
+            self.emit('map:routingParamsChanged');
+            self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
+            self.layerControls.addOverlay(self.layerAvoid, 'Avoidable Regions');
+        };
+        //this.theMap.on('editable:drawing:end', addTooltip);
+        //this.theMap.on('editable:shape:deleted', shapeListener);813
+        this.theMap.on('editable:drawing:commit', shapeListener);
+        this.theMap.on('editable:vertex:deleted', shapeListener);
+        this.theMap.on('editable:vertex:dragend', shapeListener);
+        /* LAYER CONTROLLER */
         this.layerControls = L.control.layers(this.baseLayers, this.overlays);
         this.layerControls.addTo(this.theMap);
         L.control.scale().addTo(this.theMap);
@@ -212,17 +242,7 @@ var Map = (function() {
         /* *********************************************************************
          * MAP CONTROLS
          * *********************************************************************/
-        this.theMap.on('contextmenu', function(e) {
-            var displayPos = e.latlng;
-            $('.leaflet-popup-content').remove();
-            var menuObject = createMapContextMenu();
-            var popup = L.popup({
-                closeButton: false,
-                maxHeight: '112px',
-                maxWidth: '120px',
-                className: 'mapContextMenu'
-            }).setContent(menuObject.innerHTML).setLatLng(e.latlng);
-            self.theMap.openPopup(popup);
+        function contextMenuListeners(displayPos, popup) {
             var options = $('.leaflet-popup-content');
             options = options[0].childNodes;
             options[0].onclick = function(e) {
@@ -252,6 +272,19 @@ var Map = (function() {
                 });
                 self.theMap.closePopup(popup);
             };
+        }
+        this.theMap.on('contextmenu', function(e) {
+            var displayPos = e.latlng;
+            $('.leaflet-popup-content').remove();
+            var menuObject = createMapContextMenu();
+            var popup = L.popup({
+                closeButton: false,
+                maxHeight: '112px',
+                maxWidth: '120px',
+                className: 'mapContextMenu'
+            }).setContent(menuObject.innerHTML).setLatLng(e.latlng);
+            self.theMap.openPopup(popup);
+            contextMenuListeners(displayPos, popup);
         });
         // create a new contextMenu
         function createMapContextMenu() {
@@ -285,52 +318,6 @@ var Map = (function() {
             mapContextMenuContainer.appendChild(useAsEndPointContainer);
             return mapContextMenuContainer;
         }
-        //avoid area controls
-        L.NewPolygonControl = L.Control.extend({
-            options: {
-                position: 'topleft'
-            },
-            onAdd: function(map) {
-                var container = L.DomUtil.create('div', 'leaflet-control leaflet-bar'),
-                    link = L.DomUtil.create('a', '', container);
-                link.href = '#';
-                link.title = 'Create a new polygon';
-                link.innerHTML = '▱';
-                L.DomEvent.on(link, 'click', L.DomEvent.stop).on(link, 'click', function() {
-                    map.editTools.startPolygon();
-                });
-                return container;
-            }
-        });
-        this.theMap.addControl(new L.NewPolygonControl());
-        var deleteShape = function(e) {
-            if ((e.originalEvent.ctrlKey || e.originalEvent.metaKey) && this.editEnabled()) {
-                this.editor.deleteShapeAt(e.latlng);
-                self.layerAvoid.removeLayer(e.target._leaflet_id);
-                self.emit('map:routingParamsChanged');
-                self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
-                // remove overlay in controls if no regions left
-                if (self.layerAvoid.getLayers().length === 0) self.layerControls.removeLayer(self.layerAvoid);
-            }
-        };
-        // add eventlisteners for layeravoidables only
-        this.layerAvoid.on('layeradd', function(e) {
-            if (e.layer instanceof L.Path) e.layer.on('click', L.DomEvent.stop).on('click', deleteShape, e.layer);
-            if (e.layer instanceof L.Path) e.layer.on('dblclick', L.DomEvent.stop).on('dblclick', e.layer.toggleEdit);
-        });
-        var shapeListener = function(e) {
-            // var errorous = self.checkAvoidAreasIntersectThemselves();
-            // if (errorous) self.emit('map:errorsInAvoidAreas', true);
-            // else self.emit('map:errorsInAvoidAreas', false);
-            self.emit('map:routingParamsChanged');
-            self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
-            self.layerControls.addOverlay(self.layerAvoid, 'Avoidable Regions');
-        };
-        //this.theMap.on('editable:drawing:end', addTooltip);
-        //this.theMap.on('editable:shape:deleted', shapeListener);813
-        this.theMap.on('editable:drawing:commit', shapeListener);
-        this.theMap.on('editable:vertex:deleted', shapeListener);
-        this.theMap.on('editable:vertex:dragend', shapeListener);
         /* *********************************************************************
          * MAP EVENTS
          * *********************************************************************/
@@ -1020,21 +1007,25 @@ var Map = (function() {
      * @param {Object} routeLineSegments: array of Leaflet Linestrings with height information
      */
     function updateHeightprofiles(routeLineHeights, viaPoints) {
+        var i, elevationArr = [];
+        // if height difference not more than 50 meters return
+        for (i = 0; i < routeLineHeights.length; i++) {
+            elevationArr.push(routeLineHeights[i].alt);
+        }
+        if (util.calcStdDev(elevationArr) < 50) return;
+        var latLng, viaPointsList = [];
         var el = this.elevationControl;
         el.addTo(this.theMap);
         this.layerRouteLines.clearLayers();
         el.clear();
         var polyline = L.polyline(routeLineHeights).toGeoJSON();
         // add waypoints in elevation diagram
-        if (viaPoints) {
-            for (var i = 0; i < viaPoints.length; i++) {
-                viaPoints[i] = viaPoints[i].split(" ");
-                var lat = parseFloat(viaPoints[i][1])
-                var lng = parseFloat(viaPoints[i][0])
-                viaPoints[i][0] = lat;
-                viaPoints[i][1] = lng;
+        if (viaPoints.length > 0) {
+            for (i = 0; i < viaPoints.length; i++) {
+                latLng = [parseFloat(viaPoints[i].lon), parseFloat(viaPoints[i].lat)];
+                viaPointsList.push(latLng);
             }
-            polyline.properties.waypoint_coordinates = viaPoints;
+            polyline.properties.waypoint_coordinates = viaPointsList;
         }
         var gjl = L.geoJson(polyline, {
             opacity: '0',

@@ -1,25 +1,45 @@
 <!DOCTYPE html>
 <html lang="de">
 	<head>
-		<title>OpenRouteService</title>
+		<!-- TITLE AND ICON FOR THE WEBSITE -->
+		<title> OpenRouteService </title>
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+
+		<!-- WEBSITE METADATA -->
 		<meta name="robots" content="index, follow">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
-		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+		
+		<!-- NECESSARY STYLESHEETS FOR THE WEBSITE -->
+
+		<!-- BOOTSTRAP -->
+		<link rel="stylesheet" type="text/css" href="css/bootstrap-ext.min.css">
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"> 
+		
+		<!-- LEAFLET -->
+		<link rel="stylesheet" type="text/css" href="css/leaflet.css">
+
+		<!-- LEAFLET PLUGINS -->
+		<link rel="stylesheet" type="text/css" href="css/leaflet.elevation-0.0.4.css"> <!-- ELEVATION PLUGIN -->
+		<link rel="stylesheet" type="text/css" href="css/MarkerCluster.css" /> <!-- MARKER CLUSTER PLUGIN -->
+
+		<!-- JQUERY PLUGINS -->
+		<link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.min.css">
+
+		<link rel="stylesheet" type="text/css" href="css/MarkerCluster.Default.css" />
+		<link rel="stylesheet" type="text/css" href="css/L.Control.MousePosition.css" /> <!-- MOUSE POSITION PLUGIN -->
+
+		<!-- FONTS -->
 		<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" type="text/css" href="css/font-awesome.css">
-		<link rel="stylesheet" type="text/css" href="css/bootstrap-ext.min.css"><!-- for file upload -->
-		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"> 
-		<link rel="stylesheet" type="text/css" href="css/leaflet.css">
-		<link rel="stylesheet" type="text/css" href="css/default.css">
-		<link rel="stylesheet" type="text/css" href="css/leaflet.elevation-0.0.4.css">
-		<!-- css for leaflet cluster -->
-		<link rel="stylesheet" type="text/css" href="css/MarkerCluster.css" />
-		<link rel="stylesheet" type="text/css" href="css/MarkerCluster.Default.css" />
-		<link rel="stylesheet" type="text/css" href="css/L.Control.MousePosition.css" />
+		<link rel="stylesheet" type="text/css" href="css/ruifont.css">
+
+		<!-- MAIN STYLES -->
+		<link rel="stylesheet" type="text/css" href="css/default.css"> <!-- Must come at the end to overwrite other API styles -->
+
  	</head>
 	<body class="ORS">
-		<!-- navigation bar on top -->
+		<!-- START OF HEADER SECTION -->
 		<header class="ORS-header" id="navbar">
 			<a id="ORS-headIcon" href="http://www.geog.uni-heidelberg.de/giscience.html"></a>
 			<a id="title" href="http://www.openrouteservice.org">OpenRouteService</a>
@@ -32,6 +52,9 @@
 				</li>
 			</ul>
 		</header>
+		<!-- END OF HEADER SECTION -->
+
+		<!-- START OF MAIN SECTION -->
 		<div class="ORS-main">
 			<div class="ORS-sidebar" id="sidebar">
 				<!-- sidebar content -->
@@ -43,7 +66,6 @@
 						<button select-id="ORS-aaContent" class="btn menuButton primary-menu">
 							<i class="fa fa-bullseye"></i>
 						</button>
-						
 						<button select-id="ORS-cloudContent" class="btn menuButton primary-menu">
 							<i class="fa fa-download"></i>
 						</button>
@@ -90,7 +112,7 @@
 					</div>
 				</div>
 				<div class="ORS-mainPanel">
-					<div id="routeContainer" data-id="ORS-routeContent" class="ORS-panel route">
+					<div id="routeContainer" data-id="ORS-routeContent" class="route">
 						<div id="routingPanel">
 						    <div id="optionsContainer" class="routeOptions ORS-panel-sub ORS-light" style="display: none;">
 						        <div class="ORS-panel-sub ORS-all ORS-hr-dark" id="weightingOptions" style="display: none;">
@@ -183,7 +205,7 @@
 								        <li><a href="#width" data-toggle="tab" id="truckwidthLabel">width</a></li>
 								        <li><a href="#height" data-toggle="tab" id="truckheightLabel">height</a></li>
 								        <li><a href="#weight" data-toggle="tab" id="truckweightLabel">weight</a></li>
-										<li><a href="#axleload" data-toggle="tab" id="truckaxleloadLabel">axleload</a></li>
+										<li><a href="#axleload" data-toggle="tab" id="truckaxleloadLabel">load</a></li>
 								    </ul>
 								    <div id="my-tab-content" class="tab-content">
 								        <div class="tab-pane active" id="length">
@@ -323,9 +345,9 @@
 						    	</div>
 						    	<div id="maxSpeed" style="display: none;" class="ORS-all ORS-panel-sub">
 									<h6>Maximum speed</h6>
-									<div class="input-append">
-										<input class="span3" id="maxSpeedInput" type="text" placeholder="maximum speed">
-										<button class="btn primary" type="button" id="maxSpeedBtn">set</button>
+									<div class="input-append ORS-input-append">
+										<input class="span2" id="maxSpeedInput" type="number" placeholder="maximum speed">
+										<button class="btn primary-control" style=" border:1px solid #F0F0F0;" type="button" id="maxSpeedBtn">set</button>
 									</div>
 								</div>
 								<div id="avoidAreas">
@@ -388,19 +410,19 @@
 								</div>
 								<div class="clear">
 									<div class="left" id="viaOptimizePanel">
-										<label class="btn primary transparent" data-container="body" type="button" id="tt-optimize" data-toggle="tooltip" title="Optimize Waypoints">
+										<label class="btn primary-control transparent" data-container="body" type="button" id="tt-optimize" data-toggle="tooltip" title="Optimize Waypoints">
 										    <i class="fa fa-wrench"></i>
 										    <input type="checkbox" class="hide" id="viaOptimize" data-toggle="button"/>
 										</label>
 									</div>
 									<div class="right">
-										<button id="orderRoute" class="btn primary transparent" data-container="body" type="button" id="tt-reorder" data-toggle="tooltip" title="Reorder Waypoints"><i class="fa fa-refresh"></i></button>
+										<button id="orderRoute" class="btn primary-control transparent" data-container="body" type="button" id="tt-reorder" data-toggle="tooltip" title="Reorder Waypoints"><i class="fa fa-refresh"></i></button>
 									</div>
 									<div class="right">
-										<button id="resetRoute" class="btn primary transparent" data-container="body" type="button" id="tt-reset" data-toggle="tooltip" title="Reset Route"><i class="fa fa-remove"></i></button>
+										<button id="resetRoute" class="btn primary-control transparent" data-container="body" type="button" id="tt-reset" data-toggle="tooltip" title="Reset Route"><i class="fa fa-remove"></i></button>
 									</div>
 									<div class="right">
-										<button id="zoomToRouteButton" class="btn primary transparent" data-container="body" type="button"  id="tt-zoom"data-toggle="tooltip" title="Zoom to Route"><i class="fa fa-arrows-alt"></i></button>
+										<button id="zoomToRouteButton" class="btn primary-control transparent" data-container="body" type="button"  id="tt-zoom"data-toggle="tooltip" title="Zoom to Route"><i class="fa fa-arrows-alt"></i></button>
 									</div>
 								</div>
 								<div id="ORS-routeError" style="display:none" class="ORS-alert alert alert-error"></div>
@@ -456,10 +478,10 @@
 							</form>
 							<div class="clear">
 								<div class="left">
-    								<button class="btn primary" id="analyzeAccessibility" type="button" data-toggle="tooltip" title="" data-original-title="Calculate accessibility"><i class="fa fa-fw fa-bullseye"></i><span id="analyzeAccessibilityLabel"></span></button>
+    								<button class="btn primary-control" data-container="body" id="analyzeAccessibility" type="button" data-toggle="tooltip" title="" data-original-title="Calculate accessibility"><i class="fa fa-fw fa-bullseye"></i><span id="analyzeAccessibilityLabel"></span></button>
     							</div>
     							<div class="left">
-    								<button class="btn primary" id="removeAccessibility" style="display:none" type="button" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-remove"></i></button>
+    								<button class="btn primary-control" data-container="body" id="removeAccessibility" style="display:none" type="button" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-remove"></i></button>
     							</div>
     						</div>
 							<div class="ORS-alert alert alert-info" id="accessibilityCalculation" style="display: none;">
@@ -475,10 +497,10 @@
 						<div class="ORS-panel-sub">
 							<div class="clear">
 								<div style="margin-bottom: 10px">
-									<a id="export-gpx" class="btn primary" download="map.gpx" title="Download of current route in GPX format" data-container="body" data-toggle="tooltip" data-original-title=""><i class="fa fa-download fa-fw"></i><span>download GPX</span></a>
+									<a id="export-gpx" class="btn primary-control" download="map.gpx" title="Download of current route in GPX format" data-container="body" data-toggle="tooltip" data-original-title=""><i class="fa fa-download fa-fw"></i><span>download GPX</span></a>
 								</div>
 								<div id="GPXcontainer">
-									<span class="btn btn-file primary" id="import-gpx" title="Upload multiple tracks from a GPX-files" data-container="body" data-toggle="tooltip" data-original-title=""><i class="fa fa-upload fa-fw"></i><span>upload GPX</span><input type="file" id="files" multiple /></span>
+									<span class="btn btn-file primary-control" id="import-gpx" title="Upload multiple tracks from a GPX-files" data-container="body" data-toggle="tooltip" data-original-title=""><i class="fa fa-upload fa-fw"></i><span>upload GPX</span><input type="file" id="files" multiple /></span>
 										<div id="fileContainerMain" style="display: none;"></div>		
 								</div>
 							</div>
@@ -507,7 +529,7 @@
 	    				</div>
 					</div>
 				</div>
-				<div id="geolocationPanel" style="display: none;">
+				<!--<div id="geolocationPanel" style="display: none;">
 					<div id="geoloc" class="panel panelLight">
 						<div class="toolHeading" id="geolocationHead">
 							My current location
@@ -517,7 +539,7 @@
 							<div id="geolocationResult"></div>
 						</div>
 					</div>
-				</div>
+				</div>-->
 				<div class="disclaimer">
 					<a id="debug">debug - </a>
 					<a href="contact.html" class="inlineLink">(c) 2008-2016 &nbsp; -</a>
@@ -525,7 +547,7 @@
 					<a href="" id="infoPanel"></a>
 				</div>
 			</div>
-			<div id="map" class="ORS-map">
+			<div class="ORS-map" id="map">
 				<a href="http://www.geog.uni-heidelberg.de/giscience.html" class="ORS-logo" target="_blank" class="link">GIScience</a>
 				<div id="infoPermalink">Permalink</div>
 				<div id="bubble">
@@ -552,6 +574,7 @@
 				</div>
 			</div>
 		</div>
+		<!-- END OF MAIN SECTION -->
 		<!-- popup for user preferences (language, distance unit,...) -->
 		<div id="sitePrefsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sitePrefs">
 			<div class="modal-header">
@@ -585,7 +608,9 @@
 				</button>
 			</div>
 		</div>
-		<!-- 	important: jQuery must be included before propertiesotype	 -->
+
+		<!-- CALL JAVASCRIPT FUNCTIONS -->
+		<!-- 	important: jQuery must be included before properties type	 -->
 		<script type="text/javascript" src="lib/jquery-1.7.2.min.js"></script>
 		<script type="text/javascript" src="lib/bootstrap/bootstrap.js"></script>
 		<script type="text/javascript" src="lib/bootstrap/bootstrap-typeahead.js"></script>
@@ -608,6 +633,7 @@
 		<script type="text/javascript" src="lib/javascript.util.min.js"></script>
 		<script type="text/javascript" src="lib/jsts.min.js"></script>
 		<script type="text/javascript" src="lib/OverPassLayer.js"></script>
+		<script type="text/javascript" src="lib/jquery.mCustomScrollbar.concat.min.js"></script>
 		<script type="text/javascript" src="js/namespaces.js"></script>
 		<script type="text/javascript" src="js/util.js"></script>
 		<script type="text/javascript" src="js/list.js"></script>
@@ -640,5 +666,17 @@
 		<script type="text/javascript" src="js/lang/lang-ua.js"></script>
 		<script type="text/javascript" src="js/lang/lang-cn.js"></script>
 		<script type="text/javascript" src="js/lang/lang-cnsimple.js"></script>
+		<!-- CALL CUSTOM SCROLLBAR -->
+		<script>
+		    (function($){
+				$(window).on("load",function(){
+					$(".ORS-mainPanel").mCustomScrollbar({
+			        	theme:"minimal-dark",
+			        	autoHideScrollbar: true,
+
+			      });
+		        });
+		    })(jQuery);
+		</script>
 	</body>
 </html>

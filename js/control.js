@@ -452,7 +452,6 @@ var Controller = (function(w) {
      * @param params: id or ids of the map feature to zoom to
      */
     function handleZoomToRouteInstruction(params) {
-        console.log(params)
         map.zoomToFeature(map.layerRouteLines, params);
     }
     /**
@@ -460,7 +459,6 @@ var Controller = (function(w) {
      * @param vectorId: id of the map feature to zoom to
      */
     function handleZoomToRouteCorner(vectorId) {
-        console.log(vectorId)
         map.zoomToFeature(map.layerCornerPoints, vectorId);
     }
     /* *********************************************************************
@@ -827,8 +825,8 @@ var Controller = (function(w) {
      * processes route results: triggers displaying the route on the map, showing instructions and a summary
      * @param results: XML route service results
      */
-    function routeCalculationSuccess(results, routeID, routePref) {
-        var viaPoints;
+    function routeCalculationSuccess(results, routeID, routePref, routePoints) {
+        var viaPoints = [];
         // only fire if returned routeID from callback is same as current global calcRouteID
         if (routeID == calcRouteID) {
             //var zoomToMap = !route.routePresent;
@@ -846,11 +844,10 @@ var Controller = (function(w) {
                 var routeString = map.writeRouteToString(routeLineString);
                 route.routeString = routeString;
                 
-                if (ui.getRoutePoints().length > 2)  {
-                    var wayPoints = ui.getRoutePoints();
-                    wayPoints.shift();
-                    wayPoints.pop(); 
-                    viaPoints = wayPoints;
+                if (routePoints.length > 2)  {
+                    routePoints.shift();
+                    routePoints.pop(); 
+                    viaPoints = routePoints;
                 } 
                 // each route instruction has a part of this lineString as geometry for this instruction           
                 // get height profile update height profile widget if elevation profile type selected
@@ -862,10 +859,10 @@ var Controller = (function(w) {
 
                 }
                 var routeLinestring = route.parseResultsToLineStrings(results);
-                var routePoints = route.parseResultsToCornerPoints(results);
+                var cornerPoints = route.parseResultsToCornerPoints(results);
                 //Get the restrictions along the route
                 map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString), permaInfo[preferences.routeOptionsIdx]);
-                var featureIds = map.updateRoute(routeLinestring, routePoints, routePref);
+                var featureIds = map.updateRoute(routeLinestring, cornerPoints, routePref);
                 var errors = route.hasRoutingErrors(results);
                 if (!errors) {
                     var totalDistance = ui.updateRouteInstructions(results, featureIds, 'layerRouteLines');
