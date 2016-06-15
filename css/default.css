@@ -123,6 +123,11 @@ a:focus {
     order: 2;
 }
 
+.ORS-input-append {
+    font-size: 12px;
+    color: #707070;
+}
+
 /* BUTTON GROUPS */
 
 button.routeOptionsButton, button.optionsButton {
@@ -211,7 +216,7 @@ button.routeOptionsButton, button.optionsButton {
 
 /* LEFT MENU BUTTONS */
 
-.btn-group>.primary-menu:hover {
+.btn-group>.primary-menu:hover   {
     background: transparent;
     color: #444;
 }
@@ -275,7 +280,7 @@ button.routeOptionsButton, button.optionsButton {
             float: right;
             list-style: none;
         }
-        
+
         #topMenu > li {
             height: 40px;
             float: left;
@@ -370,52 +375,23 @@ button.routeOptionsButton, button.optionsButton {
             }
 
                 /* ROUTE CONTAINER */
-                    /* WEIGHTING OPTIONS */
-                    /*#dropdown_weighting {
-                        padding-left: 5px;
-                        padding-right: 10px;
-                        min-width: 100px;
-                        overflow: auto;
-                        overflow-x: auto;
-                        overflow-y: auto;
-                        border-radius: 0;
-                    }
-                    
-                    #dropdown_weighting label {
-                        font-size: 85%;
-                        margin-bottom: 0px;
-                    }*/
-                    
-                    /* AREAS TO AVOID OPTIONS */
-                    /*#dropdown_avoid_areas {
-                        padding-left: 10px;
-                    }
-                    
-                    #dropdown_avoid_roads label, #dropdown_weighting label {
-                        font-size: 85%;
-                    }*/
-
-                    /* ROADS TO AVOID */
-                    /*.dropdown_avoid {
-                        padding-left: 5px;
-                        padding-right: 5px;
-                        padding-top: 5px;
-                        font-size: 90%;
-                        border-radius: 0;
-                    }*/
-
+                
                     /* VEHICLE OPTIONS */
+                    #TruckTabs>ul {
+                        border-bottom: none;
+                        background: #F0F0F0
+                    }
                     #TruckTabs>li>a {
-                        font-size: 90%;
-                        font-weight: normal;
+                        font-size: 80%;
                         background-color: #f8f8f8;
                         padding-bottom: 4px;
                         padding-top: 4px;
+                        color: #707070;
                     }
 
-                    /* SET MAX SPEED */
-                    #maxSpeedInput {
-                        font-size: 90%;
+                    #TruckTabs>li>a:hover {
+                        border-bottom: transparent;
+                        background: #F0F0F0;
                     }
 
                     /* WAYPOINT OPTIONS */
@@ -1539,7 +1515,7 @@ input[type='checkbox'], input[type='radio'] {
     vertical-align: baseline;
 }
 
-input[type="text"] {
+input[type="text"], input[type="number"] {
     background-color: #fff;
     border: 1px solid #ccc;
     -webkit-box-shadow: none;
@@ -1547,6 +1523,10 @@ input[type="text"] {
     box-shadow: none;
     border-color: #F0F0F0;
     font-size: 90%;
+}
+
+input[class*="span"] {
+    float: left;
 }
 
 h3 {
@@ -1599,8 +1579,6 @@ a.options.active {
 button.routeOptionsButton, button.optionsButton {
     width: 44px;
     height: 41px;
-=======
->>>>>>> c7cb51ae74757ac1895dae7f1eb557c2f55a9122
 }
 
 .clickable {
@@ -1804,10 +1782,6 @@ a.options.active {
     width: 130px;
     border: 0;
     color: #6392C2;
-}
-
-.mySlider img {
-    margin-top: -5px;
 }
 
 #route_totalDistance {

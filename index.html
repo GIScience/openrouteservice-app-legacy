@@ -205,7 +205,7 @@
 								        <li><a href="#width" data-toggle="tab" id="truckwidthLabel">width</a></li>
 								        <li><a href="#height" data-toggle="tab" id="truckheightLabel">height</a></li>
 								        <li><a href="#weight" data-toggle="tab" id="truckweightLabel">weight</a></li>
-										<li><a href="#axleload" data-toggle="tab" id="truckaxleloadLabel">axleload</a></li>
+										<li><a href="#axleload" data-toggle="tab" id="truckaxleloadLabel">load</a></li>
 								    </ul>
 								    <div id="my-tab-content" class="tab-content">
 								        <div class="tab-pane active" id="length">
@@ -345,9 +345,9 @@
 						    	</div>
 						    	<div id="maxSpeed" style="display: none;" class="ORS-all ORS-panel-sub">
 									<h6>Maximum speed</h6>
-									<div class="input-append">
-										<input class="span3" id="maxSpeedInput" type="text" placeholder="maximum speed">
-										<button class="btn primary-control" type="button" id="maxSpeedBtn">set</button>
+									<div class="input-append ORS-input-append">
+										<input class="span2" id="maxSpeedInput" type="number" placeholder="maximum speed">
+										<button class="btn primary-control" style=" border:1px solid #F0F0F0;" type="button" id="maxSpeedBtn">set</button>
 									</div>
 								</div>
 								<div id="avoidAreas">
@@ -666,6 +666,7 @@
 		<script type="text/javascript" src="js/lang/lang-ua.js"></script>
 		<script type="text/javascript" src="js/lang/lang-cn.js"></script>
 		<script type="text/javascript" src="js/lang/lang-cnsimple.js"></script>
+		<!-- CALL CUSTOM SCROLLBAR -->
 		<script>
 		    (function($){
 				$(window).on("load",function(){
