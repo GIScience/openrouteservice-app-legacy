@@ -216,19 +216,19 @@ button.routeOptionsButton, button.optionsButton {
 
 /* LEFT MENU BUTTONS */
 
-.btn-group>.primary-menu:hover   {
+.btn-group>.primary-menu:hover, .primary-control:hover   {
     background: transparent;
     color: #444;
 }
 
-.btn-group>.primary-menu:active {
+.btn-group>.primary-menu:active, .primary-control:active {
     background: transparent;
     border-color: transparent;
     color: #444;
     outline: none;
 }
 
-.btn-group>.primary-menu.active, .btn-group>.primary-menu:focus {
+.btn-group>.primary-menu.active, .btn-group>.primary-menu:focus, .primary-control:active, .primary-control.active {
     box-shadow: none !important;
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;

@@ -768,7 +768,7 @@ var Ui = (function(w) {
         // empty old summary
         $('.directions-summary-info-container').remove();
         // empty route types container
-        $('.routeTypesContainer').empty();
+        $('#routeTypesContainer').empty();
         //remove markers on map
         theInterface.emit('ui:resetRoute');
         //remove all existing waypoints
@@ -1417,12 +1417,13 @@ var Ui = (function(w) {
      */
     function updateRouteSummary(results) {
         // empty old summary
-        $('.directions-summary-container').remove();
-        // empty route types container
-        $('.routeTypesContainer').empty();
+        var container = $('#routeSummary');
+        container.empty();
+        container.parent().parent().show();
         // fetch route summary
         var routeSummary = getSummaryXML(results);
         var summaryItem, unit, time, distance, value, len, iconDiv, contentDiv;
+        var elevation = false;
         var summaryContainer = new Element('div', {
             'class': 'directions-summary-container'
         });
@@ -1496,16 +1497,19 @@ var Ui = (function(w) {
                 }).update(routeSummary[key][2]);
                 contentDiv.appendChild(distance);
                 contentDiv.appendChild(unit);
+                // save elevation true if ascent or descent over 40 meters
+                if (key == 'ascent' ||  key == 'descent') {
+                    if (routeSummary[key][1] > 40) elevation = true;
+                }
             }
             summaryItem.appendChild(iconDiv);
             summaryItem.appendChild(contentDiv);
             summaryContainer.appendChild(summaryItem);
+            container.append(summaryContainer);
         }
-        var container = $('#routeSummary');
-        container.parent().parent().show();
-        container.append(summaryContainer);
         // initiate tooltips
         $('[data-toggle="tooltip"]').tooltip();
+        return elevation;
     }
     /**
      * calculates way and surface type information for horizontal barcharts
@@ -1686,6 +1690,8 @@ var Ui = (function(w) {
      * @param mapLayer: map layer containing these features
      */
     function updateRouteInstructions(results, mapFeatureIds, mapLayer) {
+        // empty route types container
+        $('.routeTypesContainer').empty();
         var container, directionsContainer;
         if (!results) {
             container = $('#routeInstructionsContainer').get(0);
@@ -1898,10 +1904,7 @@ var Ui = (function(w) {
             totalTime += stopoverTime;
             directionsContainer = buildWaypoint('layerRoutePoints', 'end', endpoint, getWaypoints().length - 1, stopoverDistance, stopoverTime);
             directionsMain.appendChild(directionsContainer);
-            /* Route Summary */
-            var routeSummary = updateRouteSummary(results);
             return distArrAll;
-            // TODO tmc messages expand collapse function
         }
         /** 
          * builds Waypoint for start, via and end points in instructionlist
@@ -2792,7 +2795,7 @@ var Ui = (function(w) {
         var parent;
         for (var i = 0; i < parentOptions.length; i++) {
             if (list.routePreferences.get(parentOptions[i]).indexOf(routeOption) != -1) {
-                    //activate corresponding option panel
+                //activate corresponding option panel
                 switchRouteOptionsButton(parentOptions[i]);
             }
         }

@@ -200,7 +200,7 @@ var Controller = (function(w) {
      * @param addWaypointAt: index where to add the waypoint
      */
     function reverseGeocodeSuccess(addressResult, wpType, wpIndex, featureId, addWaypointAt) {
-         // show loading
+        // show loading
         var el = $('#ORS-loading');
         el.hide();
         //when the service gives response but contains an error the response is handeled as success, not error. We have to check for an error tag here:
@@ -430,7 +430,6 @@ var Controller = (function(w) {
      * @param vectorId: id of the map feature to zoom to
      */
     function handleZoomToWaypoint(vectorId) {
-
         map.zoomToFeature(map.layerRoutePoints, ui.getFeatureIdOfWaypoint(vectorId), 16);
     }
     /**
@@ -809,7 +808,7 @@ var Controller = (function(w) {
             wheelChairParams[4] = wheelchairSmoothness;
             route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferencesType, wheelChairParams, truckParams, avoidableParams, avoidAreas, extendedRoutePreferencesWeight, extendedRoutePreferencesMaxspeed, calcRouteID);
             //try to read a variable that is set after the service response was received. If this variable is not set after a while -> timeout.
-            clearTimeout(timerRoute);          
+            clearTimeout(timerRoute);
         } else {
             //internal
             route.routePresent = false;
@@ -826,7 +825,6 @@ var Controller = (function(w) {
      * @param results: XML route service results
      */
     function routeCalculationSuccess(results, routeID, routePref, routePoints) {
-        var viaPoints = [];
         // only fire if returned routeID from callback is same as current global calcRouteID
         if (routeID == calcRouteID) {
             //var zoomToMap = !route.routePresent;
@@ -843,31 +841,32 @@ var Controller = (function(w) {
                 var routeLineString = route.writeRouteToSingleLineString(results);
                 var routeString = map.writeRouteToString(routeLineString);
                 route.routeString = routeString;
-                
-                if (routePoints.length > 2)  {
-                    routePoints.shift();
-                    routePoints.pop(); 
-                    viaPoints = routePoints;
-                } 
-                // each route instruction has a part of this lineString as geometry for this instruction           
-                // get height profile update height profile widget if elevation profile type selected
-                if ($.inArray(routePref, list.elevationProfiles) >= 0) {
-                    var routeLineHeights = route.parseResultsToHeights(results);
-                    map.updateHeightprofiles(routeLineHeights, viaPoints);
-                    var routeHeight = map.writeRouteToString(routeLineHeights);
-                    route.routeString = routeHeight;
-
-                }
                 var routeLinestring = route.parseResultsToLineStrings(results);
                 var cornerPoints = route.parseResultsToCornerPoints(results);
                 //Get the restrictions along the route
                 map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString), permaInfo[preferences.routeOptionsIdx]);
+                map.removeElevationControl();
                 var featureIds = map.updateRoute(routeLinestring, cornerPoints, routePref);
                 var errors = route.hasRoutingErrors(results);
                 if (!errors) {
                     var totalDistance = ui.updateRouteInstructions(results, featureIds, 'layerRouteLines');
+                    var elevation = ui.updateRouteSummary(results);
                     if ($.inArray(routePref, list.elevationProfiles) >= 0) {
+                        // Surface and waytype information
                         ui.updateSurfaceInformation(results, featureIds, 'layerRouteLines', totalDistance);
+                        // Elevation information
+                        if (elevation) {
+                            var viaPoints = [];
+                            if (routePoints.length > 2) {
+                                routePoints.shift();
+                                routePoints.pop();
+                                viaPoints = routePoints;
+                            }
+                            var routeLineHeights = route.parseResultsToHeights(results);
+                            map.updateHeightprofiles(routeLineHeights, viaPoints);
+                            var routeHeight = map.writeRouteToString(routeLineHeights);
+                            route.routeString = routeHeight;
+                        }
                     } else {
                         var container = $('#routeTypesContainer').get(0);
                         container.hide();

@@ -1007,16 +1007,10 @@ var Map = (function() {
      * @param {Object} routeLineSegments: array of Leaflet Linestrings with height information
      */
     function updateHeightprofiles(routeLineHeights, viaPoints) {
-        var i, elevationArr = [];
-        // if height difference not more than 50 meters return
-        for (i = 0; i < routeLineHeights.length; i++) {
-            elevationArr.push(routeLineHeights[i].alt);
-        }
-        if (util.calcStdDev(elevationArr) < 50) return;
-        var latLng, viaPointsList = [];
+        var i, latLng, viaPointsList = [];
         var el = this.elevationControl;
         el.addTo(this.theMap);
-        this.layerRouteLines.clearLayers();
+        //this.layerRouteLines.clearLayers();
         el.clear();
         var polyline = L.polyline(routeLineHeights).toGeoJSON();
         // add waypoints in elevation diagram
@@ -1032,6 +1026,16 @@ var Map = (function() {
             onEachFeature: el.addData.bind(el)
         }).addTo(this.layerRouteLines);
     }
+
+    /**
+     * removes elevation profile if not needed
+     */
+    function removeElevationControl() {
+        // clear elevation info if not bike
+        var el = this.elevationControl;
+        el.clear();
+        el.remove();
+    }
     /**
      * draws given points as route line on the map
      * adds route and corner points twice, the base information has to be added
@@ -1045,12 +1049,6 @@ var Map = (function() {
     function updateRoute(routeLineSegments, routeLinePoints, routePref) {
         this.layerRouteLines.clearLayers();
         this.layerCornerPoints.clearLayers();
-        // clear elevation info if not bike
-        var el = this.elevationControl;
-        if ($.inArray(routePref, list.elevationProfiles) < 0) {
-            el.clear();
-            el.remove();
-        }
         var ftIds = [];
         if (routeLineSegments && routeLineSegments.length > 0) {
             var self = this;
@@ -1377,6 +1375,7 @@ var Map = (function() {
     map.prototype.resetFeatures = resetFeatures;
     map.prototype.zoomToRoute = zoomToRoute;
     map.prototype.updateRoute = updateRoute;
+    map.prototype.removeElevationControl = removeElevationControl;
     map.prototype.updateSize = updateSize;
     map.prototype.checkAvoidAreasIntersectThemselves = checkAvoidAreasIntersectThemselves;
     map.prototype.addAvoidAreas = addAvoidAreas;
