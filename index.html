@@ -553,30 +553,30 @@
 			<div class="modal-body">
 				<form class="form-horizontal">
 				  <div class="control-group">
-				    <label class="control-label" for="inputEmail" id="languageText" >Please select your language:&nbsp;</label>
+				    <label id="languageText" >Please select your language:&nbsp;</label>
 				    <div class="controls">
-				      <select class="span2" id="languagePrefs"></select>
+				      <select id="languagePrefs"></select>
 				    </div>
 				  </div>
 				  <div class="control-group">
-				    <label class="control-label" for="inputPassword" id="routingLanguageText">Please select your language:&nbsp;</label>
+				    <label id="routingLanguageText">Please select your language:&nbsp;</label>
 				    <div class="controls">
-				    	<select class="span2" id="routingLanguagePrefs"></select>
+				    	<select id="routingLanguagePrefs"></select>
 				    </div>
 				  </div>
 				  <div class="control-group">
-				    <label class="control-label" for="inputEmail" id="distanceUnitText">Please select your distance unit:&nbsp;</label>
+				    <label id="distanceUnitText">Please select your distance unit:&nbsp;</label>
 				    <div class="controls">
-				    	<select class="span2" id="unitPrefs"></select>
+				    	<select id="unitPrefs"></select>
 				    </div>
 				  </div>
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button class="btn" data-dismiss="modal" aria-hidden="true" id="preferencesClose">
+				<button class="btn primary-control" data-dismiss="modal" aria-hidden="true" id="preferencesClose">
 					Close
 				</button>
-				<button class="btn btn-primary" id="savePrefsBtn">
+				<button class="btn primary-control" id="savePrefsBtn">
 					Save
 				</button>
 			</div>
@@ -591,15 +591,15 @@
 				  <p id="returnmessage"></p>
 						<div class="control-group">
 							<label>Name: <span>*</span></label>
-							<input class="span6" type="text" id="name" placeholder="Name"/>
+							<input class="span4" type="text" id="name" placeholder="Name"/>
 						</div>
 						<div class="control-group">
 							<label>Email: <span>*</span></label>
-							<input class="span6" type="text" id="email" placeholder="Email"/>
+							<input class="span4" type="text" id="email" placeholder="Email"/>
 						</div>
 						<div class="control-group">
 							<label>Message:</label>
-							<textarea rows="5" class="span6" id="message" placeholder="Type your message here"></textarea>
+							<textarea rows="5" class="span4" id="message" placeholder="Type your message here"></textarea>
 						</div>
 						<input class="btn primary-control" type="button" id="submit_feedback" value="Send Message"/>
 				</form>
