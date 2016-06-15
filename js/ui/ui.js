@@ -1460,7 +1460,7 @@ var Ui = (function(w) {
             summaryItem = new Element('div', {
                 'class': 'info',
                 'data-toggle': 'tooltip',
-                'data-container': 'body',
+                'data-container': '.ORS-mainPanel',
                 'id': routeSummaryStyles[key].id,
                 'title': routeSummaryStyles[key].title
             });
