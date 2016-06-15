@@ -1427,31 +1427,32 @@ var Ui = (function(w) {
         var summaryContainer = new Element('div', {
             'class': 'directions-summary-container'
         });
+
         var routeSummaryStyles = {
             time: {
                 fa: '<i class="fa fa-clock-o"></i>',
                 id: 'tt-time',
-                title: 'Duration'
+                title: preferences.translate('tt-time')
             },
             actualDistance: {
                 fa: '<i class="fa fa-long-arrow-right"></i>',
                 id: 'tt-actdistance',
-                title: 'Actual Distance'
+                title: preferences.translate('tt-actdistance')
             },
             distance: {
                 fa: '<i class="fa fa-arrows-h"></i>',
                 id: 'tt-distance',
-                title: 'Distance'
+                title: preferences.translate('tt-distance')
             },
             ascent: {
                 fa: '<i class="fa fa-long-arrow-up fa-rotate-45"></i>',
                 id: 'tt-ascent',
-                title: 'Ascent'
+                title: preferences.translate('tt-ascent')
             },
             descent: {
                 fa: '<i class="fa fa-long-arrow-down fa-rotate-315"></i>',
                 id: 'tt-descent',
-                title: 'Descent'
+                title: preferences.translate('tt-descent')
             },
         };
         // loop through summary
@@ -1536,7 +1537,7 @@ var Ui = (function(w) {
         d3.select(types).selectAll("svg").remove();
         var tip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) {
             var dist = util.convertDistanceFormat(d.distance, preferences.distanceUnit);
-            return d.type + " " + d.percentage + "% " + '(' + dist[1] + ' ' + dist[2] + ')';
+            return d.typetranslated + " " + d.percentage + "% " + '(' + dist[1] + ' ' + dist[2] + ')';
         });
         var margin = {
                 top: 0,
