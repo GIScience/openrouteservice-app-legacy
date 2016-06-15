@@ -62,7 +62,7 @@ list = {
         Bicycle: ['.ORS-bike'],
         HeavyVehicle: ['.ORS-hgv']
     },
-    menuElements: ['ORS-routeContent', 'ORS-aaContent', 'ORS-feedbackContent', 'ORS-cloudContent'],
+    menuElements: ['ORS-routeContent', 'ORS-aaContent', 'ORS-cloudContent'],
     // waytype and surface type information
     tmc: {},
     WayType: {

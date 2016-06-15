@@ -1484,7 +1484,7 @@ var Ui = (function(w) {
                     }).update(routeSummary[key][ts]);
                     unit = new Element('div', {
                         'class': 'units'
-                    }).update(routeSummary[key][ts + 1][0].toLowerCase());
+                    }).update(' ' + routeSummary[key][ts + 1][0].toLowerCase());
                     contentDiv.appendChild(time);
                     contentDiv.appendChild(unit);
                 }
@@ -1495,7 +1495,7 @@ var Ui = (function(w) {
                 }).update(routeSummary[key][1]);
                 unit = new Element('div', {
                     'class': 'units'
-                }).update(routeSummary[key][2]);
+                }).update(' ' + routeSummary[key][2]);
                 contentDiv.appendChild(distance);
                 contentDiv.appendChild(unit);
                 // save elevation true if ascent or descent over 40 meters

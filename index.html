@@ -45,7 +45,10 @@
 			<a id="title" href="http://www.openrouteservice.org">OpenRouteService</a>
  			<ul id="topMenu">
 				<li>
-					<a href="#sitePrefsModal" data-toggle="modal" id="menuLinkSitePrefs"><i class="fa fa-globe"></i></a>
+					<a href="#feedbackModal" data-toggle="modal" id="menuLinkFeedback"><i class="fa fa-comment"></i></a>
+				</li>
+				<li>
+					<a href="#sitePrefsModal" data-toggle="modal" id="menuLinkSitePrefs"><i class="fa fa-cogs"></i></a>
 				</li>
 				<li>
 					<a href="contact.html#top" target="_blank" id="menuLinkInfo"><i class="fa fa-info"></i></a>
@@ -68,9 +71,6 @@
 						</button>
 						<button select-id="ORS-cloudContent" class="btn menuButton primary-menu">
 							<i class="fa fa-download"></i>
-						</button>
-						<button select-id="ORS-feedbackContent" class="btn menuButton primary-menu">
-							<i class="fa fa-comment"></i>
 						</button>
 					</div>
 					<div style="bottom: 0px; margin: 12px; position: absolute;">
@@ -104,16 +104,13 @@
 					<div data-id="ORS-aaContent" class="ORS-center" style="display: none">
 						<span>Accessibility Analysis</span>
 					</div>
-					<div data-id="ORS-feedbackContent" class="ORS-center" style="display: none">
-						<span>Send Feedback</span>
-					</div>
 					<div data-id="ORS-cloudContent" class="ORS-center" style="display: none">
 						<span>Import and Export Features</span>
 					</div>
 				</div>
 				<div class="ORS-mainPanel">
 					<div id="routeContainer" data-id="ORS-routeContent" class="route">
-						<div id="routingPanel">
+						<div id="routingPanel ORS-panel">
 						    <div id="optionsContainer" class="routeOptions ORS-panel-sub ORS-light" style="display: none;">
 						        <div class="ORS-panel-sub ORS-all ORS-hr-dark" id="weightingOptions" style="display: none;">
 									<h6>Route weight</h6>
@@ -356,7 +353,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="ORS-panel-sub ORS-padding">
+							<div class="ORS-panel-sub ORS-hr-dark ORS-padding">
 								<div class="guiComponent waypoint unset" draggable="draggable" id="Draft" style="display: none">
 									<span class="clickable waypoint-icon unset" title="Zoom to waypoint"> </span>
 									<span class="clickable removeWaypoint" title="Remove waypoint"> </span>
@@ -512,34 +509,7 @@
 							</div>
 						</div>
 					</div>	
-					<div data-id="ORS-feedbackContent" class="feedbackContainer ORS-panel" style="display: none;">
-						<div class="ORS-panel-sub">
-							<div class="feedback">
-								<div class="form">
-								<p id="returnmessage"></p>
-									<label>Name: <span>*</span></label>
-									<input type="text" id="name" placeholder="Name"/>
-									<label>Email: <span>*</span></label>
-									<input type="text" id="email" placeholder="Email"/>
-									<label>Message:</label>
-									<textarea id="message" placeholder="Type your message here"></textarea>
-									<input class="btn primary" type="button" id="submit_feedback" value="Send Message"/>
-								</div>
-							</div>
-	    				</div>
-					</div>
 				</div>
-				<!--<div id="geolocationPanel" style="display: none;">
-					<div id="geoloc" class="panel panelLight">
-						<div class="toolHeading" id="geolocationHead">
-							My current location
-						</div>
-						<div class="guiComponent">
-							<div class="alert alert-error" id="geolocationError" style="display: none;"></div>
-							<div id="geolocationResult"></div>
-						</div>
-					</div>
-				</div>-->
 				<div class="disclaimer">
 					<a id="debug">debug - </a>
 					<a href="contact.html" class="inlineLink">(c) 2008-2016 &nbsp; -</a>
@@ -575,7 +545,7 @@
 			</div>
 		</div>
 		<!-- END OF MAIN SECTION -->
-		<!-- popup for user preferences (language, distance unit,...) -->
+		<!-- modal for user preferences (language, distance unit,...) -->
 		<div id="sitePrefsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sitePrefs">
 			<div class="modal-header">
 				<a href="#" class="close" data-dismiss="modal" aria-hidden="true">×</a><h3 id="sitePrefs">Site Preferences</h3>
@@ -608,7 +578,30 @@
 				</button>
 			</div>
 		</div>
-
+		<!-- modal for feedback -->
+		<div id="feedbackModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="feedback">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal" aria-hidden="true">×</a><h3 id="feedback">Feedback</h3>
+			</div>
+			<div class="modal-body feedback">
+				<div class="form-horizontal">
+					<p id="returnmessage"></p>
+					<div class="control-group">
+						<label>Name: <span>*</span></label>
+						<input class="span6" type="text" id="name" placeholder="Name"/>
+					</div>
+					<div class="control-group">
+						<label>Email: <span>*</span></label>
+						<input class="span6" type="text" id="email" placeholder="Email"/>
+					</div>
+					<div class="control-group">
+						<label>Message:</label>
+						<textarea rows="5" class="span6" id="message" placeholder="Type your message here"></textarea>
+					</div>
+					<input class="btn primary-control" type="button" id="submit_feedback" value="Send Message"/>
+				</div>
+			</div>
+		</div>
 		<!-- CALL JAVASCRIPT FUNCTIONS -->
 		<!-- 	important: jQuery must be included before properties type	 -->
 		<script type="text/javascript" src="lib/jquery-1.7.2.min.js"></script>

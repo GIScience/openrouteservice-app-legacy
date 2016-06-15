@@ -201,7 +201,7 @@ button.routeOptionsButton, button.optionsButton {
     box-shadow: none !important;
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;
-    color: rgb(96, 125, 139);
+    color: #b5152b;
     background-color: transparent;
     border: none;
 }
@@ -210,8 +210,8 @@ button.routeOptionsButton, button.optionsButton {
 
 .btn-group>.primary:hover, .btn-group>.primary.active, .btn-group>.primary:active, .optionsButton:hover, .optionsButton.active, .optionsButton:active {
     background: transparent;
-    border-bottom: 1px solid rgb(96, 125, 139);
-    color: rgb(96, 125, 139);
+    border-bottom: 1px solid #b5152b;
+    color: #b5152b
 }
 
 /* LEFT MENU BUTTONS */
@@ -247,11 +247,11 @@ button.routeOptionsButton, button.optionsButton {
     /* STYLE FOR ELEMENTS ON HEADER SECTION */
 
     #navbar {
-        background-color: rgb(96, 125, 139);
+        background-color: #b5152b;
     }
 
     #navbar #title {
-        color: rgba(255, 255, 255, 0.66);
+        color: #F0F0F0;
         line-height: 25px;
         margin: 0 auto;
         display: flex;
@@ -263,10 +263,9 @@ button.routeOptionsButton, button.optionsButton {
     }
 
     #ORS-headIcon {
-        background: url(../img/logo.png) no-repeat center center;
-        background-size: 40px 40px;
-        width: 50px;
-        height: 50px;
+        background: url(../img/logo_unihd.png) no-repeat center center;
+        background-size: 70px auto;
+        width: 80px;
     }
 
     /* STYLE FOR ELEMENTS ON ASIDE SECTION (LEFT NAVIGATION MENU SECTION) */
@@ -522,7 +521,7 @@ button.routeOptionsButton, button.optionsButton {
                     
                     .directions-summary-container .info .icon {
                         font-size: 14px;
-                        color: rgb(96, 125, 139);
+                        color: #b5152b;
                     }
                     
                     .directions-summary-container .info .content {}
@@ -727,62 +726,6 @@ button.routeOptionsButton, button.optionsButton {
                     margin-top: 5px;
                 }
 
-                /* FEEDBACK CONTENT */
-                .feedback {
-                    width: 320px;
-                }
-                
-                .feedback a {
-                    display: block;
-                    height: 20px;
-                    text-align: center;
-                    background: black;
-                    opacity: 0.9;
-                    clear: both;
-                    padding-right: 5px;
-                    padding-left: 5px;
-                    float: right;
-                    cursor: pointer;
-                    /*Font*/
-                    color: #fff;
-                    font-size: 14px;
-                }
-                
-                .feedback .form {
-                    clear: both;
-                    background: #fff;
-                }
-                
-                .feedback input {
-                    width: 100%;
-                    border-radius: 0;
-                    padding: 5px;
-                }
-                
-                .feedback input[type=text] {
-                    height: 25px;
-                }
-                
-                .feedback input[type=button] {
-                    background-color: #F7F7F7;
-                    border: 0px solid white;
-                    border-radius: 0;
-                    margin-top: 5px;
-                }
-                
-                .feedback textarea {
-                    width: 100%;
-                    height: 80px;
-                    margin-top: 5px;
-                    border-radius: 0px;
-                    padding: 5px;
-                    resize: none;
-                    border-color: #F0F0F0;
-                }
-                
-                .feedback span {
-                    color: red
-                }
 
             /* DISCLAIMER */
             .disclaimer {
@@ -840,7 +783,7 @@ button.routeOptionsButton, button.optionsButton {
             }
             
             .ORS-hr-dark {
-                border-bottom: 1px solid #DDD;
+                border-bottom: 1px solid #EBEBEB;
             }
 
             .ORS-label {
@@ -945,7 +888,7 @@ button.routeOptionsButton, button.optionsButton {
             white-space: nowrap;
             cursor: pointer;
             margin-bottom: 3px;
-            background-color: rgba(96, 125, 139, 0.9);
+            background-color: #b5152b;
             border-left: 2px solid #F0F0F0;
             color: white;
             min-height: 10px;
@@ -957,7 +900,7 @@ button.routeOptionsButton, button.optionsButton {
         }
         
         .mapContextMenu .contextWaypoint:hover {
-            background-color: rgba(96, 125, 139, 1);
+            background-color: #b5152b;
             border-left: 2px solid #444;
         }
         
@@ -981,7 +924,7 @@ button.routeOptionsButton, button.optionsButton {
         }
         
         .mapContextMenu .leaflet-popup-tip {
-            border: 2px solid rgb(96, 125, 139);
+            border: 2px solid #b5152b;
             box-shadow: none;
             background-color: transparent;
             border-radius: 50%;
