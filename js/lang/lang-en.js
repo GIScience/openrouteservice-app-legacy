@@ -366,13 +366,19 @@ var lang_en = {
     'Woodchips': 'Woodchips',
     'Grass': 'Grass',
     'GrassPaver': 'Grass Paver',
+
     //Tooltips
-    'optimizeWP': 'Optimize Waypoint Ordering',
+    'optimizeWP': 'Optimize Waypoints',
     'reorderWP': 'Reorder Waypoints',
     'reset': 'Reset Route',
-    'zoom': 'Zoom To Route',
-    'analyzeAccess': 'Accessibility Analysis',
-    'removeAccess': 'Remove Accessibility Analysis',
-    'exportGPX': 'Export Route as GPX',
-    'importGPX': 'Upload multiple GPX files',
+    'zoom': 'Zoom to Route',
+    'analyzeAccess': 'Calculate accessibility',
+    'removeAccess': 'Remove',
+    'exportGPX': 'Download of current route in GPX format',
+    'importGPX': 'Upload multiple tracks from GPX-files',
+    'tt-ascent': 'Ascent',
+    'tt-descent': 'Descent',
+    'tt-time': 'Time',
+    'tt-distance': 'Distance',
+    'tt-actdistance': 'Actual Distance'
 };

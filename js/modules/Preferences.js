@@ -48,14 +48,12 @@ var Preferences = (function(w) {
         this.language = 'en';
         this.routingLanguage = 'en';
         this.distanceUnit = 'm';
-        this.version = list.version['extendedVersion'];
         this.dictionaryLang = window['lang_' + this.language];
         this.dictionaryInstruct = window['lang_' + this.language];
         //set permalink links
         permaInfo[this.languageIdx] = this.language;
         permaInfo[this.routingLanguageIdx] = this.routingLanguage;
         permaInfo[this.distanceUnitIdx] = this.distanceUnit;
-        permaInfo[this.versionIdx] = this.version;
         //other fields are filled with default values when reading GET variables/ cookies etc.
         cookiesAvailable = false;
     }
@@ -120,7 +118,6 @@ var Preferences = (function(w) {
         this.routingLanguage = this.setRoutingLanguage();
         this.dictionaryInstruct = window['lang_' + this.routingLanguage];
         this.distanceUnit = this.setDistanceUnit();
-        this.version = this.setVersion();
         //return GET variables that have to be applied to other objects
         return readGetVars();
     }
@@ -210,19 +207,6 @@ var Preferences = (function(w) {
             distUnit = list.distanceUnitsPreferences[0];
         }
         return distUnit;
-    }
-    /**
-     * determines the site version either by cookie or using the standard version by default
-     * @return the version 
-     */
-    function setVersion() {
-        //read from cookie
-        var siteVersion = readCookie(prefNames[this.versionIdx]);
-        //if no cookie is available, use default
-        if (!siteVersion) {
-            siteVersion = list.version[0];
-        }
-        return siteVersion;
     }
     /**
      * determines the map positoin by using GET variable, cookie or geolocation feature
@@ -646,7 +630,6 @@ var Preferences = (function(w) {
         document.cookie = prefNames[this.languageIdx] + "=" + escape(this.language) + ";expires=" + exdate.toUTCString();
         document.cookie = prefNames[this.routingLanguageIdx] + "=" + escape(this.routingLanguage) + ";expires=" + exdate.toUTCString();
         document.cookie = prefNames[this.distanceUnitIdx] + "=" + escape(this.distanceUnit) + ";expires=" + exdate.toUTCString();
-        document.cookie = prefNames[this.versionIdx] + "=" + escape(this.version) + ";expires=" + exdate.toUTCString();
         cookiesAvailable = true;
     }
     /**
@@ -665,7 +648,6 @@ var Preferences = (function(w) {
             this.language = key == this.languageIdx ? value : this.langauge;
             this.routingLanguage = key == this.routingLanguageIdx ? value : this.routingLanguage;
             this.distanceUnit = key == this.distanceUnitIdx ? value : this.distanceUnit;
-            this.version = key == this.versionIdx ? value : this.version;
             this.dictionaryLang = window['lang_' + this.language];
             this.dictionaryInstruct = window['lang_' + this.routingLanguage];
         }
@@ -740,7 +722,6 @@ var Preferences = (function(w) {
     Preferences.prototype.setLanguage = setLanguage;
     Preferences.prototype.setRoutingLanguage = setRoutingLanguage;
     Preferences.prototype.setDistanceUnit = setDistanceUnit;
-    Preferences.prototype.setVersion = setVersion;
     Preferences.prototype.loadMapPosition = loadMapPosition;
     Preferences.prototype.loadMapZoom = loadMapZoom;
     Preferences.prototype.loadMapLayer = loadMapLayer;

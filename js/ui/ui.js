@@ -768,7 +768,7 @@ var Ui = (function(w) {
         // empty old summary
         $('.directions-summary-info-container').remove();
         // empty route types container
-        $('.routeTypesContainer').empty();
+        $('#routeTypesContainer').empty();
         //remove markers on map
         theInterface.emit('ui:resetRoute');
         //remove all existing waypoints
@@ -1417,40 +1417,42 @@ var Ui = (function(w) {
      */
     function updateRouteSummary(results) {
         // empty old summary
-        $('.directions-summary-container').remove();
-        // empty route types container
-        $('.routeTypesContainer').empty();
+        var container = $('#routeSummary');
+        container.empty();
+        container.parent().parent().show();
         // fetch route summary
         var routeSummary = getSummaryXML(results);
         var summaryItem, unit, time, distance, value, len, iconDiv, contentDiv;
+        var elevation = false;
         var summaryContainer = new Element('div', {
             'class': 'directions-summary-container'
         });
+
         var routeSummaryStyles = {
             time: {
                 fa: '<i class="fa fa-clock-o"></i>',
                 id: 'tt-time',
-                title: 'Duration'
+                title: preferences.translate('tt-time')
             },
             actualDistance: {
                 fa: '<i class="fa fa-long-arrow-right"></i>',
                 id: 'tt-actdistance',
-                title: 'Actual Distance'
+                title: preferences.translate('tt-actdistance')
             },
             distance: {
                 fa: '<i class="fa fa-arrows-h"></i>',
                 id: 'tt-distance',
-                title: 'Distance'
+                title: preferences.translate('tt-distance')
             },
             ascent: {
                 fa: '<i class="fa fa-long-arrow-up fa-rotate-45"></i>',
                 id: 'tt-ascent',
-                title: 'Ascent'
+                title: preferences.translate('tt-ascent')
             },
             descent: {
                 fa: '<i class="fa fa-long-arrow-down fa-rotate-315"></i>',
                 id: 'tt-descent',
-                title: 'Descent'
+                title: preferences.translate('tt-descent')
             },
         };
         // loop through summary
@@ -1458,7 +1460,7 @@ var Ui = (function(w) {
             summaryItem = new Element('div', {
                 'class': 'info',
                 'data-toggle': 'tooltip',
-                'data-container': 'body',
+                'data-container': '.ORS-mainPanel',
                 'id': routeSummaryStyles[key].id,
                 'title': routeSummaryStyles[key].title
             });
@@ -1482,7 +1484,7 @@ var Ui = (function(w) {
                     }).update(routeSummary[key][ts]);
                     unit = new Element('div', {
                         'class': 'units'
-                    }).update(routeSummary[key][ts + 1][0].toLowerCase());
+                    }).update(' ' + routeSummary[key][ts + 1][0].toLowerCase());
                     contentDiv.appendChild(time);
                     contentDiv.appendChild(unit);
                 }
@@ -1493,19 +1495,22 @@ var Ui = (function(w) {
                 }).update(routeSummary[key][1]);
                 unit = new Element('div', {
                     'class': 'units'
-                }).update(routeSummary[key][2]);
+                }).update(' ' + routeSummary[key][2]);
                 contentDiv.appendChild(distance);
                 contentDiv.appendChild(unit);
+                // save elevation true if ascent or descent over 40 meters
+                if (key == 'ascent' ||  key == 'descent') {
+                    if (routeSummary[key][1] > 40) elevation = true;
+                }
             }
             summaryItem.appendChild(iconDiv);
             summaryItem.appendChild(contentDiv);
             summaryContainer.appendChild(summaryItem);
+            container.append(summaryContainer);
         }
-        var container = $('#routeSummary');
-        container.parent().parent().show();
-        container.append(summaryContainer);
         // initiate tooltips
         $('[data-toggle="tooltip"]').tooltip();
+        return elevation;
     }
     /**
      * calculates way and surface type information for horizontal barcharts
@@ -1532,7 +1537,7 @@ var Ui = (function(w) {
         d3.select(types).selectAll("svg").remove();
         var tip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) {
             var dist = util.convertDistanceFormat(d.distance, preferences.distanceUnit);
-            return d.type + " " + d.percentage + "% " + '(' + dist[1] + ' ' + dist[2] + ')';
+            return d.typetranslated + " " + d.percentage + "% " + '(' + dist[1] + ' ' + dist[2] + ')';
         });
         var margin = {
                 top: 0,
@@ -1686,6 +1691,8 @@ var Ui = (function(w) {
      * @param mapLayer: map layer containing these features
      */
     function updateRouteInstructions(results, mapFeatureIds, mapLayer) {
+        // empty route types container
+        $('.routeTypesContainer').empty();
         var container, directionsContainer;
         if (!results) {
             container = $('#routeInstructionsContainer').get(0);
@@ -1898,10 +1905,7 @@ var Ui = (function(w) {
             totalTime += stopoverTime;
             directionsContainer = buildWaypoint('layerRoutePoints', 'end', endpoint, getWaypoints().length - 1, stopoverDistance, stopoverTime);
             directionsMain.appendChild(directionsContainer);
-            /* Route Summary */
-            var routeSummary = updateRouteSummary(results);
             return distArrAll;
-            // TODO tmc messages expand collapse function
         }
         /** 
          * builds Waypoint for start, via and end points in instructionlist
@@ -2792,7 +2796,7 @@ var Ui = (function(w) {
         var parent;
         for (var i = 0; i < parentOptions.length; i++) {
             if (list.routePreferences.get(parentOptions[i]).indexOf(routeOption) != -1) {
-                    //activate corresponding option panel
+                //activate corresponding option panel
                 switchRouteOptionsButton(parentOptions[i]);
             }
         }
@@ -3125,13 +3129,10 @@ var Ui = (function(w) {
      * extracts selected user preferences and forwards them for saving in the preference module
      */
     function handleSaveUserPreferences() {
-        var version = $('#extendedVersionPrefs').find(":selected").text();
         var language = $('#languagePrefs').find(":selected").text();
         var routingLanguage = $('#routingLanguagePrefs').find(":selected").text();
         var distanceUnit = $('#unitPrefs').find(":selected").text();
         //var baseLayer = $('input[name=layerSwitcherPanel_baseLayers]:checked').val();
-        //version: one of list.version
-        version = preferences.reverseTranslate(version);
         //language: one of list.languages
         language = preferences.reverseTranslate(language);
         //routing language: one of list.routingLanguages
@@ -3148,7 +3149,6 @@ var Ui = (function(w) {
             }
         }
         theInterface.emit('ui:saveUserPreferences', {
-            version: version,
             language: language,
             routingLanguage: routingLanguage,
             distanceUnit: distanceUnit
@@ -3158,23 +3158,13 @@ var Ui = (function(w) {
     }
     /**
      * applies the given user preferences
-     * @param version: version of the site: standard, extended,...
      * @param language: language of the site
      * @param routingLanguage: language of the routing instructions
      * @param distanceUnit: unit of distances used on the site
      */
-    function setUserPreferences(version, language, routingLanguage, distanceUnit) {
-        //setting version
-        var container = $('#extendedVersionPrefs').get(0);
-        container = container.options;
-        for (var i = 0; i < list.version.length; i++) {
-            if (list.version[i] === version) {
-                //set selected = true
-                container[i].selected = true;
-            }
-        }
+    function setUserPreferences(language, routingLanguage, distanceUnit) {
         //setting language
-        container = $('#languagePrefs').get(0);
+        var container = $('#languagePrefs').get(0);
         container = container.options;
         for (var i = 0; i < list.languages.length; i++) {
             if (list.languages[i] === language) {

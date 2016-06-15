@@ -19,6 +19,7 @@
 /* START OF BLOCK STYLES (BASE LAYOUT STYLE) */
 /* *******************************************/
 
+
     /* BASE LAYOUT */
     .ORS {
         display: flex;
@@ -37,7 +38,7 @@
     .ORS-header {
         display: flex;
         flex: 0 0 50px;
-        background-color: rgb(96, 125, 139);
+        background-color: #b5152b
     }
     
     .ORS-main {
@@ -60,6 +61,11 @@
         order: 2;
     }
 
+    .ORS-input-append {
+        font-size: 12px;
+        color: #707070;
+    }
+
     /* GENERAL ELEMENTS */
     input, .form-inline input, textarea, select, .form-inline select, .guiComponent > input {
         font-family: 'Source Sans Pro', sans-serif;
@@ -76,7 +82,47 @@
         -webkit-appearance: none;
     }
     
+    select:not([multiple]) {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-position: right 50%;
+    background-repeat: no-repeat;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAMCAYAAABSgIzaAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NDZFNDEwNjlGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NDZFNDEwNkFGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0NkU0MTA2N0Y3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo0NkU0MTA2OEY3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuGsgwQAAAA5SURBVHjaYvz//z8DOYCJgUxAf42MQIzTk0D/M+KzkRGPoQSdykiKJrBGpOhgJFYTWNEIiEeAAAMAzNENEOH+do8AAAAASUVORK5CYII=);
+    vertical-align: middle;
+    }
+    
+    select, input[type="file"] {
+        line-height: 1;
+    }
+    
+    input[type='checkbox'], input[type='radio'] {
+        vertical-align: baseline;
+    }
+    
+    input[type="text"] {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+        border-color: #F0F0F0;
+        font-size: 90%;
+    }
+    
+    h3 {
+        margin: 0 0 0.5em 0;
+    }
+    
     a:link, a:visited {
+        text-decoration: none;
+    }
+    
+    a:hover, a:active {
+        text-decoration: none;
+    }
+    
+    a:focus {
+        background-color: none;
         text-decoration: none;
     }
     
@@ -102,6 +148,7 @@
 
 
     /* BUTTONS */
+
     .primary:focus {
         outline: none;
         color: #707070;
@@ -152,7 +199,7 @@
         box-shadow: none !important;
         -webkit-box-shadow: none !important;
         -moz-box-shadow: none !important;
-        color: rgb(96, 125, 139);
+        color: #b5152b;
         background-color: transparent;
         border: none;
     }
@@ -166,10 +213,11 @@
 /* *********************************************/
 
     /* STYLE FOR ELEMENTS ON HEADER SECTION */
-    
+
     /* Main ORS title */
     #ORS-title { 
-        color: rgba(255, 255, 255, 0.66);
+        background-color: #b5152b;
+        color: #F0F0F0;
         line-height: 25px;
         margin: 0 auto;
         display: flex;
@@ -181,11 +229,10 @@
     }
 
     /* ORS icon on top left side */
-    #ORS-headIcon { 
-        background: url(../img/logo.png) no-repeat center center;
-        background-size: 40px 40px;
-        width: 50px;
-        height: 50px;
+    #ORS-headIcon {
+        background: url(../img/logo_unihd.png) no-repeat center center;
+        background-size: 70px auto;
+        width: 80px;
     }
 
     /* ORS menu on top right side (site preferences and info icons) */
@@ -249,20 +296,20 @@
                 background-color: #F0F0F0;
                 height: 40px;
             }
-            /* buttons on the navigation panel */
-            .btn-group>.primary-menu:hover {
+            /* buttons on the navigation panel (left menu buttons) */
+            .btn-group>.primary-menu:hover, .primary-control:hover   {
                 background: transparent;
                 color: #444;
             }
-    
-            .btn-group>.primary-menu:active {
+            
+            .btn-group>.primary-menu:active, .primary-control:active {
                 background: transparent;
                 border-color: transparent;
                 color: #444;
                 outline: none;
             }
             
-            .btn-group>.primary-menu.active, .btn-group>.primary-menu:focus {
+            .btn-group>.primary-menu.active, .btn-group>.primary-menu:focus, .primary-control:active, .primary-control.active {
                 box-shadow: none !important;
                 -webkit-box-shadow: none !important;
                 -moz-box-shadow: none !important;
@@ -282,31 +329,35 @@
                 background-color: #FFF;
             }
 
-            /* buttons on the top menu (choose between vehicle type) */
+            /* buttons on the top menu (top menu buttons choose between vehicle type) */
             .btn-group>.primary:hover, .btn-group>.primary.active, .btn-group>.primary:active, .optionsButton:hover, .optionsButton.active, .optionsButton:active {
                 background: transparent;
-                border-bottom: 1px solid rgb(96, 125, 139);
-                color: rgb(96, 125, 139);
+                border-bottom: 1px solid #b5152b;
+                color: #b5152b
             }
 
                 /* ROUTE CONTAINER */
+
                     /* WEIGHTING OPTIONS */
-                    
 
                     /* ROADS TO AVOID */
-                    
+
                     /* VEHICLE OPTIONS */
+                    #TruckTabs>ul {
+                        border-bottom: none;
+                        background: #F0F0F0
+                    }
                     #TruckTabs>li>a {
-                        font-size: 90%;
-                        font-weight: normal;
+                        font-size: 80%;
                         background-color: #f8f8f8;
                         padding-bottom: 4px;
                         padding-top: 4px;
+                        color: #707070;
                     }
 
-                    /* SET MAX SPEED */
-                    #maxSpeedInput {
-                        font-size: 90%;
+                    #TruckTabs>li>a:hover {
+                        border-bottom: transparent;
+                        background: #F0F0F0;
                     }
 
                     /* WAYPOINT OPTIONS */
@@ -437,7 +488,7 @@
                     
                     .directions-summary-container .info .icon {
                         font-size: 14px;
-                        color: rgb(96, 125, 139);
+                        color: #b5152b;
                     }
                     
                     .directions-summary-container .info .content {}
@@ -642,62 +693,6 @@
                     margin-top: 5px;
                 }
 
-                /* FEEDBACK CONTENT */
-                .feedback {
-                    width: 320px;
-                }
-                
-                .feedback a {
-                    display: block;
-                    height: 20px;
-                    text-align: center;
-                    background: black;
-                    opacity: 0.9;
-                    clear: both;
-                    padding-right: 5px;
-                    padding-left: 5px;
-                    float: right;
-                    cursor: pointer;
-                    /*Font*/
-                    color: #fff;
-                    font-size: 14px;
-                }
-                
-                .feedback .form {
-                    clear: both;
-                    background: #fff;
-                }
-                
-                .feedback input {
-                    width: 100%;
-                    border-radius: 0;
-                    padding: 5px;
-                }
-                
-                .feedback input[type=text] {
-                    height: 25px;
-                }
-                
-                .feedback input[type=button] {
-                    background-color: #F7F7F7;
-                    border: 0px solid white;
-                    border-radius: 0;
-                    margin-top: 5px;
-                }
-                
-                .feedback textarea {
-                    width: 100%;
-                    height: 80px;
-                    margin-top: 5px;
-                    border-radius: 0px;
-                    padding: 5px;
-                    resize: none;
-                    border-color: #F0F0F0;
-                }
-                
-                .feedback span {
-                    color: red
-                }
 
             /* DISCLAIMER */
             .disclaimer {
@@ -755,7 +750,7 @@
             }
             
             .ORS-hr-dark {
-                border-bottom: 1px solid #DDD;
+                border-bottom: 1px solid #EBEBEB;
             }
 
             .ORS-label {
@@ -860,7 +855,7 @@
             white-space: nowrap;
             cursor: pointer;
             margin-bottom: 3px;
-            background-color: rgba(96, 125, 139, 0.9);
+            background-color: #b5152b;
             border-left: 2px solid #F0F0F0;
             color: white;
             min-height: 10px;
@@ -872,7 +867,7 @@
         }
         
         .mapContextMenu .contextWaypoint:hover {
-            background-color: rgba(96, 125, 139, 1);
+            background-color: #b5152b;
             border-left: 2px solid #444;
         }
         
@@ -896,7 +891,7 @@
         }
         
         .mapContextMenu .leaflet-popup-tip {
-            border: 2px solid rgb(96, 125, 139);
+            border: 2px solid #b5152b;
             box-shadow: none;
             background-color: transparent;
             border-radius: 50%;
@@ -1166,26 +1161,7 @@
         left:5vw;
     }
 
-    #sitePrefs{
-        text-align: center;
-    }
 
-    .ORS-mobileBrLine{
-        display:block;
-    }
-
-    #sitePrefsModal p, #sitePrefsModal h4  {
-        margin: 0 auto;
-        width:100%;
-        text-align:center;
-    }
-        
-    .ORS-PrefsDropDown {         
-        float:left;
-        width:100%;
-        margin: 0 auto;
-    }
-}
 /* ****************************************************************/
 /* END OF MOBILE STYLES (MEDIA QUERIES FOR MOBILE VISUALIZATION)  */
 /* ****************************************************************/
@@ -1258,6 +1234,256 @@
 
 .radioContainer {
     padding: 0 0 0 5px;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.clickable.active {
+    cursor: pointer;
+    color: rgb(0, 161, 45);
+}
+
+.addWaypoint {
+    padding-left: 40px;
+    padding-top: 5px;
+    min-height: 30px;
+    background-image: url('../img/marker-plus.png');
+    background-repeat: no-repeat;
+    background-size: 16px;
+    background-position: 8px 3px;
+    font-size: 90%;
+}
+
+
+/* container for "zoom to route" or "calculate route" when appropriate*/
+
+.zoomToSearchResults {
+    margin-top: 7px;
+    margin-bottom: 7px;
+}
+
+
+/*contains the route instructions of a calculated route*/
+
+.routeInstructions {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 90%;
+}
+
+
+/*for displaying route instructions in the panel*/
+
+#routeInstructionHead {
+    float: left;
+    width: 60%;
+}
+
+.collapsibleHead:before {
+    padding: 3px;
+    content: "\f0d7";
+    font-family: FontAwesome;
+}
+
+.collapsibleHead.collapsed:before {
+    padding: 4px;
+    content: "\f0da";
+    font-family: FontAwesome;
+}
+
+.collapsibleBody {
+    padding-left: 2px;
+    clear: left;
+}
+
+.collapsibleBody > table {
+    width: 100%;
+    font-size: 13px;
+}
+
+.odd {
+    background-color: rgb(245, 245, 235);
+    /* fallback for unsupported rgba*/
+    background-color: rgba(235, 235, 225, 0.65);
+}
+
+.downloadGpx {
+    width: 60px;
+    height: 30px;
+    background-size: 60px 30px;
+    background: url(../img/routelinkGPX.png) no-repeat 0% 50%;
+}
+
+.prompt {}
+
+.prompt.selectSearchResult {
+    margin-top: 3px;
+}
+
+#accessibilityCalculation {
+    margin-top: 5px;
+}
+
+#accessibilityError {
+    margin-top: 5px;
+}
+
+
+/* Leaflet styles */
+
+.leaflet-bottom .leaflet-control-scale {
+    margin-bottom: 23px;
+}
+
+.leaflet-pane {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.leaflet-control-container {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.leaflet-bar, .leaflet-bar a:last-child, .leaflet-bar a:first-child, .leaflet-control-layers {
+    border-radius: 0px;
+    background-color: #FAFAFA;
+}
+
+
+/*preferences popup*/
+
+#sitePrefsModal label {
+    float: left;
+}
+
+.logo {
+    height: 45px;
+    width: 45px;
+    margin-top: -5px;
+    padding-right: 5px;
+}
+
+.links {
+    height: 40px;
+    padding-top: 0px;
+    padding-bottom: 2px;
+}
+
+a img {
+    border: none;
+}
+
+
+/*avoid layer names too close to radio button */
+
+body {
+    font-size: 90%;
+    -line-height: 1.4;
+    color: rgba(0, 0, 0, 0.8);
+    background-color: #fff;
+    color: #444;
+    margin: 0;
+    padding: 0;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+input, .form-inline input, textarea, select, .form-inline select, .guiComponent > input {
+    font-family: 'Source Sans Pro', sans-serif;
+    border-radius: 0;
+    margin-bottom: 0px;
+    border-color: 1px solid #ccc;
+    font-size: 90%;
+    webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.form-inline select {
+    -webkit-appearance: none;
+}
+
+select:not([multiple]) {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-position: right 50%;
+    background-repeat: no-repeat;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAMCAYAAABSgIzaAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NDZFNDEwNjlGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NDZFNDEwNkFGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0NkU0MTA2N0Y3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo0NkU0MTA2OEY3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuGsgwQAAAA5SURBVHjaYvz//z8DOYCJgUxAf42MQIzTk0D/M+KzkRGPoQSdykiKJrBGpOhgJFYTWNEIiEeAAAMAzNENEOH+do8AAAAASUVORK5CYII=);
+    vertical-align: middle;
+}
+
+select, input[type="file"] {
+    line-height: 1;
+}
+
+input[type='checkbox'], input[type='radio'] {
+    vertical-align: baseline;
+}
+
+input[type="text"], input[type="number"] {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    border-color: #F0F0F0;
+    font-size: 90%;
+}
+
+input[class*="span"] {
+    float: left;
+}
+
+h3 {
+    margin: 0 0 0.5em 0;
+}
+
+a:link, a:visited {
+    text-decoration: none;
+}
+
+a:hover, a:active {
+    text-decoration: none;
+}
+
+a:focus {
+    background-color: none;
+    text-decoration: none;
+}
+
+a.options {
+    clear: both;
+    background: url(../img/arrowRight.png) no-repeat 0 50%;
+    padding-left: 12px;
+    font-size: 0.8em;
+    line-height: 1;
+    color: #5f5f5f;
+    text-decoration: none;
+}
+
+a.options.active {
+    background: url(../img/arrowDown.png) no-repeat 0 50%;
+}
+
+.address {
+    list-style-type: none;
+    font-size: 90%;
+}
+
+.poi {
+    list-style-type: none;
+}
+
+.transparent {
+    background-color: transparent !important;
+}
+
+
+/* BUTTON GROUPS */
+
+button.routeOptionsButton, button.optionsButton {
+    width: 44px;
+    height: 41px;
 }
 
 .clickable {
@@ -1401,10 +1627,6 @@
     width: 130px;
     border: 0;
     color: #6392C2;
-}
-
-.mySlider img {
-    margin-top: -5px;
 }
 
 #route_totalDistance {

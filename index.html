@@ -45,7 +45,10 @@
 			<a id="ORS-title" href="http://www.openrouteservice.org">OpenRouteService</a>
  			<ul id="ORS-topMenu">
 				<li>
-					<a href="#sitePrefsModal" data-toggle="modal" id="ORS-menuLinkSitePrefs"><i class="fa fa-globe"></i></a>
+					<a href="#feedbackModal" data-toggle="modal" id="menuLinkFeedback"><i class="fa fa-comment"></i></a>
+				</li>
+				<li>
+					<a href="#sitePrefsModal" data-toggle="modal" id="menuLinkSitePrefs"><i class="fa fa-cogs"></i></a>
 				</li>
 				<li>
 					<a href="contact.html#top" target="_blank" id="ORS-menuLinkInfo"><i class="fa fa-info"></i></a>
@@ -68,9 +71,6 @@
 						</button>
 						<button select-id="ORS-cloudContent" class="btn menuButton primary-menu">
 							<i class="fa fa-download"></i>
-						</button>
-						<button select-id="ORS-feedbackContent" class="btn menuButton primary-menu">
-							<i class="fa fa-comment"></i>
 						</button>
 					</div>
 					<div style="bottom: 0px; margin: 12px; position: absolute;">
@@ -104,16 +104,13 @@
 					<div data-id="ORS-aaContent" class="ORS-center" style="display: none">
 						<span>Accessibility Analysis</span>
 					</div>
-					<div data-id="ORS-feedbackContent" class="ORS-center" style="display: none">
-						<span>Send Feedback</span>
-					</div>
 					<div data-id="ORS-cloudContent" class="ORS-center" style="display: none">
 						<span>Import and Export Features</span>
 					</div>
 				</div>
 				<div class="ORS-mainPanel">
 					<div id="routeContainer" data-id="ORS-routeContent" class="route">
-						<div id="routingPanel">
+						<div id="routingPanel ORS-panel">
 						    <div id="optionsContainer" class="routeOptions ORS-panel-sub ORS-light" style="display: none;">
 						        <div class="ORS-panel-sub ORS-all ORS-hr-dark" id="weightingOptions" style="display: none;">
 									<h6>Route weight</h6>
@@ -205,7 +202,7 @@
 								        <li><a href="#width" data-toggle="tab" id="truckwidthLabel">width</a></li>
 								        <li><a href="#height" data-toggle="tab" id="truckheightLabel">height</a></li>
 								        <li><a href="#weight" data-toggle="tab" id="truckweightLabel">weight</a></li>
-										<li><a href="#axleload" data-toggle="tab" id="truckaxleloadLabel">axleload</a></li>
+										<li><a href="#axleload" data-toggle="tab" id="truckaxleloadLabel">load</a></li>
 								    </ul>
 								    <div id="my-tab-content" class="tab-content">
 								        <div class="tab-pane active" id="length">
@@ -345,9 +342,9 @@
 						    	</div>
 						    	<div id="maxSpeed" style="display: none;" class="ORS-all ORS-panel-sub">
 									<h6>Maximum speed</h6>
-									<div class="input-append">
-										<input class="span3" id="maxSpeedInput" type="text" placeholder="maximum speed">
-										<button class="btn primary-control" type="button" id="maxSpeedBtn">set</button>
+									<div class="input-append ORS-input-append">
+										<input class="span2" id="maxSpeedInput" type="number" placeholder="maximum speed">
+										<button class="btn primary-control" style=" border:1px solid #F0F0F0;" type="button" id="maxSpeedBtn">set</button>
 									</div>
 								</div>
 								<div id="avoidAreas">
@@ -356,7 +353,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="ORS-panel-sub ORS-padding">
+							<div class="ORS-panel-sub ORS-hr-dark ORS-padding">
 								<div class="guiComponent waypoint unset" draggable="draggable" id="Draft" style="display: none">
 									<span class="clickable waypoint-icon unset" title="Zoom to waypoint"> </span>
 									<span class="clickable removeWaypoint" title="Remove waypoint"> </span>
@@ -410,19 +407,19 @@
 								</div>
 								<div class="clear">
 									<div class="left" id="viaOptimizePanel">
-										<label class="btn primary-control transparent" data-container="body" type="button" id="tt-optimize" data-toggle="tooltip" title="Optimize Waypoints">
+										<label class="btn primary-control transparent" data-container=".ORS-mainPanel" type="button" id="tt-optimize" data-toggle="tooltip" title="Optimize Waypoints">
 										    <i class="fa fa-wrench"></i>
 										    <input type="checkbox" class="hide" id="viaOptimize" data-toggle="button"/>
 										</label>
 									</div>
 									<div class="right">
-										<button id="orderRoute" class="btn primary-control transparent" data-container="body" type="button" id="tt-reorder" data-toggle="tooltip" title="Reorder Waypoints"><i class="fa fa-refresh"></i></button>
+										<button id="orderRoute" class="btn primary-control transparent" data-container=".ORS-mainPanel" type="button" id="tt-reorder" data-toggle="tooltip" title="Reorder Waypoints"><i class="fa fa-refresh"></i></button>
 									</div>
 									<div class="right">
-										<button id="resetRoute" class="btn primary-control transparent" data-container="body" type="button" id="tt-reset" data-toggle="tooltip" title="Reset Route"><i class="fa fa-remove"></i></button>
+										<button id="resetRoute" class="btn primary-control transparent" data-container=".ORS-mainPanel" type="button" id="tt-reset" data-toggle="tooltip" title="Reset Route"><i class="fa fa-remove"></i></button>
 									</div>
 									<div class="right">
-										<button id="zoomToRouteButton" class="btn primary-control transparent" data-container="body" type="button"  id="tt-zoom"data-toggle="tooltip" title="Zoom to Route"><i class="fa fa-arrows-alt"></i></button>
+										<button id="zoomToRouteButton" class="btn primary-control transparent" data-container=".ORS-mainPanel" type="button"  id="tt-zoom"data-toggle="tooltip" title="Zoom to Route"><i class="fa fa-arrows-alt"></i></button>
 									</div>
 								</div>
 								<div id="ORS-routeError" style="display:none" class="ORS-alert alert alert-error"></div>
@@ -478,10 +475,10 @@
 							</form>
 							<div class="clear">
 								<div class="left">
-    								<button class="btn primary-control" data-container="body" id="analyzeAccessibility" type="button" data-toggle="tooltip" title="" data-original-title="Calculate accessibility"><i class="fa fa-fw fa-bullseye"></i><span id="analyzeAccessibilityLabel"></span></button>
+    								<button class="btn primary-control" data-container="ORS-mainPanel" id="analyzeAccessibility" type="button" data-toggle="tooltip" title="" data-original-title="Calculate accessibility"><i class="fa fa-fw fa-bullseye"></i><span id="analyzeAccessibilityLabel"></span></button>
     							</div>
     							<div class="left">
-    								<button class="btn primary-control" data-container="body" id="removeAccessibility" style="display:none" type="button" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-remove"></i></button>
+    								<button class="btn primary-control" data-container="ORS-mainPanel" id="removeAccessibility" style="display:none" type="button" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-remove"></i></button>
     							</div>
     						</div>
 							<div class="ORS-alert alert alert-info" id="accessibilityCalculation" style="display: none;">
@@ -497,10 +494,10 @@
 						<div class="ORS-panel-sub">
 							<div class="clear">
 								<div style="margin-bottom: 10px">
-									<a id="export-gpx" class="btn primary-control" download="map.gpx" title="Download of current route in GPX format" data-container="body" data-toggle="tooltip" data-original-title=""><i class="fa fa-download fa-fw"></i><span>download GPX</span></a>
+									<a id="export-gpx" class="btn primary-control" download="map.gpx" title="Download of current route in GPX format" data-container=".ORS-mainPanel" data-toggle="tooltip" data-original-title=""><i class="fa fa-download fa-fw"></i><span>download GPX</span></a>
 								</div>
 								<div id="GPXcontainer">
-									<span class="btn btn-file primary-control" id="import-gpx" title="Upload multiple tracks from a GPX-files" data-container="body" data-toggle="tooltip" data-original-title=""><i class="fa fa-upload fa-fw"></i><span>upload GPX</span><input type="file" id="files" multiple /></span>
+									<span class="btn btn-file primary-control" id="import-gpx" title="Upload multiple tracks from a GPX-files" data-container=".ORS-mainPanel" data-toggle="tooltip" data-original-title=""><i class="fa fa-upload fa-fw"></i><span>upload GPX</span><input type="file" id="files" multiple /></span>
 										<div id="fileContainerMain" style="display: none;"></div>		
 								</div>
 							</div>
@@ -512,34 +509,7 @@
 							</div>
 						</div>
 					</div>	
-					<div data-id="ORS-feedbackContent" class="feedbackContainer ORS-panel" style="display: none;">
-						<div class="ORS-panel-sub">
-							<div class="feedback">
-								<div class="form">
-								<p id="returnmessage"></p>
-									<label>Name: <span>*</span></label>
-									<input type="text" id="name" placeholder="Name"/>
-									<label>Email: <span>*</span></label>
-									<input type="text" id="email" placeholder="Email"/>
-									<label>Message:</label>
-									<textarea id="message" placeholder="Type your message here"></textarea>
-									<input class="btn primary" type="button" id="submit_feedback" value="Send Message"/>
-								</div>
-							</div>
-	    				</div>
-					</div>
 				</div>
-				<!--<div id="geolocationPanel" style="display: none;">
-					<div id="geoloc" class="panel panelLight">
-						<div class="toolHeading" id="geolocationHead">
-							My current location
-						</div>
-						<div class="guiComponent">
-							<div class="alert alert-error" id="geolocationError" style="display: none;"></div>
-							<div id="geolocationResult"></div>
-						</div>
-					</div>
-				</div>-->
 				<div class="disclaimer">
 					<a id="debug">debug - </a>
 					<a href="contact.html" class="inlineLink">(c) 2008-2016 &nbsp; -</a>
@@ -575,39 +545,32 @@
 			</div>
 		</div>
 		<!-- END OF MAIN SECTION -->
-		<!-- popup for user preferences (language, distance unit,...) -->
+		<!-- modal for user preferences (language, distance unit,...) -->
 		<div id="sitePrefsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sitePrefs">
 			<div class="modal-header">
 				<a href="#" class="close" data-dismiss="modal" aria-hidden="true">×</a><h3 id="sitePrefs">Site Preferences</h3>
 			</div>
 			<div class="modal-body">
-				<h4 id="versionLabel">Version</h4>
-				<p>
-					<label id="versionText">Please choose the number of options:&nbsp;</label>
-					<br class="ORS-mobileBrLine">
-					<select class="ORS-PrefsDropDown" id="extendedVersionPrefs"></select>
-				</p>
-				<br>
-				<h4 id="languageLabel">Languages</h4>
-				<p>
-					<label id="languageText">Please select your language:&nbsp;</label>
-					<br class="ORS-mobileBrLine">
-					<select class="ORS-PrefsDropDown" id="languagePrefs"></select>
-				</p>
-				<br>
-				<h4 id="routingLanguageLabel">Routing Languages</h4>
-				<p>
-					<label id="routingLanguageText">Please select your language:&nbsp;</label>
-					<br class="ORS-mobileBrLine">
-					<select class="ORS-PrefsDropDown" id="routingLanguagePrefs"></select>
-				</p>
-				<br>
-				<h4 id="distanceUnitLabel">Distance Units</h4>
-				<p>
-					<label id="distanceUnitText">Please select your distance unit:&nbsp;</label>
-					<br class="ORS-mobileBrLine">
-					<select class="ORS-PrefsDropDown" id="unitPrefs"></select>
-				</p>
+				<form class="form-horizontal">
+				  <div class="control-group">
+				    <label class="control-label" for="inputEmail" id="languageText" >Please select your language:&nbsp;</label>
+				    <div class="controls">
+				      <select class="span2" id="languagePrefs"></select>
+				    </div>
+				  </div>
+				  <div class="control-group">
+				    <label class="control-label" for="inputPassword" id="routingLanguageText">Please select your language:&nbsp;</label>
+				    <div class="controls">
+				    	<select class="span2" id="routingLanguagePrefs"></select>
+				    </div>
+				  </div>
+				  <div class="control-group">
+				    <label class="control-label" for="inputEmail" id="distanceUnitText">Please select your distance unit:&nbsp;</label>
+				    <div class="controls">
+				    	<select class="span2" id="unitPrefs"></select>
+				    </div>
+				  </div>
+				</form>
 			</div>
 			<div class="modal-footer">
 				<button class="btn" data-dismiss="modal" aria-hidden="true" id="preferencesClose">
@@ -618,7 +581,30 @@
 				</button>
 			</div>
 		</div>
-
+		<!-- modal for feedback -->
+		<div id="feedbackModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="feedback">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal" aria-hidden="true">×</a><h3 id="feedback">Feedback</h3>
+			</div>
+			<div class="modal-body feedback">
+				<form class="form-horizontal">
+				  <p id="returnmessage"></p>
+						<div class="control-group">
+							<label>Name: <span>*</span></label>
+							<input class="span6" type="text" id="name" placeholder="Name"/>
+						</div>
+						<div class="control-group">
+							<label>Email: <span>*</span></label>
+							<input class="span6" type="text" id="email" placeholder="Email"/>
+						</div>
+						<div class="control-group">
+							<label>Message:</label>
+							<textarea rows="5" class="span6" id="message" placeholder="Type your message here"></textarea>
+						</div>
+						<input class="btn primary-control" type="button" id="submit_feedback" value="Send Message"/>
+				</form>
+			</div>
+		</div>
 		<!-- CALL JAVASCRIPT FUNCTIONS -->
 		<!-- 	important: jQuery must be included before properties type	 -->
 		<script type="text/javascript" src="lib/jquery-1.7.2.min.js"></script>
@@ -676,6 +662,7 @@
 		<script type="text/javascript" src="js/lang/lang-ua.js"></script>
 		<script type="text/javascript" src="js/lang/lang-cn.js"></script>
 		<script type="text/javascript" src="js/lang/lang-cnsimple.js"></script>
+		<!-- CALL CUSTOM SCROLLBAR -->
 		<script>
 		    (function($){
 				$(window).on("load",function(){
