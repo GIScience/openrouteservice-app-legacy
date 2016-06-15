@@ -42,8 +42,8 @@
 		<!-- START OF HEADER SECTION -->
 		<header class="ORS-header" id="navbar">
 			<a id="ORS-headIcon" href="http://www.geog.uni-heidelberg.de/giscience.html"></a>
-			<a id="title" href="http://www.openrouteservice.org">OpenRouteService</a>
- 			<ul id="topMenu">
+			<a id="ORS-title" href="http://www.openrouteservice.org">OpenRouteService</a>
+ 			<ul id="ORS-topMenu">
 				<li>
 					<a href="#feedbackModal" data-toggle="modal" id="menuLinkFeedback"><i class="fa fa-comment"></i></a>
 				</li>
@@ -51,7 +51,7 @@
 					<a href="#sitePrefsModal" data-toggle="modal" id="menuLinkSitePrefs"><i class="fa fa-cogs"></i></a>
 				</li>
 				<li>
-					<a href="contact.html#top" target="_blank" id="menuLinkInfo"><i class="fa fa-info"></i></a>
+					<a href="contact.html#top" target="_blank" id="ORS-menuLinkInfo"><i class="fa fa-info"></i></a>
 				</li>
 			</ul>
 		</header>
@@ -551,23 +551,26 @@
 				<a href="#" class="close" data-dismiss="modal" aria-hidden="true">×</a><h3 id="sitePrefs">Site Preferences</h3>
 			</div>
 			<div class="modal-body">
-				<h4 id="versionLabel">Version</h4>
-				<p>
-					<label id="versionText">Please choose the number of options:&nbsp;</label>
-					<select id="extendedVersionPrefs"></select>
-				</p><h4 id="languageLabel">Languages</h4>
-				<p>
-					<label id="languageText">Please select your language:&nbsp;</label>
-					<select id="languagePrefs"></select>
-				</p><h4 id="routingLanguageLabel">Routing Languages</h4>
-				<p>
-					<label id="routingLanguageText">Please select your language:&nbsp;</label>
-					<select id="routingLanguagePrefs"></select>
-				</p><h4 id="distanceUnitLabel">Distance Units</h4>
-				<p>
-					<label id="distanceUnitText">Please select your distance unit:&nbsp;</label>
-					<select id="unitPrefs"></select>
-				</p>
+				<form class="form-horizontal">
+				  <div class="control-group">
+				    <label class="control-label" for="inputEmail" id="languageText" >Please select your language:&nbsp;</label>
+				    <div class="controls">
+				      <select class="span2" id="languagePrefs"></select>
+				    </div>
+				  </div>
+				  <div class="control-group">
+				    <label class="control-label" for="inputPassword" id="routingLanguageText">Please select your language:&nbsp;</label>
+				    <div class="controls">
+				    	<select class="span2" id="routingLanguagePrefs"></select>
+				    </div>
+				  </div>
+				  <div class="control-group">
+				    <label class="control-label" for="inputEmail" id="distanceUnitText">Please select your distance unit:&nbsp;</label>
+				    <div class="controls">
+				    	<select class="span2" id="unitPrefs"></select>
+				    </div>
+				  </div>
+				</form>
 			</div>
 			<div class="modal-footer">
 				<button class="btn" data-dismiss="modal" aria-hidden="true" id="preferencesClose">
@@ -584,22 +587,22 @@
 				<a href="#" class="close" data-dismiss="modal" aria-hidden="true">×</a><h3 id="feedback">Feedback</h3>
 			</div>
 			<div class="modal-body feedback">
-				<div class="form-horizontal">
-					<p id="returnmessage"></p>
-					<div class="control-group">
-						<label>Name: <span>*</span></label>
-						<input class="span6" type="text" id="name" placeholder="Name"/>
-					</div>
-					<div class="control-group">
-						<label>Email: <span>*</span></label>
-						<input class="span6" type="text" id="email" placeholder="Email"/>
-					</div>
-					<div class="control-group">
-						<label>Message:</label>
-						<textarea rows="5" class="span6" id="message" placeholder="Type your message here"></textarea>
-					</div>
-					<input class="btn primary-control" type="button" id="submit_feedback" value="Send Message"/>
-				</div>
+				<form class="form-horizontal">
+				  <p id="returnmessage"></p>
+						<div class="control-group">
+							<label>Name: <span>*</span></label>
+							<input class="span6" type="text" id="name" placeholder="Name"/>
+						</div>
+						<div class="control-group">
+							<label>Email: <span>*</span></label>
+							<input class="span6" type="text" id="email" placeholder="Email"/>
+						</div>
+						<div class="control-group">
+							<label>Message:</label>
+							<textarea rows="5" class="span6" id="message" placeholder="Type your message here"></textarea>
+						</div>
+						<input class="btn primary-control" type="button" id="submit_feedback" value="Send Message"/>
+				</form>
 			</div>
 		</div>
 		<!-- CALL JAVASCRIPT FUNCTIONS -->

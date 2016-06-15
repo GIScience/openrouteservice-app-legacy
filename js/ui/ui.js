@@ -3129,13 +3129,10 @@ var Ui = (function(w) {
      * extracts selected user preferences and forwards them for saving in the preference module
      */
     function handleSaveUserPreferences() {
-        var version = $('#extendedVersionPrefs').find(":selected").text();
         var language = $('#languagePrefs').find(":selected").text();
         var routingLanguage = $('#routingLanguagePrefs').find(":selected").text();
         var distanceUnit = $('#unitPrefs').find(":selected").text();
         //var baseLayer = $('input[name=layerSwitcherPanel_baseLayers]:checked').val();
-        //version: one of list.version
-        version = preferences.reverseTranslate(version);
         //language: one of list.languages
         language = preferences.reverseTranslate(language);
         //routing language: one of list.routingLanguages
@@ -3152,7 +3149,6 @@ var Ui = (function(w) {
             }
         }
         theInterface.emit('ui:saveUserPreferences', {
-            version: version,
             language: language,
             routingLanguage: routingLanguage,
             distanceUnit: distanceUnit
@@ -3162,23 +3158,13 @@ var Ui = (function(w) {
     }
     /**
      * applies the given user preferences
-     * @param version: version of the site: standard, extended,...
      * @param language: language of the site
      * @param routingLanguage: language of the routing instructions
      * @param distanceUnit: unit of distances used on the site
      */
-    function setUserPreferences(version, language, routingLanguage, distanceUnit) {
-        //setting version
-        var container = $('#extendedVersionPrefs').get(0);
-        container = container.options;
-        for (var i = 0; i < list.version.length; i++) {
-            if (list.version[i] === version) {
-                //set selected = true
-                container[i].selected = true;
-            }
-        }
+    function setUserPreferences(language, routingLanguage, distanceUnit) {
         //setting language
-        container = $('#languagePrefs').get(0);
+        var container = $('#languagePrefs').get(0);
         container = container.options;
         for (var i = 0; i < list.languages.length; i++) {
             if (list.languages[i] === language) {

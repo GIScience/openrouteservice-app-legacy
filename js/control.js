@@ -1450,7 +1450,7 @@ var Controller = (function(w) {
         //hide or show Ui elements based on the version
         uiVersions.applyVersion(preferences.version);
         //in the user preferences popup, set appropriate element active
-        ui.setUserPreferences(preferences.version, preferences.language, preferences.routingLanguage, preferences.distanceUnit);
+        ui.setUserPreferences(preferences.language, preferences.routingLanguage, preferences.distanceUnit);
     }
     /**
      * can be called to output debug information
