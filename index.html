@@ -15,6 +15,8 @@
 		<!-- BOOTSTRAP -->
 		<link rel="stylesheet" type="text/css" href="css/bootstrap-ext.min.css">
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+		<!--<link rel="stylesheet" type="text/css" href="lib/bootstrap-3.3.6-dist/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="lib/bootstrap-3.3.6-dist/css/bootstrap.css">-->
 		
 		<!-- LEAFLET -->
 		<link rel="stylesheet" type="text/css" href="css/leaflet.css">
@@ -22,12 +24,10 @@
 		<!-- LEAFLET PLUGINS -->
 		<link rel="stylesheet" type="text/css" href="css/leaflet.elevation-0.0.4.css"> <!-- ELEVATION PLUGIN -->
 		<link rel="stylesheet" type="text/css" href="css/MarkerCluster.css" /> <!-- MARKER CLUSTER PLUGIN -->
+		<link rel="stylesheet" type="text/css" href="css/L.Control.MousePosition.css" /> <!-- MOUSE POSITION PLUGIN -->
 
 		<!-- JQUERY PLUGINS -->
 		<link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.min.css">
-
-		<link rel="stylesheet" type="text/css" href="css/MarkerCluster.Default.css" />
-		<link rel="stylesheet" type="text/css" href="css/L.Control.MousePosition.css" /> <!-- MOUSE POSITION PLUGIN -->
 
 		<!-- FONTS -->
 		<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
@@ -80,24 +80,24 @@
 				</div>
 				<div class="ORS-navigation">
 					<div data-id="ORS-routeContent">
-						<div class="btn-group routePreferenceBtns">
-							<button id="car" class="btn primary routeOptionsButton active">
+						<div class="btn-group ORS-routePreferenceBtns">
+							<button id="car" class="btn primary ORS-routeOptionsButton active">
 								<i class="fa fa-car"></i>
 							</button>
-							<button id="bicycle" class="btn primary routeOptionsButton">
+							<button id="bicycle" class="btn primary ORS-routeOptionsButton">
 								<i class="fa fa-bicycle"></i>
 							</button>
-							<button id="pedestrian" class="btn primary routeOptionsButton">
+							<button id="pedestrian" class="btn primary ORS-routeOptionsButton">
 								<i class="fa fa-male"></i>
 							</button>
-							<button id="wheelchair" class="btn primary routeOptionsButton">
+							<button id="wheelchair" class="btn primary ORS-routeOptionsButton">
 								<i class="fa fa-wheelchair"></i>
 							</button>
-							<button id="heavyvehicle" class="btn primary routeOptionsButton">
+							<button id="heavyvehicle" class="btn primary ORS-routeOptionsButton">
 								<i class="fa fa-truck"></i>
 							</button>
 						</div>
-						<button class="btn primary optionsButton right">
+						<button class="btn primary ORS-optionsButton right">
 							<i class="fa fa-cog"></i>
 						</button>
 					</div>	
@@ -206,31 +206,31 @@
 								    </ul>
 								    <div id="my-tab-content" class="tab-content">
 								        <div class="tab-pane active" id="length">
-											<form class="mySlider">
+											<form class="ORS-Slider">
 												<input type="text" value="15" min="0" max="50" autocomplete="off" id="value_length" oninput="this.form.value_length_slide.value=this.value","m">
 												<input type="range" min="0" max="50" value="15" step="0.5" id="value_length_slide" oninput="this.form.value_length.value=this.value" />
 											</form>
 								        </div>
 								        <div class="tab-pane" id="width">
-								            <form class="mySlider">
+								            <form class="ORS-Slider">
 												<input type="text" value="4" min="0" max="20" autocomplete="off" id="value_width" oninput="this.form.value_width_slide.value=this.value">
 												<input type="range" min="0" max="20" value="4" step="0.5" id="value_width_slide"  oninput="this.form.value_width.value=this.value" />
 											</form>
 								        </div>
 								        <div class="tab-pane" id="height">
-								        	<form class="mySlider">
+								        	<form class="ORS-Slider">
 												<input type="text" value="4" autocomplete="off" id="value_height" oninput="this.form.value_height_slide.value=this.value">
 												<input type="range" min="0" max="15" value="4" step="0.5" id="value_height_slide" oninput="this.form.value_height.value=this.value"  />
 											</form>
 								        </div>
 								        <div class="tab-pane" id="weight">
-								            <form class="mySlider">
+								            <form class="ORS-Slider">
 												<input type="text" value="7" autocomplete="off" id="value_weight" oninput="this.form.value_weight_slide.value=this.value">
 												<input type="range" min="0" max="50" value="4" step="0.5" id="value_weigth_slide"  oninput="this.form.value_weight.value=this.value"  />
 											</form>
 								        </div>
 										<div class="tab-pane" id="axleload">
-								            <form class="mySlider">
+								            <form class="ORS-Slider">
 												<input type="text" value="2" autocomplete="off" id="value_axleload" oninput="this.form.value_axleload_slide.value=this.value">
 												<input type="range" min="0" max="20" value="4" step="0.5" id="value_axleload_slide"  oninput="this.form.value_axleload.value=this.value"  />
 											</form>
@@ -573,9 +573,9 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button class="btn primary-control" data-dismiss="modal" aria-hidden="true" id="preferencesClose">
+				<!--<button class="btn primary-control" data-dismiss="modal" aria-hidden="true" id="preferencesClose">
 					Close
-				</button>
+				</button>-->
 				<button class="btn primary-control" id="savePrefsBtn">
 					Save
 				</button>
@@ -608,9 +608,12 @@
 		<!-- CALL JAVASCRIPT FUNCTIONS -->
 		<!-- 	important: jQuery must be included before properties type	 -->
 		<script type="text/javascript" src="lib/jquery-1.7.2.min.js"></script>
+		<!--<script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>-->
 		<script type="text/javascript" src="lib/bootstrap/bootstrap.js"></script>
-		<script type="text/javascript" src="lib/bootstrap/bootstrap-typeahead.js"></script>
+		<<script type="text/javascript" src="lib/bootstrap/bootstrap-typeahead.js"></script>
 		<script type="text/javascript" src="lib/bootstrap/bootstrap-ext.min.js"></script><!-- for file upload -->
+		<!--<script type="text/javascript" src="lib/bootstrap-3.3.6-dist/js/bootstrap.js"></script>-->
+		<!--<script type="text/javascript" src="lib/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>-->
 		<script type="text/javascript" src="lib/bootstrap/bootstrap-hover-dropdown.js"></script><!-- for hover dropdowns -->
 		<script type="text/javascript" src="lib/prototype.1.7.minified.js"></script>
 		<script type="text/javascript" src="lib/leaflet-1.0.0-beta.2.js"></script>
