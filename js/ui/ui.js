@@ -2115,11 +2115,11 @@ var Ui = (function(w) {
         // toggle options
         if ($('#optionsContainer').is(':hidden')) {
             $('#optionsContainer').show();
-            $('.optionsButton').addClass('active');
+            $('.ORS-optionsButton').addClass('active');
         } else {
             $('#optionsContainer').hide();
-            $('.optionsButton').removeClass('active');
-            $('.optionsButton').blur();
+            $('.ORS-optionsButton').removeClass('active');
+            $('.ORS-optionsButton').blur();
         }
     }
     /**
@@ -2147,7 +2147,7 @@ var Ui = (function(w) {
     function switchRouteOptionsPane(e) {
         // hide options
         $('#optionsContainer').hide();
-        var parent = $('.routePreferenceBtns').get(0);
+        var parent = $('.ORS-routePreferenceBtns').get(0);
         var optionType = e.currentTarget.id;
         //switch the buttons above
         var allBtn = parent.querySelectorAll('button');
@@ -2519,7 +2519,7 @@ var Ui = (function(w) {
      * @param activeRouteOption: the active route option, i.e. one of car,bicycle,pedestrian,wheelchair
      */
     function switchRouteOptionsButton(activeRouteOption) {
-        var parent = $('.routePreferenceBtns').get(0);
+        var parent = $('.ORS-routePreferenceBtns').get(0);
         //switch the buttons above
         var allBtn = parent.querySelectorAll('button');
         for (var i = 0; i < allBtn.length; i++) {
@@ -3242,7 +3242,7 @@ var Ui = (function(w) {
         $('#heavyvehicle').click(switchRouteOptionsPane);
         $('#wheelchair').click(switchRouteOptionsPane);
         $('.routeOptions').change(handleOptionsChanged);
-        $('.optionsButton').click(handleShowOptions);
+        $('.ORS-optionsButton').click(handleShowOptions);
         $('#viaOptimize').click(handleOptionsChanged);
         //permalink
         $('#infoPermalink').click(handleOpenPermaOptions);
