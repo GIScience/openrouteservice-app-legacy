@@ -15,8 +15,8 @@
     /* *******************************************/
     /* START OF BLOCK STYLES (BASE LAYOUT STYLE) */
     /* *******************************************/
-    /* BASE LAYOUT */
     
+    /* BASE LAYOUT */
     .ORS {
         display: flex;
         min-height: 100vh;
@@ -1214,6 +1214,9 @@
         color: rgb(0, 161, 45);
     }
     
+    /************************************************************************/
+    /* Add waypoint button */
+    /************************************************************************/
     .addWaypoint {
         padding-left: 40px;
         padding-top: 5px;
@@ -1224,26 +1227,31 @@
         background-position: 8px 3px;
         font-size: 90%;
     }
-    /* container for "zoom to route" or "calculate route" when appropriate*/
-    
+    /***********************************************************************/
+    /***********************************************************************/
+
+    /***********************************************************************/
+    /* Address search and input containers*/
+    /***********************************************************************/
     .zoomToSearchResults {
         margin-top: 7px;
         margin-bottom: 7px;
     }
-    /*contains the route instructions of a calculated route*/
+    /***********************************************************************/
+    /***********************************************************************/
+
     
-    .routeInstructions {
-        padding-top: 5px;
-        padding-bottom: 5px;
-        font-size: 90%;
-    }
-    /*for displaying route instructions in the panel*/
-    
+    /********************************************************************/
+    /*for displaying route instructions in the panel (title)*/
+    /********************************************************************/ 
     #routeInstructionHead {
         float: left;
         width: 60%;
     }
     
+    /******************************************************************/
+    /* ICON FOR ROUTE INSTRUCTIONS */
+    /******************************************************************/
     .collapsibleHead:before {
         padding: 3px;
         content: "\f0d7";
@@ -1255,35 +1263,54 @@
         content: "\f0da";
         font-family: FontAwesome;
     }
-    
+    /******************************************************************/
+    /******************************************************************/
+
+    /********************************************************************/
+    /*contains the route instructions of a calculated route (lines on route instructions)*/
+    /********************************************************************/
+    .routeInstructions {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        font-size: 90%;
+    }
+
+
     .collapsibleBody {
         padding-left: 2px;
         clear: left;
     }
+
+    /*******************************************************************/
+    /*******************************************************************/
+
     
     .collapsibleBody > table {
         width: 100%;
         font-size: 13px;
+        border: 1px solid green;
     }
     
     .odd {
         background-color: rgb(245, 245, 235);
         /* fallback for unsupported rgba*/
         background-color: rgba(235, 235, 225, 0.65);
+        border: 1px solid red;
     }
+    /****************************************************************/*
     
-    .downloadGpx {
+    /*.downloadGpx {
         width: 60px;
         height: 30px;
         background-size: 60px 30px;
         background: url(../img/routelinkGPX.png) no-repeat 0% 50%;
-    }
+    }*/
     
-    .prompt {}
+    /*.prompt {}
     
     .prompt.selectSearchResult {
         margin-top: 3px;
-    }
+    }*/
     
     #accessibilityCalculation {
         margin-top: 5px;
@@ -1292,8 +1319,11 @@
     #accessibilityError {
         margin-top: 5px;
     }
+
+    /*******************************************/
     /* Leaflet styles */
-    
+    /*******************************************/
+
     .leaflet-bottom .leaflet-control-scale {
         margin-bottom: 23px;
     }
@@ -1310,20 +1340,25 @@
         border-radius: 0px;
         background-color: #FAFAFA;
     }
+    /********************************************/
+    /********************************************/
+
+    /**************************************************************/
     /*preferences popup*/
-    
-    #sitePrefsModal label {
+    /**************************************************************/
+
+    /*#sitePrefsModal label {
         float: left;
-    }
+    }*/
     
-    .logo {
+    /*.logo {
         height: 45px;
         width: 45px;
         margin-top: -5px;
         padding-right: 5px;
-    }
+    }*/
     
-    .links {
+    /*.links {
         height: 40px;
         padding-top: 0px;
         padding-bottom: 2px;
@@ -1331,191 +1366,18 @@
     
     a img {
         border: none;
-    }
-    /*avoid layer names too close to radio button */
-    
-    body {
-        font-size: 90%;
-        -line-height: 1.4;
-        color: rgba(0, 0, 0, 0.8);
-        background-color: #fff;
-        color: #444;
-        margin: 0;
-        padding: 0;
-        font-family: 'Source Sans Pro', sans-serif;
-    }
-    
-    input, .form-inline input, textarea, select, .form-inline select, .guiComponent > input {
-        font-family: 'Source Sans Pro', sans-serif;
-        border-radius: 0;
-        margin-bottom: 0px;
-        border-color: 1px solid #ccc;
-        font-size: 90%;
-        webkit-box-shadow: none;
-        -moz-box-shadow: none;
-        box-shadow: none;
-    }
-    
-    .form-inline select {
-        -webkit-appearance: none;
-    }
-    
-    select:not([multiple]) {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        background-position: right 50%;
-        background-repeat: no-repeat;
-        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAMCAYAAABSgIzaAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NDZFNDEwNjlGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NDZFNDEwNkFGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0NkU0MTA2N0Y3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo0NkU0MTA2OEY3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuGsgwQAAAA5SURBVHjaYvz//z8DOYCJgUxAf42MQIzTk0D/M+KzkRGPoQSdykiKJrBGpOhgJFYTWNEIiEeAAAMAzNENEOH+do8AAAAASUVORK5CYII=);
-        vertical-align: middle;
-    }
-    
-    select, input[type="file"] {
-        line-height: 1;
-    }
-    
-    input[type='checkbox'], input[type='radio'] {
-        vertical-align: baseline;
-    }
-    
-    input[type="text"], input[type="number"] {
-        background-color: #fff;
-        border: 1px solid #ccc;
-        -webkit-box-shadow: none;
-        -moz-box-shadow: none;
-        box-shadow: none;
-        border-color: #F0F0F0;
-        font-size: 90%;
-    }
-    
-    input[class*="span"] {
-        float: left;
-    }
-    
-    h3 {
-        margin: 0 0 0.5em 0;
-    }
-    
-    a:link, a:visited {
-        text-decoration: none;
-    }
-    
-    a:hover, a:active {
-        text-decoration: none;
-    }
-    
-    a:focus {
-        background-color: none;
-        text-decoration: none;
-    }
-    
-    a.options {
-        clear: both;
-        background: url(../img/arrowRight.png) no-repeat 0 50%;
-        padding-left: 12px;
-        font-size: 0.8em;
-        line-height: 1;
-        color: #5f5f5f;
-        text-decoration: none;
-    }
-    
-    a.options.active {
-        background: url(../img/arrowDown.png) no-repeat 0 50%;
-    }
+    }*/
+
+    /**************************************************************/
+    /**************************************************************/
+
     
     .address {
         list-style-type: none;
         font-size: 90%;
     }
     
-    .poi {
-        list-style-type: none;
-    }
-    /* BUTTON GROUPS */
-    
-    button.routeOptionsButton, button.optionsButton {
-        width: 44px;
-        height: 41px;
-    }
-    
-    .clickable {
-        cursor: pointer;
-    }
-    
-    .clickable.active {
-        cursor: pointer;
-        color: rgb(0, 161, 45);
-    }
-    /* container for "zoom to route" or "calculate route" when appropriate*/
-    
-    .zoomToSearchResults {
-        margin-top: 7px;
-        margin-bottom: 7px;
-    }
-    /*contains the route instructions of a calculated route*/
-    
-    .routeInstructions {
-        padding-top: 5px;
-        padding-bottom: 5px;
-        font-size: 90%;
-    }
-    /*for displaying route instructions in the panel*/
-    
-    #routeInstructionHead {
-        float: left;
-        width: 60%;
-    }
-    
-    .collapsibleHead:before {
-        padding: 3px;
-        content: "\f0d7";
-        font-family: FontAwesome;
-    }
-    
-    .collapsibleHead.collapsed:before {
-        padding: 4px;
-        content: "\f0da";
-        font-family: FontAwesome;
-    }
-    
-    .collapsibleBody {
-        padding-left: 2px;
-        clear: left;
-    }
-    
-    .collapsibleBody > table {
-        width: 100%;
-        font-size: 13px;
-    }
-    
-    .odd {
-        background-color: rgb(245, 245, 235);
-        /* fallback for unsupported rgba*/
-        background-color: rgba(235, 235, 225, 0.65);
-    }
-    
-    .prompt {}
-    
-    .prompt.selectSearchResult {
-        margin-top: 3px;
-    }
-    
-    #accessibilityCalculation {
-        margin-top: 5px;
-    }
-    
-    #accessibilityError {
-        margin-top: 5px;
-    }
-    
-    .address {
-        list-style-type: none;
-        font-size: 90%;
-    }
-    
-    .transparent {
-        background-color: transparent !important;
-    }
-    
+   
     .input-append input {
         border-radius: 0;
     }
@@ -1525,16 +1387,16 @@
     }
     /* avoid area controls*/
     
-    #avoidAreas {
+    /*#avoidAreas {
         /*height: 30px;*/
-    }
+    /*}*/
     
-    #avoidAreasTitle {
+    /*#avoidAreasTitle {
         height: 30px;
         float: left;
         padding-top: 5px;
         margin-right: 15px;
-    }
+    }*/
     
     #avoidAreasError {
         margin-top: 10px;
@@ -1542,14 +1404,16 @@
     }
     /*dropdown to define the distance measure for the routing instructions */
     
-    #distMeasureRouteInstructions {
+    /*#distMeasureRouteInstructions {
         width: 85px;
         height: 100%;
         vertical-align: baseline;
         padding: 2px 2px 0px 2px;
-    }
+    }*/
+
+    /******************************************************************/
     /* bootstrap sliders */
-    
+    /******************************************************************/
     .mySlider input[type="text"] {
         width: 45px;
         margin-left: 10px;
@@ -1562,8 +1426,12 @@
         border: 0;
         color: #6392C2;
     }
+    /******************************************************************/
+    /******************************************************************/
+
+    /******************************************************************/
     /* address result list */
-    
+    /******************************************************************/
     .resultList {
         margin-bottom: 1em;
     }
@@ -1576,11 +1444,12 @@
     .resultList li:hover {
         cursor: pointer;
     }
-    /*fixes broken map tiles with OpenLayer 2.12*/
+    /******************************************************************/
+    /******************************************************************/
     
-    img {
+    /*img {
         max-width: none;
-    }
+    }*/
     
     .dl-horizontal dt {
         float: left;
