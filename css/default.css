@@ -164,6 +164,11 @@
         padding-left: 2px;
         clear: left;
     }
+    .clear:after {
+        clear: both;
+        content: "";
+        display: table;
+    }
     /* GENERIC ELEMENTS (CLASSES OR ID'S USED FOR VARIOUS ELEMENTS) */
     .mCS-ors-theme.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar { /* generic scrollbar classes (controllers can be found in jquery.mCustomScrollbar.concat.min.js) */
         background-color: #707070;
@@ -235,54 +240,100 @@
         font-size: 12px;
         color: #707070;
     }
-    .ORS-routeOptionsButton,.ORS-optionsButton { /* Buttons on top menu, to chose transportation type and route options menu */
-        width: 44px;
-        height: 41px;
+    .ORS-Btn { /* General style for ORS buttons */
+      display: inline-block;
+      *display: inline;
+      padding: 4px 12px;
+      margin-bottom: 0;
+      *margin-left: .3em;
+      font-size: 14px;
+      line-height: 20px;
+      color: #333333;
+      text-align: center;
+      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #f5f5f5;
+      *background-color: #e6e6e6;
+      background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+      background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
+      background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+      background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+      background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
+      background-repeat: repeat-x;
+      border: 1px solid #cccccc;
+      *border: 0;
+      border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+      border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+      border-bottom-color: #b3b3b3;
+      -webkit-border-radius: 4px;
+         -moz-border-radius: 4px;
+              border-radius: 4px;
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
+      filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+      *zoom: 1;
+      -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+         -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+              box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
     }
-    .ORS-Slider input[type="text"] { /* All sliders with ORS Style*/
-        width: 45px;
-        margin-left: 10px;
-        font-size: 90%;
+    .ORS-Btn:hover,.ORS-Btn:focus,.ORS-Btn:active,.ORS-Btn.active, .ORS-Btn.disabled, .ORS-Btn[disabled] { /* General style for ORS buttons */
+      color: #333333;
+      background-color: #e6e6e6;
+      *background-color: #d9d9d9;
     }
-    .ORS-Slider input[type="range"] { /* All Sliders with ORS Style*/
-        margin-top: -6px;
-        width: 130px;
-        border: 0;
-        color: #6392C2;
+    .ORS-Btn:active, .ORS-Btn.active { /* General style for ORS buttons */
+      background-color: #cccccc \9;
     }
-    /* Bootstrap buttons (override original styles) */
-    /*******************************************************************/
-    .btn-group+.btn-group {
-        margin-left: 0px;
+    .ORS-Btn:first-child { /* General style for ORS buttons */
+      *margin-left: 0;
     }
-    .btn-group>.btn:first-child {
-        border-radius: 0px;
+    .ORS-Btn:hover, .ORS-Btn:focus { /* General style for ORS buttons */
+      color: #333333;
+      text-decoration: none;
+      background-position: 0 -15px;
+      -webkit-transition: background-position 0.1s linear;
+         -moz-transition: background-position 0.1s linear;
+           -o-transition: background-position 0.1s linear;
+              transition: background-position 0.1s linear;
     }
-    .btn-group>.btn:last-child {
-        border-radius: 0px;
-        -margin-left: 50px;
+    .ORS-Btn:focus { /* General style for ORS buttons */
+      outline: thin dotted #333;
+      outline: 5px auto -webkit-focus-ring-color;
+      outline-offset: -2px;
     }
-    /* BUTTONS */
-    .primary:focus {
-        outline: none;
-        color: #707070;
+    .ORS-Btn.active, .ORS-Btn:active { /* General style for ORS buttons */
+      background-image: none;
+      outline: 0;
+      -webkit-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+         -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+              box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
     }
-    .primary i, .primary-menu i {
+    .ORS-Btn.disabled, .ORS-Btn[disabled] { /* General style for ORS buttons */
+      cursor: default;
+      background-image: none;
+      opacity: 0.65;
+      filter: alpha(opacity=65);
+      -webkit-box-shadow: none;
+         -moz-box-shadow: none;
+              box-shadow: none;
+    }
+    .ORS-BtnPrimary i, .ORS-BtnPrimary-menu i { /* General style for ORS buttons on left menu and top menu (vehicle options on sidebar) */
         font-size: 105%;
     }
-    .primary {
+    .ORS-BtnPrimary { /* General style for ORS buttons on top menu (vehicle options on sidebar)*/
         background: #F0F0F0;
         border-radius: 0px;
         border-left: transparent;
         border-right: transparent;
         border-top: transparent;
-        border-bottom: 1px solid #CCC;
+        border-bottom: transparent;
         color: #707070;
         box-shadow: none;
         text-shadow: none;
         font-family: 'Source Sans Pro', sans-serif;
+
     }
-    .primary-control {
+    .ORS-BtnPrimary-control { /* General style for ORS buttons on top menu (vehicle options on sidebar) */
         background: #F0F0F0;
         border-radius: 0px;
         border: none;
@@ -291,9 +342,9 @@
         text-shadow: none;
         font-family: 'Source Sans Pro', sans-serif;
     }
-    .primary-menu {
+    .ORS-BtnPrimary-menu { /* General style for ORS buttons on left menu */ 
         background: #F0F0F0;
-        border-radius: 0px;
+        border-radius: 0px !important;
         border: none;
         height: 41px;
         color: #808080;
@@ -303,16 +354,69 @@
         box-shadow: none;
         text-shadow: none;
         font-family: 'Source Sans Pro', sans-serif;
+        left:0px;
     }
-    .primary.active, .primary:active {
+    .ORS-BtnPrimary.active, .ORS-BtnPrimary:active, .ORS-BtnPrimary:hover{ /* General style for ORS buttons on top menu (vehicle options on sidebar) */
         box-shadow: none !important;
         -webkit-box-shadow: none !important;
         -moz-box-shadow: none !important;
-        color: #b5152b;
+        color: #b5152b !important;
+        background-color: transparent;
+        border-bottom: 1px solid #b5152b;
+    }
+    .ORS-BtnPrimary-menu.active, .ORS-BtnPrimary-menu:active, .ORS-BtnPrimary-menu:hover { /* General style for ORS buttons on left menu */
+        box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        -moz-box-shadow: none !important;
         background-color: transparent;
         border: none;
+        color: #444 !important;
+        border-bottom: 1px solid transparent; /* prevents icons from changing size */
     }
-    /*******************************************************************/
+    .ORS-BtnPrimary-control:hover { /* General style for ORS control buttons */
+        box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        -moz-box-shadow: none !important;
+        background-color: transparent;
+        border: none;
+        color: #444 !important; 
+    }
+    .ORS-routeOptionsButton,.ORS-optionsButton { /* Buttons on top menu, to chose transportation type and route options menu */
+        width: 44px;
+        height: 40px;
+    }
+    .ORS-BtnFile{ /* For file upload buttons */
+        overflow:hidden;
+        position:relative;
+        vertical-align:middle;
+    }
+    .ORS-BtnFile>input{ /* For file upload buttons */
+        position:absolute;
+        top:0;
+        right:0;
+        margin:0;
+        border:solid transparent;
+        border-width:0 0 100px 200px;
+        opacity:0;filter:alpha(opacity=0);
+        -moz-transform:translate(-300px, 0) scale(4);
+        direction:ltr;
+        cursor:pointer;
+    }
+    .ORS-Slider input[type="text"] { /* All sliders with ORS Style */
+        width: 45px;
+        margin-left: 10px;
+        font-size: 90%;
+    }
+    .ORS-Slider input[type="range"] { /* All Sliders with ORS Style */
+        margin-top: -6px;
+        width: 130px;
+        border: 0;
+        color: #6392C2;
+    }
+
+    .ORS-Span { /* Styles for any input attribute to have a specific width */
+        width: 90%;
+    }
     /* *******************************************/
     /* END OF BLOCK STYLES (BASE LAYOUT STYLE)   */
     /* *******************************************/
@@ -385,24 +489,6 @@
         background-color: #F0F0F0;
         height: 40px;
     }
-    /* buttons on the navigation panel (left menu buttons) */
-    .btn-group>.primary-menu:hover, .primary-control:hover {
-        background: transparent;
-        color: #444;
-    }
-    .btn-group>.primary-menu:active, .primary-control:active {
-        background: transparent;
-        border-color: transparent;
-        color: #444;
-        outline: none;
-    }
-    .btn-group>.primary-menu.active, .btn-group>.primary-menu:focus, .primary-control:active, .primary-control.active {
-        box-shadow: none !important;
-        -webkit-box-shadow: none !important;
-        -moz-box-shadow: none !important;
-        color: #444;
-        background-color: transparent;
-    }
     #ORS-loading, #ORS-error { /* Loading and error messages */
         display: none;
     }
@@ -417,28 +503,18 @@
         border-left: 1px solid #CCC;
         background-color: #FFF;
     }
-    /* buttons on the top menu (top menu buttons choose between vehicle type) */
-    .btn-group>.primary:hover, .btn-group>.primary.active, .btn-group>.primary:active, .optionsButton:hover, .optionsButton.active, .optionsButton:active {
-        background: transparent;
-        border-bottom: 1px solid #b5152b;
-        color: #b5152b
-    }
-    /* ROUTE CONTAINER */
-    /* WEIGHTING OPTIONS */
-    /* ROADS TO AVOID */
-    /* VEHICLE OPTIONS */
-    #TruckTabs>ul {
+    #TruckTabs>ul { /* Styles for tabs on truck options */
         border-bottom: none;
         background: #F0F0F0
     }
-    #TruckTabs>li>a {
+    #TruckTabs>li>a { /* Styles content on each tab on truck options */
         font-size: 80%;
         background-color: #f8f8f8;
         padding-bottom: 4px;
         padding-top: 4px;
         color: #707070;
     }
-    #TruckTabs>li>a:hover {
+    #TruckTabs>li>a:hover { /* Styles for tabs on truck options when mouse is over tab*/
         border-bottom: transparent;
         background: #F0F0F0;
     }
@@ -446,36 +522,30 @@
     /******************************************************************/
     /* address result list */
     /******************************************************************/
-    .resultList {
+    .resultList { /* General styles for address list dropdown (this list will popup when you type something in the "search address" input box) */
         margin-bottom: 1em;
     }
-    
-    .resultList li {
+    .resultList li { /* Styles for each item in the address list dropdown */
         padding: 3px;
         border-bottom: 1px dashed #c8c8c8;
     }
-    
-    .resultList li:hover {
+    .resultList li:hover { /* Styles to what happens when mouse is over the address list dropdown */
         cursor: pointer;
     }
-
     /* avoid area controls*/
     #avoidAreas {
         /*height: 30px;*/
     }
-    
     #avoidAreasTitle {
         height: 30px;
         float: left;
         padding-top: 5px;
         margin-right: 15px;
     }
-    
     #avoidAreasError {
         margin-top: 10px;
         margin-bottom: 0px;
     }
-
     /* WAYPOINT OPTIONS */
     .addWaypoint {
         padding-left: 40px;
@@ -485,7 +555,7 @@
         background-repeat: no-repeat;
         background-size: 16px;
         background-position: 8px 3px;
-        font-size: 90%;
+        font-size: 90% !important;
     }
     .guiComponent > input {
         margin-bottom: 0px;
@@ -574,7 +644,6 @@
         content: "\f041";
         font-family: FontAwesome;
     }
-
     /* ROUTE INSTRUCTIONS */
     .zoomToSearchResults { /* Address search and input containers*/
         margin-top: 7px;
@@ -599,9 +668,6 @@
         padding-bottom: 5px;
         font-size: 90%;
     }
-    /*******************************************************************/
-    /*******************************************************************/
-    
     .directions-main {
         margin-top: 5px;
     }
@@ -642,7 +708,6 @@
         table-layout: fixed;
         width: 330px;
     }
-    
     .directions-summary-container .info {
         text-align: center;
         display: table-cell;
@@ -652,7 +717,6 @@
     .directions-summary-container .info:nth-child(1) {
         border-left: transparent;
     }
-    
     .directions-summary-container .info .icon {
         font-size: 14px;
         color: #b5152b;
@@ -721,7 +785,6 @@
         transform: rotate(315deg);
     }
     /* SURFACE INFORMATION */
-    
     #routeTypesHead {
         float: left;
     }
@@ -824,8 +887,7 @@
         padding-left: 13px;
         pointer-events: none;
     }
-    /* popup with information about a service timeout */
-    #exportGpxError {
+    #exportGpxError { /* popup with information about a service timeout */
         margin-top: 5px;
     }
     /* DISCLAIMER */
@@ -843,21 +905,20 @@
         color: #707070;
     }
     /* STYLE FOR ELEMENTS ON NAV SECTION (MAP SECTION) */
-    .leaflet-pane {
+    .leaflet-pane { /* For map pane */
         font-family: 'Source Sans Pro', sans-serif;
     }
-    .leaflet-control-container {
+    .leaflet-control-container { /* For general control containers */
         font-family: 'Source Sans Pro', sans-serif;
     }
-    .leaflet-bar, .leaflet-bar a:last-child, .leaflet-bar a:first-child, .leaflet-control-layers {
+    .leaflet-bar, .leaflet-bar a:last-child, .leaflet-bar a:first-child, .leaflet-control-layers { /* For general elements on map */
         border-radius: 0px;
         background-color: #FAFAFA;
     }
-    /* MAP CONTROLLERS */
-    .leaflet-bottom .leaflet-control-scale {
+    .leaflet-bottom .leaflet-control-scale { /* for scale controller */
         margin-bottom: 23px;
     }
-    .leaflet-control-customNavMenuToggle, .leaflet-control-customLocate {
+    .leaflet-control-customNavMenuToggle, .leaflet-control-customLocate { /* for locate controller */
         width: 26px;
         height: 26px;
         position: relative;
@@ -866,10 +927,10 @@
         color: #70707D;
         cursor: pointer;
     }
-    .leaflet-retina .leaflet-control-layers-toggle, .leaflet-control-layers-toggle {
+    .leaflet-retina .leaflet-control-layers-toggle, .leaflet-control-layers-toggle { /* for layers controller */
         background-image: none;
     }
-    .leaflet-control-layers a.leaflet-control-layers-toggle {
+    .leaflet-control-layers a.leaflet-control-layers-toggle { /* for layers controller */
         width: 26px;
         height: 26px;
         position: relative;
@@ -877,22 +938,19 @@
         line-height: 26px;
         color: #70707D;
     }
-    .leaflet-control-layers a.leaflet-control-layers-toggle:before {
+    .leaflet-control-layers a.leaflet-control-layers-toggle:before { /* for layers controller */
         content: "\e804";
         font-family: ruifont;
     }
-    /* for toggle menu controller */
-    .leaflet-control-customNavMenuToggle:before {
+    .leaflet-control-customNavMenuToggle:before { /* for toggle menu controller */
         content: "\f07e";
         font-family: FontAwesome;
     }
-    /* for locate controller */
-    .leaflet-control-customLocate:before {
+    .leaflet-control-customLocate:before { /* for locate controller */
         content: "\f05b";
         font-family: FontAwesome;
     }
-    /* for all controllers */
-    .leaflet-control a:link, .leaflet-control a:visited, .leaflet-control a:hover {
+    .leaflet-control a:link, .leaflet-control a:visited, .leaflet-control a:hover { /* for all controllers */
         text-decoration: none;
         color: #707070;
     }
@@ -909,8 +967,8 @@
     .steelblue-theme.leaflet-control.elevation .elevation-toggle-icon {
         background-size: 16px 11px;
     }
-    /* CONTEXT MENU STYLES (WHEN CLICKING WITH THE RIGHT MOUSE BUTTON ON THE MAP AREA) */
-    .mapContextMenu .contextWaypoint {
+    
+    .ORS-mapContextMenu .ORS-contextWaypoint { /* Context menu styles (when clicking with the right mouse button on the map area */
         padding: 3px 10px 3px 10px;
         white-space: nowrap;
         cursor: pointer;
@@ -925,29 +983,27 @@
         -webkit-transition: .2s;
         transition: .2s;
     }
-    /* mapContextMenu class created in map.js*/
-    /*****************************************/
-    .mapContextMenu .contextWaypoint:hover {
+    .ORS-mapContextMenu .ORS-contextWaypoint:hover { /* Context menu styles (when clicking with the right mouse button on the map area) Class created on map.js */
         background-color: #b5152b;
         border-left: 2px solid #444;
     }
-    .mapContextMenu .leaflet-popup-content {
+    .ORS-mapContextMenu .leaflet-popup-content { /* Context menu styles (when clicking with the right mouse button on the map area) Class created on map.js */
         -position: absolute;
         left: 2.5em;
         bottom: 0.7em;
     }
-    .mapContextMenu .leaflet-popup-content-wrapper {
+    .ORS-mapContextMenu .leaflet-popup-content-wrapper { /* Context menu styles (when clicking with the right mouse button on the map area) Class created on map.js */
         background: transparent;
         box-shadow: none;
     }
-    .mapContextMenu .leaflet-popup-tip-container {
+    .ORS-mapContextMenu .leaflet-popup-tip-container { /* Context menu styles (when clicking with the right mouse button on the map area) Class created on map.js */
         margin: 0 auto;
         position: relative;
         overflow: visible;
         width: 100px;
         height: 20px;
     }
-    .mapContextMenu .leaflet-popup-tip {
+    .ORS-mapContextMenu .leaflet-popup-tip { /* Context menu styles (when clicking with the right mouse button on the map area */
         border: 2px solid #b5152b;
         box-shadow: none;
         background-color: transparent;
@@ -955,10 +1011,7 @@
         width: 10px;
         height: 10px;
     }
-    /**********************************************/
-
-    /* PERMALINK */
-    #infoPermalink {
+    #infoPermalink { /* for elements on permalink */
         position: absolute;
         bottom: 2px;
         cursor: pointer;
@@ -970,7 +1023,7 @@
         margin-left: 5px;
         font-family: 'Source Sans Pro', sans-serif;
     }
-    #bubble {
+    #bubble { /* for elements on permalink */
         display: none;
         position: fixed;
         width: 70px;
@@ -985,20 +1038,19 @@
         border-radius: 5px;
         font-family: 'Source Sans Pro', sans-serif;
     }
-    #bubble #permaText {
+    #bubble #permaText { /* for elements on permalink */
         position: absolute;
         padding: 5px 2px 2px 20px;
     }
     
-    #bubble #permaText #copy {
+    #bubble #permaText #copy { /* for elements on permalink */
         cursor: pointer;
     }
-    #bubble #permaText #open {
+    #bubble #permaText #open { /* for elements on permalink */
         margin-top: 5px;
         cursor: pointer;
     }
-    /* for elements on permalink */
-    #bubble:after {
+    #bubble:after { /* for elements on permalink */
         content: '';
         position: relative;
         border-style: solid;
@@ -1010,13 +1062,7 @@
         left: -7px;
         top: 27px;
     }
-    .clear:after {
-        clear: both;
-        content: "";
-        display: table;
-    }
-    /* AVOIDABLES INFO */
-    #avoidables_info {
+    #avoidables_info { /* avoidables info */
         position: absolute;
         margin-left: 43px;
         top: 72px;
@@ -1024,20 +1070,18 @@
         display: none;
         width: 200px;
     }
-    /* SERVICE TIMEOUT */
-    #serviceTimeout {
+    #serviceTimeout { /* service timeout message */
         display: none;
         position: absolute;
         margin-left: 40px;
         top: 5px;
         z-index: 999;
     }
-    #serviceTimeout > label {
+    #serviceTimeout > label { /* service timeout message */
         width: 220px;
         line-height: 1.1;
     }
-    /* NEW TO ORS */
-    #newToOrs {
+    #newToOrs { /* new to ORS message */
         display: none;
         width: 220px;
         line-height: 1.1;
@@ -1046,8 +1090,7 @@
         right: 100px;
         top: 10px;
     }
-    /* GISCIENCE LOGO */
-    .ORS-logo {
+    .ORS-logo { /* GIScience Logo */
         background-image: url('../img/logo_giscience.png');
         background-repeat: no-repeat;
         background-position: center center;
@@ -1064,7 +1107,6 @@
     /* ******************************************/
     /* END OF ELEMENT STYLES (CLASSES AND ID's) */
     /* ******************************************/
-
     /* ******************************************************************/
     /* START OF MOBILE STYLES (MEDIA QUERIES FOR MOBILE VISUALIZATION)  */
     /* ******************************************************************/
@@ -1113,6 +1155,19 @@
             margin: 0 auto;
             left: 5vw;
         }
+
+        #sitePrefsModal > label , #feedbackModal > label{
+            margin-left: 200px;
+        }
+        .ORS-logo { /* GIScience Logo */
+            bottom:25px;
+        }
+        .leaflet-bottom .leaflet-control-scale { /* for scale controller */
+            margin-bottom: 50px;
+        }
+        #infoPermalink{
+            margin-bottom:30px;
+        }
     }
     /* ****************************************************************/
     /* END OF MOBILE STYLES (MEDIA QUERIES FOR MOBILE VISUALIZATION)  */
@@ -1153,7 +1208,3 @@
     /* ***************************************************************/
     /* END OF PRINTING STYLES (MEDIA QUERIES FOR PRINTING THE PAGE)  */
     /* ***************************************************************/
-
-    
-
-    

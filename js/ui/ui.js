@@ -3277,7 +3277,7 @@ var Ui = (function(w) {
         // tooltips
         $('[data-toggle="tooltip"]').tooltip();
         // menuButtons
-        $('.menuButton').click(handleSwitchMenu)
+        $('.ORS-menuButton').click(handleSwitchMenu)
     }
     Ui.prototype = new EventEmitter();
     Ui.prototype.constructor = Ui;

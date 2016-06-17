@@ -100,7 +100,7 @@ var Map = (function() {
                 closeButton: false,
                 maxHeight: '112px',
                 maxWidth: '120px',
-                className: 'mapContextMenu'
+                className: 'ORS-mapContextMenu'
             }).setContent(menuObject.innerHTML).setLatLng(e.latlng);
             self.theMap.openPopup(popup);
             contextMenuListeners(e.latlng, popup);
@@ -281,7 +281,7 @@ var Map = (function() {
                 closeButton: false,
                 maxHeight: '112px',
                 maxWidth: '120px',
-                className: 'mapContextMenu'
+                className: 'ORS-mapContextMenu'
             }).setContent(menuObject.innerHTML).setLatLng(e.latlng);
             self.theMap.openPopup(popup);
             contextMenuListeners(displayPos, popup);
@@ -289,25 +289,25 @@ var Map = (function() {
         // create a new contextMenu
         function createMapContextMenu() {
             var mapContextMenuContainer = new Element('div', {
-                'id': 'mapContextMenu',
+                'id': 'ORS-mapContextMenu',
                 'style': 'display:none',
             });
             var useAsStartPointContainer = new Element('div', {
-                'class': 'contextWaypoint'
+                'class': 'ORS-contextWaypoint'
             });
             var startSpan = new Element('span', {
                 'id': 'contextStart',
             }).update('Set as starting point');
             useAsStartPointContainer.appendChild(startSpan);
             var useAsViaPointContainer = new Element('div', {
-                'class': 'contextWaypoint'
+                'class': 'ORS-contextWaypoint'
             });
             var viaSpan = new Element('span', {
                 'id': 'contextVia',
             }).update('Add a waypoint');
             useAsViaPointContainer.appendChild(viaSpan);
             var useAsEndPointContainer = new Element('div', {
-                'class': 'contextWaypoint'
+                'class': 'ORS-contextWaypoint'
             });
             var endSpan = new Element('span', {
                 'id': 'contextEnd',
@@ -455,7 +455,7 @@ var Map = (function() {
             closeButton: true,
             //maxHeight: '112px',
             //maxWidth: '200px',
-            //className: 'mapContextMenu'
+            //className: 'ORS-mapContextMenu'
         }).setContent(e.target.feature.properties.message).setLatLng(e.latlng);
         self.theMap.openPopup(popup);
     }
