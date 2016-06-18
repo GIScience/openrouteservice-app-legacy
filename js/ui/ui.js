@@ -2145,8 +2145,6 @@ var Ui = (function(w) {
      * @param e: the event
      */
     function switchRouteOptionsPane(e) {
-        // hide options
-        $('#optionsContainer').hide();
         var parent = $('.routePreferenceBtns').get(0);
         var optionType = e.currentTarget.id;
         //switch the buttons above
@@ -2165,16 +2163,16 @@ var Ui = (function(w) {
             }
         }
         // update options 
-        updateProfileOptions();
+        updateProfileOptions(e.currentTarget.id);
     }
     /**
      * updates options for specific profiles
      */
-    function updateProfileOptions() {
+    function updateProfileOptions(currentProfile) {
         // show profile specific route options
-        var i, el, optionType = permaInfo[preferences.routeOptionsIdx];
+        var i, el;
         for (var profile in list.showElements) {
-            if (optionType == profile || profile == 'All') {
+            if (currentProfile == profile || profile == 'All') {
                 for (i = 0; i < list.showElements[profile].length; i++) {
                     el = $(list.showElements[profile][i]);
                     el.show();
@@ -3277,7 +3275,7 @@ var Ui = (function(w) {
         // tooltips
         $('[data-toggle="tooltip"]').tooltip();
         // menuButtons
-        $('.menuButton').click(handleSwitchMenu)
+        $('.menuButton').click(handleSwitchMenu);
     }
     Ui.prototype = new EventEmitter();
     Ui.prototype.constructor = Ui;

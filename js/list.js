@@ -56,11 +56,11 @@ list = {
     // divs to show or hide for specific profiles
     showElements: {
         All: ['.ORS-all'],
-        Car: ['.ORS-car'],
-        Wheelchair: ['.ORS-wc'],
-        Pedestrian: ['.ORS-ped'],
-        Bicycle: ['.ORS-bike'],
-        HeavyVehicle: ['.ORS-hgv']
+        car: ['.ORS-car'],
+        wheelchair: ['.ORS-wc'],
+        pedestrian: ['.ORS-ped'],
+        bicycle: ['.ORS-bike'],
+        heavyvehicle: ['.ORS-hgv']
     },
     menuElements: ['ORS-routeContent', 'ORS-aaContent', 'ORS-cloudContent'],
     // waytype and surface type information
