@@ -13,8 +13,8 @@
 		<!-- NECESSARY STYLESHEETS FOR THE WEBSITE -->
 
 		<!-- BOOTSTRAP -->
-		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-		<!--<link rel="stylesheet" type="text/css" href="lib/bootstrap3/css/bootstrap.min.css">-->
+		<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+		<link rel="stylesheet" type="text/css" href="lib/bootstrap3/css/bootstrap.css">
 		
 		<!-- LEAFLET -->
 		<link rel="stylesheet" type="text/css" href="css/leaflet.css">
@@ -113,84 +113,107 @@
 						    <div id="optionsContainer" class="routeOptions ORS-panel-sub ORS-light" style="display: none;">
 						        <div class="ORS-panel-sub ORS-all ORS-hr-dark" id="weightingOptions" style="display: none;">
 									<h6>Route weight</h6>
-									<label class="radio">
-										<input type="radio" id="Fastest" name="weighting" checked="checked">
-										<span class="ORS-label label" id="fastestLabel">fastest</span>
-									</label>	
+
+									<div class="radio">
+									  <label>
+									    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+									    Option one is this and that&mdash;be sure to include why it's great
+									  </label>
+									</div>
+									<div class="radio">
+									  <label>
+									    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+									    Option two can be something else and selecting it will deselect option one
+									  </label>
+									</div>
+									<div class="radio disabled">
+									  <label>
+									    <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" disabled>
+									    Option three is disabled
+									  </label>
+									</div>
+
+									<div class="radio">
+										<label class="radio-inline">
+											<input type="radio" id="Fastest" name="weighting" checked="checked">
+											<span id="fastestLabel">fastest</span>
+										</label>
+									</div>
+	
 									<label class="radio">
 										<input type="radio" id="Shortest" name="weighting">
-										<span class="ORS-label label" id="shortestLabel">shortest</span>
+										<span class="ORS-label label label-default " id="shortestLabel">shortest</span>
 									</label>
 									<label class="radio">
 										<input type="radio" id="Recommended" name="weighting">
-										<span class="ORS-label label" id="recommendedLabel">recommended</span>
+										<span class="ORS-label" id="recommendedLabel">recommended</span>
 									</label>	
 								</div>
 								<div class="ORS-panel-sub ORS-car-HIDE" id="carOptions" style="display: none;">
 									<label class="radio">
 										<input type="radio" id="Car" name="car"  value="car" checked="checked">
-										<span class="ORS-label label" id="carLabel">car</span>
+										<span class="ORS-label" id="carLabel">car</span>
 									</label>
 								</div>
 								<div class="ORS-panel-sub ORS-bike ORS-hr-dark" id="bicycleOptions" style="display: none;">
 									<h6>Route preference</h6>
 									<label class="radio">
 										<input type="radio" id="Bicycle" name="bicycle"  value="shortest" checked="checked">
-										<span class="ORS-label label" id="BicycleLabel">normal</span>
+										<span class="ORS-label" id="BicycleLabel">normal</span>
 									</label>
 									<label class="radio">
 										<input type="radio" id="BicycleSafety" name="bicycle"  value="safest">
-										<span class="ORS-label label" id="BicycleSafetyLabel">safest route</span>
+										<span class="ORS-label" id="BicycleSafetyLabel">safest route</span>
 									</label>
 									<label class="radio">
 										<input type="radio" id="BicycleTour" name="bicycle"  value="tour">
-										<span class="ORS-label label" id="BicycleTourLabel">cycle tour</span>
+										<span class="ORS-label" id="BicycleTourLabel">cycle tour</span>
 									</label>
 									<label class="radio">
 										<input type="radio" id="BicycleMTB" name="bicycle" value="mountain">
-										<span class="ORS-label label" id="BicycleMtbLabel">mountain bike</span>
+										<span class="ORS-label" id="BicycleMtbLabel">mountain bike</span>
 									</label>
 									<label class="radio">
 										<input type="radio" id="BicycleRacer" name="bicycle" value="racing">
-										<span class="ORS-label label" id="BicycleRacerLabel">racing bike</span>
+										<span class="ORS-label" id="BicycleRacerLabel">racing bike</span>
 									</label>	
 								</div>
 								<div class="ORS-panel-sub ORS-ped-HIDE ORS-hr-dark" id="pedestrianOptions" style="display: none;">
 									<label class="radio">
 										<input type="radio" id="Pedestrian" name="pedestrian" value="pedestrian" checked="checked">
-										<span class="ORS-label label" id="PedestrianLabel">pedestrian</span>
+										<span class="ORS-label" id="PedestrianLabel">pedestrian</span>
 									</label>
 								</div>
 								<div class="ORS-panel-sub ORS-hgv ORS-hr-dark" id="heavyvehicleOptions" style="display: none;">
 									<h6>Route preference</h6>
 									<label class="radio">
 										<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="goods" checked="checked">
-										<span class="ORS-label label" id="goodsHeavyTruckLabel">goods</span>
+										<span class="ORS-label" id="goodsHeavyTruckLabel">goods</span>
 									</label>
 									<label class="radio">
 										<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="hgv">
-										<span class="ORS-label label" id="hgvHeavyTruckLabel">HGV</span>
+										<span class="ORS-label" id="hgvHeavyTruckLabel">HGV</span>
 									</label>
 									<label class="radio">
 										<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="bus">
-										<span class="ORS-label label" id="busHeavyTruckLabel">Bus</span>
+										<span class="ORS-label" id="busHeavyTruckLabel">Bus</span>
 									</label>
 									<label class="radio">
 										<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="agricultural">
-										<span class="ORS-label label" id="agriculturalHeavyTruckLabel">Agricultural Vehicle</span>
+										<span class="ORS-label" id="agriculturalHeavyTruckLabel">Agricultural Vehicle</span>
 									</label>
 									<label class="radio">
 										<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="forestry">
-										<span class="ORS-label label" id="forestryHeavyTruckLabel">Forestry</span>
+										<span class="ORS-label" id="forestryHeavyTruckLabel">Forestry</span>
 									</label>
 									<label class="radio">
 										<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="delivery">
-										<span class="ORS-label label" id="deliveryHeavyTruckLabel">Delivery</span>
+										<span class="ORS-label" id="deliveryHeavyTruckLabel">Delivery</span>
 									</label>
 									<div id="hazardOptions">
 										<label class="checkbox">
 											<input type="checkbox" id="Hazardous" value="hazmat">
-											<span id="hazardous" class="label ORS-label"><i class="icon-tint"></i>&nbsp;Hazardous Materials</span>
+											<span id="hazardous" class=" ORS-label"><i class="icon-tint"></i>&nbsp;Hazardous Materials</span>
 										</label>
 									</div>
 								</div>
@@ -240,7 +263,7 @@
 									<h6>Route preference</h6>
 									<label class="radio">
 											<input type="radio" id="Wheelchair" name="wheelchair" checked="checked">
-											<span class="ORS-label label" id="WheelchairLabel">wheelchair</span>
+											<span class="ORS-label" id="WheelchairLabel">wheelchair</span>
 									</label>		
 								</div>
 								<div class="ORS-panel-sub ORS-wc ORS-hr" id="wheelchairParameters" style="display: none;">
@@ -252,7 +275,7 @@
 											<option id="compactedOption">Compacted</option>
 											<option id="allSurfacesOption">All Surfaces</option>
 										</select>
-										<span id="surfaceLabel" class="label ORS-label">Surface</span>	
+										<span id="surfaceLabel" class="ORS-label">Surface</span>	
 									</form>
 									<form class="form-inline ORS-form">		
 										<select id="Incline" class="wheelchairSelect">
@@ -262,7 +285,7 @@
 											<option id="fifteenPercentOption">Up to 15%</option>
 											<option id="allInclinesOption">All Inclines</option>
 										</select>
-										<span id="inclineLabel" class="label ORS-label">Maximum Incline</span>	
+										<span id="inclineLabel" class="ORS-label">Maximum Incline</span>	
 									</form>
 									<form class="form-inline ORS-form">		
 										<select id="SlopedCurb" class="wheelchairSelect">
@@ -271,78 +294,78 @@
 											<option id="tenCmOption">Up to 10cm</option>
 											<option id="allSlopedCurbesOption">All Sloped Curbs</option>
 										</select>
-										<span id="slopedCurbLabel" class="label ORS-label">Maximum Sloped Curb</span>
+										<span id="slopedCurbLabel" class="ORS-label">Maximum Sloped Curb</span>
 									</form>
 								</div>
 								<div class="ORS-car ORS-panel-sub ORS-hr-dark" id="avoidables" style="display: none;">
 						        	<h6>Avoid road types</h6>
 				                  	<label class="checkbox">
 										<input type="checkbox" id="Highway">
-										<span class="ORS-label label" id="avoidMotorLabel">highways</span>
+										<span class="ORS-label " id="avoidMotorLabel">highways</span>
 									</label>										
 									<label class="checkbox">
 										<input type="checkbox" id="Tollway">
-										<span class="ORS-label label" id="avoidTollLabel">toll roads</span>
+										<span class="ORS-label" id="avoidTollLabel">toll roads</span>
 									</label>
 									<label class="checkbox">
 										<input type="checkbox" id="Tunnel">
-										<span class="ORS-label label" id="avoidTunnelLabel">tunnels</span>
+										<span class="ORS-label" id="avoidTunnelLabel">tunnels</span>
 									</label>
 									<label class="checkbox">
 										<input type="checkbox" id="Unpavedroads">
-										<span class="ORS-label label" id="avoidunpavedRoadsLabel">unpaved roads</span>
+										<span class="ORS-label"avoidunpavedRoadsLabel">unpaved roads</span>
 									</label>
 									<label class="checkbox">
 										<input type="checkbox" id="Ferry">
-										<span class="ORS-label label" id="avoidFerryLabel">ferrys</span>
+										<span class="ORS-label" id="avoidFerryLabel">ferrys</span>
 									</label>
 									<label class="checkbox">
 										<input type="checkbox" id="Fords">
-										<span class="ORS-label label" id="avoidFordsLabel">fords</span>
+										<span class="ORS-label" id="avoidFordsLabel">fords</span>
 									</label>
 						    	</div>
 						    	<div class="ORS-ped ORS-panel-sub ORS-hr-dark" id="avoidablesPedestrian" style="display: none;">
 						        	<h6 id="avoidPedesBtn">Avoid ways</h6>
 				                  	<label class="checkbox">
 										<input type="checkbox" id="Ferry">
-										<span class="ORS-label label" id="avoidFerryLabelPedestrian">ferries</span>
+										<span class="ORS-label" id="avoidFerryLabelPedestrian">ferries</span>
 									</label>
 									<label class="checkbox">
 										<input type="checkbox" id="Steps">
-										<span class="ORS-label label" id="avoidStepsLabelPedestrian">steps</span>
+										<span class="ORS-label" id="avoidStepsLabelPedestrian">steps</span>
 									</label>	
 									<label class="checkbox">
 										<input type="checkbox" id="Fords">
-										<span class="ORS-label label" id="avoidFordsLabelPedestrian">fords</span>
+										<span class="ORS-label" id="avoidFordsLabelPedestrian">fords</span>
 									</label>									
 						    	</div>
 						    	<div class="ORS-bike ORS-panel-sub ORS-hr-dark" id="avoidablesBike" style="display: none;">
 						        	<h6>Avoid road types</h6>
 				                  	<label class="checkbox">
 										<input type="checkbox" id="Ferry">
-										<span class="ORS-label label" id="avoidFerryLabelBike">ferries</span>
+										<span class="ORS-label" id="avoidFerryLabelBike">ferries</span>
 									</label>										
 									<label class="checkbox">
 										<input type="checkbox" id="Unpavedroads">
-										<span class="ORS-label label" id="avoidunpavedRoadsLabelBike">unpaved roads</span>
+										<span class="ORS-label" id="avoidunpavedRoadsLabelBike">unpaved roads</span>
 									</label>
 									<label class="checkbox">
 										<input type="checkbox" id="Pavedroads">
-										<span class="ORS-label label" id="avoidpavedRoadsLabelBike">paved roads</span>
+										<span class="ORS-label" id="avoidpavedRoadsLabelBike">paved roads</span>
 									</label>	
 									<label class="checkbox">
 										<input type="checkbox" id="Steps">
-										<span class="ORS-label label" id="avoidStepsLabelBike">steps</span>
+										<span class="ORS-label" id="avoidStepsLabelBike">steps</span>
 									</label>
 									<label class="checkbox">
 										<input type="checkbox" id="Fords">
-										<span class="ORS-label label" id="avoidFordsLabelBike">fords</span>
+										<span class="ORS-label" id="avoidFordsLabelBike">fords</span>
 									</label>
 						    	</div>
 						    	<div id="maxSpeed" style="display: none;" class="ORS-all ORS-panel-sub">
 									<h6>Maximum speed</h6>
 									<div class="input-append ORS-input-append">
-										<input class="input" id="maxSpeedInput" type="number" placeholder="maximum speed">
+										<input class="span2" id="maxSpeedInput" type="number" placeholder="maximum speed">
 										<button class="ORS-Btn ORS-BtnPrimary-control" style=" border:1px solid #F0F0F0;" type="button" id="maxSpeedBtn">set</button>
 									</div>
 								</div>
@@ -462,15 +485,15 @@
 									<option id="Default" value="RecursiveGrid">Recursive Grid</option>
 									<option id="Default2" value="TIN">TIN</option>
 								</select>
-								<span id ="accessibilityAnalysisMethod" class="label ORS-label">Select Isochrone method</span>
+								<span id ="accessibilityAnalysisMethod" class="ORS-label">Select Isochrone method</span>
 							</form>
 							<form class="form-inline ORS-form">						
 								<input type="text" id="accessibilityDistance" class="textfield" value="15">
-								<span id ="accessibilityAnalysisMinutes" class="label ORS-label">Select Minutes</span>
+								<span id ="accessibilityAnalysisMinutes" class="ORS-label">Select Minutes</span>
 							</form>
 							<form class="form-inline ORS-form">						
 								<input type="text" id="accessibilityAnalysisIsochronesIntervall" class="textfield" value="3">
-								<span id ="accessibilityAnalysisIsochrones" class="label ORS-label">Select Isochrone Interval</span>
+								<span id ="accessibilityAnalysisIsochrones" class="ORS-label">Select Isochrone Interval</span>
 							</form>
 							<div class="clear">
 								<div class="left">
@@ -545,7 +568,7 @@
 		</div>
 		<!-- END OF MAIN SECTION -->
 		<!-- modal for user preferences (language, distance unit,...) -->
-		<div id="sitePrefsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sitePrefs">
+		<!--<div id="sitePrefsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sitePrefs">
 			<div class="modal-header">
 				<a href="#" class="close" data-dismiss="modal" aria-hidden="true">×</a><h3 id="sitePrefs">Site Preferences</h3>
 			</div>
@@ -581,7 +604,7 @@
 			</div>
 		</div>
 		<!-- modal for feedback -->
-		<div id="feedbackModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="feedback">
+		<!--<div id="feedbackModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="feedback">
 			<div class="modal-header">
 				<a href="#" class="close" data-dismiss="modal" aria-hidden="true">×</a><h3 id="feedback">Feedback</h3>
 			</div>
@@ -605,11 +628,11 @@
 			<div class="modal-footer">
 				<button class="ORS-Btn ORS-BtnPrimary-control" id="submit_feedback">Send Message</button>
 			</div>
-		</div>
+		</div>-->
 
 		<!-- FOR WHEN BOOTSTRAP 3 IS READY -->
-
-		<!--<div class="modal hide fade" id="sitePrefsModal" tabindex="-1" role="dialog" aria-labelledby="sitePrefs">
+		<!-- modal for user preferences (language, distance unit,...) -->
+		<div class="modal fade" id="sitePrefsModal" tabindex="-1" role="dialog" aria-labelledby="sitePrefs">
 		  <div class="modal-dialog" role="document">
 		    <div class="modal-content">
 		      <div class="modal-header">
@@ -621,21 +644,21 @@
 				  	<h4> Language </h4>
 				    <label id="languageText" ></label>
 				    <div class="controls">
-				      <select id="languagePrefs"></select>
+				      <select class="ORS-Span" id="languagePrefs"></select>
 				    </div>
 				  </div>
 				  <div class="form-group row">
 				  	<h4> Language for routing instructions </h4>
 				    <label id="routingLanguageText"></label>
 				    <div class="controls">
-				    	<select id="routingLanguagePrefs"></select>
+				    	<select class="ORS-Span" id="routingLanguagePrefs"></select>
 				    </div>
 				  </div>
 				  <div class="form-group row">
 				  	<h4> Distance Units </h4>
 				    <label id="distanceUnitText"></label>
 				    <div class="controls">
-				    	<select id="unitPrefs"></select>
+				    	<select class="ORS-Span" id="unitPrefs"></select>
 				    </div>
 				  </div>
 				</form>
@@ -645,9 +668,9 @@
 		       </div>
 		    </div>
 		  </div>
-		</div> -->
-
-		<!--<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedback">
+		</div> 
+		<!-- modal for feedback -->
+		<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedback">
 		  <div class="modal-dialog" role="document">
 		    <div class="modal-content">
 		      <div class="modal-header">
@@ -659,18 +682,21 @@
 				  	<p id="returnmessage"></p>
 				  	<div class="control-group">
 				    	<label>Name: <span>*</span></label>
+				    	<br>
 						<input class="ORS-Span" type="text" id="name" placeholder="Name"/>
 					</div>
 				  </div>
 				  <div class="form-group row">
 				  	<div class="control-group">
 						<label>Email: <span>*</span></label>
+						<br>
 						<input class="ORS-Span" type="text" id="email" placeholder="Email"/>
 					</div>
 				  </div>
 				  <div class="form-group row">
 				  	<div class="control-group">
 						<label>Message:</label>
+						<br>
 						<textarea rows="5" class="ORS-Span" id="message" placeholder="Type your message here"></textarea>
 					</div>
 				  </div>
@@ -681,13 +707,13 @@
 		      </div>
 		    </div>
 		  </div>
-		</div>-->
+		</div>
 
 		<!-- CALL JAVASCRIPT FUNCTIONS -->
 		<!-- 	important: jQuery must be included before properties type	 -->
 		<script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
-		<script type="text/javascript" src="lib/bootstrap/bootstrap.js"></script>
-		<!--<script type="text/javascript" src="lib/bootstrap3/js/bootstrap.js"></script>-->
+		<!--<script type="text/javascript" src="lib/bootstrap/bootstrap.js"></script>-->
+		<script type="text/javascript" src="lib/bootstrap3/js/bootstrap.js"></script>
 		<!--<script type="text/javascript" src="lib/bootstrap3/js/bootstrap.min.js"></script>-->
 		<script type="text/javascript" src="lib/prototype.1.7.minified.js"></script>
 		<script type="text/javascript" src="lib/leaflet-1.0.0-beta.2.js"></script>
