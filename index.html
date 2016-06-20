@@ -61,13 +61,13 @@
 				<!-- sidebar content -->
 				<div class="ORS-menuPanel" id="menuPanel">
 					<div>
-						<button select-id="ORS-routeContent" class="btn ORS-menuButton ORS-BtnPrimary-menu active">
+						<button select-id="ORS-routeContent" class="btn btn-default ORS-menuButton ORS-BtnPrimary-menu active">
 							<i class="fa fa-road"></i>
 						</button>
-						<button select-id="ORS-aaContent" class="btn ORS-menuButton ORS-BtnPrimary-menu">
+						<button select-id="ORS-aaContent" class="btn btn-default ORS-menuButton ORS-BtnPrimary-menu">
 							<i class="fa fa-bullseye"></i>
 						</button>
-						<button select-id="ORS-cloudContent" class="btn ORS-menuButton ORS-BtnPrimary-menu">
+						<button select-id="ORS-cloudContent" class="btn btn-default ORS-menuButton ORS-BtnPrimary-menu">
 							<i class="fa fa-download"></i>
 						</button>
 					</div>
@@ -79,22 +79,22 @@
 				<div class="ORS-navigation">
 					<div data-id="ORS-routeContent">
 						<div class="ORS-routePreferenceBtns">
-							<button id="car" class="btn ORS-BtnPrimary ORS-routeOptionsButton left active">
+							<button id="car" class="btn btn-default ORS-BtnPrimary ORS-routeOptionsButton left active">
 								<i class="fa fa-car"></i>
 							</button>
-							<button id="bicycle" class="btn ORS-BtnPrimary ORS-routeOptionsButton left">
+							<button id="bicycle" class="btn btn-default ORS-BtnPrimary ORS-routeOptionsButton left">
 								<i class="fa fa-bicycle"></i>
 							</button>
-							<button id="pedestrian" class="btn ORS-BtnPrimary ORS-routeOptionsButton left">
+							<button id="pedestrian" class="btn btn-default ORS-BtnPrimary ORS-routeOptionsButton left">
 								<i class="fa fa-male"></i>
 							</button>
-							<button id="wheelchair" class="btn ORS-BtnPrimary ORS-routeOptionsButton left">
+							<button id="wheelchair" class="btn btn-default ORS-BtnPrimary ORS-routeOptionsButton left">
 								<i class="fa fa-wheelchair"></i>
 							</button>
-							<button id="heavyvehicle" class="btn ORS-BtnPrimary ORS-routeOptionsButton left">
+							<button id="heavyvehicle" class="btn btn-default ORS-BtnPrimary ORS-routeOptionsButton left">
 								<i class="fa fa-truck"></i>
 							</button>
-							<button class="btn ORS-BtnPrimary ORS-optionsButton right">
+							<button class="btn btn-default ORS-BtnPrimary ORS-optionsButton right">
 								<i class="fa fa-cog"></i>
 							</button>
 						</div>	
@@ -223,7 +223,7 @@
 								</div>
 								<div class="ORS-panel-sub ORS-hgv ORS-hr-dark" id="truckOptions_restrict" style="display: none;">
 									<h6>HGV properties</h6>
-									<ul id="TruckTabs" class="nav nav-tabs" data-tabs="tabs">
+									<ul id="TruckTabs" class="nav nav-pills" data-tabs="tabs">
 								        <li class="active"><a href="#length" data-toggle="tab" id="trucklengthLabel">length</a></li>
 								        <li><a href="#width" data-toggle="tab" id="truckwidthLabel">width</a></li>
 								        <li><a href="#height" data-toggle="tab" id="truckheightLabel">height</a></li>
@@ -273,17 +273,17 @@
 									</div>		
 								</div>
 								<div class="ORS-panel-sub ORS-wc ORS-hr" id="wheelchairParameters" style="display: none;">
-									<form class="form-inline ORS-form">
-										<select id="Surface" class="wheelchairSelect">
+									<form class="form-horizontal ORS-form">
+										<select id="Surface" class="wheelchairSelect"> 
 											<option id="asphaltOption">Asphalt</option>
 											<option id="cobblestoneFlattenedOption">Flattened Cobblestone</option>
 											<option id="cobblestoneOption">Cobblestone</option>
 											<option id="compactedOption">Compacted</option>
 											<option id="allSurfacesOption">All Surfaces</option>
 										</select>
-										<span id="surfaceLabel">Surface</span>	
+										<span id="surfaceLabel">Surface</span>
 									</form>
-									<form class="form-inline ORS-form">		
+									<form class="form-horizontal ORS-form">			
 										<select id="Incline" class="wheelchairSelect">
 											<option id="threePercentOption">Up to 3%</option>
 											<option id="sixPercentOption">Up to 6%</option>
@@ -291,9 +291,9 @@
 											<option id="fifteenPercentOption">Up to 15%</option>
 											<option id="allInclinesOption">All Inclines</option>
 										</select>
-										<span id="inclineLabel">Maximum Incline</span>	
+										<span id="inclineLabel">Maximum Incline</span>
 									</form>
-									<form class="form-inline ORS-form">		
+									<form class="form-horizontal ORS-form">		
 										<select id="SlopedCurb" class="wheelchairSelect">
 											<option id="threeCmOption">Up to 3cm</option>
 											<option id="sixCmOption">Up to 6cm</option>
@@ -398,9 +398,15 @@
 								</div>
 								<div id="maxSpeed" style="display: none;" class="ORS-all ORS-panel-sub">
 									<h6>Maximum speed</h6>
-									<div class="input-append ORS-input-append">
-										<input class="span2" id="maxSpeedInput" type="number" placeholder="maximum speed">
-										<button class="btn ORS-BtnPrimary-control" style=" border:1px solid #F0F0F0;" type="button" id="maxSpeedBtn">set</button>
+									<div class="row">
+									  <div class="col-lg-6">
+									    <div class="input-group">
+									      <input type="number" class="form-control" id="maxSpeedInput" style="width:140px" placeholder="set maximum speed">
+									      <span class="input-group-btn">
+									        <button id="maxSpeedBtn" class="btn btn-default ORS-BtnPrimary-control" style=" border:1px solid #F0F0F0;" type="button">set</button>
+									      </span>
+									    </div>
+									  </div>
 									</div>
 								</div>
 								<div id="avoidAreas">
@@ -463,19 +469,19 @@
 								</div>
 								<div class="clear">
 									<div class="left" id="viaOptimizePanel">
-										<label class="btn ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" type="button" id="tt-optimize" data-toggle="tooltip" title="Optimize Waypoints">
+										<label class="btn btn-default ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" type="button" id="tt-optimize" data-toggle="tooltip" title="Optimize Waypoints">
 										    <i class="fa fa-wrench"></i>
 										    <input type="checkbox" class="hide" id="viaOptimize" data-toggle="button"/>
 										</label>
 									</div>
 									<div class="right">
-										<button id="orderRoute" class="btn ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" type="button" id="tt-reorder" data-toggle="tooltip" title="Reorder Waypoints"><i class="fa fa-refresh"></i></button>
+										<button id="orderRoute" class="btn btn-default ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" type="button" id="tt-reorder" data-toggle="tooltip" title="Reorder Waypoints"><i class="fa fa-refresh"></i></button>
 									</div>
 									<div class="right">
-										<button id="resetRoute" class="btn ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" type="button" id="tt-reset" data-toggle="tooltip" title="Reset Route"><i class="fa fa-remove"></i></button>
+										<button id="resetRoute" class="btn btn-default ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" type="button" id="tt-reset" data-toggle="tooltip" title="Reset Route"><i class="fa fa-remove"></i></button>
 									</div>
 									<div class="right">
-										<button id="zoomToRouteButton" class="btn ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" type="button"  id="tt-zoom"data-toggle="tooltip" title="Zoom to Route"><i class="fa fa-arrows-alt"></i></button>
+										<button id="zoomToRouteButton" class="btn btn-default ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" type="button"  id="tt-zoom"data-toggle="tooltip" title="Zoom to Route"><i class="fa fa-arrows-alt"></i></button>
 									</div>
 								</div>
 								<div id="ORS-routeError" style="display:none" class="ORS-alert alert alert-error"></div>
@@ -504,7 +510,7 @@
 									</div>
 									<div class="collapsibleBody" style="display: none;" id="routeInstructions">
 										<div class="right">
-											<button id="printRouteInstructions" class="btn ORS-BtnPrimary transparent" type="button" title="Print Route Instructions"><i class="fa fa-print"></i></button>
+											<button id="printRouteInstructions" class="btn btn-default ORS-BtnPrimary transparent" type="button" title="Print Route Instructions"><i class="fa fa-print"></i></button>
 										</div>
 										<div class="directions-main" id="directionsMainContainer"></div>
 									</div>
@@ -514,27 +520,27 @@
 					</div>
 					<div data-id="ORS-aaContent" class="routeExtrasContainer ORS-panel" style="display: none;">
 						<div class="guiComponent ORS-panel-sub ORS-hr">
-							<form class="form-inline ORS-form">						
-								<select id="accessibilityAnalysisMethodList">
+							<form class="form-horizontal ORS-form">		
+								<select id="SlopedCurb" class="wheelchairSelect">
 									<option id="Default" value="RecursiveGrid">Recursive Grid</option>
 									<option id="Default2" value="TIN">TIN</option>
 								</select>
-								<span id ="accessibilityAnalysisMethod">Select Isochrone method</span>
+								<span id ="accessibilityAnalysisMethod"></span>
 							</form>
-							<form class="form-inline ORS-form">						
+							<form class="form-horizontal ORS-form">	
 								<input type="text" id="accessibilityDistance" class="textfield" value="15">
 								<span id ="accessibilityAnalysisMinutes">Select Minutes</span>
 							</form>
-							<form class="form-inline ORS-form">						
+							<form class="form-horizontal ORS-form">		
 								<input type="text" id="accessibilityAnalysisIsochronesIntervall" class="textfield" value="3">
 								<span id ="accessibilityAnalysisIsochrones">Select Isochrone Interval</span>
 							</form>
 							<div class="clear">
 								<div class="left">
-    								<button class="btn ORS-BtnPrimary-control" data-container="ORS-mainPanel" id="analyzeAccessibility" type="button" data-toggle="tooltip" title="" data-original-title="Calculate accessibility"><i class="fa fa-fw fa-bullseye"></i><span id="analyzeAccessibilityLabel"></span></button>
+    								<button class="btn btn-default ORS-BtnPrimary-control" data-container="ORS-mainPanel" id="analyzeAccessibility" type="button" data-toggle="tooltip" title="" data-original-title="Calculate accessibility"><i class="fa fa-fw fa-bullseye"></i><span id="analyzeAccessibilityLabel"></span></button>
     							</div>
     							<div class="left">
-    								<button class="btn ORS-BtnPrimary-control" data-container="ORS-mainPanel" id="removeAccessibility" style="display:none" type="button" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-remove"></i></button>
+    								<button class="btn btn-default ORS-BtnPrimary-control" data-container="ORS-mainPanel" id="removeAccessibility" style="display:none" type="button" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-remove"></i></button>
     							</div>
     						</div>
 							<div class="ORS-alert alert alert-info" id="accessibilityCalculation" style="display: none;">
@@ -550,10 +556,10 @@
 						<div class="ORS-panel-sub">
 							<div class="clear">
 								<div style="margin-bottom: 10px">
-									<a id="export-gpx" class="btn ORS-BtnPrimary-control" download="map.gpx" title="Download of current route in GPX format" data-container=".ORS-mainPanel" data-toggle="tooltip" data-original-title=""><i class="fa fa-download fa-fw"></i><span>download GPX</span></a>
+									<a id="export-gpx" class="btn btn-default ORS-BtnPrimary-control" download="map.gpx" title="Download of current route in GPX format" data-container=".ORS-mainPanel" data-toggle="tooltip" data-original-title=""><i class="fa fa-download fa-fw"></i><span>download GPX</span></a>
 								</div>
 								<div id="GPXcontainer">
-									<span class="btn ORS-BtnFile ORS-BtnPrimary-control" id="import-gpx" title="Upload multiple tracks from a GPX-files" data-container=".ORS-mainPanel" data-toggle="tooltip" data-original-title=""><i class="fa fa-upload fa-fw"></i><span>upload GPX</span><input type="file" id="files" accept=".gpx" /></span>
+									<span class="btn btn-default ORS-BtnFile ORS-BtnPrimary-control" id="import-gpx" title="Upload multiple tracks from a GPX-files" data-container=".ORS-mainPanel" data-toggle="tooltip" data-original-title=""><i class="fa fa-upload fa-fw"></i><span>upload GPX</span><input type="file" id="files" accept=".gpx" /></span>
 										<div id="fileContainerMain" style="display: none;"></div>		
 								</div>
 							</div>
@@ -601,7 +607,6 @@
 			</div>
 		</div>
 		<!-- END OF MAIN SECTION -->
-		<!-- FOR WHEN BOOTSTRAP 3 IS READY -->
 		<!-- modal for user preferences (language, distance unit,...) -->
 		<div class="modal fade" id="sitePrefsModal" tabindex="-1" role="dialog" aria-labelledby="sitePrefs">
 		  <div class="modal-dialog" role="document">
@@ -613,29 +618,29 @@
 		      	<form>
 				  <div class="form-group row">
 				  	<h4> Language </h4>
-				    <label id="languageText" ></label>
+				    <label class="left" id="languageText" ></label>
 				    <div class="controls">
-				      <select class="ORS-Span" id="languagePrefs"></select>
+				      <select class="ORS-Span right" id="languagePrefs"></select>
 				    </div>
 				  </div>
 				  <div class="form-group row">
 				  	<h4> Language for routing instructions </h4>
 				    <label id="routingLanguageText"></label>
 				    <div class="controls">
-				    	<select class="ORS-Span" id="routingLanguagePrefs"></select>
+				    	<select class="ORS-Span right" id="routingLanguagePrefs"></select>
 				    </div>
 				  </div>
 				  <div class="form-group row">
 				  	<h4> Distance Units </h4>
 				    <label id="distanceUnitText"></label>
 				    <div class="controls">
-				    	<select class="ORS-Span" id="unitPrefs"></select>
+				    	<select class="ORS-Span right" id="unitPrefs"></select>
 				    </div>
 				  </div>
 				</form>
 		      </div>
 		      <div class="modal-footer">
-		        <button class="btn ORS-BtnPrimary-control" id="savePrefsBtn">Save</button>
+		        <button class="btn btn-default ORS-BtnPrimary-control" id="savePrefsBtn">Save</button>
 		       </div>
 		    </div>
 		  </div>
@@ -674,7 +679,7 @@
 				</form>
 		      </div>
 		      <div class="modal-footer">
-		        <button class="btn ORS-BtnPrimary-control" id="submit_feedback">Send Message</button>
+		        <button class="btn btn-default ORS-BtnPrimary-control" id="submit_feedback">Send Message</button>
 		      </div>
 		    </div>
 		  </div>
@@ -747,7 +752,6 @@
 			      });
 		        });
 		    })(jQuery);
-
 		</script>
 
 	</body>
