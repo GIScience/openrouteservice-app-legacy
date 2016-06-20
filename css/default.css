@@ -16,46 +16,56 @@
     /* START OF BLOCK STYLES (BASE LAYOUT STYLE) */
     /* *******************************************/
     /************************** BASE LAYOUT ****************************/
-    html{
-        font-family: 'Source Sans Pro', sans-serif;
+    
+    html, body {
+        font-family: 'Source Sans Pro', sans-serif !important;
     }
-    .ORS, .body { /* BODY */
+    
+    .ORS {
+        /* BODY */
         display: flex;
         min-height: 100vh;
         flex-direction: column;
-        font-size: 90%;
-        -line-height: 1.4;
+        line-height: 1.4;
         color: rgba(0, 0, 0, 0.8);
         background-color: #fff;
         color: #444;
         margin: 0;
         padding: 0;
-        /*font-family: 'Source Sans Pro', sans-serif;*/
     }
-    .ORS-header { /* HEADER */
+    
+    .ORS-header {
+        /* HEADER */
         display: flex;
         flex: 0 0 50px;
         background-color: #b5152b
     }
-    .ORS-main { /* MAIN BODY FOR WEB APPLICATION */
+    
+    .ORS-main {
+        /* MAIN BODY FOR WEB APPLICATION */
         display: flex;
         flex: 1 0 auto;
         flex-direction: row;
     }
-    .ORS-sidebar { /* NAVIGATION SIDEBAR */
+    
+    .ORS-sidebar {
+        /* NAVIGATION SIDEBAR */
         flex: 0 1 388px;
         order: 1;
         flex-direction: row;
         position: relative;
         color: #707070;
     }
-    .ORS-map { /* MAP AREA */
+    
+    .ORS-map {
+        /* MAP AREA */
         display: flex;
         flex: 1 1 auto;
         order: 2;
     }
     /*******************************************************************/
     /* GENERAL ELEMENTS */
+    
     input, .form-inline input, textarea, select, .form-inline select, .guiComponent > input {
         font-family: 'Source Sans Pro', sans-serif;
         border-radius: 0;
@@ -65,11 +75,12 @@
         webkit-box-shadow: none;
         -moz-box-shadow: none;
         box-shadow: none;
-        height:30px;
     }
+    
     .form-inline select {
         -webkit-appearance: none;
     }
+    
     select:not([multiple]) {
         -webkit-appearance: none;
         -moz-appearance: none;
@@ -78,12 +89,15 @@
         background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAMCAYAAABSgIzaAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NDZFNDEwNjlGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NDZFNDEwNkFGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0NkU0MTA2N0Y3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo0NkU0MTA2OEY3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuGsgwQAAAA5SURBVHjaYvz//z8DOYCJgUxAf42MQIzTk0D/M+KzkRGPoQSdykiKJrBGpOhgJFYTWNEIiEeAAAMAzNENEOH+do8AAAAASUVORK5CYII=);
         vertical-align: middle;
     }
+    
     select, input[type="file"] {
         line-height: 1;
     }
+    
     input[type='checkbox'], input[type='radio'] {
         vertical-align: middle;
     }
+    
     input[type="text"] {
         background-color: #fff;
         border: 1px solid #ccc;
@@ -93,127 +107,145 @@
         border-color: #F0F0F0;
         font-size: 90%;
     }
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      margin: 10px 0;
-      font-family: inherit;
-      font-weight: bold;
-      line-height: 20px;
-      color: inherit;
-      text-rendering: optimizelegibility;
+    
+    h1, h2, h3, h4, h5, h6 {
+        margin: 10px 0;
+        font-family: inherit;
+        font-weight: bold;
+        line-height: 20px;
+        color: inherit;
+        text-rendering: optimizelegibility;
     }
-    h1 small,
-    h2 small,
-    h3 small,
-    h4 small,
-    h5 small,
-    h6 small {
-      font-weight: normal;
-      line-height: 1;
-      color: #999999;
+    
+    h1 small, h2 small, h3 small, h4 small, h5 small, h6 small {
+        font-weight: normal;
+        line-height: 1;
+        color: #999999;
     }
-    h1,
-    h2,
-    h3 {
-      line-height: 40px;
+    
+    h1, h2, h3 {
+        line-height: 40px;
     }
+    
     h1 {
-      font-size: 38.5px;
+        font-size: 38.5px;
     }
+    
     h2 {
-      font-size: 31.5px;
+        font-size: 31.5px;
     }
+    
     h3 {
-      font-size: 24.5px;
-      margin: 0 0 0.5em 0;
+        font-size: 24.5px;
+        margin: 0 0 0.5em 0;
     }
+    
     h4 {
-      font-size: 17.5px;
+        font-size: 17.5px;
     }
+    
     h5 {
-      font-size: 14px;
+        font-size: 14px;
     }
+    
     h6 {
-      font-size: 11.9px;
+        font-size: 11.9px;
     }
+    
     h1 small {
-      font-size: 24.5px;
+        font-size: 24.5px;
     }
+    
     h2 small {
-      font-size: 17.5px;
+        font-size: 17.5px;
     }
+    
     h3 small {
-      font-size: 14px;
+        font-size: 14px;
     }
+    
     h4 small {
-      font-size: 14px;
+        font-size: 14px;
     }
+    
     a:link, a:visited {
         text-decoration: none;
     }
+    
     a:hover, a:active {
         text-decoration: none;
     }
+    
     a:focus {
         background-color: none;
         text-decoration: none;
     }
+    
     .right {
         float: right;
     }
+    
     .left {
         float: left;
     }
+    
     .transparent {
         background-color: transparent !important;
     }
+    
     .show {
         float: left;
         padding-left: 13px;
         cursor: pointer;
     }
+    
     .calc {
         float: left;
         padding-left: 13px;
         cursor: pointer;
     }
+    
     .delete {
         float: left;
         padding-left: 13px;
         cursor: pointer;
     }
+    
     .calcGranularity {
         margin-top: 5px;
         width: 100px;
     }
+    
     .radioContainer {
         padding: 0 0 0 5px;
     }
+    
     .clickable {
         cursor: pointer;
     }
+    
     .clickable.active {
         cursor: pointer;
         color: rgb(0, 161, 45);
     }
+    
     .collapsibleBody > table {
         width: 100%;
         font-size: 13px;
         border: 1px solid green;
     }
+    
     .odd {
         background-color: rgb(245, 245, 235);
         /* fallback for unsupported rgba*/
         background-color: rgba(235, 235, 225, 0.65);
     }
+    
     .address {
         list-style-type: none;
         font-size: 90%;
     }
+    
     .input-append input {
         border-radius: 0;
     }
@@ -224,82 +256,109 @@
         vertical-align: middle;
         border: 1px solid black;
     }*/
+    
     .collapsibleBody {
         padding-left: 2px;
         clear: left;
     }
+    
     .clear:after {
         clear: both;
         content: "";
         display: table;
     }
+    
     .span12 {
-      width: 940px;
+        width: 940px;
     }
+    
     .span11 {
-      width: 860px;
+        width: 860px;
     }
+    
     .span10 {
-      width: 780px;
+        width: 780px;
     }
+    
     .span9 {
-      width: 700px;
+        width: 700px;
     }
+    
     .span8 {
-      width: 620px;
+        width: 620px;
     }
+    
     .span7 {
-      width: 540px;
+        width: 540px;
     }
+    
     .span6 {
-      width: 460px;
+        width: 460px;
     }
+    
     .span5 {
-      width: 380px;
+        width: 380px;
     }
+    
     .span4 {
-      width: 300px;
+        width: 300px;
     }
+    
     .span3 {
-      width: 220px;
+        width: 220px;
     }
+    
     .span2 {
-      width: 140px;
+        width: 140px;
     }
+    
     .span1 {
-      width: 60px;
+        width: 60px;
     }
-    .mCS-ors-theme.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar { /* generic scrollbar classes (controllers can be found in jquery.mCustomScrollbar.concat.min.js) */
+    
+    .mCS-ors-theme.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+        /* generic scrollbar classes (controllers can be found in jquery.mCustomScrollbar.concat.min.js) */
         background-color: #707070;
     }
-    .mCS-ors-theme.mCSB_scrollTools .mCSB_draggerRail { /* generic scrollbar classes (controllers can be found in jquery.mCustomScrollbar.concat.min.js) */
+    
+    .mCS-ors-theme.mCSB_scrollTools .mCSB_draggerRail {
+        /* generic scrollbar classes (controllers can be found in jquery.mCustomScrollbar.concat.min.js) */
         background-color: #F0F0F0;
     }
-    .mCS-ors-theme.mCSB_scrollTools .mCustomScrollBox { /* generic scrollbar classes (controllers can be found in jquery.mCustomScrollbar.concat.min.js) */
+    
+    .mCS-ors-theme.mCSB_scrollTools .mCustomScrollBox {
+        /* generic scrollbar classes (controllers can be found in jquery.mCustomScrollbar.concat.min.js) */
         background-color: #F0F0F0;
     }
-     /* GENERIC ORS CLASSES */
+    /* GENERIC ORS CLASSES */
+    
     .ORS-light {
         background-color: #fafafa;
     }
+    
     .ORS-panel {
         border-bottom: 1px solid #EBEBEB;
     }
+    
     .ORS-panel-sub {
         padding-left: 10px;
         padding-right: 10px;
         padding-bottom: 10px;
         padding-top: 10px;
     }
+    
     .ORS-padding {
         padding-top: 20px;
     }
+    
     .ORS-hr {
         border-bottom: 1px solid #F0F0F0;
     }
+    
     .ORS-hr-dark {
         border-bottom: 1px solid #EBEBEB;
     }
+    
     .ORS-label {
         line-height: 16px;
         font-weight: normal;
@@ -308,18 +367,22 @@
         background-color: transparent;
         border: 1px solid black;
     }
+    
     .ORS-form {
         margin: 0 0 10px;
     }
+    
     .ORS-alert {
         margin-bottom: 0;
         border-radius: 0;
         margin-top: 5px;
         /*font-family: 'Source Sans Pro', sans-serif;*/
     }
+    
     .ORS-info {
         /*font-family: 'Source Sans Pro', sans-serif;*/
     }
+    
     .ORS-close {
         display: block;
         float: right;
@@ -327,98 +390,28 @@
         height: 29px;
         color: #707070;
     }
+    
     .ORS-center {
         text-align: center;
         line-height: 40px;
     }
+    
     .ORS-mobileBrLine {
         display: none;
     }
+    
     .ORS-input-append {
         font-size: 12px;
         color: #707070;
     }
-    .ORS-Btn { /* General style for ORS buttons */
-      display: inline-block;
-      *display: inline;
-      padding: 4px 12px;
-      margin-bottom: 0;
-      *margin-left: .3em;
-      font-size: 14px;
-      line-height: 20px;
-      color: #333333;
-      text-align: center;
-      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
-      vertical-align: middle;
-      cursor: pointer;
-      background-color: #f5f5f5;
-      *background-color: #e6e6e6;
-      background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
-      background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
-      background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
-      background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
-      background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
-      background-repeat: repeat-x;
-      border: 1px solid #cccccc;
-      *border: 0;
-      border-color: #e6e6e6 #e6e6e6 #bfbfbf;
-      border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-      border-bottom-color: #b3b3b3;
-      -webkit-border-radius: 4px;
-         -moz-border-radius: 4px;
-              border-radius: 4px;
-      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
-      filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
-      *zoom: 1;
-      -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-         -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-              box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-    }
-    .ORS-Btn:hover,.ORS-Btn:focus,.ORS-Btn:active,.ORS-Btn.active, .ORS-Btn.disabled, .ORS-Btn[disabled] { /* General style for ORS buttons */
-      color: #333333;
-      background-color: #e6e6e6;
-      *background-color: #d9d9d9;
-    }
-    .ORS-Btn:active, .ORS-Btn.active { /* General style for ORS buttons */
-      background-color: #cccccc \9;
-    }
-    .ORS-Btn:first-child { /* General style for ORS buttons */
-      *margin-left: 0;
-    }
-    .ORS-Btn:hover, .ORS-Btn:focus { /* General style for ORS buttons */
-      color: #333333;
-      text-decoration: none;
-      background-position: 0 -15px;
-      -webkit-transition: background-position 0.1s linear;
-         -moz-transition: background-position 0.1s linear;
-           -o-transition: background-position 0.1s linear;
-              transition: background-position 0.1s linear;
-    }
-    .ORS-Btn:focus { /* General style for ORS buttons */
-      outline: thin dotted #333;
-      outline: 5px auto -webkit-focus-ring-color;
-      outline-offset: -2px;
-    }
-    .ORS-Btn.active, .ORS-Btn:active { /* General style for ORS buttons */
-      background-image: none;
-      outline: 0;
-      -webkit-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
-         -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
-              box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
-    }
-    .ORS-Btn.disabled, .ORS-Btn[disabled] { /* General style for ORS buttons */
-      cursor: default;
-      background-image: none;
-      opacity: 0.65;
-      filter: alpha(opacity=65);
-      -webkit-box-shadow: none;
-         -moz-box-shadow: none;
-              box-shadow: none;
-    }
-    .ORS-BtnPrimary i, .ORS-BtnPrimary-menu i { /* General style for ORS buttons on left menu and top menu (vehicle options on sidebar) */
+      
+    .ORS-BtnPrimary i, .ORS-BtnPrimary-menu i {
+        /* General style for ORS buttons on left menu and top menu (vehicle options on sidebar) */
         font-size: 105%;
     }
-    .ORS-BtnPrimary { /* General style for ORS buttons on top menu (vehicle options on sidebar)*/
+    
+    .ORS-BtnPrimary {
+        /* General style for ORS buttons on top menu (vehicle options on sidebar)*/
         background: #F0F0F0;
         border-radius: 0px;
         height: 41px !important;
@@ -430,9 +423,10 @@
         box-shadow: none;
         text-shadow: none;
         font-family: 'Source Sans Pro', sans-serif;
-
     }
-    .ORS-BtnPrimary-control { /* General style for ORS buttons on top menu (vehicle options on sidebar) */
+    
+    .ORS-BtnPrimary-control {
+        /* General style for ORS buttons on top menu (vehicle options on sidebar) */
         background: #F0F0F0;
         border-radius: 0px;
         border: none;
@@ -441,7 +435,9 @@
         text-shadow: none;
         /*font-family: 'Source Sans Pro', sans-serif;*/
     }
-    .ORS-BtnPrimary-menu { /* General style for ORS buttons on left menu */ 
+    
+    .ORS-BtnPrimary-menu {
+        /* General style for ORS buttons on left menu */
         background: #F0F0F0;
         border-radius: 0px !important;
         border: none;
@@ -453,9 +449,11 @@
         box-shadow: none;
         text-shadow: none;
         /*font-family: 'Source Sans Pro', sans-serif;*/
-        left:0px;
+        left: 0px;
     }
-    .ORS-BtnPrimary.active, .ORS-BtnPrimary:active, .ORS-BtnPrimary:hover{ /* General style for ORS buttons on top menu (vehicle options on sidebar) */
+    
+    .ORS-BtnPrimary.active, .ORS-BtnPrimary:active, .ORS-BtnPrimary:hover {
+        /* General style for ORS buttons on top menu (vehicle options on sidebar) */
         box-shadow: none !important;
         -webkit-box-shadow: none !important;
         -moz-box-shadow: none !important;
@@ -463,56 +461,74 @@
         background-color: transparent;
         border-bottom: 1px solid #b5152b;
     }
-    .ORS-BtnPrimary-menu.active, .ORS-BtnPrimary-menu:active, .ORS-BtnPrimary-menu:hover { /* General style for ORS buttons on left menu */
+    
+    .ORS-BtnPrimary-menu.active, .ORS-BtnPrimary-menu:active, .ORS-BtnPrimary-menu:hover {
+        /* General style for ORS buttons on left menu */
         box-shadow: none !important;
         -webkit-box-shadow: none !important;
         -moz-box-shadow: none !important;
         background-color: transparent;
         border: none;
         color: #444 !important;
-        border-bottom: 1px solid transparent; /* prevents icons from changing size */
+        border-bottom: 1px solid transparent;
+        /* prevents icons from changing size */
     }
-    .ORS-BtnPrimary-control:hover { /* General style for ORS control buttons */
+    
+    .ORS-BtnPrimary-control:hover {
+        /* General style for ORS control buttons */
         box-shadow: none !important;
         -webkit-box-shadow: none !important;
         -moz-box-shadow: none !important;
         background-color: transparent;
         border: none;
-        color: #444 !important; 
+        color: #444 !important;
     }
-    .ORS-routeOptionsButton,.ORS-optionsButton { /* Buttons on top menu, to chose transportation type and route options menu */
+    
+    .ORS-routeOptionsButton, .ORS-optionsButton {
+        /* Buttons on top menu, to chose transportation type and route options menu */
         width: 44px;
         height: 40px;
     }
-    .ORS-BtnFile{ /* For file upload buttons */
-        overflow:hidden;
-        position:relative;
-        vertical-align:middle;
+    
+    .ORS-BtnFile {
+        /* For file upload buttons */
+        overflow: hidden;
+        position: relative;
+        vertical-align: middle;
     }
-    .ORS-BtnFile>input{ /* For file upload buttons */
-        position:absolute;
-        top:0;
-        right:0;
-        margin:0;
-        border:solid transparent;
-        border-width:0 0 100px 200px;
-        opacity:0;filter:alpha(opacity=0);
-        -moz-transform:translate(-300px, 0) scale(4);
-        direction:ltr;
-        cursor:pointer;
+    
+    .ORS-BtnFile>input {
+        /* For file upload buttons */
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        border: solid transparent;
+        border-width: 0 0 100px 200px;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        -moz-transform: translate(-300px, 0) scale(4);
+        direction: ltr;
+        cursor: pointer;
     }
-    .ORS-Slider input[type="text"] { /* All sliders with ORS Style */
+    
+    .ORS-Slider input[type="text"] {
+        /* All sliders with ORS Style */
         width: 45px;
         margin-left: 10px;
         font-size: 90%;
     }
-    .ORS-Slider input[type="range"] { /* All Sliders with ORS Style */
+    
+    .ORS-Slider input[type="range"] {
+        /* All Sliders with ORS Style */
         margin-top: -6px;
         width: 130px;
         border: 0;
         color: #6392C2;
     }
-    .ORS-Span { /* Styles for any input attribute to have a specific width */
+    
+    .ORS-Span {
+        /* Styles for any input attribute to have a specific width */
         width: 60%;
     }
     /* *******************************************/
@@ -522,7 +538,9 @@
     /* START OF ELEMENT STYLES (CLASSES AND ID's)  */
     /* *********************************************/
     /* STYLE FOR ELEMENTS ON HEADER SECTION */
-    #ORS-title { /* Main ORS title */
+    
+    #ORS-title {
+        /* Main ORS title */
         background-color: #b5152b;
         color: #F0F0F0;
         line-height: 25px;
@@ -534,19 +552,25 @@
         /* align vertical */
         font-size: 16px;
     }
-    #ORS-headIcon { /* ORS icon on top left side */
+    
+    #ORS-headIcon {
+        /* ORS icon on top left side */
         background: url(../img/logo_unihd.png) no-repeat center center;
         background-size: 70px auto;
         width: 80px;
     }
-    #ORS-topMenu { /* ORS menu on top right side (feedback, site preferences and info icons) */
+    
+    #ORS-topMenu {
+        /* ORS menu on top right side (feedback, site preferences and info icons) */
         position: absolute;
         top: 5px;
         right: 4px;
         float: right;
         list-style: none;
     }
-    #ORS-topMenu > li, #ORS-topMenu > li >a { /* Style for individual elements on ORS menu on top right side */
+    
+    #ORS-topMenu > li, #ORS-topMenu > li >a {
+        /* Style for individual elements on ORS menu on top right side */
         height: 40px;
         float: left;
         margin: 0px 10px 0px 0;
@@ -555,26 +579,36 @@
         color: white;
         font-size: 18px;
     }
-    #sitePrefsModal label { /* Site preferences menu (it pops up on the screen after clicking the preferences icon on top right side) */
+    
+    #sitePrefsModal label {
+        /* Site preferences menu (it pops up on the screen after clicking the preferences icon on top right side) */
         float: left;
         padding: 10px;
     }
-    #sitePrefsModal select { /* Site preferences menu (it pops up on the screen after clicking the preferences icon on top right side) */
-        float:right;
+    
+    #sitePrefsModal select {
+        /* Site preferences menu (it pops up on the screen after clicking the preferences icon on top right side) */
+        float: right;
         /*margin-left: 10px;*/
         margin-right: 10px;
     }
-    .ORS-PrefsDropDown { /* Drop down boxes inside site preferences menu */
+    
+    .ORS-PrefsDropDown {
+        /* Drop down boxes inside site preferences menu */
         float: right;
         margin-right: 10px;
-    } 
-    #returnmessage { /* Feedback Menu message after clicking on feedback button */
+    }
+    
+    #returnmessage {
+        /* Feedback Menu message after clicking on feedback button */
         font-size: 14px;
         color: green;
         text-align: center;
     }
     /* STYLE FOR SIDEBAR AND OBJECTS WITHIN THE SIDEBAR */
-    .ORS-menuPanel { /* Styles for menu panel on the left side of the sidebar */
+    
+    .ORS-menuPanel {
+        /* Styles for menu panel on the left side of the sidebar */
         top: 0;
         position: absolute;
         overflow: auto;
@@ -583,7 +617,9 @@
         background-color: #F0F0F0;
     }
     /* LEFT SIDE */
-    .ORS-navigation { /* Styles for menu panel on the right side of the sidebar */
+    
+    .ORS-navigation {
+        /* Styles for menu panel on the right side of the sidebar */
         -top: 0;
         left: 40px;
         width: 348px;
@@ -593,10 +629,13 @@
         background-color: #F0F0F0;
         height: 41px;
     }
-    #ORS-loading, #ORS-error { /* Loading and error messages */
+    
+    #ORS-loading, #ORS-error {
+        /* Loading and error messages */
         display: none;
     }
     /* RIGHT SIDE */
+    
     .ORS-mainPanel {
         top: 41px;
         position: absolute;
@@ -607,47 +646,63 @@
         border-left: 1px solid #CCC;
         background-color: #FFF;
     }
-    #TruckTabs>ul { /* Styles for tabs on truck options */
+    
+    #TruckTabs>ul {
+        /* Styles for tabs on truck options */
         border-bottom: none;
         background: #F0F0F0
     }
-    #TruckTabs>li>a { /* Styles content on each tab on truck options */
+    
+    #TruckTabs>li>a {
+        /* Styles content on each tab on truck options */
         font-size: 80%;
         background-color: #f8f8f8;
         padding-bottom: 4px;
         padding-top: 4px;
         color: #707070;
     }
-    #TruckTabs>li>a:hover { /* Styles for tabs on truck options when mouse is over tab*/
+    
+    #TruckTabs>li>a:hover {
+        /* Styles for tabs on truck options when mouse is over tab*/
         border-bottom: transparent;
         background: #F0F0F0;
     }
     /* ROUTE SETTINGS */
-    .resultList { /* General styles for address list dropdown (this list will popup when you type something in the "search address" input box) */
+    
+    .resultList {
+        /* General styles for address list dropdown (this list will popup when you type something in the "search address" input box) */
         margin-bottom: 1em;
     }
-    .resultList li { /* Styles for each item in the address list dropdown */
+    
+    .resultList li {
+        /* Styles for each item in the address list dropdown */
         padding: 3px;
         border-bottom: 1px dashed #c8c8c8;
     }
-    .resultList li:hover { /* Styles to what happens when mouse is over the address list dropdown */
+    
+    .resultList li:hover {
+        /* Styles to what happens when mouse is over the address list dropdown */
         cursor: pointer;
     }
     /* avoid area controls*/
+    
     #avoidAreas {
         /*height: 30px;*/
     }
+    
     #avoidAreasTitle {
         height: 30px;
         float: left;
         padding-top: 5px;
         margin-right: 15px;
     }
+    
     #avoidAreasError {
         margin-top: 10px;
         margin-bottom: 0px;
     }
     /* WAYPOINT OPTIONS */
+    
     .addWaypoint {
         padding-left: 40px;
         padding-top: 5px;
@@ -658,51 +713,61 @@
         background-position: 8px 3px;
         font-size: 90% !important;
     }
+    
     .guiComponent > input {
         margin-bottom: 0px;
         font-size: 13px;
     }
+    
     .waypointResult {
         margin-bottom: 10px;
         width: 240px;
         margin-left: 32px;
     }
+    
     .waypointResult li span {
         position: relative;
         left: 10px;
     }
+    
     .waypoint {
         padding-left: 0px;
         padding-top: 0;
         min-height: 25px;
         margin-bottom: 10px !important;
     }
+    
     .waypoint-icon {
         display: inline;
         float: left;
         width: 33px;
         height: 25px;
     }
+    
     .waypoint-icon.start {
         background: url(../img/marker-start.png) no-repeat;
         background-size: 16px;
         background-position: 8px 3px;
     }
+    
     .waypoint-icon.via {
         background: url(../img/marker-via.png) no-repeat;
         background-size: 16px;
         background-position: 8px 3px;
     }
+    
     .waypoint-icon.end {
         background: url(../img/marker-end.png) no-repeat;
         background-size: 16px;
         background-position: 8px 3px;
     }
+    
     .waypoint-icon.unset {
         background: url(../img/marker.png) no-repeat;
         background-size: 16px;
         background-position: 8px 3px;
     }
+    
     .removeWaypoint:before {
         display: block;
         float: right;
@@ -712,6 +777,7 @@
         content: "\f00d";
         font-family: FontAwesome;
     }
+    
     .moveUpWaypoint:before {
         display: block;
         float: right;
@@ -721,6 +787,7 @@
         content: "\f062";
         font-family: FontAwesome;
     }
+    
     .moveDownWaypoint:before {
         display: block;
         float: right;
@@ -729,6 +796,7 @@
         content: "\f063";
         font-family: FontAwesome;
     }
+    
     .searchAgainButton:before {
         display: block;
         float: right;
@@ -737,6 +805,7 @@
         content: "\f021";
         font-family: FontAwesome;
     }
+    
     .useAsWaypoint:before {
         display: block;
         float: right;
@@ -746,56 +815,73 @@
         font-family: FontAwesome;
     }
     /* ROUTE INSTRUCTIONS */
-    .zoomToSearchResults { /* Address search and input containers*/
+    
+    .zoomToSearchResults {
+        /* Address search and input containers*/
         margin-top: 7px;
         margin-bottom: 7px;
     }
-    #routeInstructionHead { /*for displaying route instructions in the panel (title)*/
+    
+    #routeInstructionHead {
+        /*for displaying route instructions in the panel (title)*/
         float: left;
         width: 60%;
     }
-    .collapsibleHead:before { /* Icon for route instructions collapsed */
+    
+    .collapsibleHead:before {
+        /* Icon for route instructions collapsed */
         padding: 3px;
         content: "\f0d7";
         font-family: FontAwesome;
     }
-    .collapsibleHead.collapsed:before { /* Icon for route instructions opened */
+    
+    .collapsibleHead.collapsed:before {
+        /* Icon for route instructions opened */
         padding: 4px;
         content: "\f0da";
         font-family: FontAwesome;
     }
-    .routeInstructions { /* route instructions lines */
+    
+    .routeInstructions {
+        /* route instructions lines */
         padding-top: 5px;
         padding-bottom: 5px;
         font-size: 90%;
     }
+    
     .directions-main {
         margin-top: 5px;
     }
+    
     .directions-container {
         padding: 8px 0;
     }
+    
     .directions-text {
         padding: 3px 5px 0 30px;
         line-height: 16px;
         vertical-align: middle;
     }
+    
     .directions-waypoint {
         margin-top: 25px;
         margin-left: 40px;
         line-height: 26px;
         position: absolute;
     }
+    
     .directions-waypoint-address {
         margin-top: 21px;
         margin-left: 75px;
         line-height: 26px;
         font-size: 14px;
     }
+    
     .directions-waypoint-address .submain {
         font-size: 13px;
         color: #A0A0A0;
     }
+    
     .directions-waypoint-info {
         padding: 6px 5px 0 75px;
         position: absolute;
@@ -803,39 +889,48 @@
         font-size: 12px;
         color: #777777;
     }
+    
     .directions-summary-container {
         height: 20px;
         display: table;
         table-layout: fixed;
         width: 330px;
     }
+    
     .directions-summary-container .info {
         text-align: center;
         display: table-cell;
         font-size: 18px;
         border-left: 1px solid #F0F0F0;
     }
+    
     .directions-summary-container .info:nth-child(1) {
         border-left: transparent;
     }
+    
     .directions-summary-container .info .icon {
         font-size: 14px;
         color: #b5152b;
     }
+    
     .directions-summary-container .info .content {}
+    
     .directions-summary-container .info .content .digit {
         display: inline;
         padding-right: 0px;
     }
+    
     .directions-summary-container .info .content .units {
         margin-right: 5px;
         display: inline;
         font-size: 12px;
     }
+    
     .directions-img {
         margin-left: 3px;
         position: absolute;
     }
+    
     .directions-mode-distance {
         top: 1px;
         right: 15px;
@@ -846,6 +941,7 @@
         background-color: #fff;
         font-size: 12px;
     }
+    
     .directions-mode-container {
         padding: 0 0 0 40px;
         position: absolute;
@@ -855,22 +951,27 @@
         line-height: normal;
         font-weight: normal;
     }
+    
     .directions-mode-line {
         border-bottom: 1px solid #e6e6e6;
         padding-top: 8px;
         margin: 0 2em 0 0;
     }
+    
     .directions-warning-table {
         color: red;
     }
+    
     .directions-warning-table tr td:first-child {
         width: 37px;
     }
+    
     .directions-warning-table img {
         height: 16px;
         width: auto;
         margin-left: 3px;
     }
+    
     .fa-rotate-45 {
         -webkit-transform: rotate(45deg);
         -moz-transform: rotate(45deg);
@@ -878,6 +979,7 @@
         -o-transform: rotate(45deg);
         transform: rotate(45deg);
     }
+    
     .fa-rotate-315 {
         -webkit-transform: rotate(315deg);
         -moz-transform: rotate(315deg);
@@ -886,35 +988,43 @@
         transform: rotate(315deg);
     }
     /* SURFACE INFORMATION */
+    
     #routeTypesHead {
         float: left;
     }
+    
     #routeTypesBody {
         position: relative;
     }
+    
     #wayType, #surfaceType {
         width: 100%;
     }
+    
     #wayTypeList, #surfaceTypeList {
         min-height: 25px;
         padding-bottom: 5px;
         margin-left: 5px;
     }
+    
     #wayTypeList ul, #surfaceTypeList ul {
         margin-left: 10px;
         margin-top: -10px;
     }
+    
     #wayTypeList li, #surfaceTypeList li {
         float: left;
         font-size: 90%;
         margin-right: 20px;
     }
+    
     #wayTypeList li span, #surfaceTypeList li span {
         color: #707070;
         font-size: 90%;
         position: relative;
         margin-left: -5px;
     }
+    
     .d3-tip {
         line-height: 1;
         font-weight: bold;
@@ -925,6 +1035,7 @@
         font-size: 10px;
     }
     /* Creates a small triangle extender for the tooltip */
+    
     .d3-tip:after {
         box-sizing: border-box;
         display: inline;
@@ -937,12 +1048,14 @@
         text-align: center;
     }
     /* Style northward tooltips differently */
+    
     .d3-tip.n:after {
         margin: -1px 0 0 0;
         top: 100%;
         left: 0;
     }
     /* ACCESSIBILITY ANALYSIS */
+    
     #accessibilityDistance, #accessibilityAnalysisIsochronesIntervall {
         width: 30px;
         /*overwrite settings from bootstrap for input fields*/
@@ -952,46 +1065,58 @@
         text-align: center;
         font-size: 90%;
     }
+    
     #accessibilityAnalysisMethodList {
         width: 140px;
     }
+    
     #accessibilityCalculation {
         margin-top: 5px;
     }
+    
     #accessibilityError {
         margin-top: 5px;
     }
     /* CLOUD CONTENT */
+    
     .downloadGpx {
         width: 60px;
         height: 30px;
         background-size: 60px 30px;
         background: url(../img/routelinkGPX.png) no-repeat 0% 50%;
     }
+    
     .fileUploadForm {
         margin: 0px;
     }
+    
     .fileUploadForm > div {
         margin: 0px;
     }
+    
     #fileContainerMain {
         margin-top: 10px;
         width: 200px;
     }
+    
     #fileContainer {
         height: 60px;
         border-bottom: 1px solid #e6e6e6;
         margin: 1em 2em 0 0.5em;
     }
+    
     .myfile {
         float: left;
         padding-left: 13px;
         pointer-events: none;
     }
-    #exportGpxError { /* popup with information about a service timeout */
+    
+    #exportGpxError {
+        /* popup with information about a service timeout */
         margin-top: 5px;
     }
     /* DISCLAIMER */
+    
     .disclaimer {
         bottom: 0;
         position: absolute;
@@ -999,6 +1124,7 @@
         width: 388px;
         border-top: 1px solid #EBEBEB;
     }
+    
     .disclaimer a, .disclaimer div {
         font-size: 80%;
         margin-right: 10px;
@@ -1006,20 +1132,30 @@
         color: #707070;
     }
     /* STYLE FOR ELEMENTS ON NAV SECTION (MAP SECTION) */
-    .leaflet-pane { /* For map pane */
+    
+    .leaflet-pane {
+        /* For map pane */
         font-family: 'Source Sans Pro', sans-serif;
     }
-    .leaflet-control-container { /* For general control containers */
+    
+    .leaflet-control-container {
+        /* For general control containers */
         font-family: 'Source Sans Pro', sans-serif;
     }
-    .leaflet-bar, .leaflet-bar a:last-child, .leaflet-bar a:first-child, .leaflet-control-layers { /* For general elements on map */
+    
+    .leaflet-bar, .leaflet-bar a:last-child, .leaflet-bar a:first-child, .leaflet-control-layers {
+        /* For general elements on map */
         border-radius: 0px;
         background-color: #FAFAFA;
     }
-    .leaflet-bottom .leaflet-control-scale { /* for scale controller */
+    
+    .leaflet-bottom .leaflet-control-scale {
+        /* for scale controller */
         margin-bottom: 23px;
     }
-    .leaflet-control-customNavMenuToggle, .leaflet-control-customLocate { /* for locate controller */
+    
+    .leaflet-control-customNavMenuToggle, .leaflet-control-customLocate {
+        /* for locate controller */
         width: 26px;
         height: 26px;
         position: relative;
@@ -1028,10 +1164,14 @@
         color: #70707D;
         cursor: pointer;
     }
-    .leaflet-retina .leaflet-control-layers-toggle, .leaflet-control-layers-toggle { /* for layers controller */
+    
+    .leaflet-retina .leaflet-control-layers-toggle, .leaflet-control-layers-toggle {
+        /* for layers controller */
         background-image: none;
     }
-    .leaflet-control-layers a.leaflet-control-layers-toggle { /* for layers controller */
+    
+    .leaflet-control-layers a.leaflet-control-layers-toggle {
+        /* for layers controller */
         width: 26px;
         height: 26px;
         position: relative;
@@ -1039,37 +1179,49 @@
         line-height: 26px;
         color: #70707D;
     }
-    .leaflet-control-layers a.leaflet-control-layers-toggle:before { /* for layers controller */
+    
+    .leaflet-control-layers a.leaflet-control-layers-toggle:before {
+        /* for layers controller */
         content: "\e804";
         font-family: ruifont;
     }
-    .leaflet-control-customNavMenuToggle:before { /* for toggle menu controller */
+    
+    .leaflet-control-customNavMenuToggle:before {
+        /* for toggle menu controller */
         content: "\f07e";
         font-family: FontAwesome;
     }
-    .leaflet-control-customLocate:before { /* for locate controller */
+    
+    .leaflet-control-customLocate:before {
+        /* for locate controller */
         content: "\f05b";
         font-family: FontAwesome;
     }
-    .leaflet-control a:link, .leaflet-control a:visited, .leaflet-control a:hover { /* for all controllers */
+    
+    .leaflet-control a:link, .leaflet-control a:visited, .leaflet-control a:hover {
+        /* for all controllers */
         text-decoration: none;
         color: #707070;
     }
+    
     .elevation-collapsed {
         background: #FAFAFA;
         border-radius: 0;
     }
+    
     .steelblue-theme.leaflet-control.elevation .elevation-toggle {
         border-radius: 0;
         -webkit-border-radius: 0;
         width: 26px;
         height: 26px;
     }
+    
     .steelblue-theme.leaflet-control.elevation .elevation-toggle-icon {
         background-size: 16px 11px;
     }
     
-    .ORS-mapContextMenu .ORS-contextWaypoint { /* Context menu styles (when clicking with the right mouse button on the map area */
+    .ORS-mapContextMenu .ORS-contextWaypoint {
+        /* Context menu styles (when clicking with the right mouse button on the map area */
         padding: 3px 10px 3px 10px;
         white-space: nowrap;
         cursor: pointer;
@@ -1084,27 +1236,37 @@
         -webkit-transition: .2s;
         transition: .2s;
     }
-    .ORS-mapContextMenu .ORS-contextWaypoint:hover { /* Context menu styles (when clicking with the right mouse button on the map area) Class created on map.js */
+    
+    .ORS-mapContextMenu .ORS-contextWaypoint:hover {
+        /* Context menu styles (when clicking with the right mouse button on the map area) Class created on map.js */
         background-color: #b5152b;
         border-left: 2px solid #444;
     }
-    .ORS-mapContextMenu .leaflet-popup-content { /* Context menu styles (when clicking with the right mouse button on the map area) Class created on map.js */
+    
+    .ORS-mapContextMenu .leaflet-popup-content {
+        /* Context menu styles (when clicking with the right mouse button on the map area) Class created on map.js */
         -position: absolute;
         left: 2.5em;
         bottom: 0.7em;
     }
-    .ORS-mapContextMenu .leaflet-popup-content-wrapper { /* Context menu styles (when clicking with the right mouse button on the map area) Class created on map.js */
+    
+    .ORS-mapContextMenu .leaflet-popup-content-wrapper {
+        /* Context menu styles (when clicking with the right mouse button on the map area) Class created on map.js */
         background: transparent;
         box-shadow: none;
     }
-    .ORS-mapContextMenu .leaflet-popup-tip-container { /* Context menu styles (when clicking with the right mouse button on the map area) Class created on map.js */
+    
+    .ORS-mapContextMenu .leaflet-popup-tip-container {
+        /* Context menu styles (when clicking with the right mouse button on the map area) Class created on map.js */
         margin: 0 auto;
         position: relative;
         overflow: visible;
         width: 100px;
         height: 20px;
     }
-    .ORS-mapContextMenu .leaflet-popup-tip { /* Context menu styles (when clicking with the right mouse button on the map area */
+    
+    .ORS-mapContextMenu .leaflet-popup-tip {
+        /* Context menu styles (when clicking with the right mouse button on the map area */
         border: 2px solid #b5152b;
         box-shadow: none;
         background-color: transparent;
@@ -1112,7 +1274,9 @@
         width: 10px;
         height: 10px;
     }
-    #infoPermalink { /* for elements on permalink */
+    
+    #infoPermalink {
+        /* for elements on permalink */
         position: absolute;
         bottom: 2px;
         cursor: pointer;
@@ -1124,7 +1288,9 @@
         margin-left: 5px;
         /*font-family: 'Source Sans Pro', sans-serif;*/
     }
-    #bubble { /* for elements on permalink */
+    
+    #bubble {
+        /* for elements on permalink */
         display: none;
         position: fixed;
         width: 70px;
@@ -1139,19 +1305,26 @@
         border-radius: 5px;
         /*font-family: 'Source Sans Pro', sans-serif;*/
     }
-    #bubble #permaText { /* for elements on permalink */
+    
+    #bubble #permaText {
+        /* for elements on permalink */
         position: absolute;
         padding: 5px 2px 2px 20px;
     }
     
-    #bubble #permaText #copy { /* for elements on permalink */
+    #bubble #permaText #copy {
+        /* for elements on permalink */
         cursor: pointer;
     }
-    #bubble #permaText #open { /* for elements on permalink */
+    
+    #bubble #permaText #open {
+        /* for elements on permalink */
         margin-top: 5px;
         cursor: pointer;
     }
-    #bubble:after { /* for elements on permalink */
+    
+    #bubble:after {
+        /* for elements on permalink */
         content: '';
         position: relative;
         border-style: solid;
@@ -1163,7 +1336,9 @@
         left: -7px;
         top: 27px;
     }
-    #avoidables_info { /* avoidables info */
+    
+    #avoidables_info {
+        /* avoidables info */
         position: absolute;
         margin-left: 43px;
         top: 72px;
@@ -1171,18 +1346,24 @@
         display: none;
         width: 200px;
     }
-    #serviceTimeout { /* service timeout message */
+    
+    #serviceTimeout {
+        /* service timeout message */
         display: none;
         position: absolute;
         margin-left: 40px;
         top: 5px;
         z-index: 999;
     }
-    #serviceTimeout > label { /* service timeout message */
+    
+    #serviceTimeout > label {
+        /* service timeout message */
         width: 220px;
         line-height: 1.1;
     }
-    #newToOrs { /* new to ORS message */
+    
+    #newToOrs {
+        /* new to ORS message */
         display: none;
         width: 220px;
         line-height: 1.1;
@@ -1191,7 +1372,9 @@
         right: 100px;
         top: 10px;
     }
-    .ORS-logo { /* GIScience Logo */
+    
+    .ORS-logo {
+        /* GIScience Logo */
         background-image: url('../img/logo_giscience.png');
         background-repeat: no-repeat;
         background-position: center center;
@@ -1223,7 +1406,6 @@
         .ORS-map {
             order: 1;
         }
-        
         /* To hide the mouse position controller */
         .leaflet-container .leaflet-control-mouseposition {
             display: none;
@@ -1256,23 +1438,25 @@
             margin: 0 auto;
             left: 5vw;
         }
-
-        #sitePrefsModal > label , #feedbackModal > label{
+        #sitePrefsModal > label, #feedbackModal > label {
             margin-left: 200px;
         }
-        .ORS-logo { /* GIScience Logo */
-            bottom:25px;
+        .ORS-logo {
+            /* GIScience Logo */
+            bottom: 25px;
         }
-        .leaflet-bottom .leaflet-control-scale { /* for scale controller */
+        .leaflet-bottom .leaflet-control-scale {
+            /* for scale controller */
             margin-bottom: 50px;
         }
-        #infoPermalink{
-            margin-bottom:30px;
+        #infoPermalink {
+            margin-bottom: 30px;
         }
-        .ORS-Span { /* Styles for any input attribute to have a specific width */
-        width: 50%;
-        float:left;
-    }
+        .ORS-Span {
+            /* Styles for any input attribute to have a specific width */
+            width: 50%;
+            float: left;
+        }
     }
     /* ****************************************************************/
     /* END OF MOBILE STYLES (MEDIA QUERIES FOR MOBILE VISUALIZATION)  */
@@ -1280,6 +1464,7 @@
     /* *****************************************************************/
     /* START OF PRINTING STYLES (MEDIA QUERIES FOR PRINTING THE PAGE)  */
     /* *****************************************************************/
+    
     @media print {
         .ORS-navigation {
             display: none;
@@ -1307,7 +1492,7 @@
         }
         .ORS-map {
             order: 1;
-            height:20%;
+            height: 20%;
         }
     }
     /* ***************************************************************/
