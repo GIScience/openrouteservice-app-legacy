@@ -1267,6 +1267,7 @@ var Ui = (function(w) {
         var waypoints = [];
         for (var i = 0; i < $('.waypoint').length - 1; i++) {
             var address = $('#' + i).get(0);
+            console.log(address)
             if (address.querySelector('.address')) {
                 address = $(address).children(".waypointResult");
                 address = $(address).find("li").attr("data-shortaddress");
@@ -1827,28 +1828,28 @@ var Ui = (function(w) {
                     numInstructions++;
                     //add DOM elements
                     directionsContainer = new Element('div', {
-                        'class': 'directions-container clickable',
+                        'class': 'directions-container',
                         'data-layer': mapLayer,
                     });
                     var directionsImgDiv = new Element('div', {
-                        'class': 'directions-img'
+                        'class': 'img'
                     });
                     if (direction) {
                         directionsImgDiv.appendChild(direction);
                     }
                     var directionTextDiv = new Element('div', {
-                        'class': 'directions-text clickable routeInstructions',
+                        'class': 'text clickable routeInstructions',
                         'id': mapFeatureIds[2 * (numInstructions - 1) + 1]
                     }).update(text);
                     // modeContainer
                     var directionsModeContainer = new Element('div', {
-                        'class': 'directions-mode-container'
+                        'class': 'mode-container'
                     });
                     var directionsBorder = new Element('div', {
-                        'class': 'directions-mode-line'
+                        'class': 'line'
                     });
                     var distanceDiv = new Element('div', {
-                        'class': 'directions-mode-distance clickable',
+                        'class': 'distance clickable',
                         'id': mapFeatureIds[2 * (numInstructions - 1)],
                     }).update(distArr[1] + ' ' + distArr[2]);
                     directionsContainer.appendChild(directionsImgDiv);
@@ -1937,11 +1938,11 @@ var Ui = (function(w) {
                 });
             }
             var wayPoint = new Element('div', {
-                'class': 'directions-waypoint',
+                'class': 'instr-waypoint',
             });
             wayPoint.appendChild(icon);
             var shortAddress = new Element('div', {
-                'class': 'directions-waypoint-address',
+                'class': 'address',
                 'waypoint-id': viaCounter
             }).update(address);
             // modeContainer
@@ -1949,13 +1950,13 @@ var Ui = (function(w) {
                 'class': 'directions-mode-container'
             });
             var directionsBorder = new Element('div', {
-                'class': 'directions-mode-line'
+                'class': 'line'
             });
             directionsContainer.appendChild(wayPoint);
             // add info if via or endpoint
             if (wpType == 'end' || wpType == 'via') {
                 var pointInfo = new Element('div', {
-                    'class': 'directions-waypoint-info'
+                    'class': 'info'
                 }).update(Number(duration / 60).toFixed() + ' min' + ' / ' + Number(distance / 1000).toFixed(2) + ' km');
                 directionsContainer.appendChild(pointInfo);
             }

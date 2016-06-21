@@ -16,6 +16,7 @@
     /* START OF BLOCK STYLES (BASE LAYOUT STYLE) */
     /* *******************************************/
     /************************** BASE LAYOUT ****************************/
+    
     html, body {
         font-family: 'Source Sans Pro', sans-serif !important;
         font-size: 90%;
@@ -66,142 +67,68 @@
     /*******************************************************************/
     /* GENERAL ELEMENTS */
     
-    .searchWaypoint{
-        width:220px;
-        height: 30px;
-        text-align: center;
+    .searchWaypoint {
+        width: 220px;
+        height: 28px;
+        font-size: 100%;
     }
+    
     .routeExtrasContainer input {
         width: 30px;
         height: 30px;
-        text-align: center;
     }
-
+    
     .routeExtrasContainer select {
         width: 140px;
         height: 30px;
-        text-align: center;
     }
-
+    
     .routeExtrasContainer form {
-        margin-top:5px;
-        margin-bottom:5px;
+        margin-top: 5px;
+        margin-bottom: 5px;
     }
-
+    
     #wheelchairParameters select {
-        width:220px;
-        height:30px;
-        text-align: center;
+        width: 220px;
+        height: 30px;
     }
-
+    
     #wheelchairParameters form {
-        margin-top:5px;
-        margin-bottom:5px;
+        margin-top: 5px;
+        margin-bottom: 5px;
     }
-
+    
     .modal table {
         margin: 0 auto;
         width: 90%;
     }
-
-    table tr{
+    
+    table tr {
         height: 35px;
         width: 90%;
-        margin-right:5px;
+        margin-right: 5px;
     }
-
-    table td{
-        margin-right:10px;
-        margin-left:10px;
+    
+    table td {
+        margin-right: 10px;
+        margin-left: 10px;
     }
-
-    .modal table select{
+    
+    .modal table select {
         width: 220px;
         height: 30px;
     }
-
-    #feedbackModal table input{
-        width:100%;
+    
+    #feedbackModal table input {
+        width: 100%;
         height: 30px;
     }
-
-    #feedbackModal table textarea{
-        width:100%;
+    
+    #feedbackModal table textarea {
+        width: 100%;
         height: 120px;
         max-width: 100%;
     }
-    /*.modal-body form div{
-        position:relative;
-        margin: 0 auto;
-        margin-top: 5px;
-    }
-
-    .modal {
-        margin-top: 50px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .modal input, .modal select, .modal .label {
-        height: 30px;
-        font-size:100%;
-        margin-top: 5px;
-    }*/
-
-    /*input, .form-inline input, textarea, select, .form-inline select, .guiComponent > input {
-        font-family: 'Source Sans Pro', sans-serif;
-        border-radius: 0;
-        margin-bottom: 0px;
-        border-color: 1px solid #ccc;
-        font-size: 90%;
-        webkit-box-shadow: none;
-        -moz-box-shadow: none;
-        box-shadow: none;
-    }
-    
-    .form-inline select {
-        -webkit-appearance: none;
-    }
-    
-    select:not([multiple]) {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        background-position: right 50%;
-        background-repeat: no-repeat;
-        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAMCAYAAABSgIzaAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NDZFNDEwNjlGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NDZFNDEwNkFGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0NkU0MTA2N0Y3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo0NkU0MTA2OEY3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuGsgwQAAAA5SURBVHjaYvz//z8DOYCJgUxAf42MQIzTk0D/M+KzkRGPoQSdykiKJrBGpOhgJFYTWNEIiEeAAAMAzNENEOH+do8AAAAASUVORK5CYII=);
-        vertical-align: middle;
-    }
-    
-    select, input[type="file"] {
-        line-height: 1;
-    }
-    
-    input[type='checkbox'], input[type='radio'] {
-        vertical-align: middle;
-    }
-    
-    input[type="text"] {
-        background-color: #fff;
-        border: 1px solid #ccc;
-        -webkit-box-shadow: none;
-        -moz-box-shadow: none;
-        box-shadow: none;
-        border-color: #F0F0F0;
-        font-size: 90%;
-    }
-
-    a:link, a:visited {
-        text-decoration: none;
-    }
-    
-    a:hover, a:active {
-        text-decoration: none;
-    }
-    
-    a:focus {
-        background-color: none;
-        text-decoration: none;
-    }*/
     
     .right {
         float: right;
@@ -211,11 +138,17 @@
         float: left;
     }
     
+    .clear {
+        clear: both;
+        display: table;
+        width: 100%;
+    }
+    
     .transparent {
         background-color: transparent !important;
     }
     
-    /*.show {
+    .show {
         float: left;
         padding-left: 13px;
         cursor: pointer;
@@ -231,17 +164,13 @@
         float: left;
         padding-left: 13px;
         cursor: pointer;
-    }*/
+    }
     
     .calcGranularity {
         margin-top: 5px;
         width: 100px;
     }
     
-    /*.radioContainer {
-        padding: 0 0 0 5px;
-    }
-    */
     .clickable {
         cursor: pointer;
     }
@@ -250,46 +179,7 @@
         cursor: pointer;
         color: rgb(0, 161, 45);
     }
-    /*
-    .collapsibleBody > table {
-        width: 100%;
-        font-size: 13px;
-        border: 1px solid green;
-    }
     
-    .odd {
-        background-color: rgb(245, 245, 235);
-        /* fallback for unsupported rgba*/
-    /*    background-color: rgba(235, 235, 225, 0.65);
-    }
-    
-    .address {
-        list-style-type: none;
-        font-size: 90%;
-    }
-    
-    .input-append input {
-        border-radius: 0;
-    }
-    /*.radio,
-    .checkbox {
-        min-height: 20px;
-        padding-left: 20px;
-        vertical-align: middle;
-        border: 1px solid black;
-    }*/
-    
-    /*.collapsibleBody {
-        padding-left: 2px;
-        clear: left;
-    }
-    */
-    .clear:after {
-        clear: both;
-        content: "";
-        display: table;
-    }
-   
     .mCS-ors-theme.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
         /* generic scrollbar classes (controllers can be found in jquery.mCustomScrollbar.concat.min.js) */
         background-color: #707070;
@@ -342,19 +232,10 @@
         border: 1px solid black;
     }
     
-    /*.ORS-form {
-        margin: 0 0 10px;
-    }*/
-    
     .ORS-alert {
         margin-bottom: 0;
         border-radius: 0;
         margin-top: 5px;
-        /*font-family: 'Source Sans Pro', sans-serif;*/
-    }
-    
-    .ORS-info {
-        /*font-family: 'Source Sans Pro', sans-serif;*/
     }
     
     .ORS-close {
@@ -374,11 +255,6 @@
         display: none;
     }
     
-    .ORS-input-append {
-        font-size: 12px;
-        color: #707070;
-    }
-      
     .ORS-BtnPrimary i, .ORS-BtnPrimary-menu i {
         /* General style for ORS buttons on left menu and top menu (vehicle options on sidebar) */
         font-size: 105%;
@@ -435,16 +311,15 @@
         background-color: transparent;
         border-bottom: 1px solid #b5152b;
     }
-    
+  
     .ORS-BtnPrimary-menu.active, .ORS-BtnPrimary-menu:active, .ORS-BtnPrimary-menu:hover {
         /* General style for ORS buttons on left menu */
         box-shadow: none !important;
         -webkit-box-shadow: none !important;
         -moz-box-shadow: none !important;
         background-color: transparent;
-        border: none;
+        border-bottom: 1px solid #EBEBEB;
         color: #444 !important;
-        border-bottom: 1px solid transparent;
         /* prevents icons from changing size */
     }
     
@@ -462,6 +337,11 @@
         /* Buttons on top menu, to chose transportation type and route options menu */
         width: 44px;
         height: 40px;
+    }
+    
+    .table-borderless tbody tr td, .table-borderless tbody tr th, .table-borderless thead tr th {
+        border: none;
+        font-size: 100%;
     }
     
     .ORS-BtnFile {
@@ -492,7 +372,7 @@
         margin-left: 10px;
         font-size: 90%;
         display: inline-block;
-        text-align:center;
+        text-align: center;
         margin-top: 6px;
     }
     
@@ -502,14 +382,9 @@
         border: 0;
         color: #6392C2;
         display: inline-block;
-        position:absolute;
+        position: absolute;
         margin-top: 6px;
         margin-left: 5px;
-    }
-    
-    .ORS-Span {
-        /* Styles for any input attribute to have a specific width */
-        width: 60%;
     }
     /* *******************************************/
     /* END OF BLOCK STYLES (BASE LAYOUT STYLE)   */
@@ -560,33 +435,14 @@
         font-size: 18px;
     }
     
-    #sitePrefsModal label {
-        /* Site preferences menu (it pops up on the screen after clicking the preferences icon on top right side) */
-        float: left;
-        padding: 10px;
-    }
-    
-    /*#sitePrefsModal select {
-        /* Site preferences menu (it pops up on the screen after clicking the preferences icon on top right side) */
-        /*float: right;
-        /*margin-left: 10px;*/
-        /*margin-right: 10px;
-    }*/
-    
-    /*.ORS-PrefsDropDown {
-        /* Drop down boxes inside site preferences menu */
-        /*float: right;
-       ./* margin-right: 10px;
-    }*/
-    
     #returnmessage {
         /* Feedback Menu message after clicking on feedback button */
         font-size: 14px;
         color: green;
         text-align: center;
     }
-
     /* STYLE FOR SIDEBAR AND OBJECTS WITHIN THE SIDEBAR */
+    
     .ORS-menuPanel {
         /* Styles for menu panel on the left side of the sidebar */
         top: 0;
@@ -649,55 +505,11 @@
     }
     /* ROUTE SETTINGS */
     
-    .resultList {
-        /* General styles for address list dropdown (this list will popup when you type something in the "search address" input box) */
-        margin-bottom: 1em;
-    }
-    
-    .resultList li {
-        /* Styles for each item in the address list dropdown */
-        padding: 3px;
-        border-bottom: 1px dashed #c8c8c8;
-    }
-    
-    .resultList li:hover {
-        /* Styles to what happens when mouse is over the address list dropdown */
-        cursor: pointer;
-    }
-    /* avoid area controls*/
-    
-    #avoidAreas {
-        /*height: 30px;*/
-    }
-    
-    #avoidAreasTitle {
-        height: 30px;
-        float: left;
-        padding-top: 5px;
-        margin-right: 15px;
-    }
-    
     #avoidAreasError {
         margin-top: 10px;
         margin-bottom: 0px;
     }
     /* WAYPOINT OPTIONS */
-    
-    .addWaypoint {
-        padding-left: 40px;
-        padding-top: 5px;
-        min-height: 30px;
-        background-image: url('../img/marker-plus.png');
-        background-repeat: no-repeat;
-        background-size: 16px;
-        background-position: 8px 3px;
-        font-size: 90% !important;
-    }
-    
-    .guiComponent > input {
-        margin-bottom: 0px;
-        font-size: 13px;
-    }
     
     .waypointResult {
         margin-bottom: 10px;
@@ -705,13 +517,24 @@
         margin-left: 32px;
     }
     
+    .waypointResult li {
+        list-style: none;
+    }
+    
     .waypointResult li span {
         position: relative;
-        left: 10px;
+    }
+    
+    .addWaypoint {
+        padding-left: 40px;
+        padding-top: 5px;
+        min-height: 30px;
+        background: url('../img/marker-plus.png') no-repeat;
+        background-size: 16px;
+        background-position: 8px 3px;
     }
     
     .waypoint {
-        padding-left: 0px;
         padding-top: 0;
         min-height: 25px;
         margin-bottom: 10px !important;
@@ -752,7 +575,6 @@
         display: block;
         float: right;
         width: 18px;
-        font-size: 100%;
         padding-left: 3px;
         padding-top: 6px;
         content: "\f00d";
@@ -763,7 +585,6 @@
         display: block;
         float: right;
         width: 18px;
-        font-size: 100%;
         padding-left: 3px;
         padding-top: 6px;
         content: "\f062";
@@ -774,7 +595,6 @@
         display: block;
         float: right;
         width: 18px;
-        font-size: 100%;
         padding-left: 3px;
         padding-top: 6px;
         content: "\f063";
@@ -785,7 +605,8 @@
         display: block;
         float: right;
         width: 18px;
-        font-size: 85%;
+        padding-left: 3px;
+        padding-top: 6px;
         content: "\f021";
         font-family: FontAwesome;
     }
@@ -797,6 +618,23 @@
         font-size: 85%;
         content: "\f041";
         font-family: FontAwesome;
+    }
+    
+    .resultList {
+        /* General styles for address list dropdown (this list will popup when you type something in the "search address" input box) */
+        margin-bottom: 1em;
+    }
+    
+    .resultList li {
+        /* Styles for each item in the address list dropdown */
+        padding: 3px;
+        border-bottom: 1px dashed #c8c8c8;
+        list-style: none;
+    }
+    
+    .resultList li:hover {
+        /* Styles to what happens when mouse is over the address list dropdown */
+        cursor: pointer;
     }
     /* ROUTE INSTRUCTIONS */
     
@@ -825,13 +663,7 @@
         content: "\f0da";
         font-family: FontAwesome;
     }
-    
-    .routeInstructions {
-        /* route instructions lines */
-        padding-top: 5px;
-        padding-bottom: 5px;
-        font-size: 90%;
-    }
+    /* ROUTE INSTRUCTIONS */
     
     .directions-main {
         margin-top: 5px;
@@ -841,38 +673,101 @@
         padding: 8px 0;
     }
     
-    .directions-text {
+    .directions-container .text {
         padding: 3px 5px 0 30px;
         line-height: 16px;
         vertical-align: middle;
     }
     
-    .directions-waypoint {
+    .directions-container .instr-waypoint {
         margin-top: 25px;
         margin-left: 40px;
         line-height: 26px;
         position: absolute;
     }
     
-    .directions-waypoint-address {
+    .directions-container .address {
         margin-top: 21px;
         margin-left: 75px;
         line-height: 26px;
         font-size: 14px;
     }
     
-    .directions-waypoint-address .submain {
+    .directions-container .submain {
         font-size: 13px;
         color: #A0A0A0;
     }
     
-    .directions-waypoint-info {
+    .directions-container .info {
         padding: 6px 5px 0 75px;
         position: absolute;
         right: 16px;
         font-size: 12px;
         color: #777777;
     }
+    
+    .mode-container {
+        padding: 0 0 0 40px;
+        position: absolute;
+        left: 0px;
+        right: 0;
+        height: 30px;
+        line-height: normal;
+        font-weight: normal;
+    }
+    
+    .mode-container .distance {
+        top: 1px;
+        right: 15px;
+        padding-left: .5em;
+        padding-right: .5em;
+        z-index: 1;
+        position: absolute;
+        background-color: #fff;
+        font-size: 12px;
+    }
+    
+    .mode-container .line {
+        border-bottom: 1px solid #e6e6e6;
+        padding-top: 8px;
+        margin: 0 2em 0 0;
+    }
+    
+    .directions-warning-table {
+        color: red;
+    }
+    
+    .directions-warning-table tr td:first-child {
+        width: 37px;
+    }
+    
+    .directions-warning-table img {
+        height: 16px;
+        width: auto;
+        margin-left: 3px;
+    }
+    
+    .img {
+        margin-left: 3px;
+        position: absolute;
+    }
+    
+    .fa-rotate-45 {
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+    
+    .fa-rotate-315 {
+        -webkit-transform: rotate(315deg);
+        -moz-transform: rotate(315deg);
+        -ms-transform: rotate(315deg);
+        -o-transform: rotate(315deg);
+        transform: rotate(315deg);
+    }
+    /* ROUTE SUMMARY */
     
     .directions-summary-container {
         height: 20px;
@@ -909,68 +804,6 @@
         display: inline;
         font-size: 12px;
     }
-    
-    .directions-img {
-        margin-left: 3px;
-        position: absolute;
-    }
-    
-    .directions-mode-distance {
-        top: 1px;
-        right: 15px;
-        padding-left: .5em;
-        padding-right: .5em;
-        z-index: 1;
-        position: absolute;
-        background-color: #fff;
-        font-size: 12px;
-    }
-    
-    .directions-mode-container {
-        padding: 0 0 0 40px;
-        position: absolute;
-        left: 0px;
-        right: 0;
-        height: 30px;
-        line-height: normal;
-        font-weight: normal;
-    }
-    
-    .directions-mode-line {
-        border-bottom: 1px solid #e6e6e6;
-        padding-top: 8px;
-        margin: 0 2em 0 0;
-    }
-    
-    .directions-warning-table {
-        color: red;
-    }
-    
-    .directions-warning-table tr td:first-child {
-        width: 37px;
-    }
-    
-    .directions-warning-table img {
-        height: 16px;
-        width: auto;
-        margin-left: 3px;
-    }
-    
-    .fa-rotate-45 {
-        -webkit-transform: rotate(45deg);
-        -moz-transform: rotate(45deg);
-        -ms-transform: rotate(45deg);
-        -o-transform: rotate(45deg);
-        transform: rotate(45deg);
-    }
-    
-    .fa-rotate-315 {
-        -webkit-transform: rotate(315deg);
-        -moz-transform: rotate(315deg);
-        -ms-transform: rotate(315deg);
-        -o-transform: rotate(315deg);
-        transform: rotate(315deg);
-    }
     /* SURFACE INFORMATION */
     
     #routeTypesHead {
@@ -988,12 +821,10 @@
     #wayTypeList, #surfaceTypeList {
         min-height: 25px;
         padding-bottom: 5px;
-        margin-left: 5px;
     }
     
     #wayTypeList ul, #surfaceTypeList ul {
-        margin-left: 10px;
-        margin-top: -10px;
+        margin-left: -20px;
     }
     
     #wayTypeList li, #surfaceTypeList li {
@@ -1007,6 +838,10 @@
         font-size: 90%;
         position: relative;
         margin-left: -5px;
+    }
+    
+    .tooltip {
+        font-family: 'Source Sans Pro', sans-serif !important;
     }
     
     .d3-tip {
@@ -1091,7 +926,6 @@
     
     .myfile {
         float: left;
-        padding-left: 13px;
         pointer-events: none;
     }
     
@@ -1436,11 +1270,6 @@
         }
         #infoPermalink {
             margin-bottom: 30px;
-        }
-        .ORS-Span {
-            /* Styles for any input attribute to have a specific width */
-            width: 50%;
-            float: left;
         }
     }
     /* ****************************************************************/
