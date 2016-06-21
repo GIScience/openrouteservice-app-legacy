@@ -99,7 +99,38 @@
         margin-bottom:5px;
     }
 
-    .modal-body form div{
+    .modal table {
+        margin: 0 auto;
+        width: 90%;
+    }
+
+    table tr{
+        height: 35px;
+        width: 90%;
+        margin-right:5px;
+    }
+
+    table td{
+        margin-right:10px;
+        margin-left:10px;
+    }
+
+    .modal table select{
+        width: 220px;
+        height: 30px;
+    }
+
+    #feedbackModal table input{
+        width:100%;
+        height: 30px;
+    }
+
+    #feedbackModal table textarea{
+        width:100%;
+        height: 120px;
+        max-width: 100%;
+    }
+    /*.modal-body form div{
         position:relative;
         margin: 0 auto;
         margin-top: 5px;
@@ -115,7 +146,7 @@
         height: 30px;
         font-size:100%;
         margin-top: 5px;
-    }
+    }*/
 
     /*input, .form-inline input, textarea, select, .form-inline select, .guiComponent > input {
         font-family: 'Source Sans Pro', sans-serif;

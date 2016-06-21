@@ -273,35 +273,49 @@
 									</div>		
 								</div>
 								<div class="ORS-panel-sub ORS-wc ORS-hr" id="wheelchairParameters" style="display: none;">
-									<form class="form-horizontal ORS-form">
-										<select id="Surface" class="wheelchairSelect"> 
-											<option id="asphaltOption">Asphalt</option>
-											<option id="cobblestoneFlattenedOption">Flattened Cobblestone</option>
-											<option id="cobblestoneOption">Cobblestone</option>
-											<option id="compactedOption">Compacted</option>
-											<option id="allSurfacesOption">All Surfaces</option>
-										</select>
-										<span id="surfaceLabel">Surface</span>
-									</form>
-									<form class="form-horizontal ORS-form">			
-										<select id="Incline" class="wheelchairSelect">
-											<option id="threePercentOption">Up to 3%</option>
-											<option id="sixPercentOption">Up to 6%</option>
-											<option id="tenPercentOption">Up to 10%</option>
-											<option id="fifteenPercentOption">Up to 15%</option>
-											<option id="allInclinesOption">All Inclines</option>
-										</select>
-										<span id="inclineLabel">Maximum Incline</span>
-									</form>
-									<form class="form-horizontal ORS-form">		
-										<select id="SlopedCurb" class="wheelchairSelect">
-											<option id="threeCmOption">Up to 3cm</option>
-											<option id="sixCmOption">Up to 6cm</option>
-											<option id="tenCmOption">Up to 10cm</option>
-											<option id="allSlopedCurbesOption">All Sloped Curbs</option>
-										</select>
-										<span id="slopedCurbLabel">Maximum Sloped Curb</span>
-									</form>
+									<table>
+  										<tr>
+    										<td ><span id="surfaceLabel">Surface</span></td>
+    									</tr>
+    									<tr>
+    										<td> 
+    											<select id="Surface" class="wheelchairSelect"> 
+													<option id="asphaltOption">Asphalt</option>
+													<option id="cobblestoneFlattenedOption">Flattened Cobblestone</option>
+													<option id="cobblestoneOption">Cobblestone</option>
+													<option id="compactedOption">Compacted</option>
+													<option id="allSurfacesOption">All Surfaces</option>
+												</select>
+											</td>
+  										</tr>
+  										<tr>
+  											<td><span id="inclineLabel">Maximum Incline</span></td>
+  										</tr>
+  										<tr> 
+  											<td>
+  												<select id="Incline" class="wheelchairSelect">
+													<option id="threePercentOption">Up to 3%</option>
+													<option id="sixPercentOption">Up to 6%</option>
+													<option id="tenPercentOption">Up to 10%</option>
+													<option id="fifteenPercentOption">Up to 15%</option>
+													<option id="allInclinesOption">All Inclines</option>
+												</select>
+  											</td>
+  										</tr>
+  										<tr>
+  											<td><span id="slopedCurbLabel">Maximum Sloped Curb</span></td>
+  										</tr>
+  										<tr>
+  											<td>
+  												<select id="SlopedCurb" class="wheelchairSelect">
+													<option id="threeCmOption">Up to 3cm</option>
+													<option id="sixCmOption">Up to 6cm</option>
+													<option id="tenCmOption">Up to 10cm</option>
+													<option id="allSlopedCurbesOption">All Sloped Curbs</option>
+												</select>	
+  											</td>
+  										</tr>
+									</table>
 								</div>
 								<div class="ORS-car ORS-panel-sub ORS-hr-dark" id="avoidables" style="display: none;">
 									<h6>Avoid road types</h6>
@@ -520,21 +534,25 @@
 					</div>
 					<div data-id="ORS-aaContent" class="routeExtrasContainer ORS-panel" style="display: none;">
 						<div class="guiComponent ORS-panel-sub ORS-hr">
-							<form class="form-horizontal ORS-form">		
-								<select id="SlopedCurb" class="wheelchairSelect">
-									<option id="Default" value="RecursiveGrid">Recursive Grid</option>
-									<option id="Default2" value="TIN">TIN</option>
-								</select>
-								<span id ="accessibilityAnalysisMethod"></span>
-							</form>
-							<form class="form-horizontal ORS-form">	
-								<input type="text" id="accessibilityDistance" class="textfield" value="15">
-								<span id ="accessibilityAnalysisMinutes">Select Minutes</span>
-							</form>
-							<form class="form-horizontal ORS-form">		
-								<input type="text" id="accessibilityAnalysisIsochronesIntervall" class="textfield" value="3">
-								<span id ="accessibilityAnalysisIsochrones">Select Isochrone Interval</span>
-							</form>
+							<table>
+  								<tr>
+    								<td ><span id ="accessibilityAnalysisMethod"></span></td>
+    								<td class="right"> 
+    									<select id="SlopedCurb" class="wheelchairSelect">
+											<option id="Default" value="RecursiveGrid">Recursive Grid</option>
+											<option id="Default2" value="TIN">TIN</option>
+										</select>
+									</td>
+  								</tr>
+  								<tr>
+  									<td ><span id ="accessibilityAnalysisMinutes">Select Minutes</span></td> 
+  									<td class="left"><input type="text" id="accessibilityDistance" class="textfield" value="15"></td>
+  								</tr>
+  								<tr>
+  									<td ><span id ="accessibilityAnalysisIsochrones">Select Isochrone Interval</span></td>
+  									<td class="left"><input type="text" id="accessibilityAnalysisIsochronesIntervall" class="textfield" value="3"></td>
+  								</tr>
+							</table>
 							<div class="clear">
 								<div class="left">
     								<button class="btn btn-default ORS-BtnPrimary-control" data-container="ORS-mainPanel" id="analyzeAccessibility" type="button" data-toggle="tooltip" title="" data-original-title="Calculate accessibility"><i class="fa fa-fw fa-bullseye"></i><span id="analyzeAccessibilityLabel"></span></button>
@@ -615,29 +633,30 @@
 		        <a href="#" class="close" data-dismiss="modal" aria-hidden="true">×</a><h3 id="sitePrefs">Site Preferences</h3>
 		      </div>
 		      <div class="modal-body">
-		      	<form>
-				  <div class="form-group row">
-				  	<h4> Language </h4>
-				    <label class="left" id="languageText" ></label>
-				    <div class="controls">
-				      <select class="ORS-Span right" id="languagePrefs"></select>
-				    </div>
-				  </div>
-				  <div class="form-group row">
-				  	<h4> Language for routing instructions </h4>
-				    <label id="routingLanguageText"></label>
-				    <div class="controls">
-				    	<select class="ORS-Span right" id="routingLanguagePrefs"></select>
-				    </div>
-				  </div>
-				  <div class="form-group row">
-				  	<h4> Distance Units </h4>
-				    <label id="distanceUnitText"></label>
-				    <div class="controls">
-				    	<select class="ORS-Span right" id="unitPrefs"></select>
-				    </div>
-				  </div>
-				</form>
+
+		      	<table>
+  					<tr>
+    					<td><h4> Language for interface </h4></td>
+  					</tr>
+  					<tr>
+    					<td><label class="left" id="languageText" ></label></td>
+    					<td><select class="ORS-Span right" id="languagePrefs"></select></td> 
+  					</tr>
+  					<tr>
+    					<td><h4> Language for routing instructions </h4></td>
+  					</tr>
+  					<tr>
+    					<td><label id="routingLanguageText"></label></td>
+    					<td><select class="ORS-Span right" id="routingLanguagePrefs"></select></td> 
+  					</tr>
+  					<tr>
+    					<td><h4> Distance Units </h4></td>
+  					</tr>
+  					<tr>
+    					<td><label id="distanceUnitText"></label></td>
+    					<td><select class="ORS-Span right" id="unitPrefs"></select></td> 
+  					</tr>
+				</table>
 		      </div>
 		      <div class="modal-footer">
 		        <button class="btn btn-default ORS-BtnPrimary-control" id="savePrefsBtn">Save</button>
@@ -653,30 +672,27 @@
 		        <a href="#" class="close" data-dismiss="modal" aria-hidden="true">×</a><h3 id="feedback">Feedback</h3>
 		      </div>
 		      <div class="modal-body feedback">
-		      	<form>
-				  <div class="form-group row">
-				  	<p id="returnmessage"></p>
-				  	<div class="control-group">
-				    	<label>Name: <span>*</span></label>
-				    	<br>
-						<input class="ORS-Span" type="text" id="name" placeholder="Name"/>
-					</div>
-				  </div>
-				  <div class="form-group row">
-				  	<div class="control-group">
-						<label>Email: <span>*</span></label>
-						<br>
-						<input class="ORS-Span" type="text" id="email" placeholder="Email"/>
-					</div>
-				  </div>
-				  <div class="form-group row">
-				  	<div class="control-group">
-						<label>Message:</label>
-						<br>
-						<textarea rows="5" class="ORS-Span" id="message" placeholder="Type your message here"></textarea>
-					</div>
-				  </div>
-				</form>
+		      	<table>
+  					<tr>
+    					<td><label>Name: <span style="color:red">*</span></label></td>
+  					</tr>
+  					<tr>
+  						<td><input type="text" id="name" placeholder="Name"/></td> 
+  					</tr>
+  					<tr>
+  						<td><label>Email: <span style="color:red">*</span></label></td>
+  					</tr>
+  					<tr>
+  						<td><input class="ORS-Span" type="text" id="email" placeholder="Email"/></td>
+  					</tr>
+  					<tr>
+  						<td><label>Message:</label></td>
+  					</tr>
+  					<tr>
+  						<td><textarea rows="5" class="ORS-Span" id="message" placeholder="Type your message here"></textarea></td>
+  					</tr>
+				</table>
+				<p><span style="color:red; font-size:150%"><b>*</b></span>: Mandatory field </p>
 		      </div>
 		      <div class="modal-footer">
 		        <button class="btn btn-default ORS-BtnPrimary-control" id="submit_feedback">Send Message</button>
