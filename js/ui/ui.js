@@ -1501,7 +1501,7 @@ var Ui = (function(w) {
                 contentDiv.appendChild(unit);
                 // save elevation true if ascent or descent over 40 meters
                 if (key == 'ascent' ||  key == 'descent') {
-                    if (routeSummary[key][1] > 40) elevation = true;
+                    if (routeSummary[key][1] > 20) elevation = true;
                 }
             }
             summaryItem.appendChild(iconDiv);
@@ -2072,7 +2072,7 @@ var Ui = (function(w) {
      * displays an error message when no route between the selected waypoints could be found or another error happened during route calculation
      */
     function showRoutingError() {
-        var el = $('#ORS-routeError');
+        var el = $('#ƒrouteError');
         el.html(preferences.translate('noRouteAvailable'));
         el.show();
     }

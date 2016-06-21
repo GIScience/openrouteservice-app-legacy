@@ -69,65 +69,7 @@
     
     .searchWaypoint {
         width: 220px;
-        height: 28px;
         font-size: 100%;
-    }
-    
-    .routeExtrasContainer input {
-        width: 30px;
-        height: 30px;
-    }
-    
-    .routeExtrasContainer select {
-        width: 140px;
-        height: 30px;
-    }
-    
-    .routeExtrasContainer form {
-        margin-top: 5px;
-        margin-bottom: 5px;
-    }
-    
-    #wheelchairParameters select {
-        width: 220px;
-        height: 30px;
-    }
-    
-    #wheelchairParameters form {
-        margin-top: 5px;
-        margin-bottom: 5px;
-    }
-    
-    .modal table {
-        margin: 0 auto;
-        width: 90%;
-    }
-    
-    table tr {
-        height: 35px;
-        width: 90%;
-        margin-right: 5px;
-    }
-    
-    table td {
-        margin-right: 10px;
-        margin-left: 10px;
-    }
-    
-    .modal table select {
-        width: 220px;
-        height: 30px;
-    }
-    
-    #feedbackModal table input {
-        width: 100%;
-        height: 30px;
-    }
-    
-    #feedbackModal table textarea {
-        width: 100%;
-        height: 120px;
-        max-width: 100%;
     }
 
     .right {
@@ -311,7 +253,7 @@
         background-color: transparent;
         border-bottom: 1px solid #b5152b;
     }
-  
+
     .ORS-BtnPrimary-menu.active, .ORS-BtnPrimary-menu:active, .ORS-BtnPrimary-menu:hover {
         /* General style for ORS buttons on left menu */
         box-shadow: none !important;
@@ -878,17 +820,6 @@
         left: 0;
     }
     /* ACCESSIBILITY ANALYSIS */
-    
-    #accessibilityDistance, #accessibilityAnalysisIsochronesIntervall {
-        width: 30px;
-        /*overwrite settings from bootstrap for input fields*/
-        padding: 2px 2px 0px 2px;
-        margin-right: 10px;
-        vertical-align: baseline;
-        text-align: center;
-        font-size: 90%;
-    }
-    
     #accessibilityAnalysisMethodList {
         width: 140px;
     }
