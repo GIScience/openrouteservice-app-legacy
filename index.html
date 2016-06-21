@@ -305,69 +305,48 @@
                                     <h6>
                                         HGV properties
                                     </h6>
-                                    <ul class="nav nav-pills" data-tabs="tabs" id="TruckTabs">
-                                        <li class="active">
-                                            <a data-toggle="tab" href="#length" id="trucklengthLabel">
-                                                length
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a data-toggle="tab" href="#width" id="truckwidthLabel">
-                                                width
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a data-toggle="tab" href="#height" id="truckheightLabel">
-                                                height
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a data-toggle="tab" href="#weight" id="truckweightLabel">
-                                                weight
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a data-toggle="tab" href="#axleload" id="truckaxleloadLabel">
-                                                load
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    <div class="tab-content" id="my-tab-content">
-                                        <div class="tab-pane active" id="length">
-                                            <form class="ORS-Slider">
-                                                <input class="form-control" type="text" value="15" min="0" max="50" autocomplete="off" id="value_length" oninput="this.form.value_length_slide.value=this.value","m">
-                                                <input id="value_length_slide" max="50" min="0" oninput="this.form.value_length.value=this.value" step="0.5" type="range" value="15"/>
-                                            </form>
-                                        </div>
-                                        <div class="tab-pane" id="width">
-                                            <form class="ORS-Slider">
-                                                <input class="form-control" autocomplete="off" id="value_width" max="20" min="0" oninput="this.form.value_width_slide.value=this.value" type="text" value="4">
-                                                <input id="value_width_slide" max="20" min="0" oninput="this.form.value_width.value=this.value" step="0.5" type="range" value="4"/>
-                                                </input>
-                                            </form>
-                                        </div>
-                                        <div class="tab-pane" id="height">
-                                            <form class="ORS-Slider">
-                                                <input class="form-control"  autocomplete="off" id="value_height" oninput="this.form.value_height_slide.value=this.value" type="text" value="4">
-                                                <input id="value_height_slide" max="15" min="0" oninput="this.form.value_height.value=this.value" step="0.5" type="range" value="4"/>
-                                                </input>
-                                            </form>
-                                        </div>
-                                        <div class="tab-pane" id="weight">
-                                            <form class="ORS-Slider">
-                                                <input class="form-control"  autocomplete="off" id="value_weight" oninput="this.form.value_weight_slide.value=this.value" type="text" value="7">
-                                                <input id="value_weigth_slide" max="50" min="0" oninput="this.form.value_weight.value=this.value" step="0.5" type="range" value="4"/>
-                                                </input>
-                                            </form>
-                                        </div>
-                                        <div class="tab-pane" id="axleload">
-                                            <form class="ORS-Slider">
-                                                <input class="form-control " autocomplete="off" id="value_axleload" oninput="this.form.value_axleload_slide.value=this.value" type="text" value="2">
-                                                <input id="value_axleload_slide" max="20" min="0" oninput="this.form.value_axleload.value=this.value" step="0.5" type="range" value="4"/>
-                                                </input>
-                                            </form>
-                                        </div>
-                                    </div>
+                                    <table class="table table-borderless">
+                                       	<tr>
+                                       	    <td>
+                                       	    	<span href="#length" id="trucklengthLabel">Lenght</span>
+                                       	    </td>
+                                       	    <td>
+                                       	        <input class="form-control" type="number" value="15" min="0" max="50" autocomplete="off" id="value_length" oninput="this.form.value_length_slide.value=this.value","m">
+                                       	    </td>
+                                       	</tr>
+                                       	<tr>
+                                       	    <td>
+                                       	    	<span href="#width" id="truckwidthLabel">Width</span>
+                                       	    </td>
+                                       	    <td>
+                                       	        <input class="form-control ORS-form" autocomplete="off" id="value_width" max="20" min="0" oninput="thisform.value_width_slide.value=this.value" type="number" value="4">
+                                       	    </td>
+                                       	</tr> 
+                                       	<tr>
+                                       	    <td>
+                                       	    	<span href="#height" id="truckheightLabel">Height</span>
+                                       	    </td>
+                                       	    <td>
+                                       	        <input class="form-control"  autocomplete="off" id="value_height" oninput="this.formvalue_height_slide.value=this.value" type="number" value="4">
+                                       	    </td>
+                                       	</tr> 
+                                       	<tr>
+                                       	    <td>
+                                       	    	<span href="#weight" id="truckweightLabel">Weight</span>
+                                       	    </td>
+                                       	    <td>
+                                       	        <input class="form-control"  autocomplete="off" id="value_weight" oninput="this.formvalue_weight_slide.value=this.value" type="number" value="7">
+                                       	    </td>
+                                       	</tr> 
+                                       	<tr>
+                                       	    <td>
+                                       	    	<span href="#axleload" id="truckaxleloadLabel">Load</span>
+                                       	    </td>
+                                       	    <td>
+                                       	        <input class="form-control " autocomplete="off" id="value_axleload" oninput="this.formvalue_axleload_slide.value=this.value" type="number" value="2">
+                                       	    </td>          	    
+                                       	</tr>  
+                                    </table>
                                 </div>
                                 <div class="ORS-panel-sub ORS-wc-HIDE ORS-hr-dark" id="wheelchairOptions" style="display: none;">
                                     <h6>

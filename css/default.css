@@ -129,7 +129,7 @@
         height: 120px;
         max-width: 100%;
     }
-    
+
     .right {
         float: right;
     }
@@ -342,7 +342,11 @@
     .table-borderless tbody tr td, .table-borderless tbody tr th, .table-borderless thead tr th {
         border: none;
         font-size: 100%;
+        
+        vertical-align: middle;
     }
+
+
     
     .ORS-BtnFile {
         /* For file upload buttons */
