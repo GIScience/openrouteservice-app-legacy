@@ -438,14 +438,14 @@
         position: relative;
     }
     
-    /*.addWaypoint {
+    .addWaypoint{
         padding-left: 40px;
         padding-top: 5px;
         min-height: 30px;
         /*background: url('../img/marker-plus.png') no-repeat;
         background-size: 16px;
         background-position: 8px 3px;*/
-    /*}
+    }
 
     /*.addWaypoint:before {
         display: block;
