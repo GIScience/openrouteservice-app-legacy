@@ -312,26 +312,6 @@
         cursor: pointer;
     }
     
-    .ORS-Slider input[type="text"] {
-        /* All sliders with ORS Style */
-        width: 45px;
-        margin-left: 10px;
-        font-size: 90%;
-        display: inline-block;
-        text-align: center;
-        margin-top: 6px;
-    }
-    
-    .ORS-Slider input[type="range"] {
-        /* All Sliders with ORS Style */
-        width: 130px;
-        border: 0;
-        color: #6392C2;
-        display: inline-block;
-        position: absolute;
-        margin-top: 6px;
-        margin-left: 5px;
-    }
     /* *******************************************/
     /* END OF BLOCK STYLES (BASE LAYOUT STYLE)   */
     /* *******************************************/
