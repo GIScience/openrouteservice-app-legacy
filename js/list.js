@@ -56,15 +56,73 @@ list = {
     // divs to show or hide for specific profiles
     showElements: {
         All: ['.ORS-all'],
-        Car: ['.ORS-car'],
-        Wheelchair: ['.ORS-wc'],
-        Pedestrian: ['.ORS-ped'],
-        Bicycle: ['.ORS-bike'],
-        HeavyVehicle: ['.ORS-hgv']
+        car: ['.ORS-car'],
+        wheelchair: ['.ORS-wc'],
+        pedestrian: ['.ORS-ped'],
+        bicycle: ['.ORS-bike'],
+        heavyvehicle: ['.ORS-hgv']
     },
     menuElements: ['ORS-routeContent', 'ORS-aaContent', 'ORS-cloudContent'],
     // waytype and surface type information
     tmc: {},
+    SteepnessType: [{
+        '-5': {
+            text: '16%+',
+            color: '#00E5AA'
+        }
+    }, {
+        '-4': {
+            text: '10-15%',
+            color: '#13CE9D'
+        }
+    }, {
+        '-3': {
+            text: '7-9%',
+            color: '#26B791'
+        }
+    }, {
+        '-2': {
+            text: '4-6%',
+            color: '#39A085'
+        }
+    }, {
+        '-1': {
+            text: '1-3%',
+            color: '#4C8979'
+        }
+    }, {
+        '0': {
+            text: '0%',
+            color: '#5F726D'
+        }
+    }, {
+        '1': {
+            text: '1-3%',
+            color: '#725B61'
+        }
+    }, {
+        '2': {
+            text: '4-6%',
+            color: '#854455'
+        }
+    }, {
+        '3': {
+            text: '7-9%',
+            color: '#982D49'
+        }
+    }, {
+        '4': {
+            text: '10-15%',
+            color: '#AB163D'
+        }
+    }, {
+        '5': {
+            text: '16%+',
+            color: '#BF0031'
+        }
+    }],
+    divSteepnessTypes: '#steepnessType',
+    listSteepnessTypesContainer: '#steepnessTypeList',
     WayType: {
         0: 'Other',
         1: 'StateRoad',
@@ -102,7 +160,7 @@ list = {
         17: 'Grass',
         18: 'GrassPaver'
     },
-    SurfaceTypeColors: ['#8be57d', '#7dce70', '#6fb764', '#61a057', '#53894b', '#45723e', '#375b32', '#294425', '#1b2d19', '#0d160c'],
+    SurfaceTypeColors: ['#E5D600', '#E0CA00', '#DCBF00', '#D8B400', '#D4A800', '#CF9D00', '#CB9200', '#C78600', '#C37B00', '#BF7000'],
     divSurfaceTypes: '#surfaceType',
     listSurfaceTypesContainer: '#surfaceTypeList'
 };
