@@ -351,6 +351,11 @@
                                 <div class="ORS-panel-sub ORS-wc ORS-hr" id="wheelchairParameters" style="display: none;">
                                     <table class="table table-borderless">
                                         <tr>
+                                        	<td>
+                                                <span id="surfaceLabel">
+                                                    Surface
+                                                </span>
+                                            </td>
                                             <td>
                                                 <select class="form-control input-sm wheelchairSelect" id="Surface">
                                                     <option id="asphaltOption">
@@ -370,13 +375,13 @@
                                                     </option>
                                                 </select>
                                             </td>
-                                            <td>
-                                                <span id="surfaceLabel">
-                                                    Surface
-                                                </span>
-                                            </td>
                                         </tr>
                                         <tr>
+                                        	<td>
+                                                <span id="inclineLabel">
+                                                    Maximum Incline
+                                                </span>
+                                            </td>
                                             <td>
                                                 <select class="form-control input-sm wheelchairSelect" id="Incline">
                                                     <option id="threePercentOption">
@@ -396,13 +401,13 @@
                                                     </option>
                                                 </select>
                                             </td>
-                                            <td>
-                                                <span id="inclineLabel">
-                                                    Maximum Incline
-                                                </span>
-                                            </td>
                                         </tr>
                                         <tr>
+                                        	<td>
+                                                <span id="slopedCurbLabel">
+                                                    Maximum Sloped Curb
+                                                </span>
+                                            </td>
                                             <td>
                                                 <select class="form-control input-sm wheelchairSelect" id="SlopedCurb">
                                                     <option id="threeCmOption">
@@ -418,12 +423,7 @@
                                                         All Sloped Curbs
                                                     </option>
                                                 </select>
-                                            </td>
-                                            <td>
-                                                <span id="slopedCurbLabel">
-                                                    Maximum Sloped Curb
-                                                </span>
-                                            </td>
+                                            </td>   
                                         </tr>
                                     </table>
                                 </div>
@@ -669,7 +669,13 @@
                                     </div>
                                 </div>
                                 <div class="addWaypoint clickable" id="addWaypoint">
-                                    add waypoint
+                                	<div class="fa-stack fa-lg">
+                                		<i class="fa fa-plus fa-stack-1x"></i>
+                                		<i class="fa fa-map-marker fa-stack-2x"></i>
+                                	</div>
+                                	<span style="display:inline-block">
+                                    	add waypoint
+                                    </span>
                                 </div>
                                 <div class="clear">
                                     <div class="left" id="viaOptimizePanel">
@@ -990,7 +996,7 @@
                                     <label>Message:</label>
                                 </td>
                                 <td>
-                                    <textarea class="form-control input-sm" id="message" placeholder="Type your message here" rows="5"></textarea>
+                                    <textarea style="resize:vertical;" class="form-control input-sm" id="message" placeholder="Type your message here" rows="5"></textarea> 
                                 </td>
                             </tr>
                         </table>

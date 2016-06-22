@@ -438,15 +438,28 @@
         position: relative;
     }
     
-    .addWaypoint {
+    .addWaypoint{
         padding-left: 40px;
         padding-top: 5px;
         min-height: 30px;
-        background: url('../img/marker-plus.png') no-repeat;
+        /*background: url('../img/marker-plus.png') no-repeat;
         background-size: 16px;
-        background-position: 8px 3px;
+        background-position: 8px 3px;*/
     }
-    
+
+    /*.addWaypoint:before {
+        display: block;
+        float: right;
+        width: 30px;
+        height: 30px;
+        content: "\f041";
+        font-family: FontAwesome;
+        color: #00FF00;
+        line-height:30px;
+        font-size:20px;
+        text-align:center;
+    }*/
+
     .waypoint {
         padding-top: 0;
         min-height: 25px;
@@ -460,30 +473,83 @@
         height: 25px;
     }
     
-    .waypoint-icon.start {
+    /*.waypoint-icon.start {
         background: url(../img/marker-start.png) no-repeat;
         background-size: 16px;
         background-position: 8px 3px;
+    }*/
+
+    .waypoint-icon.start:before{
+        display: block;
+        float: right;
+        width: 30px;
+        height: 30px;
+        content: "\f041";
+        font-family: FontAwesome;
+        color: #00FF00;
+        line-height:30px;
+        font-size:20px;
+        text-align:center;
+
     }
-    
-    .waypoint-icon.via {
+
+    /*.waypoint-icon.via {
         background: url(../img/marker-via.png) no-repeat;
         background-size: 16px;
         background-position: 8px 3px;
+    }*/
+
+    .waypoint-icon.via:before {
+        display: block;
+        float: right;
+        width: 30px;
+        height: 30px;
+        content: "\f041";
+        font-family: FontAwesome;
+        color: yellow;
+        line-height:30px;
+        font-size:20px;
+        text-align:center;
     }
     
-    .waypoint-icon.end {
+    /*.waypoint-icon.end {
         background: url(../img/marker-end.png) no-repeat;
         background-size: 16px;
         background-position: 8px 3px;
+    }*/
+
+    .waypoint-icon.end:before {
+        display: block;
+        float: right;
+        width: 30px;
+        height: 30px;
+        content: "\f041";
+        font-family: FontAwesome;
+        color: red;
+        line-height:30px;
+        font-size:20px;
+        text-align:center;
     }
     
-    .waypoint-icon.unset {
+    /*.waypoint-icon.unset {
         background: url(../img/marker.png) no-repeat;
         background-size: 16px;
         background-position: 8px 3px;
-    }
+    }*/
     
+    .waypoint-icon.unset:before {
+        display: block;
+        float: right;
+        width: 30px;
+        height:30px;
+        content: "\f041";
+        font-family: FontAwesome;
+        color: #B8B8B8;
+        line-height:30px;
+        font-size:20px;
+        text-align:center;
+    }
+
     .removeWaypoint:before {
         display: block;
         float: right;
