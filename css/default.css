@@ -439,26 +439,46 @@
     }
     
     .addWaypoint{
-        padding-left: 40px;
         padding-top: 5px;
         min-height: 30px;
-        /*background: url('../img/marker-plus.png') no-repeat;
-        background-size: 16px;
-        background-position: 8px 3px;*/
+        cursor:pointer;
     }
 
-    /*.addWaypoint:before {
-        display: block;
-        float: right;
-        width: 30px;
-        height: 30px;
-        content: "\f041";
-        font-family: FontAwesome;
-        color: #00FF00;
+    #plusSign{
+        color:#B8B8B8;
+        line-height:30px;
+        font-size:10px;
+        text-align:right;
+        bottom: 0;
+        left: -10px;
+        text-stroke-width: 1px;
+        text-stroke-color: #707070;
+        -o-text-stroke-width: 1px;
+        -o-text-stroke-color: #707070;
+        -ms-text-stroke-width: 1px;
+        -ms-text-stroke-color: #707070;
+        -moz-text-stroke-width: 1px;
+        -moz-text-stroke-color: #707070;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: #707070;
+    }
+
+    #mapMarker{
+        color:#B8B8B8;
         line-height:30px;
         font-size:20px;
         text-align:center;
-    }*/
+        text-stroke-width: 1px;
+        text-stroke-color: #707070;
+        -o-text-stroke-width: 1px;
+        -o-text-stroke-color: #707070;
+        -ms-text-stroke-width: 1px;
+        -ms-text-stroke-color: #707070;
+        -moz-text-stroke-width: 1px;
+        -moz-text-stroke-color: #707070;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: #707070;
+    }
 
     .waypoint {
         padding-top: 0;
@@ -467,17 +487,11 @@
     }
     
     .waypoint-icon {
-        display: inline;
+        display: inline-block;
         float: left;
         width: 33px;
         height: 25px;
     }
-    
-    /*.waypoint-icon.start {
-        background: url(../img/marker-start.png) no-repeat;
-        background-size: 16px;
-        background-position: 8px 3px;
-    }*/
 
     .waypoint-icon.start:before{
         display: block;
@@ -486,18 +500,21 @@
         height: 30px;
         content: "\f041";
         font-family: FontAwesome;
-        color: #00FF00;
+        color: #00b100;
         line-height:30px;
         font-size:20px;
         text-align:center;
-
+        text-stroke-width: 1px;
+        text-stroke-color: #707070;
+        -o-text-stroke-width: 1px;
+        -o-text-stroke-color: #707070;
+        -ms-text-stroke-width: 1px;
+        -ms-text-stroke-color: #707070;
+        -moz-text-stroke-width: 1px;
+        -moz-text-stroke-color: #707070;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: #707070;
     }
-
-    /*.waypoint-icon.via {
-        background: url(../img/marker-via.png) no-repeat;
-        background-size: 16px;
-        background-position: 8px 3px;
-    }*/
 
     .waypoint-icon.via:before {
         display: block;
@@ -506,17 +523,21 @@
         height: 30px;
         content: "\f041";
         font-family: FontAwesome;
-        color: yellow;
+        color: #ffb74b;
         line-height:30px;
         font-size:20px;
         text-align:center;
+        text-stroke-width: 1px;
+        text-stroke-color: #707070;
+        -o-text-stroke-width: 1px;
+        -o-text-stroke-color: #707070;
+        -ms-text-stroke-width: 1px;
+        -ms-text-stroke-color: #707070;
+        -moz-text-stroke-width: 1px;
+        -moz-text-stroke-color: #707070;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: #707070;
     }
-    
-    /*.waypoint-icon.end {
-        background: url(../img/marker-end.png) no-repeat;
-        background-size: 16px;
-        background-position: 8px 3px;
-    }*/
 
     .waypoint-icon.end:before {
         display: block;
@@ -525,17 +546,21 @@
         height: 30px;
         content: "\f041";
         font-family: FontAwesome;
-        color: red;
+        color: #ff6f4b;
         line-height:30px;
         font-size:20px;
         text-align:center;
+        text-stroke-width: 1px;
+        text-stroke-color: #707070;
+        -o-text-stroke-width: 1px;
+        -o-text-stroke-color: #707070;
+        -ms-text-stroke-width: 1px;
+        -ms-text-stroke-color: #707070;
+        -moz-text-stroke-width: 1px;
+        -moz-text-stroke-color: #707070;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: #707070;
     }
-    
-    /*.waypoint-icon.unset {
-        background: url(../img/marker.png) no-repeat;
-        background-size: 16px;
-        background-position: 8px 3px;
-    }*/
     
     .waypoint-icon.unset:before {
         display: block;
@@ -548,6 +573,16 @@
         line-height:30px;
         font-size:20px;
         text-align:center;
+        text-stroke-width: 1px;
+        text-stroke-color: #707070;
+        -o-text-stroke-width: 1px;
+        -o-text-stroke-color: #707070;
+        -ms-text-stroke-width: 1px;
+        -ms-text-stroke-color: #707070;
+        -moz-text-stroke-width: 1px;
+        -moz-text-stroke-color: #707070;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: #707070;
     }
 
     .removeWaypoint:before {

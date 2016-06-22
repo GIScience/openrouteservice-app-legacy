@@ -108,7 +108,7 @@ var Languages = (function(w) {'use strict';
 		
 		//routing
 		$('.searchWaypoint').attr('placeholder', p.translate('enterAddress'));
-		$('#addWaypoint').html(p.translate('addWaypoint'));
+		$('#addWaypointText').html(p.translate('addWaypoint'));
 		$('#routeSummaryHead').html(p.translate('routeSummary'));
 		$('#routeInstructionHead').html(p.translate('routeInstructions'));
 		$('#routeTypesHead').html(p.translate('routeSurface'));
