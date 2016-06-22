@@ -376,17 +376,10 @@
         float: left;
         margin: 0px 10px 0px 0;
         line-height: 40px;
-        padding: 0px 5px 0px 5px;
         color: white;
         font-size: 18px;
     }
-    
-    #returnmessage {
-        /* Feedback Menu message after clicking on feedback button */
-        font-size: 14px;
-        color: green;
-        text-align: center;
-    }
+
     /* STYLE FOR SIDEBAR AND OBJECTS WITHIN THE SIDEBAR */
     
     .ORS-menuPanel {
