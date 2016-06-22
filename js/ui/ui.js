@@ -1609,7 +1609,7 @@ var Ui = (function(w) {
             var color = list.SteepnessType[i][Object.keys(list.SteepnessType[i])[0]].color;
             typelist.push({
                 type: text,
-                typetranslated: text + ' (steepness)',
+                typetranslated: text,
                 color: color,
                 distance: 0,
                 ids: [],
@@ -1648,7 +1648,6 @@ var Ui = (function(w) {
         });
         var a = 0;
         var y0 = 0;
-        console.log(typelist)
         for (type in typelist) {
             if (typelist[type].distance > 0) {
                 // consider percentages less than 1
@@ -1665,6 +1664,9 @@ var Ui = (function(w) {
         var typelistCleaned = typelist.filter(function(el) {
             return el.distance !== 0;
         });
+        console.log(typelistCleaned[0])
+        console.log(typelistCleaned[0].type)
+        typelistCleaned[0].typetranslated = typelistCleaned[0].typetranslated + ' (steepness)';
         console.log(typelistCleaned)
         return typelistCleaned;
     }
@@ -2254,6 +2256,7 @@ var Ui = (function(w) {
      * updates options for specific profiles
      */
     function updateProfileOptions(currentProfile) {
+        console.log(currentProfile)
         // show profile specific route options
         var i, el;
         for (var profile in list.showElements) {

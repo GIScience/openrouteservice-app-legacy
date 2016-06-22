@@ -1352,10 +1352,13 @@ var Controller = (function(w) {
         routeOpt = preferences.loadRouteOptions(routeOpt);
         if (routeOpt === undefined || routeOpt === null || routeOpt == 'undefined') {
             ui.setRouteOption(list.routePreferences.get('car'));
+            ui.updateProfileOptions(list.routePreferences.get('car'));
         } else {
             ui.setRouteOption(routeOpt);
+            //lower case to find key
+            routeOpt = routeOpt.toLowerCase();
+            ui.updateProfileOptions(list.routePreferences.get(routeOpt)[0]);
         }
-        ui.updateProfileOptions();
         routeOptType = preferences.loadRouteOptionsType(routeOptType);
         ui.setRouteOptionType(routeOptType);
         routeWeight = preferences.loadRouteWeight(routeWeight);
