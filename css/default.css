@@ -860,6 +860,10 @@
     .tooltip {
         font-family: 'Source Sans Pro', sans-serif !important;
     }
+
+    .tooltip:active {
+        display:none;
+    }
     
     .d3-tip {
         line-height: 1;
