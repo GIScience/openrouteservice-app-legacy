@@ -793,26 +793,26 @@
         position: relative;
     }
     
-    #wayType, #surfaceType {
+    #wayType, #surfaceType, #steepnessType {
         width: 100%;
     }
     
-    #wayTypeList, #surfaceTypeList {
+    #wayTypeList, #surfaceTypeList, #steepnessTypeList {
         min-height: 25px;
         padding-bottom: 5px;
     }
     
-    #wayTypeList ul, #surfaceTypeList ul {
+    #wayTypeList ul, #surfaceTypeList ul, #steepnessTypeList ul {
         margin-left: -20px;
     }
     
-    #wayTypeList li, #surfaceTypeList li {
+    #wayTypeList li, #surfaceTypeList li, #steepnessTypeList li {
         float: left;
         font-size: 90%;
         margin-right: 20px;
     }
     
-    #wayTypeList li span, #surfaceTypeList li span {
+    #wayTypeList li span, #surfaceTypeList li span, #steepnessTypeList li span {
         color: #707070;
         font-size: 90%;
         position: relative;

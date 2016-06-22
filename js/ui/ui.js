@@ -1,6 +1,8 @@
 var Ui = (function(w) {
     'use strict';
     var $ = w.jQuery,
+        // Route
+        route = w.Route,
         //Ui interface
         theInterface,
         //preferences for language selection
@@ -1427,7 +1429,6 @@ var Ui = (function(w) {
         var summaryContainer = new Element('div', {
             'class': 'directions-summary-container'
         });
-
         var routeSummaryStyles = {
             time: {
                 fa: '<i class="fa fa-clock-o"></i>',
@@ -1518,12 +1519,14 @@ var Ui = (function(w) {
      * @param mapFeatureIds: list of IDs of Leaflet elements containing BOTH - ids for route line segments AND corner points: [routeLineSegment_0, cornerPoint_0, routeLineSegment_1, cornerPoint_1,...]
      * @param mapLayer: map layer containing these features
      */
-    function updateSurfaceInformation(results, mapFeatureIds, mapLayer, totalDistance) {
+    function updateSurfaceSteepness(results, mapFeatureIds, mapLayer, totalDistance) {
         //var lang = preferences.language;
         var WayTypeResult = calculateChart(results, mapFeatureIds, "WayType", totalDistance);
         var WaySurfaceResult = calculateChart(results, mapFeatureIds, "WaySurface", totalDistance);
-        horizontalBarchart(list.divWayTypes, list.listWayTypesContainer, WayTypeResult, list.WayTypeColors);
-        horizontalBarchart(list.divSurfaceTypes, list.listSurfaceTypesContainer, WaySurfaceResult, list.SurfaceTypeColors);
+        var WaySteepnessResult = calculateSteepness(results);
+        horizontalBarchart('layerRouteLines', list.divWayTypes, list.listWayTypesContainer, WayTypeResult, list.WayTypeColors);
+        horizontalBarchart('layerRouteLines', list.divSurfaceTypes, list.listSurfaceTypesContainer, WaySurfaceResult, list.SurfaceTypeColors);
+        horizontalBarchart('layerSteepnessLines', list.divSteepnessTypes, list.listSteepnessTypesContainer, WaySteepnessResult);
         var container = $('#routeTypesContainer').get(0);
         container.show();
     }
@@ -1533,7 +1536,7 @@ var Ui = (function(w) {
      * @param types: div element
      * @param list: div list element for type
      */
-    function horizontalBarchart(types, list, data, colors) {
+    function horizontalBarchart(layer, types, list, data, colors) {
         d3.select(types).selectAll("svg").remove();
         var tip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) {
             var dist = util.convertDistanceFormat(d.distance, preferences.distanceUnit);
@@ -1559,28 +1562,107 @@ var Ui = (function(w) {
         }).attr("width", function(d) {
             return x(d.y1) / 1 - x(d.y0) / 1;
         }).attr("title", function(d) {
-            return (d.y1 - d.y0) + "% " + d.typetranslated;
+            return (d.y1 - d.y0) + "% : " + d.typetranslated;
         }).style("fill", function(d, i) {
-            return colors[i];
+            if (colors) {
+                return colors[i];
+            } else {
+                return d.color;
+            }
         }).on('mouseover', function(d) {
-            handleHighlightTypes(d.ids);
+            handleHighlightTypes(d.ids, layer);
             tip.show(d);
         }).on('mouseout', function(d) {
-            handleResetTypes(d.ids);
+            handleResetTypes(d.ids, layer);
             tip.hide(d);
         }).on('click', function(d) {
-            handleClickRouteIds(d.ids);
+            handleClickRouteIds(d.ids, layer);
         });
         $(list).empty();
         $(list).append("<ul></ul>");
         for (var i = 0; i < data.length; i++) {
             var li = $('<li>');
-            li.text(data[i].percentage + "% " + data[i].typetranslated);
+            li.text(data[i].percentage + "% : " + data[i].typetranslated);
             li.wrapInner('<span />');
-            li.css('color', colors[i]);
+            if (colors) {
+                li.css('color', colors[i]);
+            } else {
+                li.css('color', data[i].color);
+            }
             if (i !== "type" && i !== "total") $(list + "> ul").append(li);
         }
         svg.call(tip);
+    }
+    /** 
+     * adds steepness segments and prepares information for barchart
+     * @param results: XML response of route
+     * @return WaySteepnessObject: Object containing Names and Percetages
+     */
+    function calculateSteepness(results) {
+        // RouteGeometry
+        var routeLineString = route.routeLineString;
+        var information, type, typelist = [];
+        information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySteepnessList')[0];
+        information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySteepness');
+        for (type in list.SteepnessType) {
+            typelist.push({
+                type: list.SteepnessType[type].text,
+                typetranslated: list.SteepnessType[type].text + ' (steepness)',
+                color: list.SteepnessType[type].color,
+                distance: 0,
+                ids: [],
+                segments: [],
+                percentage: 0,
+                y0: 0,
+                y1: 0
+            });
+        }
+        var totaldistancevalue = 0;
+        for (var i = 0; i < routeLineString.length - 1; i++) {
+            totaldistancevalue += routeLineString[i].distanceTo(routeLineString[i + 1]);
+        }
+        $A(information).each(function(WayType, i) {
+            var fr = util.getElementsByTagNameNS(WayType, namespaces.xls, 'From')[0];
+            fr = parseInt(fr.textContent);
+            var to = util.getElementsByTagNameNS(WayType, namespaces.xls, 'To')[0];
+            to = parseInt(to.textContent);
+            if (fr !== to) {
+                var typenumber = util.getElementsByTagNameNS(WayType, namespaces.xls, 'Type')[0];
+                typenumber = typenumber.textContent;
+                // add 5 as types start at -5
+                typenumber = parseInt(typenumber) + 5;
+                var steepnessSegment = routeLineString.slice(fr, to);
+                // add segments invisible to map and grab hold of ids
+                var id = map.addSegment(steepnessSegment, 'layerSteepnessLines');
+                // calculate distances
+                var sumDistance = 0;
+                for (var i = 0; i < steepnessSegment.length - 1; i++) {
+                    sumDistance += steepnessSegment[i].distanceTo(steepnessSegment[i + 1]);
+                }
+                typelist[typenumber].distance += sumDistance;
+                typelist[typenumber].segments.push(parseInt(to - fr));
+                typelist[typenumber].ids.push(id);
+            }
+        });
+        var a = 0;
+        var y0 = 0;
+        for (type in typelist) {
+            if (typelist[type].distance > 0) {
+                // consider percentages less than 1
+                if (Math.round(typelist[type].distance / totaldistancevalue * 100) < 1) {
+                    typelist[type].percentage = Math.round(typelist[type].distance / totaldistancevalue * 100 * 10) / 10;
+                } else {
+                    typelist[type].percentage = Math.round(typelist[type].distance / totaldistancevalue * 100);
+                }
+                typelist[type].y0 = y0;
+                typelist[type].y1 = y0 += +typelist[type].percentage;
+            }
+        }
+        // remove elements without distance
+        var typelistCleaned = typelist.filter(function(el) {
+            return el.distance !== 0;
+        });
+        return typelistCleaned;
     }
     /** 
      * calculates percentages for waytypes and waysurfaces
@@ -1600,7 +1682,6 @@ var Ui = (function(w) {
             for (type in list.WayType) {
                 typelist.push({
                     type: list.WayType[type],
-                    //typetranslated: list.WayTypeTranslation[list.WayType[type]][lang],
                     typetranslated: preferences.translate(list.WayType[type]),
                     distance: 0,
                     ids: [],
@@ -1610,14 +1691,13 @@ var Ui = (function(w) {
                     y1: 0
                 });
             }
-        } else {
+        } else if (types == "WaySurface") {
             information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySurfaceList')[0];
             information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySurface');
             typelist = [];
             for (type in list.SurfaceType) {
                 typelist.push({
                     type: list.SurfaceType[type],
-                    //typetranslated: list.SurfaceTranslation[list.SurfaceType[type]][lang],
                     typetranslated: preferences.translate(list.SurfaceType[type]),
                     distance: 0,
                     ids: [],
@@ -1664,7 +1744,6 @@ var Ui = (function(w) {
             }
         });
         var a = 0;
-        var WayTypePercentList = [];
         var y0 = 0;
         for (type in typelist) {
             if (typelist[type].distance > 0) {
@@ -2012,14 +2091,14 @@ var Ui = (function(w) {
     /**
      * when the way or surface types are clicked highlight segments on map
      */
-    function handleHighlightTypes(ids) {
-        theInterface.emit('ui:hightlightTypes', ids);
+    function handleHighlightTypes(ids, layer) {
+        theInterface.emit('ui:hightlightTypes', [layer, ids]);
     }
     /** reset way our surface style
      *
      */
-    function handleResetTypes(ids) {
-        theInterface.emit('ui:resetTypes', ids);
+    function handleResetTypes(ids, layer) {
+        theInterface.emit('ui:resetTypes', [layer, ids]);
     }
     /**
      * when the distance or text part of the route instruction is clicked, triggers zooming to that part of the route
@@ -2030,8 +2109,8 @@ var Ui = (function(w) {
     /**
      * when the distance or text part of the route instruction is clicked, triggers zooming to that part of the route
      */
-    function handleClickRouteIds(arr) {
-        theInterface.emit('ui:zoomToRouteInstruction', arr);
+    function handleClickRouteIds(ids, layer) {
+        theInterface.emit('ui:zoomToRouteInstructionType', [layer, ids]);
     }
     /**
      * when the distance or text part of the route instruction is clicked, triggers zooming to that part of the route
@@ -3304,7 +3383,7 @@ var Ui = (function(w) {
     Ui.prototype.showSearchAddressError = showSearchAddressError;
     Ui.prototype.showCurrentLocation = showCurrentLocation;
     Ui.prototype.showGeolocationSearching = showGeolocationSearching;
-    Ui.prototype.showGeolocationError = showGeolocationError;
+    Ui.prototype.showGpxeolocationError = showGeolocationError;
     Ui.prototype.setRouteIsPresent = setRouteIsPresent;
     Ui.prototype.searchPoiChangeToSearchingState = searchPoiChangeToSearchingState;
     Ui.prototype.updateSearchPoiResultList = updateSearchPoiResultList;
@@ -3316,7 +3395,7 @@ var Ui = (function(w) {
     Ui.prototype.startRouteCalculation = startRouteCalculation;
     Ui.prototype.endRouteCalculation = endRouteCalculation;
     Ui.prototype.updateRouteInstructions = updateRouteInstructions;
-    Ui.prototype.updateSurfaceInformation = updateSurfaceInformation;
+    Ui.prototype.updateSurfaceSteepness = updateSurfaceSteepness;
     Ui.prototype.hideRouteSummary = hideRouteSummary;
     Ui.prototype.hideRouteInstructions = hideRouteInstructions;
     Ui.prototype.showRoutingError = showRoutingError;

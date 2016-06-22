@@ -6,6 +6,7 @@ var Route = (function(w) {
     function Route() {
         this.routePresent = false;
         this.routeString = null;
+        this.routeLineString = null;
     }
     /**
      * builds and sends the service request and calls the callback function
@@ -260,26 +261,15 @@ var Route = (function(w) {
         $A(util.getElementsByTagNameNS(routeGeometry, namespaces.gml, 'pos')).each(function(point) {
             point = point.text || point.textContent;
             point = point.split(' ');
-            point = L.latLng(point[1], point[0]);
+            // if elevation contained
+            if (point.length == 2) {
+                point = L.latLng(point[1], point[0]);
+            } else {
+                point = L.latLng(point[1], point[0], point[2]);
+            }
             routeString.push(point);
         });
         return routeString;
-    }
-    /**
-     * the line strings represent a part of the route when driving on one street (e.g. 7km on autoroute A7)
-     * if we have selected a profile which returns height profiles we have to derive the information
-     * @param {Object} results: XML response
-     */
-    function parseResultsToHeights(results) {
-        var heights = [];
-        var routePoints = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteGeometry')[0];
-        $A(util.getElementsByTagNameNS(routePoints, namespaces.gml, 'pos')).each(function(point) {
-            point = point.text || point.textContent;
-            point = point.split(' ');
-            point = L.latLng(point[1], point[0], point[2]);
-            heights.push(point);
-        });
-        return heights;
     }
     /**
      * the line strings represent a part of the route when driving on one street (e.g. 7km on autoroute A7)
@@ -361,7 +351,6 @@ var Route = (function(w) {
     Route.prototype.calculate = calculate;
     Route.prototype.writeRouteToSingleLineString = writeRouteToSingleLineString;
     Route.prototype.parseResultsToLineStrings = parseResultsToLineStrings;
-    Route.prototype.parseResultsToHeights = parseResultsToHeights;
     Route.prototype.parseResultsToCornerPoints = parseResultsToCornerPoints;
     Route.prototype.hasRoutingErrors = hasRoutingErrors;
     return new Route();

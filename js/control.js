@@ -1,6 +1,6 @@
 // global variable which is set to false after init is run
 // is needed in order for cookies to be loaded properly
-var initMap = true;
+var map, initMap = true;
 var Controller = (function(w) {
     'use strict';
     var $ = w.jQuery,
@@ -16,9 +16,7 @@ var Controller = (function(w) {
         preferences = w.Preferences,
         openRouteService = w.OpenRouteService,
         restrictions = w.Restrictions,
-        Map = w.Map,
-        //the map
-        map,
+        //Map = w.Map,
         //Timeout for service responses
         SERVICE_TIMEOUT_INTERVAL = 10000,
         //timer
@@ -434,17 +432,18 @@ var Controller = (function(w) {
     }
     /**
      * way or surface types are clicked
-     * @param ids: array of feature ids to hightlight
+     * @param [list] arr: contains ids and layer
      */
-    function handleHighlightTypes(ids) {
-        map.highlightFeatures(map.layerRouteLines, ids);
+    function handleHighlightTypes(arr) {
+        map.highlightFeatures(arr);
     }
     /**
      * reset styles
-     * @param ids: array of features ids to reset highlight
+     * @param [list] arr: contains ids and layer
+     
      */
-    function handleResetTypes(ids) {
-        map.resetFeatures(map.layerRouteLines, ids);
+    function handleResetTypes(arr) {
+        map.resetFeatures(arr);
     }
     /**
      * map is zoomed to the selected part of the route (route instruction)
@@ -452,6 +451,13 @@ var Controller = (function(w) {
      */
     function handleZoomToRouteInstruction(params) {
         map.zoomToFeature(map.layerRouteLines, params);
+    }
+    /**
+     * map is zoomed to the selected part of the route (type)
+     * @param [list] arr: contains ids and layer
+     */
+    function handleZoomToRouteInstructionType(arr) {
+        map.zoomToFeatureType(arr);
     }
     /**
      * map is zoomed to the selected part of the route (route instruction)
@@ -839,12 +845,13 @@ var Controller = (function(w) {
             } else {
                 //use all-in-one-LineString to save the whole route in a single string
                 var routeLineString = route.writeRouteToSingleLineString(results);
+                route.routeLineString = routeLineString;
                 var routeString = map.writeRouteToString(routeLineString);
                 route.routeString = routeString;
                 var routeLinestring = route.parseResultsToLineStrings(results);
                 var cornerPoints = route.parseResultsToCornerPoints(results);
                 //Get the restrictions along the route
-                map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString), permaInfo[preferences.routeOptionsIdx]);
+                //map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString), permaInfo[preferences.routeOptionsIdx]);
                 map.removeElevationControl();
                 var featureIds = map.updateRoute(routeLinestring, cornerPoints, routePref);
                 var errors = route.hasRoutingErrors(results);
@@ -853,7 +860,7 @@ var Controller = (function(w) {
                     var elevation = ui.updateRouteSummary(results);
                     if ($.inArray(routePref, list.elevationProfiles) >= 0) {
                         // Surface and waytype information
-                        ui.updateSurfaceInformation(results, featureIds, 'layerRouteLines', totalDistance);
+                        ui.updateSurfaceSteepness(results, featureIds, 'layerRouteLines', totalDistance);
                         // Elevation information
                         if (elevation) {
                             var viaPoints = [];
@@ -862,10 +869,7 @@ var Controller = (function(w) {
                                 routePoints.pop();
                                 viaPoints = routePoints;
                             }
-                            var routeLineHeights = route.parseResultsToHeights(results);
-                            map.updateHeightprofiles(routeLineHeights, viaPoints);
-                            var routeHeight = map.writeRouteToString(routeLineHeights);
-                            route.routeString = routeHeight;
+                            map.updateHeightprofiles(routeLineString, viaPoints);
                         }
                     } else {
                         var container = $('#routeTypesContainer').get(0);
@@ -1491,6 +1495,7 @@ var Controller = (function(w) {
         ui.register('ui:searchAgainWaypoint', handleSearchAgainWaypoint);
         ui.register('ui:resetRoute', handleResetRoute);
         ui.register('ui:zoomToRouteInstruction', handleZoomToRouteInstruction);
+        ui.register('ui:zoomToRouteInstructionType', handleZoomToRouteInstructionType);
         ui.register('ui:hightlightTypes', handleHighlightTypes);
         ui.register('ui:resetTypes', handleResetTypes);
         ui.register('ui:zoomToRouteCorner', handleZoomToRouteCorner);
