@@ -1267,7 +1267,6 @@ var Ui = (function(w) {
         var waypoints = [];
         for (var i = 0; i < $('.waypoint').length - 1; i++) {
             var address = $('#' + i).get(0);
-            console.log(address)
             if (address.querySelector('.address')) {
                 address = $(address).children(".waypointResult");
                 address = $(address).find("li").attr("data-shortaddress");
