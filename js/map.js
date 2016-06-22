@@ -147,14 +147,15 @@ var Map = (function() {
             },
         });
         this.theMap.addControl(new NavMenuToggle());
+        
         /* AVOID AREA CONTROLLER */
         L.NewPolygonControl = L.Control.extend({
             options: {
                 position: 'topright'
             },
             onAdd: function(map) {
-                var container = L.DomUtil.create('div', 'leaflet-control leaflet-bar'),
-                    link = L.DomUtil.create('a', '', container);
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-avoidArea',container),
+                link = L.DomUtil.create('a', '', container);
                 link.href = '#';
                 link.title = 'Create a new polygon';
                 link.innerHTML = '▱';

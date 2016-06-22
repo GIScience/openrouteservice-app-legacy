@@ -34,8 +34,8 @@
     <body class="ORS">
         <!-- START OF HEADER SECTION -->
         <header class="ORS-header">
-            <a href="http://www.geog.uni-heidelberg.de/giscience.html" id="ORS-headIcon">
-            </a>
+            <!--<a href="http://www.geog.uni-heidelberg.de/giscience.html" id="ORS-headIcon">
+            </a>-->
             <a href="http://www.openrouteservice.org" id="ORS-title">
                 OpenRouteService
             </a>
@@ -680,26 +680,30 @@
                                 </div>
                                 <div class="clear">
                                     <div class="left" id="viaOptimizePanel">
-                                        <label class="btn  ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="tt-optimize" title="Optimize Waypoints" type="button">
+                                        <button class="btn  ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="tt-optimize" title="Optimize Waypoints" type="button">
                                             <i class="fa fa-wrench">
                                             </i>
                                             <input class="hide" data-toggle="button" id="viaOptimize" type="checkbox"/>
-                                        </label>
+                                        </button>
                                     </div>
                                     <div class="right">
-                                        <button class="btn  ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="tt-reorder" title="Reorder Waypoints" type="button">
+                                        <button class="btn  ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="orderRoute" title="Reorder Waypoints" type="button">
                                             <i class="fa fa-refresh">
                                             </i>
                                         </button>
                                     </div>
                                     <div class="right">
-                                        <button class="btn  ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="tt-reset" title="Reset Route" type="button">
+                                        <button class="btn  ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="resetRoute" title="Reset Route" type="button">
+
+                                                                                <!--<button id="resetRoute" class="btn primary-control transparent" data-container=".ORS-mainPanel" type="button" id="tt-reset" data-toggle="tooltip" title="Reset Route"><i class="fa fa-remove"></i></button>-->
+
+
                                             <i class="fa fa-remove">
                                             </i>
                                         </button>
                                     </div>
                                     <div class="right">
-                                        <button class="btn  ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="tt-zoom" title="Zoom to Route" type="button">
+                                        <button class="btn  ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="zoomToRouteButton" title="Zoom to Route" type="button">
                                             <i class="fa fa-arrows-alt">
                                             </i>
                                         </button>
@@ -863,9 +867,9 @@
                 </div>
             </div>
             <div class="ORS-map" id="map">
-                <a class="link" href="http://www.geog.uni-heidelberg.de/giscience.html" target="_blank">
+                <!--<a class="link" href="http://www.geog.uni-heidelberg.de/giscience.html" target="_blank">
                     GIScience
-                </a>
+                </a>-->
                 <div id="infoPermalink">
                     Permalink
                 </div>
@@ -912,11 +916,9 @@
                     </div>
                     <div class="modal-body">
                         <table class="table table-borderless">
-                            <tr>
-                                <td>
+                            <td>
                                     <h4>Language for interface</h4>
-                                </td>
-                            </tr>
+                            </td>
                             <tr>
                                 <td>
                                     <label class="left" id="languageText"></label>
@@ -926,9 +928,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>
-                                    <h4>Language for routing instructions</h4>
-                                </td>
+                                <h4>Language for routing instructions</h4>
                             </tr>
                             <tr>
                                 <td>
@@ -939,9 +939,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>
-                                    <h4>Distance Units</h4>
-                                </td>
+                                <h4>Distance Units</h4>
                             </tr>
                             <tr>
                                 <td>
@@ -1128,6 +1126,7 @@
 			      });
 		        });
 		    })(jQuery);
+            //jQuery( document ).ready(function() {jQuery('body').click(function () { jQuery(this).tooltip('hide') })});
         </script>
     </body>
 </html>

@@ -326,8 +326,11 @@
         /* align horizontal */
         align-items: center;
         /* align vertical */
-        font-size: 16px;
-    }
+        font-size: 150%;
+        text-decoration:none;
+        font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    };
+
     
     #ORS-headIcon {
         /* ORS icon on top left side */
@@ -1108,7 +1111,8 @@
         background-color: rgba(255, 255, 255, 0.5);
         color: black;
         z-index: 999;
-        margin-left: 5px;
+        left:0;
+        /*margin-left: 5px;
         /*font-family: 'Source Sans Pro', sans-serif;*/
     }
     
@@ -1117,7 +1121,7 @@
         display: none;
         position: fixed;
         width: 70px;
-        margin-left: 100px;
+        margin-left: 110px;
         height: 50px;
         padding: 0px;
         bottom: 3px;
@@ -1229,14 +1233,42 @@
         .ORS-map {
             order: 1;
         }
+        #ORS-title {
+            margin-left:10px;
+            position:absolute;
+            height:50px;
+        };
+
         /* To hide the mouse position controller */
-        .leaflet-container .leaflet-control-mouseposition {
+        .leaflet-control-mouseposition{
             display: none;
+        }
+        .leaflet-control-customLocate {
+            width: 26px;
+            height: 26px;
+        }
+
+        .leaflet-control-layers-toggle:before {
+            width: 26px;
+            height: 26px;
         }
         .leaflet-control-customNavMenuToggle:before {
             content: "\f07d";
             font-family: FontAwesome;
+            width: 26px;
+            height: 26px;
         }
+
+        .leaflet-control-zoom-in {
+            width: 26px;
+            height: 26px;
+        }
+
+        .leaflet-control-zoom-out {
+            width: 26px;
+            height: 26px;
+        }
+
         .ORS-sidebar {
             box-shadow: none;
         }
@@ -1259,12 +1291,21 @@
             /* GIScience Logo */
             bottom: 25px;
         }
+
         .leaflet-bottom .leaflet-control-scale {
             /* for scale controller */
-            margin-bottom: 50px;
+            display: none;
         }
         #infoPermalink {
+            position:absolute;
             margin-bottom: 30px;
+            margin-left:5px;
+        }
+
+        #bubble {
+            position:absolute;
+            margin-bottom: 30px;
+            
         }
     }
     /* ****************************************************************/
