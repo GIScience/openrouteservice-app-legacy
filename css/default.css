@@ -15,35 +15,42 @@
     /* *******************************************/
     /* START OF BLOCK STYLES (BASE LAYOUT STYLE) */
     /* *******************************************/
-    /* BASE LAYOUT */
+    /************************** BASE LAYOUT ****************************/
+    
+    html, body {
+        font-family: 'Source Sans Pro', sans-serif !important;
+        font-size: 90%;
+    }
     
     .ORS {
+        /* BODY */
         display: flex;
         min-height: 100vh;
         flex-direction: column;
-        font-size: 90%;
-        -line-height: 1.4;
+        line-height: 1.4;
         color: rgba(0, 0, 0, 0.8);
         background-color: #fff;
         color: #444;
         margin: 0;
         padding: 0;
-        font-family: 'Source Sans Pro', sans-serif;
     }
     
     .ORS-header {
+        /* HEADER */
         display: flex;
         flex: 0 0 50px;
         background-color: #b5152b
     }
     
     .ORS-main {
+        /* MAIN BODY FOR WEB APPLICATION */
         display: flex;
         flex: 1 0 auto;
         flex-direction: row;
     }
     
     .ORS-sidebar {
+        /* NAVIGATION SIDEBAR */
         flex: 0 1 388px;
         order: 1;
         flex-direction: row;
@@ -52,74 +59,17 @@
     }
     
     .ORS-map {
+        /* MAP AREA */
         display: flex;
         flex: 1 1 auto;
         order: 2;
     }
-    
-    .ORS-input-append {
-        font-size: 12px;
-        color: #707070;
-    }
+    /*******************************************************************/
     /* GENERAL ELEMENTS */
     
-    input, .form-inline input, textarea, select, .form-inline select, .guiComponent > input {
-        font-family: 'Source Sans Pro', sans-serif;
-        border-radius: 0;
-        margin-bottom: 0px;
-        border-color: 1px solid #ccc;
-        font-size: 90%;
-        webkit-box-shadow: none;
-        -moz-box-shadow: none;
-        box-shadow: none;
-    }
-    
-    .form-inline select {
-        -webkit-appearance: none;
-    }
-    
-    select:not([multiple]) {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        background-position: right 50%;
-        background-repeat: no-repeat;
-        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAMCAYAAABSgIzaAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NDZFNDEwNjlGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NDZFNDEwNkFGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0NkU0MTA2N0Y3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo0NkU0MTA2OEY3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuGsgwQAAAA5SURBVHjaYvz//z8DOYCJgUxAf42MQIzTk0D/M+KzkRGPoQSdykiKJrBGpOhgJFYTWNEIiEeAAAMAzNENEOH+do8AAAAASUVORK5CYII=);
-        vertical-align: middle;
-    }
-    
-    select, input[type="file"] {
-        line-height: 1;
-    }
-    
-    input[type='checkbox'], input[type='radio'] {
-        vertical-align: baseline;
-    }
-    
-    input[type="text"] {
-        background-color: #fff;
-        border: 1px solid #ccc;
-        -webkit-box-shadow: none;
-        -moz-box-shadow: none;
-        box-shadow: none;
-        border-color: #F0F0F0;
-        font-size: 90%;
-    }
-    
-    h3 {
-        margin: 0 0 0.5em 0;
-    }
-    
-    a:link, a:visited {
-        text-decoration: none;
-    }
-    
-    a:hover, a:active {
-        text-decoration: none;
-    }
-    
-    a:focus {
-        background-color: none;
-        text-decoration: none;
+    .searchWaypoint {
+        width: 220px;
+        font-size: 100%;
     }
     
     .right {
@@ -130,66 +80,155 @@
         float: left;
     }
     
+    .clear {
+        clear: both;
+        display: table;
+        width: 100%;
+    }
+    
     .transparent {
         background-color: transparent !important;
     }
-    /* BUTTON GROUPS */
     
-    button.routeOptionsButton, button.optionsButton {
-        width: 44px;
-        height: 41px;
+    .show {
+        float: left;
+        padding-left: 13px;
+        cursor: pointer;
     }
     
-    .btn-group+.btn-group {
-        margin-left: 0px;
+    .calc {
+        float: left;
+        padding-left: 13px;
+        cursor: pointer;
     }
     
-    .btn-group>.btn:first-child {
-        border-radius: 0px;
+    .delete {
+        float: left;
+        padding-left: 13px;
+        cursor: pointer;
     }
     
-    .btn-group>.btn:last-child {
-        border-radius: 0px;
-        -margin-left: 50px;
+    .calcGranularity {
+        margin-top: 5px;
+        width: 100px;
     }
-    /* BUTTONS */
     
-    .primary:focus {
-        outline: none;
+    .clickable {
+        cursor: pointer;
+    }
+    
+    .clickable.active {
+        cursor: pointer;
+        color: rgb(0, 161, 45);
+    }
+    
+    .mCS-ors-theme.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+        /* generic scrollbar classes (controllers can be found in jquery.mCustomScrollbar.concat.min.js) */
+        background-color: #707070;
+    }
+    
+    .mCS-ors-theme.mCSB_scrollTools .mCSB_draggerRail {
+        /* generic scrollbar classes (controllers can be found in jquery.mCustomScrollbar.concat.min.js) */
+        background-color: #F0F0F0;
+    }
+    
+    .mCS-ors-theme.mCSB_scrollTools .mCustomScrollBox {
+        /* generic scrollbar classes (controllers can be found in jquery.mCustomScrollbar.concat.min.js) */
+        background-color: #F0F0F0;
+    }
+    /* GENERIC ORS CLASSES */
+    
+    .ORS-light {
+        background-color: #fafafa;
+    }
+    
+    .ORS-panel {
+        border-bottom: 1px solid #EBEBEB;
+    }
+    
+    .ORS-panel-sub {
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+    
+    .ORS-padding {
+        padding-top: 20px;
+    }
+    
+    .ORS-hr {
+        border-bottom: 1px solid #F0F0F0;
+    }
+    
+    .ORS-hr-dark {
+        border-bottom: 1px solid #EBEBEB;
+    }
+    
+    .ORS-label {
+        line-height: 16px;
+        font-weight: normal;
+        color: #707070;
+        text-shadow: none;
+        background-color: transparent;
+        border: 1px solid black;
+    }
+    
+    .ORS-alert {
+        margin-bottom: 0;
+        border-radius: 0;
+        margin-top: 5px;
+        font-family: 'Source Sans Pro', sans-serif;
+    }
+    
+    .ORS-close {
+        display: block;
+        float: right;
+        width: 17px;
+        height: 29px;
         color: #707070;
     }
     
-    .primary i, .primary-menu i {
+    .ORS-center {
+        text-align: center;
+        line-height: 40px;
+    }
+    
+    .ORS-BtnPrimary i, .ORS-BtnPrimary-menu i {
+        /* General style for ORS buttons on left menu and top menu (vehicle options on sidebar) */
         font-size: 105%;
     }
     
-    .primary {
-        background: #F0F0F0;
+    .ORS-BtnPrimary {
+        /* General style for ORS buttons on top menu (vehicle options on sidebar)*/
+        background: transparent;
         border-radius: 0px;
+        height: 41px !important;
         border-left: transparent;
         border-right: transparent;
         border-top: transparent;
-        border-bottom: 1px solid #CCC;
+        border-bottom: 2px solid transparent;
         color: #707070;
         box-shadow: none;
         text-shadow: none;
         font-family: 'Source Sans Pro', sans-serif;
     }
     
-    .primary-control {
+    .ORS-BtnPrimary-control {
+        /* General style for ORS buttons on top menu (vehicle options on sidebar) */
         background: #F0F0F0;
         border-radius: 0px;
         border: none;
         color: #707070;
         box-shadow: none;
         text-shadow: none;
-        font-family: 'Source Sans Pro', sans-serif;
-
+        /*font-family: 'Source Sans Pro', sans-serif;*/
     }
     
-    .primary-menu {
+    .ORS-BtnPrimary-menu {
+        /* General style for ORS buttons on left menu */
         background: #F0F0F0;
-        border-radius: 0px;
+        border-radius: 0px !important;
         border: none;
         height: 41px;
         color: #808080;
@@ -198,16 +237,75 @@
         width: 100%;
         box-shadow: none;
         text-shadow: none;
-        font-family: 'Source Sans Pro', sans-serif;
+        /*font-family: 'Source Sans Pro', sans-serif;*/
+        left: 0px;
     }
     
-    .primary.active, .primary:active {
+    .ORS-BtnPrimary.active, .ORS-BtnPrimary:active, .ORS-BtnPrimary:hover {
+        /* General style for ORS buttons on top menu (vehicle options on sidebar) */
         box-shadow: none !important;
         -webkit-box-shadow: none !important;
         -moz-box-shadow: none !important;
-        color: #b5152b;
+        color: #b5152b !important;
+        background-color: transparent;
+        border-bottom: 2px solid #b5152b;
+    }
+    
+    .ORS-BtnPrimary-menu.active, .ORS-BtnPrimary-menu:active, .ORS-BtnPrimary-menu:hover {
+        /* General style for ORS buttons on left menu */
+        box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        -moz-box-shadow: none !important;
+        background-color: transparent;
+        border-bottom: 1px solid #EBEBEB;
+        color: #444 !important;
+        /* prevents icons from changing size */
+    }
+    
+    .ORS-BtnPrimary-control:hover {
+        /* General style for ORS control buttons */
+        box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        -moz-box-shadow: none !important;
         background-color: transparent;
         border: none;
+        color: #444 !important;
+    }
+    
+    .btn:focus, .btn:active:focus, .btn.active:focus {
+        outline: none;
+    }
+    
+    .ORS-routeOptionsButton, .ORS-optionsButton {
+        width: 44px;
+    }
+    
+    .table-borderless tbody tr td, .table-borderless tbody tr th, .table-borderless thead tr th {
+        border: none;
+        font-size: 100%;
+        vertical-align: middle;
+    }
+    
+    .ORS-BtnFile {
+        /* For file upload buttons */
+        overflow: hidden;
+        position: relative;
+        vertical-align: middle;
+    }
+    
+    .ORS-BtnFile>input {
+        /* For file upload buttons */
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        border: solid transparent;
+        border-width: 0 0 100px 200px;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        -moz-transform: translate(-300px, 0) scale(4);
+        direction: ltr;
+        cursor: pointer;
     }
     /* *******************************************/
     /* END OF BLOCK STYLES (BASE LAYOUT STYLE)   */
@@ -216,9 +314,9 @@
     /* START OF ELEMENT STYLES (CLASSES AND ID's)  */
     /* *********************************************/
     /* STYLE FOR ELEMENTS ON HEADER SECTION */
-    /* Main ORS title */
     
     #ORS-title {
+        /* Main ORS title */
         background-color: #b5152b;
         color: #F0F0F0;
         line-height: 25px;
@@ -230,16 +328,16 @@
         /* align vertical */
         font-size: 16px;
     }
-    /* ORS icon on top left side */
     
     #ORS-headIcon {
+        /* ORS icon on top left side */
         background: url(../img/logo_unihd.png) no-repeat center center;
         background-size: 70px auto;
         width: 80px;
     }
-    /* ORS menu on top right side (site preferences and info icons) */
     
     #ORS-topMenu {
+        /* ORS menu on top right side (feedback, site preferences and info icons) */
         position: absolute;
         top: 5px;
         right: 4px;
@@ -248,29 +346,18 @@
     }
     
     #ORS-topMenu > li, #ORS-topMenu > li >a {
+        /* Style for individual elements on ORS menu on top right side */
         height: 40px;
         float: left;
         margin: 0px 10px 0px 0;
         line-height: 40px;
-        padding: 0px 5px 0px 5px;
         color: white;
         font-size: 18px;
     }
-    /* Site preferences menu (it pops up on the screen after clicking the preferences icon on top right side) */
-    
-    #sitePrefsModal label {
-        float: left;
-    }
-    
-    .ORS-PrefsDropDown {
-        float: right;
-        margin-right: 10px;
-    }
-    /* STYLE FOR ELEMENTS ON ASIDE SECTION (LEFT NAVIGATION MENU SECTION) */
     /* STYLE FOR SIDEBAR AND OBJECTS WITHIN THE SIDEBAR */
-    /*STYLES FOR MENU PANEL ON THE LEFT */
     
     .ORS-menuPanel {
+        /* Styles for menu panel on the left side of the sidebar */
         top: 0;
         position: absolute;
         overflow: auto;
@@ -278,14 +365,10 @@
         bottom: 20px;
         background-color: #F0F0F0;
     }
-    
-    #ORS-loading, #ORS-error {
-        display: none;
-    }
-    /*STYLES FOR MAIN PANEL ON THE RIGHT */
-    /* NAVIGATION PANEL */
+    /* LEFT SIDE */
     
     .ORS-navigation {
+        /* Styles for menu panel on the right side of the sidebar */
         -top: 0;
         left: 40px;
         width: 348px;
@@ -293,30 +376,14 @@
         border-left: 1px solid #CCC;
         border-bottom: 1px solid #CCC;
         background-color: #F0F0F0;
-        height: 40px;
-    }
-    /* buttons on the navigation panel (left menu buttons) */
-    
-    .btn-group>.primary-menu:hover, .primary-control:hover {
-        background: transparent;
-        color: #444;
+        height: 41px;
     }
     
-    .btn-group>.primary-menu:active, .primary-control:active {
-        background: transparent;
-        border-color: transparent;
-        color: #444;
-        outline: none;
+    #ORS-loading, #ORS-error {
+        /* Loading and error messages */
+        display: none;
     }
-    
-    .btn-group>.primary-menu.active, .btn-group>.primary-menu:focus, .primary-control:active, .primary-control.active {
-        box-shadow: none !important;
-        -webkit-box-shadow: none !important;
-        -moz-box-shadow: none !important;
-        color: #444;
-        background-color: transparent;
-    }
-    /* MAIN PANEL */
+    /* RIGHT SIDE */
     
     .ORS-mainPanel {
         top: 41px;
@@ -328,24 +395,15 @@
         border-left: 1px solid #CCC;
         background-color: #FFF;
     }
-    /* buttons on the top menu (top menu buttons choose between vehicle type) */
-    
-    .btn-group>.primary:hover, .btn-group>.primary.active, .btn-group>.primary:active, .optionsButton:hover, .optionsButton.active, .optionsButton:active {
-        background: transparent;
-        border-bottom: 1px solid #b5152b;
-        color: #b5152b
-    }
-    /* ROUTE CONTAINER */
-    /* WEIGHTING OPTIONS */
-    /* ROADS TO AVOID */
-    /* VEHICLE OPTIONS */
     
     #TruckTabs>ul {
+        /* Styles for tabs on truck options */
         border-bottom: none;
         background: #F0F0F0
     }
     
     #TruckTabs>li>a {
+        /* Styles content on each tab on truck options */
         font-size: 80%;
         background-color: #f8f8f8;
         padding-bottom: 4px;
@@ -354,26 +412,17 @@
     }
     
     #TruckTabs>li>a:hover {
+        /* Styles for tabs on truck options when mouse is over tab*/
         border-bottom: transparent;
         background: #F0F0F0;
     }
-    /* WAYPOINT OPTIONS */
+    /* ROUTE SETTINGS */
     
-    .addWaypoint {
-        padding-left: 40px;
-        padding-top: 5px;
-        min-height: 30px;
-        background-image: url('../img/marker-plus.png');
-        background-repeat: no-repeat;
-        background-size: 16px;
-        background-position: 8px 3px;
-        font-size: 90%;
-    }
-    
-    .guiComponent > input {
+    #avoidAreasError {
+        margin-top: 10px;
         margin-bottom: 0px;
-        font-size: 13px;
     }
+    /* WAYPOINT OPTIONS */
     
     .waypointResult {
         margin-bottom: 10px;
@@ -381,47 +430,252 @@
         margin-left: 32px;
     }
     
-    .waypointResult li span {
-        position: relative;
-        left: 10px;
+    .waypointResult li {
+        list-style: none;
     }
     
+    .waypointResult li span {
+        position: relative;
+    }
+    
+    .addWaypoint{
+        padding-top: 5px;
+        min-height: 30px;
+        cursor:pointer;
+    }
+
+    #plusSign{
+        color:#B8B8B8;
+        line-height:30px;
+        font-size:10px;
+        text-align:right;
+        bottom: 0;
+        left: -10px;
+        text-stroke-width: 1px;
+        text-stroke-color: #707070;
+        -o-text-stroke-width: 1px;
+        -o-text-stroke-color: #707070;
+        -ms-text-stroke-width: 1px;
+        -ms-text-stroke-color: #707070;
+        -moz-text-stroke-width: 1px;
+        -moz-text-stroke-color: #707070;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: #707070;
+    }
+
+    #mapMarker{
+        color:#B8B8B8;
+        line-height:30px;
+        font-size:20px;
+        text-align:center;
+        text-stroke-width: 1px;
+        text-stroke-color: #707070;
+        -o-text-stroke-width: 1px;
+        -o-text-stroke-color: #707070;
+        -ms-text-stroke-width: 1px;
+        -ms-text-stroke-color: #707070;
+        -moz-text-stroke-width: 1px;
+        -moz-text-stroke-color: #707070;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: #707070;
+    }
+
     .waypoint {
-        padding-left: 0px;
         padding-top: 0;
         min-height: 25px;
         margin-bottom: 10px !important;
     }
     
     .waypoint-icon {
-        display: inline;
+        display: inline-block;
         float: left;
         width: 33px;
         height: 25px;
     }
-    
-    .waypoint-icon.start {
-        background: url(../img/marker-start.png) no-repeat;
-        background-size: 16px;
-        background-position: 8px 3px;
+
+    .waypoint-icon.start:before{
+        display: block;
+        float: right;
+        width: 30px;
+        height: 30px;
+        content: "\f041";
+        font-family: FontAwesome;
+        color: #00b100;
+        line-height:30px;
+        font-size:20px;
+        text-align:center;
+        text-stroke-width: 1px;
+        text-stroke-color: #707070;
+        -o-text-stroke-width: 1px;
+        -o-text-stroke-color: #707070;
+        -ms-text-stroke-width: 1px;
+        -ms-text-stroke-color: #707070;
+        -moz-text-stroke-width: 1px;
+        -moz-text-stroke-color: #707070;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: #707070;
+    }
+
+    .waypoint-icon.via:before {
+        display: block;
+        float: right;
+        width: 30px;
+        height: 30px;
+        content: "\f041";
+        font-family: FontAwesome;
+        color: #ffb74b;
+        line-height:30px;
+        font-size:20px;
+        text-align:center;
+        text-stroke-width: 1px;
+        text-stroke-color: #707070;
+        -o-text-stroke-width: 1px;
+        -o-text-stroke-color: #707070;
+        -ms-text-stroke-width: 1px;
+        -ms-text-stroke-color: #707070;
+        -moz-text-stroke-width: 1px;
+        -moz-text-stroke-color: #707070;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: #707070;
+    }
+
+    .waypoint-icon.end:before {
+        display: block;
+        float: right;
+        width: 30px;
+        height: 30px;
+        content: "\f041";
+        font-family: FontAwesome;
+        color: #ff6f4b;
+        line-height:30px;
+        font-size:20px;
+        text-align:center;
+        text-stroke-width: 1px;
+        text-stroke-color: #707070;
+        -o-text-stroke-width: 1px;
+        -o-text-stroke-color: #707070;
+        -ms-text-stroke-width: 1px;
+        -ms-text-stroke-color: #707070;
+        -moz-text-stroke-width: 1px;
+        -moz-text-stroke-color: #707070;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: #707070;
     }
     
-    .waypoint-icon.via {
-        background: url(../img/marker-via.png) no-repeat;
-        background-size: 16px;
-        background-position: 8px 3px;
+    .waypoint-icon.unset:before {
+        display: block;
+        float: right;
+        width: 30px;
+        height:30px;
+        content: "\f041";
+        font-family: FontAwesome;
+        color: #B8B8B8;
+        line-height:30px;
+        font-size:20px;
+        text-align:center;
+        text-stroke-width: 1px;
+        text-stroke-color: #707070;
+        -o-text-stroke-width: 1px;
+        -o-text-stroke-color: #707070;
+        -ms-text-stroke-width: 1px;
+        -ms-text-stroke-color: #707070;
+        -moz-text-stroke-width: 1px;
+        -moz-text-stroke-color: #707070;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: #707070;
+    }
+
+    .removeWaypoint:before {
+        display: block;
+        float: right;
+        width: 18px;
+        padding-left: 3px;
+        padding-top: 6px;
+        content: "\f00d";
+        font-family: FontAwesome;
     }
     
-    .waypoint-icon.end {
-        background: url(../img/marker-end.png) no-repeat;
-        background-size: 16px;
-        background-position: 8px 3px;
+    .moveUpWaypoint:before {
+        display: block;
+        float: right;
+        width: 18px;
+        padding-left: 3px;
+        padding-top: 6px;
+        content: "\f062";
+        font-family: FontAwesome;
     }
     
-    .waypoint-icon.unset {
-        background: url(../img/marker.png) no-repeat;
-        background-size: 16px;
-        background-position: 8px 3px;
+    .moveDownWaypoint:before {
+        display: block;
+        float: right;
+        width: 18px;
+        padding-left: 3px;
+        padding-top: 6px;
+        content: "\f063";
+        font-family: FontAwesome;
+    }
+    
+    .searchAgainButton:before {
+        display: block;
+        float: right;
+        width: 18px;
+        padding-left: 3px;
+        padding-top: 6px;
+        content: "\f021";
+        font-family: FontAwesome;
+    }
+    
+    .useAsWaypoint:before {
+        display: block;
+        float: right;
+        width: 18px;
+        font-size: 85%;
+        content: "\f041";
+        font-family: FontAwesome;
+    }
+    
+    .resultList {
+        /* General styles for address list dropdown (this list will popup when you type something in the "search address" input box) */
+        margin-bottom: 1em;
+    }
+    
+    .resultList li {
+        /* Styles for each item in the address list dropdown */
+        padding: 3px;
+        border-bottom: 1px dashed #c8c8c8;
+        list-style: none;
+    }
+    
+    .resultList li:hover {
+        /* Styles to what happens when mouse is over the address list dropdown */
+        cursor: pointer;
+    }
+    /* ROUTE INSTRUCTIONS */
+    
+    .zoomToSearchResults {
+        /* Address search and input containers*/
+        margin-top: 7px;
+        margin-bottom: 7px;
+    }
+    
+    #routeInstructionHead {
+        /*for displaying route instructions in the panel (title)*/
+        float: left;
+        width: 60%;
+    }
+    
+    .collapsibleHead:before {
+        /* Icon for route instructions collapsed */
+        padding: 3px;
+        content: "\f0d7";
+        font-family: FontAwesome;
+    }
+    
+    .collapsibleHead.collapsed:before {
+        /* Icon for route instructions opened */
+        padding: 4px;
+        content: "\f0da";
+        font-family: FontAwesome;
     }
     /* ROUTE INSTRUCTIONS */
     
@@ -433,38 +687,101 @@
         padding: 8px 0;
     }
     
-    .directions-text {
+    .directions-container .text {
         padding: 3px 5px 0 30px;
         line-height: 16px;
         vertical-align: middle;
     }
     
-    .directions-waypoint {
+    .directions-container .instr-waypoint {
         margin-top: 25px;
         margin-left: 40px;
         line-height: 26px;
         position: absolute;
     }
     
-    .directions-waypoint-address {
+    .directions-container .address {
         margin-top: 21px;
         margin-left: 75px;
         line-height: 26px;
         font-size: 14px;
     }
     
-    .directions-waypoint-address .submain {
+    .directions-container .submain {
         font-size: 13px;
         color: #A0A0A0;
     }
     
-    .directions-waypoint-info {
+    .directions-container .info {
         padding: 6px 5px 0 75px;
         position: absolute;
         right: 16px;
         font-size: 12px;
         color: #777777;
     }
+    
+    .mode-container {
+        padding: 0 0 0 40px;
+        position: absolute;
+        left: 0px;
+        right: 0;
+        height: 30px;
+        line-height: normal;
+        font-weight: normal;
+    }
+    
+    .mode-container .distance {
+        top: 1px;
+        right: 15px;
+        padding-left: .5em;
+        padding-right: .5em;
+        z-index: 1;
+        position: absolute;
+        background-color: #fff;
+        font-size: 12px;
+    }
+    
+    .mode-container .line {
+        border-bottom: 1px solid #e6e6e6;
+        padding-top: 8px;
+        margin: 0 2em 0 0;
+    }
+    
+    .directions-warning-table {
+        color: red;
+    }
+    
+    .directions-warning-table tr td:first-child {
+        width: 37px;
+    }
+    
+    .directions-warning-table img {
+        height: 16px;
+        width: auto;
+        margin-left: 3px;
+    }
+    
+    .img {
+        margin-left: 3px;
+        position: absolute;
+    }
+    
+    .fa-rotate-45 {
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+    
+    .fa-rotate-315 {
+        -webkit-transform: rotate(315deg);
+        -moz-transform: rotate(315deg);
+        -ms-transform: rotate(315deg);
+        -o-transform: rotate(315deg);
+        transform: rotate(315deg);
+    }
+    /* ROUTE SUMMARY */
     
     .directions-summary-container {
         height: 20px;
@@ -501,68 +818,6 @@
         display: inline;
         font-size: 12px;
     }
-    
-    .directions-img {
-        margin-left: 3px;
-        position: absolute;
-    }
-    
-    .directions-mode-distance {
-        top: 1px;
-        right: 15px;
-        padding-left: .5em;
-        padding-right: .5em;
-        z-index: 1;
-        position: absolute;
-        background-color: #fff;
-        font-size: 12px;
-    }
-    
-    .directions-mode-container {
-        padding: 0 0 0 40px;
-        position: absolute;
-        left: 0px;
-        right: 0;
-        height: 30px;
-        line-height: normal;
-        font-weight: normal;
-    }
-    
-    .directions-mode-line {
-        border-bottom: 1px solid #e6e6e6;
-        padding-top: 8px;
-        margin: 0 2em 0 0;
-    }
-    
-    .directions-warning-table {
-        color: red;
-    }
-    
-    .directions-warning-table tr td:first-child {
-        width: 37px;
-    }
-    
-    .directions-warning-table img {
-        height: 16px;
-        width: auto;
-        margin-left: 3px;
-    }
-    
-    .fa-rotate-45 {
-        -webkit-transform: rotate(45deg);
-        -moz-transform: rotate(45deg);
-        -ms-transform: rotate(45deg);
-        -o-transform: rotate(45deg);
-        transform: rotate(45deg);
-    }
-    
-    .fa-rotate-315 {
-        -webkit-transform: rotate(315deg);
-        -moz-transform: rotate(315deg);
-        -ms-transform: rotate(315deg);
-        -o-transform: rotate(315deg);
-        transform: rotate(315deg);
-    }
     /* SURFACE INFORMATION */
     
     #routeTypesHead {
@@ -573,32 +828,34 @@
         position: relative;
     }
     
-    #wayType, #surfaceType {
+    #wayType, #surfaceType, #steepnessType {
         width: 100%;
     }
     
-    #wayTypeList, #surfaceTypeList {
+    #wayTypeList, #surfaceTypeList, #steepnessTypeList {
         min-height: 25px;
         padding-bottom: 5px;
-        margin-left: 5px;
     }
     
-    #wayTypeList ul, #surfaceTypeList ul {
-        margin-left: 10px;
-        margin-top: -10px;
+    #wayTypeList ul, #surfaceTypeList ul, #steepnessTypeList ul {
+        margin-left: -20px;
     }
     
-    #wayTypeList li, #surfaceTypeList li {
+    #wayTypeList li, #surfaceTypeList li, #steepnessTypeList li {
         float: left;
         font-size: 90%;
         margin-right: 20px;
     }
     
-    #wayTypeList li span, #surfaceTypeList li span {
+    #wayTypeList li span, #surfaceTypeList li span, #steepnessTypeList li span {
         color: #707070;
         font-size: 90%;
         position: relative;
         margin-left: -5px;
+    }
+    
+    .tooltip {
+        font-family: 'Source Sans Pro', sans-serif !important;
     }
     
     .d3-tip {
@@ -632,18 +889,16 @@
     }
     /* ACCESSIBILITY ANALYSIS */
     
-    #accessibilityDistance, #accessibilityAnalysisIsochronesIntervall {
-        width: 30px;
-        /*overwrite settings from bootstrap for input fields*/
-        padding: 2px 2px 0px 2px;
-        margin-right: 10px;
-        vertical-align: baseline;
-        text-align: center;
-        font-size: 90%;
-    }
-    
     #accessibilityAnalysisMethodList {
         width: 140px;
+    }
+    
+    #accessibilityCalculation {
+        margin-top: 5px;
+    }
+    
+    #accessibilityError {
+        margin-top: 5px;
     }
     /* CLOUD CONTENT */
     
@@ -675,12 +930,11 @@
     
     .myfile {
         float: left;
-        padding-left: 13px;
         pointer-events: none;
     }
-    /* popup with information about a service timeout */
     
     #exportGpxError {
+        /* popup with information about a service timeout */
         margin-top: 5px;
     }
     /* DISCLAIMER */
@@ -691,113 +945,40 @@
         background-color: #F7F7F7;
         width: 388px;
         border-top: 1px solid #EBEBEB;
+        height: 22px;
     }
     
     .disclaimer a, .disclaimer div {
-        font-size: 80%;
+        font-size: 90%;
         margin-right: 10px;
         padding-left: 5px;
         color: #707070;
     }
-    /* GENERIC ELEMENTS (CLASSES OR ID'S USED FOR VARIOUS ELEMENTS) */
-    /* generic scrollbar classes */
-    
-    .mCS-ors-theme.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
-        background-color: #707070;
-    }
-    
-    .mCS-ors-theme.mCSB_scrollTools .mCSB_draggerRail {
-        background-color: #F0F0F0;
-    }
-    
-    .mCS-ors-theme.mCSB_scrollTools .mCustomScrollBox {
-        background-color: #F0F0F0;
-    }
-    /* generic ORS classes */
-    
-    .ORS-light {
-        background-color: #fafafa;
-    }
-    
-    .ORS-panel {
-        border-bottom: 1px solid #EBEBEB;
-    }
-    
-    .ORS-panel-sub {
-        padding-left: 10px;
-        padding-right: 10px;
-        padding-bottom: 10px;
-        padding-top: 10px;
-    }
-    
-    .ORS-padding {
-        padding-top: 20px;
-    }
-    
-    .ORS-hr {
-        border-bottom: 1px solid #F0F0F0;
-    }
-    
-    .ORS-hr-dark {
-        border-bottom: 1px solid #EBEBEB;
-    }
-    
-    .ORS-label {
-        line-height: 16px;
-        font-weight: normal;
-        color: #707070;
-        text-shadow: none;
-        background-color: transparent;
-    }
-    
-    .ORS-form {
-        margin: 0 0 10px;
-    }
-    
-    .ORS-alert {
-        margin-bottom: 0;
-        border-radius: 0;
-        margin-top: 5px;
-        font-family: 'Source Sans Pro', sans-serif;
-    }
-    
-    .ORS-info {
-        font-family: 'Source Sans Pro', sans-serif;
-    }
-    
-    .ORS-close {
-        display: block;
-        float: right;
-        width: 17px;
-        height: 29px;
-        color: #707070;
-    }
-    
-    .ORS-center {
-        text-align: center;
-        line-height: 40px;
-    }
     /* STYLE FOR ELEMENTS ON NAV SECTION (MAP SECTION) */
     
     .leaflet-pane {
+        /* For map pane */
         font-family: 'Source Sans Pro', sans-serif;
     }
     
     .leaflet-control-container {
+        /* For general control containers */
         font-family: 'Source Sans Pro', sans-serif;
     }
     
     .leaflet-bar, .leaflet-bar a:last-child, .leaflet-bar a:first-child, .leaflet-control-layers {
+        /* For general elements on map */
         border-radius: 0px;
         background-color: #FAFAFA;
     }
-    /* MAP CONTROLLERS */
     
     .leaflet-bottom .leaflet-control-scale {
+        /* for scale controller */
         margin-bottom: 23px;
     }
     
     .leaflet-control-customNavMenuToggle, .leaflet-control-customLocate {
+        /* for locate controller */
         width: 26px;
         height: 26px;
         position: relative;
@@ -808,16 +989,42 @@
     }
     
     .leaflet-retina .leaflet-control-layers-toggle, .leaflet-control-layers-toggle {
+        /* for layers controller */
         background-image: none;
     }
     
     .leaflet-control-layers a.leaflet-control-layers-toggle {
+        /* for layers controller */
         width: 26px;
         height: 26px;
         position: relative;
         text-align: center;
         line-height: 26px;
         color: #70707D;
+    }
+    
+    .leaflet-control-layers a.leaflet-control-layers-toggle:before {
+        /* for layers controller */
+        content: "\e804";
+        font-family: ruifont;
+    }
+    
+    .leaflet-control-customNavMenuToggle:before {
+        /* for toggle menu controller */
+        content: "\f07e";
+        font-family: FontAwesome;
+    }
+    
+    .leaflet-control-customLocate:before {
+        /* for locate controller */
+        content: "\f05b";
+        font-family: FontAwesome;
+    }
+    
+    .leaflet-control a:link, .leaflet-control a:visited, .leaflet-control a:hover {
+        /* for all controllers */
+        text-decoration: none;
+        color: #707070;
     }
     
     .elevation-collapsed {
@@ -835,9 +1042,9 @@
     .steelblue-theme.leaflet-control.elevation .elevation-toggle-icon {
         background-size: 16px 11px;
     }
-    /* CONTEXT MENU STYLES (WHEN CLICKING WITH THE RIGHT MOUSE BUTTON ON THE MAP AREA) */
     
-    .mapContextMenu .contextWaypoint {
+    .ORS-mapContextMenu .ORS-contextWaypoint {
+        /* Context menu styles (when clicking with the right mouse button on the map area */
         padding: 3px 10px 3px 10px;
         white-space: nowrap;
         cursor: pointer;
@@ -853,23 +1060,27 @@
         transition: .2s;
     }
     
-    .mapContextMenu .contextWaypoint:hover {
+    .ORS-mapContextMenu .ORS-contextWaypoint:hover {
+        /* Context menu styles (when clicking with the right mouse button on the map area) Class created on map.js */
         background-color: #b5152b;
         border-left: 2px solid #444;
     }
     
-    .mapContextMenu .leaflet-popup-content {
+    .ORS-mapContextMenu .leaflet-popup-content {
+        /* Context menu styles (when clicking with the right mouse button on the map area) Class created on map.js */
         -position: absolute;
         left: 2.5em;
         bottom: 0.7em;
     }
     
-    .mapContextMenu .leaflet-popup-content-wrapper {
+    .ORS-mapContextMenu .leaflet-popup-content-wrapper {
+        /* Context menu styles (when clicking with the right mouse button on the map area) Class created on map.js */
         background: transparent;
         box-shadow: none;
     }
     
-    .mapContextMenu .leaflet-popup-tip-container {
+    .ORS-mapContextMenu .leaflet-popup-tip-container {
+        /* Context menu styles (when clicking with the right mouse button on the map area) Class created on map.js */
         margin: 0 auto;
         position: relative;
         overflow: visible;
@@ -877,7 +1088,8 @@
         height: 20px;
     }
     
-    .mapContextMenu .leaflet-popup-tip {
+    .ORS-mapContextMenu .leaflet-popup-tip {
+        /* Context menu styles (when clicking with the right mouse button on the map area */
         border: 2px solid #b5152b;
         box-shadow: none;
         background-color: transparent;
@@ -885,9 +1097,9 @@
         width: 10px;
         height: 10px;
     }
-    /* PERMALINK */
     
     #infoPermalink {
+        /* for elements on permalink */
         position: absolute;
         bottom: 2px;
         cursor: pointer;
@@ -897,10 +1109,11 @@
         color: black;
         z-index: 999;
         margin-left: 5px;
-        font-family: 'Source Sans Pro', sans-serif;
+        /*font-family: 'Source Sans Pro', sans-serif;*/
     }
     
     #bubble {
+        /* for elements on permalink */
         display: none;
         position: fixed;
         width: 70px;
@@ -913,25 +1126,42 @@
         -webkit-border-radius: 5px;
         -moz-border-radius: 5px;
         border-radius: 5px;
-        font-family: 'Source Sans Pro', sans-serif;
+        /*font-family: 'Source Sans Pro', sans-serif;*/
     }
     
     #bubble #permaText {
+        /* for elements on permalink */
         position: absolute;
         padding: 5px 2px 2px 20px;
     }
     
     #bubble #permaText #copy {
+        /* for elements on permalink */
         cursor: pointer;
     }
     
     #bubble #permaText #open {
+        /* for elements on permalink */
         margin-top: 5px;
         cursor: pointer;
     }
-    /* AVOIDABLES INFO */
+    
+    #bubble:after {
+        /* for elements on permalink */
+        content: '';
+        position: relative;
+        border-style: solid;
+        border-width: 7px 7px 7px 0;
+        border-color: transparent rgba(255, 255, 255, 0.5);
+        display: block;
+        width: 0;
+        z-index: 1;
+        left: -7px;
+        top: 27px;
+    }
     
     #avoidables_info {
+        /* avoidables info */
         position: absolute;
         margin-left: 43px;
         top: 72px;
@@ -939,9 +1169,9 @@
         display: none;
         width: 200px;
     }
-    /* SERVICE TIMEOUT */
     
     #serviceTimeout {
+        /* service timeout message */
         display: none;
         position: absolute;
         margin-left: 40px;
@@ -950,12 +1180,13 @@
     }
     
     #serviceTimeout > label {
+        /* service timeout message */
         width: 220px;
         line-height: 1.1;
     }
-    /* NEW TO ORS */
     
     #newToOrs {
+        /* new to ORS message */
         display: none;
         width: 220px;
         line-height: 1.1;
@@ -964,9 +1195,9 @@
         right: 100px;
         top: 10px;
     }
-    /* GISCIENCE LOGO */
     
     .ORS-logo {
+        /* GIScience Logo */
         background-image: url('../img/logo_giscience.png');
         background-repeat: no-repeat;
         background-position: center center;
@@ -983,109 +1214,6 @@
     /* ******************************************/
     /* END OF ELEMENT STYLES (CLASSES AND ID's) */
     /* ******************************************/
-    /* ***********************************************/
-    /* START OF MODIFIER STYLES (FLAGS ON ELEMENTS)  */
-    /* ***********************************************/
-    /* MAP CONTROLLERS */
-    /* toggle layers controller */
-    
-    .leaflet-control-layers a.leaflet-control-layers-toggle:before {
-        content: "\e804";
-        font-family: ruifont;
-    }
-    /* for toggle menu controller */
-    
-    .leaflet-control-customNavMenuToggle:before {
-        content: "\f07e";
-        font-family: FontAwesome;
-    }
-    /* for locate controller */
-    
-    .leaflet-control-customLocate:before {
-        content: "\f05b";
-        font-family: FontAwesome;
-    }
-    /* for all controllers */
-    
-    .leaflet-control a:link, .leaflet-control a:visited, .leaflet-control a:hover {
-        text-decoration: none;
-        color: #707070;
-    }
-    /* for elements on permalink */
-    
-    #bubble:after {
-        content: '';
-        position: relative;
-        border-style: solid;
-        border-width: 7px 7px 7px 0;
-        border-color: transparent rgba(255, 255, 255, 0.5);
-        display: block;
-        width: 0;
-        z-index: 1;
-        left: -7px;
-        top: 27px;
-    }
-    
-    .clear:after {
-        clear: both;
-        content: "";
-        display: table;
-    }
-    /* for waypoints */
-    
-    .removeWaypoint:before {
-        display: block;
-        float: right;
-        width: 16px;
-        font-size: 85%;
-        padding-left: 3px;
-        content: "\f00d";
-        font-family: FontAwesome;
-    }
-    
-    .moveUpWaypoint:before {
-        display: block;
-        float: right;
-        width: 18px;
-        font-size: 85%;
-        padding-left: 3px;
-        content: "\f062";
-        font-family: FontAwesome;
-    }
-    
-    .moveDownWaypoint:before {
-        display: block;
-        float: right;
-        width: 18px;
-        font-size: 85%;
-        content: "\f063";
-        font-family: FontAwesome;
-    }
-    
-    .searchAgainButton:before {
-        display: block;
-        float: right;
-        width: 18px;
-        font-size: 85%;
-        content: "\f021";
-        font-family: FontAwesome;
-    }
-    
-    .useAsWaypoint:before {
-        display: block;
-        float: right;
-        width: 18px;
-        font-size: 85%;
-        content: "\f041";
-        font-family: FontAwesome;
-    }
-    /* *********************************************/
-    /* END OF MODIFIER STYLES (FLAGS ON ELEMENTS)  */
-    /* *********************************************/
-    
-    .ORS-mobileBrLine {
-        display: none;
-    }
     /* ******************************************************************/
     /* START OF MOBILE STYLES (MEDIA QUERIES FOR MOBILE VISUALIZATION)  */
     /* ******************************************************************/
@@ -1101,7 +1229,6 @@
         .ORS-map {
             order: 1;
         }
-        
         /* To hide the mouse position controller */
         .leaflet-container .leaflet-control-mouseposition {
             display: none;
@@ -1128,13 +1255,17 @@
         .ORS-mainPanel {
             width: calc(100% - 41px) !important;
         }
-        #sitePrefsModal, #feedbackModal {
-            z-index: 9999;
-            width: 90vw;
-            margin: 0 auto;
-            left: 5vw;
+        .ORS-logo {
+            /* GIScience Logo */
+            bottom: 25px;
         }
-
+        .leaflet-bottom .leaflet-control-scale {
+            /* for scale controller */
+            margin-bottom: 50px;
+        }
+        #infoPermalink {
+            margin-bottom: 30px;
+        }
     }
     /* ****************************************************************/
     /* END OF MOBILE STYLES (MEDIA QUERIES FOR MOBILE VISUALIZATION)  */
@@ -1170,434 +1301,9 @@
         }
         .ORS-map {
             order: 1;
-            height:20%;
+            height: 20%;
         }
     }
     /* ***************************************************************/
     /* END OF PRINTING STYLES (MEDIA QUERIES FOR PRINTING THE PAGE)  */
     /* ***************************************************************/
-    /* gpx upload styles */
-    
-    .show {
-        float: left;
-        padding-left: 13px;
-        cursor: pointer;
-    }
-    
-    .calc {
-        float: left;
-        padding-left: 13px;
-        cursor: pointer;
-    }
-    
-    .delete {
-        float: left;
-        padding-left: 13px;
-        cursor: pointer;
-    }
-    
-    .calcGranularity {
-        margin-top: 5px;
-        width: 100px;
-    }
-    
-    .radioContainer {
-        padding: 0 0 0 5px;
-    }
-    
-    .clickable {
-        cursor: pointer;
-    }
-    
-    .clickable.active {
-        cursor: pointer;
-        color: rgb(0, 161, 45);
-    }
-    
-    .addWaypoint {
-        padding-left: 40px;
-        padding-top: 5px;
-        min-height: 30px;
-        background-image: url('../img/marker-plus.png');
-        background-repeat: no-repeat;
-        background-size: 16px;
-        background-position: 8px 3px;
-        font-size: 90%;
-    }
-    /* container for "zoom to route" or "calculate route" when appropriate*/
-    
-    .zoomToSearchResults {
-        margin-top: 7px;
-        margin-bottom: 7px;
-    }
-    /*contains the route instructions of a calculated route*/
-    
-    .routeInstructions {
-        padding-top: 5px;
-        padding-bottom: 5px;
-        font-size: 90%;
-    }
-    /*for displaying route instructions in the panel*/
-    
-    #routeInstructionHead {
-        float: left;
-        width: 60%;
-    }
-    
-    .collapsibleHead:before {
-        padding: 3px;
-        content: "\f0d7";
-        font-family: FontAwesome;
-    }
-    
-    .collapsibleHead.collapsed:before {
-        padding: 4px;
-        content: "\f0da";
-        font-family: FontAwesome;
-    }
-    
-    .collapsibleBody {
-        padding-left: 2px;
-        clear: left;
-    }
-    
-    .collapsibleBody > table {
-        width: 100%;
-        font-size: 13px;
-    }
-    
-    .odd {
-        background-color: rgb(245, 245, 235);
-        /* fallback for unsupported rgba*/
-        background-color: rgba(235, 235, 225, 0.65);
-    }
-    
-    .downloadGpx {
-        width: 60px;
-        height: 30px;
-        background-size: 60px 30px;
-        background: url(../img/routelinkGPX.png) no-repeat 0% 50%;
-    }
-    
-    .prompt {}
-    
-    .prompt.selectSearchResult {
-        margin-top: 3px;
-    }
-    
-    #accessibilityCalculation {
-        margin-top: 5px;
-    }
-    
-    #accessibilityError {
-        margin-top: 5px;
-    }
-    /* Leaflet styles */
-    
-    .leaflet-bottom .leaflet-control-scale {
-        margin-bottom: 23px;
-    }
-    
-    .leaflet-pane {
-        font-family: 'Source Sans Pro', sans-serif;
-    }
-    
-    .leaflet-control-container {
-        font-family: 'Source Sans Pro', sans-serif;
-    }
-    
-    .leaflet-bar, .leaflet-bar a:last-child, .leaflet-bar a:first-child, .leaflet-control-layers {
-        border-radius: 0px;
-        background-color: #FAFAFA;
-    }
-    /*preferences popup*/
-    
-    #sitePrefsModal label {
-        float: left;
-    }
-    
-    .logo {
-        height: 45px;
-        width: 45px;
-        margin-top: -5px;
-        padding-right: 5px;
-    }
-    
-    .links {
-        height: 40px;
-        padding-top: 0px;
-        padding-bottom: 2px;
-    }
-    
-    a img {
-        border: none;
-    }
-    /*avoid layer names too close to radio button */
-    
-    body {
-        font-size: 90%;
-        -line-height: 1.4;
-        color: rgba(0, 0, 0, 0.8);
-        background-color: #fff;
-        color: #444;
-        margin: 0;
-        padding: 0;
-        font-family: 'Source Sans Pro', sans-serif;
-    }
-    
-    input, .form-inline input, textarea, select, .form-inline select, .guiComponent > input {
-        font-family: 'Source Sans Pro', sans-serif;
-        border-radius: 0;
-        margin-bottom: 0px;
-        border-color: 1px solid #ccc;
-        font-size: 90%;
-        webkit-box-shadow: none;
-        -moz-box-shadow: none;
-        box-shadow: none;
-    }
-    
-    .form-inline select {
-        -webkit-appearance: none;
-    }
-    
-    select:not([multiple]) {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        background-position: right 50%;
-        background-repeat: no-repeat;
-        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAMCAYAAABSgIzaAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NDZFNDEwNjlGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NDZFNDEwNkFGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0NkU0MTA2N0Y3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo0NkU0MTA2OEY3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuGsgwQAAAA5SURBVHjaYvz//z8DOYCJgUxAf42MQIzTk0D/M+KzkRGPoQSdykiKJrBGpOhgJFYTWNEIiEeAAAMAzNENEOH+do8AAAAASUVORK5CYII=);
-        vertical-align: middle;
-    }
-    
-    select, input[type="file"] {
-        line-height: 1;
-    }
-    
-    input[type='checkbox'], input[type='radio'] {
-        vertical-align: baseline;
-    }
-    
-    input[type="text"], input[type="number"] {
-        background-color: #fff;
-        border: 1px solid #ccc;
-        -webkit-box-shadow: none;
-        -moz-box-shadow: none;
-        box-shadow: none;
-        border-color: #F0F0F0;
-        font-size: 90%;
-    }
-    
-    input[class*="span"] {
-        float: left;
-    }
-    
-    h3 {
-        margin: 0 0 0.5em 0;
-    }
-    
-    a:link, a:visited {
-        text-decoration: none;
-    }
-    
-    a:hover, a:active {
-        text-decoration: none;
-    }
-    
-    a:focus {
-        background-color: none;
-        text-decoration: none;
-    }
-    
-    a.options {
-        clear: both;
-        background: url(../img/arrowRight.png) no-repeat 0 50%;
-        padding-left: 12px;
-        font-size: 0.8em;
-        line-height: 1;
-        color: #5f5f5f;
-        text-decoration: none;
-    }
-    
-    a.options.active {
-        background: url(../img/arrowDown.png) no-repeat 0 50%;
-    }
-    
-    .address {
-        list-style-type: none;
-        font-size: 90%;
-    }
-    
-    .poi {
-        list-style-type: none;
-    }
-    /* BUTTON GROUPS */
-    
-    button.routeOptionsButton, button.optionsButton {
-        width: 44px;
-        height: 41px;
-    }
-    
-    .clickable {
-        cursor: pointer;
-    }
-    
-    .clickable.active {
-        cursor: pointer;
-        color: rgb(0, 161, 45);
-    }
-    /* container for "zoom to route" or "calculate route" when appropriate*/
-    
-    .zoomToSearchResults {
-        margin-top: 7px;
-        margin-bottom: 7px;
-    }
-    /*contains the route instructions of a calculated route*/
-    
-    .routeInstructions {
-        padding-top: 5px;
-        padding-bottom: 5px;
-        font-size: 90%;
-    }
-    /*for displaying route instructions in the panel*/
-    
-    #routeInstructionHead {
-        float: left;
-        width: 60%;
-    }
-    
-    .collapsibleHead:before {
-        padding: 3px;
-        content: "\f0d7";
-        font-family: FontAwesome;
-    }
-    
-    .collapsibleHead.collapsed:before {
-        padding: 4px;
-        content: "\f0da";
-        font-family: FontAwesome;
-    }
-    
-    .collapsibleBody {
-        padding-left: 2px;
-        clear: left;
-    }
-    
-    .collapsibleBody > table {
-        width: 100%;
-        font-size: 13px;
-    }
-    
-    .odd {
-        background-color: rgb(245, 245, 235);
-        /* fallback for unsupported rgba*/
-        background-color: rgba(235, 235, 225, 0.65);
-    }
-    
-    .prompt {}
-    
-    .prompt.selectSearchResult {
-        margin-top: 3px;
-    }
-    
-    #accessibilityCalculation {
-        margin-top: 5px;
-    }
-    
-    #accessibilityError {
-        margin-top: 5px;
-    }
-    
-    .address {
-        list-style-type: none;
-        font-size: 90%;
-    }
-    
-    .transparent {
-        background-color: transparent !important;
-    }
-    
-    .input-append input {
-        border-radius: 0;
-    }
-    
-    .input-append .btn:last-child {
-        border-radius: 0;
-    }
-    /* avoid area controls*/
-    
-    #avoidAreas {
-        /*height: 30px;*/
-    }
-    
-    #avoidAreasTitle {
-        height: 30px;
-        float: left;
-        padding-top: 5px;
-        margin-right: 15px;
-    }
-    
-    #avoidAreasError {
-        margin-top: 10px;
-        margin-bottom: 0px;
-    }
-    /*dropdown to define the distance measure for the routing instructions */
-    
-    #distMeasureRouteInstructions {
-        width: 85px;
-        height: 100%;
-        vertical-align: baseline;
-        padding: 2px 2px 0px 2px;
-    }
-    /* bootstrap sliders */
-    
-    .mySlider input[type="text"] {
-        width: 45px;
-        margin-left: 10px;
-        font-size: 90%;
-    }
-    
-    .mySlider input[type="range"] {
-        margin-top: -6px;
-        width: 130px;
-        border: 0;
-        color: #6392C2;
-    }
-    /* address result list */
-    
-    .resultList {
-        margin-bottom: 1em;
-    }
-    
-    .resultList li {
-        padding: 3px;
-        border-bottom: 1px dashed #c8c8c8;
-    }
-    
-    .resultList li:hover {
-        cursor: pointer;
-    }
-    /*fixes broken map tiles with OpenLayer 2.12*/
-    
-    img {
-        max-width: none;
-    }
-    
-    .dl-horizontal dt {
-        float: left;
-        width: 120px;
-        overflow: hidden;
-        clear: left;
-        text-align: right;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    
-    .dl-horizontal dd {
-        margin-left: 130px;
-    }
-    
-    #returnmessage {
-        font-size: 14px;
-        color: green;
-        text-align: center;
-    }

@@ -1,678 +1,1079 @@
 <!DOCTYPE html>
 <html lang="de">
-	<head>
-		<!-- TITLE AND ICON FOR THE WEBSITE -->
-		<title> OpenRouteService </title>
-		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
-
-		<!-- WEBSITE METADATA -->
-		<meta name="robots" content="index, follow">
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
-		
-		<!-- NECESSARY STYLESHEETS FOR THE WEBSITE -->
-
-		<!-- BOOTSTRAP -->
-		<link rel="stylesheet" type="text/css" href="css/bootstrap-ext.min.css">
-		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"> 
-		
-		<!-- LEAFLET -->
-		<link rel="stylesheet" type="text/css" href="css/leaflet.css">
-
-		<!-- LEAFLET PLUGINS -->
-		<link rel="stylesheet" type="text/css" href="css/leaflet.elevation-0.0.4.css"> <!-- ELEVATION PLUGIN -->
-		<link rel="stylesheet" type="text/css" href="css/MarkerCluster.css" /> <!-- MARKER CLUSTER PLUGIN -->
-
-		<!-- JQUERY PLUGINS -->
-		<link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.min.css">
-
-		<link rel="stylesheet" type="text/css" href="css/MarkerCluster.Default.css" />
-		<link rel="stylesheet" type="text/css" href="css/L.Control.MousePosition.css" /> <!-- MOUSE POSITION PLUGIN -->
-
-		<!-- FONTS -->
-		<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
-		<link rel="stylesheet" type="text/css" href="css/font-awesome.css">
-		<link rel="stylesheet" type="text/css" href="css/ruifont.css">
-
-		<!-- MAIN STYLES -->
-		<link rel="stylesheet" type="text/css" href="css/default.css"> <!-- Must come at the end to overwrite other API styles -->
-
- 	</head>
-	<body class="ORS">
-		<!-- START OF HEADER SECTION -->
-		<header class="ORS-header" id="navbar">
-			<a id="ORS-headIcon" href="http://www.geog.uni-heidelberg.de/giscience.html"></a>
-			<a id="ORS-title" href="http://www.openrouteservice.org">OpenRouteService</a>
- 			<ul id="ORS-topMenu">
-				<li>
-					<a href="#feedbackModal" data-toggle="modal" id="menuLinkFeedback"><i class="fa fa-comment"></i></a>
-				</li>
-				<li>
-					<a href="#sitePrefsModal" data-toggle="modal" id="menuLinkSitePrefs"><i class="fa fa-cogs"></i></a>
-				</li>
-				<li>
-					<a href="contact.html#top" target="_blank" id="ORS-menuLinkInfo"><i class="fa fa-info"></i></a>
-				</li>
-			</ul>
-		</header>
-		<!-- END OF HEADER SECTION -->
-
-		<!-- START OF MAIN SECTION -->
-		<div class="ORS-main">
-			<div class="ORS-sidebar" id="sidebar">
-				<!-- sidebar content -->
-				<div class="ORS-menuPanel" id="menuPanel">
-					<div class="btn-group">
-						<button select-id="ORS-routeContent" class="btn menuButton primary-menu active">
-							<i class="fa fa-road"></i>
-						</button>
-						<button select-id="ORS-aaContent" class="btn menuButton primary-menu">
-							<i class="fa fa-bullseye"></i>
-						</button>
-						<button select-id="ORS-cloudContent" class="btn menuButton primary-menu">
-							<i class="fa fa-download"></i>
-						</button>
-					</div>
-					<div style="bottom: 0px; margin: 12px; position: absolute;">
-						<i class="fa fa-circle-o-notch fa-spin" id="ORS-loading"></i>
-						<i class="fa fa-warning" id="ORS-error"></i>
-					</div>
-				</div>
-				<div class="ORS-navigation">
-					<div data-id="ORS-routeContent">
-						<div class="btn-group routePreferenceBtns">
-							<button id="car" class="btn primary routeOptionsButton active">
-								<i class="fa fa-car"></i>
-							</button>
-							<button id="bicycle" class="btn primary routeOptionsButton">
-								<i class="fa fa-bicycle"></i>
-							</button>
-							<button id="pedestrian" class="btn primary routeOptionsButton">
-								<i class="fa fa-male"></i>
-							</button>
-							<button id="wheelchair" class="btn primary routeOptionsButton">
-								<i class="fa fa-wheelchair"></i>
-							</button>
-							<button id="heavyvehicle" class="btn primary routeOptionsButton">
-								<i class="fa fa-truck"></i>
-							</button>
-						</div>
-						<button class="btn primary optionsButton right">
-							<i class="fa fa-cog"></i>
-						</button>
-					</div>	
-					<div data-id="ORS-aaContent" class="ORS-center" style="display: none">
-						<span>Accessibility Analysis</span>
-					</div>
-					<div data-id="ORS-cloudContent" class="ORS-center" style="display: none">
-						<span>Import and Export Features</span>
-					</div>
-				</div>
-				<div class="ORS-mainPanel">
-					<div id="routeContainer" data-id="ORS-routeContent" class="route">
-						<div id="routingPanel ORS-panel">
-						    <div id="optionsContainer" class="routeOptions ORS-panel-sub ORS-light" style="display: none;">
-						        <div class="ORS-panel-sub ORS-all ORS-hr-dark" id="weightingOptions" style="display: none;">
-									<h6>Route weight</h6>
-									<label class="radio">
-										<input type="radio" id="Fastest" name="weighting" checked="checked">
-										<span class="ORS-label label" id="fastestLabel">fastest</span>
-									</label>	
-									<label class="radio">
-										<input type="radio" id="Shortest" name="weighting">
-										<span class="ORS-label label" id="shortestLabel">shortest</span>
-									</label>
-									<label class="radio">
-										<input type="radio" id="Recommended" name="weighting">
-										<span class="ORS-label label" id="recommendedLabel">recommended</span>
-									</label>	
-								</div>
-								<div class="ORS-panel-sub ORS-car-HIDE" id="carOptions" style="display: none;">
-									<label class="radio">
-										<input type="radio" id="Car" name="car"  value="car" checked="checked">
-										<span class="ORS-label label" id="carLabel">car</span>
-									</label>
-								</div>
-								<div class="ORS-panel-sub ORS-bike ORS-hr-dark" id="bicycleOptions" style="display: none;">
-									<h6>Route preference</h6>
-									<label class="radio">
-										<input type="radio" id="Bicycle" name="bicycle"  value="shortest" checked="checked">
-										<span class="ORS-label label" id="BicycleLabel">normal</span>
-									</label>
-									<label class="radio">
-										<input type="radio" id="BicycleSafety" name="bicycle"  value="safest">
-										<span class="ORS-label label" id="BicycleSafetyLabel">safest route</span>
-									</label>
-									<label class="radio">
-										<input type="radio" id="BicycleTour" name="bicycle"  value="tour">
-										<span class="ORS-label label" id="BicycleTourLabel">cycle tour</span>
-									</label>
-									<label class="radio">
-										<input type="radio" id="BicycleMTB" name="bicycle" value="mountain">
-										<span class="ORS-label label" id="BicycleMtbLabel">mountain bike</span>
-									</label>
-									<label class="radio">
-										<input type="radio" id="BicycleRacer" name="bicycle" value="racing">
-										<span class="ORS-label label" id="BicycleRacerLabel">racing bike</span>
-									</label>	
-								</div>
-								<div class="ORS-panel-sub ORS-ped-HIDE ORS-hr-dark" id="pedestrianOptions" style="display: none;">
-									<label class="radio">
-										<input type="radio" id="Pedestrian" name="pedestrian" value="pedestrian" checked="checked">
-										<span class="ORS-label label" id="PedestrianLabel">pedestrian</span>
-									</label>
-								</div>
-								<div class="ORS-panel-sub ORS-hgv ORS-hr-dark" id="heavyvehicleOptions" style="display: none;">
-									<h6>Route preference</h6>
-									<label class="radio">
-										<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="goods" checked="checked">
-										<span class="ORS-label label" id="goodsHeavyTruckLabel">goods</span>
-									</label>
-									<label class="radio">
-										<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="hgv">
-										<span class="ORS-label label" id="hgvHeavyTruckLabel">HGV</span>
-									</label>
-									<label class="radio">
-										<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="bus">
-										<span class="ORS-label label" id="busHeavyTruckLabel">Bus</span>
-									</label>
-									<label class="radio">
-										<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="agricultural">
-										<span class="ORS-label label" id="agriculturalHeavyTruckLabel">Agricultural Vehicle</span>
-									</label>
-									<label class="radio">
-										<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="forestry">
-										<span class="ORS-label label" id="forestryHeavyTruckLabel">Forestry</span>
-									</label>
-									<label class="radio">
-										<input type="radio" id="HeavyVehicle" name="heavyvehicle" value="delivery">
-										<span class="ORS-label label" id="deliveryHeavyTruckLabel">Delivery</span>
-									</label>
-									<div id="hazardOptions">
-										<label class="checkbox">
-											<input type="checkbox" id="Hazardous" value="hazmat">
-											<span id="hazardous" class="label ORS-label"><i class="icon-tint"></i>&nbsp;Hazardous Materials</span>
-										</label>
-									</div>
-								</div>
-								<div class="ORS-panel-sub ORS-hgv ORS-hr-dark" id="truckOptions_restrict" style="display: none;">
-									<h6>HGV properties</h6>
-									<ul id="TruckTabs" class="nav nav-tabs" data-tabs="tabs">
-								        <li class="active"><a href="#length" data-toggle="tab" id="trucklengthLabel">length</a></li>
-								        <li><a href="#width" data-toggle="tab" id="truckwidthLabel">width</a></li>
-								        <li><a href="#height" data-toggle="tab" id="truckheightLabel">height</a></li>
-								        <li><a href="#weight" data-toggle="tab" id="truckweightLabel">weight</a></li>
-										<li><a href="#axleload" data-toggle="tab" id="truckaxleloadLabel">load</a></li>
-								    </ul>
-								    <div id="my-tab-content" class="tab-content">
-								        <div class="tab-pane active" id="length">
-											<form class="mySlider">
-												<input type="text" value="15" min="0" max="50" autocomplete="off" id="value_length" oninput="this.form.value_length_slide.value=this.value","m">
-												<input type="range" min="0" max="50" value="15" step="0.5" id="value_length_slide" oninput="this.form.value_length.value=this.value" />
-											</form>
-								        </div>
-								        <div class="tab-pane" id="width">
-								            <form class="mySlider">
-												<input type="text" value="4" min="0" max="20" autocomplete="off" id="value_width" oninput="this.form.value_width_slide.value=this.value">
-												<input type="range" min="0" max="20" value="4" step="0.5" id="value_width_slide"  oninput="this.form.value_width.value=this.value" />
-											</form>
-								        </div>
-								        <div class="tab-pane" id="height">
-								        	<form class="mySlider">
-												<input type="text" value="4" autocomplete="off" id="value_height" oninput="this.form.value_height_slide.value=this.value">
-												<input type="range" min="0" max="15" value="4" step="0.5" id="value_height_slide" oninput="this.form.value_height.value=this.value"  />
-											</form>
-								        </div>
-								        <div class="tab-pane" id="weight">
-								            <form class="mySlider">
-												<input type="text" value="7" autocomplete="off" id="value_weight" oninput="this.form.value_weight_slide.value=this.value">
-												<input type="range" min="0" max="50" value="4" step="0.5" id="value_weigth_slide"  oninput="this.form.value_weight.value=this.value"  />
-											</form>
-								        </div>
-										<div class="tab-pane" id="axleload">
-								            <form class="mySlider">
-												<input type="text" value="2" autocomplete="off" id="value_axleload" oninput="this.form.value_axleload_slide.value=this.value">
-												<input type="range" min="0" max="20" value="4" step="0.5" id="value_axleload_slide"  oninput="this.form.value_axleload.value=this.value"  />
-											</form>
-								        </div>
-								    </div>
-								</div>
-								<div class="ORS-panel-sub ORS-wc-HIDE ORS-hr-dark" id="wheelchairOptions" style="display: none;"> 	
-									<h6>Route preference</h6>
-									<label class="radio">
-											<input type="radio" id="Wheelchair" name="wheelchair" checked="checked">
-											<span class="ORS-label label" id="WheelchairLabel">wheelchair</span>
-									</label>		
-								</div>
-								<div class="ORS-panel-sub ORS-wc ORS-hr" id="wheelchairParameters" style="display: none;">
-									<form class="form-inline ORS-form">
-										<select id="Surface" class="wheelchairSelect">
-											<option id="asphaltOption">Asphalt</option>
-											<option id="cobblestoneFlattenedOption">Flattened Cobblestone</option>
-											<option id="cobblestoneOption">Cobblestone</option>
-											<option id="compactedOption">Compacted</option>
-											<option id="allSurfacesOption">All Surfaces</option>
-										</select>
-										<span id="surfaceLabel" class="label ORS-label">Surface</span>	
-									</form>
-									<form class="form-inline ORS-form">		
-										<select id="Incline" class="wheelchairSelect">
-											<option id="threePercentOption">Up to 3%</option>
-											<option id="sixPercentOption">Up to 6%</option>
-											<option id="tenPercentOption">Up to 10%</option>
-											<option id="fifteenPercentOption">Up to 15%</option>
-											<option id="allInclinesOption">All Inclines</option>
-										</select>
-										<span id="inclineLabel" class="label ORS-label">Maximum Incline</span>	
-									</form>
-									<form class="form-inline ORS-form">		
-										<select id="SlopedCurb" class="wheelchairSelect">
-											<option id="threeCmOption">Up to 3cm</option>
-											<option id="sixCmOption">Up to 6cm</option>
-											<option id="tenCmOption">Up to 10cm</option>
-											<option id="allSlopedCurbesOption">All Sloped Curbs</option>
-										</select>
-										<span id="slopedCurbLabel" class="label ORS-label">Maximum Sloped Curb</span>
-									</form>
-								</div>
-								<div class="ORS-car ORS-panel-sub ORS-hr-dark" id="avoidables" style="display: none;">
-						        	<h6>Avoid road types</h6>
-				                  	<label class="checkbox">
-										<input type="checkbox" id="Highway">
-										<span class="ORS-label label" id="avoidMotorLabel">highways</span>
-									</label>										
-									<label class="checkbox">
-										<input type="checkbox" id="Tollway">
-										<span class="ORS-label label" id="avoidTollLabel">toll roads</span>
-									</label>
-									<label class="checkbox">
-										<input type="checkbox" id="Tunnel">
-										<span class="ORS-label label" id="avoidTunnelLabel">tunnels</span>
-									</label>
-									<label class="checkbox">
-										<input type="checkbox" id="Unpavedroads">
-										<span class="ORS-label label" id="avoidunpavedRoadsLabel">unpaved roads</span>
-									</label>
-									<label class="checkbox">
-										<input type="checkbox" id="Ferry">
-										<span class="ORS-label label" id="avoidFerryLabel">ferrys</span>
-									</label>
-									<label class="checkbox">
-										<input type="checkbox" id="Fords">
-										<span class="ORS-label label" id="avoidFordsLabel">fords</span>
-									</label>
-						    	</div>
-						    	<div class="ORS-ped ORS-panel-sub ORS-hr-dark" id="avoidablesPedestrian" style="display: none;">
-						        	<h6 id="avoidPedesBtn">Avoid ways</h6>
-				                  	<label class="checkbox">
-										<input type="checkbox" id="Ferry">
-										<span class="ORS-label label" id="avoidFerryLabelPedestrian">ferries</span>
-									</label>
-									<label class="checkbox">
-										<input type="checkbox" id="Steps">
-										<span class="ORS-label label" id="avoidStepsLabelPedestrian">steps</span>
-									</label>	
-									<label class="checkbox">
-										<input type="checkbox" id="Fords">
-										<span class="ORS-label label" id="avoidFordsLabelPedestrian">fords</span>
-									</label>									
-						    	</div>
-						    	<div class="ORS-bike ORS-panel-sub ORS-hr-dark" id="avoidablesBike" style="display: none;">
-						        	<h6>Avoid road types</h6>
-				                  	<label class="checkbox">
-										<input type="checkbox" id="Ferry">
-										<span class="ORS-label label" id="avoidFerryLabelBike">ferries</span>
-									</label>										
-									<label class="checkbox">
-										<input type="checkbox" id="Unpavedroads">
-										<span class="ORS-label label" id="avoidunpavedRoadsLabelBike">unpaved roads</span>
-									</label>
-									<label class="checkbox">
-										<input type="checkbox" id="Pavedroads">
-										<span class="ORS-label label" id="avoidpavedRoadsLabelBike">paved roads</span>
-									</label>	
-									<label class="checkbox">
-										<input type="checkbox" id="Steps">
-										<span class="ORS-label label" id="avoidStepsLabelBike">steps</span>
-									</label>
-									<label class="checkbox">
-										<input type="checkbox" id="Fords">
-										<span class="ORS-label label" id="avoidFordsLabelBike">fords</span>
-									</label>
-						    	</div>
-						    	<div id="maxSpeed" style="display: none;" class="ORS-all ORS-panel-sub">
-									<h6>Maximum speed</h6>
-									<div class="input-append ORS-input-append">
-										<input class="span2" id="maxSpeedInput" type="number" placeholder="maximum speed">
-										<button class="btn primary-control" style=" border:1px solid #F0F0F0;" type="button" id="maxSpeedBtn">set</button>
-									</div>
-								</div>
-								<div id="avoidAreas">
-						         	<div class="alert alert-error" id="avoidAreasError" style="display: none;">
-										Polygons are overlapping. Please refit!
-									</div>
-								</div>
-							</div>
-							<div class="ORS-panel-sub ORS-hr-dark ORS-padding">
-								<div class="guiComponent waypoint unset" draggable="draggable" id="Draft" style="display: none">
-									<span class="clickable waypoint-icon unset" title="Zoom to waypoint"> </span>
-									<span class="clickable removeWaypoint" title="Remove waypoint"> </span>
-									<span class="clickable moveUpWaypoint" href="#" title="Move waypoint up"> </span>
-									<span class="clickable moveDownWaypoint" href="#" title="Move Waypoint down"> </span>
-									<span class="clickable searchAgainButton" title="show previous search result" style="display: none;"> </span>
-									<div class="waypointResult" style="display:none;"></div>
-									<div class="guiComponent">
-										<input type="text" class="searchWaypoint" placeholder="enter an address">
-										<div class="ORS-alert alert alert-error searchWaypointError" style="display:none"></div>
-										<div class="responseContainer">
-											<div class="clickable zoomToSearchResults zoomToWaypointResults" title="Zoom to search results"></div>
-											<ul class="guiComponent resultList SearchAddress searchWaypointResults"></ul>
-										</div>
-									</div>
-								</div>
-								<div class="guiComponent waypoint unset" draggable="draggable" id="0">
-									<span class="clickable waypoint-icon unset" title="Zoom to waypoint"> </span>
-									<span class="clickable removeWaypoint" title="Remove waypoint"> </span>
-									<span class="clickable moveUpWaypoint" href="#" title="Move waypoint up" style="display: none;"> </span>
-									<span class="clickable moveDownWaypoint" href="#" title="Move Waypoint down" style=""> </span>
-									<span class="clickable searchAgainButton" title="search Again" style="display: none;"> </span>
-									<div class="waypointResult" style="display:none;"></div>
-									<div class="guiComponent">
-										<input type="text" class="searchWaypoint" placeholder="enter an address">
-										<div class="ORS-alert alert alert-error searchWaypointError" style="display:none"></div>
-										<div class="responseContainer">
-											<div class="clickable zoomToSearchResults zoomToWaypointResults" title="Zoom to search results"></div>
-											<ul class="guiComponent resultList SearchAddress searchWaypointResults"></ul>
-										</div>
-									</div>
-								</div>
-								<div class="guiComponent waypoint unset" draggable="draggable" id="1">
-									<span class="clickable waypoint-icon unset" title="Zoom to waypoint"> </span>
-									<span class="clickable removeWaypoint" title="Remove waypoint"> </span>
-									<span class="clickable moveUpWaypoint" href="#" title="Move waypoint up" style=""> </span>
-									<span class="clickable moveDownWaypoint" href="#" title="Move Waypoint down" style="display: none;"> </span>
-									<span class="clickable searchAgainButton" title="search Again" style="display: none;"> </span>
-									<div class="waypointResult" style="display:none;"></div>
-									<div class="guiComponent">
-										<input type="text" class="searchWaypoint" placeholder="enter an address">
-										<div class="ORS-alert alert alert-error searchWaypointError" style="display:none"></div>
-										<div class="responseContainer">
-											<div class="clickable zoomToSearchResults zoomToWaypointResults" title="Zoom to search results"></div>
-											<ul class="guiComponent resultList SearchAddress searchWaypointResults"></ul>
-										</div>
-									</div>
-								</div>
-								<div class="addWaypoint clickable" id="addWaypoint">
-									add waypoint
-								</div>
-								<div class="clear">
-									<div class="left" id="viaOptimizePanel">
-										<label class="btn primary-control transparent" data-container=".ORS-mainPanel" type="button" id="tt-optimize" data-toggle="tooltip" title="Optimize Waypoints">
-										    <i class="fa fa-wrench"></i>
-										    <input type="checkbox" class="hide" id="viaOptimize" data-toggle="button"/>
-										</label>
-									</div>
-									<div class="right">
-										<button id="orderRoute" class="btn primary-control transparent" data-container=".ORS-mainPanel" type="button" id="tt-reorder" data-toggle="tooltip" title="Reorder Waypoints"><i class="fa fa-refresh"></i></button>
-									</div>
-									<div class="right">
-										<button id="resetRoute" class="btn primary-control transparent" data-container=".ORS-mainPanel" type="button" id="tt-reset" data-toggle="tooltip" title="Reset Route"><i class="fa fa-remove"></i></button>
-									</div>
-									<div class="right">
-										<button id="zoomToRouteButton" class="btn primary-control transparent" data-container=".ORS-mainPanel" type="button"  id="tt-zoom"data-toggle="tooltip" title="Zoom to Route"><i class="fa fa-arrows-alt"></i></button>
-									</div>
-								</div>
-								<div id="ORS-routeError" style="display:none" class="ORS-alert alert alert-error"></div>
-							</div>
-						</div>
-						<div class="ORS-panel" style="display: none;">
-							<div class="ORS-panel-sub">
-								<div id="routeSummary" class="clear"></div>
-							</div>
-							<div class="ORS-panel-sub" id="routeTypesContainer" style="display: none;">
-								<div id="wayType">
-								</div>
-								<div id="wayTypeList" class="clear">
-								</div>
-								<div id="surfaceType">
-								</div>
-								<div id="surfaceTypeList" class="clear">
-								</div>
-							</div>
-						</div>
-						<div class="ORS-panel" id="routeInstructionsContainer" style="display:none">
-							<div class="ORS-panel-sub clear">
-								<div class="collapsible guiComponent">
-									<div class="collapsibleHead clickable collapsed" id="routeInstructionHead">
-										Route instructions
-									</div>
-									<div class="collapsibleBody" style="display: none;" id="routeInstructions">
-										<div class="right">
-											<button id="printRouteInstructions" class="btn primary transparent" type="button" title="Print Route Instructions"><i class="fa fa-print"></i></button>
-										</div>
-										<div class="directions-main" id="directionsMainContainer"></div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div data-id="ORS-aaContent" class="routeExtrasContainer ORS-panel" style="display: none;">
-						<div class="guiComponent ORS-panel-sub ORS-hr">
-							<form class="form-inline ORS-form">						
-								<select id="accessibilityAnalysisMethodList">
-									<option id="Default" value="RecursiveGrid">Recursive Grid</option>
-									<option id="Default2" value="TIN">TIN</option>
-								</select>
-								<span id ="accessibilityAnalysisMethod" class="label ORS-label">Select Isochrone method</span>
-							</form>
-							<form class="form-inline ORS-form">						
-								<input type="text" id="accessibilityDistance" class="textfield" value="15">
-								<span id ="accessibilityAnalysisMinutes" class="label ORS-label">Select Minutes</span>
-							</form>
-							<form class="form-inline ORS-form">						
-								<input type="text" id="accessibilityAnalysisIsochronesIntervall" class="textfield" value="3">
-								<span id ="accessibilityAnalysisIsochrones" class="label ORS-label">Select Isochrone Interval</span>
-							</form>
-							<div class="clear">
-								<div class="left">
-    								<button class="btn primary-control" data-container="ORS-mainPanel" id="analyzeAccessibility" type="button" data-toggle="tooltip" title="" data-original-title="Calculate accessibility"><i class="fa fa-fw fa-bullseye"></i><span id="analyzeAccessibilityLabel"></span></button>
-    							</div>
-    							<div class="left">
-    								<button class="btn primary-control" data-container="ORS-mainPanel" id="removeAccessibility" style="display:none" type="button" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-remove"></i></button>
-    							</div>
-    						</div>
-							<div class="ORS-alert alert alert-info" id="accessibilityCalculation" style="display: none;">
-								<span id="accessibilityCalculationLabel">The accessibility is being analyzed...</span><i class="fa fa-circle-o-notch fa-spin right"></i>
-								<span class="sr-only">Loading...</span>
-							</div>
-							<div class="ORS-alert alert alert-error" id="accessibilityError" style="display: none;">
-								An error occured during the accessibility analysis. Did you forget to set a start point?
-							</div>
-	    				</div>
-	    			</div>
-					<div data-id="ORS-cloudContent" class="cloudContainer ORS-panel" style="display: none;">
-						<div class="ORS-panel-sub">
-							<div class="clear">
-								<div style="margin-bottom: 10px">
-									<a id="export-gpx" class="btn primary-control" download="map.gpx" title="Download of current route in GPX format" data-container=".ORS-mainPanel" data-toggle="tooltip" data-original-title=""><i class="fa fa-download fa-fw"></i><span>download GPX</span></a>
-								</div>
-								<div id="GPXcontainer">
-									<span class="btn btn-file primary-control" id="import-gpx" title="Upload multiple tracks from a GPX-files" data-container=".ORS-mainPanel" data-toggle="tooltip" data-original-title=""><i class="fa fa-upload fa-fw"></i><span>upload GPX</span><input type="file" id="files" multiple /></span>
-										<div id="fileContainerMain" style="display: none;"></div>		
-								</div>
-							</div>
-							<div class="ORS-alert alert alert-error" style="display:none" id="exportGpxError">
-								Unfortunately an error occured while downloading the route.
-							</div>
-							<div id="importGpxError" class="ORS-alert alert alert-error" style="display:none">
-								Unfortunately an error occured while uploading the route.
-							</div>
-						</div>
-					</div>	
-				</div>
-				<div class="disclaimer">
-					<a id="debug">debug - </a>
-					<a href="contact.html" class="inlineLink">(c) 2008-2016 &nbsp; -</a>
-					<a href="contact.html#disclaimer">Disclaimer &nbsp; -</a>
-					<a href="" id="infoPanel"></a>
-				</div>
-			</div>
-			<div class="ORS-map" id="map">
-				<a href="http://www.geog.uni-heidelberg.de/giscience.html" class="ORS-logo" target="_blank" class="link">GIScience</a>
-				<div id="infoPermalink">Permalink</div>
-				<div id="bubble">
-					<div id="permaText">
-						<div id="copy">copy</div>
-						<div id="open">open</div>
-					</div>
-				</div>
-				<div class="alert alert-info ORS-info" id="avoidables_info">
-					<button type="button" class="close" data-dismiss="alert">
-						×
-					</button>
-				</div>
-				<!-- Popup for service timeouts -->
-				<div class="alert alert-error ORS-alert" id="serviceTimeout">
-					<button type="button" class="close">
-						×
-					</button>
-				</div>
-				<div class="alert alert-info ORS-info" id="newToOrs">
-					<button type="button" class="close" data-dismiss="alert">
-						×
-					</button>
-				</div>
-			</div>
-		</div>
-		<!-- END OF MAIN SECTION -->
-		<!-- modal for user preferences (language, distance unit,...) -->
-		<div id="sitePrefsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sitePrefs">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal" aria-hidden="true">×</a><h3 id="sitePrefs">Site Preferences</h3>
-			</div>
-			<div class="modal-body">
-				<form class="form-horizontal">
-				  <div class="control-group">
-				    <label id="languageText" >Please select your language:&nbsp;</label>
-				    <div class="controls">
-				      <select id="languagePrefs"></select>
-				    </div>
-				  </div>
-				  <div class="control-group">
-				    <label id="routingLanguageText">Please select your language:&nbsp;</label>
-				    <div class="controls">
-				    	<select id="routingLanguagePrefs"></select>
-				    </div>
-				  </div>
-				  <div class="control-group">
-				    <label id="distanceUnitText">Please select your distance unit:&nbsp;</label>
-				    <div class="controls">
-				    	<select id="unitPrefs"></select>
-				    </div>
-				  </div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button class="btn primary-control" data-dismiss="modal" aria-hidden="true" id="preferencesClose">
-					Close
-				</button>
-				<button class="btn primary-control" id="savePrefsBtn">
-					Save
-				</button>
-			</div>
-		</div>
-		<!-- modal for feedback -->
-		<div id="feedbackModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="feedback">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal" aria-hidden="true">×</a><h3 id="feedback">Feedback</h3>
-			</div>
-			<div class="modal-body feedback">
-				<form class="form-horizontal">
-				  <p id="returnmessage"></p>
-						<div class="control-group">
-							<label>Name: <span>*</span></label>
-							<input class="span4" type="text" id="name" placeholder="Name"/>
-						</div>
-						<div class="control-group">
-							<label>Email: <span>*</span></label>
-							<input class="span4" type="text" id="email" placeholder="Email"/>
-						</div>
-						<div class="control-group">
-							<label>Message:</label>
-							<textarea rows="5" class="span4" id="message" placeholder="Type your message here"></textarea>
-						</div>
-						<input class="btn primary-control" type="button" id="submit_feedback" value="Send Message"/>
-				</form>
-			</div>
-		</div>
-		<!-- CALL JAVASCRIPT FUNCTIONS -->
-		<!-- 	important: jQuery must be included before properties type	 -->
-		<script type="text/javascript" src="lib/jquery-1.7.2.min.js"></script>
-		<script type="text/javascript" src="lib/bootstrap/bootstrap.js"></script>
-		<script type="text/javascript" src="lib/bootstrap/bootstrap-typeahead.js"></script>
-		<script type="text/javascript" src="lib/bootstrap/bootstrap-ext.min.js"></script><!-- for file upload -->
-		<script type="text/javascript" src="lib/bootstrap/bootstrap-hover-dropdown.js"></script><!-- for hover dropdowns -->
-		<script type="text/javascript" src="lib/prototype.1.7.minified.js"></script>
-		<script type="text/javascript" src="lib/leaflet-1.0.0-beta.2.js"></script>
-		<script type="text/javascript" src="lib/Leaflet.Editable.js"></script>
-		<script type="text/javascript" src="lib/leaflet.ajax.js"></script>
-		<script type="text/javascript" src="lib/leaflet.markercluster-src.js"></script>
-		<script type="text/javascript" src="lib/L.Control.MousePosition.js"></script>
-		<script type="text/javascript" src="lib/togpx.js"></script>
-		<script type="text/javascript" src="lib/togeojson.js"></script>
-		<script type="text/javascript" src="lib/leaflet-drag-marker-edges.js"></script>
-		<script type="text/javascript" src="lib/Leaflet.MakiMarkers.js"></script>
-		<script type="text/javascript" src="lib/d3.v3.min.js" ></script>
-		<script type="text/javascript" src="lib/d3.tip.js" ></script>
-		<script type="text/javascript" src="lib/leaflet.elevation-0.0.4.src.js"></script>
-		<script type="text/javascript" src="lib/XMLWriter-1.0.0-min.js"></script>
-		<script type="text/javascript" src="lib/javascript.util.min.js"></script>
-		<script type="text/javascript" src="lib/jsts.min.js"></script>
-		<script type="text/javascript" src="lib/OverPassLayer.js"></script>
-		<script type="text/javascript" src="lib/jquery.mCustomScrollbar.concat.min.js"></script>
-		<script type="text/javascript" src="js/namespaces.js"></script>
-		<script type="text/javascript" src="js/util.js"></script>
-		<script type="text/javascript" src="js/list.js"></script>
-		<script type="text/javascript" src="js/modules/Preferences.js"></script>
-		<script type="text/javascript" src="js/event.js"></script>
-		<script type="text/javascript" src="js/modules/Waypoint.js"></script>
-		<script type="text/javascript" src="js/modules/Geolocation.js"></script>
-		<script type="text/javascript" src="js/modules/SearchAddress.js"></script>
-		<script type="text/javascript" src="js/modules/SearchPoi.js"></script>
-		<script type="text/javascript" src="js/modules/Route.js"></script>
-		<script type="text/javascript" src="js/modules/AccessibilityAnalysis.js"></script>
-		<script type="text/javascript" src="js/modules/Restrictions.js"></script>
-		<script type="text/javascript" src="js/ui/ui.js"></script>
-		<script type="text/javascript" src="js/ui/Versions.js"></script>
-		<script type="text/javascript" src="js/ui/Languages.js"></script>	
-		<script type="text/javascript" src="js/map_styles.js"></script>				
-		<script type="text/javascript" src="js/map.js"></script>
-		<script type="text/javascript" src="js/control.js"></script>
-		<script type="text/javascript" src="js/contact_form.js"></script>
-		<script type="text/javascript" src="js/lang/lang-cz.js"></script>
-		<script type="text/javascript" src="js/lang/lang-de.js"></script>
-		<script type="text/javascript" src="js/lang/lang-en.js"></script>
-		<script type="text/javascript" src="js/lang/lang-es.js"></script>
-		<script type="text/javascript" src="js/lang/lang-fr.js"></script>
-		<script type="text/javascript" src="js/lang/lang-hu.js"></script>
-		<script type="text/javascript" src="js/lang/lang-it.js"></script>
-		<script type="text/javascript" src="js/lang/lang-nl.js"></script>
-		<script type="text/javascript" src="js/lang/lang-pl.js"></script>
-		<script type="text/javascript" src="js/lang/lang-ru.js"></script>
-		<script type="text/javascript" src="js/lang/lang-ua.js"></script>
-		<script type="text/javascript" src="js/lang/lang-cn.js"></script>
-		<script type="text/javascript" src="js/lang/lang-cnsimple.js"></script>
-		<!-- CALL CUSTOM SCROLLBAR -->
-		<script>
-		    (function($){
+    <head>
+        <!-- TITLE AND ICON FOR THE WEBSITE -->
+        <title>OpenRouteService</title>
+        <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
+        <!-- WEBSITE METADATA -->
+        <meta content="index, follow" name="robots">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" name="viewport">
+        <!-- NECESSARY STYLESHEETS FOR THE WEBSITE -->
+        <!-- BOOTSTRAP -->
+        <!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+        <link href="lib/bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css">
+        <!-- LEAFLET -->
+        <link href="css/leaflet.css" rel="stylesheet" type="text/css">
+        <!-- LEAFLET PLUGINS -->
+        <link href="css/leaflet.elevation-0.0.4.css" rel="stylesheet" type="text/css">
+        <!-- ELEVATION PLUGIN -->
+        <link href="css/MarkerCluster.css" rel="stylesheet" type="text/css">
+        <!-- MARKER CLUSTER PLUGIN -->
+        <link href="css/L.Control.MousePosition.css" rel="stylesheet" type="text/css">
+        <!-- MOUSE POSITION PLUGIN -->
+        <!-- JQUERY PLUGINS -->
+        <link href="css/jquery.mCustomScrollbar.min.css" rel="stylesheet" type="text/css">
+        <!-- FONTS -->
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet" type="text/css">
+        <link href="css/font-awesome.css" rel="stylesheet" type="text/css">
+        <link href="css/ruifont.css" rel="stylesheet" type="text/css">
+        <!-- MAIN STYLES -->
+        <link href="css/default.css" rel="stylesheet" type="text/css">
+        <!-- Must come at the end to overwrite other API styles -->                          
+    </head>
+    <body class="ORS">
+        <!-- START OF HEADER SECTION -->
+        <header class="ORS-header">
+            <a href="http://www.geog.uni-heidelberg.de/giscience.html" id="ORS-headIcon">
+            </a>
+            <a href="http://www.openrouteservice.org" id="ORS-title">
+                OpenRouteService
+            </a>
+            <ul id="ORS-topMenu">
+                <li>
+                    <a data-toggle="modal" href="#feedbackModal" id="ORS-menuLinkFeedback">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+                <li>
+                    <a data-toggle="modal" href="#sitePrefsModal" id="ORS-menuLinkSitePrefs">
+                        <i class="fa fa-cogs"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="contact.html#top" id="ORS-menuLinkInfo" target="_blank">
+                        <i class="fa fa-info"></i>
+                    </a>
+                </li>
+            </ul>
+        </header>
+        <!-- END OF HEADER SECTION -->
+        <!-- START OF MAIN SECTION -->
+        <div class="ORS-main">
+            <div class="ORS-sidebar" id="sidebar">
+                <!-- sidebar content -->
+                <div class="ORS-menuPanel" id="menuPanel">
+                    <div>
+                        <button class="btn  ORS-menuButton ORS-BtnPrimary-menu active" select-id="ORS-routeContent">
+                            <i class="fa fa-road"></i>
+                        </button>
+                        <button class="btn  ORS-menuButton ORS-BtnPrimary-menu" select-id="ORS-aaContent">
+                            <i class="fa fa-bullseye"></i>
+                        </button>
+                        <button class="btn  ORS-menuButton ORS-BtnPrimary-menu" select-id="ORS-cloudContent">
+                            <i class="fa fa-download"></i>
+                        </button>
+                    </div>
+                    <div style="bottom: 0px; margin: 12px; position: absolute;">
+                        <i class="fa fa-circle-o-notch fa-spin" id="ORS-loading"></i>
+                        <i class="fa fa-warning" id="ORS-error"></i>
+                    </div>
+                </div>
+                <div class="ORS-navigation">
+                    <div data-id="ORS-routeContent">
+                        <div class="ORS-routePreferenceBtns">
+                            <button class="btn  ORS-BtnPrimary ORS-routeOptionsButton left active" id="car">
+                                <i class="fa fa-car"></i>
+                            </button>
+                            <button class="btn  ORS-BtnPrimary ORS-routeOptionsButton left" id="bicycle">
+                                <i class="fa fa-bicycle"></i>
+                            </button>
+                            <button class="btn  ORS-BtnPrimary ORS-routeOptionsButton left" id="pedestrian">
+                                <i class="fa fa-male"></i>
+                            </button>
+                            <button class="btn  ORS-BtnPrimary ORS-routeOptionsButton left" id="wheelchair">
+                                <i class="fa fa-wheelchair"></i>
+                            </button>
+                            <button class="btn  ORS-BtnPrimary ORS-routeOptionsButton left" id="heavyvehicle">
+                                <i class="fa fa-truck"></i>
+                            </button>
+                            <button class="btn  ORS-BtnPrimary ORS-optionsButton right">
+                                <i class="fa fa-cog"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ORS-center" data-id="ORS-aaContent" style="display: none">
+                        <span>
+                            Accessibility Analysis
+                        </span>
+                    </div>
+                    <div class="ORS-center" data-id="ORS-cloudContent" style="display: none">
+                        <span>
+                            Import and Export Features
+                        </span>
+                    </div>
+                </div>
+                <div class="ORS-mainPanel">
+                    <div class="route" data-id="ORS-routeContent" id="routeContainer">
+                        <div id="routingPanel ORS-panel">
+                            <div class="routeOptions ORS-panel-sub ORS-light" id="optionsContainer" style="display: none;">
+                                <div class="ORS-panel-sub ORS-all ORS-hr-dark" id="weightingOptions" style="display: none;">
+                                    <h6>
+                                        Route weight
+                                    </h6>
+                                    <div class="radio">
+                                        <label>
+                                            <input checked="checked" id="Fastest" name="weighting" type="radio">
+                                                <span id="fastestLabel">
+                                                    fastest
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input id="Shortest" name="weighting" type="radio">
+                                                <span id="shortestLabel">
+                                                    shortest
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input id="Recommended" name="weighting" type="radio">
+                                                <span id="recommendedLabel">
+                                                    recommended
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="ORS-panel-sub ORS-car-HIDE" id="carOptions" style="display: none;">
+                                    <div class="radio">
+                                        <input checked="checked" id="Car" name="car" type="radio" value="car">
+                                            <span id="carLabel">
+                                                car
+                                            </span>
+                                        </input>
+                                    </div>
+                                </div>
+                                <div class="ORS-panel-sub ORS-bike ORS-hr-dark" id="bicycleOptions" style="display: none;">
+                                    <h6>
+                                        Route preference
+                                    </h6>
+                                    <div class="radio">
+                                        <label>
+                                            <input checked="checked" id="Bicycle" name="bicycle" type="radio" value="shortest">
+                                                <span id="BicycleLabel">
+                                                    normal
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input id="BicycleSafety" name="bicycle" type="radio" value="safest">
+                                                <span id="BicycleSafetyLabel">
+                                                    safest route
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input id="BicycleTour" name="bicycle" type="radio" value="tour">
+                                                <span id="BicycleTourLabel">
+                                                    cycle tour
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input id="BicycleMTB" name="bicycle" type="radio" value="mountain">
+                                                <span id="BicycleMtbLabel">
+                                                    mountain bike
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input id="BicycleRacer" name="bicycle" type="radio" value="racing">
+                                                <span id="BicycleRacerLabel">
+                                                    racing bike
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="ORS-panel-sub ORS-ped-HIDE ORS-hr-dark" id="pedestrianOptions" style="display: none;">
+                                    <div class="radio">
+                                        <input checked="checked" id="Pedestrian" name="pedestrian" type="radio" value="pedestrian">
+                                            <span id="PedestrianLabel">
+                                                pedestrian
+                                            </span>
+                                        </input>
+                                    </div>
+                                </div>
+                                <div class="ORS-panel-sub ORS-hgv ORS-hr-dark" id="heavyvehicleOptions" style="display: none;">
+                                    <h6>
+                                        Route preference
+                                    </h6>
+                                    <div class="radio">
+                                        <label>
+                                            <input checked="checked" id="HeavyVehicle" name="heavyvehicle" type="radio" value="goods">
+                                                <span id="goodsHeavyTruckLabel">
+                                                    goods
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input id="HeavyVehicle" name="heavyvehicle" type="radio" value="hgv">
+                                                <span id="hgvHeavyTruckLabel">
+                                                    HGV
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input id="HeavyVehicle" name="heavyvehicle" type="radio" value="bus">
+                                                <span id="busHeavyTruckLabel">
+                                                    Bus
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input id="HeavyVehicle" name="heavyvehicle" type="radio" value="agricultural">
+                                                <span id="agriculturalHeavyTruckLabel">
+                                                    Agricultural Vehicle
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input id="HeavyVehicle" name="heavyvehicle" type="radio" value="forestry">
+                                                <span id="forestryHeavyTruckLabel">
+                                                    Forestry
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input id="HeavyVehicle" name="heavyvehicle" type="radio" value="delivery">
+                                                <span id="deliveryHeavyTruckLabel">
+                                                    Delivery
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox" id="hazardOptions">
+                                        <label>
+                                            <input id="Hazardous" type="checkbox" value="hazmat">
+                                                <span id="hazardous">
+                                                    <i class="icon-tint">
+                                                    </i>
+                                                    Hazardous Materials
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="ORS-panel-sub ORS-hgv ORS-hr-dark" id="truckOptions_restrict" style="display: none;">
+                                    <h6>
+                                        HGV properties
+                                    </h6>
+                                    <table class="table table-borderless">
+                                       	<tr>
+                                       	    <td>
+                                       	    	<span href="#length" id="trucklengthLabel">Lenght</span>
+                                       	    </td>
+                                       	    <td>
+                                       	        <input class="form-control input-sm" type="number" value="15" min="0" max="50" autocomplete="off" id="value_length" oninput="this.form.value_length_slide.value=this.value","m">
+                                       	    </td>
+                                       	</tr>
+                                       	<tr>
+                                       	    <td>
+                                       	    	<span href="#width" id="truckwidthLabel">Width</span>
+                                       	    </td>
+                                       	    <td>
+                                       	        <input class="form-control input-sm ORS-form" autocomplete="off" id="value_width" max="20" min="0" oninput="thisform.value_width_slide.value=this.value" type="number" value="4">
+                                       	    </td>
+                                       	</tr> 
+                                       	<tr>
+                                       	    <td>
+                                       	    	<span href="#height" id="truckheightLabel">Height</span>
+                                       	    </td>
+                                       	    <td>
+                                       	        <input class="form-control input-sm"  autocomplete="off" id="value_height" oninput="this.formvalue_height_slide.value=this.value" type="number" value="4">
+                                       	    </td>
+                                       	</tr> 
+                                       	<tr>
+                                       	    <td>
+                                       	    	<span href="#weight" id="truckweightLabel">Weight</span>
+                                       	    </td>
+                                       	    <td>
+                                       	        <input class="form-control input-sm"  autocomplete="off" id="value_weight" oninput="this.formvalue_weight_slide.value=this.value" type="number" value="7">
+                                       	    </td>
+                                       	</tr> 
+                                       	<tr>
+                                       	    <td>
+                                       	    	<span href="#axleload" id="truckaxleloadLabel">Load</span>
+                                       	    </td>
+                                       	    <td>
+                                       	        <input class="form-control input-sm " autocomplete="off" id="value_axleload" oninput="this.formvalue_axleload_slide.value=this.value" type="number" value="2">
+                                       	    </td>          	    
+                                       	</tr>  
+                                    </table>
+                                </div>
+                                <div class="ORS-panel-sub ORS-wc-HIDE ORS-hr-dark" id="wheelchairOptions" style="display: none;">
+                                    <h6>
+                                        Route preference
+                                    </h6>
+                                    <div class="radio">
+                                        <label>
+                                            <input checked="checked" id="Wheelchair" name="wheelchair" type="radio">
+                                                <span id="WheelchairLabel">
+                                                    wheelchair
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="ORS-panel-sub ORS-wc ORS-hr" id="wheelchairParameters" style="display: none;">
+                                    <table class="table table-borderless">
+                                        <tr>
+                                        	<td>
+                                                <span id="surfaceLabel">
+                                                    Surface
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <select class="form-control input-sm wheelchairSelect" id="Surface">
+                                                    <option id="asphaltOption">
+                                                        Asphalt
+                                                    </option>
+                                                    <option id="cobblestoneFlattenedOption">
+                                                        Flattened Cobblestone
+                                                    </option>
+                                                    <option id="cobblestoneOption">
+                                                        Cobblestone
+                                                    </option>
+                                                    <option id="compactedOption">
+                                                        Compacted
+                                                    </option>
+                                                    <option id="allSurfacesOption">
+                                                        All Surfaces
+                                                    </option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                        	<td>
+                                                <span id="inclineLabel">
+                                                    Maximum Incline
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <select class="form-control input-sm wheelchairSelect" id="Incline">
+                                                    <option id="threePercentOption">
+                                                        Up to 3%
+                                                    </option>
+                                                    <option id="sixPercentOption">
+                                                        Up to 6%
+                                                    </option>
+                                                    <option id="tenPercentOption">
+                                                        Up to 10%
+                                                    </option>
+                                                    <option id="fifteenPercentOption">
+                                                        Up to 15%
+                                                    </option>
+                                                    <option id="allInclinesOption">
+                                                        All Inclines
+                                                    </option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                        	<td>
+                                                <span id="slopedCurbLabel">
+                                                    Maximum Sloped Curb
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <select class="form-control input-sm wheelchairSelect" id="SlopedCurb">
+                                                    <option id="threeCmOption">
+                                                        Up to 3cm
+                                                    </option>
+                                                    <option id="sixCmOption">
+                                                        Up to 6cm
+                                                    </option>
+                                                    <option id="tenCmOption">
+                                                        Up to 10cm
+                                                    </option>
+                                                    <option id="allSlopedCurbesOption">
+                                                        All Sloped Curbs
+                                                    </option>
+                                                </select>
+                                            </td>   
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="ORS-car ORS-panel-sub ORS-hr-dark" id="avoidables" style="display: none;">
+                                    <h6>
+                                        Avoid road types
+                                    </h6>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="Highway" type="checkbox">
+                                                <span id="avoidMotorLabel">
+                                                    highways
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="Tollway" type="checkbox">
+                                                <span id="avoidTollLabel">
+                                                    toll roads
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="Tunnel" type="checkbox">
+                                                <span id="avoidTunnelLabel">
+                                                    tunnels
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="Unpavedroads" type="checkbox">
+                                                <span id="avoidunpavedRoadsLabel">
+                                                    unpaved roads
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="Ferry" type="checkbox">
+                                                <span id="avoidFerryLabel">
+                                                    ferrys
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="Fords" type="checkbox">
+                                                <span id="avoidFordsLabel">
+                                                    fords
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="ORS-ped ORS-panel-sub ORS-hr-dark" id="avoidablesPedestrian" style="display: none;">
+                                    <h6 id="avoidPedesBtn">
+                                        Avoid ways
+                                    </h6>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="Ferry" type="checkbox">
+                                                <span id="avoidFerryLabelPedestrian">
+                                                    ferries
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="Steps" type="checkbox">
+                                                <span id="avoidStepsLabelPedestrian">
+                                                    steps
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="Fords" type="checkbox">
+                                                <span id="avoidFordsLabelPedestrian">
+                                                    fords
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="ORS-bike ORS-panel-sub ORS-hr-dark" id="avoidablesBike" style="display: none;">
+                                    <h6>
+                                        Avoid road types
+                                    </h6>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="Ferry" type="checkbox">
+                                                <span id="avoidFerryLabelBike">
+                                                    ferries
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="Unpavedroads" type="checkbox">
+                                                <span id="avoidunpavedRoadsLabelBike">
+                                                    unpaved roads
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="Pavedroads" type="checkbox">
+                                                <span id="avoidpavedRoadsLabelBike">
+                                                    paved roads
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="Steps" type="checkbox">
+                                                <span id="avoidStepsLabelBike">
+                                                    steps
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="Fords" type="checkbox">
+                                                <span id="avoidFordsLabelBike">
+                                                    fords
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="ORS-all ORS-panel-sub" id="maxSpeed" style="display: none;">
+                                    <div class="row">
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <input class="form-control input-sm" id="maxSpeedInput" placeholder="set maximum speed" type="number">
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-default btn-sm" id="maxSpeedBtn" type="button">
+                                                            set
+                                                        </button>
+                                                    </span>
+                                                </input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="avoidAreas">
+                                    <div class="alert alert-danger" id="avoidAreasError" style="display: none;">
+                                        Polygons are overlapping. Please refit!
+                                    </div>
+                                </div>
+                        	</div>
+                            <div class="ORS-panel-sub ORS-hr-dark ORS-padding">
+                                <div class="guiComponent waypoint unset" draggable="draggable" id="Draft" style="display: none">
+                                    <span class="clickable waypoint-icon unset" title="Zoom to waypoint">
+                                    </span>
+                                    <span class="clickable removeWaypoint" title="Remove waypoint">
+                                    </span>
+                                    <span class="clickable moveUpWaypoint" href="#" title="Move waypoint up">
+                                    </span>
+                                    <span class="clickable moveDownWaypoint" href="#" title="Move Waypoint down">
+                                    </span>
+                                    <span class="clickable searchAgainButton" style="display: none;" title="show previous search result">
+                                    </span>
+                                    <div class="waypointResult" style="display:none;">
+                                    </div>
+                                    <div class="guiComponent">
+                                        <input class="searchWaypoint form-control input-sm" placeholder="enter an address" type="text">
+                                            <div class="ORS-alert alert alert-danger searchWaypointError" style="display:none">
+                                            </div>
+                                            <div class="responseContainer">
+                                                <div class="clickable zoomToSearchResults zoomToWaypointResults" title="Zoom to search results">
+                                                </div>
+                                                <ul class="guiComponent resultList SearchAddress searchWaypointResults">
+                                                </ul>
+                                            </div>
+                                        </input>
+                                    </div>
+                                </div>
+                                <div class="guiComponent waypoint unset" draggable="draggable" id="0">
+                                    <span class="clickable waypoint-icon unset" title="Zoom to waypoint">
+                                    </span>
+                                    <span class="clickable removeWaypoint" title="Remove waypoint">
+                                    </span>
+                                    <span class="clickable moveUpWaypoint" href="#" style="display: none;" title="Move waypoint up">
+                                    </span>
+                                    <span class="clickable moveDownWaypoint" href="#" style="" title="Move Waypoint down">
+                                    </span>
+                                    <span class="clickable searchAgainButton" style="display: none;" title="search Again">
+                                    </span>
+                                    <div class="waypointResult" style="display:none;">
+                                    </div>
+                                    <div class="guiComponent">
+                                        <input class="searchWaypoint form-control input-sm" placeholder="enter an address" type="text">
+                                            <div class="ORS-alert alert alert-danger searchWaypointError" style="display:none">
+                                            </div>
+                                            <div class="responseContainer">
+                                                <div class="clickable zoomToSearchResults zoomToWaypointResults" title="Zoom to search results">
+                                                </div>
+                                                <ul class="guiComponent resultList SearchAddress searchWaypointResults">
+                                                </ul>
+                                            </div>
+                                        </input>
+                                    </div>
+                                </div>
+                                <div class="guiComponent waypoint unset" draggable="draggable" id="1">
+                                    <span class="clickable waypoint-icon unset" title="Zoom to waypoint">
+                                    </span>
+                                    <span class="clickable removeWaypoint" title="Remove waypoint">
+                                    </span>
+                                    <span class="clickable moveUpWaypoint" href="#" style="" title="Move waypoint up">
+                                    </span>
+                                    <span class="clickable moveDownWaypoint" href="#" style="display: none;" title="Move Waypoint down">
+                                    </span>
+                                    <span class="clickable searchAgainButton" style="display: none;" title="search Again">
+                                    </span>
+                                    <div class="waypointResult" style="display:none;">
+                                    </div>
+                                    <div class="guiComponent">
+                                        <input class="searchWaypoint form-control input-sm" placeholder="enter an address" type="text">
+                                            <div class="ORS-alert alert alert-danger searchWaypointError" style="display:none">
+                                            </div>
+                                            <div class="responseContainer">
+                                                <div class="clickable zoomToSearchResults zoomToWaypointResults" title="Zoom to search results">
+                                                </div>
+                                                <ul class="guiComponent resultList SearchAddress searchWaypointResults">
+                                                </ul>
+                                            </div>
+                                        </input>
+                                    </div>
+                                </div>
+                                <div class="addWaypoint clickable" id="addWaypoint">
+                                    <span class="fa-stack fa-lg">
+                                        
+                                        <i id="mapMarker" class="fa fa-map-marker fa-stack-2x"></i>
+                                        <i id="plusSign" class="fa fa-plus fa-stack-1x"></i>
+                                    </span>
+                                    <span id="addWaypointText">
+                                        add waypoint
+                                    </span>
+                                </div>
+                                <div class="clear">
+                                    <div class="left" id="viaOptimizePanel">
+                                        <label class="btn  ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="tt-optimize" title="Optimize Waypoints" type="button">
+                                            <i class="fa fa-wrench">
+                                            </i>
+                                            <input class="hide" data-toggle="button" id="viaOptimize" type="checkbox"/>
+                                        </label>
+                                    </div>
+                                    <div class="right">
+                                        <button class="btn  ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="tt-reorder" title="Reorder Waypoints" type="button">
+                                            <i class="fa fa-refresh">
+                                            </i>
+                                        </button>
+                                    </div>
+                                    <div class="right">
+                                        <button class="btn  ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="tt-reset" title="Reset Route" type="button">
+                                            <i class="fa fa-remove">
+                                            </i>
+                                        </button>
+                                    </div>
+                                    <div class="right">
+                                        <button class="btn  ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="tt-zoom" title="Zoom to Route" type="button">
+                                            <i class="fa fa-arrows-alt">
+                                            </i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="ORS-alert alert alert-danger" id="ORS-routeError" style="display:none">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ORS-panel" style="display: none;">
+                            <div class="ORS-panel-sub">
+                                <div class="clear" id="routeSummary">
+                                </div>
+                            </div>
+                            <div class="ORS-panel-sub" id="routeTypesContainer" style="display: none;">
+                                <div id="wayType"></div>
+                                <div class="clear" id="wayTypeList"></div>
+                                <div id="surfaceType"></div>
+                                <div class="clear" id="surfaceTypeList"></div>
+                                <div id="steepnessType"></div>
+                                <div class="clear" id="steepnessTypeList"></div>
+                            </div>
+                        </div>
+                        <div class="ORS-panel" id="routeInstructionsContainer" style="display:none">
+                            <div class="ORS-panel-sub clear">
+                                <div class="collapsible guiComponent">
+                                    <div class="collapsibleHead clickable collapsed" id="routeInstructionHead">
+                                        Route instructions
+                                    </div>
+                                    <div class="collapsibleBody" id="routeInstructions" style="display: none;">
+                                        <div class="right">
+                                            <button class="btn  ORS-BtnPrimary transparent" id="printRouteInstructions" title="Print Route Instructions" type="button">
+                                                <i class="fa fa-print">
+                                                </i>
+                                            </button>
+                                        </div>
+                                        <div class="directions-main" id="directionsMainContainer">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="routeExtrasContainer ORS-panel" data-id="ORS-aaContent" style="display: none;">
+                        <div class="guiComponent ORS-panel-sub ORS-hr">
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td>
+                                        <span id="accessibilityAnalysisMethod">
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <select class="wheelchairSelect form-control input-sm" id="SlopedCurb">
+                                            <option id="Default" value="RecursiveGrid">
+                                                Recursive Grid
+                                            </option>
+                                            <option id="Default2" value="TIN">
+                                                TIN
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span id="accessibilityAnalysisMinutes">
+                                            Select Minutes
+                                        </span>
+                                    </td>
+                                    <td>                                        
+                                    	<input class="form-control input-sm" id="accessibilityDistance" type="number" value="15" min="0"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span id="accessibilityAnalysisIsochrones">
+                                            Select Isochrone Interval
+                                        </span>
+                                    </td>
+                                    <td>
+                                    	<input class="form-control input-sm" id="accessibilityAnalysisIsochronesIntervall" type="number" value="3"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="clear">
+                                <div class="left">
+                                    <button class="btn btn-default btn-sm" data-container="ORS-mainPanel" data-original-title="Calculate accessibility" data-toggle="tooltip" id="analyzeAccessibility" title="" type="button">
+                                        <i class="fa fa-fw fa-bullseye"></i>
+                                        <span id="analyzeAccessibilityLabel"></span>
+                                    </button>
+                                </div>
+                                <div class="left">
+                                    <button class="btn btn-default btn-sm" data-container="ORS-mainPanel" data-original-title="Remove" data-toggle="tooltip" id="removeAccessibility" style="display:none" title="" type="button">
+                                        <i class="fa fa-remove">
+                                        </i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="ORS-alert alert alert-info" id="accessibilityCalculation" style="display: none;">
+                                <span id="accessibilityCalculationLabel">
+                                    The accessibility is being analyzed...
+                                </span>
+                                <i class="fa fa-circle-o-notch fa-spin right">
+                                </i>
+                                <span class="sr-only">
+                                    Loading...
+                                </span>
+                            </div>
+                            <div class="ORS-alert alert alert-danger" id="accessibilityError" style="display: none;">
+                                An error occured during the accessibility analysis. Did you forget to set a start point?
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cloudContainer ORS-panel" data-id="ORS-cloudContent" style="display: none;">
+                        <div class="ORS-panel-sub">
+                            <div class="clear">
+                                <div style="margin-bottom: 10px">
+                                    <a class="btn btn-default btn-sm" data-container=".ORS-mainPanel" data-original-title="" data-toggle="tooltip" download="map.gpx" id="export-gpx" title="Download of current route in GPX format">
+                                        <i class="fa fa-download fa-fw">
+                                        </i>
+                                        <span>
+                                            download GPX
+                                        </span>
+                                    </a>
+                                </div>
+                                <div id="GPXcontainer">
+                                    <span class="btn ORS-BtnFile btn-default btn-sm" data-container=".ORS-mainPanel" data-original-title="" data-toggle="tooltip" id="import-gpx" title="Upload multiple tracks from a GPX-files">
+                                        <i class="fa fa-upload fa-fw">
+                                        </i>
+                                        <span>
+                                            upload GPX
+                                        </span>
+                                        <input accept=".gpx" id="files" type="file" multiple/>
+                                    </span>
+                                    <div id="fileContainerMain" style="display: none;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ORS-alert alert alert-danger" id="exportGpxError" style="display:none">
+                                Unfortunately an error occured while downloading the route.
+                            </div>
+                            <div class="ORS-alert alert alert-danger" id="importGpxError" style="display:none">
+                                Unfortunately an error occured while uploading the route.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="disclaimer">
+                    <a id="debug">
+                        debug -
+                    </a>
+                    <a class="inlineLink" href="contact.html">
+                        (c) 2008-2016   -
+                    </a>
+                    <a href="contact.html#disclaimer">
+                        Disclaimer   -
+                    </a>
+                    <a href="" id="infoPanel">
+                    </a>
+                </div>
+            </div>
+            <div class="ORS-map" id="map">
+                <a class="link" href="http://www.geog.uni-heidelberg.de/giscience.html" target="_blank">
+                    GIScience
+                </a>
+                <div id="infoPermalink">
+                    Permalink
+                </div>
+                <div id="bubble">
+                    <div id="permaText">
+                        <div id="copy">
+                            copy
+                        </div>
+                        <div id="open">
+                            open
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-info ORS-info" id="avoidables_info">
+                    <button class="close" data-dismiss="alert" type="button">
+                        ×
+                    </button>
+                </div>
+                <!-- Popup for service timeouts -->
+                <div class="alert alert-danger ORS-alert" id="serviceTimeout">
+                    <button class="close" type="button">
+                        ×
+                    </button>
+                </div>
+                <div class="alert alert-info" id="newToOrs">
+                    <button class="close" data-dismiss="alert" type="button">
+                        ×
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- END OF MAIN SECTION -->
+        <!-- modal for user preferences (language, distance unit,...) -->
+        <div aria-labelledby="sitePrefs" class="modal fade" id="sitePrefsModal" role="dialog" tabindex="-1">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a aria-hidden="true" class="close" data-dismiss="modal" href="#">
+                            ×
+                        </a>
+                        <h3 id="sitePrefs">
+                            Site Preferences
+                        </h3>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-borderless">
+                            <tr>
+                                <td>
+                                    <h4>Language for interface</h4>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="left" id="languageText"></label>
+                                </td>
+                                <td>
+                                    <select class="form-control input-sm" id="languagePrefs"></select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h4>Language for routing instructions</h4>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label id="routingLanguageText"></label>
+                                </td>
+                                <td>
+                                    <select class="form-control input-sm" id="routingLanguagePrefs"></select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h4>Distance Units</h4>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label id="distanceUnitText"></label>
+                                </td>
+                                <td>
+                                    <select class="form-control input-sm" id="unitPrefs"></select>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" id="savePrefsBtn">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- modal for feedback -->
+        <div aria-labelledby="feedback" class="modal fade" id="feedbackModal" role="dialog" tabindex="-1">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a aria-hidden="true" class="close" data-dismiss="modal" href="#">×</a>
+                        <h3 id="feedback">Feedback</h3>
+                    </div>
+                    <div class="modal-body feedback">
+                        <table class="table table-borderless">
+                            <tr>
+                                <td>
+                                    <label>
+                                        Name:
+                                        <span style="color:red">*</span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <input class="form-control input-sm" id="name" placeholder="Name" type="text"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Email:
+                                        <span style="color:red">*</span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <input class="form-control input-sm" id="email" placeholder="Email" type="text"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Message:</label>
+                                </td>
+                                <td>
+                                    <textarea style="resize:vertical;" class="form-control input-sm" id="message" placeholder="Type your message here" rows="5"></textarea> 
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" id="submit_feedback">
+                            Send Message
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- CALL JAVASCRIPT FUNCTIONS -->
+        <!-- 	important: jQuery must be included before properties type	 -->
+        <script src="lib/jquery-2.2.4.min.js" type="text/javascript"> </script>
+        <!--<script type="text/javascript" src="lib/bootstrap/bootstrap.js"></script>-->
+        <script src="lib/bootstrap3/js/bootstrap.js" type="text/javascript"></script>
+        <!--<script type="text/javascript" src="lib/bootstrap3/js/bootstrap.min.js"></script>-->
+        <script src="lib/prototype.1.7.minified.js" type="text/javascript"></script>
+        <script src="lib/leaflet-1.0.0-beta.2.js" type="text/javascript"></script>
+        <script src="lib/Leaflet.Editable.js" type="text/javascript"></script>
+        <script src="lib/leaflet.ajax.js" type="text/javascript"></script>
+        <script src="lib/leaflet.markercluster-src.js" type="text/javascript"></script>
+        <script src="lib/L.Control.MousePosition.js" type="text/javascript"></script>
+        <script src="lib/togpx.js" type="text/javascript"></script>
+        <script src="lib/togeojson.js" type="text/javascript"></script>
+        <script src="lib/leaflet-drag-marker-edges.js" type="text/javascript"></script>
+        <script src="lib/Leaflet.MakiMarkers.js" type="text/javascript"></script>
+        <script src="lib/d3.v3.min.js" type="text/javascript"></script>
+        <script src="lib/d3.tip.js" type="text/javascript"></script>
+        <script src="lib/leaflet.elevation-0.0.4.src.js" type="text/javascript"></script>
+        <script src="lib/XMLWriter-1.0.0-min.js" type="text/javascript"></script>
+        <script src="lib/javascript.util.min.js" type="text/javascript"></script>
+        <script src="lib/jsts.min.js" type="text/javascript"></script>
+        <script src="lib/OverPassLayer.js" type="text/javascript"></script>
+        <script src="lib/jquery.mCustomScrollbar.concat.min.js" type="text/javascript"></script>
+        <script src="js/namespaces.js" type="text/javascript"></script>
+        <script src="js/util.js" type="text/javascript"></script>
+        <script src="js/list.js" type="text/javascript"></script>
+        <script src="js/modules/Preferences.js" type="text/javascript"></script>
+        <script src="js/event.js" type="text/javascript"></script>
+        <script src="js/modules/Waypoint.js" type="text/javascript"></script>
+        <script src="js/modules/Geolocation.js" type="text/javascript"></script>
+        <script src="js/modules/SearchAddress.js" type="text/javascript"></script>
+        <script src="js/modules/SearchPoi.js" type="text/javascript"> </script>
+        <script src="js/modules/Route.js" type="text/javascript"></script>
+        <script src="js/modules/AccessibilityAnalysis.js" type="text/javascript"></script>
+        <script src="js/modules/Restrictions.js" type="text/javascript"></script>
+        <script src="js/ui/ui.js" type="text/javascript"></script>
+        <script src="js/ui/Versions.js" type="text/javascript"></script>
+        <script src="js/ui/Languages.js" type="text/javascript"></script>
+        <script src="js/map_styles.js" type="text/javascript"></script>
+        <script src="js/map.js" type="text/javascript"></script>
+        <script src="js/control.js" type="text/javascript"></script>
+        <script src="js/contact_form.js" type="text/javascript"></script>
+        <script src="js/lang/lang-cz.js" type="text/javascript"></script>
+        <script src="js/lang/lang-de.js" type="text/javascript"></script>
+        <script src="js/lang/lang-en.js" type="text/javascript"></script>
+        <script src="js/lang/lang-es.js" type="text/javascript"></script>
+        <script src="js/lang/lang-fr.js" type="text/javascript"></script>
+        <script src="js/lang/lang-hu.js" type="text/javascript"></script>
+        <script src="js/lang/lang-it.js" type="text/javascript"></script>
+        <script src="js/lang/lang-nl.js" type="text/javascript"></script>
+        <script src="js/lang/lang-pl.js" type="text/javascript"></script>
+        <script src="js/lang/lang-ru.js" type="text/javascript"></script>
+        <script src="js/lang/lang-ua.js" type="text/javascript"></script>
+        <script src="js/lang/lang-cn.js" type="text/javascript"></script>
+        <script src="js/lang/lang-cnsimple.js" type="text/javascript"></script>
+        <!-- CALL CUSTOM SCROLLBAR -->
+        <script>
+            (function($){
 				$(window).on("load",function(){
 					$(".ORS-mainPanel").mCustomScrollbar({
 			        	theme:"minimal-dark",
 			        	autoHideScrollbar: true,
-
 			      });
 		        });
 		    })(jQuery);
-		</script>
-	</body>
+        </script>
+    </body>
 </html>

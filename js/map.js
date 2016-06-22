@@ -100,7 +100,7 @@ var Map = (function() {
                 closeButton: false,
                 maxHeight: '112px',
                 maxWidth: '120px',
-                className: 'mapContextMenu'
+                className: 'ORS-mapContextMenu'
             }).setContent(menuObject.innerHTML).setLatLng(e.latlng);
             self.theMap.openPopup(popup);
             contextMenuListeners(e.latlng, popup);
@@ -227,6 +227,7 @@ var Map = (function() {
         });
         this.layerRoutePoints = L.featureGroup().addTo(this.theMap);
         this.layerRouteLines = L.featureGroup().addTo(this.theMap);
+        this.layerSteepnessLines = L.featureGroup().addTo(this.theMap);
         this.layerCornerPoints = L.featureGroup().addTo(this.theMap);
         this.layerGeolocation = L.featureGroup().addTo(this.theMap);
         this.layerPoi = L.featureGroup().addTo(this.theMap);
@@ -281,7 +282,7 @@ var Map = (function() {
                 closeButton: false,
                 maxHeight: '112px',
                 maxWidth: '120px',
-                className: 'mapContextMenu'
+                className: 'ORS-mapContextMenu'
             }).setContent(menuObject.innerHTML).setLatLng(e.latlng);
             self.theMap.openPopup(popup);
             contextMenuListeners(displayPos, popup);
@@ -289,25 +290,25 @@ var Map = (function() {
         // create a new contextMenu
         function createMapContextMenu() {
             var mapContextMenuContainer = new Element('div', {
-                'id': 'mapContextMenu',
+                'id': 'ORS-mapContextMenu',
                 'style': 'display:none',
             });
             var useAsStartPointContainer = new Element('div', {
-                'class': 'contextWaypoint'
+                'class': 'ORS-contextWaypoint'
             });
             var startSpan = new Element('span', {
                 'id': 'contextStart',
             }).update('Set as starting point');
             useAsStartPointContainer.appendChild(startSpan);
             var useAsViaPointContainer = new Element('div', {
-                'class': 'contextWaypoint'
+                'class': 'ORS-contextWaypoint'
             });
             var viaSpan = new Element('span', {
                 'id': 'contextVia',
             }).update('Add a waypoint');
             useAsViaPointContainer.appendChild(viaSpan);
             var useAsEndPointContainer = new Element('div', {
-                'class': 'contextWaypoint'
+                'class': 'ORS-contextWaypoint'
             });
             var endSpan = new Element('span', {
                 'id': 'contextEnd',
@@ -455,7 +456,7 @@ var Map = (function() {
             closeButton: true,
             //maxHeight: '112px',
             //maxWidth: '200px',
-            //className: 'mapContextMenu'
+            //className: 'ORS-mapContextMenu'
         }).setContent(e.target.feature.properties.message).setLatLng(e.latlng);
         self.theMap.openPopup(popup);
     }
@@ -608,6 +609,30 @@ var Map = (function() {
     /**
      * zoom to a given feature vector defined by its vector id or given features 
      * defined by their vector ids.
+     * @param [list] arr: layer of the map where the feature is located and vector ids
+     */
+    function zoomToFeatureType(arr) {
+        if (arr instanceof Array) {
+            vectors = this[arr[0]].getLayers(arr[1]);
+        } else {
+            vectors = this[arr[0]].getLayer(arr[1]);
+        }
+        if (vectors instanceof Array) {
+            var vectorGroup = new L.featureGroup(vectors);
+            this.theMap.fitBounds(vectorGroup.getBounds());
+        } else if (vectors._latlngs) {
+            this.theMap.fitBounds(vectors.getBounds());
+        } else if (vectors._latlng) {
+            if (!zoom) {
+                this.theMap.panTo(vectors.getLatLng());
+            } else {
+                this.theMap.setView(vectors.getLatLng(), zoom);
+            }
+        }
+    }
+    /**
+     * zoom to a given feature vector defined by its vector id or given features 
+     * defined by their vector ids.
      * @param mapLayer: layer of the map where the feature is located
      * @param params: vector id or list of vector ids
      * @param zoom: optional zoom level
@@ -644,26 +669,24 @@ var Map = (function() {
     }
     /**
      * highlight given feature vectors defined by their ids
-     * @param mapLayer: layer of the map where the feature is located
-     * @param vectorIds: array of vectorIds
+     * @param [list] arr: layer of the map and array of vectorIds
      */
-    function highlightFeatures(mapLayer, vectorIds) {
-        for (var i = 0; i < vectorIds.length; i++) {
-            mapLayer.getLayer(vectorIds[i]).bringToFront();
-            mapLayer.getLayer(vectorIds[i]).setStyle({
+    function highlightFeatures(arr) {
+        for (var i = 0; i < arr[1].length; i++) {
+            this[arr[0]].getLayer(arr[1][i]).bringToFront();
+            this[arr[0]].getLayer(arr[1][i]).setStyle({
                 opacity: 0.85,
             });
         }
     }
     /**
      * reset highlight given feature vectors defined by their ids
-     * @param mapLayer: layer of the map where the feature is located
-     * @param vectorIds: array of vectorIds
+     * @param [list] arr: layer of the map and array of vectorIds
      */
-    function resetFeatures(mapLayer, vectorIds) {
-        for (var i = 0; i < vectorIds.length; i++) {
-            mapLayer.getLayer(vectorIds[i]).bringToBack();
-            mapLayer.getLayer(vectorIds[i]).setStyle({
+    function resetFeatures(arr) {
+        for (var i = 0; i < arr[1].length; i++) {
+            this[arr[0]].getLayer(arr[1][i]).bringToBack();
+            this[arr[0]].getLayer(arr[1][i]).setStyle({
                 opacity: 0,
             });
         }
@@ -1026,7 +1049,16 @@ var Map = (function() {
             onEachFeature: el.addData.bind(el)
         }).addTo(this.layerRouteLines);
     }
-
+    /**
+     * Ads segments
+     * @param [list] steepnessSegment: array of Leaflet LatLngs
+     * @param layer: defines the layer the segment should be added to
+     */
+    function addSegment(routelines, layer) {
+        var segment = L.polyline(routelines, styles.routeBase());
+        segment.addTo(this[layer]);
+        return segment._leaflet_id;
+    }
     /**
      * removes elevation profile if not needed
      */
@@ -1047,6 +1079,7 @@ var Map = (function() {
      * @return array of Leaflet Ids added to the layer
      */
     function updateRoute(routeLineSegments, routeLinePoints, routePref) {
+        this.layerSteepnessLines.clearLayers();
         this.layerRouteLines.clearLayers();
         this.layerCornerPoints.clearLayers();
         var ftIds = [];
@@ -1371,6 +1404,7 @@ var Map = (function() {
     // map.prototype.zoomToPoiResults = zoomToPoiResults;
     map.prototype.zoomToMarker = zoomToMarker;
     map.prototype.zoomToFeature = zoomToFeature;
+    map.prototype.zoomToFeatureType = zoomToFeatureType;
     map.prototype.highlightFeatures = highlightFeatures;
     map.prototype.resetFeatures = resetFeatures;
     map.prototype.zoomToRoute = zoomToRoute;
@@ -1394,5 +1428,6 @@ var Map = (function() {
     map.prototype.emitloadTMC = emitloadTMC;
     map.prototype.graphInfo = graphInfo;
     map.prototype.updateInfoPanel = updateInfoPanel;
+    map.prototype.addSegment = addSegment;
     return map;
 }());
