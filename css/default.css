@@ -71,7 +71,7 @@
         width: 220px;
         font-size: 100%;
     }
-
+    
     .right {
         float: right;
     }
@@ -178,6 +178,7 @@
         margin-bottom: 0;
         border-radius: 0;
         margin-top: 5px;
+        font-family: 'Source Sans Pro', sans-serif;
     }
     
     .ORS-close {
@@ -193,10 +194,6 @@
         line-height: 40px;
     }
     
-    .ORS-mobileBrLine {
-        display: none;
-    }
-    
     .ORS-BtnPrimary i, .ORS-BtnPrimary-menu i {
         /* General style for ORS buttons on left menu and top menu (vehicle options on sidebar) */
         font-size: 105%;
@@ -204,13 +201,13 @@
     
     .ORS-BtnPrimary {
         /* General style for ORS buttons on top menu (vehicle options on sidebar)*/
-        background: #F0F0F0;
+        background: transparent;
         border-radius: 0px;
         height: 41px !important;
         border-left: transparent;
         border-right: transparent;
         border-top: transparent;
-        border-bottom: 1px solid #CCC;
+        border-bottom: 2px solid transparent;
         color: #707070;
         box-shadow: none;
         text-shadow: none;
@@ -251,9 +248,9 @@
         -moz-box-shadow: none !important;
         color: #b5152b !important;
         background-color: transparent;
-        border-bottom: 1px solid #b5152b;
+        border-bottom: 2px solid #b5152b;
     }
-
+    
     .ORS-BtnPrimary-menu.active, .ORS-BtnPrimary-menu:active, .ORS-BtnPrimary-menu:hover {
         /* General style for ORS buttons on left menu */
         box-shadow: none !important;
@@ -275,20 +272,19 @@
         color: #444 !important;
     }
     
+    .btn:focus, .btn:active:focus, .btn.active:focus {
+        outline: none;
+    }
+    
     .ORS-routeOptionsButton, .ORS-optionsButton {
-        /* Buttons on top menu, to chose transportation type and route options menu */
         width: 44px;
-        height: 40px;
     }
     
     .table-borderless tbody tr td, .table-borderless tbody tr th, .table-borderless thead tr th {
         border: none;
         font-size: 100%;
-        
         vertical-align: middle;
     }
-
-
     
     .ORS-BtnFile {
         /* For file upload buttons */
@@ -311,7 +307,6 @@
         direction: ltr;
         cursor: pointer;
     }
-    
     /* *******************************************/
     /* END OF BLOCK STYLES (BASE LAYOUT STYLE)   */
     /* *******************************************/
@@ -359,7 +354,6 @@
         color: white;
         font-size: 18px;
     }
-
     /* STYLE FOR SIDEBAR AND OBJECTS WITHIN THE SIDEBAR */
     
     .ORS-menuPanel {
@@ -793,6 +787,7 @@
         left: 0;
     }
     /* ACCESSIBILITY ANALYSIS */
+    
     #accessibilityAnalysisMethodList {
         width: 140px;
     }
