@@ -493,30 +493,76 @@
         height: 25px;
     }
     
-    .waypoint-icon.start {
+    /*.waypoint-icon.start {
         background: url(../img/marker-start.png) no-repeat;
         background-size: 16px;
         background-position: 8px 3px;
+    }*/
+
+    .waypoint-icon.start:before{
+        display: block;
+        float: right;
+        width: 18px;
+        padding-left: 3px;
+        padding-top: 6px;
+        content: "\f041";
+        font-family: FontAwesome;
+        color: green;
+
     }
-    
-    .waypoint-icon.via {
+
+    /*.waypoint-icon.via {
         background: url(../img/marker-via.png) no-repeat;
         background-size: 16px;
         background-position: 8px 3px;
+    }*/
+
+    .waypoint-icon.via:before {
+        display: block;
+        float: right;
+        width: 18px;
+        padding-left: 3px;
+        padding-top: 6px;
+        content: "\f041";
+        font-family: FontAwesome;
+        color: yellow;
     }
     
-    .waypoint-icon.end {
+    /*.waypoint-icon.end {
         background: url(../img/marker-end.png) no-repeat;
         background-size: 16px;
         background-position: 8px 3px;
+    }*/
+
+    .waypoint-icon.end:before {
+        display: block;
+        float: right;
+        width: 18px;
+        padding-left: 3px;
+        padding-top: 6px;
+        content: "\f041";
+        font-family: FontAwesome;
+        color: red;
     }
     
-    .waypoint-icon.unset {
+    /*.waypoint-icon.unset {
         background: url(../img/marker.png) no-repeat;
         background-size: 16px;
         background-position: 8px 3px;
-    }
+    }*/
     
+    .waypoint-icon.unset:before {
+        display: block;
+        float: right;
+        width: 18px;
+        padding-left: 3px;
+        padding-top: 6px;
+        content: "\f041";
+        font-family: FontAwesome;
+        color: gray;
+        border: 1px solid black;
+    }
+
     .removeWaypoint:before {
         display: block;
         float: right;

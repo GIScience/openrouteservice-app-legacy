@@ -365,6 +365,11 @@
                                 <div class="ORS-panel-sub ORS-wc ORS-hr" id="wheelchairParameters" style="display: none;">
                                     <table class="table table-borderless">
                                         <tr>
+                                        	<td>
+                                                <span id="surfaceLabel">
+                                                    Surface
+                                                </span>
+                                            </td>
                                             <td>
                                                 <select class="form-control wheelchairSelect" id="Surface">
                                                     <option id="asphaltOption">
@@ -384,13 +389,13 @@
                                                     </option>
                                                 </select>
                                             </td>
-                                            <td>
-                                                <span id="surfaceLabel">
-                                                    Surface
-                                                </span>
-                                            </td>
                                         </tr>
                                         <tr>
+                                        	<td>
+                                                <span id="inclineLabel">
+                                                    Maximum Incline
+                                                </span>
+                                            </td>
                                             <td>
                                                 <select class="form-control wheelchairSelect" id="Incline">
                                                     <option id="threePercentOption">
@@ -410,13 +415,13 @@
                                                     </option>
                                                 </select>
                                             </td>
-                                            <td>
-                                                <span id="inclineLabel">
-                                                    Maximum Incline
-                                                </span>
-                                            </td>
                                         </tr>
                                         <tr>
+                                        	<td>
+                                                <span id="slopedCurbLabel">
+                                                    Maximum Sloped Curb
+                                                </span>
+                                            </td>
                                             <td>
                                                 <select class="form-control wheelchairSelect" id="SlopedCurb">
                                                     <option id="threeCmOption">
@@ -432,12 +437,7 @@
                                                         All Sloped Curbs
                                                     </option>
                                                 </select>
-                                            </td>
-                                            <td>
-                                                <span id="slopedCurbLabel">
-                                                    Maximum Sloped Curb
-                                                </span>
-                                            </td>
+                                            </td>   
                                         </tr>
                                     </table>
                                 </div>
@@ -934,7 +934,7 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <select class="span4 right" id="languagePrefs">
+                                    <select class="form-control" id="languagePrefs">
                                     </select>
                                 </td>
                             </tr>
@@ -951,7 +951,7 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <select class="span4 right" id="routingLanguagePrefs">
+                                    <select class="form-control" id="routingLanguagePrefs">
                                     </select>
                                 </td>
                             </tr>
@@ -968,7 +968,7 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <select class="span4 right" id="unitPrefs">
+                                    <select class="form-control" id="unitPrefs">
                                     </select>
                                 </td>
                             </tr>
@@ -1005,10 +1005,8 @@
                                         </span>
                                     </label>
                                 </td>
-                            </tr>
-                            <tr>
                                 <td>
-                                    <input id="name" placeholder="Name" type="text"/>
+                                    <input class="form-control" id="name" placeholder="Name" type="text" required="true"/>
                                 </td>
                             </tr>
                             <tr>
@@ -1020,10 +1018,8 @@
                                         </span>
                                     </label>
                                 </td>
-                            </tr>
-                            <tr>
                                 <td>
-                                    <input class="span4" id="email" placeholder="Email" type="text"/>
+                                    <input class="form-control" id="email" placeholder="Email" type="text" required="true"/>
                                 </td>
                             </tr>
                             <tr>
@@ -1032,10 +1028,8 @@
                                         Message:
                                     </label>
                                 </td>
-                            </tr>
-                            <tr>
                                 <td>
-                                    <textarea class="span4" id="message" placeholder="Type your message here" rows="5">
+                                    <textarea style="resize:vertical" class="form-control" id="message" placeholder="Type your message here" rows="5">
                                     </textarea>
                                 </td>
                             </tr>
@@ -1050,7 +1044,7 @@
                         </p>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn  ORS-BtnPrimary-control" id="submit_feedback">
+                        <button data-dismiss="modal" class="btn  ORS-BtnPrimary-control" id="submit_feedback">
                             Send Message
                         </button>
                     </div>
