@@ -3055,7 +3055,7 @@ var Ui = (function(w) {
                 'title': 'remove track or route'
             });
             var calcGranularity = new Element('select', {
-                'class': 'form-control calcGranularity',
+                'class': 'form-control input-sm calcGranularity',
                 'title': 'route calculation from gpx detail'
             });
             calcGranularity.insert(new Element('option', {

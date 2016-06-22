@@ -312,26 +312,6 @@
         cursor: pointer;
     }
     
-    .ORS-Slider input[type="text"] {
-        /* All sliders with ORS Style */
-        width: 45px;
-        margin-left: 10px;
-        font-size: 90%;
-        display: inline-block;
-        text-align: center;
-        margin-top: 6px;
-    }
-    
-    .ORS-Slider input[type="range"] {
-        /* All Sliders with ORS Style */
-        width: 130px;
-        border: 0;
-        color: #6392C2;
-        display: inline-block;
-        position: absolute;
-        margin-top: 6px;
-        margin-left: 5px;
-    }
     /* *******************************************/
     /* END OF BLOCK STYLES (BASE LAYOUT STYLE)   */
     /* *******************************************/
@@ -376,17 +356,10 @@
         float: left;
         margin: 0px 10px 0px 0;
         line-height: 40px;
-        padding: 0px 5px 0px 5px;
         color: white;
         font-size: 18px;
     }
-    
-    #returnmessage {
-        /* Feedback Menu message after clicking on feedback button */
-        font-size: 14px;
-        color: green;
-        text-align: center;
-    }
+
     /* STYLE FOR SIDEBAR AND OBJECTS WITHIN THE SIDEBAR */
     
     .ORS-menuPanel {
@@ -1231,15 +1204,6 @@
         }
         .ORS-mainPanel {
             width: calc(100% - 41px) !important;
-        }
-        #sitePrefsModal, #feedbackModal {
-            z-index: 9999;
-            width: 90vw;
-            margin: 0 auto;
-            left: 5vw;
-        }
-        #sitePrefsModal > label, #feedbackModal > label {
-            margin-left: 200px;
         }
         .ORS-logo {
             /* GIScience Logo */
