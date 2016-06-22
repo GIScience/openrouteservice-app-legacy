@@ -3,7 +3,6 @@ jQuery(document).ready(function($) {
         var name = $("#name").val();
         var email = $("#email").val();
         var message = $("#message").val();
-        $("#returnmessage").empty(); //To empty previous error/success message.
         //checking for blank fields	
         if (name === '' || email === '') {
             alert("Please Fill Required Fields");
@@ -14,10 +13,7 @@ jQuery(document).ready(function($) {
                 email1: email,
                 message1: message
             }, function(data) {
-                $("#returnmessage").append(data); //Append returned message to message paragraph
-                if (data == "Your Query has been received, We will contact you soon.") {
-                    $("#form")[0].reset(); //To reset form fields on success
-                }
+                $('#feedbackModal').modal('hide');
             });
         }
     });

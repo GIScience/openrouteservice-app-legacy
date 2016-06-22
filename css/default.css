@@ -1186,15 +1186,6 @@
         .ORS-mainPanel {
             width: calc(100% - 41px) !important;
         }
-        #sitePrefsModal, #feedbackModal {
-            z-index: 9999;
-            width: 90vw;
-            margin: 0 auto;
-            left: 5vw;
-        }
-        #sitePrefsModal > label, #feedbackModal > label {
-            margin-left: 200px;
-        }
         .ORS-logo {
             /* GIScience Logo */
             bottom: 25px;

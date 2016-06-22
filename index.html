@@ -5,30 +5,30 @@
         <title>OpenRouteService</title>
         <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
         <!-- WEBSITE METADATA -->
-        <meta content="index, follow" name="robots"></meta>
-        <meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta>
-        <meta content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" name="viewport"></meta>
+        <meta content="index, follow" name="robots">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" name="viewport">
         <!-- NECESSARY STYLESHEETS FOR THE WEBSITE -->
         <!-- BOOTSTRAP -->
         <!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
-        <link href="lib/bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css"></link>
+        <link href="lib/bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css">
         <!-- LEAFLET -->
-        <link href="css/leaflet.css" rel="stylesheet" type="text/css"></link>
+        <link href="css/leaflet.css" rel="stylesheet" type="text/css">
         <!-- LEAFLET PLUGINS -->
-        <link href="css/leaflet.elevation-0.0.4.css" rel="stylesheet" type="text/css"></link>
+        <link href="css/leaflet.elevation-0.0.4.css" rel="stylesheet" type="text/css">
         <!-- ELEVATION PLUGIN -->
-        <link href="css/MarkerCluster.css" rel="stylesheet" type="text/css"/></link>
+        <link href="css/MarkerCluster.css" rel="stylesheet" type="text/css">
         <!-- MARKER CLUSTER PLUGIN -->
-        <link href="css/L.Control.MousePosition.css" rel="stylesheet" type="text/css"/></link>
+        <link href="css/L.Control.MousePosition.css" rel="stylesheet" type="text/css">
         <!-- MOUSE POSITION PLUGIN -->
         <!-- JQUERY PLUGINS -->
-        <link href="css/jquery.mCustomScrollbar.min.css" rel="stylesheet" type="text/css"></link>
+        <link href="css/jquery.mCustomScrollbar.min.css" rel="stylesheet" type="text/css">
         <!-- FONTS -->
-        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet" type="text/css"></link>
-        <link href="css/font-awesome.css" rel="stylesheet" type="text/css"></link>
-        <link href="css/ruifont.css" rel="stylesheet" type="text/css"></link>
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet" type="text/css">
+        <link href="css/font-awesome.css" rel="stylesheet" type="text/css">
+        <link href="css/ruifont.css" rel="stylesheet" type="text/css">
         <!-- MAIN STYLES -->
-        <link href="css/default.css" rel="stylesheet" type="text/css"></link>
+        <link href="css/default.css" rel="stylesheet" type="text/css">
         <!-- Must come at the end to overwrite other API styles -->                          
     </head>
     <body class="ORS">
@@ -42,20 +42,17 @@
             <ul id="ORS-topMenu">
                 <li>
                     <a data-toggle="modal" href="#feedbackModal" id="ORS-menuLinkFeedback">
-                        <i class="fa fa-comment">
-                        </i>
+                        <i class="fa fa-comment"></i>
                     </a>
                 </li>
                 <li>
                     <a data-toggle="modal" href="#sitePrefsModal" id="ORS-menuLinkSitePrefs">
-                        <i class="fa fa-cogs">
-                        </i>
+                        <i class="fa fa-cogs"></i>
                     </a>
                 </li>
                 <li>
                     <a href="contact.html#top" id="ORS-menuLinkInfo" target="_blank">
-                        <i class="fa fa-info">
-                        </i>
+                        <i class="fa fa-info"></i>
                     </a>
                 </li>
             </ul>
@@ -68,51 +65,40 @@
                 <div class="ORS-menuPanel" id="menuPanel">
                     <div>
                         <button class="btn  ORS-menuButton ORS-BtnPrimary-menu active" select-id="ORS-routeContent">
-                            <i class="fa fa-road">
-                            </i>
+                            <i class="fa fa-road"></i>
                         </button>
                         <button class="btn  ORS-menuButton ORS-BtnPrimary-menu" select-id="ORS-aaContent">
-                            <i class="fa fa-bullseye">
-                            </i>
+                            <i class="fa fa-bullseye"></i>
                         </button>
                         <button class="btn  ORS-menuButton ORS-BtnPrimary-menu" select-id="ORS-cloudContent">
-                            <i class="fa fa-download">
-                            </i>
+                            <i class="fa fa-download"></i>
                         </button>
                     </div>
                     <div style="bottom: 0px; margin: 12px; position: absolute;">
-                        <i class="fa fa-circle-o-notch fa-spin" id="ORS-loading">
-                        </i>
-                        <i class="fa fa-warning" id="ORS-error">
-                        </i>
+                        <i class="fa fa-circle-o-notch fa-spin" id="ORS-loading"></i>
+                        <i class="fa fa-warning" id="ORS-error"></i>
                     </div>
                 </div>
                 <div class="ORS-navigation">
                     <div data-id="ORS-routeContent">
                         <div class="ORS-routePreferenceBtns">
                             <button class="btn  ORS-BtnPrimary ORS-routeOptionsButton left active" id="car">
-                                <i class="fa fa-car">
-                                </i>
+                                <i class="fa fa-car"></i>
                             </button>
                             <button class="btn  ORS-BtnPrimary ORS-routeOptionsButton left" id="bicycle">
-                                <i class="fa fa-bicycle">
-                                </i>
+                                <i class="fa fa-bicycle"></i>
                             </button>
                             <button class="btn  ORS-BtnPrimary ORS-routeOptionsButton left" id="pedestrian">
-                                <i class="fa fa-male">
-                                </i>
+                                <i class="fa fa-male"></i>
                             </button>
                             <button class="btn  ORS-BtnPrimary ORS-routeOptionsButton left" id="wheelchair">
-                                <i class="fa fa-wheelchair">
-                                </i>
+                                <i class="fa fa-wheelchair"></i>
                             </button>
                             <button class="btn  ORS-BtnPrimary ORS-routeOptionsButton left" id="heavyvehicle">
-                                <i class="fa fa-truck">
-                                </i>
+                                <i class="fa fa-truck"></i>
                             </button>
                             <button class="btn  ORS-BtnPrimary ORS-optionsButton right">
-                                <i class="fa fa-cog">
-                                </i>
+                                <i class="fa fa-cog"></i>
                             </button>
                         </div>
                     </div>
@@ -588,7 +574,7 @@
                                             <div class="input-group">
                                                 <input class="form-control" id="maxSpeedInput" placeholder="set maximum speed" type="number">
                                                     <span class="input-group-btn">
-                                                        <button class="btn " id="maxSpeedBtn" type="button">
+                                                        <button class="btn btn-default" id="maxSpeedBtn" type="button">
                                                             set
                                                         </button>
                                                     </span>
@@ -602,7 +588,7 @@
                                         Polygons are overlapping. Please refit!
                                     </div>
                                 </div>
-                            </div>
+                        	</div>
                             <div class="ORS-panel-sub ORS-hr-dark ORS-padding">
                                 <div class="guiComponent waypoint unset" draggable="draggable" id="Draft" style="display: none">
                                     <span class="clickable waypoint-icon unset" title="Zoom to waypoint">
@@ -794,15 +780,13 @@
                             </table>
                             <div class="clear">
                                 <div class="left">
-                                    <button class="btn ORS-BtnPrimary-control" data-container="ORS-mainPanel" data-original-title="Calculate accessibility" data-toggle="tooltip" id="analyzeAccessibility" title="" type="button">
-                                        <i class="fa fa-fw fa-bullseye">
-                                        </i>
-                                        <span id="analyzeAccessibilityLabel">
-                                        </span>
+                                    <button class="btn btn-default btn-sm" data-container="ORS-mainPanel" data-original-title="Calculate accessibility" data-toggle="tooltip" id="analyzeAccessibility" title="" type="button">
+                                        <i class="fa fa-fw fa-bullseye"></i>
+                                        <span id="analyzeAccessibilityLabel"></span>
                                     </button>
                                 </div>
                                 <div class="left">
-                                    <button class="btn ORS-BtnPrimary-control" data-container="ORS-mainPanel" data-original-title="Remove" data-toggle="tooltip" id="removeAccessibility" style="display:none" title="" type="button">
+                                    <button class="btn btn-default btn-sm" data-container="ORS-mainPanel" data-original-title="Remove" data-toggle="tooltip" id="removeAccessibility" style="display:none" title="" type="button">
                                         <i class="fa fa-remove">
                                         </i>
                                     </button>
@@ -827,7 +811,7 @@
                         <div class="ORS-panel-sub">
                             <div class="clear">
                                 <div style="margin-bottom: 10px">
-                                    <a class="btn  ORS-BtnPrimary-control" data-container=".ORS-mainPanel" data-original-title="" data-toggle="tooltip" download="map.gpx" id="export-gpx" title="Download of current route in GPX format">
+                                    <a class="btn btn-default btn-sm" data-container=".ORS-mainPanel" data-original-title="" data-toggle="tooltip" download="map.gpx" id="export-gpx" title="Download of current route in GPX format">
                                         <i class="fa fa-download fa-fw">
                                         </i>
                                         <span>
@@ -836,7 +820,7 @@
                                     </a>
                                 </div>
                                 <div id="GPXcontainer">
-                                    <span class="btn  ORS-BtnFile ORS-BtnPrimary-control" data-container=".ORS-mainPanel" data-original-title="" data-toggle="tooltip" id="import-gpx" title="Upload multiple tracks from a GPX-files">
+                                    <span class="btn ORS-BtnFile btn-default btn-sm" data-container=".ORS-mainPanel" data-original-title="" data-toggle="tooltip" id="import-gpx" title="Upload multiple tracks from a GPX-files">
                                         <i class="fa fa-upload fa-fw">
                                         </i>
                                         <span>
@@ -923,59 +907,47 @@
                         <table class="table table-borderless">
                             <tr>
                                 <td>
-                                    <h4>
-                                        Language for interface
-                                    </h4>
+                                    <h4>Language for interface</h4>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <label class="left" id="languageText">
-                                    </label>
+                                    <label class="left" id="languageText"></label>
                                 </td>
                                 <td>
-                                    <select class="span4 right" id="languagePrefs">
-                                    </select>
+                                    <select class="form-control" id="languagePrefs"></select>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <h4>
-                                        Language for routing instructions
-                                    </h4>
+                                    <h4>Language for routing instructions</h4>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <label id="routingLanguageText">
-                                    </label>
+                                    <label id="routingLanguageText"></label>
                                 </td>
                                 <td>
-                                    <select class="span4 right" id="routingLanguagePrefs">
-                                    </select>
+                                    <select class="form-control" id="routingLanguagePrefs"></select>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <h4>
-                                        Distance Units
-                                    </h4>
+                                    <h4>Distance Units</h4>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <label id="distanceUnitText">
-                                    </label>
+                                    <label id="distanceUnitText"></label>
                                 </td>
                                 <td>
-                                    <select class="span4 right" id="unitPrefs">
-                                    </select>
+                                    <select class="form-control" id="unitPrefs"></select>
                                 </td>
                             </tr>
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn ORS-BtnPrimary-control" id="savePrefsBtn">
+                        <button class="btn" id="savePrefsBtn">
                             Save
                         </button>
                     </div>
@@ -987,12 +959,8 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <a aria-hidden="true" class="close" data-dismiss="modal" href="#">
-                            ×
-                        </a>
-                        <h3 id="feedback">
-                            Feedback
-                        </h3>
+                        <a aria-hidden="true" class="close" data-dismiss="modal" href="#">×</a>
+                        <h3 id="feedback">Feedback</h3>
                     </div>
                     <div class="modal-body feedback">
                         <table class="table table-borderless">
@@ -1000,57 +968,47 @@
                                 <td>
                                     <label>
                                         Name:
-                                        <span style="color:red">
-                                            *
-                                        </span>
+                                        <span style="color:red">*</span>
                                     </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <input id="name" placeholder="Name" type="text"/>
+                                    <input class="form-control" id="name" placeholder="Name" type="text"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <label>
-                                        Email:
-                                        <span style="color:red">
-                                            *
-                                        </span>
+                                    <label>Email:
+                                        <span style="color:red">*</span>
                                     </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <input class="span4" id="email" placeholder="Email" type="text"/>
+                                    <input class="form-control" id="email" placeholder="Email" type="text"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <label>
-                                        Message:
-                                    </label>
+                                    <label>Message:</label>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <textarea class="span4" id="message" placeholder="Type your message here" rows="5">
-                                    </textarea>
+                                    <textarea class="form-control" id="message" placeholder="Type your message here" rows="5"></textarea>
                                 </td>
                             </tr>
                         </table>
                         <p>
                             <span style="color:red; font-size:150%">
-                                <b>
-                                    *
-                                </b>
+                                <b>*</b>
                             </span>
                             : Mandatory field
                         </p>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn  ORS-BtnPrimary-control" id="submit_feedback">
+                        <button class="btn btn-default" id="submit_feedback">
                             Send Message
                         </button>
                     </div>
