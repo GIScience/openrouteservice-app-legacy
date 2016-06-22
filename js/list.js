@@ -65,52 +65,62 @@ list = {
     menuElements: ['ORS-routeContent', 'ORS-aaContent', 'ORS-cloudContent'],
     // waytype and surface type information
     tmc: {},
-    SteepnessType: {
+    SteepnessType: [{
         '-5': {
-            text: '16%+',
-            color: '#BF0031'
-        },
-        '-4': {
-            text: '10-15%',
-            color: '#AB163D'
-        },
-        '-3': {
-            text: '7-9%',
-            color: '#982D49'
-        },
-        '-2': {
-            text: '4-6%',
-            color: '#854455'
-        },
-        '-1': {
-            text: '1-3%',
-            color: '#725B61'
-        },
-        '0': {
-            text: '0%',
-            color: '#5F726D'
-        },
-        '1': {
-            text: '1-3%',
-            color: '#4C8979'
-        },
-        '2': {
-            text: '4-6%',
-            color: '#39A085'
-        },
-        '3': {
-            text: '7-9%',
-            color: '#26B791'
-        },
-        '4': {
-            text: '10-15%',
-            color: '#13CE9D'
-        },
-        '5': {
             text: '16%+',
             color: '#00E5AA'
         }
-    },
+    }, {
+        '-4': {
+            text: '10-15%',
+            color: '#13CE9D'
+        }
+    }, {
+        '-3': {
+            text: '7-9%',
+            color: '#26B791'
+        }
+    }, {
+        '-2': {
+            text: '4-6%',
+            color: '#39A085'
+        }
+    }, {
+        '-1': {
+            text: '1-3%',
+            color: '#4C8979'
+        }
+    }, {
+        '0': {
+            text: '0%',
+            color: '#5F726D'
+        }
+    }, {
+        '1': {
+            text: '1-3%',
+            color: '#725B61'
+        }
+    }, {
+        '2': {
+            text: '4-6%',
+            color: '#854455'
+        }
+    }, {
+        '3': {
+            text: '7-9%',
+            color: '#982D49'
+        }
+    }, {
+        '4': {
+            text: '10-15%',
+            color: '#AB163D'
+        }
+    }, {
+        '5': {
+            text: '16%+',
+            color: '#BF0031'
+        }
+    }],
     divSteepnessTypes: '#steepnessType',
     listSteepnessTypesContainer: '#steepnessTypeList',
     WayType: {

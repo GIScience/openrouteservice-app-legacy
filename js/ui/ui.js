@@ -1604,11 +1604,13 @@ var Ui = (function(w) {
         var information, type, typelist = [];
         information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySteepnessList')[0];
         information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySteepness');
-        for (type in list.SteepnessType) {
+        for (var i = 0; i < (list.SteepnessType).length; i++) {
+            var text = list.SteepnessType[i][Object.keys(list.SteepnessType[i])[0]].text;
+            var color = list.SteepnessType[i][Object.keys(list.SteepnessType[i])[0]].color;
             typelist.push({
-                type: list.SteepnessType[type].text,
-                typetranslated: list.SteepnessType[type].text + ' (steepness)',
-                color: list.SteepnessType[type].color,
+                type: text,
+                typetranslated: text + ' (steepness)',
+                color: color,
                 distance: 0,
                 ids: [],
                 segments: [],
@@ -1646,6 +1648,7 @@ var Ui = (function(w) {
         });
         var a = 0;
         var y0 = 0;
+        console.log(typelist)
         for (type in typelist) {
             if (typelist[type].distance > 0) {
                 // consider percentages less than 1
@@ -1662,6 +1665,7 @@ var Ui = (function(w) {
         var typelistCleaned = typelist.filter(function(el) {
             return el.distance !== 0;
         });
+        console.log(typelistCleaned)
         return typelistCleaned;
     }
     /** 
