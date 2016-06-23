@@ -83,15 +83,23 @@ var Map = (function() {
         var layerName6 = Preferences.translate('layer6');
         this.overlays[layerName6] = this.aster_hillshade;
         /* MOUSE POSITION CONTROL */
-        L.control.mousePosition({
+        var MousePosition = L.control.mousePosition({
             position: 'topright',
             separator: ', '
-        }).addTo(this.theMap);
+        });
+        if (screen.width>=320 && screen.width<=720){
+            
+            MousePosition.remove();        
+        }
+        else {
+            MousePosition.addTo(this.theMap);
+        }
         /* ZOOM CONTROL */
         var ZoomControl = new L.Control.Zoom({
             position: 'topright'
         });
-        ZoomControl.addTo(this.theMap);
+        ZoomControl.addTo(this.theMap); 
+        
         /* LOCATE CONTROL */
         function onLocationFound(e) {
             $('.leaflet-popup-content').remove();
@@ -155,7 +163,7 @@ var Map = (function() {
             },
             onAdd: function(map) {
                 var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-avoidArea',container),
-                link = L.DomUtil.create('a', '', container);
+                link = L.DomUtil.create('a', 'leaflet-avoidAreaContainer', container);
                 link.href = '#';
                 link.title = 'Create a new polygon';
                 link.innerHTML = '▱';

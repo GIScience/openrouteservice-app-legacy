@@ -1243,35 +1243,63 @@
             height:50px;
         };
 
-        /* To hide the mouse position controller */
-        .leaflet-control-mouseposition{
-            display: none;
+        .leaflet-control-container .leaflet-top .leaflet-right {
+            margin:0 auto !important;
+            clear:none !important;
         }
-        .leaflet-control-customLocate {
-            width: 26px;
-            height: 26px;
+
+
+        /*.leaflet-control-customLocate {
+            width: 30px !important;
+            height: 30px !important;
+            margin-top:-60px !important;
+        }
+        .leaflet-control-customLocate:before{
+            width: 30px !important;
+            height: 30px !important;
+        }
+
+        .leaflet-control-avoidArea {
+            width: 30px !important;
+            height: 30px !important; 
+        }
+
+        .leaflet-avoidAreaContainer {
+            width: 30px !important;
+            height: 30px !important; 
+        }
+
+        .leaflet-control-layers-toggle {
+            width: 30px !important;
+            height: 30px !important;
+
         }
 
         .leaflet-control-layers-toggle:before {
-            width: 26px;
-            height: 26px;
+            width: 30px !important;
+            height: 30px !important;
+        }*/
+
+        .leaflet-control-customNavMenuToggle {
+            width: 30px !important;
+            height: 30px !important;
         }
         .leaflet-control-customNavMenuToggle:before {
             content: "\f07d";
             font-family: FontAwesome;
-            width: 26px;
-            height: 26px;
+            width: 30px !important;
+            height: 30px !important;
         }
 
-        .leaflet-control-zoom-in {
-            width: 26px;
-            height: 26px;
+        /*.leaflet-control-zoom-in {
+            width: 30px !important;
+            height: 30px !important;
         }
 
         .leaflet-control-zoom-out {
-            width: 26px;
-            height: 26px;
-        }
+            width: 30px !important;
+            height: 30px !important;
+        }*/
 
         .ORS-sidebar {
             box-shadow: none;
