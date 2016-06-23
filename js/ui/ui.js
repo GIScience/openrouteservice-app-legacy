@@ -2709,7 +2709,7 @@ var Ui = (function(w) {
                     value: boolVar
                 });
             }
-            // if heavy vehicle type
+        // if heavy vehicle type
         } else if ($.inArray(itemValue, list.routePreferencesTypes.get('heavyvehicle')) >= 0) {
             theInterface.emit('ui:prefsChanged', {
                 key: preferences.routeOptionsTypesIdx,
@@ -2718,27 +2718,27 @@ var Ui = (function(w) {
         }
         // if truck options sliders are changed
         else if ($.inArray(itemId, list.truckParams) >= 0) {
-            if (itemId == 'value_length_slide') {
+            if (itemId == 'value_length') {
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.value_lengthIdx,
                     value: $("#value_length").val()
                 });
-            } else if (itemId == 'value_width_slide') {
+            } else if (itemId == 'value_width') {
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.value_widthIdx,
                     value: $("#value_width").val()
                 });
-            } else if (itemId == 'value_weight_slide') {
+            } else if (itemId == 'value_weight') {
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.value_weightIdx,
                     value: $("#value_weight").val()
                 });
-            } else if (itemId == 'value_height_slide') {
+            } else if (itemId == 'value_height') {
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.value_heightIdx,
                     value: $("#value_height").val()
                 });
-            } else if (itemId == 'value_axleload_slide') {
+            } else if (itemId == 'value_axleload') {
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.value_axleloadIdx,
                     value: $("#value_axleload").val()

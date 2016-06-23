@@ -36,7 +36,7 @@ list = {
     routeDangerousGoods: ['hazmat'],
     routeWeightSettings: ['Fastest', 'Shortest', 'Recommended'],
     routeAvoidables: ['Highway', 'Tollway', 'Unpavedroads', 'Ferry', 'Steps', 'Fords', 'Pavedroads', 'Tunnel'],
-    truckParams: ['value_length_slide', 'value_height_slide', 'value_weigth_slide', 'value_axleload_slide', 'value_width_slide'],
+    truckParams: ['value_length', 'value_height', 'value_weigth', 'value_axleload', 'value_width'],
     routePreferencesImages: new Hash({
         'car': ['img/picto-car.png'],
         'bicycle': ['img/picto-bike.png'],
