@@ -303,12 +303,13 @@
         justify-content: center;
         /* align horizontal */
         align-items: center;
-        font-size: 150%;
-        text-decoration:none;
+        font-size: 180%;
+        text-decoration: none;
         font-family: 'Roboto', sans-serif;
         padding-left: 10px;
+        letter-spacing: 1.5px;
     }
-
+    
     #ORS-headIcon {
         /* ORS icon on top left side */
         background: url(../img/logo_unihd.png) no-repeat center center;
@@ -418,17 +419,17 @@
         position: relative;
     }
     
-    .addWaypoint{
+    .addWaypoint {
         padding-top: 5px;
         min-height: 30px;
-        cursor:pointer;
+        cursor: pointer;
     }
-
-    #plusSign{
-        color:#B8B8B8;
-        line-height:30px;
-        font-size:10px;
-        text-align:right;
+    
+    #plusSign {
+        color: #B8B8B8;
+        line-height: 30px;
+        font-size: 10px;
+        text-align: right;
         bottom: 0;
         left: -10px;
         text-stroke-width: 1px;
@@ -442,12 +443,12 @@
         -webkit-text-stroke-width: 1px;
         -webkit-text-stroke-color: #707070;
     }
-
-    #mapMarker{
-        color:#B8B8B8;
-        line-height:30px;
-        font-size:20px;
-        text-align:center;
+    
+    #mapMarker {
+        color: #B8B8B8;
+        line-height: 30px;
+        font-size: 20px;
+        text-align: center;
         text-stroke-width: 1px;
         text-stroke-color: #707070;
         -o-text-stroke-width: 1px;
@@ -459,7 +460,7 @@
         -webkit-text-stroke-width: 1px;
         -webkit-text-stroke-color: #707070;
     }
-
+    
     .waypoint {
         padding-top: 0;
         min-height: 25px;
@@ -472,17 +473,17 @@
         width: 33px;
         height: 25px;
     }
-
-    .waypoint-icon.start:before{
+    
+    .waypoint-icon.start:before {
         display: block;
         float: right;
         width: 30px;
         content: "\f041";
         font-family: FontAwesome;
         color: #00b100;
-        line-height:25px;
-        font-size:20px;
-        text-align:center;
+        line-height: 25px;
+        font-size: 20px;
+        text-align: center;
         text-stroke-width: 1px;
         text-stroke-color: #707070;
         -o-text-stroke-width: 1px;
@@ -494,7 +495,7 @@
         -webkit-text-stroke-width: 1px;
         -webkit-text-stroke-color: #707070;
     }
-
+    
     .waypoint-icon.via:before {
         display: block;
         float: right;
@@ -502,9 +503,9 @@
         content: "\f041";
         font-family: FontAwesome;
         color: #ffb74b;
-        line-height:25px;
-        font-size:20px;
-        text-align:center;
+        line-height: 25px;
+        font-size: 20px;
+        text-align: center;
         text-stroke-width: 1px;
         text-stroke-color: #707070;
         -o-text-stroke-width: 1px;
@@ -516,7 +517,7 @@
         -webkit-text-stroke-width: 1px;
         -webkit-text-stroke-color: #707070;
     }
-
+    
     .waypoint-icon.end:before {
         display: block;
         float: right;
@@ -524,9 +525,9 @@
         content: "\f041";
         font-family: FontAwesome;
         color: #ff6f4b;
-        line-height:25px;
-        font-size:20px;
-        text-align:center;
+        line-height: 25px;
+        font-size: 20px;
+        text-align: center;
         text-stroke-width: 1px;
         text-stroke-color: #707070;
         -o-text-stroke-width: 1px;
@@ -546,9 +547,9 @@
         content: "\f041";
         font-family: FontAwesome;
         color: #B8B8B8;
-        line-height:25px;
-        font-size:20px;
-        text-align:center;
+        line-height: 25px;
+        font-size: 20px;
+        text-align: center;
         text-stroke-width: 1px;
         text-stroke-color: #707070;
         -o-text-stroke-width: 1px;
@@ -560,7 +561,7 @@
         -webkit-text-stroke-width: 1px;
         -webkit-text-stroke-color: #707070;
     }
-
+    
     .removeWaypoint:before {
         display: block;
         float: right;
@@ -833,9 +834,9 @@
     .tooltip {
         font-family: 'Source Sans Pro', sans-serif !important;
     }
-
+    
     .tooltip:active {
-        display:none;
+        display: none;
     }
     
     .d3-tip {
@@ -1082,7 +1083,7 @@
         background-color: rgba(255, 255, 255, 0.5);
         color: black;
         z-index: 999;
-        left:0;
+        left: 0;
         margin-left: 5px;
         font-family: 'Source Sans Pro', sans-serif;
     }
@@ -1185,7 +1186,7 @@
         display: block;
         right: 5px;
         position: absolute;
-        z-index: 9999;
+        z-index: 999;
     }
     /* ******************************************/
     /* END OF ELEMENT STYLES (CLASSES AND ID's) */
@@ -1206,20 +1207,18 @@
             order: 1;
         }
         #ORS-title {
-            margin-left:10px;
-            position:absolute;
-            height:50px;
-        };
-
+            margin-left: 10px;
+            position: absolute;
+            height: 50px;
+        }
         /* To hide the mouse position controller */
-        .leaflet-control-mouseposition{
+        .leaflet-control-mouseposition {
             display: none;
         }
         .leaflet-control-customLocate {
             width: 26px;
             height: 26px;
         }
-
         .leaflet-control-layers-toggle:before {
             width: 26px;
             height: 26px;
@@ -1230,17 +1229,14 @@
             width: 26px;
             height: 26px;
         }
-
         .leaflet-control-zoom-in {
             width: 26px;
             height: 26px;
         }
-
         .leaflet-control-zoom-out {
             width: 26px;
             height: 26px;
         }
-
         .ORS-sidebar {
             box-shadow: none;
         }
@@ -1263,21 +1259,18 @@
             /* GIScience Logo */
             bottom: 25px;
         }
-
         .leaflet-bottom .leaflet-control-scale {
             /* for scale controller */
             display: none;
         }
         #infoPermalink {
-            position:absolute;
+            position: absolute;
             margin-bottom: 30px;
-            margin-left:5px;
+            margin-left: 5px;
         }
-
         #bubble {
-            position:absolute;
+            position: absolute;
             margin-bottom: 30px;
-            
         }
     }
     /* ****************************************************************/

@@ -279,16 +279,6 @@ var Ui = (function(w) {
                 currentTarget: e.currentTarget.up('.waypointResult')
             });
         }
-        // make input field not selectable
-        // var thisDiv = selectedDiv.className
-        // var myDiv = thisDiv.replace(/ /g,".");
-        // $('.'+myDiv).css('pointer-events', 'none');
-        // $('.'+myDiv).css('cursor', 'auto');
-        // $('.removeWaypoint').css('pointer-events', 'auto');
-        // $('.moveUpWaypoint').css('pointer-events', 'auto');
-        // $('.moveDownWaypoint').css('pointer-events', 'auto');
-        // $('.searchAgainButton').css('pointer-events', 'auto');
-        //$('.address').unbind( "click", handleSearchWaypointResultClick );
     }
     /**
      * Sets attributes of the selected waypoint.
@@ -547,6 +537,11 @@ var Ui = (function(w) {
         if (latlon === true) {
             address = util.parseLatlon(results);
             shortAddress = results.toString();
+            shortAddress = shortAddress.split(" ");
+            shortAddress[0] = shortAddress[0].substr(0, 9);
+            shortAddress[1] = shortAddress[1].substr(0, 9);
+            shortAddress = shortAddress.toString();
+            shortAddress = shortAddress.replace(/,/g, " ");
             stopover = $(".directions-main").find("[waypoint-id=" + index + "]");
             stopover.html(shortAddress);
         } else {
@@ -1272,8 +1267,6 @@ var Ui = (function(w) {
             if (address.querySelector('.address')) {
                 address = $(address).children(".waypointResult");
                 address = $(address).find("li").attr("data-shortaddress");
-                //address = address.match(/[^,]*/).toString();
-                //address = address.replace(/(\r\n|\n|\r)/gm,", ");
                 waypoints.push(address);
             }
         }
@@ -1540,7 +1533,7 @@ var Ui = (function(w) {
         d3.select(types).selectAll("svg").remove();
         var tip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) {
             var dist = util.convertDistanceFormat(d.distance, preferences.distanceUnit);
-            return d.typetranslated + ' <i class="fa fa-caret-right"></i> ' + d.percentage + "% " + '(' + dist[1] + ' ' + dist[2] + ')';
+            return d.typetranslated + ' ' + d.percentage + "% " + '(' + dist[1] + ' ' + dist[2] + ')';
         });
         var margin = {
                 top: 0,
@@ -1582,7 +1575,7 @@ var Ui = (function(w) {
         $(list).append("<ul></ul>");
         for (var i = 0; i < data.length; i++) {
             var li = $('<li>');
-            li.html(data[i].percentage + '% <i class="fa fa-caret-right"></i> ' + data[i].typetranslated);
+            li.html(data[i].percentage + '% ' + data[i].typetranslated);
             li.wrapInner('<span />');
             if (colors) {
                 li.css('color', colors[i]);
@@ -1601,11 +1594,17 @@ var Ui = (function(w) {
     function calculateSteepness(results) {
         // RouteGeometry
         var routeLineString = route.routeLineString;
-        var information, type, typelist = [];
+        var information, type, text, typelist = [];
         information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySteepnessList')[0];
         information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySteepness');
         for (var i = 0; i < (list.SteepnessType).length; i++) {
-            var text = list.SteepnessType[i][Object.keys(list.SteepnessType[i])[0]].text;
+            if (Object.keys(list.SteepnessType[i])[0] > 0) {
+                text = '<i class="fa fa-caret-up"></i> ' + list.SteepnessType[i][Object.keys(list.SteepnessType[i])[0]].text;
+            } else if (Object.keys(list.SteepnessType[i])[0] < 0) {
+                text = '<i class="fa fa-caret-down"></i> ' + list.SteepnessType[i][Object.keys(list.SteepnessType[i])[0]].text;
+            } else {
+                text = '<i class="fa fa-caret-right"></i> ' + list.SteepnessType[i][Object.keys(list.SteepnessType[i])[0]].text;
+            }
             var color = list.SteepnessType[i][Object.keys(list.SteepnessType[i])[0]].color;
             typelist.push({
                 type: text,
@@ -1803,8 +1802,6 @@ var Ui = (function(w) {
             if ($('.waypoint').length > 2) {
                 waypoints = getWaypoints();
             }
-            //var startpoint = waypoints.splice(0, 1);
-            //var endpoint = waypoints.splice(-1, 1);
             var startpoint = waypoints[0];
             var endpoint = waypoints[(waypoints.length) - 1];
             //add startpoint
@@ -2252,8 +2249,7 @@ var Ui = (function(w) {
      * updates options for specific profiles
      */
     function updateProfileOptions(currentProfile) {
-        console.log(currentProfile)
-            // show profile specific route options
+        // show profile specific route options
         var i, el;
         for (var profile in list.showElements) {
             if (currentProfile == profile || profile == 'All') {
@@ -3114,32 +3110,32 @@ var Ui = (function(w) {
             var showGpx = new Element('button', {
                 'class': 'left btn ORS-BtnPrimary-control transparent show',
                 'data': i,
-                'data-container' : '.ORS-mainPanel',
-                'data-toggle' : 'tooltip',
-                'id' : 'tt-showgpx',
+                'data-container': '.ORS-mainPanel',
+                'data-toggle': 'tooltip',
+                'id': 'tt-showgpx',
                 'title': '',
-                'type' : 'button',
-                'data-original-title' : 'Show GPX'
+                'type': 'button',
+                'data-original-title': 'Show GPX'
             });
             var calcGpx = new Element('button', {
                 'class': 'left btn ORS-BtnPrimary-control transparent calc',
                 'data': i,
-                'data-container' : '.ORS-mainPanel',
-                'data-toggle' : 'tooltip',
-                'id' : 'tt-calcRoute',
+                'data-container': '.ORS-mainPanel',
+                'data-toggle': 'tooltip',
+                'id': 'tt-calcRoute',
                 'title': '',
-                'type' : 'button',
-                'data-original-title' : 'Calculate Route'
+                'type': 'button',
+                'data-original-title': 'Calculate Route'
             });
             var deleteGpx = new Element('button', {
                 'class': 'left btn ORS-BtnPrimary-control transparent delete',
                 'data': i,
-                'data-container' : '.ORS-mainPanel',
-                'data-toggle' : 'tooltip',
-                'id' : 'tt-deleteRoute',
+                'data-container': '.ORS-mainPanel',
+                'data-toggle': 'tooltip',
+                'id': 'tt-deleteRoute',
                 'title': '',
-                'type' : 'button',
-                'data-original-title' : 'Delete Route'
+                'type': 'button',
+                'data-original-title': 'Delete Route'
             });
             var show = new Element('i', {
                 'class': 'fa fa-map-marker',
@@ -3155,11 +3151,11 @@ var Ui = (function(w) {
             });
             var calcGranularity = new Element('select', {
                 'class': 'form-control input-sm calcGranularity',
-                'data-container' : '.ORS-mainPanel',
-                'data-toggle' : 'tooltip',
-                'id' : 'tt-calcDetail',
+                'data-container': '.ORS-mainPanel',
+                'data-toggle': 'tooltip',
+                'id': 'tt-calcDetail',
                 'title': '',
-                'data-original-title' : 'Route calculation from gpx detail'
+                'data-original-title': 'Route calculation from gpx detail'
             });
             calcGranularity.insert(new Element('option', {
                 value: '3000'
@@ -3185,7 +3181,6 @@ var Ui = (function(w) {
         }
         container.appendChild(fileContainerMain);
         $('[data-toggle="tooltip"]').tooltip();
-
     }
     /**
      * handles the clicked gpx file and shows it on map
