@@ -22,10 +22,10 @@ list = {
     }),
     //please make sure that each category contains at least one element. all names in the hash have to be unique.
     routePreferences: new Hash({
-        'car': ['Car'],
+        'car': ['car', 'Car'],
         'bicycle': ['bicycle', 'Bicycle', 'BicycleSafety', 'BicycleRoute', 'BicycleMTB', 'BicycleRacer', 'BicycleTour'],
         'pedestrian': ['pedestrian', 'Pedestrian'],
-        'heavyvehicle': ['HeavyVehicle'],
+        'heavyvehicle': ['heavyvehicle', 'HeavyVehicle'],
         'wheelchair': ['wheelchair', 'Wheelchair']
     }),
     elevationProfiles: ['Bicycle', 'BicycleRacer', 'BicycleMTB', 'BicycleTour', 'Pedestrian', 'BicycleSafety', 'Wheelchair'],
@@ -68,59 +68,64 @@ list = {
     SteepnessType: [{
         '-5': {
             text: '16%+',
-            color: '#00E5AA'
+            color: '#0FAD00'
         }
     }, {
         '-4': {
             text: '10-15%',
-            color: '#13CE9D'
+            color: '#34B401'
         }
     }, {
         '-3': {
             text: '7-9%',
-            color: '#26B791'
+            color: '#5CBC02'
         }
     }, {
         '-2': {
             text: '4-6%',
-            color: '#39A085'
+            color: '#86C403'
         }
     }, {
         '-1': {
             text: '1-3%',
-            color: '#4C8979'
+            color: '#B2CC04'
         }
     }, {
         '0': {
             text: '0%',
-            color: '#5F726D'
+            color: '#D3C605'
         }
     }, {
         '1': {
             text: '1-3%',
-            color: '#725B61'
+            color: '#DBA407'
         }
     }, {
         '2': {
             text: '4-6%',
-            color: '#854455'
+            color: '#E37F08'
         }
     }, {
         '3': {
             text: '7-9%',
-            color: '#982D49'
+            color: '#EB580A'
         }
     }, {
         '4': {
             text: '10-15%',
-            color: '#AB163D'
+            color: '#F32F0C'
         }
     }, {
         '5': {
             text: '16%+',
-            color: '#BF0031'
+            color: '#FA0D17'
         }
     }],
+
+
+
+
+
     divSteepnessTypes: '#steepnessType',
     listSteepnessTypesContainer: '#steepnessTypeList',
     WayType: {
@@ -160,7 +165,7 @@ list = {
         17: 'Grass',
         18: 'GrassPaver'
     },
-    SurfaceTypeColors: ['#E5D600', '#E0CA00', '#DCBF00', '#D8B400', '#D4A800', '#CF9D00', '#CB9200', '#C78600', '#C37B00', '#BF7000'],
+    SurfaceTypeColors: ['#45C4F9', '#37A4F5', '#339AF3', '#257AEF', '#2070EE', '#1250EA', '#0D46E9', '#0431E6', '#0431E6', '#0027E5'],
     divSurfaceTypes: '#surfaceType',
     listSurfaceTypesContainer: '#surfaceTypeList'
 };

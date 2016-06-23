@@ -329,6 +329,7 @@ var Preferences = (function(w) {
         if (routeOptType == null || routeOptType == 'undefined') {
             routeOptType = null;
         }
+        console.log(routeOptType)
         permaInfo[this.routeOptionsTypesIdx] = routeOptType;
         //check if the routeOptType parameter is a valid routeOption.
         var mainObjects = list.routePreferencesTypes.keys();
@@ -340,10 +341,12 @@ var Preferences = (function(w) {
                 break;
             }
         }
+        console.log(routeOptType)
         if (!isValid) {
             //we found a parameter to parse, but this wasn't a valid route option. Use the default instead
             routeOptType = permaInfo[this.routeOptionsTypesIdx];
         }
+        console.log(routeOptType)
         return routeOptType;
     }
     /**
@@ -355,7 +358,7 @@ var Preferences = (function(w) {
         routeOpt = unescape(routeOpt);
         //set a default in the permaInfo Array if routeOpt == null, undef, etc.
         if (routeOpt == undefined || routeOpt == null || routeOpt == 'undefined') {
-            routeOpt = list.routePreferences.get('car')[0];
+            routeOpt = list.routePreferences.get('car')[1];
             // routeOpt = list.routePreferences.get('wheelchair')[0];
         }
         permaInfo[this.routeOptionsIdx] = routeOpt;
