@@ -157,9 +157,6 @@
     }
     
     .ORS-alert {
-        margin-bottom: 0;
-        border-radius: 0;
-        margin-top: 5px;
         font-family: 'Source Sans Pro', sans-serif;
     }
     
@@ -1086,8 +1083,8 @@
         color: black;
         z-index: 999;
         left:0;
-        /*margin-left: 5px;
-        /*font-family: 'Source Sans Pro', sans-serif;*/
+        margin-left: 5px;
+        font-family: 'Source Sans Pro', sans-serif;
     }
     
     #bubble {
@@ -1104,7 +1101,7 @@
         -webkit-border-radius: 5px;
         -moz-border-radius: 5px;
         border-radius: 5px;
-        /*font-family: 'Source Sans Pro', sans-serif;*/
+        font-family: 'Source Sans Pro', sans-serif;
     }
     
     #bubble #permaText {
@@ -1140,12 +1137,13 @@
     
     #avoidables_info {
         /* avoidables info */
-        position: absolute;
-        margin-left: 43px;
-        top: 72px;
-        z-index: 999;
         display: none;
-        width: 200px;
+        width: 220px;
+        line-height: 1.1;
+        z-index: 999;
+        position: absolute;
+        right: 100px;
+        top: 120px;
     }
     
     #serviceTimeout {

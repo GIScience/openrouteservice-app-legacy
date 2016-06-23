@@ -52,18 +52,18 @@ var Ui = (function(w) {
      * if it is the user's first visit to ORS show a popup with information about the settings (version, language,...)
      */
     function showNewToOrsPopup() {
-        var label = new Element('label');
-        label.insert(preferences.translate('infoTextVersions'));
-        $('#newToOrs').append(label);
+        var span = new Element('span');
+        span.insert(preferences.translate('infoTextVersions'));
+        $('#newToOrs').append(span);
         $('#newToOrs').show();
     }
     /**
      * if it is the user's first visit to ORS show a popup with information about the avoidables
      */
     function showAvoidablesInfoPopup() {
-        var label = new Element('label');
-        label.insert(preferences.translate('infoAboutAvoidables'));
-        $('#avoidables_info').append(label);
+        var span = new Element('span');
+        span.insert(preferences.translate('infoAboutAvoidables'));
+        $('#avoidables_info').append(span);
         $('#avoidables_info').show();
     }
 
