@@ -90,24 +90,6 @@
         background-color: transparent !important;
     }
     
-    .show {
-        float: left;
-        padding-left: 13px;
-        cursor: pointer;
-    }
-    
-    .calc {
-        float: left;
-        padding-left: 13px;
-        cursor: pointer;
-    }
-    
-    .delete {
-        float: left;
-        padding-left: 13px;
-        cursor: pointer;
-    }
-    
     .calcGranularity {
         margin-top: 5px;
         width: 100px;
@@ -320,18 +302,16 @@
         background-color: #b5152b;
         color: #F0F0F0;
         line-height: 25px;
-        margin: 0 auto;
         display: flex;
         justify-content: center;
         /* align horizontal */
         align-items: center;
-        /* align vertical */
         font-size: 150%;
         text-decoration:none;
-        font-family: "Open Sans", Helvetica, Arial, sans-serif;
-    };
+        font-family: 'Roboto', sans-serif;
+        padding-left: 10px;
+    }
 
-    
     #ORS-headIcon {
         /* ORS icon on top left side */
         background: url(../img/logo_unihd.png) no-repeat center center;
@@ -922,14 +902,8 @@
     }
     
     #fileContainer {
-        height: 60px;
+        padding: 5px;
         border-bottom: 1px solid #e6e6e6;
-        margin: 1em 2em 0 0.5em;
-    }
-    
-    .myfile {
-        float: left;
-        pointer-events: none;
     }
     
     #exportGpxError {

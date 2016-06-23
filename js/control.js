@@ -1351,13 +1351,12 @@ var Controller = (function(w) {
         // if routeOpt is not in getVars then use Car for init
         routeOpt = preferences.loadRouteOptions(routeOpt);
         if (routeOpt === undefined || routeOpt === null || routeOpt == 'undefined') {
-            ui.setRouteOption(list.routePreferences.get('car'));
+            ui.setRouteOption('Car');
             ui.updateProfileOptions(list.routePreferences.get('car'));
         } else {
             ui.setRouteOption(routeOpt);
             //lower case to find key
-            routeOpt = routeOpt.toLowerCase();
-            ui.updateProfileOptions(list.routePreferences.get(routeOpt)[0]);
+            ui.updateProfileOptions(list.routePreferences.get(routeOpt.toLowerCase())[0]);
         }
         routeOptType = preferences.loadRouteOptionsType(routeOptType);
         ui.setRouteOptionType(routeOptType);

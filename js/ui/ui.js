@@ -1540,7 +1540,7 @@ var Ui = (function(w) {
         d3.select(types).selectAll("svg").remove();
         var tip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) {
             var dist = util.convertDistanceFormat(d.distance, preferences.distanceUnit);
-            return d.typetranslated + " " + d.percentage + "% " + '(' + dist[1] + ' ' + dist[2] + ')';
+            return d.typetranslated + ' <i class="fa fa-caret-right"></i> ' + d.percentage + "% " + '(' + dist[1] + ' ' + dist[2] + ')';
         });
         var margin = {
                 top: 0,
@@ -1582,7 +1582,7 @@ var Ui = (function(w) {
         $(list).append("<ul></ul>");
         for (var i = 0; i < data.length; i++) {
             var li = $('<li>');
-            li.text(data[i].percentage + "% : " + data[i].typetranslated);
+            li.html(data[i].percentage + '% <i class="fa fa-caret-right"></i> ' + data[i].typetranslated);
             li.wrapInner('<span />');
             if (colors) {
                 li.css('color', colors[i]);
@@ -1664,10 +1664,6 @@ var Ui = (function(w) {
         var typelistCleaned = typelist.filter(function(el) {
             return el.distance !== 0;
         });
-        console.log(typelistCleaned[0])
-        console.log(typelistCleaned[0].type)
-        typelistCleaned[0].typetranslated = typelistCleaned[0].typetranslated + ' (steepness)';
-        console.log(typelistCleaned)
         return typelistCleaned;
     }
     /** 
@@ -2257,7 +2253,7 @@ var Ui = (function(w) {
      */
     function updateProfileOptions(currentProfile) {
         console.log(currentProfile)
-        // show profile specific route options
+            // show profile specific route options
         var i, el;
         for (var profile in list.showElements) {
             if (currentProfile == profile || profile == 'All') {
@@ -3113,19 +3109,37 @@ var Ui = (function(w) {
             });
             var filename = files[i].name;
             var fileName = new Element('div', {
-                'class': 'myfile',
+                'class': 'left clear',
             }).update(filename);
-            var showGpx = new Element('div', {
-                'class': 'show',
-                'data': i
+            var showGpx = new Element('button', {
+                'class': 'left btn ORS-BtnPrimary-control transparent show',
+                'data': i,
+                'data-container' : '.ORS-mainPanel',
+                'data-toggle' : 'tooltip',
+                'id' : 'tt-showgpx',
+                'title': '',
+                'type' : 'button',
+                'data-original-title' : 'Show GPX'
             });
-            var calcGpx = new Element('div', {
-                'class': 'calc',
-                'data': i
+            var calcGpx = new Element('button', {
+                'class': 'left btn ORS-BtnPrimary-control transparent calc',
+                'data': i,
+                'data-container' : '.ORS-mainPanel',
+                'data-toggle' : 'tooltip',
+                'id' : 'tt-calcRoute',
+                'title': '',
+                'type' : 'button',
+                'data-original-title' : 'Calculate Route'
             });
-            var deleteGpx = new Element('div', {
-                'class': 'delete',
-                'data': i
+            var deleteGpx = new Element('button', {
+                'class': 'left btn ORS-BtnPrimary-control transparent delete',
+                'data': i,
+                'data-container' : '.ORS-mainPanel',
+                'data-toggle' : 'tooltip',
+                'id' : 'tt-deleteRoute',
+                'title': '',
+                'type' : 'button',
+                'data-original-title' : 'Delete Route'
             });
             var show = new Element('i', {
                 'class': 'fa fa-map-marker',
@@ -3141,7 +3155,11 @@ var Ui = (function(w) {
             });
             var calcGranularity = new Element('select', {
                 'class': 'form-control input-sm calcGranularity',
-                'title': 'route calculation from gpx detail'
+                'data-container' : '.ORS-mainPanel',
+                'data-toggle' : 'tooltip',
+                'id' : 'tt-calcDetail',
+                'title': '',
+                'data-original-title' : 'Route calculation from gpx detail'
             });
             calcGranularity.insert(new Element('option', {
                 value: '3000'
@@ -3166,6 +3184,8 @@ var Ui = (function(w) {
             $(deleteGpx).click(handleDeleteFromMapGpx);
         }
         container.appendChild(fileContainerMain);
+        $('[data-toggle="tooltip"]').tooltip();
+
     }
     /**
      * handles the clicked gpx file and shows it on map
