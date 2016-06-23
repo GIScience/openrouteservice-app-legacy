@@ -905,7 +905,7 @@
                         </h3>
                     </div>
                     <div class="modal-body">
-                        <table class="table table-borderless">
+                       <table class="table table-borderless">
                             <tr>   
                                 <td>
                                     <h4>Language for interface</h4>
@@ -964,68 +964,47 @@
                         <h3 id="feedback">Feedback</h3>
                     </div>
                     <div class="modal-body feedback">
-                        <table class="table table-borderless" id="feedbackForm">
-                            <tr>
-                                <td>
-                                    <label>
-                                        Name:
-                                        <span style="color:red">*</span>
-                                    </label>
-                                </td>
-                                <td>
+                        <div id="contact_form" class="row">
+                            <form role="form" id="feedbackForm"  data-toggle="validator" data-disable="false">
+                                <div id="NameFormGroup" class="form-group">
+                                    <label class="control-label" > Name: <span style="color:red">*</span></label> 
                                     <input class="form-control input-sm" id="name" placeholder="Name" type="text" name="name" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>Email:
-                                        <span style="color:red">*</span>
-                                    </label>
-                                </td>
-                                <td>
+                                    <span id="inputStatus" aria-hidden="true"></span>
+                                    <label class="FormWarningMessage" style="display:none"> Please, write your name</label>
+                                    
+                                </div>
+                                <div id="EmailFormGroup" class="form-group">
+                                    <label class="control-label" > Email: <span style="color:red">*</span></label> 
                                     <input class="form-control input-sm" id="email" placeholder="Email" type="text" name="email"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>Message:</label>
-                                </td>
-                                <td>
+                                    <span id="inputStatus" aria-hidden="true"></span>
+                                    <label class="FormWarningMessage" style="display:none"> Please, write your e-mail</label>
+                                    <label class="FormErrorMessage" style="display:none"> The provided e-mail is not valid. Please, write a valid e-mail address</label>
+                                    
+                                </div>
+                                <div id="TextMessageFormGroup" class="form-group">
+                                    <label class="control-label" > Message: </label> 
                                     <textarea style="resize:vertical;" class="form-control input-sm" id="message" name="feedbackText" placeholder="Type your message here" rows="5"></textarea> 
-                                </td>
-                            </tr>
-                        </table>  
+                                    <span id="inputStatus" aria-hidden="true"></span>
+                                    <label class="FormWarningMessage" style="display:none"> Please, write something for us!</label>
+                                </div>
+                            </form>
+                        </div>
                         <!-- Success message -->
                         <div class="alert alert-success" role="alert" id="feedback_success_message" style="display:none">
-                            Success 
-                            <i class="fa fa-thumbs-o-up"></i> 
-                            Thanks for providing your feedback, we will get back to you shortly.
+                            <span> Success <i class="fa fa-thumbs-o-up"></i> </span>
+                            <br>
+                            <span>Thanks for providing your feedback, we will get back to you shortly.</span>
                         </div>
-                        <!-- Error message-->
-                        <div class="alert alert-warning" role="alert" id="feedback_error_message" style="display:none">
-                            Oops
-                            <i class="fa fa-thumbs-o-down"></i> 
-                            Please, write your name and e-mail.
+                        <!-- Success message -->
+                        <div class="alert alert-error" role="alert" id="feedback_error_message" style="display:none">
+                            <span> Oops!!! <i class="fa fa-thumbs-o-down"></i> </span>
+                            <br>
+                            <span>Something went wrong. Your feedback was not sent. Please, try again later.</span>
                         </div>
-                        <div class="alert alert-warning" role="alert" id="feedback_error_message_2" style="display:none">
-                            Oops
-                            <i class="fa fa-thumbs-o-down"></i> 
-                            Please, write your name.
-                        </div>
-                        <div class="alert alert-warning" role="alert" id="feedback_error_message_3" style="display:none">
-                            Oops
-                            <i class="fa fa-thumbs-o-down"></i> 
-                            Please, write your e-mail.
-                        </div>
-                        <div class="alert alert-warning" role="alert" id="feedback_error_message_4" style="display:none">
-                            Oops
-                            <i class="fa fa-thumbs-o-down"></i> 
-                            Please, write something on your feedback message.
-                        </div>          
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-default" id="submit_feedback">
-                            Send Message
+                        <button type="submit" class="btn btn-default" id="submit_feedback">
+                            <span>  <i class="fa-li fa fa-spinner fa-spin" style="display:hidden"></i>Send Message<span>
                         </button>
                     </div>
                 </div>
