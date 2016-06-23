@@ -10,6 +10,9 @@ jQuery(document).ready(function($){
         var email = $("#email").val();
         var message = $("#message").val();
         
+        $("#feedback_success_message").hide();
+        $("#feedback_errors_message").hide();
+
         if(!name && !email && !message){
             $("#feedbackForm #NameFormGroup .FormWarningMessage").show();
             $("#feedbackForm #NameFormGroup").addClass('has-warning has-feedback');
