@@ -90,7 +90,7 @@
                                 <i class="fa fa-male"></i>
                             </button>
                             <button class="btn  ORS-BtnPrimary ORS-routeOptionsButton left" id="wheelchair">
-                                <i class="fa fa-wheelchair"></i>
+                                <i class="fa fa-wheelchair-alt"></i>
                             </button>
                             <button class="btn  ORS-BtnPrimary ORS-routeOptionsButton left" id="heavyvehicle">
                                 <i class="fa fa-truck"></i>
@@ -668,7 +668,6 @@
                                 </div>
                                 <div class="addWaypoint clickable" id="addWaypoint">
                                     <span class="fa-stack fa-lg">
-                                        
                                         <i id="mapMarker" class="fa fa-map-marker fa-stack-2x"></i>
                                         <i id="plusSign" class="fa fa-plus fa-stack-1x"></i>
                                     </span>
@@ -676,30 +675,28 @@
                                         add waypoint
                                     </span>
                                 </div>
+                            </div>
+                            <div class="ORS-panel-sub ORS-hr-dark">
                                 <div class="clear">
                                     <div class="left" id="viaOptimizePanel">
                                         <button class="btn  ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="tt-optimize" title="Optimize Waypoints" type="button">
-                                            <i class="fa fa-wrench">
-                                            </i>
-                                            <input class="hide" data-toggle="button" id="viaOptimize" type="checkbox"/>
+                                            <i class="fa fa-fw fa-wrench"></i>
+                                            <input data-toggle="button" id="viaOptimize" type="checkbox"/>
                                         </button>
                                     </div>
                                     <div class="right">
                                         <button class="btn  ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="orderRoute" title="Reorder Waypoints" type="button">
-                                            <i class="fa fa-refresh">
-                                            </i>
+                                            <i class="fa fa-refresh"></i>
                                         </button>
                                     </div>
                                     <div class="right">
                                         <button class="btn  ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="resetRoute" title="Reset Route" type="button">
-                                            <i class="fa fa-remove">
-                                            </i>
+                                            <i class="fa fa-remove"></i>
                                         </button>
                                     </div>
                                     <div class="right">
                                         <button class="btn  ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="zoomToRouteButton" title="Zoom to Route" type="button">
-                                            <i class="fa fa-arrows-alt">
-                                            </i>
+                                            <i class="fa fa-arrows-alt"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -709,8 +706,7 @@
                         </div>
                         <div class="ORS-panel" style="display: none;">
                             <div class="ORS-panel-sub">
-                                <div class="clear" id="routeSummary">
-                                </div>
+                                <div class="clear" id="routeSummary"></div>
                             </div>
                             <div class="ORS-panel-sub" id="routeTypesContainer" style="display: none;">
                                 <div id="wayType"></div>

@@ -871,9 +871,9 @@ var Controller = (function(w) {
                             }
                             map.updateHeightprofiles(routeLineString, viaPoints);
                         }
+                        $('#routeTypesContainer').show();
                     } else {
-                        var container = $('#routeTypesContainer').get(0);
-                        container.hide();
+                        $('#routeTypesContainer').hide();
                     }
                     ui.endRouteCalculation();
                     map.zoomToRoute();
