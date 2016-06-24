@@ -57,6 +57,7 @@ var Map = (function() {
             zoom: 13,
             attributionControl: true,
             zoomControl: false,
+            tap: false,
             /* By setting this value to false we remove the default zoom control from the map. This is needed to be able to change the position of the control on the map (default: topleft).This control will be added later. */
             crs: L.CRS.EPSG900913,
             //layers: [this.openmapsurfer],

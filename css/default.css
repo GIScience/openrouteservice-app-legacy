@@ -1216,12 +1216,10 @@
             position:absolute;
             height:50px;
             font-size: 90%;
-        };
+        }
         .leaflet-control-customNavMenuToggle:before {
             content: "\f07d";
             font-family: FontAwesome;
-            width: 30px !important;
-            height: 30px !important;
         }
         .ORS-sidebar {
             box-shadow: none;
@@ -1259,6 +1257,7 @@
             position: absolute;
             margin-bottom: 30px;
         }
+
     }
     /* ****************************************************************/
     /* END OF MOBILE STYLES (MEDIA QUERIES FOR MOBILE VISUALIZATION)  */
