@@ -1212,9 +1212,10 @@
             order: 1;
         }
         #ORS-title {
-            margin-left:10px;
+            margin-left:0px;
             position:absolute;
             height:50px;
+            font-size: 90%;
         };
         .leaflet-control-customNavMenuToggle:before {
             content: "\f07d";
