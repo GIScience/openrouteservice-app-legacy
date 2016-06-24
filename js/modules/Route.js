@@ -157,33 +157,36 @@ var Route = (function(w) {
             //avoidAreas contains an array of Leaflet latLngs
             for (var i = 0; i < avoidAreas.length; i++) {
                 var currentArea = avoidAreas[i];
-                //<xls:AOI>
-                writer.writeStartElement('xls:AOI');
-                //<gml:Polygon>
-                writer.writeStartElement('gml:Polygon');
-                //<gml:exterior>
-                writer.writeStartElement('gml:exterior');
-                //<gml:LinearRing>
-                writer.writeStartElement('gml:LinearRing');
                 var corners = currentArea.getLatLngs()[0];
-                for (var j = 0; j < corners.length; j++) {
-                    writer.writeStartElement('gml:pos');
-                    writer.writeString(corners[j].lng + ' ' + corners[j].lat);
-                    writer.writeEndElement();
-                    // close polygon
-                    if (j == corners.length - 1) {
+                // ignore lines
+                if (corners.length > 2) {
+                    //<xls:AOI>
+                    writer.writeStartElement('xls:AOI');
+                    //<gml:Polygon>
+                    writer.writeStartElement('gml:Polygon');
+                    //<gml:exterior>
+                    writer.writeStartElement('gml:exterior');
+                    //<gml:LinearRing>
+                    writer.writeStartElement('gml:LinearRing');
+                    for (var j = 0; j < corners.length; j++) {
                         writer.writeStartElement('gml:pos');
-                        writer.writeString(corners[0].lng + ' ' + corners[0].lat);
+                        writer.writeString(corners[j].lng + ' ' + corners[j].lat);
                         writer.writeEndElement();
+                        // close polygon
+                        if (j == corners.length - 1) {
+                            writer.writeStartElement('gml:pos');
+                            writer.writeString(corners[0].lng + ' ' + corners[0].lat);
+                            writer.writeEndElement();
+                        }
                     }
+                    writer.writeEndElement();
+                    //</gml:exterior>
+                    writer.writeEndElement();
+                    //</gml:Polygon>
+                    writer.writeEndElement();
+                    //</xls:AOI>
+                    writer.writeEndElement();
                 }
-                writer.writeEndElement();
-                //</gml:exterior>
-                writer.writeEndElement();
-                //</gml:Polygon>
-                writer.writeEndElement();
-                //</xls:AOI>
-                writer.writeEndElement();
             }
         }
         if (avoidableParams[0] == 'true' || avoidableParams[0] === true) {

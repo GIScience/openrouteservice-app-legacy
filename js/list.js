@@ -149,7 +149,7 @@ list = {
     }, {
         '0': {
             text: '0%',
-            color: '#FFE32E'
+            color: '#ffcc99'
         }
     }, {
         '1': {
