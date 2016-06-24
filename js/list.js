@@ -36,7 +36,7 @@ list = {
     routeDangerousGoods: ['hazmat'],
     routeWeightSettings: ['Fastest', 'Shortest', 'Recommended'],
     routeAvoidables: ['Highway', 'Tollway', 'Unpavedroads', 'Ferry', 'Steps', 'Fords', 'Pavedroads', 'Tunnel'],
-    truckParams: ['value_length_slide', 'value_height_slide', 'value_weigth_slide', 'value_axleload_slide', 'value_width_slide'],
+    truckParams: ['value_length', 'value_height', 'value_weigth', 'value_axleload', 'value_width'],
     routePreferencesImages: new Hash({
         'car': ['img/picto-car.png'],
         'bicycle': ['img/picto-bike.png'],
@@ -65,67 +65,118 @@ list = {
     menuElements: ['ORS-routeContent', 'ORS-aaContent', 'ORS-cloudContent'],
     // waytype and surface type information
     tmc: {},
+    // SteepnessType: [{
+    //     '-5': {
+    //         text: '16%+',
+    //         color: '#0FAD00'
+    //     }
+    // }, {
+    //     '-4': {
+    //         text: '10-15%',
+    //         color: '#34B401'
+    //     }
+    // }, {
+    //     '-3': {
+    //         text: '7-9%',
+    //         color: '#5CBC02'
+    //     }
+    // }, {
+    //     '-2': {
+    //         text: '4-6%',
+    //         color: '#86C403'
+    //     }
+    // }, {
+    //     '-1': {
+    //         text: '1-3%',
+    //         color: '#B2CC04'
+    //     }
+    // }, {
+    //     '0': {
+    //         text: '0%',
+    //         color: '#D3C605'
+    //     }
+    // }, {
+    //     '1': {
+    //         text: '1-3%',
+    //         color: '#DBA407'
+    //     }
+    // }, {
+    //     '2': {
+    //         text: '4-6%',
+    //         color: '#E37F08'
+    //     }
+    // }, {
+    //     '3': {
+    //         text: '7-9%',
+    //         color: '#EB580A'
+    //     }
+    // }, {
+    //     '4': {
+    //         text: '10-15%',
+    //         color: '#F32F0C'
+    //     }
+    // }, {
+    //     '5': {
+    //         text: '16%+',
+    //         color: '#FA0D17'
+    //     }
+    // }],
     SteepnessType: [{
         '-5': {
             text: '16%+',
-            color: '#0FAD00'
+            color: '#028306'
         }
     }, {
         '-4': {
             text: '10-15%',
-            color: '#34B401'
+            color: '#2AA12E'
         }
     }, {
         '-3': {
             text: '7-9%',
-            color: '#5CBC02'
+            color: '#53BF56'
         }
     }, {
         '-2': {
             text: '4-6%',
-            color: '#86C403'
+            color: '#7BDD7E'
         }
     }, {
         '-1': {
             text: '1-3%',
-            color: '#B2CC04'
+            color: '#A4FBA6'
         }
     }, {
         '0': {
             text: '0%',
-            color: '#D3C605'
+            color: '#FFE32E'
         }
     }, {
         '1': {
             text: '1-3%',
-            color: '#DBA407'
+            color: '#F29898 '
         }
     }, {
         '2': {
             text: '4-6%',
-            color: '#E37F08'
+            color: '#E07575'
         }
     }, {
         '3': {
             text: '7-9%',
-            color: '#EB580A'
+            color: '#CF5352'
         }
     }, {
         '4': {
             text: '10-15%',
-            color: '#F32F0C'
+            color: '#BE312F'
         }
     }, {
         '5': {
             text: '16%+',
-            color: '#FA0D17'
+            color: '#AD0F0C'
         }
     }],
-
-
-
-
-
     divSteepnessTypes: '#steepnessType',
     listSteepnessTypesContainer: '#steepnessTypeList',
     WayType: {
