@@ -1212,56 +1212,15 @@
             order: 1;
         }
         #ORS-title {
-<<<<<<< HEAD
             margin-left:10px;
             position:absolute;
             height:50px;
         };
-
-        .leaflet-control-container .leaflet-top .leaflet-right {
-            margin:0 auto !important;
-            clear:none !important;
-        }
-
-        .leaflet-control-customNavMenuToggle {
-            width: 30px !important;
-            height: 30px !important;
-=======
-            margin-left: 10px;
-            position: absolute;
-            height: 50px;
-        }
-        /* To hide the mouse position controller */
-        .leaflet-control-mouseposition {
-            display: none;
-        }
-        .leaflet-control-customLocate {
-            width: 26px;
-            height: 26px;
-        }
-        .leaflet-control-layers-toggle:before {
-            width: 26px;
-            height: 26px;
->>>>>>> bugfixes-3.0
-        }
         .leaflet-control-customNavMenuToggle:before {
             content: "\f07d";
             font-family: FontAwesome;
-<<<<<<< HEAD
             width: 30px !important;
             height: 30px !important;
-=======
-            width: 26px;
-            height: 26px;
-        }
-        .leaflet-control-zoom-in {
-            width: 26px;
-            height: 26px;
-        }
-        .leaflet-control-zoom-out {
-            width: 26px;
-            height: 26px;
->>>>>>> bugfixes-3.0
         }
         .ORS-sidebar {
             box-shadow: none;
