@@ -1309,7 +1309,7 @@ var Ui = (function(w) {
     function startRouteCalculation() {
         var el = $('#ORS-loading');
         el.show();
-        $('#ORS-routeError').hide();
+        $('#routeError').hide();
     }
     /**
      * hides the spinner for the route calculation process
@@ -2145,7 +2145,7 @@ var Ui = (function(w) {
      * displays an error message when no route between the selected waypoints could be found or another error happened during route calculation
      */
     function showRoutingError() {
-        var el = $('#ƒrouteError');
+        var el = $('#routeError');
         el.html(preferences.translate('noRouteAvailable'));
         el.show();
     }
