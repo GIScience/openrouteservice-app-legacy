@@ -98,8 +98,14 @@ var Map = (function() {
         var ZoomControl = new L.Control.Zoom({
             position: 'topright'
         });
-        ZoomControl.addTo(this.theMap); 
-        
+
+        if (screen.width>=320 && screen.width<=720){
+            ZoomControl.remove();        
+        }
+        else {
+            ZoomControl.addTo(this.theMap);
+        }
+
         /* LOCATE CONTROL */
         function onLocationFound(e) {
             $('.leaflet-popup-content').remove();
