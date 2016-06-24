@@ -1255,6 +1255,7 @@
         .ORS-logo {
             /* GIScience Logo */
             bottom: 25px;
+            right: calc(100vw - 60%);
         }
 
         .leaflet-bottom .leaflet-control-scale {
