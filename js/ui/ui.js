@@ -2248,15 +2248,13 @@ var Ui = (function(w) {
         // show profile specific route options
         var i, el;
         for (var profile in list.showElements) {
-            if (currentProfile == profile || profile == 'All') {
-                for (i = 0; i < list.showElements[profile].length; i++) {
-                    el = $(list.showElements[profile][i]);
+            if (currentProfile == profile) {
+                for (i = 0; i < list.showElements[profile].show.length; i++) {
+                    el = $(list.showElements[profile].show[i]);
                     el.show();
                 }
-                // hide all other elements
-            } else {
-                for (i = 0; i < list.showElements[profile].length; i++) {
-                    el = $(list.showElements[profile][i]);
+                for (i = 0; i < list.showElements[profile].hide.length; i++) {
+                    el = $(list.showElements[profile].hide[i]);
                     el.hide();
                 }
             }
