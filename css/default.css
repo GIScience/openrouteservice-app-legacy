@@ -335,11 +335,11 @@
         color: white;
         font-size: 18px;
     }
-
-   #contact_form {
-    width:90%;
-    margin: 0 auto;
-   }
+    
+    #contact_form {
+        width: 90%;
+        margin: 0 auto;
+    }
     /* STYLE FOR SIDEBAR AND OBJECTS WITHIN THE SIDEBAR */
     
     .ORS-menuPanel {
@@ -378,6 +378,7 @@
         width: 348px;
         bottom: 20px;
         left: 40px;
+        z-index: 400;
         border-left: 1px solid #CCC;
         background-color: #FFF;
     }
@@ -685,8 +686,6 @@
     .directions-container .address {
         margin-top: 21px;
         margin-left: 75px;
-        line-height: 26px;
-        font-size: 14px;
     }
     
     .directions-container .submain {
@@ -846,32 +845,59 @@
     
     .d3-tip {
         line-height: 1;
-        font-weight: bold;
-        padding: 12px;
-        background: rgba(0, 0, 0, 0.8);
+        padding: 8px;
+        background: rgba(0, 0, 0, 1);
         color: #fff;
-        border-radius: 5px;
-        font-size: 10px;
+        font-size: 90%;
+        border-radius: 4px;
+        pointer-events: none;
+        overflow: visible;
+        z-index: 401;
     }
     /* Creates a small triangle extender for the tooltip */
     
     .d3-tip:after {
         box-sizing: border-box;
         display: inline;
-        font-size: 11px;
         width: 100%;
         line-height: 1;
         color: rgba(0, 0, 0, 0.8);
-        content: "\25BC";
         position: absolute;
-        text-align: center;
+        pointer-events: none;
     }
-    /* Style northward tooltips differently */
+    /* Northward tooltips */
     
     .d3-tip.n:after {
-        margin: -1px 0 0 0;
+        content: "\25BC";
+        margin: -3px 0 0 0;
         top: 100%;
         left: 0;
+        text-align: center;
+    }
+    /* Eastward tooltips */
+    
+    .d3-tip.e:after {
+        content: "\25C0";
+        margin: -4px 0 0 0;
+        top: 50%;
+        left: -8px;
+    }
+    /* Southward tooltips */
+    
+    .d3-tip.s:after {
+        content: "\25B2";
+        margin: 0 0 1px 0;
+        top: -8px;
+        left: 0;
+        text-align: center;
+    }
+    /* Westward tooltips */
+    
+    .d3-tip.w:after {
+        content: "\25B6";
+        margin: -4px 0 0 -1px;
+        top: 50%;
+        left: 100%;
     }
     /* ACCESSIBILITY ANALYSIS */
     
@@ -1159,10 +1185,6 @@
         margin-left: 40px;
         top: 5px;
         z-index: 999;
-    }
-    
-    #serviceTimeout > label {
-        /* service timeout message */
         width: 220px;
         line-height: 1.1;
     }
@@ -1212,21 +1234,19 @@
             order: 1;
         }
         #ORS-title {
-<<<<<<< HEAD
-            margin-left:10px;
-            position:absolute;
-            height:50px;
-        };
-
-        .leaflet-control-container .leaflet-top .leaflet-right {
-            margin:0 auto !important;
-            clear:none !important;
+            margin-left: 10px;
+            position: absolute;
+            height: 50px;
+            font-size: 100%;
         }
-
+        
+        .leaflet-control-container .leaflet-top .leaflet-right {
+            margin: 0 auto !important;
+            clear: none !important;
+        }
         .leaflet-control-customNavMenuToggle {
             width: 30px !important;
             height: 30px !important;
-=======
             margin-left: 10px;
             position: absolute;
             height: 50px;
@@ -1242,15 +1262,12 @@
         .leaflet-control-layers-toggle:before {
             width: 26px;
             height: 26px;
->>>>>>> bugfixes-3.0
         }
         .leaflet-control-customNavMenuToggle:before {
             content: "\f07d";
             font-family: FontAwesome;
-<<<<<<< HEAD
             width: 30px !important;
             height: 30px !important;
-=======
             width: 26px;
             height: 26px;
         }
@@ -1261,7 +1278,6 @@
         .leaflet-control-zoom-out {
             width: 26px;
             height: 26px;
->>>>>>> bugfixes-3.0
         }
         .ORS-sidebar {
             box-shadow: none;
@@ -1284,6 +1300,7 @@
         .ORS-logo {
             /* GIScience Logo */
             bottom: 25px;
+            right: calc(100vw - 60%);
         }
         .leaflet-bottom .leaflet-control-scale {
             /* for scale controller */
@@ -1298,6 +1315,7 @@
             position: absolute;
             margin-bottom: 30px;
         }
+
     }
     /* ****************************************************************/
     /* END OF MOBILE STYLES (MEDIA QUERIES FOR MOBILE VISUALIZATION)  */

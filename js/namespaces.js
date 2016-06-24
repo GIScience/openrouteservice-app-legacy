@@ -35,7 +35,7 @@ namespaces.services = {
     // see latest ORS API documentation http://wiki.openstreetmap.org/wiki/OpenRouteService
     // geocoding: 'http://openls.geog.uni-heidelberg.de/testing2015/geocoding', //for address search requests
     // //routing : 'http://openls.geog.uni-heidelberg.de/testing2015/routing', //for routing requests
-    routing: 'http://openls.geog.uni-heidelberg.de/osm/routing-test',
+    //routing: 'http://openls.geog.uni-heidelberg.de/osm/routing-test',
     // tmc: 'http://openls.geog.uni-heidelberg.de/osm/routing-test?tmc',
     // directory: 'http://openls.geog.uni-heidelberg.de/testing2015/directory', //for POI search requests
     // analyse: 'http://openls.geog.uni-heidelberg.de/testing2015/analysis', //for accessibility analysis requests
@@ -51,7 +51,7 @@ namespaces.services = {
     //     */
     // see latest ORS API documentation http://wiki.openstreetmap.org/wiki/OpenRouteService
     geocoding: 'http://openls.geog.uni-heidelberg.de/geocoding', //for address search requests
-    //routing: 'http://openls.geog.uni-heidelberg.de/routing', //for routing requests
+    routing: 'http://openls.geog.uni-heidelberg.de/routing', //for routing requests
     tmc: 'http://openls.geog.uni-heidelberg.de/osm/routing?tmc',
     directory: 'http://openls.geog.uni-heidelberg.de/directory', //for POI search requests
     analyse: 'http://openls.geog.uni-heidelberg.de/analysis', //for accessibility analysis requests

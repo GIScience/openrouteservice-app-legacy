@@ -55,72 +55,30 @@ list = {
     }),
     // divs to show or hide for specific profiles
     showElements: {
-        All: ['.ORS-all'],
-        car: ['.ORS-car'],
-        wheelchair: ['.ORS-wc'],
-        pedestrian: ['.ORS-ped'],
-        bicycle: ['.ORS-bike'],
-        heavyvehicle: ['.ORS-hgv']
+        car: {
+            show: ['.ORS-car', '.ORS-all'],
+            hide: ['.ORS-ped', '.ORS-bike', '.ORS-hgv', '.ORS-ped-wc']
+        },
+        wheelchair: {
+            show: ['.ORS-wc', '.ORS-all', '.ORS-ped-wc'],
+            hide: ['.ORS-ped', '.ORS-bike', '.ORS-hgv', '.ORS-car']
+        },
+        pedestrian: {
+            show: ['.ORS-ped-wc', '.ORS-ped', '.ORS-all'],
+            hide: ['.ORS-wc', '.ORS-bike', '.ORS-hgv', '.ORS-car']
+        },
+        bicycle: {
+            show: ['.ORS-bike', '.ORS-all'],
+            hide: ['.ORS-wc', '.ORS-ped', '.ORS-hgv', '.ORS-car', '.ORS-ped-wc']
+        },
+        heavyvehicle: {
+            show: ['.ORS-hgv', '.ORS-all'],
+            hide: ['.ORS-wc', '.ORS-ped', '.ORS-car', '.ORS-bike', '.ORS-ped-wc']
+        },
     },
     menuElements: ['ORS-routeContent', 'ORS-aaContent', 'ORS-cloudContent'],
     // waytype and surface type information
     tmc: {},
-    // SteepnessType: [{
-    //     '-5': {
-    //         text: '16%+',
-    //         color: '#0FAD00'
-    //     }
-    // }, {
-    //     '-4': {
-    //         text: '10-15%',
-    //         color: '#34B401'
-    //     }
-    // }, {
-    //     '-3': {
-    //         text: '7-9%',
-    //         color: '#5CBC02'
-    //     }
-    // }, {
-    //     '-2': {
-    //         text: '4-6%',
-    //         color: '#86C403'
-    //     }
-    // }, {
-    //     '-1': {
-    //         text: '1-3%',
-    //         color: '#B2CC04'
-    //     }
-    // }, {
-    //     '0': {
-    //         text: '0%',
-    //         color: '#D3C605'
-    //     }
-    // }, {
-    //     '1': {
-    //         text: '1-3%',
-    //         color: '#DBA407'
-    //     }
-    // }, {
-    //     '2': {
-    //         text: '4-6%',
-    //         color: '#E37F08'
-    //     }
-    // }, {
-    //     '3': {
-    //         text: '7-9%',
-    //         color: '#EB580A'
-    //     }
-    // }, {
-    //     '4': {
-    //         text: '10-15%',
-    //         color: '#F32F0C'
-    //     }
-    // }, {
-    //     '5': {
-    //         text: '16%+',
-    //         color: '#FA0D17'
-    //     }
-    // }],
     SteepnessType: [{
         '-5': {
             text: '16%+',
@@ -149,7 +107,7 @@ list = {
     }, {
         '0': {
             text: '0%',
-            color: '#FFE32E'
+            color: '#ffcc99'
         }
     }, {
         '1': {

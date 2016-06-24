@@ -484,7 +484,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="ORS-ped ORS-panel-sub ORS-hr-dark" id="avoidablesPedestrian" style="display: none;">
+                                <div class="ORS-ped-wc ORS-panel-sub ORS-hr-dark" id="avoidablesPedestrian" style="display: none;">
                                     <h6 id="avoidPedesBtn">
                                         Avoid ways
                                     </h6>
@@ -668,7 +668,6 @@
                                 </div>
                                 <div class="addWaypoint clickable" id="addWaypoint">
                                     <span class="fa-stack fa-lg">
-                                        
                                         <i id="mapMarker" class="fa fa-map-marker fa-stack-2x"></i>
                                         <i id="plusSign" class="fa fa-plus fa-stack-1x"></i>
                                     </span>
@@ -676,41 +675,38 @@
                                         add waypoint
                                     </span>
                                 </div>
+                                <div class="ORS-alert alert alert-danger" id="routeError" style="display:none">
+                                </div>
+                            </div>
+                            <div class="ORS-panel-sub ORS-hr-dark">
                                 <div class="clear">
                                     <div class="left" id="viaOptimizePanel">
                                         <button class="btn  ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="tt-optimize" title="Optimize Waypoints" type="button">
-                                            <i class="fa fa-wrench">
-                                            </i>
-                                            <input class="hide" data-toggle="button" id="viaOptimize" type="checkbox"/>
+                                            <i class="fa fa-fw fa-wrench"></i>
+                                            <input data-toggle="button" id="viaOptimize" type="checkbox"/>
                                         </button>
                                     </div>
                                     <div class="right">
                                         <button class="btn  ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="orderRoute" title="Reorder Waypoints" type="button">
-                                            <i class="fa fa-refresh">
-                                            </i>
+                                            <i class="fa fa-refresh"></i>
                                         </button>
                                     </div>
                                     <div class="right">
                                         <button class="btn  ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="resetRoute" title="Reset Route" type="button">
-                                            <i class="fa fa-remove">
-                                            </i>
+                                            <i class="fa fa-remove"></i>
                                         </button>
                                     </div>
                                     <div class="right">
                                         <button class="btn  ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="zoomToRouteButton" title="Zoom to Route" type="button">
-                                            <i class="fa fa-arrows-alt">
-                                            </i>
+                                            <i class="fa fa-arrows-alt"></i>
                                         </button>
                                     </div>
-                                </div>
-                                <div class="ORS-alert alert alert-danger" id="ORS-routeError" style="display:none">
                                 </div>
                             </div>
                         </div>
                         <div class="ORS-panel" style="display: none;">
                             <div class="ORS-panel-sub">
-                                <div class="clear" id="routeSummary">
-                                </div>
+                                <div class="clear" id="routeSummary"></div>
                             </div>
                             <div class="ORS-panel-sub" id="routeTypesContainer" style="display: none;">
                                 <div id="wayType"></div>
@@ -966,22 +962,16 @@
                                     <label class="control-label" > Name: <span style="color:red">*</span></label> 
                                     <input class="form-control input-sm" id="name" placeholder="Name" type="text" name="name" />
                                     <span id="inputStatus" aria-hidden="true"></span>
-                                    <label class="FormWarningMessage" style="display:none"> Please, write your name</label>
-                                    
                                 </div>
                                 <div id="EmailFormGroup" class="form-group">
                                     <label class="control-label" > Email: <span style="color:red">*</span></label> 
                                     <input class="form-control input-sm" id="email" placeholder="Email" type="text" name="email"/>
                                     <span id="inputStatus" aria-hidden="true"></span>
-                                    <label class="FormWarningMessage" style="display:none"> Please, write your e-mail</label>
-                                    <label class="FormErrorMessage" style="display:none"> The provided e-mail is not valid. Please, write a valid e-mail address</label>
-                                    
                                 </div>
                                 <div id="TextMessageFormGroup" class="form-group">
                                     <label class="control-label" > Message: </label> 
                                     <textarea style="resize:vertical;" class="form-control input-sm" id="message" name="feedbackText" placeholder="Type your message here" rows="5"></textarea> 
                                     <span id="inputStatus" aria-hidden="true"></span>
-                                    <label class="FormWarningMessage" style="display:none"> Please, write something for us!</label>
                                 </div>
                             </form>
                         </div>

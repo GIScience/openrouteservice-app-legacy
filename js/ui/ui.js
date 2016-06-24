@@ -69,10 +69,9 @@ var Ui = (function(w) {
 
     function showServiceTimeoutPopup(arg) {
         if (arg === true) {
-            $('#serviceTimeout').children('label').empty();
-            var label = new Element('label');
-            label.insert(preferences.translate('serverError'));
-            $('#serviceTimeout').append(label);
+            var span = new Element('span');
+            span.insert(preferences.translate('serverError'));
+            $('#serviceTimeout').append(span);
             $('#serviceTimeout').show();
         } else if (arg === false) {
             $('#serviceTimeout').hide();
@@ -765,7 +764,7 @@ var Ui = (function(w) {
         // empty old summary
         $('.directions-summary-info-container').remove();
         // empty route types container
-        $('#routeTypesContainer').empty();
+        //$('#routeTypesContainer').empty();
         //remove markers on map
         theInterface.emit('ui:resetRoute');
         //remove all existing waypoints
@@ -1310,7 +1309,7 @@ var Ui = (function(w) {
     function startRouteCalculation() {
         var el = $('#ORS-loading');
         el.show();
-        $('#ORS-routeError').hide();
+        $('#routeError').hide();
     }
     /**
      * hides the spinner for the route calculation process
@@ -1520,8 +1519,7 @@ var Ui = (function(w) {
         horizontalBarchart('layerRouteLines', list.divWayTypes, list.listWayTypesContainer, WayTypeResult, list.WayTypeColors);
         horizontalBarchart('layerRouteLines', list.divSurfaceTypes, list.listSurfaceTypesContainer, WaySurfaceResult, list.SurfaceTypeColors);
         horizontalBarchart('layerSteepnessLines', list.divSteepnessTypes, list.listSteepnessTypesContainer, WaySteepnessResult);
-        var container = $('#routeTypesContainer').get(0);
-        container.show();
+        $('#routeTypesContainer').show();
     }
     /**
      * displays way and surface type in horizontal barcharts
@@ -1533,7 +1531,7 @@ var Ui = (function(w) {
         d3.select(types).selectAll("svg").remove();
         var tip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) {
             var dist = util.convertDistanceFormat(d.distance, preferences.distanceUnit);
-            return d.typetranslated + ' ' + d.percentage + "% " + '(' + dist[1] + ' ' + dist[2] + ')';
+            return d.percentage + '% ' + d.typetranslated + ' (' + dist[1] + ' ' + dist[2] + ')';
         });
         var margin = {
                 top: 0,
@@ -1749,10 +1747,10 @@ var Ui = (function(w) {
         for (type in typelist) {
             if (typelist[type].distance > 0) {
                 // consider percentages less than 1
-                if (Math.round(typelist[type].distance / totaldistancevalue * 100) < 1) {
-                    typelist[type].percentage = Math.round(typelist[type].distance / totaldistancevalue * 100 * 10) / 10;
+                if (Math.floor(typelist[type].distance / totaldistancevalue * 100) < 1) {
+                    typelist[type].percentage = Math.floor(typelist[type].distance / totaldistancevalue * 100 * 10) / 10;
                 } else {
-                    typelist[type].percentage = Math.round(typelist[type].distance / totaldistancevalue * 100);
+                    typelist[type].percentage = Math.floor(typelist[type].distance / totaldistancevalue * 100);
                 }
                 typelist[type].y0 = y0;
                 typelist[type].y1 = y0 += +typelist[type].percentage;
@@ -1771,8 +1769,6 @@ var Ui = (function(w) {
      * @param mapLayer: map layer containing these features
      */
     function updateRouteInstructions(results, mapFeatureIds, mapLayer) {
-        // empty route types container
-        $('.routeTypesContainer').empty();
         var container, directionsContainer;
         if (!results) {
             container = $('#routeInstructionsContainer').get(0);
@@ -2149,7 +2145,7 @@ var Ui = (function(w) {
      * displays an error message when no route between the selected waypoints could be found or another error happened during route calculation
      */
     function showRoutingError() {
-        var el = $('#ƒrouteError');
+        var el = $('#routeError');
         el.html(preferences.translate('noRouteAvailable'));
         el.show();
     }
@@ -2252,15 +2248,13 @@ var Ui = (function(w) {
         // show profile specific route options
         var i, el;
         for (var profile in list.showElements) {
-            if (currentProfile == profile || profile == 'All') {
-                for (i = 0; i < list.showElements[profile].length; i++) {
-                    el = $(list.showElements[profile][i]);
+            if (currentProfile == profile) {
+                for (i = 0; i < list.showElements[profile].show.length; i++) {
+                    el = $(list.showElements[profile].show[i]);
                     el.show();
                 }
-                // hide all other elements
-            } else {
-                for (i = 0; i < list.showElements[profile].length; i++) {
-                    el = $(list.showElements[profile][i]);
+                for (i = 0; i < list.showElements[profile].hide.length; i++) {
+                    el = $(list.showElements[profile].hide[i]);
                     el.hide();
                 }
             }
@@ -2709,7 +2703,7 @@ var Ui = (function(w) {
                     value: boolVar
                 });
             }
-        // if heavy vehicle type
+            // if heavy vehicle type
         } else if ($.inArray(itemValue, list.routePreferencesTypes.get('heavyvehicle')) >= 0) {
             theInterface.emit('ui:prefsChanged', {
                 key: preferences.routeOptionsTypesIdx,
@@ -3180,7 +3174,9 @@ var Ui = (function(w) {
             $(deleteGpx).click(handleDeleteFromMapGpx);
         }
         container.appendChild(fileContainerMain);
-        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="tooltip"]').tooltip({
+            trigger: 'hover'
+        });
     }
     /**
      * handles the clicked gpx file and shows it on map
@@ -3376,9 +3372,11 @@ var Ui = (function(w) {
             $('#serviceTimeout').hide();
         });
         // tooltips
-        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="tooltip"]').tooltip({
+            trigger: 'hover'
+        });
         // menuButtons
-        $('.ORS-menuButton').click(handleSwitchMenu)
+        $('.ORS-menuButton').click(handleSwitchMenu);
     }
     Ui.prototype = new EventEmitter();
     Ui.prototype.constructor = Ui;
