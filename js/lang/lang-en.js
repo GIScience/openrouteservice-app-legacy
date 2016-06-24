@@ -122,7 +122,7 @@ var lang_en = {
     'cobblestone:flattened': 'flattened cobblestone and better',
     'cobblestone': 'cobblestone and better',
     'compacted': 'compacted',
-    'all_surfaces': 'flexible',
+    'all_surfaces': 'all traversable surfaces',
     // Inclines
     'incline': 'max incline',
     'threepercent': 'up to 3%',
