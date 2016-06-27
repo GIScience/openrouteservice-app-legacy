@@ -186,7 +186,21 @@ var Languages = (function(w) {'use strict';
 		$('#analyzeAccessibility').attr('data-original-title',p.translate('analyzeAccess'));
 		$('#removeAccessibility').attr('data-original-title',p.translate('removeAccess'));
 		$('#export-gpx').attr('data-original-title',p.translate('exportGPX'));
-		$('#a').attr('data-original-title',p.translate('importGPX'));
+		$('#import-gpx').attr('data-original-title',p.translate('importGPX'));
+		$('#routeContentMenu').attr('data-original-title',p.translate('tt-route'));
+		$('#aaContentMenu').attr('data-original-title',p.translate('tt-access'));
+		$('#cloudContentMenu').attr('data-original-title',p.translate('tt-cloud'));
+		$('#feedbackContentMenu').attr('data-original-title',p.translate('tt-feedback'));
+		$('#car').attr('data-original-title',p.translate('tt-car'));
+		$('#bicycle').attr('data-original-title',p.translate('tt-bicycle'));
+		$('#pedestrian').attr('data-original-title',p.translate('tt-pedestrian'));
+		$('#wheelchair').attr('data-original-title',p.translate('tt-wheelchair'));
+		$('#heavyvehicle').attr('data-original-title',p.translate('tt-heavyvehicle'));
+		$('#optionsMenu').attr('data-original-title',p.translate('tt-optionsMenu'));
+		$('#sitePrefsMenu').attr('data-original-title',p.translate('tt-sitePref'));
+		$('#contactMenu').attr('data-original-title',p.translate('tt-contactInfo'));
+
+
 	}
 
 	/**

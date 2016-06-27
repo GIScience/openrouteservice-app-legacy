@@ -45,10 +45,10 @@
 			<a id="title" href="http://www.openrouteservice.org">OpenRouteService</a>
  			<ul id="topMenu">
 				<li>
-					<a href="#sitePrefsModal" data-toggle="modal" id="menuLinkSitePrefs"><i class="fa fa-globe"></i></a>
+					<a href="#sitePrefsModal" data-toggle="modal" id="menuLinkSitePrefs" ><i class="fa fa-globe" id="sitePrefsMenu" data-container="body" data-toggle="tooltip" data-placement="bottom" data-original-title="Site Preferences"></i></a>
 				</li>
 				<li>
-					<a href="contact.html#top" target="_blank" id="menuLinkInfo"><i class="fa fa-info"></i></a>
+					<a href="contact.html#top" target="_blank" id="menuLinkInfo"><i class="fa fa-info" id="contactMenu" data-container="body" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Contact info"></i></a>
 				</li>
 			</ul>
 		</header>
@@ -60,16 +60,16 @@
 				<!-- sidebar content -->
 				<div class="ORS-menuPanel" id="menuPanel">
 					<div class="btn-group">
-						<button select-id="ORS-routeContent" class="btn menuButton primary-menu active">
+						<button select-id="ORS-routeContent" class="btn menuButton primary-menu active" data-container="body" id="routeContentMenu" type="button" data-toggle="tooltip" title="" data-placement="right" data-original-title="Route">
 							<i class="fa fa-road"></i>
 						</button>
-						<button select-id="ORS-aaContent" class="btn menuButton primary-menu">
+						<button select-id="ORS-aaContent" class="btn menuButton primary-menu" data-container="body" id="aaContentMenu" type="button" data-toggle="tooltip" title="" data-placement="right" data-original-title="Accessibility">
 							<i class="fa fa-bullseye"></i>
 						</button>
-						<button select-id="ORS-cloudContent" class="btn menuButton primary-menu">
+						<button select-id="ORS-cloudContent" class="btn menuButton primary-menu" data-container="body" id="cloudContentMenu" type="button" data-toggle="tooltip" title="" data-placement="right" data-original-title="Import/ Export">
 							<i class="fa fa-download"></i>
 						</button>
-						<button select-id="ORS-feedbackContent" class="btn menuButton primary-menu">
+						<button select-id="ORS-feedbackContent" class="btn menuButton primary-menu" data-container="body" id="feedbackContentMenu" type="button" data-toggle="tooltip" title="" data-placement="right" data-original-title="Feedback">
 							<i class="fa fa-comment"></i>
 						</button>
 					</div>
@@ -81,23 +81,23 @@
 				<div class="ORS-navigation">
 					<div data-id="ORS-routeContent">
 						<div class="btn-group routePreferenceBtns">
-							<button id="car" class="btn primary routeOptionsButton active">
+							<button id="car" class="btn primary routeOptionsButton active" data-container="body" type="button" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Car">
 								<i class="fa fa-car"></i>
 							</button>
-							<button id="bicycle" class="btn primary routeOptionsButton">
+							<button id="bicycle" class="btn primary routeOptionsButton" data-container="body" type="button" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Bicycle">
 								<i class="fa fa-bicycle"></i>
 							</button>
-							<button id="pedestrian" class="btn primary routeOptionsButton">
+							<button id="pedestrian" class="btn primary routeOptionsButton" data-container="body" type="button" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Pedestrian">
 								<i class="fa fa-male"></i>
 							</button>
-							<button id="wheelchair" class="btn primary routeOptionsButton">
+							<button id="wheelchair" class="btn primary routeOptionsButton" data-container="body" type="button" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Wheelchair">
 								<i class="fa fa-wheelchair"></i>
 							</button>
-							<button id="heavyvehicle" class="btn primary routeOptionsButton">
+							<button id="heavyvehicle" class="btn primary routeOptionsButton" data-container="body" type="button" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Heavy vehicle">
 								<i class="fa fa-truck"></i>
 							</button>
 						</div>
-						<button class="btn primary optionsButton right">
+						<button class="btn primary optionsButton right"  data-container="body" id="optionsMenu" type="button" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Options">
 							<i class="fa fa-cog"></i>
 						</button>
 					</div>	
