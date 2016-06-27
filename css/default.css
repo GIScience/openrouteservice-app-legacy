@@ -1297,11 +1297,11 @@
         .ORS-mainPanel {
             width: calc(100% - 41px) !important;
         }
-        .ORS-logo {
+        /*.ORS-logo {
             /* GIScience Logo */
-            bottom: 25px;
+            /*bottom: 25px;
             right: calc(100vw - 60%);
-        }
+        }*/
         .leaflet-bottom .leaflet-control-scale {
             /* for scale controller */
             display: none;
@@ -1325,34 +1325,36 @@
     /* *****************************************************************/
     
     @media print {
-        .ORS-navigation {
-            display: none;
-        }
-        .ORS-menuPanel {
-            display: none;
-        }
-        .ORS-header {
-            display: none;
-        }
-        #routingPanel {
-            display: none;
-        }
-        #printRouteInstructions {
-            display: none;
-        }
-        #routeInstructionHead {
-            display: none;
-        }
-        .ORS-main {
+		
+		@page {
+			margin-top:1cm;
+			margin-bottom:1cm;
+			margin-left:2cm;
+			margin-right:1cm;
+		}
+
+		.ORS-main {
             flex-direction: column;
         }
-        .ORS-sidebar {
-            order: 2;
-        }
-        .ORS-map {
+		
+		.ORS-sidebar {
             order: 1;
-            height: 20%;
+            flex-basis: 100vh;
+			width: 100%;
         }
+		
+		#routeInstructions {
+			width:100%;
+		}
+		
+		.ORS-navigation, .ORS-menuPanel, .disclaimer, .ORS-header, .ORS-map, #routingPanel, #printRouteInstructions, #routeInstructionHead {
+            display: none;
+        }
+
+
+        
+
+
     }
     /* ***************************************************************/
     /* END OF PRINTING STYLES (MEDIA QUERIES FOR PRINTING THE PAGE)  */
