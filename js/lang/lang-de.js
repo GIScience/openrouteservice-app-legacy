@@ -458,7 +458,7 @@ var lang_de = {
     'tt-car' : 'Auto',
     'tt-bicycle' : 'Fahrrad',
     'tt-pedestrian' :'Fußgänger',
-    'tt-wheelchair' : 'Rollstuhl',
+    'tt-wheelchair' : 'Barrierefrei',
     'tt-heavyvehicle' : 'Schwertransport',
     'tt-optionsMenu' : 'Optionen',
     'tt-sitePref' : 'Seiteneinstellungen',
