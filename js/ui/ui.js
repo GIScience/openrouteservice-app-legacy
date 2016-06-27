@@ -1,6 +1,8 @@
 var Ui = (function(w) {
     'use strict';
     var $ = w.jQuery,
+        // Route
+        route = w.Route,
         //Ui interface
         theInterface,
         //preferences for language selection
@@ -50,27 +52,26 @@ var Ui = (function(w) {
      * if it is the user's first visit to ORS show a popup with information about the settings (version, language,...)
      */
     function showNewToOrsPopup() {
-        var label = new Element('label');
-        label.insert(preferences.translate('infoTextVersions'));
-        $('#newToOrs').append(label);
+        var span = new Element('span');
+        span.insert(preferences.translate('infoTextVersions'));
+        $('#newToOrs').append(span);
         $('#newToOrs').show();
     }
     /**
      * if it is the user's first visit to ORS show a popup with information about the avoidables
      */
     function showAvoidablesInfoPopup() {
-        var label = new Element('label');
-        label.insert(preferences.translate('infoAboutAvoidables'));
-        $('#avoidables_info').append(label);
+        var span = new Element('span');
+        span.insert(preferences.translate('infoAboutAvoidables'));
+        $('#avoidables_info').append(span);
         $('#avoidables_info').show();
     }
 
     function showServiceTimeoutPopup(arg) {
         if (arg === true) {
-            $('#serviceTimeout').children('label').empty();
-            var label = new Element('label');
-            label.insert(preferences.translate('serverError'));
-            $('#serviceTimeout').append(label);
+            var span = new Element('span');
+            span.insert(preferences.translate('serverError'));
+            $('#serviceTimeout').append(span);
             $('#serviceTimeout').show();
         } else if (arg === false) {
             $('#serviceTimeout').hide();
@@ -277,16 +278,6 @@ var Ui = (function(w) {
                 currentTarget: e.currentTarget.up('.waypointResult')
             });
         }
-        // make input field not selectable
-        // var thisDiv = selectedDiv.className
-        // var myDiv = thisDiv.replace(/ /g,".");
-        // $('.'+myDiv).css('pointer-events', 'none');
-        // $('.'+myDiv).css('cursor', 'auto');
-        // $('.removeWaypoint').css('pointer-events', 'auto');
-        // $('.moveUpWaypoint').css('pointer-events', 'auto');
-        // $('.moveDownWaypoint').css('pointer-events', 'auto');
-        // $('.searchAgainButton').css('pointer-events', 'auto');
-        //$('.address').unbind( "click", handleSearchWaypointResultClick );
     }
     /**
      * Sets attributes of the selected waypoint.
@@ -545,6 +536,11 @@ var Ui = (function(w) {
         if (latlon === true) {
             address = util.parseLatlon(results);
             shortAddress = results.toString();
+            shortAddress = shortAddress.split(" ");
+            shortAddress[0] = shortAddress[0].substr(0, 9);
+            shortAddress[1] = shortAddress[1].substr(0, 9);
+            shortAddress = shortAddress.toString();
+            shortAddress = shortAddress.replace(/,/g, " ");
             stopover = $(".directions-main").find("[waypoint-id=" + index + "]");
             stopover.html(shortAddress);
         } else {
@@ -768,7 +764,7 @@ var Ui = (function(w) {
         // empty old summary
         $('.directions-summary-info-container').remove();
         // empty route types container
-        $('.routeTypesContainer').empty();
+        //$('#routeTypesContainer').empty();
         //remove markers on map
         theInterface.emit('ui:resetRoute');
         //remove all existing waypoints
@@ -1270,8 +1266,6 @@ var Ui = (function(w) {
             if (address.querySelector('.address')) {
                 address = $(address).children(".waypointResult");
                 address = $(address).find("li").attr("data-shortaddress");
-                //address = address.match(/[^,]*/).toString();
-                //address = address.replace(/(\r\n|\n|\r)/gm,", ");
                 waypoints.push(address);
             }
         }
@@ -1315,7 +1309,7 @@ var Ui = (function(w) {
     function startRouteCalculation() {
         var el = $('#ORS-loading');
         el.show();
-        $('#ORS-routeError').hide();
+        $('#routeError').hide();
     }
     /**
      * hides the spinner for the route calculation process
@@ -1417,16 +1411,16 @@ var Ui = (function(w) {
      */
     function updateRouteSummary(results) {
         // empty old summary
-        $('.directions-summary-container').remove();
-        // empty route types container
-        $('.routeTypesContainer').empty();
+        var container = $('#routeSummary');
+        container.empty();
+        container.parent().parent().show();
         // fetch route summary
         var routeSummary = getSummaryXML(results);
         var summaryItem, unit, time, distance, value, len, iconDiv, contentDiv;
+        var elevation = false;
         var summaryContainer = new Element('div', {
             'class': 'directions-summary-container'
         });
-
         var routeSummaryStyles = {
             time: {
                 fa: '<i class="fa fa-clock-o"></i>',
@@ -1459,7 +1453,7 @@ var Ui = (function(w) {
             summaryItem = new Element('div', {
                 'class': 'info',
                 'data-toggle': 'tooltip',
-                'data-container': 'body',
+                'data-container': '.ORS-mainPanel',
                 'id': routeSummaryStyles[key].id,
                 'title': routeSummaryStyles[key].title
             });
@@ -1483,7 +1477,7 @@ var Ui = (function(w) {
                     }).update(routeSummary[key][ts]);
                     unit = new Element('div', {
                         'class': 'units'
-                    }).update(routeSummary[key][ts + 1][0].toLowerCase());
+                    }).update(' ' + routeSummary[key][ts + 1][0].toLowerCase());
                     contentDiv.appendChild(time);
                     contentDiv.appendChild(unit);
                 }
@@ -1494,19 +1488,22 @@ var Ui = (function(w) {
                 }).update(routeSummary[key][1]);
                 unit = new Element('div', {
                     'class': 'units'
-                }).update(routeSummary[key][2]);
+                }).update(' ' + routeSummary[key][2]);
                 contentDiv.appendChild(distance);
                 contentDiv.appendChild(unit);
+                // save elevation true if ascent or descent over 40 meters
+                if (key == 'ascent' ||  key == 'descent') {
+                    if (routeSummary[key][1] > 20) elevation = true;
+                }
             }
             summaryItem.appendChild(iconDiv);
             summaryItem.appendChild(contentDiv);
             summaryContainer.appendChild(summaryItem);
+            container.append(summaryContainer);
         }
-        var container = $('#routeSummary');
-        container.parent().parent().show();
-        container.append(summaryContainer);
         // initiate tooltips
         $('[data-toggle="tooltip"]').tooltip();
+        return elevation;
     }
     /**
      * calculates way and surface type information for horizontal barcharts
@@ -1514,14 +1511,15 @@ var Ui = (function(w) {
      * @param mapFeatureIds: list of IDs of Leaflet elements containing BOTH - ids for route line segments AND corner points: [routeLineSegment_0, cornerPoint_0, routeLineSegment_1, cornerPoint_1,...]
      * @param mapLayer: map layer containing these features
      */
-    function updateSurfaceInformation(results, mapFeatureIds, mapLayer, totalDistance) {
+    function updateSurfaceSteepness(results, mapFeatureIds, mapLayer, totalDistance) {
         //var lang = preferences.language;
         var WayTypeResult = calculateChart(results, mapFeatureIds, "WayType", totalDistance);
         var WaySurfaceResult = calculateChart(results, mapFeatureIds, "WaySurface", totalDistance);
-        horizontalBarchart(list.divWayTypes, list.listWayTypesContainer, WayTypeResult, list.WayTypeColors);
-        horizontalBarchart(list.divSurfaceTypes, list.listSurfaceTypesContainer, WaySurfaceResult, list.SurfaceTypeColors);
-        var container = $('#routeTypesContainer').get(0);
-        container.show();
+        var WaySteepnessResult = calculateSteepness(results);
+        horizontalBarchart('layerRouteLines', list.divWayTypes, list.listWayTypesContainer, WayTypeResult, list.WayTypeColors);
+        horizontalBarchart('layerRouteLines', list.divSurfaceTypes, list.listSurfaceTypesContainer, WaySurfaceResult, list.SurfaceTypeColors);
+        horizontalBarchart('layerSteepnessLines', list.divSteepnessTypes, list.listSteepnessTypesContainer, WaySteepnessResult);
+        $('#routeTypesContainer').show();
     }
     /**
      * displays way and surface type in horizontal barcharts
@@ -1529,11 +1527,11 @@ var Ui = (function(w) {
      * @param types: div element
      * @param list: div list element for type
      */
-    function horizontalBarchart(types, list, data, colors) {
+    function horizontalBarchart(layer, types, list, data, colors) {
         d3.select(types).selectAll("svg").remove();
         var tip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) {
             var dist = util.convertDistanceFormat(d.distance, preferences.distanceUnit);
-            return d.typetranslated + " " + d.percentage + "% " + '(' + dist[1] + ' ' + dist[2] + ')';
+            return d.percentage + '% ' + d.typetranslated + ' (' + dist[1] + ' ' + dist[2] + ')';
         });
         var margin = {
                 top: 0,
@@ -1555,28 +1553,115 @@ var Ui = (function(w) {
         }).attr("width", function(d) {
             return x(d.y1) / 1 - x(d.y0) / 1;
         }).attr("title", function(d) {
-            return (d.y1 - d.y0) + "% " + d.typetranslated;
+            return (d.y1 - d.y0) + "% : " + d.typetranslated;
         }).style("fill", function(d, i) {
-            return colors[i];
+            if (colors) {
+                return colors[i];
+            } else {
+                return d.color;
+            }
         }).on('mouseover', function(d) {
-            handleHighlightTypes(d.ids);
+            handleHighlightTypes(d.ids, layer);
             tip.show(d);
         }).on('mouseout', function(d) {
-            handleResetTypes(d.ids);
+            handleResetTypes(d.ids, layer);
             tip.hide(d);
         }).on('click', function(d) {
-            handleClickRouteIds(d.ids);
+            handleClickRouteIds(d.ids, layer);
         });
         $(list).empty();
         $(list).append("<ul></ul>");
         for (var i = 0; i < data.length; i++) {
             var li = $('<li>');
-            li.text(data[i].percentage + "% " + data[i].typetranslated);
+            li.html(data[i].percentage + '% ' + data[i].typetranslated);
             li.wrapInner('<span />');
-            li.css('color', colors[i]);
+            if (colors) {
+                li.css('color', colors[i]);
+            } else {
+                li.css('color', data[i].color);
+            }
             if (i !== "type" && i !== "total") $(list + "> ul").append(li);
         }
         svg.call(tip);
+    }
+    /** 
+     * adds steepness segments and prepares information for barchart
+     * @param results: XML response of route
+     * @return WaySteepnessObject: Object containing Names and Percetages
+     */
+    function calculateSteepness(results) {
+        // RouteGeometry
+        var routeLineString = route.routeLineString;
+        var information, type, text, typelist = [];
+        information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySteepnessList')[0];
+        information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySteepness');
+        for (var i = 0; i < (list.SteepnessType).length; i++) {
+            if (Object.keys(list.SteepnessType[i])[0] > 0) {
+                text = '<i class="fa fa-caret-up"></i> ' + list.SteepnessType[i][Object.keys(list.SteepnessType[i])[0]].text;
+            } else if (Object.keys(list.SteepnessType[i])[0] < 0) {
+                text = '<i class="fa fa-caret-down"></i> ' + list.SteepnessType[i][Object.keys(list.SteepnessType[i])[0]].text;
+            } else {
+                text = '<i class="fa fa-caret-right"></i> ' + list.SteepnessType[i][Object.keys(list.SteepnessType[i])[0]].text;
+            }
+            var color = list.SteepnessType[i][Object.keys(list.SteepnessType[i])[0]].color;
+            typelist.push({
+                type: text,
+                typetranslated: text,
+                color: color,
+                distance: 0,
+                ids: [],
+                segments: [],
+                percentage: 0,
+                y0: 0,
+                y1: 0
+            });
+        }
+        var totaldistancevalue = 0;
+        for (var i = 0; i < routeLineString.length - 1; i++) {
+            totaldistancevalue += routeLineString[i].distanceTo(routeLineString[i + 1]);
+        }
+        $A(information).each(function(WayType, i) {
+            var fr = util.getElementsByTagNameNS(WayType, namespaces.xls, 'From')[0];
+            fr = parseInt(fr.textContent);
+            var to = util.getElementsByTagNameNS(WayType, namespaces.xls, 'To')[0];
+            to = parseInt(to.textContent);
+            if (fr !== to) {
+                var typenumber = util.getElementsByTagNameNS(WayType, namespaces.xls, 'Type')[0];
+                typenumber = typenumber.textContent;
+                // add 5 as types start at -5
+                typenumber = parseInt(typenumber) + 5;
+                var steepnessSegment = routeLineString.slice(fr, to);
+                // add segments invisible to map and grab hold of ids
+                var id = map.addSegment(steepnessSegment, 'layerSteepnessLines');
+                // calculate distances
+                var sumDistance = 0;
+                for (var i = 0; i < steepnessSegment.length - 1; i++) {
+                    sumDistance += steepnessSegment[i].distanceTo(steepnessSegment[i + 1]);
+                }
+                typelist[typenumber].distance += sumDistance;
+                typelist[typenumber].segments.push(parseInt(to - fr));
+                typelist[typenumber].ids.push(id);
+            }
+        });
+        var a = 0;
+        var y0 = 0;
+        for (type in typelist) {
+            if (typelist[type].distance > 0) {
+                // consider percentages less than 1
+                if (Math.round(typelist[type].distance / totaldistancevalue * 100) < 1) {
+                    typelist[type].percentage = Math.round(typelist[type].distance / totaldistancevalue * 100 * 10) / 10;
+                } else {
+                    typelist[type].percentage = Math.round(typelist[type].distance / totaldistancevalue * 100);
+                }
+                typelist[type].y0 = y0;
+                typelist[type].y1 = y0 += +typelist[type].percentage;
+            }
+        }
+        // remove elements without distance
+        var typelistCleaned = typelist.filter(function(el) {
+            return el.distance !== 0;
+        });
+        return typelistCleaned;
     }
     /** 
      * calculates percentages for waytypes and waysurfaces
@@ -1596,7 +1681,6 @@ var Ui = (function(w) {
             for (type in list.WayType) {
                 typelist.push({
                     type: list.WayType[type],
-                    //typetranslated: list.WayTypeTranslation[list.WayType[type]][lang],
                     typetranslated: preferences.translate(list.WayType[type]),
                     distance: 0,
                     ids: [],
@@ -1606,14 +1690,13 @@ var Ui = (function(w) {
                     y1: 0
                 });
             }
-        } else {
+        } else if (types == "WaySurface") {
             information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySurfaceList')[0];
             information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySurface');
             typelist = [];
             for (type in list.SurfaceType) {
                 typelist.push({
                     type: list.SurfaceType[type],
-                    //typetranslated: list.SurfaceTranslation[list.SurfaceType[type]][lang],
                     typetranslated: preferences.translate(list.SurfaceType[type]),
                     distance: 0,
                     ids: [],
@@ -1660,15 +1743,14 @@ var Ui = (function(w) {
             }
         });
         var a = 0;
-        var WayTypePercentList = [];
         var y0 = 0;
         for (type in typelist) {
             if (typelist[type].distance > 0) {
                 // consider percentages less than 1
-                if (Math.round(typelist[type].distance / totaldistancevalue * 100) < 1) {
-                    typelist[type].percentage = Math.round(typelist[type].distance / totaldistancevalue * 100 * 10) / 10;
+                if (Math.floor(typelist[type].distance / totaldistancevalue * 100) < 1) {
+                    typelist[type].percentage = Math.floor(typelist[type].distance / totaldistancevalue * 100 * 10) / 10;
                 } else {
-                    typelist[type].percentage = Math.round(typelist[type].distance / totaldistancevalue * 100);
+                    typelist[type].percentage = Math.floor(typelist[type].distance / totaldistancevalue * 100);
                 }
                 typelist[type].y0 = y0;
                 typelist[type].y1 = y0 += +typelist[type].percentage;
@@ -1716,8 +1798,6 @@ var Ui = (function(w) {
             if ($('.waypoint').length > 2) {
                 waypoints = getWaypoints();
             }
-            //var startpoint = waypoints.splice(0, 1);
-            //var endpoint = waypoints.splice(-1, 1);
             var startpoint = waypoints[0];
             var endpoint = waypoints[(waypoints.length) - 1];
             //add startpoint
@@ -1821,28 +1901,28 @@ var Ui = (function(w) {
                     numInstructions++;
                     //add DOM elements
                     directionsContainer = new Element('div', {
-                        'class': 'directions-container clickable',
+                        'class': 'directions-container',
                         'data-layer': mapLayer,
                     });
                     var directionsImgDiv = new Element('div', {
-                        'class': 'directions-img'
+                        'class': 'img'
                     });
                     if (direction) {
                         directionsImgDiv.appendChild(direction);
                     }
                     var directionTextDiv = new Element('div', {
-                        'class': 'directions-text clickable routeInstructions',
+                        'class': 'text clickable routeInstructions',
                         'id': mapFeatureIds[2 * (numInstructions - 1) + 1]
                     }).update(text);
                     // modeContainer
                     var directionsModeContainer = new Element('div', {
-                        'class': 'directions-mode-container'
+                        'class': 'mode-container'
                     });
                     var directionsBorder = new Element('div', {
-                        'class': 'directions-mode-line'
+                        'class': 'line'
                     });
                     var distanceDiv = new Element('div', {
-                        'class': 'directions-mode-distance clickable',
+                        'class': 'distance clickable',
                         'id': mapFeatureIds[2 * (numInstructions - 1)],
                     }).update(distArr[1] + ' ' + distArr[2]);
                     directionsContainer.appendChild(directionsImgDiv);
@@ -1899,10 +1979,7 @@ var Ui = (function(w) {
             totalTime += stopoverTime;
             directionsContainer = buildWaypoint('layerRoutePoints', 'end', endpoint, getWaypoints().length - 1, stopoverDistance, stopoverTime);
             directionsMain.appendChild(directionsContainer);
-            /* Route Summary */
-            var routeSummary = updateRouteSummary(results);
             return distArrAll;
-            // TODO tmc messages expand collapse function
         }
         /** 
          * builds Waypoint for start, via and end points in instructionlist
@@ -1934,11 +2011,11 @@ var Ui = (function(w) {
                 });
             }
             var wayPoint = new Element('div', {
-                'class': 'directions-waypoint',
+                'class': 'instr-waypoint',
             });
             wayPoint.appendChild(icon);
             var shortAddress = new Element('div', {
-                'class': 'directions-waypoint-address',
+                'class': 'address',
                 'waypoint-id': viaCounter
             }).update(address);
             // modeContainer
@@ -1946,13 +2023,13 @@ var Ui = (function(w) {
                 'class': 'directions-mode-container'
             });
             var directionsBorder = new Element('div', {
-                'class': 'directions-mode-line'
+                'class': 'line'
             });
             directionsContainer.appendChild(wayPoint);
             // add info if via or endpoint
             if (wpType == 'end' || wpType == 'via') {
                 var pointInfo = new Element('div', {
-                    'class': 'directions-waypoint-info'
+                    'class': 'info'
                 }).update(Number(duration / 60).toFixed() + ' min' + ' / ' + Number(distance / 1000).toFixed(2) + ' km');
                 directionsContainer.appendChild(pointInfo);
             }
@@ -2009,14 +2086,14 @@ var Ui = (function(w) {
     /**
      * when the way or surface types are clicked highlight segments on map
      */
-    function handleHighlightTypes(ids) {
-        theInterface.emit('ui:hightlightTypes', ids);
+    function handleHighlightTypes(ids, layer) {
+        theInterface.emit('ui:hightlightTypes', [layer, ids]);
     }
     /** reset way our surface style
      *
      */
-    function handleResetTypes(ids) {
-        theInterface.emit('ui:resetTypes', ids);
+    function handleResetTypes(ids, layer) {
+        theInterface.emit('ui:resetTypes', [layer, ids]);
     }
     /**
      * when the distance or text part of the route instruction is clicked, triggers zooming to that part of the route
@@ -2027,8 +2104,8 @@ var Ui = (function(w) {
     /**
      * when the distance or text part of the route instruction is clicked, triggers zooming to that part of the route
      */
-    function handleClickRouteIds(arr) {
-        theInterface.emit('ui:zoomToRouteInstruction', arr);
+    function handleClickRouteIds(ids, layer) {
+        theInterface.emit('ui:zoomToRouteInstructionType', [layer, ids]);
     }
     /**
      * when the distance or text part of the route instruction is clicked, triggers zooming to that part of the route
@@ -2068,7 +2145,7 @@ var Ui = (function(w) {
      * displays an error message when no route between the selected waypoints could be found or another error happened during route calculation
      */
     function showRoutingError() {
-        var el = $('#ORS-routeError');
+        var el = $('#routeError');
         el.html(preferences.translate('noRouteAvailable'));
         el.show();
     }
@@ -2112,11 +2189,11 @@ var Ui = (function(w) {
         // toggle options
         if ($('#optionsContainer').is(':hidden')) {
             $('#optionsContainer').show();
-            $('.optionsButton').addClass('active');
+            $('.ORS-optionsButton').addClass('active');
         } else {
             $('#optionsContainer').hide();
-            $('.optionsButton').removeClass('active');
-            $('.optionsButton').blur();
+            $('.ORS-optionsButton').removeClass('active');
+            $('.ORS-optionsButton').blur();
         }
     }
     /**
@@ -2144,7 +2221,7 @@ var Ui = (function(w) {
     function switchRouteOptionsPane(e) {
         // hide options
         $('#optionsContainer').hide();
-        var parent = $('.routePreferenceBtns').get(0);
+        var parent = $('.ORS-routePreferenceBtns').get(0);
         var optionType = e.currentTarget.id;
         //switch the buttons above
         var allBtn = parent.querySelectorAll('button');
@@ -2162,24 +2239,22 @@ var Ui = (function(w) {
             }
         }
         // update options 
-        updateProfileOptions();
+        updateProfileOptions(e.currentTarget.id);
     }
     /**
      * updates options for specific profiles
      */
-    function updateProfileOptions() {
+    function updateProfileOptions(currentProfile) {
         // show profile specific route options
-        var i, el, optionType = permaInfo[preferences.routeOptionsIdx];
+        var i, el;
         for (var profile in list.showElements) {
-            if (optionType == profile || profile == 'All') {
-                for (i = 0; i < list.showElements[profile].length; i++) {
-                    el = $(list.showElements[profile][i]);
+            if (currentProfile == profile) {
+                for (i = 0; i < list.showElements[profile].show.length; i++) {
+                    el = $(list.showElements[profile].show[i]);
                     el.show();
                 }
-                // hide all other elements
-            } else {
-                for (i = 0; i < list.showElements[profile].length; i++) {
-                    el = $(list.showElements[profile][i]);
+                for (i = 0; i < list.showElements[profile].hide.length; i++) {
+                    el = $(list.showElements[profile].hide[i]);
                     el.hide();
                 }
             }
@@ -2516,7 +2591,7 @@ var Ui = (function(w) {
      * @param activeRouteOption: the active route option, i.e. one of car,bicycle,pedestrian,wheelchair
      */
     function switchRouteOptionsButton(activeRouteOption) {
-        var parent = $('.routePreferenceBtns').get(0);
+        var parent = $('.ORS-routePreferenceBtns').get(0);
         //switch the buttons above
         var allBtn = parent.querySelectorAll('button');
         for (var i = 0; i < allBtn.length; i++) {
@@ -2637,27 +2712,27 @@ var Ui = (function(w) {
         }
         // if truck options sliders are changed
         else if ($.inArray(itemId, list.truckParams) >= 0) {
-            if (itemId == 'value_length_slide') {
+            if (itemId == 'value_length') {
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.value_lengthIdx,
                     value: $("#value_length").val()
                 });
-            } else if (itemId == 'value_width_slide') {
+            } else if (itemId == 'value_width') {
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.value_widthIdx,
                     value: $("#value_width").val()
                 });
-            } else if (itemId == 'value_weight_slide') {
+            } else if (itemId == 'value_weight') {
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.value_weightIdx,
                     value: $("#value_weight").val()
                 });
-            } else if (itemId == 'value_height_slide') {
+            } else if (itemId == 'value_height') {
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.value_heightIdx,
                     value: $("#value_height").val()
                 });
-            } else if (itemId == 'value_axleload_slide') {
+            } else if (itemId == 'value_axleload') {
                 theInterface.emit('ui:prefsChanged', {
                     key: preferences.value_axleloadIdx,
                     value: $("#value_axleload").val()
@@ -2793,7 +2868,7 @@ var Ui = (function(w) {
         var parent;
         for (var i = 0; i < parentOptions.length; i++) {
             if (list.routePreferences.get(parentOptions[i]).indexOf(routeOption) != -1) {
-                    //activate corresponding option panel
+                //activate corresponding option panel
                 switchRouteOptionsButton(parentOptions[i]);
             }
         }
@@ -3024,19 +3099,37 @@ var Ui = (function(w) {
             });
             var filename = files[i].name;
             var fileName = new Element('div', {
-                'class': 'myfile',
+                'class': 'left clear',
             }).update(filename);
-            var showGpx = new Element('div', {
-                'class': 'show',
-                'data': i
+            var showGpx = new Element('button', {
+                'class': 'left btn ORS-BtnPrimary-control transparent show',
+                'data': i,
+                'data-container': '.ORS-mainPanel',
+                'data-toggle': 'tooltip',
+                'id': 'tt-showgpx',
+                'title': '',
+                'type': 'button',
+                'data-original-title': 'Show GPX'
             });
-            var calcGpx = new Element('div', {
-                'class': 'calc',
-                'data': i
+            var calcGpx = new Element('button', {
+                'class': 'left btn ORS-BtnPrimary-control transparent calc',
+                'data': i,
+                'data-container': '.ORS-mainPanel',
+                'data-toggle': 'tooltip',
+                'id': 'tt-calcRoute',
+                'title': '',
+                'type': 'button',
+                'data-original-title': 'Calculate Route'
             });
-            var deleteGpx = new Element('div', {
-                'class': 'delete',
-                'data': i
+            var deleteGpx = new Element('button', {
+                'class': 'left btn ORS-BtnPrimary-control transparent delete',
+                'data': i,
+                'data-container': '.ORS-mainPanel',
+                'data-toggle': 'tooltip',
+                'id': 'tt-deleteRoute',
+                'title': '',
+                'type': 'button',
+                'data-original-title': 'Delete Route'
             });
             var show = new Element('i', {
                 'class': 'fa fa-map-marker',
@@ -3051,8 +3144,12 @@ var Ui = (function(w) {
                 'title': 'remove track or route'
             });
             var calcGranularity = new Element('select', {
-                'class': 'form-control calcGranularity',
-                'title': 'route calculation from gpx detail'
+                'class': 'form-control input-sm calcGranularity',
+                'data-container': '.ORS-mainPanel',
+                'data-toggle': 'tooltip',
+                'id': 'tt-calcDetail',
+                'title': '',
+                'data-original-title': 'Route calculation from gpx detail'
             });
             calcGranularity.insert(new Element('option', {
                 value: '3000'
@@ -3077,6 +3174,9 @@ var Ui = (function(w) {
             $(deleteGpx).click(handleDeleteFromMapGpx);
         }
         container.appendChild(fileContainerMain);
+        $('[data-toggle="tooltip"]').tooltip({
+            trigger: 'hover'
+        });
     }
     /**
      * handles the clicked gpx file and shows it on map
@@ -3126,13 +3226,10 @@ var Ui = (function(w) {
      * extracts selected user preferences and forwards them for saving in the preference module
      */
     function handleSaveUserPreferences() {
-        var version = $('#extendedVersionPrefs').find(":selected").text();
         var language = $('#languagePrefs').find(":selected").text();
         var routingLanguage = $('#routingLanguagePrefs').find(":selected").text();
         var distanceUnit = $('#unitPrefs').find(":selected").text();
         //var baseLayer = $('input[name=layerSwitcherPanel_baseLayers]:checked').val();
-        //version: one of list.version
-        version = preferences.reverseTranslate(version);
         //language: one of list.languages
         language = preferences.reverseTranslate(language);
         //routing language: one of list.routingLanguages
@@ -3149,7 +3246,6 @@ var Ui = (function(w) {
             }
         }
         theInterface.emit('ui:saveUserPreferences', {
-            version: version,
             language: language,
             routingLanguage: routingLanguage,
             distanceUnit: distanceUnit
@@ -3159,23 +3255,13 @@ var Ui = (function(w) {
     }
     /**
      * applies the given user preferences
-     * @param version: version of the site: standard, extended,...
      * @param language: language of the site
      * @param routingLanguage: language of the routing instructions
      * @param distanceUnit: unit of distances used on the site
      */
-    function setUserPreferences(version, language, routingLanguage, distanceUnit) {
-        //setting version
-        var container = $('#extendedVersionPrefs').get(0);
-        container = container.options;
-        for (var i = 0; i < list.version.length; i++) {
-            if (list.version[i] === version) {
-                //set selected = true
-                container[i].selected = true;
-            }
-        }
+    function setUserPreferences(language, routingLanguage, distanceUnit) {
         //setting language
-        container = $('#languagePrefs').get(0);
+        var container = $('#languagePrefs').get(0);
         container = container.options;
         for (var i = 0; i < list.languages.length; i++) {
             if (list.languages[i] === language) {
@@ -3253,7 +3339,7 @@ var Ui = (function(w) {
         $('#heavyvehicle').click(switchRouteOptionsPane);
         $('#wheelchair').click(switchRouteOptionsPane);
         $('.routeOptions').change(handleOptionsChanged);
-        $('.optionsButton').click(handleShowOptions);
+        $('.ORS-optionsButton').click(handleShowOptions);
         $('#viaOptimize').click(handleOptionsChanged);
         //permalink
         $('#infoPermalink').click(handleOpenPermaOptions);
@@ -3286,9 +3372,11 @@ var Ui = (function(w) {
             $('#serviceTimeout').hide();
         });
         // tooltips
-        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="tooltip"]').tooltip({
+            trigger: 'hover'
+        });
         // menuButtons
-        $('.menuButton').click(handleSwitchMenu)
+        $('.ORS-menuButton').click(handleSwitchMenu);
     }
     Ui.prototype = new EventEmitter();
     Ui.prototype.constructor = Ui;
@@ -3315,7 +3403,7 @@ var Ui = (function(w) {
     Ui.prototype.showSearchAddressError = showSearchAddressError;
     Ui.prototype.showCurrentLocation = showCurrentLocation;
     Ui.prototype.showGeolocationSearching = showGeolocationSearching;
-    Ui.prototype.showGeolocationError = showGeolocationError;
+    Ui.prototype.showGpxeolocationError = showGeolocationError;
     Ui.prototype.setRouteIsPresent = setRouteIsPresent;
     Ui.prototype.searchPoiChangeToSearchingState = searchPoiChangeToSearchingState;
     Ui.prototype.updateSearchPoiResultList = updateSearchPoiResultList;
@@ -3327,7 +3415,7 @@ var Ui = (function(w) {
     Ui.prototype.startRouteCalculation = startRouteCalculation;
     Ui.prototype.endRouteCalculation = endRouteCalculation;
     Ui.prototype.updateRouteInstructions = updateRouteInstructions;
-    Ui.prototype.updateSurfaceInformation = updateSurfaceInformation;
+    Ui.prototype.updateSurfaceSteepness = updateSurfaceSteepness;
     Ui.prototype.hideRouteSummary = hideRouteSummary;
     Ui.prototype.hideRouteInstructions = hideRouteInstructions;
     Ui.prototype.showRoutingError = showRoutingError;

@@ -139,7 +139,7 @@ var lang_de = {
 	'concrete': 'Beton',
 	'paving_stones': 'Betonpflaster',
 	'concrete:plates': 'Betonplatten',
-	'cobblestone:flattened': 'wie Pflastersteine oder besser',
+	'cobblestone:flattened': 'wie gepflastered oder besser',
 	'concrete:lanes': 'Betonspurplatten',
 	'cobblestone': 'wie Kopfsteinpflaster oder besser', 
 	'unpaved': 'Unbefestigt (unspezifiziert)', 
@@ -160,7 +160,7 @@ var lang_de = {
 	'snow': 'Schnee', 
 	'wood': 'Holz', 
 	'woodchips': 'Holzschnitzel',
-	'all_surfaces': 'Alle Bel&auml;ge',
+	'all_surfaces': 'Alle berollbaren Bel&auml;ge',
 
 // Smoothnesses
 	'smoothness': 'Oberfl&auml;chenbeschaffenheit',

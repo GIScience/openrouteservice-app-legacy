@@ -22,10 +22,10 @@ list = {
     }),
     //please make sure that each category contains at least one element. all names in the hash have to be unique.
     routePreferences: new Hash({
-        'car': ['Car'],
+        'car': ['car', 'Car'],
         'bicycle': ['bicycle', 'Bicycle', 'BicycleSafety', 'BicycleRoute', 'BicycleMTB', 'BicycleRacer', 'BicycleTour'],
         'pedestrian': ['pedestrian', 'Pedestrian'],
-        'heavyvehicle': ['HeavyVehicle'],
+        'heavyvehicle': ['heavyvehicle', 'HeavyVehicle'],
         'wheelchair': ['wheelchair', 'Wheelchair']
     }),
     elevationProfiles: ['Bicycle', 'BicycleRacer', 'BicycleMTB', 'BicycleTour', 'Pedestrian', 'BicycleSafety', 'Wheelchair'],
@@ -36,7 +36,7 @@ list = {
     routeDangerousGoods: ['hazmat'],
     routeWeightSettings: ['Fastest', 'Shortest', 'Recommended'],
     routeAvoidables: ['Highway', 'Tollway', 'Unpavedroads', 'Ferry', 'Steps', 'Fords', 'Pavedroads', 'Tunnel'],
-    truckParams: ['value_length_slide', 'value_height_slide', 'value_weigth_slide', 'value_axleload_slide', 'value_width_slide'],
+    truckParams: ['value_length', 'value_height', 'value_weigth', 'value_axleload', 'value_width'],
     routePreferencesImages: new Hash({
         'car': ['img/picto-car.png'],
         'bicycle': ['img/picto-bike.png'],
@@ -55,16 +55,88 @@ list = {
     }),
     // divs to show or hide for specific profiles
     showElements: {
-        All: ['.ORS-all'],
-        Car: ['.ORS-car'],
-        Wheelchair: ['.ORS-wc'],
-        Pedestrian: ['.ORS-ped'],
-        Bicycle: ['.ORS-bike'],
-        HeavyVehicle: ['.ORS-hgv']
+        car: {
+            show: ['.ORS-car', '.ORS-all'],
+            hide: ['.ORS-ped', '.ORS-bike', '.ORS-hgv', '.ORS-ped-wc']
+        },
+        wheelchair: {
+            show: ['.ORS-wc', '.ORS-all', '.ORS-ped-wc'],
+            hide: ['.ORS-ped', '.ORS-bike', '.ORS-hgv', '.ORS-car']
+        },
+        pedestrian: {
+            show: ['.ORS-ped-wc', '.ORS-ped', '.ORS-all'],
+            hide: ['.ORS-wc', '.ORS-bike', '.ORS-hgv', '.ORS-car']
+        },
+        bicycle: {
+            show: ['.ORS-bike', '.ORS-all'],
+            hide: ['.ORS-wc', '.ORS-ped', '.ORS-hgv', '.ORS-car', '.ORS-ped-wc']
+        },
+        heavyvehicle: {
+            show: ['.ORS-hgv', '.ORS-all'],
+            hide: ['.ORS-wc', '.ORS-ped', '.ORS-car', '.ORS-bike', '.ORS-ped-wc']
+        },
     },
-    menuElements: ['ORS-routeContent', 'ORS-aaContent', 'ORS-feedbackContent', 'ORS-cloudContent'],
+    menuElements: ['ORS-routeContent', 'ORS-aaContent', 'ORS-cloudContent'],
     // waytype and surface type information
     tmc: {},
+    SteepnessType: [{
+        '-5': {
+            text: '16%+',
+            color: '#028306'
+        }
+    }, {
+        '-4': {
+            text: '10-15%',
+            color: '#2AA12E'
+        }
+    }, {
+        '-3': {
+            text: '7-9%',
+            color: '#53BF56'
+        }
+    }, {
+        '-2': {
+            text: '4-6%',
+            color: '#7BDD7E'
+        }
+    }, {
+        '-1': {
+            text: '1-3%',
+            color: '#A4FBA6'
+        }
+    }, {
+        '0': {
+            text: '0%',
+            color: '#ffcc99'
+        }
+    }, {
+        '1': {
+            text: '1-3%',
+            color: '#F29898 '
+        }
+    }, {
+        '2': {
+            text: '4-6%',
+            color: '#E07575'
+        }
+    }, {
+        '3': {
+            text: '7-9%',
+            color: '#CF5352'
+        }
+    }, {
+        '4': {
+            text: '10-15%',
+            color: '#BE312F'
+        }
+    }, {
+        '5': {
+            text: '16%+',
+            color: '#AD0F0C'
+        }
+    }],
+    divSteepnessTypes: '#steepnessType',
+    listSteepnessTypesContainer: '#steepnessTypeList',
     WayType: {
         0: 'Other',
         1: 'StateRoad',
@@ -102,7 +174,7 @@ list = {
         17: 'Grass',
         18: 'GrassPaver'
     },
-    SurfaceTypeColors: ['#8be57d', '#7dce70', '#6fb764', '#61a057', '#53894b', '#45723e', '#375b32', '#294425', '#1b2d19', '#0d160c'],
+    SurfaceTypeColors: ['#45C4F9', '#37A4F5', '#339AF3', '#257AEF', '#2070EE', '#1250EA', '#0D46E9', '#0431E6', '#0431E6', '#0027E5'],
     divSurfaceTypes: '#surfaceType',
     listSurfaceTypesContainer: '#surfaceTypeList'
 };

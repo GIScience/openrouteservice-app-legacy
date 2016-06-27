@@ -1,6 +1,6 @@
 // global variable which is set to false after init is run
 // is needed in order for cookies to be loaded properly
-var initMap = true;
+var map, initMap = true;
 var Controller = (function(w) {
     'use strict';
     var $ = w.jQuery,
@@ -16,9 +16,7 @@ var Controller = (function(w) {
         preferences = w.Preferences,
         openRouteService = w.OpenRouteService,
         restrictions = w.Restrictions,
-        Map = w.Map,
-        //the map
-        map,
+        //Map = w.Map,
         //Timeout for service responses
         SERVICE_TIMEOUT_INTERVAL = 10000,
         //timer
@@ -200,7 +198,7 @@ var Controller = (function(w) {
      * @param addWaypointAt: index where to add the waypoint
      */
     function reverseGeocodeSuccess(addressResult, wpType, wpIndex, featureId, addWaypointAt) {
-         // show loading
+        // show loading
         var el = $('#ORS-loading');
         el.hide();
         //when the service gives response but contains an error the response is handeled as success, not error. We have to check for an error tag here:
@@ -430,22 +428,22 @@ var Controller = (function(w) {
      * @param vectorId: id of the map feature to zoom to
      */
     function handleZoomToWaypoint(vectorId) {
-
         map.zoomToFeature(map.layerRoutePoints, ui.getFeatureIdOfWaypoint(vectorId), 16);
     }
     /**
      * way or surface types are clicked
-     * @param ids: array of feature ids to hightlight
+     * @param [list] arr: contains ids and layer
      */
-    function handleHighlightTypes(ids) {
-        map.highlightFeatures(map.layerRouteLines, ids);
+    function handleHighlightTypes(arr) {
+        map.highlightFeatures(arr);
     }
     /**
      * reset styles
-     * @param ids: array of features ids to reset highlight
+     * @param [list] arr: contains ids and layer
+     
      */
-    function handleResetTypes(ids) {
-        map.resetFeatures(map.layerRouteLines, ids);
+    function handleResetTypes(arr) {
+        map.resetFeatures(arr);
     }
     /**
      * map is zoomed to the selected part of the route (route instruction)
@@ -453,6 +451,13 @@ var Controller = (function(w) {
      */
     function handleZoomToRouteInstruction(params) {
         map.zoomToFeature(map.layerRouteLines, params);
+    }
+    /**
+     * map is zoomed to the selected part of the route (type)
+     * @param [list] arr: contains ids and layer
+     */
+    function handleZoomToRouteInstructionType(arr) {
+        map.zoomToFeatureType(arr);
     }
     /**
      * map is zoomed to the selected part of the route (route instruction)
@@ -809,7 +814,7 @@ var Controller = (function(w) {
             wheelChairParams[4] = wheelchairSmoothness;
             route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferencesType, wheelChairParams, truckParams, avoidableParams, avoidAreas, extendedRoutePreferencesWeight, extendedRoutePreferencesMaxspeed, calcRouteID);
             //try to read a variable that is set after the service response was received. If this variable is not set after a while -> timeout.
-            clearTimeout(timerRoute);          
+            clearTimeout(timerRoute);
         } else {
             //internal
             route.routePresent = false;
@@ -826,7 +831,6 @@ var Controller = (function(w) {
      * @param results: XML route service results
      */
     function routeCalculationSuccess(results, routeID, routePref, routePoints) {
-        var viaPoints = [];
         // only fire if returned routeID from callback is same as current global calcRouteID
         if (routeID == calcRouteID) {
             //var zoomToMap = !route.routePresent;
@@ -841,36 +845,35 @@ var Controller = (function(w) {
             } else {
                 //use all-in-one-LineString to save the whole route in a single string
                 var routeLineString = route.writeRouteToSingleLineString(results);
+                route.routeLineString = routeLineString;
                 var routeString = map.writeRouteToString(routeLineString);
                 route.routeString = routeString;
-                
-                if (routePoints.length > 2)  {
-                    routePoints.shift();
-                    routePoints.pop(); 
-                    viaPoints = routePoints;
-                } 
-                // each route instruction has a part of this lineString as geometry for this instruction           
-                // get height profile update height profile widget if elevation profile type selected
-                if ($.inArray(routePref, list.elevationProfiles) >= 0) {
-                    var routeLineHeights = route.parseResultsToHeights(results);
-                    map.updateHeightprofiles(routeLineHeights, viaPoints);
-                    var routeHeight = map.writeRouteToString(routeLineHeights);
-                    route.routeString = routeHeight;
-
-                }
                 var routeLinestring = route.parseResultsToLineStrings(results);
                 var cornerPoints = route.parseResultsToCornerPoints(results);
                 //Get the restrictions along the route
-                map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString), permaInfo[preferences.routeOptionsIdx]);
+                //map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString), permaInfo[preferences.routeOptionsIdx]);
+                map.removeElevationControl();
                 var featureIds = map.updateRoute(routeLinestring, cornerPoints, routePref);
                 var errors = route.hasRoutingErrors(results);
                 if (!errors) {
                     var totalDistance = ui.updateRouteInstructions(results, featureIds, 'layerRouteLines');
+                    var elevation = ui.updateRouteSummary(results);
                     if ($.inArray(routePref, list.elevationProfiles) >= 0) {
-                        ui.updateSurfaceInformation(results, featureIds, 'layerRouteLines', totalDistance);
+                        // Surface and waytype information
+                        ui.updateSurfaceSteepness(results, featureIds, 'layerRouteLines', totalDistance);
+                        // Elevation information
+                        if (elevation) {
+                            var viaPoints = [];
+                            if (routePoints.length > 2) {
+                                routePoints.shift();
+                                routePoints.pop();
+                                viaPoints = routePoints;
+                            }
+                            map.updateHeightprofiles(routeLineString, viaPoints);
+                        }
+                        $('#routeTypesContainer').show();
                     } else {
-                        var container = $('#routeTypesContainer').get(0);
-                        container.hide();
+                        $('#routeTypesContainer').hide();
                     }
                     ui.endRouteCalculation();
                     map.zoomToRoute();
@@ -1348,11 +1351,13 @@ var Controller = (function(w) {
         // if routeOpt is not in getVars then use Car for init
         routeOpt = preferences.loadRouteOptions(routeOpt);
         if (routeOpt === undefined || routeOpt === null || routeOpt == 'undefined') {
-            ui.setRouteOption(list.routePreferences.get('car'));
+            ui.setRouteOption('Car');
+            ui.updateProfileOptions(list.routePreferences.get('car'));
         } else {
             ui.setRouteOption(routeOpt);
+            //lower case to find key
+            ui.updateProfileOptions(list.routePreferences.get(routeOpt.toLowerCase())[0]);
         }
-        ui.updateProfileOptions();
         routeOptType = preferences.loadRouteOptionsType(routeOptType);
         ui.setRouteOptionType(routeOptType);
         routeWeight = preferences.loadRouteWeight(routeWeight);
@@ -1451,7 +1456,7 @@ var Controller = (function(w) {
         //hide or show Ui elements based on the version
         uiVersions.applyVersion(preferences.version);
         //in the user preferences popup, set appropriate element active
-        ui.setUserPreferences(preferences.version, preferences.language, preferences.routingLanguage, preferences.distanceUnit);
+        ui.setUserPreferences(preferences.language, preferences.routingLanguage, preferences.distanceUnit);
     }
     /**
      * can be called to output debug information
@@ -1492,6 +1497,7 @@ var Controller = (function(w) {
         ui.register('ui:searchAgainWaypoint', handleSearchAgainWaypoint);
         ui.register('ui:resetRoute', handleResetRoute);
         ui.register('ui:zoomToRouteInstruction', handleZoomToRouteInstruction);
+        ui.register('ui:zoomToRouteInstructionType', handleZoomToRouteInstructionType);
         ui.register('ui:hightlightTypes', handleHighlightTypes);
         ui.register('ui:resetTypes', handleResetTypes);
         ui.register('ui:zoomToRouteCorner', handleZoomToRouteCorner);

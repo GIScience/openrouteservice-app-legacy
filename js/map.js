@@ -57,6 +57,7 @@ var Map = (function() {
             zoom: 13,
             attributionControl: true,
             zoomControl: false,
+            tap: false,
             /* By setting this value to false we remove the default zoom control from the map. This is needed to be able to change the position of the control on the map (default: topleft).This control will be added later. */
             crs: L.CRS.EPSG900913,
             //layers: [this.openmapsurfer],
@@ -83,15 +84,29 @@ var Map = (function() {
         var layerName6 = Preferences.translate('layer6');
         this.overlays[layerName6] = this.aster_hillshade;
         /* MOUSE POSITION CONTROL */
-        L.control.mousePosition({
+        var MousePosition = L.control.mousePosition({
             position: 'topright',
             separator: ', '
-        }).addTo(this.theMap);
+        });
+        if (screen.width>=320 && screen.width<=720){
+            
+            MousePosition.remove();        
+        }
+        else {
+            MousePosition.addTo(this.theMap);
+        }
         /* ZOOM CONTROL */
         var ZoomControl = new L.Control.Zoom({
             position: 'topright'
         });
-        ZoomControl.addTo(this.theMap);
+
+        if (screen.width>=320 && screen.width<=720){
+            ZoomControl.remove();        
+        }
+        else {
+            ZoomControl.addTo(this.theMap);
+        }
+
         /* LOCATE CONTROL */
         function onLocationFound(e) {
             $('.leaflet-popup-content').remove();
@@ -100,7 +115,7 @@ var Map = (function() {
                 closeButton: false,
                 maxHeight: '112px',
                 maxWidth: '120px',
-                className: 'mapContextMenu'
+                className: 'ORS-mapContextMenu'
             }).setContent(menuObject.innerHTML).setLatLng(e.latlng);
             self.theMap.openPopup(popup);
             contextMenuListeners(e.latlng, popup);
@@ -147,14 +162,15 @@ var Map = (function() {
             },
         });
         this.theMap.addControl(new NavMenuToggle());
+        
         /* AVOID AREA CONTROLLER */
         L.NewPolygonControl = L.Control.extend({
             options: {
                 position: 'topright'
             },
             onAdd: function(map) {
-                var container = L.DomUtil.create('div', 'leaflet-control leaflet-bar'),
-                    link = L.DomUtil.create('a', '', container);
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-avoidArea',container),
+                link = L.DomUtil.create('a', 'leaflet-avoidAreaContainer', container);
                 link.href = '#';
                 link.title = 'Create a new polygon';
                 link.innerHTML = '▱';
@@ -227,6 +243,7 @@ var Map = (function() {
         });
         this.layerRoutePoints = L.featureGroup().addTo(this.theMap);
         this.layerRouteLines = L.featureGroup().addTo(this.theMap);
+        this.layerSteepnessLines = L.featureGroup().addTo(this.theMap);
         this.layerCornerPoints = L.featureGroup().addTo(this.theMap);
         this.layerGeolocation = L.featureGroup().addTo(this.theMap);
         this.layerPoi = L.featureGroup().addTo(this.theMap);
@@ -281,7 +298,7 @@ var Map = (function() {
                 closeButton: false,
                 maxHeight: '112px',
                 maxWidth: '120px',
-                className: 'mapContextMenu'
+                className: 'ORS-mapContextMenu'
             }).setContent(menuObject.innerHTML).setLatLng(e.latlng);
             self.theMap.openPopup(popup);
             contextMenuListeners(displayPos, popup);
@@ -289,25 +306,25 @@ var Map = (function() {
         // create a new contextMenu
         function createMapContextMenu() {
             var mapContextMenuContainer = new Element('div', {
-                'id': 'mapContextMenu',
+                'id': 'ORS-mapContextMenu',
                 'style': 'display:none',
             });
             var useAsStartPointContainer = new Element('div', {
-                'class': 'contextWaypoint'
+                'class': 'ORS-contextWaypoint'
             });
             var startSpan = new Element('span', {
                 'id': 'contextStart',
             }).update('Set as starting point');
             useAsStartPointContainer.appendChild(startSpan);
             var useAsViaPointContainer = new Element('div', {
-                'class': 'contextWaypoint'
+                'class': 'ORS-contextWaypoint'
             });
             var viaSpan = new Element('span', {
                 'id': 'contextVia',
             }).update('Add a waypoint');
             useAsViaPointContainer.appendChild(viaSpan);
             var useAsEndPointContainer = new Element('div', {
-                'class': 'contextWaypoint'
+                'class': 'ORS-contextWaypoint'
             });
             var endSpan = new Element('span', {
                 'id': 'contextEnd',
@@ -455,7 +472,7 @@ var Map = (function() {
             closeButton: true,
             //maxHeight: '112px',
             //maxWidth: '200px',
-            //className: 'mapContextMenu'
+            //className: 'ORS-mapContextMenu'
         }).setContent(e.target.feature.properties.message).setLatLng(e.latlng);
         self.theMap.openPopup(popup);
     }
@@ -608,6 +625,30 @@ var Map = (function() {
     /**
      * zoom to a given feature vector defined by its vector id or given features 
      * defined by their vector ids.
+     * @param [list] arr: layer of the map where the feature is located and vector ids
+     */
+    function zoomToFeatureType(arr) {
+        if (arr instanceof Array) {
+            vectors = this[arr[0]].getLayers(arr[1]);
+        } else {
+            vectors = this[arr[0]].getLayer(arr[1]);
+        }
+        if (vectors instanceof Array) {
+            var vectorGroup = new L.featureGroup(vectors);
+            this.theMap.fitBounds(vectorGroup.getBounds());
+        } else if (vectors._latlngs) {
+            this.theMap.fitBounds(vectors.getBounds());
+        } else if (vectors._latlng) {
+            if (!zoom) {
+                this.theMap.panTo(vectors.getLatLng());
+            } else {
+                this.theMap.setView(vectors.getLatLng(), zoom);
+            }
+        }
+    }
+    /**
+     * zoom to a given feature vector defined by its vector id or given features 
+     * defined by their vector ids.
      * @param mapLayer: layer of the map where the feature is located
      * @param params: vector id or list of vector ids
      * @param zoom: optional zoom level
@@ -644,26 +685,24 @@ var Map = (function() {
     }
     /**
      * highlight given feature vectors defined by their ids
-     * @param mapLayer: layer of the map where the feature is located
-     * @param vectorIds: array of vectorIds
+     * @param [list] arr: layer of the map and array of vectorIds
      */
-    function highlightFeatures(mapLayer, vectorIds) {
-        for (var i = 0; i < vectorIds.length; i++) {
-            mapLayer.getLayer(vectorIds[i]).bringToFront();
-            mapLayer.getLayer(vectorIds[i]).setStyle({
+    function highlightFeatures(arr) {
+        for (var i = 0; i < arr[1].length; i++) {
+            this[arr[0]].getLayer(arr[1][i]).bringToFront();
+            this[arr[0]].getLayer(arr[1][i]).setStyle({
                 opacity: 0.85,
             });
         }
     }
     /**
      * reset highlight given feature vectors defined by their ids
-     * @param mapLayer: layer of the map where the feature is located
-     * @param vectorIds: array of vectorIds
+     * @param [list] arr: layer of the map and array of vectorIds
      */
-    function resetFeatures(mapLayer, vectorIds) {
-        for (var i = 0; i < vectorIds.length; i++) {
-            mapLayer.getLayer(vectorIds[i]).bringToBack();
-            mapLayer.getLayer(vectorIds[i]).setStyle({
+    function resetFeatures(arr) {
+        for (var i = 0; i < arr[1].length; i++) {
+            this[arr[0]].getLayer(arr[1][i]).bringToBack();
+            this[arr[0]].getLayer(arr[1][i]).setStyle({
                 opacity: 0,
             });
         }
@@ -1007,16 +1046,10 @@ var Map = (function() {
      * @param {Object} routeLineSegments: array of Leaflet Linestrings with height information
      */
     function updateHeightprofiles(routeLineHeights, viaPoints) {
-        var i, elevationArr = [];
-        // if height difference not more than 50 meters return
-        for (i = 0; i < routeLineHeights.length; i++) {
-            elevationArr.push(routeLineHeights[i].alt);
-        }
-        if (util.calcStdDev(elevationArr) < 50) return;
-        var latLng, viaPointsList = [];
+        var i, latLng, viaPointsList = [];
         var el = this.elevationControl;
         el.addTo(this.theMap);
-        this.layerRouteLines.clearLayers();
+        //this.layerRouteLines.clearLayers();
         el.clear();
         var polyline = L.polyline(routeLineHeights).toGeoJSON();
         // add waypoints in elevation diagram
@@ -1033,6 +1066,25 @@ var Map = (function() {
         }).addTo(this.layerRouteLines);
     }
     /**
+     * Ads segments
+     * @param [list] steepnessSegment: array of Leaflet LatLngs
+     * @param layer: defines the layer the segment should be added to
+     */
+    function addSegment(routelines, layer) {
+        var segment = L.polyline(routelines, styles.routeBase());
+        segment.addTo(this[layer]);
+        return segment._leaflet_id;
+    }
+    /**
+     * removes elevation profile if not needed
+     */
+    function removeElevationControl() {
+        // clear elevation info if not bike
+        var el = this.elevationControl;
+        el.clear();
+        el.remove();
+    }
+    /**
      * draws given points as route line on the map
      * adds route and corner points twice, the base information has to be added
      * to enable click events on route instructions for individual segments
@@ -1043,14 +1095,9 @@ var Map = (function() {
      * @return array of Leaflet Ids added to the layer
      */
     function updateRoute(routeLineSegments, routeLinePoints, routePref) {
+        this.layerSteepnessLines.clearLayers();
         this.layerRouteLines.clearLayers();
         this.layerCornerPoints.clearLayers();
-        // clear elevation info if not bike
-        var el = this.elevationControl;
-        if ($.inArray(routePref, list.elevationProfiles) < 0) {
-            el.clear();
-            el.remove();
-        }
         var ftIds = [];
         if (routeLineSegments && routeLineSegments.length > 0) {
             var self = this;
@@ -1373,10 +1420,12 @@ var Map = (function() {
     // map.prototype.zoomToPoiResults = zoomToPoiResults;
     map.prototype.zoomToMarker = zoomToMarker;
     map.prototype.zoomToFeature = zoomToFeature;
+    map.prototype.zoomToFeatureType = zoomToFeatureType;
     map.prototype.highlightFeatures = highlightFeatures;
     map.prototype.resetFeatures = resetFeatures;
     map.prototype.zoomToRoute = zoomToRoute;
     map.prototype.updateRoute = updateRoute;
+    map.prototype.removeElevationControl = removeElevationControl;
     map.prototype.updateSize = updateSize;
     map.prototype.checkAvoidAreasIntersectThemselves = checkAvoidAreasIntersectThemselves;
     map.prototype.addAvoidAreas = addAvoidAreas;
@@ -1395,5 +1444,6 @@ var Map = (function() {
     map.prototype.emitloadTMC = emitloadTMC;
     map.prototype.graphInfo = graphInfo;
     map.prototype.updateInfoPanel = updateInfoPanel;
+    map.prototype.addSegment = addSegment;
     return map;
 }());
