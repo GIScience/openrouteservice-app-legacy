@@ -450,6 +450,17 @@ var lang_de = {
     'tt-descent': 'Abstieg',
     'tt-time': 'Zeit',
     'tt-distance': 'Entfernung',
-    'tt-actdistance': 'Tatsächliche Entfernung'
-
+    'tt-actdistance': 'Tatsächliche Entfernung',
+    'tt-route' : 'Route',
+    'tt-access' : 'Erreichbarkeit',
+    'tt-cloud' : 'Import/ Export',
+    'tt-feedback' : 'Feedback',
+    'tt-car' : 'Auto',
+    'tt-bicycle' : 'Fahrrad',
+    'tt-pedestrian' :'Fußgänger',
+    'tt-wheelchair' : 'Rollstuhl',
+    'tt-heavyvehicle' : 'Schwertransport',
+    'tt-optionsMenu' : 'Optionen',
+    'tt-sitePref' : 'Seiteneinstellungen',
+    'tt-contactInfo': 'Kontakt- informationen'
 };

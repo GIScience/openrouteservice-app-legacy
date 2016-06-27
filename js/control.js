@@ -57,6 +57,10 @@ var Controller = (function(w) {
             map.clearMarkers(map.layerSearch, lastSearchResults);
         }
         waypoint.incrRequestCounterWaypoint(atts.wpIndex);
+        // show loading circle
+        // show loading
+        var el = $('#ORS-loading');
+        el.show();
         waypoint.find(atts.query, handleSearchWaypointResults, handleSearchWaypointFailure, atts.wpIndex, preferences.language);
     }
     /**
@@ -65,6 +69,9 @@ var Controller = (function(w) {
      * @param wpIndex: index of the waypoint
      */
     function handleSearchWaypointResults(results, wpIndex) {
+        // hide loading circle
+        var el = $('#ORS-loading');
+        el.hide();
         //when the service gives response but contains an error the response is handeled as success, not error. We have to check for an error tag here:
         var responseError = util.getElementsByTagNameNS(results, namespaces.xls, 'ErrorList').length;
         if (parseInt(responseError) > 0) {
@@ -876,7 +883,9 @@ var Controller = (function(w) {
                         $('#routeTypesContainer').hide();
                     }
                     ui.endRouteCalculation();
-                    map.zoomToRoute();
+                    if (routePoints.length == 2) {
+                        map.zoomToRoute();
+                    }
                 } else {
                     routeCalculationError();
                 }
