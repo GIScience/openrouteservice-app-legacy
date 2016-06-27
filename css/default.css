@@ -157,6 +157,7 @@
     }
     
     .ORS-alert {
+        margin-top: 5px;
         font-family: 'Source Sans Pro', sans-serif;
     }
     
@@ -625,7 +626,7 @@
     .resultList li {
         /* Styles for each item in the address list dropdown */
         padding: 3px;
-        border-bottom: 1px dashed #c8c8c8;
+        border-bottom: 1px solid #F0F0F0;
         list-style: none;
     }
     
@@ -706,7 +707,6 @@
         position: absolute;
         left: 0px;
         right: 0;
-        height: 30px;
         line-height: normal;
         font-weight: normal;
     }
@@ -1233,7 +1233,7 @@
         .ORS-map {
             order: 1;
         }
-        #ORS-title {
+       /* #ORS-title {
             margin-left: 10px;
             position: absolute;
             height: 50px;
@@ -1314,7 +1314,7 @@
         #bubble {
             position: absolute;
             margin-bottom: 30px;
-        }
+        }*/
 
     }
     /* ****************************************************************/

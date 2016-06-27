@@ -69,6 +69,7 @@ var Ui = (function(w) {
 
     function showServiceTimeoutPopup(arg) {
         if (arg === true) {
+            $('#serviceTimeout').children("span").empty();
             var span = new Element('span');
             span.insert(preferences.translate('serverError'));
             $('#serviceTimeout').append(span);
@@ -761,10 +762,16 @@ var Ui = (function(w) {
      * The whole route is removed, waypoints are emptied or deleted (if more than two exist)
      */
     function handleResetRoute() {
-        // empty old summary
-        $('.directions-summary-info-container').remove();
-        // empty route types container
-        //$('#routeTypesContainer').empty();
+        // remove old summary
+        $('.directions-summary-container').remove();
+        // clear route types container
+        $('#routeTypesContainer').children().each(function() {
+            $(this).empty();
+        });
+        // hide summary container
+        $('#routeTypesContainer').parent().hide();
+        // remove elevation control
+        map.removeElevationControl();   
         //remove markers on map
         theInterface.emit('ui:resetRoute');
         //remove all existing waypoints

@@ -170,10 +170,10 @@ util = (function() {
                     var buildingName = Building.getAttribute('buildingName');
                     var buildingSubdivision = Building.getAttribute('subdivision');
                     if (buildingName != null) {
-                        element.appendChild(new Element('span').update(buildingName + ' '));
+                        element.appendChild(new Element('span').update(buildingName + ', '));
                     }
                     if (buildingSubdivision != null) {
-                        element.appendChild(new Element('span').update(buildingSubdivision + ' '));
+                        element.appendChild(new Element('span').update(buildingSubdivision + ', '));
                     }
                 }
                 //Street line
