@@ -891,6 +891,7 @@ var Map = (function() {
 			}
 		
 			if(type == Waypoint.type.ROUNDTRIP && wpIndex != 0){
+				console.log("Called map.setWaypointType at ROUNDTRIP and index ", wpIndex);
 				newFeature.on('dragend', function(e) {
 					$('.waypoint.roundtrip').each(function (index){
 						console.log("dragend last wp called");

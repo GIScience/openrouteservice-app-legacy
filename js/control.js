@@ -119,14 +119,10 @@ var Controller = (function(w) {
         ui.setWaypointFeatureId(wpIndex, waypointResultId, position_string, 'layerRoutePoints');
         handleWaypointChanged();
 				//If roundtrip and no second roundtrip-wp set: add it
-		console.log($('.waypoint.roundtrip').length);
 		if (type == Waypoint.type.ROUNDTRIP && $('#roundtrip')[0].checked && $('.waypoint.roundtrip').length <= 1){
 			var currentTarget = atts.currentTarget;
 			var newIndex = waypoint.getNumWaypoints() - 1;
-			// handleAddWaypoint(newIndex);
 			//Replace the waypoint adress with the one selected in the first waypoint
-			console.log(currentTarget);
-			console.log($('#' + newIndex));
 			var rootElement = $('#' + newIndex);
 			rootElement.removeClass('unset');
 			var guiComponent = rootElement.find('.guiComponent');
@@ -140,7 +136,6 @@ var Controller = (function(w) {
             waypointResultElement.show();
 			
 			type = selectWaypointType(newIndex);
-			console.log(type);
 			// type = Waypoint.type.ROUNDTRIP;
 			waypointResultId = map.addWaypointAtPos(position, newIndex, type);
 			waypoint.setWaypoint(newIndex, true);
@@ -520,19 +515,14 @@ var Controller = (function(w) {
 			var coordinates;
 			// Use this jquery method to not count unset waypoints in between end and start point
 			var numWaypoints = $('.waypoint:not(.unset)').length - 1;
-			console.log(numWaypoints);
 			if($('#0').hasClass('start') || $('#0').hasClass('roundtrip')){
 				//If the last waypoint is an end point, copy it as a via point so that it does not vanish when adding an end point
 				// if($('#' + (numWaypoints - 1)).hasClass('end') && copy){
 				if($('.waypoint.end').length != 0 && copy){
 					//if the last and first waypoint are not the same
 					var id = $('.waypoint.end:eq(0)').attr('id');
-					console.log(id);
 					coordinates = rP[id].split(' ');
-					console.log(coordinates);
-					// if (coordinates[0] != rP[0].split(' ')[0] && coordinates[1] != rP[0].split(' ')[1]){
 					handleAddWaypointByRightclick({pos: {lat: coordinates[0], lng: coordinates[1]}, type: 'via'}, false, false, false);
-					// }
 				}
 				numWaypoints = $('.waypoint:not(.unset)').length - 1;
 				rP = ui.getRoutePoints();
@@ -543,6 +533,11 @@ var Controller = (function(w) {
 				//add new waypoints for roundtrip start and end
 				handleAddWaypointByRightclick({pos: {lat: coordinates[0], lng: coordinates[1]}, type: 'roundtrip'}, false, false, false);
 				handleAddWaypointByRightclick({pos: {lat: coordinates[0], lng: coordinates[1]}, type: 'roundtrip'}, false, false, true);
+				//If the user has only set start and end point, add new empty waypoint for convenience
+				if($('.waypoint').length == $('.waypoint.roundtrip').length){
+					ui.addWaypintAfter(0, 2);
+					selectWaypointType(0);
+				}
 				}
 		}
 		
@@ -550,7 +545,7 @@ var Controller = (function(w) {
 			var rP = ui.getRoutePoints();
 			var coordinates;
 			if($('#0').hasClass('roundtrip')){
-				// Find the end-roundtrip-wp and remove it. This will take care of the rest of new assignments and so on
+				// Find the end-roundtrip-wp and remove it. The event handler will take care of the rest of new assignments and so on
 				eventFire($('.waypoint.roundtrip:eq(1)').children(".removeWaypoint")[0], 'click');
 			}
 			
@@ -826,7 +821,6 @@ var Controller = (function(w) {
     function handleWaypointMoved(featureMoved) {
         var pos = featureMoved.getLatLng();
         pos = new L.LatLng(pos.lat, pos.lng);
-		console.log(featureMoved._leaflet_id);
         var index = ui.getWaypiontIndexByFeatureId(featureMoved._leaflet_id);
         var type = waypoint.determineWaypointType(index);
         //add lat lon to input field 

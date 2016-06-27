@@ -322,7 +322,6 @@ var Ui = (function(w) {
             while (waypointResultElement.firstChild) {
                 waypointResultElement.removeChild(waypointResultElement.firstChild);
             }
-			console.log(rootElement);
             waypointResultElement.insert(e.currentTarget);
             waypointResultElement.show();
             //remove search markers and add a new waypoint marker
@@ -372,8 +371,6 @@ var Ui = (function(w) {
     function getFeatureIdOfWaypoint(wpIndex) {
         var rootElement = $('#' + wpIndex).get(0);
         var address = rootElement.querySelector('.address');
-		console.log(rootElement);
-		console.log(address);
         var id = address ? address.id : null;
         return id;
     }
@@ -384,8 +381,6 @@ var Ui = (function(w) {
      */
     function getWaypiontIndexByFeatureId(featureId) {
         var wpResult = $('#' + featureId);
-		console.log(featureId);
-		console.log(wpResult);
         var wpElement;
         if (wpResult) {
             wpElement = wpResult.parent().parent();
@@ -475,7 +470,6 @@ var Ui = (function(w) {
             //the waypoint which has been moved down is the last waypoint: hide the move down button
             $(previousElement.get(0).querySelector('.moveUpWaypoint')).show();
             $(previousElement.get(0).querySelector('.moveDownWaypoint')).hide();
-			console.log("last wp");
 			$('#roundtrip').attr('checked', false);
 			theInterface.emit('ui:specifyRoundtrip', false);
         } else {
@@ -548,6 +542,8 @@ var Ui = (function(w) {
         //id of prior to last waypoint:
         var waypointId = $(e.currentTarget).prev().attr('id');
         var oldIndex = parseInt(waypointId);
+		
+		console.log(oldIndex);
 		// If roundtrip is enabled, add the waypoint in front of the last (roundtrip) waypoint
 		var numWaypoints = oldIndex + 1;
 		if($('#roundtrip')[0].checked && $('.waypoint.roundtrip').length > 1 && $('#' + oldIndex).hasClass('roundtrip')) oldIndex -= 1;
@@ -638,8 +634,6 @@ var Ui = (function(w) {
         }
         //insert information as waypoint
         var rootElement = $('#' + index);
-		console.log(index);
-		console.log(rootElement);
         rootElement.removeClass('unset');
         address.setAttribute('data-shortAddress', shortAddress);
         var children = rootElement.children();
@@ -703,9 +697,7 @@ var Ui = (function(w) {
             }
             $(e.currentTarget).parent().remove();
         } else {
-			console.log("called");
             var wpElement = $(e.currentTarget).parent();
-			console.log(wpElement);
             var wpIndex = wpElement.attr('id');
             //delete waypoint
             wpElement.remove();
