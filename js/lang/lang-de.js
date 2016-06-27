@@ -139,7 +139,7 @@ var lang_de = {
 	'concrete': 'Beton',
 	'paving_stones': 'Betonpflaster',
 	'concrete:plates': 'Betonplatten',
-	'cobblestone:flattened': 'wie Pflastersteine oder besser',
+	'cobblestone:flattened': 'wie gepflastered oder besser',
 	'concrete:lanes': 'Betonspurplatten',
 	'cobblestone': 'wie Kopfsteinpflaster oder besser', 
 	'unpaved': 'Unbefestigt (unspezifiziert)', 
@@ -160,7 +160,7 @@ var lang_de = {
 	'snow': 'Schnee', 
 	'wood': 'Holz', 
 	'woodchips': 'Holzschnitzel',
-	'all_surfaces': 'Alle Bel&auml;ge',
+	'all_surfaces': 'Alle berollbaren Bel&auml;ge',
 
 // Smoothnesses
 	'smoothness': 'Oberfl&auml;chenbeschaffenheit',
@@ -450,6 +450,17 @@ var lang_de = {
     'tt-descent': 'Abstieg',
     'tt-time': 'Zeit',
     'tt-distance': 'Entfernung',
-    'tt-actdistance': 'Tatsächliche Entfernung'
-
+    'tt-actdistance': 'Tatsächliche Entfernung',
+    'tt-route' : 'Route',
+    'tt-access' : 'Erreichbarkeit',
+    'tt-cloud' : 'Import/ Export',
+    'tt-feedback' : 'Feedback',
+    'tt-car' : 'Auto',
+    'tt-bicycle' : 'Fahrrad',
+    'tt-pedestrian' :'Fußgänger',
+    'tt-wheelchair' : 'Rollstuhl',
+    'tt-heavyvehicle' : 'Schwertransport',
+    'tt-optionsMenu' : 'Optionen',
+    'tt-sitePref' : 'Seiteneinstellungen',
+    'tt-contactInfo': 'Kontakt- informationen'
 };

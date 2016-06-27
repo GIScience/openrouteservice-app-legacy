@@ -40,17 +40,20 @@
             <ul id="ORS-topMenu">
                 <li>
                     <a data-toggle="modal" href="#feedbackModal" id="ORS-menuLinkFeedback">
-                        <i class="fa fa-comment"></i>
+                        <i class="fa fa-comment" id="feedbackContentMenu" data-container="body" id="feedbackContentMenu" type="button" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Feedback">
+                        </i>
                     </a>
                 </li>
                 <li>
                     <a data-toggle="modal" href="#sitePrefsModal" id="ORS-menuLinkSitePrefs">
-                        <i class="fa fa-cogs"></i>
+                        <i class="fa fa-cogs" id="sitePrefsMenu" data-container="body" data-toggle="tooltip" data-placement="bottom" data-original-title="Site Preferences">
+                        </i>
                     </a>
                 </li>
                 <li>
                     <a href="contact.html#top" id="ORS-menuLinkInfo" target="_blank">
-                        <i class="fa fa-info"></i>
+                        <i class="fa fa-info" id="contactMenu" data-container="body" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Contact info">
+                        </i>
                     </a>
                 </li>
             </ul>
@@ -62,13 +65,13 @@
                 <!-- sidebar content -->
                 <div class="ORS-menuPanel" id="menuPanel">
                     <div>
-                        <button class="btn  ORS-menuButton ORS-BtnPrimary-menu active" select-id="ORS-routeContent">
+                        <button class="btn  ORS-menuButton ORS-BtnPrimary-menu active" select-id="ORS-routeContent"  data-container="body" id="routeContentMenu" type="button" data-toggle="tooltip" title="" data-placement="right" data-original-title="Route">
                             <i class="fa fa-road"></i>
                         </button>
-                        <button class="btn  ORS-menuButton ORS-BtnPrimary-menu" select-id="ORS-aaContent">
+                        <button class="btn  ORS-menuButton ORS-BtnPrimary-menu" select-id="ORS-aaContent" data-container="body" id="aaContentMenu" type="button" data-toggle="tooltip" title="" data-placement="right" data-original-title="Accessibility">
                             <i class="fa fa-bullseye"></i>
                         </button>
-                        <button class="btn  ORS-menuButton ORS-BtnPrimary-menu" select-id="ORS-cloudContent">
+                        <button class="btn  ORS-menuButton ORS-BtnPrimary-menu" select-id="ORS-cloudContent" data-container="body" id="cloudContentMenu" type="button" data-toggle="tooltip" title="" data-placement="right" data-original-title="Import/ Export">
                             <i class="fa fa-cloud-download"></i>
                         </button>
                     </div>
@@ -80,22 +83,22 @@
                 <div class="ORS-navigation">
                     <div data-id="ORS-routeContent">
                         <div class="ORS-routePreferenceBtns">
-                            <button class="btn  ORS-BtnPrimary ORS-routeOptionsButton left active" id="car">
+                            <button class="btn  ORS-BtnPrimary ORS-routeOptionsButton left active" id="car" data-container="body" type="button" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Car">
                                 <i class="fa fa-car"></i>
                             </button>
-                            <button class="btn  ORS-BtnPrimary ORS-routeOptionsButton left" id="bicycle">
+                            <button class="btn  ORS-BtnPrimary ORS-routeOptionsButton left" id="bicycle" data-container="body" type="button" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Bicycle">
                                 <i class="fa fa-bicycle"></i>
                             </button>
-                            <button class="btn  ORS-BtnPrimary ORS-routeOptionsButton left" id="pedestrian">
+                            <button class="btn  ORS-BtnPrimary ORS-routeOptionsButton left" id="pedestrian" data-container="body" type="button" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Pedestrian">
                                 <i class="fa fa-male"></i>
                             </button>
-                            <button class="btn  ORS-BtnPrimary ORS-routeOptionsButton left" id="wheelchair">
+                            <button class="btn  ORS-BtnPrimary ORS-routeOptionsButton left" id="wheelchair" data-container="body" type="button" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Wheelchair">
                                 <i class="fa fa-wheelchair-alt"></i>
                             </button>
-                            <button class="btn  ORS-BtnPrimary ORS-routeOptionsButton left" id="heavyvehicle">
+                            <button class="btn  ORS-BtnPrimary ORS-routeOptionsButton left" id="heavyvehicle" data-container="body" type="button" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Heavy vehicle">
                                 <i class="fa fa-truck"></i>
                             </button>
-                            <button class="btn  ORS-BtnPrimary ORS-optionsButton right">
+                            <button class="btn  ORS-BtnPrimary ORS-optionsButton right" data-container="body" id="optionsMenu" type="button" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Options">
                                 <i class="fa fa-cog"></i>
                             </button>
                         </div>
@@ -885,7 +888,7 @@
         </div>
         <!-- END OF MAIN SECTION -->
         <!-- modal for user preferences (language, distance unit,...) -->
-        <div aria-labelledby="sitePrefs" class="modal fade" id="sitePrefsModal" role="dialog" tabindex="-1">
+        <div aria-labelledby="sitePrefs" class="modal fade"Pop id="sitePrefsModal" role="dialog" tabindex="-1">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">

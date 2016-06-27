@@ -122,7 +122,7 @@ var lang_en = {
     'cobblestone:flattened': 'flattened cobblestone and better',
     'cobblestone': 'cobblestone and better',
     'compacted': 'compacted',
-    'all_surfaces': 'flexible',
+    'all_surfaces': 'all traversable surfaces',
     // Inclines
     'incline': 'max incline',
     'threepercent': 'up to 3%',
@@ -375,10 +375,22 @@ var lang_en = {
     'analyzeAccess': 'Calculate accessibility',
     'removeAccess': 'Remove',
     'exportGPX': 'Download of current route in GPX format',
-    'importGPX': 'Upload multiple tracks from GPX-files',
+    'importGPX': 'Upload multiple tracks from GPX-file',
     'tt-ascent': 'Ascent',
     'tt-descent': 'Descent',
     'tt-time': 'Time',
     'tt-distance': 'Distance',
-    'tt-actdistance': 'Actual Distance'
+    'tt-actdistance': 'Actual Distance',
+    'tt-route' : 'Route',
+    'tt-access' : 'Accessibility',
+    'tt-cloud' : 'Import/ Export',
+    'tt-feedback' : 'Feedback',
+    'tt-car' : 'Car',
+    'tt-bicycle' : 'Bicycle',
+    'tt-pedestrian' :'Pedestrian',
+    'tt-wheelchair' : 'Wheelchair',
+    'tt-heavyvehicle' : 'Heavy vehicle',
+    'tt-optionsMenu' : 'Options',
+    'tt-sitePref' : 'Site Preferences',
+    'tt-contactInfo': 'Contact informations'
 };
