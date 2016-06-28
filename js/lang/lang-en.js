@@ -388,7 +388,7 @@ var lang_en = {
     'tt-car' : 'Car',
     'tt-bicycle' : 'Bicycle',
     'tt-pedestrian' :'Pedestrian',
-    'tt-wheelchair' : 'Wheelchair',
+    'tt-wheelchair' : 'Accessible',
     'tt-heavyvehicle' : 'Heavy vehicle',
     'tt-optionsMenu' : 'Options',
     'tt-sitePref' : 'Site Preferences',
