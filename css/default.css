@@ -1314,7 +1314,7 @@
         #bubble {
             position: absolute;
             margin-bottom: 30px;
-        }*/
+        }
 
     }
     /* ****************************************************************/
@@ -1323,16 +1323,28 @@
     /* *****************************************************************/
     /* START OF PRINTING STYLES (MEDIA QUERIES FOR PRINTING THE PAGE)  */
     /* *****************************************************************/
-    
-    @media print {
-		
+
+	@media print {
+		.ORS-navigation, .ORS-menuPanel, .disclaimer, .ORS-header, .ORS-map, div[id="routingPanel ORS-panel"], #routeInstructionHead, #printRouteInstructions{
+            display: none;
+        }
 		@page {
 			margin-top:1cm;
 			margin-bottom:1cm;
-			margin-left:2cm;
+			margin-left:1.5cm;
 			margin-right:1cm;
 		}
-
+		
+		@bottom-left-corner {
+				margin: 10pt 0 30pt 0;
+				border-top: .25pt solid #666;
+				content: "My book";
+				font-size: 9pt;
+				color: #333;
+		
+		}
+		
+		
 		.ORS-main {
             flex-direction: column;
         }
@@ -1340,29 +1352,48 @@
 		.ORS-sidebar {
             order: 1;
             flex-basis: 100vh;
-			width: 100%;
-			background-color: yellow;
+			overflow: visible;
+			float:none;
         }
 		
-		#optionContainer .start, #optionContainer .end {
-			display: block;
+		.ORS-navigation {
+			width: 100vw;
+			overflow: visible;
+			float:none;
+		}
+	
+
+		.ORS-mainPanel {
 			width: 100%;
+			border-left: 1px solid transparent;
+			overflow: visible;
+			float:none;
+		}
+		
+		#directionsMainContainer {
+			font-size: 15pt !important;
+			overflow: visible !important;
+			float:none !important;
+			display:block !important;
+			height: 100% !important;
 			
 		}
-		#directionsMainContainer {
-			display: block;
-			width: 100%;
+		.directions-summary-container{
+			margin: 0 auto;
+			overflow: visible;
+			float:none;
 		}
-		
-		
-		.ORS-navigation, .ORS-menuPanel, .disclaimer, .ORS-header, .ORS-map {
-            display: none;
-        }
+		.directions-container: {
+			height: 20pt;
+			overflow: visible;
+			float:none;
+		}
 
-
-        
-
-
+		#directionsMainContainer div[class="directions-container clickable"] .address .submain {
+			font-size: 12pt;
+			overflow: visible;
+			float:none;
+		}
     }
     /* ***************************************************************/
     /* END OF PRINTING STYLES (MEDIA QUERIES FOR PRINTING THE PAGE)  */

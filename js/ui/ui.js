@@ -2172,7 +2172,7 @@ var Ui = (function(w) {
      * opens the print dialogue
      */
     function handlePrintRouteInstructionsClick() {
-        $.ajax({
+        /*$.ajax({
             url: "css/printRouteInstructions.css",
             success: function(data) {
                 var style = $("<style />", {
@@ -2195,8 +2195,13 @@ var Ui = (function(w) {
                 });
                 style.remove();
                 // $('.directions-summary-info').hide();
-            }
-        });
+            }*/
+			
+        /*});*/
+
+		window.print();
+	
+
     }
     /* *********************************************************************
      * ROUTE OPTIONS
