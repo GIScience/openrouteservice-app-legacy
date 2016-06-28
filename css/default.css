@@ -1341,13 +1341,21 @@
             order: 1;
             flex-basis: 100vh;
 			width: 100%;
+			background-color: yellow;
         }
 		
-		#routeInstructions {
-			width:100%;
+		#optionContainer .start, #optionContainer .end {
+			display: block;
+			width: 100%;
+			
+		}
+		#directionsMainContainer {
+			display: block;
+			width: 100%;
 		}
 		
-		.ORS-navigation, .ORS-menuPanel, .disclaimer, .ORS-header, .ORS-map, #routingPanel, #printRouteInstructions, #routeInstructionHead {
+		
+		.ORS-navigation, .ORS-menuPanel, .disclaimer, .ORS-header, .ORS-map {
             display: none;
         }
 
