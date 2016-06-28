@@ -65,6 +65,7 @@ var Ui = (function(w) {
         span.insert(preferences.translate('infoAboutAvoidables'));
         $('#avoidables_info').append(span);
         $('#avoidables_info').show();
+		
     }
 
     function showServiceTimeoutPopup(arg) {
@@ -78,6 +79,17 @@ var Ui = (function(w) {
             $('#serviceTimeout').hide();
         }
     }
+	
+	/**
+    * The snippet above will hide all elements with the class specified in data-hide,
+    * i.e: data-hide="alert" will hide all elements with the alert property.
+	*/
+	$(function(){
+		$("[data-hide]").on("click", function(){
+			$("#" + $(this).attr("data-hide")).hide();
+        
+		});
+	});
     /* *********************************************************************
      * ALL MARKER ELEMENTS
      * *********************************************************************/
