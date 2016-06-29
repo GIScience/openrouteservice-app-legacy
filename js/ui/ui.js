@@ -2172,36 +2172,7 @@ var Ui = (function(w) {
      * opens the print dialogue
      */
     function handlePrintRouteInstructionsClick() {
-        /*$.ajax({
-            url: "css/printRouteInstructions.css",
-            success: function(data) {
-                var style = $("<style />", {
-                    id: 'printCss',
-                    type: 'text/css',
-                    html: data
-                }).appendTo("head");
-                routeInstructions.show();
-                //Replace the bold font with normal font for printing
-                var originalText = [];
-                $('.directions-text').each(function(i, obj) {
-                    originalText[i] = obj.innerHTML;
-                    obj.innerHTML = obj.innerHTML.replace(new RegExp('<b>', 'g'), '');
-                    obj.innerHTML = obj.innerHTML.replace(new RegExp('</b>', 'g'), '');
-                });
-                window.print();
-                //After printing, use the bold font again
-                $('.directions-text').each(function(i, obj) {
-                    obj.innerHTML = originalText[i];
-                });
-                style.remove();
-                // $('.directions-summary-info').hide();
-            }*/
-			
-        /*});*/
-
 		window.print();
-	
-
     }
     /* *********************************************************************
      * ROUTE OPTIONS
@@ -3312,6 +3283,27 @@ var Ui = (function(w) {
             }
         }
     }
+	
+	/* *********************************************************************
+     * OPTIONS MENU IN HEADER FOR MOBILE VERSION
+     * *********************************************************************/
+    /**
+     * used to control the menu in the header on the mobile version
+     */
+	
+	function handleShowHeaderOptionsMobile(e) {
+        // toggle options
+        if ($('#HeaderOptionsMenuMobile').is(':hidden')) {
+            $('#HeaderOptionsMenuMobile').show();
+            //$('.ORS-optionsButton').addClass('active');
+        } else {
+            $('#HeaderOptionsMenuMobile').hide();
+            //$('.ORS-optionsButton').removeClass('active');
+            //$('.ORS-optionsButton').blur();
+        }
+    }
+	
+	
     /* *********************************************************************
      * CLASS-SPECIFIC
      * *********************************************************************/
@@ -3364,6 +3356,7 @@ var Ui = (function(w) {
         $('#wheelchair').click(switchRouteOptionsPane);
         $('.routeOptions').change(handleOptionsChanged);
         $('.ORS-optionsButton').click(handleShowOptions);
+		$('#HeaderOptionsMenuButtonMobile').click(handleShowHeaderOptionsMobile);
         $('#viaOptimize').click(handleOptionsChanged);
         //permalink
         $('#infoPermalink').click(handleOpenPermaOptions);

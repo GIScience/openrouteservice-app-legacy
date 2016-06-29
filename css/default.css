@@ -294,7 +294,10 @@
     /* START OF ELEMENT STYLES (CLASSES AND ID's)  */
     /* *********************************************/
     /* STYLE FOR ELEMENTS ON HEADER SECTION */
-    
+    #HeaderOptionsMenuMobile{
+		display:none;
+	}
+	
     #ORS-title {
         /* Main ORS title */
         background-color: #b5152b;
@@ -1223,7 +1226,51 @@
     /* ******************************************************************/
     
     @media screen and (min-width: 320px) and (max-width: 720px) {
-        .ORS-main {
+        #HeaderOptionsMenuButtonMobile{
+			display:inline-block;
+			position: absolute;
+			top:10px;
+			right: 5px;
+			float: right;
+			color: white;
+			height: 30px;
+			width:30px;
+			line-height: 30px;
+			color: white;
+			font-size: 20px;
+			text-align: center;
+		}
+		
+		#HeaderOptionsMenuMobile{
+			float:right !important;
+			display: inline-block;
+			right:0;
+			position: fixed;
+			z-index: 9999;
+			background-color: #F0F0F0;
+			
+		}
+		
+		#HeaderOptionsMenuMobile ul{
+        /* Style for individual elements on ORS menu on top right side */
+			line-height: 30px;
+			color: #F0F0F0;
+			font-size: 15px;
+			list-style-type: none;
+			
+		}
+		
+		#HeaderOptionsMenuMobile ul li {
+			border: 1px solid #CCC;
+			float: left;
+			color: #F0F0F0;
+			display: block;
+		}
+		
+		#ORS-topMenu{
+			display:none;
+		}
+		.ORS-main {
             flex-direction: column;
         }
         .ORS-sidebar {
@@ -1233,13 +1280,13 @@
         .ORS-map {
             order: 1;
         }
-       /* #ORS-title {
+       #ORS-title {
             margin-left: 10px;
             position: absolute;
             height: 50px;
-            font-size: 100%;
+            font-size: 130%;
         }
-        
+        /*
         .leaflet-control-container .leaflet-top .leaflet-right {
             margin: 0 auto !important;
             clear: none !important;
@@ -1297,11 +1344,6 @@
         .ORS-mainPanel {
             width: calc(100% - 41px) !important;
         }
-        /*.ORS-logo {
-            /* GIScience Logo */
-            /*bottom: 25px;
-            right: calc(100vw - 60%);
-        }*/
         .leaflet-bottom .leaflet-control-scale {
             /* for scale controller */
             display: none;
@@ -1323,78 +1365,111 @@
     /* *****************************************************************/
     /* START OF PRINTING STYLES (MEDIA QUERIES FOR PRINTING THE PAGE)  */
     /* *****************************************************************/
-
+	@media screen {
+		.print-only-header{
+			display:none;
+		}
+	}
+	
 	@media print {
-		.ORS-navigation, .ORS-menuPanel, .disclaimer, .ORS-header, .ORS-map, div[id="routingPanel ORS-panel"], #routeInstructionHead, #printRouteInstructions{
+		
+		.ORS-navigation, .ORS-header, .ORS-menuPanel, .disclaimer, .ORS-header, .ORS-map, div[id="routingPanel ORS-panel"], #routeInstructionHead, #printRouteInstructions{
             display: none;
         }
-		@page {
-			margin-top:1cm;
-			margin-bottom:1cm;
-			margin-left:1.5cm;
-			margin-right:1cm;
+		
+		.print-only-header{
+			display: inline-block;
+			position: fixed;
+			margin: 0 auto;
+			line-height: 25px;
+			justify-content: center;
+			/* align horizontal */
+			align-items: center;
+			font-size: 180%;
+			text-decoration: none;
+			font-family: 'Roboto', sans-serif;
+			padding-left: 5em;
+			letter-spacing: 1.5px;
 		}
 		
-		@bottom-left-corner {
-				margin: 10pt 0 30pt 0;
-				border-top: .25pt solid #666;
-				content: "My book";
-				font-size: 9pt;
-				color: #333;
-		
+		.print-only-header img {
+			margin:0 auto;
+			padding-left: -3em;
+			/*-webkit-filter: invert(100%); 
+			filter: invert(100%);*/
+			width: 10em;
+			height:5em;
 		}
 		
 		
+		.ORS {
+			float: none !important;
+			/*height: auto;*/
+			/*page-break-before: always;
+			page-break-inside:avoid;
+			page-break-after: always;*/
+		}
+
 		.ORS-main {
-            flex-direction: column;
+            /*flex-direction: column;*/
+			top: 0;
         }
 		
 		.ORS-sidebar {
-            order: 1;
-            flex-basis: 100vh;
-			overflow: visible;
-			float:none;
+			width: 100vw;
+			display: inline-block;
+            /*order: 1;
+            flex-basis: 100vh;*/
+			/*height: auto;*/
+			/*display:flex;*/
+			top:100px;
         }
 		
 		.ORS-navigation {
 			width: 100vw;
-			overflow: visible;
-			float:none;
 		}
 	
-
 		.ORS-mainPanel {
-			width: 100%;
+			width: 100vw;
 			border-left: 1px solid transparent;
-			overflow: visible;
-			float:none;
 		}
 		
-		#directionsMainContainer {
-			font-size: 15pt !important;
+		.ORS-panelSub {
+			font-size: 30pt !important;	
+		}
+		
+		#routeInstructionsContainer{
+			page-break-before: avoid;
+			page-break-inside:auto;
+			page-break-after: avoid;
+			height: auto;
 			overflow: visible !important;
-			float:none !important;
-			display:block !important;
-			height: 100% !important;
+		}
+		#directionsMainContainer {
+			font-size: 15pt !important;	
+			/*page-break-before: avoid;
+			page-break-inside:auto;
+			page-break-after: avoid;*/
 			
 		}
 		.directions-summary-container{
 			margin: 0 auto;
-			overflow: visible;
-			float:none;
-		}
-		.directions-container: {
-			height: 20pt;
-			overflow: visible;
-			float:none;
 		}
 
 		#directionsMainContainer div[class="directions-container clickable"] .address .submain {
 			font-size: 12pt;
-			overflow: visible;
-			float:none;
+
 		}
     }
+	
+	@page {
+			margin-top:1cm;
+			margin-bottom:1cm;
+			margin-left:1.5cm;
+			margin-right:1cm;
+			
+	}
+
     /* ***************************************************************/
     /* END OF PRINTING STYLES (MEDIA QUERIES FOR PRINTING THE PAGE)  */
     /* ***************************************************************/

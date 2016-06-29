@@ -34,9 +34,18 @@
     </head>
     <body class="ORS">
         <!-- START OF HEADER SECTION -->
+		<div class="print-only-header" > 
+			<img src="img/logo_unihd_2.png">
+			OpenRouteService
+		</div>
         <header class="ORS-header">
             <a href="http://www.geog.uni-heidelberg.de/giscience.html" id="ORS-headIcon"></a>
             <a href="http://www.openrouteservice.org" id="ORS-title">OpenRouteService</a>
+			<!-- MENU BUTTON FOR MOBILE VERSION -->
+			<div id="HeaderOptionsMenuButtonMobile">
+                <i class="fa fa-ellipsis-v"></i>
+            </div>
+			<!-- END OF MENU BUTTON FOR MOBILE VERSION -->
             <ul id="ORS-topMenu">
                 <li>
                     <a data-toggle="modal" href="#feedbackModal" id="ORS-menuLinkFeedback">
@@ -61,6 +70,31 @@
         <!-- END OF HEADER SECTION -->
         <!-- START OF MAIN SECTION -->
         <div class="ORS-main">
+			<div id="HeaderOptionsMenuMobile" style="display:none">
+				<ul id="ORS-topMenuMobile">
+					<li>
+						<a data-toggle="modal" href="#feedbackModal" id="ORS-menuLinkFeedback">
+							<i class="fa fa-comment" id="feedbackContentMenu" data-container="body" id="feedbackContentMenu" type="button" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Feedback">
+							</i>
+							<span>Feedback</span>
+						</a>
+					</li>
+					<li>
+						<a data-toggle="modal" href="#sitePrefsModal" id="ORS-menuLinkSitePrefs">
+							<i class="fa fa-cogs" id="sitePrefsMenu" data-container="body" data-toggle="tooltip" data-placement="bottom" data-original-title="Site Preferences">
+							</i>
+							<span>User preferences</span>
+						</a>
+					</li>
+					<li>
+						<a href="contact.html#top" id="ORS-menuLinkInfo" target="_blank">
+							<i class="fa fa-info" id="contactMenu" data-container="body" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Contact info">
+							</i>
+							<span>Info & contacts</span>
+						</a>
+					</li>
+				</ul> 
+			</div>
             <div class="ORS-sidebar" id="sidebar">
                 <!-- sidebar content -->
                 <div class="ORS-menuPanel" id="menuPanel">
