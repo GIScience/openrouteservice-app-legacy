@@ -87,25 +87,20 @@ var Map = (function() {
             position: 'topright',
             separator: ', '
         });
-        if (screen.width>=320 && screen.width<=720){
-            
-            MousePosition.remove();        
-        }
-        else {
+        if (screen.width >= 320 && screen.width <= 720) {
+            MousePosition.remove();
+        } else {
             MousePosition.addTo(this.theMap);
         }
         /* ZOOM CONTROL */
         var ZoomControl = new L.Control.Zoom({
             position: 'topright'
         });
-
-        if (screen.width>=320 && screen.width<=720){
-            ZoomControl.remove();        
-        }
-        else {
+        if (screen.width >= 320 && screen.width <= 720) {
+            ZoomControl.remove();
+        } else {
             ZoomControl.addTo(this.theMap);
         }
-
         /* LOCATE CONTROL */
         function onLocationFound(e) {
             $('.leaflet-popup-content').remove();
@@ -161,15 +156,14 @@ var Map = (function() {
             },
         });
         this.theMap.addControl(new NavMenuToggle());
-        
         /* AVOID AREA CONTROLLER */
         L.NewPolygonControl = L.Control.extend({
             options: {
                 position: 'topright'
             },
             onAdd: function(map) {
-                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-avoidArea',container),
-                link = L.DomUtil.create('a', 'leaflet-avoidAreaContainer', container);
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-avoidArea', container),
+                    link = L.DomUtil.create('a', 'leaflet-avoidAreaContainer', container);
                 link.href = '#';
                 link.title = 'Create a new polygon';
                 link.innerHTML = '▱';
@@ -684,12 +678,19 @@ var Map = (function() {
     }
     /**
      * highlight given feature vectors defined by their ids
-     * @param [list] arr: layer of the map and array of vectorIds
+     * @param [list] layerIds: layer of the map and vectorId or array of vectorIds
      */
-    function highlightFeatures(arr) {
-        for (var i = 0; i < arr[1].length; i++) {
-            this[arr[0]].getLayer(arr[1][i]).bringToFront();
-            this[arr[0]].getLayer(arr[1][i]).setStyle({
+    function highlightFeatures(layerIds) {
+        if (layerIds[1].constructor === Array) {
+            for (var i = 0; i < layerIds[1].length; i++) {
+                this[layerIds[0]].getLayer(layerIds[1][i]).bringToFront();
+                this[layerIds[0]].getLayer(layerIds[1][i]).setStyle({
+                    opacity: 0.85,
+                });
+            }
+        } else {
+            this[layerIds[0]].getLayer(layerIds[1]).bringToFront();
+            this[layerIds[0]].getLayer(layerIds[1]).setStyle({
                 opacity: 0.85,
             });
         }
@@ -698,10 +699,17 @@ var Map = (function() {
      * reset highlight given feature vectors defined by their ids
      * @param [list] arr: layer of the map and array of vectorIds
      */
-    function resetFeatures(arr) {
-        for (var i = 0; i < arr[1].length; i++) {
-            this[arr[0]].getLayer(arr[1][i]).bringToBack();
-            this[arr[0]].getLayer(arr[1][i]).setStyle({
+    function resetFeatures(layerIds) {
+        if (layerIds[1].constructor === Array) {
+            for (var i = 0; i < layerIds[1].length; i++) {
+                this[layerIds[0]].getLayer(layerIds[1][i]).bringToBack();
+                this[layerIds[0]].getLayer(layerIds[1][i]).setStyle({
+                    opacity: 0,
+                });
+            }
+        } else {
+            this[layerIds[0]].getLayer(layerIds[1]).bringToBack();
+            this[layerIds[0]].getLayer(layerIds[1]).setStyle({
                 opacity: 0,
             });
         }
@@ -720,7 +728,7 @@ var Map = (function() {
             if (marker) {
                 if (emph) {
                     //emphasize feature
-                    if (layer == 'layerRoutePoints') {
+                    if (layer == 'layerCornerPoints') {
                         marker.setIcon(marker.options.icon_emph);
                     } else if (layer == 'layerRouteLines') {
                         marker.setStyle({
@@ -729,7 +737,7 @@ var Map = (function() {
                         });
                     }
                 } else {
-                    if (layer == 'layerRoutePoints') {
+                    if (layer == 'layerCornerPoints') {
                         marker.setIcon(marker.options.icon_orig);
                     } else if (layer == 'layerRouteLines') {
                         marker.setStyle({
@@ -1139,7 +1147,7 @@ var Map = (function() {
      * zooms the map so that the whole route becomes visible (i.e. all features of the route line layer)
      */
     function zoomToRoute() {
-        this.theMap.fitBounds(this.layerRoutePoints.getBounds());
+        this.theMap.fitBounds(this.layerRouteLines.getBounds());
     }
     /*
      * AVOID AREAS
