@@ -1243,28 +1243,42 @@
 		
 		#HeaderOptionsMenuMobile{
 			float:right !important;
-			display: inline-block;
 			right:0;
 			position: fixed;
-			z-index: 9999;
+			z-index: 9998;
 			background-color: #F0F0F0;
-			
 		}
 		
 		#HeaderOptionsMenuMobile ul{
-        /* Style for individual elements on ORS menu on top right side */
 			line-height: 30px;
 			color: #F0F0F0;
 			font-size: 15px;
 			list-style-type: none;
-			
+			padding: 0;
+			margin: 0;
 		}
 		
 		#HeaderOptionsMenuMobile ul li {
 			border: 1px solid #CCC;
 			float: left;
 			color: #F0F0F0;
-			display: block;
+			width:100%;
+		}
+		
+		#HeaderOptionsMenuMobile ul li a span {
+			float: left;
+			color: black;
+			text-align: center;
+			width:calc(100% - 30px);
+		}
+		
+		#HeaderOptionsMenuMobile ul li a i {
+			float: left;
+			color: black;
+			width: 30px;
+			height: 30px;
+			line-height:30px;
+			text-align: center;
 		}
 		
 		#ORS-topMenu{
@@ -1373,7 +1387,15 @@
 	
 	@media print {
 		
-		.ORS-navigation, .ORS-header, .ORS-menuPanel, .disclaimer, .ORS-header, .ORS-map, div[id="routingPanel ORS-panel"], #routeInstructionHead, #printRouteInstructions{
+		@page {
+			margin-top:1cm;
+			margin-bottom:1cm;
+			margin-left:1.5cm;
+			margin-right:1cm;
+			
+		}
+			
+		.ORS-navigation, .ORS-header, .ORS-menuPanel, .disclaimer, .ORS-header, .ORS-map, div[id="routingPanel ORS-panel"], #routeInstructionHead, #printRouteInstructions, #HeaderOptionsMenuButtonMobile, #HeaderOptionsMenuMobile{
             display: none;
         }
 		
@@ -1462,13 +1484,7 @@
 		}
     }
 	
-	@page {
-			margin-top:1cm;
-			margin-bottom:1cm;
-			margin-left:1.5cm;
-			margin-right:1cm;
-			
-	}
+	
 
     /* ***************************************************************/
     /* END OF PRINTING STYLES (MEDIA QUERIES FOR PRINTING THE PAGE)  */
