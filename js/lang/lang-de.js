@@ -25,7 +25,7 @@ var lang_de = {
 	//Routing
 	'planRoute':  'Route planen',
 	'calculatingRoute':  'Route wird berechnet...',
-	'noRouteAvailable' :  'Leider konnte keine Route zwischen den gew&auml;hlten Punkten berechnet werden. Bitte w&auml;hlen Sie Ihre Punkte in der N&auml;he eines Weges.',
+	'noRouteAvailable' :  'Leider konnte keine Route zwischen den gew&auml;hlten Punkten berechnet werden. Bitte w&auml;hlen Sie Ihre Punkte in der N&auml;he eines (f&uuml;r Ihre Einstellungen geeigneten) Weges.',
 	'routeFromTo' :  'Route nach ',
 	'resetRoute' :  'Gesamte Route l&ouml;schen ',
 	'TotalTime':  'Gesamte Reisezeit',

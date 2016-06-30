@@ -24,7 +24,7 @@ var lang_en = {
     'test': 'scheiss',
     'planRoute': 'Plan route',
     'calculatingRoute': 'Calculating Route...',
-    'noRouteAvailable': 'Sorry, no route was found between the selected points. Please choose your points closer to a road.',
+    'noRouteAvailable': 'Sorry, no route was found between the selected points. Please choose your points closer to a road (that is traversable based your route preferences).',
     'routeFromTo': 'Route to ',
     'resetRoute': 'Reset whole route',
     'TotalTime': 'Total time',
