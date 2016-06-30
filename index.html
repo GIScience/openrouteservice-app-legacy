@@ -727,12 +727,12 @@
                                         Route instructions
                                     </div>
                                     <div class="collapsibleBody" id="routeInstructions">
-                                        <div class="right">
+                                        <!-- div class="right">
                                             <button class="btn  ORS-BtnPrimary transparent" id="printRouteInstructions" title="Print Route Instructions" type="button">
                                                 <i class="fa fa-print">
                                                 </i>
                                             </button>
-                                        </div>
+                                        </div> -->
                                         <div class="directions-main" id="directionsMainContainer">
                                         </div>
                                     </div>
@@ -766,7 +766,7 @@
                                         </span>
                                     </td>
                                     <td>                                        
-                                    	<input class="form-control input-sm" id="accessibilityDistance" type="number" value="15" min="0"/>
+                                    	<input class="form-control input-sm" id="accessibilityDistance" type="number" min="1" max="30" placeholder="min: 1, max: 30" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -776,7 +776,7 @@
                                         </span>
                                     </td>
                                     <td>
-                                    	<input class="form-control input-sm" id="accessibilityAnalysisIsochronesIntervall" type="number" value="3"/>
+                                    	<input class="form-control input-sm" id="accessibilityAnalysisIsochronesIntervall" placeholder="must be smaller than distance" type="number" min="1" value="3"/>
                                     </td>
                                 </tr>
                             </table>
@@ -874,15 +874,15 @@
                 </div>
                <!-- Popup for avoid regions -->
                 <div class="alert alert-info ORS-alert alert-dismissible" role="alert" id="avoidables_info">
-  					<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  					<button type="button" class="close" aria-label="Close"><span aria-hidden="true" data-hide="avoidables_info">&times;</span></button>
 				</div>
                 <!-- Popup for service timeouts -->
                  <div class="alert alert-danger ORS-alert alert-dismissible" role="alert" id="serviceTimeout">
-  					<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  					<button type="button" class="close" aria-label="Close"><span aria-hidden="true" data-hide="serviceTimeout">&times;</span></button>
 				</div>
                 <!-- Popup for new to ORS -->
                 <div class="alert alert-info ORS-alert alert-dismissible" role="alert" id="newToOrs">
-  					<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  					<button type="button" class="close" aria-label="Close"><span aria-hidden="true" data-hide="newToOrs">&times;</span></button>
 				</div>
             </div>
         </div>

@@ -771,7 +771,7 @@ var Ui = (function(w) {
         // hide summary container
         $('#routeTypesContainer').parent().hide();
         // remove elevation control
-        map.removeElevationControl();   
+        map.removeElevationControl();
         //remove markers on map
         theInterface.emit('ui:resetRoute');
         //remove all existing waypoints
@@ -1775,7 +1775,7 @@ var Ui = (function(w) {
      * @param mapFeatureIds: list of IDs of Leaflet elements containing BOTH - ids for route line segments AND corner points: [routeLineSegment_0, cornerPoint_0, routeLineSegment_1, cornerPoint_1,...]
      * @param mapLayer: map layer containing these features
      */
-    function updateRouteInstructions(results, mapFeatureIds, mapLayer) {
+    function updateRouteInstructions(results, mapFeatureIds, mapLayers) {
         var container, directionsContainer;
         if (!results) {
             container = $('#routeInstructionsContainer').get(0);
@@ -1808,14 +1808,14 @@ var Ui = (function(w) {
             var startpoint = waypoints[0];
             var endpoint = waypoints[(waypoints.length) - 1];
             //add startpoint
-            directionsContainer = buildWaypoint('layerRoutePoints', 'start', startpoint, 0);
+            directionsContainer = buildWaypoint(mapLayers[1], 'start', startpoint, 0);
             directionsMain.appendChild(directionsContainer);
             // container for all direction instructions
             $A(instructionsList).each(function(instruction) {
                 var directionCode = util.getElementsByTagNameNS(instruction, namespaces.xls, 'DirectionCode')[0];
                 directionCode = directionCode.textContent;
                 if (directionCode == '100') {
-                    directionsContainer = buildWaypoint('layerRoutePoints', 'via', waypoints[numStopovers], numStopovers, stopoverDistance, stopoverTime);
+                    directionsContainer = buildWaypoint(mapLayers[1], 'via', waypoints[numStopovers], numStopovers, stopoverDistance, stopoverTime);
                     directionsMain.appendChild(directionsContainer);
                     totalDistance += stopoverDistance;
                     totalTime += stopoverTime;
@@ -1909,7 +1909,7 @@ var Ui = (function(w) {
                     //add DOM elements
                     directionsContainer = new Element('div', {
                         'class': 'directions-container',
-                        'data-layer': mapLayer,
+                        'data-layer': mapLayers[0],
                     });
                     var directionsImgDiv = new Element('div', {
                         'class': 'img'
@@ -1919,18 +1919,19 @@ var Ui = (function(w) {
                     }
                     var directionTextDiv = new Element('div', {
                         'class': 'text clickable routeInstructions',
-                        'id': mapFeatureIds[2 * (numInstructions - 1) + 1]
+                        'id': mapFeatureIds[2 * (numInstructions - 1)]
                     }).update(text);
                     // modeContainer
                     var directionsModeContainer = new Element('div', {
-                        'class': 'mode-container'
+                        'class': 'mode-container',
+                        'data-layer': mapLayers[1]
                     });
                     var directionsBorder = new Element('div', {
                         'class': 'line'
                     });
                     var distanceDiv = new Element('div', {
                         'class': 'distance clickable',
-                        'id': mapFeatureIds[2 * (numInstructions - 1)],
+                        'id': mapFeatureIds[2 * (numInstructions - 1) + 1],
                     }).update(distArr[1] + ' ' + distArr[2]);
                     directionsContainer.appendChild(directionsImgDiv);
                     directionsContainer.appendChild(directionTextDiv);
@@ -1974,17 +1975,17 @@ var Ui = (function(w) {
                     directionsContainer.appendChild(directionsModeContainer);
                     directionsMain.appendChild(directionsContainer);
                     //mouseover for points and lines
-                    $(distanceDiv).mouseover(handleMouseOverDist);
-                    $(distanceDiv).mouseout(handleMouseOutDist);
-                    $(directionTextDiv).mouseover(handleMouseOverText);
-                    $(directionTextDiv).mouseout(handleMouseOutText);
-                    $(distanceDiv).click(handleClickRouteInstr);
-                    $(directionTextDiv).click(handleClickRouteCorner);
+                    $(distanceDiv).mouseover(handleMouseOver);
+                    $(distanceDiv).mouseout(handleMouseOut);
+                    $(directionTextDiv).mouseover(handleMouseOver);
+                    $(directionTextDiv).mouseout(handleMouseOut);
+                    $(distanceDiv).click(handleClickRouteCorner);
+                    $(directionTextDiv).click(handleClickRouteInstr);
                 }
             });
             totalDistance += stopoverDistance;
             totalTime += stopoverTime;
-            directionsContainer = buildWaypoint('layerRoutePoints', 'end', endpoint, getWaypoints().length - 1, stopoverDistance, stopoverTime);
+            directionsContainer = buildWaypoint(mapLayers[1], 'end', endpoint, getWaypoints().length - 1, stopoverDistance, stopoverTime);
             directionsMain.appendChild(directionsContainer);
             return distArrAll;
         }
@@ -2049,46 +2050,22 @@ var Ui = (function(w) {
     /**
      * called when the user moves over the distance part of a route instruction. Triggers highlighting the corresponding route part
      */
-    function handleMouseOverDist(e) {
+    function handleMouseOver(e) {
         e.currentTarget.addClassName('active');
-        var parent = $(e.currentTarget).parent().parent().get(0);
-        theInterface.emit('ui:emphElement', {
-            id: e.currentTarget.getAttribute('id'),
-            layer: parent.getAttribute('data-layer')
-        });
+        var parent = $(e.currentTarget).parent().get(0);
+        var id = e.currentTarget.getAttribute('id');
+        var layer = parent.getAttribute('data-layer');
+        handleHighlightTypes(id, layer);
     }
     /**
      * called when the user moves out of the distance part of a route instruction. Triggers un-highlighting the corresponding route part
      */
-    function handleMouseOutDist(e) {
-        e.currentTarget.removeClassName('active');
-        var parent = $(e.currentTarget).parent().parent().get(0);
-        theInterface.emit('ui:deEmphElement', {
-            id: e.currentTarget.getAttribute('id'),
-            layer: parent.getAttribute('data-layer')
-        });
-    }
-    /**
-     * called when the user moves over the instruction part of the route instruction. Trigger highlighting the corresponding route point
-     */
-    function handleMouseOverText(e) {
-        e.currentTarget.addClassName('active');
-        var parent = $(e.currentTarget).parent().get(0);
-        theInterface.emit('ui:emphElement', {
-            id: e.currentTarget.getAttribute('id'),
-            layer: parent.getAttribute('data-layer')
-        });
-    }
-    /**
-     * called when the user moves out of the instruction part of a route instruction. Triggers un-highlighting the corresponding route point
-     */
-    function handleMouseOutText(e) {
+    function handleMouseOut(e) {
         e.currentTarget.removeClassName('active');
         var parent = $(e.currentTarget).parent().get(0);
-        theInterface.emit('ui:deEmphElement', {
-            id: e.currentTarget.getAttribute('id'),
-            layer: parent.getAttribute('data-layer')
-        });
+        var id = e.currentTarget.getAttribute('id');
+        var layer = parent.getAttribute('data-layer');
+        handleResetTypes(id, layer);
     }
     /**
      * when the way or surface types are clicked highlight segments on map
@@ -2992,14 +2969,21 @@ var Ui = (function(w) {
      */
     function handleAnalyzeAccessibility() {
         var distance = $('#accessibilityDistance').val();
+        var interval = $('#accessibilityAnalysisIsochronesIntervall').val();
         var position = $('.guiComponent.waypoint.start .address').attr('data-position');
         if (!position) {
-            var position = $('.guiComponent.waypoint.end .address').attr('data-position');
+            position = $('.guiComponent.waypoint.end .address').attr('data-position');
         }
-        theInterface.emit('ui:analyzeAccessibility', {
-            distance: distance,
-            position: position
-        });
+        // check if values are supported by backend
+        if (parseInt(distance) > 0 && parseInt(distance) < 30 && parseInt(interval) < parseInt(distance)) {
+            showAccessibilityError();
+            theInterface.emit('ui:analyzeAccessibility', {
+                distance: distance,
+                position: position
+            });
+        } else {
+            showAccessibilityError(true);
+        }
     }
     /**
      * shows a spinner during accessibility analysis calculation
@@ -3478,127 +3462,4 @@ Ui.markerIcons = {
         color: "#83e",
         size: "m"
     })
-};
-//icons for POI markers on map
-Ui.poiIcons = {
-    poi_9pin: 'img/poi/9pin.png',
-    poi_10pin: 'img/poi/10pin.png',
-    poi_archery: 'img/poi/archeery.png',
-    //poi_arts_center : 'img/poi/arts_center.png',
-    poi_athletics: 'img/poi/athletics.png',
-    poi_atm: 'img/poi/atm.png',
-    //poi_attraction : 'img/poi/attraction.png',
-    poi_australian_football: 'img/poi/australian_football.png',
-    poi_bakery: 'img/poi/bakery.png',
-    poi_bank: 'img/poi/bank.png',
-    poi_baseball: 'img/poi/baseball.png',
-    poi_basketball: 'img/poi/basketball.png',
-    poi_beachvolleyball: 'img/poi/beachvolleyball.png',
-    //poi_bicycle_parking : img/poi/bicycle_parking.png',
-    poi_biergarten: 'img/poi/biergarten.png',
-    poi_boules: 'img/poi/boules.png',
-    poi_bowls: 'img/poi/bowls.png',
-    poi_bureau_de_change: 'img/poi/bureau_de_change.png',
-    poi_bus_station: 'img/poi/bus_station.png',
-    poi_bus_stop: 'img/poi/bus_stop.png',
-    poi_butcher: 'img/poi/butcher.png',
-    poi_cafe: 'img/poi/cafe.png',
-    //poi_camp_site : 'img/poi/camp_site.png',
-    poi_canoe: 'img/poi/canoe.png',
-    //poi_castle : 'img/poi/castle.png',
-    poi_chess: 'img/poi/chess.png',
-    //poi_church : 'img/poi/church.png',
-    poi_cinema: 'img/poi/cinema.png',
-    poi_climbing: 'img/poi/climbing.png',
-    poi_college: 'img/poi/college.png',
-    poi_convenience: 'img/poi/convenience.png',
-    poi_courthouse: 'img/poi/courthouse.png',
-    poi_cricket: 'img/poi/cricket.png',
-    poi_cricket_nets: 'img/poi/cricket_nets.png',
-    poi_croquet: 'img/poi/croquet.png',
-    poi_cycling: 'img/poi/cycling.png',
-    poi_diving: 'img/poi/diving.png',
-    poi_dog_racing: 'img/poi/dog_racing.png',
-    poi_equestrian: 'img/poi/equestrian.png',
-    poi_fast_food: 'img/poi/fast_food.png',
-    //poi_fire_station : 'img/poi/fire_station.png',
-    poi_fishing: 'img/poi/fishing.png',
-    poi_football: 'img/poi/football.png',
-    poi_fuel: 'img/poi/fuel.png',
-    poi_garden: 'img/poi/garden.png',
-    poi_golf: 'img/poi/golf.png',
-    poi_golf_course: 'img/poi/golf.png',
-    poi_guest_house: 'img/poi/guest_house.png',
-    poi_gymnastics: 'img/poi/gymnastics.png',
-    poi_hockey: 'img/poi/hockey.png',
-    poi_horse_racing: 'img/poi/horse_racing.png',
-    poi_hospital: 'img/poi/hospital.png',
-    poi_hostel: 'img/poi/hostel.png',
-    poi_hotel: 'img/poi/hotel.png',
-    poi_ice_rink: 'img/poi/ice_rink.png',
-    poi_information: 'img/poi/information.png',
-    poi_kiosk: 'img/poi/kiosk.png',
-    poi_korfball: 'img/poi/korfball.png',
-    poi_library: 'img/poi/library.png',
-    poi_marina: 'img/poi/marina.png',
-    //poi_memorial : 'img/poi/memorial.png',
-    poi_miniature_golf: 'img/poi/miniature_golf.png',
-    //poi_monument : 'img/poi/monument.png',
-    poi_motel: 'img/poi/motel.png',
-    poi_motor: 'img/poi/motor.png',
-    //poi_museum : 'img/poi/museum.png',
-    poi_nature_reserve: 'img/poi/nature_reserve.png',
-    poi_nightclub: 'img/poi/nightclub.png',
-    poi_orienteering: 'img/poi/orienteering.png',
-    poi_paddle_tennis: 'img/poi/tennis.png',
-    poi_paragliding: 'img/poi/paragliding.png',
-    poi_park: 'img/poi/park.png',
-    poi_parking: 'img/poi/parking.png',
-    poi_pelota: 'img/poi/pelota.png',
-    poi_pharmacy: 'img/poi/pharmacy.png',
-    poi_pitch: 'img/poi/pitch.png',
-    poi_place_of_worship: 'img/poi/church.png',
-    poi_playground: 'img/poi/playground.png',
-    poi_police: 'img/poi/police.png',
-    poi_post_box: 'img/poi/post_box.png',
-    poi_post_office: 'img/poi/post_office.png',
-    poi_pub: 'img/poi/pub.png',
-    poi_public_building: 'img/poi/public_building.png',
-    poi_raquet: 'img/poi/racquet.png',
-    poi_railway_station: 'img/poi/railway_station.png',
-    //poi_recreation : 'img/poi/recreation.png',
-    //poi_recycling : 'img/poi/recycling.png',
-    poi_restaurant: 'img/poi/restaurant.png',
-    poi_rowing: 'img/poi/rowing.png',
-    poi_rugby: 'img/poi/rugby.png',
-    poi_school: 'img/poi/school.png',
-    //poi_shelter : 'img/poi/shelter.png',
-    poi_shooting: 'img/poi/shooting.png',
-    poi_skateboard: 'img/poi/skateboard.png',
-    poi_skating: 'img/poi/skating.png',
-    poi_skiing: 'img/poi/skiing.png',
-    poi_slipway: 'img/poi/slipway.png',
-    poi_soccer: 'img/poi/soccer.png',
-    poi_sports_center: 'img/poi/sports_centre.png',
-    poi_squash: 'img/poi/squash.png',
-    poi_stadium: 'img/poi/stadium.png',
-    poi_subway_entrance: 'img/poi/subway_entrance.png',
-    poi_supermarket: 'img/poi/supermarket.png',
-    poi_swimming: 'img/poi/swimming.png',
-    poi_table_tennis: 'img/poi/table_tennis.png',
-    poi_taxi: 'img/poi/taxi.png',
-    poi_team_handball: 'img/poi/team_handball.png',
-    poi_telephone: 'img/poi/telephone.png',
-    poi_tennis: 'img/poi/tennis.png',
-    poi_theatre: 'img/poi/theatre.png',
-    poi_toilets: 'img/poi/toilets.png',
-    poi_townhall: 'img/poi/townhall.png',
-    poi_track: 'img/poi/track.png',
-    poi_tram_stop: 'img/poi/tram_stop.png',
-    poi_university: 'img/poi/university.png',
-    poi_viewpoint: 'img/poi/viewpoint.png',
-    poi_volleyball: 'img/poi/volleyball.png',
-    poi_water_park: 'img/poi/water_park.png',
-    //default icon
-    poi_default: 'img/poi/building_number.png'
 };

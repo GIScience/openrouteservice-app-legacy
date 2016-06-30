@@ -439,18 +439,18 @@ var Controller = (function(w) {
     }
     /**
      * way or surface types are clicked
-     * @param [list] arr: contains ids and layer
+     * @param [list] arr: contains ids / id and layer
      */
-    function handleHighlightTypes(arr) {
-        map.highlightFeatures(arr);
+    function handleHighlightTypes(layerIds) {
+        map.highlightFeatures(layerIds);
     }
     /**
      * reset styles
      * @param [list] arr: contains ids and layer
      
      */
-    function handleResetTypes(arr) {
-        map.resetFeatures(arr);
+    function handleResetTypes(layerIds) {
+        map.resetFeatures(layerIds);
     }
     /**
      * map is zoomed to the selected part of the route (route instruction)
@@ -863,7 +863,8 @@ var Controller = (function(w) {
                 var featureIds = map.updateRoute(routeLinestring, cornerPoints, routePref);
                 var errors = route.hasRoutingErrors(results);
                 if (!errors) {
-                    var totalDistance = ui.updateRouteInstructions(results, featureIds, 'layerRouteLines');
+                    var mapLayers = ['layerRouteLines', 'layerCornerPoints'];
+                    var totalDistance = ui.updateRouteInstructions(results, featureIds, mapLayers);
                     var elevation = ui.updateRouteSummary(results);
                     if ($.inArray(routePref, list.elevationProfiles) >= 0) {
                         // Surface and waytype information
@@ -874,7 +875,7 @@ var Controller = (function(w) {
                             if (routePoints.length > 2) {
                                 routePoints.shift();
                                 routePoints.pop();
-                                viaPoints = routePoints;
+                                viaPointsx = routePoints;
                             }
                             map.updateHeightprofiles(routeLineString, viaPoints);
                         }
