@@ -2174,6 +2174,7 @@ var Ui = (function(w) {
     function handlePrintRouteInstructionsClick() {
 		window.print();
     }
+	
     /* *********************************************************************
      * ROUTE OPTIONS
      * *********************************************************************/
