@@ -386,5 +386,32 @@ var lang_es = {
     'Sand': 'Arena',
     'Woodchips': 'Astillas de madera',
     'Grass': 'Césped',
-    'GrassPaver': 'Pavimentadora hierba'
+    'GrassPaver': 'Pavimentadora hierba',
+
+    //Tooltips
+    'optimizeWP': 'Optimizar puntos de ruta',
+    'reorderWP': 'Cambiar el orden de los waypoints',
+    'reset': 'Restablecer la ruta',
+    'zoom': 'Zoom en ruta',
+    'analyzeAccess': 'Calcular la accesibilidad',
+    'removeAccess': 'Retirar',
+    'exportGPX': 'Descargar de la ruta actual en formato GPX',
+    'importGPX': 'Sube múltiples pistas de archivo GPX',
+    'tt-ascent': 'Ascenso',
+    'tt-descent': 'Descendencia',
+    'tt-time': 'Hora',
+    'tt-distance': 'Distancia',
+    'tt-actdistance': 'Distancia real',
+    'tt-route' : 'Ruta',
+    'tt-access' : 'Accesibilidad',
+    'tt-cloud' : 'Import/ Export',
+    'tt-feedback' : 'Realimentación',
+    'tt-car' : 'Coche',
+    'tt-bicycle' : 'Bicicleta',
+    'tt-pedestrian' :'Peatonal',
+    'tt-wheelchair' : 'Accesible',
+    'tt-heavyvehicle' : 'Vehículo pesado',
+    'tt-optionsMenu' : 'Opciones',
+    'tt-sitePref' : 'Preferencias de sitio',
+    'tt-contactInfo': 'Información de contacto'
 };

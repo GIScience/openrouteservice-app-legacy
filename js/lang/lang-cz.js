@@ -385,5 +385,32 @@ var lang_cz = {
     'Sand': 'Písek',
     'Woodchips': 'Dřevní štěpka',
     'Grass': 'Tráva',
-    'GrassPaver': 'Tráva dlaždič'
+    'GrassPaver': 'Tráva dlaždič',
+
+      //Tooltips
+    'optimizeWP': 'Optimalizovaná cesta bod',
+    'reorderWP': 'Objednací cesta bod',
+    'reset': 'Resetování trasa',
+    'zoom': 'Zoom na trase',
+    'analyzeAccess': 'Vypočítat přístupnosti',
+    'removeAccess': 'Odstranit',
+    'exportGPX': 'Stažení aktuální trasy ve formátu GPX',
+    'importGPX': 'Nahrát více skladeb z GPX souboru',
+    'tt-ascent': 'Výstup',
+    'tt-descent': 'Klesání',
+    'tt-time': 'čas',
+    'tt-distance': 'Vzdálenost',
+    'tt-actdistance': 'Skutečná vzdálenost',
+    'tt-route' : 'Trasa',
+    'tt-access' : 'Přístupnost',
+    'tt-cloud' : 'Import/ Export',
+    'tt-feedback' : 'Zpětná vazba',
+    'tt-car' : 'Auto',
+    'tt-bicycle' : 'Jízdní kolo',
+    'tt-pedestrian' :'Pěší',
+    'tt-wheelchair' : 'Přístupný',
+    'tt-heavyvehicle' : 'Těžkých vozidel',
+    'tt-optionsMenu' : 'Možnosti',
+    'tt-sitePref' : 'Preference místě',
+    'tt-contactInfo': 'Kontaktní informace'
 };			

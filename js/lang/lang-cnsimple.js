@@ -391,5 +391,32 @@ var lang_cnsimple = {
     'Sand': '砂',
     'Woodchips': '木屑',
     'Grass': '草',
-    'GrassPaver': '草摊铺机'
+    'GrassPaver': '草摊铺机',
+
+    //Tooltips
+    'optimizeWP': '优化航点',
+    'reorderWP': '航点重新排序',
+    'reset': '复位路由',
+    'zoom': '缩放到路线',
+    'analyzeAccess': '无障碍计算',
+    'removeAccess': '去掉',
+    'exportGPX': '在GPX格式当前路线下载',
+    'importGPX': '上传GPX从文件中的多个音轨',
+    'tt-ascent': '上升',
+    'tt-descent': '降落',
+    'tt-time': '时间',
+    'tt-distance': '距离',
+    'tt-actdistance': '实际距离',
+    'tt-route' : '路线',
+    'tt-access' : '无障碍',
+    'tt-cloud' : '进口/ 出口',
+    'tt-feedback' : '反馈',
+    'tt-car' : '汽车',
+    'tt-bicycle' : '自行车',
+    'tt-pedestrian' :'行人',
+    'tt-wheelchair' : '无障碍',
+    'tt-heavyvehicle' : '重型车辆',
+    'tt-optionsMenu' : '选项',
+    'tt-sitePref' : '网站首选项',
+    'tt-contactInfo': '联系信息'
 };
