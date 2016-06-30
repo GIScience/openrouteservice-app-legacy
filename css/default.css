@@ -1400,7 +1400,6 @@
 		.print-only-header{
 			display: block;
 			position: relative;
-			margin: 0 auto;
 			line-height: 25px;
 			justify-content: center;
 			align-items: center;
@@ -1409,8 +1408,9 @@
 			font-family: 'Roboto', sans-serif;
 			padding-left: 5em;
 			letter-spacing: 1.5px;
-			border: 1px solid black;
-			width: 100vw;
+			/*border: 1px solid black;*/
+			width: 100%;
+			
 		}
 
 		.print-only-header img {
@@ -1469,17 +1469,6 @@
 			
 		}
 		
-		.directions-container {
-			page-break-after: always;
-			page-break-inside: always;
-			page-break-before: always;
-		}
-		
-		.mode-container{
-			page-break-after: avoid;
-			page-break-inside: avoid;
-			page-break-before: always;
-		}
 		
 	}
 	
