@@ -1225,7 +1225,7 @@
     /* START OF MOBILE STYLES (MEDIA QUERIES FOR MOBILE VISUALIZATION)  */
     /* ******************************************************************/
     
-    @media screen and (min-width: 320px) and (max-width: 720px) {
+    @media screen and (min-width: 319px) and (max-width: 720px) {
         #HeaderOptionsMenuButtonMobile{
 			display:inline-block;
 			position: absolute;
