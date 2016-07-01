@@ -328,57 +328,6 @@ var Map = (function() {
             mapContextMenuContainer.appendChild(useAsEndPointContainer);
             return mapContextMenuContainer;
         }
-<<<<<<< HEAD
-=======
-        //avoid area controls
-        L.NewPolygonControl = L.Control.extend({
-            options: {
-                position: 'topleft'
-            },
-            onAdd: function(map) {
-                var container = L.DomUtil.create('div', 'leaflet-control leaflet-bar'),
-                    link = L.DomUtil.create('a', '', container);
-                link.href = '#';
-                link.title = 'Create a new polygon';
-                link.innerHTML = '▱';
-                L.DomEvent.on(link, 'click', L.DomEvent.stop).on(link, 'click', function() {
-                    map.editTools.startPolygon();
-                });
-                return container;
-            }
-        });
-        this.theMap.addControl(new L.NewPolygonControl());
-        var deleteShape = function(e) {
-            if ((e.originalEvent.ctrlKey || e.originalEvent.metaKey) && this.editEnabled()) {
-                this.editor.deleteShapeAt(e.latlng);
-                self.layerAvoid.removeLayer(e.target._leaflet_id);
-                self.emit('map:routingParamsChanged');
-                self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
-                // remove overlay in controls if no regions left
-                if (self.layerAvoid.getLayers().length === 0) self.layerControls.removeLayer(self.layerAvoid);
-            }
-        };
-        // add eventlisteners for layeravoidables only
-        this.layerAvoid.on('layeradd', function(e) {
-            if (e.layer instanceof L.Path) e.layer.on('click', L.DomEvent.stop).on('click', deleteShape, e.layer);
-            if (e.layer instanceof L.Path) e.layer.on('dblclick', L.DomEvent.stop).on('dblclick', e.layer.toggleEdit);
-        });
-		//add eventlistener for creating routepoints by dragging from routeLineSegments
-		this.layerRouteLines.on('click', function(e){console.log("added");});
-        var shapeListener = function(e) {
-            // var errorous = self.checkAvoidAreasIntersectThemselves();
-            // if (errorous) self.emit('map:errorsInAvoidAreas', true);
-            // else self.emit('map:errorsInAvoidAreas', false);
-            self.emit('map:routingParamsChanged');
-            self.emit('map:avoidAreaChanged', self.getAvoidAreasString());
-            self.layerControls.addOverlay(self.layerAvoid, 'Avoidable Regions');
-        };
-        //this.theMap.on('editable:drawing:end', addTooltip);
-        //this.theMap.on('editable:shape:deleted', shapeListener);
-        this.theMap.on('editable:drawing:commit', shapeListener);
-        this.theMap.on('editable:vertex:deleted', shapeListener);
-        this.theMap.on('editable:vertex:dragend', shapeListener);
->>>>>>> hendrik-ui-changes
         /* *********************************************************************
          * MAP EVENTS
          * *********************************************************************/
@@ -1352,11 +1301,7 @@ var Map = (function() {
      * zooms the map so that the whole route becomes visible (i.e. all features of the route line layer)
      */
     function zoomToRoute() {
-<<<<<<< HEAD
-        this.theMap.fitBounds(this.layerRouteLines.getBounds());
-=======
         this.theMap.fitBounds(new L.featureGroup([this.layerRouteLines, this.layerRoutePoints]).getBounds());
->>>>>>> hendrik-ui-changes
     }
     /*
      * AVOID AREAS
