@@ -1229,56 +1229,68 @@
         #HeaderOptionsMenuButtonMobile{
 			display:inline-block;
 			position: absolute;
-			top:10px;
+			top:5px;
 			right: 5px;
 			float: right;
 			color: white;
-			height: 30px;
-			width:30px;
-			line-height: 30px;
+			height: 40px;
+			width:40px;
+			line-height: 40px;
 			color: white;
 			font-size: 20px;
 			text-align: center;
+			border-radius: 20px;
 		}
 		
 		#HeaderOptionsMenuMobile{
 			float:right !important;
-			right:0;
-			position: fixed;
+			right:5px;
+			top:50px;
+			display: inline-block;
+			position: absolute;
 			z-index: 9998;
 			background-color: #F0F0F0;
+			width: 170px;
 		}
 		
-		#HeaderOptionsMenuMobile ul{
-			line-height: 30px;
+		#HeaderOptionsMenuMobile ul li{
+			position:relative;
+			line-height: 40px;
+			width:150px;
 			color: #F0F0F0;
 			font-size: 15px;
 			list-style-type: none;
 			padding: 0;
-			margin: 0;
+			margin-left: -30px;
+			height:40px;
+			float:left;
+			
 		}
 		
-		#HeaderOptionsMenuMobile ul li {
+		#HeaderOptionsMenuMobile ul li:active{
+			background-color:#CCC;
+		}
+		
+		#HeaderOptionsMenuMobile ul li a{
+			text-decoration: none;
+			outline : none;
+		}
+		
+		/*#HeaderOptionsMenuMobile ul li {
 			border: 1px solid #CCC;
-			float: left;
-			color: #F0F0F0;
-			width:100%;
-		}
+			/*float: left;*/
+			/*color: #F0F0F0;
+			width:150px;
+			height: 40px;*/
+		/*}*/
 		
-		#HeaderOptionsMenuMobile ul li a span {
+		#HeaderOptionsMenuMobile ul li a {
 			float: left;
 			color: black;
-			text-align: center;
-			width:calc(100% - 30px);
-		}
-		
-		#HeaderOptionsMenuMobile ul li a i {
-			float: left;
-			color: black;
-			width: 30px;
-			height: 30px;
-			line-height:30px;
-			text-align: center;
+			/*text-align: center;*/
+			width:80%;
+			
+			left:5px;
 		}
 		
 		#ORS-topMenu{
@@ -1393,7 +1405,7 @@
 			margin-right:1cm;
 		}
 			
-		.ORS-navigation, .ORS-header, .ORS-menuPanel, .disclaimer, .ORS-header, .ORS-map, .tooltip, div[id="routingPanel ORS-panel"], #optionsContainer, #routeInstructionHead, #printRouteInstructions, #HeaderOptionsMenuButtonMobile, #HeaderOptionsMenuMobile{
+		.ORS-navigation, .ORS-header, .ORS-menuPanel, .disclaimer, .ORS-header, .ORS-map, .tooltip, div[id="routingPanel ORS-panel"], #optionsContainer, #routeInstructionHead, #printRouteInstructions{
             display: none;
         }
 		
