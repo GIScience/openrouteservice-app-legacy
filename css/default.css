@@ -384,26 +384,6 @@
         background-color: #FFF;
     }
     
-    #TruckTabs>ul {
-        /* Styles for tabs on truck options */
-        border-bottom: none;
-        background: #F0F0F0
-    }
-    
-    #TruckTabs>li>a {
-        /* Styles content on each tab on truck options */
-        font-size: 80%;
-        background-color: #f8f8f8;
-        padding-bottom: 4px;
-        padding-top: 4px;
-        color: #707070;
-    }
-    
-    #TruckTabs>li>a:hover {
-        /* Styles for tabs on truck options when mouse is over tab*/
-        border-bottom: transparent;
-        background: #F0F0F0;
-    }
     /* ROUTE SETTINGS */
     
     #avoidAreasError {
@@ -432,7 +412,7 @@
         cursor: pointer;
     }
     
-    #plusSign {
+    .plusSign {
         color: #B8B8B8;
         line-height: 30px;
         font-size: 10px;
@@ -451,7 +431,7 @@
         -webkit-text-stroke-color: #707070;
     }
     
-    #mapMarker {
+    .mapMarker {
         color: #B8B8B8;
         line-height: 30px;
         font-size: 20px;
@@ -801,34 +781,26 @@
     }
     /* SURFACE INFORMATION */
     
-    #routeTypesHead {
-        float: left;
-    }
-    
-    #routeTypesBody {
-        position: relative;
-    }
-    
-    #wayType, #surfaceType, #steepnessType {
+    .ORS-types {
         width: 100%;
     }
     
-    #wayTypeList, #surfaceTypeList, #steepnessTypeList {
+    .ORS-typesList {
         min-height: 25px;
         padding-bottom: 5px;
     }
     
-    #wayTypeList ul, #surfaceTypeList ul, #steepnessTypeList ul {
+    .ORS-typesList ul {
         margin-left: -20px;
     }
     
-    #wayTypeList li, #surfaceTypeList li, #steepnessTypeList li {
+    .ORS-typesList li {
         float: left;
         font-size: 90%;
         margin-right: 20px;
     }
     
-    #wayTypeList li span, #surfaceTypeList li span, #steepnessTypeList li span {
+    .ORS-typesList li span {
         color: #707070;
         font-size: 90%;
         position: relative;
@@ -1233,7 +1205,7 @@
         .ORS-map {
             order: 1;
         }
-       /* #ORS-title {
+        /* #ORS-title {
             margin-left: 10px;
             position: absolute;
             height: 50px;
@@ -1299,7 +1271,7 @@
         }
         /*.ORS-logo {
             /* GIScience Logo */
-            /*bottom: 25px;
+        /*bottom: 25px;
             right: calc(100vw - 60%);
         }*/
         .leaflet-bottom .leaflet-control-scale {
@@ -1314,8 +1286,8 @@
         #bubble {
             position: absolute;
             margin-bottom: 30px;
-        }*/
-
+        }
+        */
     }
     /* ****************************************************************/
     /* END OF MOBILE STYLES (MEDIA QUERIES FOR MOBILE VISUALIZATION)  */
@@ -1325,44 +1297,32 @@
     /* *****************************************************************/
     
     @media print {
-		
-		@page {
-			margin-top:1cm;
-			margin-bottom:1cm;
-			margin-left:2cm;
-			margin-right:1cm;
-		}
-
-		.ORS-main {
+        @page {
+            margin-top: 1cm;
+            margin-bottom: 1cm;
+            margin-left: 2cm;
+            margin-right: 1cm;
+        }
+        .ORS-main {
             flex-direction: column;
         }
-		
-		.ORS-sidebar {
+        .ORS-sidebar {
             order: 1;
             flex-basis: 100vh;
-			width: 100%;
-			background-color: yellow;
+            width: 100%;
+            background-color: yellow;
         }
-		
-		#optionContainer .start, #optionContainer .end {
-			display: block;
-			width: 100%;
-			
-		}
-		#directionsMainContainer {
-			display: block;
-			width: 100%;
-		}
-		
-		
-		.ORS-navigation, .ORS-menuPanel, .disclaimer, .ORS-header, .ORS-map {
+        #optionContainer .start, #optionContainer .end {
+            display: block;
+            width: 100%;
+        }
+        #directionsMainContainer {
+            display: block;
+            width: 100%;
+        }
+        .ORS-navigation, .ORS-menuPanel, .disclaimer, .ORS-header, .ORS-map {
             display: none;
         }
-
-
-        
-
-
     }
     /* ***************************************************************/
     /* END OF PRINTING STYLES (MEDIA QUERIES FOR PRINTING THE PAGE)  */

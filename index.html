@@ -671,8 +671,8 @@
                                 </div>
                                 <div class="addWaypoint clickable" id="addWaypoint">
                                     <span class="fa-stack fa-lg">
-                                        <i id="mapMarker" class="fa fa-map-marker fa-stack-2x"></i>
-                                        <i id="plusSign" class="fa fa-plus fa-stack-1x"></i>
+                                        <i class="fa fa-map-marker fa-stack-2x mapMarker"></i>
+                                        <i class="fa fa-plus fa-stack-1x plusSign"></i>
                                     </span>
                                     <span id="addWaypointText">
                                         add waypoint
@@ -712,12 +712,12 @@
                                 <div class="clear" id="routeSummary"></div>
                             </div>
                             <div class="ORS-panel-sub" id="routeTypesContainer" style="display: none;">
-                                <div id="wayType"></div>
-                                <div class="clear" id="wayTypeList"></div>
-                                <div id="surfaceType"></div>
-                                <div class="clear" id="surfaceTypeList"></div>
-                                <div id="steepnessType"></div>
-                                <div class="clear" id="steepnessTypeList"></div>
+                                <div id="wayType" class="ORS-types"></div>
+                                <div class="clear ORS-typesList" id="wayTypeList"></div>
+                                <div id="surfaceType" class="ORS-types"></div>
+                                <div class="clear ORS-typesList" id="surfaceTypeList"></div>
+                                <div id="steepnessType" class="ORS-types"></div>
+                                <div class="clear ORS-typesList" id="steepnessTypeList"></div>
                             </div>
                         </div>
                         <div class="ORS-panel" id="routeInstructionsContainer" style="display:none">

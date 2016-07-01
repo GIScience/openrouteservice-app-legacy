@@ -875,7 +875,7 @@ var Controller = (function(w) {
                             if (routePoints.length > 2) {
                                 routePoints.shift();
                                 routePoints.pop();
-                                viaPointsx = routePoints;
+                                viaPoints = routePoints;
                             }
                             map.updateHeightprofiles(routeLineString, viaPoints);
                         }

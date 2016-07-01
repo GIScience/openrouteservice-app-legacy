@@ -728,7 +728,7 @@ var Map = (function() {
             if (marker) {
                 if (emph) {
                     //emphasize feature
-                    if (layer == 'layerCornerPoints') {
+                    if (layer == 'layerRoutePoints') {
                         marker.setIcon(marker.options.icon_emph);
                     } else if (layer == 'layerRouteLines') {
                         marker.setStyle({
@@ -737,7 +737,7 @@ var Map = (function() {
                         });
                     }
                 } else {
-                    if (layer == 'layerCornerPoints') {
+                    if (layer == 'layerRoutePoints') {
                         marker.setIcon(marker.options.icon_orig);
                     } else if (layer == 'layerRouteLines') {
                         marker.setStyle({
