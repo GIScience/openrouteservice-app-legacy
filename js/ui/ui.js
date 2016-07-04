@@ -2172,7 +2172,48 @@ var Ui = (function(w) {
      * opens the print dialogue
      */
     function handlePrintRouteInstructionsClick() {
-		window.print();
+		// create an ajax request to get the css files
+		$.ajax({
+            url: "css/default.css",
+            success: function(data) {
+				//Opens a new popup with the printable area
+				var myWindow = window.open('_top','width=600,height=800');
+				
+				// gets original html for printing
+				var printingHeader = document.getElementById("printableHeader").innerHTML;
+				var printingRouteSummary = document.getElementById("routeSummary").innerHTML;
+				var routeContainer = document.getElementById("directionsMainContainer").innerHTML;
+				
+				//creates the style tag
+                //var style = $("<style />", {id: 'printCss',type: 'text/css',html: data})
+				//alert(data);
+				// create the new html layout for printing
+				var printContents = "<html> \
+								<head> \
+									<title></title>" +
+									"<style " + data + " />" +
+								"</head> \
+								<body>" + 
+									printingHeader +
+									printingRouteSummary +
+									routeContainer +
+								"</body> \
+							</html>";
+				
+				
+				
+				// writes the printable content on the new popup window
+				myWindow.document.write(printContents);
+				
+				// prints the content
+				myWindow.print();
+				
+				//closes the popup
+				myWindow.close();	
+
+				//style.remove();
+            }
+        });
     }
 	
     /* *********************************************************************
@@ -3397,6 +3438,21 @@ var Ui = (function(w) {
         });
         // menuButtons
         $('.ORS-menuButton').click(handleSwitchMenu);
+		
+		// Mobile top menu
+		$('#ORS-menuLinkFeedbackMobile').click(function(){
+			$('#HeaderOptionsMenuMobile').hide();
+			$('#HeaderOptionsMenuButtonMobile').css("background-color","transparent");
+		});
+		$('#ORS-menuLinkSitePrefsMobile').click(function(){
+			$('#HeaderOptionsMenuMobile').hide();
+			$('#HeaderOptionsMenuButtonMobile').css("background-color","transparent");
+		});
+		$('#ORS-menuLinkInfoMobile').click(function(){
+			$('#HeaderOptionsMenuMobile').hide();
+			$('#HeaderOptionsMenuButtonMobile').css("background-color","transparent");
+		});
+		
     }
     Ui.prototype = new EventEmitter();
     Ui.prototype.constructor = Ui;

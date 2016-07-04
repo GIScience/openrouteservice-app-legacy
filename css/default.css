@@ -21,6 +21,10 @@
         font-family: 'Source Sans Pro', sans-serif !important;
         font-size: 90%;
     }
+	
+	.print-only-header{
+		display:none;
+	}
     
     .ORS {
         /* BODY */
@@ -1391,12 +1395,7 @@
     /* *****************************************************************/
     /* START OF PRINTING STYLES (MEDIA QUERIES FOR PRINTING THE PAGE)  */
     /* *****************************************************************/
-	@media screen {
-		.print-only-header{
-			display:none;
-		}
-	}
-	
+
 	@media print {
 		@page {
 			margin-top:1cm;
@@ -1420,20 +1419,18 @@
 			font-family: 'Roboto', sans-serif;
 			padding-left: 5em;
 			letter-spacing: 1.5px;
-			/*border: 1px solid black;*/
 			width: 100%;
 			
 		}
 
-		.print-only-header img {
+		.print-only-header  img {
 			margin:0 auto;
 			padding-left: -3em;
-			width: 10em;
-			height:5em;
+			width: 5em !important;
+			height:2.5em !important;
 		}
 		
 		.ORS-main {
-			/*border: 6px solid red;*/
 			position:relative;
 			width:100%;
 			float:none !important;
@@ -1443,7 +1440,6 @@
 		.ORS-sidebar {
 			margin: 0 auto;
 			width:100%;
-			/*border: 5px solid green;*/
 			position:absolute;
 			float:none !important;
 			overflow: visible !important;
