@@ -72,8 +72,8 @@ list = {
             hide: ['.ORS-wc', '.ORS-ped', '.ORS-hgv', '.ORS-car', '.ORS-ped-wc']
         },
         heavyvehicle: {
-            show: ['.ORS-hgv', '.ORS-all'],
-            hide: ['.ORS-wc', '.ORS-ped', '.ORS-car', '.ORS-bike', '.ORS-ped-wc']
+            show: ['.ORS-hgv', '.ORS-car', '.ORS-all'],
+            hide: ['.ORS-wc', '.ORS-ped', '.ORS-bike', '.ORS-ped-wc']
         },
     },
     menuElements: ['ORS-routeContent', 'ORS-aaContent', 'ORS-cloudContent'],
