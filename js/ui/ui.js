@@ -1509,7 +1509,9 @@ var Ui = (function(w) {
             container.append(summaryContainer);
         }
         // initiate tooltips
-        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="tooltip"]').tooltip({
+            trigger: 'hover'
+        });
         return elevation;
     }
     /**
