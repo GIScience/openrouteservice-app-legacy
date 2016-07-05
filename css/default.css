@@ -1255,18 +1255,19 @@
 			z-index: 9998;
 			background-color: #F0F0F0;
 			width: 170px;
+			border-radius:5px;
 		}
 		
 		#HeaderOptionsMenuMobile ul li{
 			position:relative;
-			line-height: 40px;
+			line-height: 50px;
 			width:150px;
 			color: #F0F0F0;
-			font-size: 15px;
+			font-size: 17px;
 			list-style-type: none;
 			padding: 0;
 			margin-left: -30px;
-			height:40px;
+			height:50px;
 			float:left;
 			
 		}
@@ -1278,22 +1279,9 @@
 		#HeaderOptionsMenuMobile ul li a{
 			text-decoration: none;
 			outline : none;
-		}
-		
-		/*#HeaderOptionsMenuMobile ul li {
-			border: 1px solid #CCC;
-			/*float: left;*/
-			/*color: #F0F0F0;
-			width:150px;
-			height: 40px;*/
-		/*}*/
-		
-		#HeaderOptionsMenuMobile ul li a {
 			float: left;
 			color: black;
-			/*text-align: center;*/
 			width:80%;
-			
 			left:5px;
 		}
 		
@@ -1404,14 +1392,16 @@
 			margin-right:1cm;
 		}
 			
-		.ORS-navigation, .ORS-header, .ORS-menuPanel, .disclaimer, .ORS-header, .ORS-map, .tooltip, div[id="routingPanel ORS-panel"], #optionsContainer, #routeInstructionHead, #printRouteInstructions{
+		/*.ORS-navigation, .ORS-header, .ORS-menuPanel, .disclaimer, .ORS-header, .ORS-map, .tooltip, div[id="routingPanel ORS-panel"], #optionsContainer, #routeInstructionHead, #printRouteInstructions{
             display: none;
-        }
+        }*/
 		
 		.print-only-header{
 			display: block;
 			position: relative;
-			line-height: 25px;
+			width: 100%;
+			height: 6em !important;
+			line-height: 5em;
 			justify-content: center;
 			align-items: center;
 			font-size: 180%;
@@ -1419,18 +1409,17 @@
 			font-family: 'Roboto', sans-serif;
 			padding-left: 5em;
 			letter-spacing: 1.5px;
-			width: 100%;
-			
 		}
 
-		.print-only-header  img {
-			margin:0 auto;
+		.print-only-header img {
+			display :inline;
 			padding-left: -3em;
-			width: 5em !important;
-			height:2.5em !important;
+			/*width: 20% !important;*/
+			height:100% !important;
+			vertical-align:middle
 		}
 		
-		.ORS-main {
+		/*.ORS-main {
 			position:relative;
 			width:100%;
 			float:none !important;
@@ -1454,11 +1443,12 @@
 			overflow: visible !important;
 			border-left: 1px solid transparent;
 
-		}
+		}*/
 
 		#routeSummary{
 			position:relative;
 			display: block;
+			margin-top: 2em;
 		}
 		
 		.directions-summary-container{
@@ -1466,15 +1456,19 @@
 			float:none !important;
 		}
 		
-		#routeInstructionsContainer{
+		#directionsMainContainer {
 			display:block;
 			position:relative;
 			overflow: visible !important;
-			/*border: 5px solid blue;*/
 			float:none !important;
 			font-size:15pt;
 			line-height:15pt;
+			width:100%;
 			
+		}
+	
+		.directions-container div {
+			page-break-inside: avoid;
 		}
 		
 		

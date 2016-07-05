@@ -2171,27 +2171,34 @@ var Ui = (function(w) {
     /**
      * opens the print dialogue
      */
+	
+	
     function handlePrintRouteInstructionsClick() {
-		// create an ajax request to get the css files
-		$.ajax({
-            url: "css/default.css",
-            success: function(data) {
-				//Opens a new popup with the printable area
-				var myWindow = window.open('_top','width=600,height=800');
-				
-				// gets original html for printing
-				var printingHeader = document.getElementById("printableHeader").innerHTML;
-				var printingRouteSummary = document.getElementById("routeSummary").innerHTML;
-				var routeContainer = document.getElementById("directionsMainContainer").innerHTML;
-				
-				//creates the style tag
-                //var style = $("<style />", {id: 'printCss',type: 'text/css',html: data})
-				//alert(data);
-				// create the new html layout for printing
-				var printContents = "<html> \
+		
+		
+		// opens new popup window
+		var printableWindow = window.open('_top','width=600,height=800');
+		var doc = printableWindow.document;
+		
+		// gets original html for printing
+		var printingHeader = document.getElementById("printableHeader").outerHTML;
+		var printingRouteSummary = document.getElementById("routeSummary").outerHTML;
+		var routeContainer = document.getElementById("directionsMainContainer").outerHTML;
+		
+		// load the required css files
+		var bootstrap = "<link href=\"lib/bootstrap3/css/bootstrap.css\" rel=\"stylesheet\" type=\"text/css\">"
+		var font1 = "<link href=\"https://fonts.googleapis.com/css?family=Source+Sans+Pro\" rel=\"stylesheet\" type=\"text/css\">"
+		var font2 = "<link href=\"https://fonts.googleapis.com/css?family=Roboto\" rel=\"stylesheet\">"
+		var font3 = "<link href=\"css/font-awesome.css\" rel=\"stylesheet\" type=\"text/css\">" 
+		var printable = "<link href=\"css/default.css\" rel=\"stylesheet\" type=\"text/css\">"
+		
+		var styles = font1 + font2 + font3 + printable;
+		
+		// create the new html layout for printing
+		var printContents = "<html> \
 								<head> \
 									<title></title>" +
-									"<style " + data + " />" +
+									styles +
 								"</head> \
 								<body>" + 
 									printingHeader +
@@ -2199,23 +2206,22 @@ var Ui = (function(w) {
 									routeContainer +
 								"</body> \
 							</html>";
-				
-				
-				
-				// writes the printable content on the new popup window
-				myWindow.document.write(printContents);
-				
-				// prints the content
-				myWindow.print();
-				
-				//closes the popup
-				myWindow.close();	
-
-				//style.remove();
-            }
-        });
-    }
-	
+		doc.write(printContents); 
+		doc.close();
+		
+		
+		function show() {
+          if (doc.readyState === "complete") {
+              printableWindow.focus();
+              printableWindow.print();
+              printableWindow.close();
+          } else {
+              setTimeout(show, 100);
+          }
+        };
+        show();
+								
+	}
     /* *********************************************************************
      * ROUTE OPTIONS
      * *********************************************************************/
