@@ -78,28 +78,27 @@ var Ui = (function(w) {
             $('#serviceTimeout').hide();
         }
     }
-	
-	function showEndAsViaWaypointPopup(wpIndex) {
-		var label = new Element('label');
+
+    function showEndAsViaWaypointPopup(wpIndex) {
+        var label = new Element('label');
         label.insert(preferences.translate('endAsViaInfo'));
-		$('#endAsViaWaypoint_info').css('opacity', '1');
+        $('#endAsViaWaypoint_info').css('opacity', '1');
         $('#endAsViaWaypoint_info').find('label').remove();
         $('#endAsViaWaypoint_info').append(label);
-		$('#endAsViaWaypoint_info').css('left', $('#' + wpIndex).offset().left + $('#' + wpIndex).width() + 20 + 'px');
-		$('#endAsViaWaypoint_info').css('top', $('#' + wpIndex).offset().top + 'px');
+        $('#endAsViaWaypoint_info').css('left', $('#' + wpIndex).offset().left + $('#' + wpIndex).width() + 20 + 'px');
+        $('#endAsViaWaypoint_info').css('top', $('#' + wpIndex).offset().top + 'px');
         $('#endAsViaWaypoint_info').show();
-		window.setTimeout(function() {
-			$("#endAsViaWaypoint_info").fadeTo(500, 0).slideUp(500, function(){
-				$(this).hide(); 
-			});
-		}, 3000);
+        window.setTimeout(function() {
+            $("#endAsViaWaypoint_info").fadeTo(500, 0).slideUp(500, function() {
+                $(this).hide();
+            });
+        }, 3000);
     }
-	
-	$(function(){
-		$("[data-hide]").on("click", function(){
-			$("." + $(this).attr("data-hide")).hide();
-		});
-	});
+    $(function() {
+        $("[data-hide]").on("click", function() {
+            $("." + $(this).attr("data-hide")).hide();
+        });
+    });
     /* *********************************************************************
      * ALL MARKER ELEMENTS
      * *********************************************************************/
@@ -295,7 +294,7 @@ var Ui = (function(w) {
                 wpIndex: index,
                 featureId: e.currentTarget.id,
                 searchIds: rootElement.getAttribute('data-search'),
-				currentTarget : e.currentTarget.cloneNode(true)
+                currentTarget: e.currentTarget.cloneNode(true)
             });
         } else {
             handleSearchAgainWaypointClick({
@@ -399,10 +398,10 @@ var Ui = (function(w) {
         var index = parseInt(waypointElement.attr('id'));
         var prevIndex = index - 1;
         var previousElement = $('#' + prevIndex);
-		//If the clicked Waypoint is unset and the previous one is the first one, disable roundtrip
-		if ($(previousElement).hasClass('roundtrip') && $(waypointElement).hasClass('unset')){
-			theInterface.emit('ui:specifyRoundtrip', false);
-		}
+        //If the clicked Waypoint is unset and the previous one is the first one, disable roundtrip
+        if ($(previousElement).hasClass('roundtrip') && $(waypointElement).hasClass('unset')) {
+            theInterface.emit('ui:specifyRoundtrip', false);
+        }
         waypointElement.insertBefore(previousElement);
         //adapt IDs...
         previousElement.attr('id', index);
@@ -426,8 +425,8 @@ var Ui = (function(w) {
             //the waypoint which has been moved down is the last waypoint: hide the move down button
             $(previousElement.get(0).querySelector('.moveUpWaypoint')).show();
             $(previousElement.get(0).querySelector('.moveDownWaypoint')).hide();
-			$('#roundtrip').attr('checked', false);
-			theInterface.emit('ui:specifyRoundtrip', false);
+            $('#roundtrip').attr('checked', false);
+            theInterface.emit('ui:specifyRoundtrip', false);
         } else {
             //show both
             $(previousElement.get(0).querySelector('.moveUpWaypoint')).show();
@@ -450,11 +449,11 @@ var Ui = (function(w) {
         var index = parseInt(waypointElement.attr('id'));
         var succElement = $('#' + (index + 1));
         var succIndex = index + 1;
-		//If the clicked Waypoint is the last to next one and the last one is a roundtrip, simply disable roundtrip
-		if ($(succElement).hasClass('roundtrip')){
-			theInterface.emit('ui:specifyRoundtrip', false);
-			return;
-		}
+        //If the clicked Waypoint is the last to next one and the last one is a roundtrip, simply disable roundtrip
+        if ($(succElement).hasClass('roundtrip')) {
+            theInterface.emit('ui:specifyRoundtrip', false);
+            return;
+        }
         waypointElement.insertAfter(succElement);
         //adapt IDs... of waypointElement
         waypointElement.attr('id', succIndex);
@@ -498,11 +497,10 @@ var Ui = (function(w) {
         //id of prior to last waypoint:
         var waypointId = $(e.currentTarget).prev().attr('id');
         var oldIndex = parseInt(waypointId);
-		
-		console.log(oldIndex);
-		// If roundtrip is enabled, add the waypoint in front of the last (roundtrip) waypoint
-		var numWaypoints = oldIndex + 1;
-		if($('#roundtrip')[0].checked && $('.waypoint.roundtrip').length > 1 && $('#' + oldIndex).hasClass('roundtrip')) oldIndex -= 1;
+        console.log(oldIndex);
+        // If roundtrip is enabled, add the waypoint in front of the last (roundtrip) waypoint
+        var numWaypoints = oldIndex + 1;
+        if ($('#roundtrip')[0].checked && $('.waypoint.roundtrip').length > 1 && $('#' + oldIndex).hasClass('roundtrip')) oldIndex -= 1;
         addWaypointAfter(oldIndex, numWaypoints);
         theInterface.emit('ui:selectWaypointType', oldIndex);
     }
@@ -644,11 +642,11 @@ var Ui = (function(w) {
         } else {
             featureId = null;
         }
-		var wpElement = $(e.currentTarget).parent();
-		if (wpElement.hasClass('roundtrip')){
-			$('#roundtrip').attr('checked', false);
-			// theInterface.emit('ui:specifyRoundtrip', false);
-		}
+        var wpElement = $(e.currentTarget).parent();
+        if (wpElement.hasClass('roundtrip')) {
+            $('#roundtrip').attr('checked', false);
+            // theInterface.emit('ui:specifyRoundtrip', false);
+        }
         //we want to show at least 2 waypoints
         if (numWaypoints > 2) {
             //'move' all successor waypoints up from currentId to currentId-1
@@ -792,10 +790,9 @@ var Ui = (function(w) {
         el.removeClass('start');
         el.removeClass('via');
         el.removeClass('end');
-		el.removeClass('roundtrip');
+        el.removeClass('roundtrip');
         el.addClass(type);
-		if($('#roundtrip')[0].checked && (type == 'start' || type == 'end')) el.addClass('roundtrip');
-		
+        if ($('#roundtrip')[0].checked && (type == 'start' || type == 'end')) el.addClass('roundtrip');
         el = $('#' + wpIndex).children('.waypoint-icon');
         el.removeClass('unset');
         el.removeClass('start');
@@ -803,7 +800,7 @@ var Ui = (function(w) {
         el.removeClass('end');
         el.removeClass('roundtrip');
         el.addClass(type);
-		if($('#roundtrip')[0].checked && (type == 'start' || type == 'end')) el.addClass('roundtrip');
+        if ($('#roundtrip')[0].checked && (type == 'start' || type == 'end')) el.addClass('roundtrip');
     }
     /**
      * The whole route is removed, waypoints are emptied or deleted (if more than two exist)
@@ -875,14 +872,13 @@ var Ui = (function(w) {
             inputElement.removeClassName('searching');
         }
     }
-	/**
-	 * activates roundtrip handler
+    /**
+     * activates roundtrip handler
      */
     function handleSpecifyRoundtripClick() {
-		var newStatus = $('#roundtrip')[0].checked; 
+        var newStatus = $('#roundtrip')[0].checked;
         theInterface.emit('ui:specifyRoundtrip', newStatus);
     }
-	
     /* *********************************************************************
      * GEOLOCATION
      * *********************************************************************/
@@ -1311,7 +1307,7 @@ var Ui = (function(w) {
         var numWaypoints = $('.waypoint').length - 1;
         for (var i = 0; i < numWaypoints; i++) {
             var element = $('#' + i).get(0);
-            if(element) element = element.querySelector('.address');
+            if (element) element = element.querySelector('.address');
             if (element) {
                 allRoutePoints.push(element.getAttribute('data-position'));
             }
@@ -1330,7 +1326,6 @@ var Ui = (function(w) {
                 address = $(address).find("li").attr("data-shortaddress");
                 waypoints.push(address);
             }
-
         }
         return waypoints;
     }
@@ -2309,8 +2304,8 @@ var Ui = (function(w) {
     function updateGlobalSettings(optionType, optionID) {
         // change routing profile
         theInterface.emit('ui:routingParamsChanged');
-        // reset all checkboxes and avoidable settings each time a new profile is clicked
-        $('input:checkbox').removeAttr('checked');
+        // reset all avoidable settings checkboxes each time a new profile is clicked
+        $('.ORS-avoid:checkbox').removeAttr('checked');
         theInterface.emit('ui:prefsChanged', {
             key: preferences.avoidHighwayIdx,
             value: false
@@ -2650,7 +2645,6 @@ var Ui = (function(w) {
      * @param e: the event
      */
     function handleOptionsChanged(e) {
-        console.log(e)
         var boolVar;
         e = e || window.event;
         var target = e.target || e.srcElement;
@@ -3433,7 +3427,7 @@ var Ui = (function(w) {
     Ui.prototype.constructor = Ui;
     Ui.prototype.showNewToOrsPopup = showNewToOrsPopup;
     Ui.prototype.showAvoidablesInfoPopup = showAvoidablesInfoPopup;
-	Ui.prototype.showEndAsViaWaypointPopup = showEndAsViaWaypointPopup;
+    Ui.prototype.showEndAsViaWaypointPopup = showEndAsViaWaypointPopup;
     Ui.prototype.showServiceTimeoutPopup = showServiceTimeoutPopup;
     Ui.prototype.emphElement = emphElement;
     Ui.prototype.deEmphElement = deEmphElement;
@@ -3514,7 +3508,7 @@ Ui.markerIcons = {
         color: "#ff714d",
         size: "m"
     }),
-	roundtrip: L.MakiMarkers.icon({
+    roundtrip: L.MakiMarkers.icon({
         icon: "circle-stroked",
         color: "#1500CC",
         size: "m"
