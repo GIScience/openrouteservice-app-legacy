@@ -385,5 +385,32 @@ var lang_fr = {
     'Sand': 'Sable',
     'Woodchips': 'Copeaux de bois',
     'Grass': 'Herbe',
-    'GrassPaver': 'Herbe finisseur'
+    'GrassPaver': 'Herbe finisseur',
+
+    //Tooltips 
+    'optimizeWP': 'Optimiser points de passage',
+    'reorderWP': 'Réorganiser points de passage',
+    'reset': 'Itinéraire reset',
+    'zoom': 'Zoom sur Route',
+    'analyzeAccess': "Calculer l'accessibilité",
+    'removeAccess': 'Supprimer',
+    'exportGPX': 'Télécharger de la route actuelle en format GPX',
+    'importGPX': 'Ajouter plusieurs pistes à partir du fichier GPX',
+    'tt-ascent': 'Ascension',
+    'tt-descent': 'Descente',
+    'tt-time': 'Temps',
+    'tt-distance': 'Distance',
+    'tt-actdistance': 'Distance réelle',
+    'tt-route' : 'Route',
+    'tt-access' : 'Accessibilité',
+    'tt-cloud' : 'Import/ Export',
+    'tt-feedback' : 'Feedback',
+    'tt-car' : 'Voiture',
+    'tt-bicycle' : 'Vélo',
+    'tt-pedestrian' :'Piéton',
+    'tt-wheelchair' : 'Accessible',
+    'tt-heavyvehicle' : 'Véhicule lourd',
+    'tt-optionsMenu' : 'Options',
+    'tt-sitePref' : 'Préférences du site',
+    'tt-contactInfo': 'Informations de contact'
 };	

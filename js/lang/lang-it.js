@@ -379,5 +379,32 @@ var lang_it = {
     'Sand': 'Sabbia',
     'Woodchips': 'Cippato',
     'Grass': 'Erba',
-    'GrassPaver': 'Erba finitrice'
+    'GrassPaver': 'Erba finitrice',
+
+    //Tooltips
+    'optimizeWP': 'Ottimizzare Waypoint',
+    'reorderWP': 'Riordina Waypoint',
+    'reset': 'Ripristina percorso',
+    'zoom': 'Zoom alla Route',
+    'analyzeAccess': "Calcola l'accessibilità",
+    'removeAccess': 'Rimuovere',
+    'exportGPX': 'Download del percorso corrente in formato GPX',
+    'importGPX': 'Carica più tracce da GPX file',
+    'tt-ascent': 'Salita',
+    'tt-descent': 'Discesa',
+    'tt-time': 'Tempo',
+    'tt-distance': 'Distanza',
+    'tt-actdistance': 'Actual Distanza',
+    'tt-route' : 'Itinerario',
+    'tt-access' : 'Accessibilità',
+    'tt-cloud' : 'Import/ Export',
+    'tt-feedback' : 'Feedback',
+    'tt-car' : 'Auto',
+    'tt-bicycle' : 'Bicicletta',
+    'tt-pedestrian' :'Pedone',
+    'tt-wheelchair' : 'Accessibile',
+    'tt-heavyvehicle' : 'Veicoli pesanti',
+    'tt-optionsMenu' : 'Opzioni',
+    'tt-sitePref' : 'Preferenze del sito',
+    'tt-contactInfo': 'Informazioni Contatto'
 };			

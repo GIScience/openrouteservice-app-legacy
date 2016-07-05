@@ -9,6 +9,7 @@ var Waypoint = (function(w) {
     'use strict';
     var waypointsSet = [false, false];
     var requestCounterWaypoints = [0, 0];
+	var $ = w.jQuery;
     /**
      * Constructor
      */
@@ -116,9 +117,15 @@ var Waypoint = (function(w) {
         /*jshint validthis: true */
         var type;
         if (wpIndex == '0') {
-            type = this.type.START;
+			if ($('#roundtrip')[0].checked){
+				type = this.type.ROUNDTRIP;
+			}
+			else type = this.type.START;
         } else if (wpIndex == waypointsSet.length - 1) {
-            type = this.type.END;
+			if ($('#roundtrip')[0].checked){
+				type = this.type.ROUNDTRIP;
+			}
+			else type = this.type.END;
         } else {
             type = this.type.VIA;
         }
@@ -254,5 +261,6 @@ Waypoint.type = {
     START: 'start',
     VIA: 'via',
     END: 'end',
+	ROUNDTRIP: 'roundtrip',
     UNSET: 'unset'
 };

@@ -390,5 +390,32 @@ var lang_nl = {
     'Sand': 'Zand',
     'Woodchips': 'Houtsnippers',
     'Grass': 'Gras',
-    'GrassPaver': 'Gras betonmolen'
+    'GrassPaver': 'Gras betonmolen',
+
+    //Tooltips
+    'optimizeWP': 'Optimaliseer waypoints',
+    'reorderWP': 'Herschikken waypoints',
+    'reset': 'Reset Route',
+    'zoom': 'Zoomen naar Route',
+    'analyzeAccess': 'Bereken toegankelijkheid',
+    'removeAccess': 'Verwijderen',
+    'exportGPX': 'Download van de huidige route in GPX-formaat',
+    'importGPX': 'Uploaden meerdere tracks van GPX-bestand',
+    'tt-ascent': 'Beklimming',
+    'tt-descent': 'Afdaling',
+    'tt-time': 'Tijd',
+    'tt-distance': 'Afstand',
+    'tt-actdistance': 'Werkelijke Afstand',
+    'tt-route' : 'Route',
+    'tt-access' : 'Toegankelijkheid',
+    'tt-cloud' : 'Import/ Export',
+    'tt-feedback' : 'Feedback',
+    'tt-car' : 'Auto',
+    'tt-bicycle' : 'Fiets',
+    'tt-pedestrian' :'Voetganger',
+    'tt-wheelchair' : 'Mindervaliden',
+    'tt-heavyvehicle' : 'Zware voertuigen',
+    'tt-optionsMenu' : 'Opties',
+    'tt-sitePref' : 'Sitevoorkeuren',
+    'tt-contactInfo': 'Contact informatie'
 };			

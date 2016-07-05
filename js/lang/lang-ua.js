@@ -391,5 +391,32 @@ var lang_ua = {
     'Sand': 'пісок',
     'Woodchips': 'тріска',
     'Grass': 'трава',
-    'GrassPaver': 'трава асфальтоукладальник'
+    'GrassPaver': 'трава асфальтоукладальник',
+
+    //Tooltips
+    'optimizeWP': 'Оптимизация шляхову точку',
+    'reorderWP': 'перезаказа шляхову точку',
+    'reset': 'скинути розрахунок маршруту',
+    'zoom': 'Збільшити до маршруту',
+    'analyzeAccess': 'розрахувати доступністьCalculate accessibility',
+    'removeAccess': 'видалення',
+    'exportGPX': 'Завантаження поточного маршруту в форматі GPX',
+    'importGPX': 'Завантаження декількох доріжок з GPX файлу',
+    'tt-ascent': 'сходження',
+    'tt-descent': 'спуск',
+    'tt-time': 'час',
+    'tt-distance': 'відстань',
+    'tt-actdistance': 'справжнє відстань',
+    'tt-route' : 'маршрут',
+    'tt-access' : 'доступність',
+    'tt-cloud' : 'імпорт/ експорт',
+    'tt-feedback' : "зворотний зв'язок",
+    'tt-car' : 'автомобіль',
+    'tt-bicycle' : 'велосипед',
+    'tt-pedestrian' :'пішохід',
+    'tt-wheelchair' : 'доступною',
+    'tt-heavyvehicle' : 'важка машина',
+    'tt-optionsMenu' : 'опції',
+    'tt-sitePref' : 'налаштування сайту',
+    'tt-contactInfo': 'Контактна інформація'
 };

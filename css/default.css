@@ -12,6 +12,7 @@
  * @author: Timothy Ellersiek, timothy.ellersiek@geog.uni-heidelberg.de, Maxim Rylov, rylov@geog.uni-heidelberg.de, Enrico Steiger, enrico.steiger@geog.uni-heidelberg.de, Rui Nunes, rui.nunes1985@gmail.com
  * @version: 0.1
  */
+
     /* *******************************************/
     /* START OF BLOCK STYLES (BASE LAYOUT STYLE) */
     /* *******************************************/
@@ -206,6 +207,7 @@
         color: #707070;
         box-shadow: none;
         text-shadow: none;
+        padding: 6px 12px;
         /*font-family: 'Source Sans Pro', sans-serif;*/
     }
     
@@ -391,26 +393,6 @@
         background-color: #FFF;
     }
     
-    #TruckTabs>ul {
-        /* Styles for tabs on truck options */
-        border-bottom: none;
-        background: #F0F0F0
-    }
-    
-    #TruckTabs>li>a {
-        /* Styles content on each tab on truck options */
-        font-size: 80%;
-        background-color: #f8f8f8;
-        padding-bottom: 4px;
-        padding-top: 4px;
-        color: #707070;
-    }
-    
-    #TruckTabs>li>a:hover {
-        /* Styles for tabs on truck options when mouse is over tab*/
-        border-bottom: transparent;
-        background: #F0F0F0;
-    }
     /* ROUTE SETTINGS */
     
     #avoidAreasError {
@@ -439,7 +421,7 @@
         cursor: pointer;
     }
     
-    #plusSign {
+    .plusSign {
         color: #B8B8B8;
         line-height: 30px;
         font-size: 10px;
@@ -458,7 +440,7 @@
         -webkit-text-stroke-color: #707070;
     }
     
-    #mapMarker {
+    .mapMarker {
         color: #B8B8B8;
         line-height: 30px;
         font-size: 20px;
@@ -539,6 +521,28 @@
         content: "\f041";
         font-family: FontAwesome;
         color: #ff6f4b;
+        line-height: 25px;
+        font-size: 20px;
+        text-align: center;
+        text-stroke-width: 1px;
+        text-stroke-color: #707070;
+        -o-text-stroke-width: 1px;
+        -o-text-stroke-color: #707070;
+        -ms-text-stroke-width: 1px;
+        -ms-text-stroke-color: #707070;
+        -moz-text-stroke-width: 1px;
+        -moz-text-stroke-color: #707070;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: #707070;
+    }
+
+    .waypoint-icon.roundtrip:before {
+        display: block;
+        float: right;
+        width: 30px;
+        content: "\f041";
+        font-family: FontAwesome;
+        color: #4C00E3;
         line-height: 25px;
         font-size: 20px;
         text-align: center;
@@ -808,34 +812,26 @@
     }
     /* SURFACE INFORMATION */
     
-    #routeTypesHead {
-        float: left;
-    }
-    
-    #routeTypesBody {
-        position: relative;
-    }
-    
-    #wayType, #surfaceType, #steepnessType {
+    .ORS-types {
         width: 100%;
     }
     
-    #wayTypeList, #surfaceTypeList, #steepnessTypeList {
+    .ORS-typesList {
         min-height: 25px;
         padding-bottom: 5px;
     }
     
-    #wayTypeList ul, #surfaceTypeList ul, #steepnessTypeList ul {
+    .ORS-typesList ul {
         margin-left: -20px;
     }
     
-    #wayTypeList li, #surfaceTypeList li, #steepnessTypeList li {
+    .ORS-typesList li {
         float: left;
         font-size: 90%;
         margin-right: 20px;
     }
     
-    #wayTypeList li span, #surfaceTypeList li span, #steepnessTypeList li span {
+    .ORS-typesList li span {
         color: #707070;
         font-size: 90%;
         position: relative;
@@ -1362,6 +1358,7 @@
         .ORS-mainPanel {
             width: calc(100% - 41px) !important;
         }
+
         .leaflet-bottom .leaflet-control-scale {
             /* for scale controller */
             display: none;
@@ -1375,7 +1372,6 @@
             position: absolute;
             margin-bottom: 30px;
         }
-
     }
     /* ****************************************************************/
     /* END OF MOBILE STYLES (MEDIA QUERIES FOR MOBILE VISUALIZATION)  */
@@ -1473,9 +1469,6 @@
 		
 		
 	}
-	
-	
-
     /* ***************************************************************/
     /* END OF PRINTING STYLES (MEDIA QUERIES FOR PRINTING THE PAGE)  */
     /* ***************************************************************/
