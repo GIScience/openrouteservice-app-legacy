@@ -1288,12 +1288,13 @@
         .ORS-map {
             order: 1;
         }
-        /* #ORS-title {
+        #ORS-title {
             margin-left: 10px;
             position: absolute;
             height: 50px;
-            font-size: 130%;
-        } */
+            font-size: 150%;
+        } 
+		
         .leaflet-control-container .leaflet-top .leaflet-right {
             margin: 0 auto !important;
             clear: none !important;
