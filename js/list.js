@@ -26,7 +26,11 @@ list = {
         'bicycle': ['bicycle', 'Bicycle', 'BicycleSafety', 'BicycleRoute', 'BicycleMTB', 'BicycleRacer', 'BicycleTour'],
         'pedestrian': ['pedestrian', 'Pedestrian'],
         'heavyvehicle': ['heavyvehicle', 'HeavyVehicle'],
-        'wheelchair': ['wheelchair', 'Wheelchair']
+        'wheelchair': ['wheelchair', 'Wheelchair'],
+        'bicycleracer': ['Bicycle'],
+        'bicycleroute': ['Bicycle'],
+        'bicyclemtb': ['Bicycle'],
+        'bicyclesafety': ['Bicycle']
     }),
     elevationProfiles: ['Bicycle', 'BicycleRacer', 'BicycleMTB', 'BicycleTour', 'Pedestrian', 'BicycleSafety', 'Wheelchair'],
     //please make sure that each category contains at least one element. all names in the hash have to be unique.

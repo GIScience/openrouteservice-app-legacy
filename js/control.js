@@ -181,8 +181,8 @@ var Controller = (function(w) {
      * @param noRouteRequest: if noRouteRequest is true, then no route request is fired
      */
     function handleAddWaypointByRightclick(atts, noRouteRequest, staticOrder, forceENDType) {
-		var staticOrder = typeof staticOrder !== 'undefined' ? staticOrder : true;
-		var forceENDType = typeof forceENDType !== 'undefined' ? forceENDType : false;
+		staticOrder = typeof staticOrder !== 'undefined' ? staticOrder : true;
+		forceENDType = typeof forceENDType !== 'undefined' ? forceENDType : false;
 		
         var pos = atts.pos;
         var wpType = atts.type;
