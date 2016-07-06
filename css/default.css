@@ -21,10 +21,10 @@
         font-family: 'Source Sans Pro', sans-serif !important;
         font-size: 90%;
     }
-	
-	.print-only-header{
-		display:none;
-	}
+    
+    .print-only-header {
+        display: none;
+    }
     
     .ORS {
         /* BODY */
@@ -206,6 +206,7 @@
         color: #707070;
         box-shadow: none;
         text-shadow: none;
+        padding: 6px 12px;
         /*font-family: 'Source Sans Pro', sans-serif;*/
     }
     
@@ -298,10 +299,11 @@
     /* START OF ELEMENT STYLES (CLASSES AND ID's)  */
     /* *********************************************/
     /* STYLE FOR ELEMENTS ON HEADER SECTION */
-    #HeaderOptionsMenuButtonMobile{
-		display:none;
-	}
-	
+    
+    #HeaderOptionsMenuButtonMobile {
+        display: none;
+    }
+    
     #ORS-title {
         /* Main ORS title */
         background-color: #b5152b;
@@ -390,27 +392,6 @@
         border-left: 1px solid #CCC;
         background-color: #FFF;
     }
-    
-    #TruckTabs>ul {
-        /* Styles for tabs on truck options */
-        border-bottom: none;
-        background: #F0F0F0
-    }
-    
-    #TruckTabs>li>a {
-        /* Styles content on each tab on truck options */
-        font-size: 80%;
-        background-color: #f8f8f8;
-        padding-bottom: 4px;
-        padding-top: 4px;
-        color: #707070;
-    }
-    
-    #TruckTabs>li>a:hover {
-        /* Styles for tabs on truck options when mouse is over tab*/
-        border-bottom: transparent;
-        background: #F0F0F0;
-    }
     /* ROUTE SETTINGS */
     
     #avoidAreasError {
@@ -439,7 +420,7 @@
         cursor: pointer;
     }
     
-    #plusSign {
+    .plusSign {
         color: #B8B8B8;
         line-height: 30px;
         font-size: 10px;
@@ -458,7 +439,7 @@
         -webkit-text-stroke-color: #707070;
     }
     
-    #mapMarker {
+    .mapMarker {
         color: #B8B8B8;
         line-height: 30px;
         font-size: 20px;
@@ -539,6 +520,28 @@
         content: "\f041";
         font-family: FontAwesome;
         color: #ff6f4b;
+        line-height: 25px;
+        font-size: 20px;
+        text-align: center;
+        text-stroke-width: 1px;
+        text-stroke-color: #707070;
+        -o-text-stroke-width: 1px;
+        -o-text-stroke-color: #707070;
+        -ms-text-stroke-width: 1px;
+        -ms-text-stroke-color: #707070;
+        -moz-text-stroke-width: 1px;
+        -moz-text-stroke-color: #707070;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: #707070;
+    }
+    
+    .waypoint-icon.roundtrip:before {
+        display: block;
+        float: right;
+        width: 30px;
+        content: "\f041";
+        font-family: FontAwesome;
+        color: #4C00E3;
         line-height: 25px;
         font-size: 20px;
         text-align: center;
@@ -808,34 +811,26 @@
     }
     /* SURFACE INFORMATION */
     
-    #routeTypesHead {
-        float: left;
-    }
-    
-    #routeTypesBody {
-        position: relative;
-    }
-    
-    #wayType, #surfaceType, #steepnessType {
+    .ORS-types {
         width: 100%;
     }
     
-    #wayTypeList, #surfaceTypeList, #steepnessTypeList {
+    .ORS-typesList {
         min-height: 25px;
         padding-bottom: 5px;
     }
     
-    #wayTypeList ul, #surfaceTypeList ul, #steepnessTypeList ul {
+    .ORS-typesList ul {
         margin-left: -20px;
     }
     
-    #wayTypeList li, #surfaceTypeList li, #steepnessTypeList li {
+    .ORS-typesList li {
         float: left;
         font-size: 90%;
         margin-right: 20px;
     }
     
-    #wayTypeList li span, #surfaceTypeList li span, #steepnessTypeList li span {
+    .ORS-typesList li span {
         color: #707070;
         font-size: 90%;
         position: relative;
@@ -1230,65 +1225,60 @@
     /* ******************************************************************/
     
     @media screen and (min-width: 319px) and (max-width: 720px) {
-        #HeaderOptionsMenuButtonMobile{
-			display:inline-block;
-			position: absolute;
-			top:5px;
-			right: 5px;
-			float: right;
-			color: white;
-			height: 40px;
-			width:40px;
-			line-height: 40px;
-			color: white;
-			font-size: 20px;
-			text-align: center;
-			border-radius: 20px;
-		}
-		
-		#HeaderOptionsMenuMobile{
-			float:right !important;
-			right:5px;
-			top:50px;
-			display: inline-block;
-			position: absolute;
-			z-index: 9998;
-			background-color: #F0F0F0;
-			width: 170px;
-			border-radius:5px;
-		}
-		
-		#HeaderOptionsMenuMobile ul li{
-			position:relative;
-			line-height: 50px;
-			width:150px;
-			color: #F0F0F0;
-			font-size: 17px;
-			list-style-type: none;
-			padding: 0;
-			margin-left: -30px;
-			height:50px;
-			float:left;
-			
-		}
-		
-		#HeaderOptionsMenuMobile ul li:active{
-			background-color:#CCC;
-		}
-		
-		#HeaderOptionsMenuMobile ul li a{
-			text-decoration: none;
-			outline : none;
-			float: left;
-			color: black;
-			width:80%;
-			left:5px;
-		}
-		
-		#ORS-topMenu{
-			display:none;
-		}
-		.ORS-main {
+        #HeaderOptionsMenuButtonMobile {
+            display: inline-block;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            float: right;
+            color: white;
+            height: 40px;
+            width: 40px;
+            line-height: 40px;
+            color: white;
+            font-size: 20px;
+            text-align: center;
+            border-radius: 20px;
+        }
+        #HeaderOptionsMenuMobile {
+            float: right !important;
+            right: 5px;
+            top: 50px;
+            display: inline-block;
+            position: absolute;
+            z-index: 9998;
+            background-color: #FFF;
+            width: 170px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px 0 rgba(0,0,0,.26),0 2px 10px 0 rgba(0,0,0,.16);
+        }
+        #HeaderOptionsMenuMobile ul li {
+            position: relative;
+            line-height: 50px;
+            width: 150px;
+            color: #F0F0F0;
+            font-size: 120%;
+            list-style-type: none;
+            padding: 0;
+            margin-left: -30px;
+            height: 50px;
+            float: left;
+        }
+        #HeaderOptionsMenuMobile ul li:active, #HeaderOptionsMenuMobile ul li:hover  {
+            background-color: #CCC;
+        }
+        #HeaderOptionsMenuMobile ul li a {
+            text-decoration: none;
+            outline: none;
+            float: left;
+            color: black;
+            width: 80%;
+            left: 5px;
+        }
+        #ORS-topMenu {
+            display: none;
+        }
+        .ORS-main {
             flex-direction: column;
         }
         .ORS-sidebar {
@@ -1298,13 +1288,12 @@
         .ORS-map {
             order: 1;
         }
-       #ORS-title {
+        /* #ORS-title {
             margin-left: 10px;
             position: absolute;
             height: 50px;
             font-size: 130%;
-        }
-        /*
+        } */
         .leaflet-control-container .leaflet-top .leaflet-right {
             margin: 0 auto !important;
             clear: none !important;
@@ -1362,6 +1351,11 @@
         .ORS-mainPanel {
             width: calc(100% - 41px) !important;
         }
+        /*.ORS-logo {
+            /* GIScience Logo */
+        /*bottom: 25px;
+            right: calc(100vw - 60%);
+        }*/
         .leaflet-bottom .leaflet-control-scale {
             /* for scale controller */
             display: none;
@@ -1375,7 +1369,6 @@
             position: absolute;
             margin-bottom: 30px;
         }
-
     }
     /* ****************************************************************/
     /* END OF MOBILE STYLES (MEDIA QUERIES FOR MOBILE VISUALIZATION)  */
@@ -1383,99 +1376,56 @@
     /* *****************************************************************/
     /* START OF PRINTING STYLES (MEDIA QUERIES FOR PRINTING THE PAGE)  */
     /* *****************************************************************/
-
-	@media print {
-		@page {
-			margin-top:1cm;
-			margin-bottom:1cm;
-			margin-left:1.5cm;
-			margin-right:1cm;
-		}
-			
-		/*.ORS-navigation, .ORS-header, .ORS-menuPanel, .disclaimer, .ORS-header, .ORS-map, .tooltip, div[id="routingPanel ORS-panel"], #optionsContainer, #routeInstructionHead, #printRouteInstructions{
-            display: none;
-        }*/
-		
-		.print-only-header{
-			display: block;
-			position: relative;
-			width: 100%;
-			height: 6em !important;
-			line-height: 5em;
-			justify-content: center;
-			align-items: center;
-			font-size: 180%;
-			text-decoration: none;
-			font-family: 'Roboto', sans-serif;
-			padding-left: 5em;
-			letter-spacing: 1.5px;
-		}
-
-		.print-only-header img {
-			display :inline;
-			padding-left: -3em;
-			/*width: 20% !important;*/
-			height:100% !important;
-			vertical-align:middle
-		}
-		
-		/*.ORS-main {
-			position:relative;
-			width:100%;
-			float:none !important;
-			overflow: visible !important;
+    
+    @media print {
+        @page {
+            margin-top: 1cm;
+            margin-bottom: 1cm;
+            margin-left: 1.5cm;
+            margin-right: 1cm;
         }
-		
-		.ORS-sidebar {
-			margin: 0 auto;
-			width:100%;
-			position:absolute;
-			float:none !important;
-			overflow: visible !important;
-
+        .print-only-header {
+            display: block;
+            position: relative;
+            width: 100%;
+            height: 6em !important;
+            line-height: 5em;
+            justify-content: center;
+            align-items: center;
+            font-size: 180%;
+            text-decoration: none;
+            font-family: 'Roboto', sans-serif;
+            padding-left: 5em;
+            letter-spacing: 1.5px;
         }
-	
-		.ORS-mainPanel {
-			width:100%;
-			left:0;
-			top:0;
-			position:relative;
-			overflow: visible !important;
-			border-left: 1px solid transparent;
-
-		}*/
-
-		#routeSummary{
-			position:relative;
-			display: block;
-			margin-top: 2em;
-		}
-		
-		.directions-summary-container{
-			width:100%;
-			float:none !important;
-		}
-		
-		#directionsMainContainer {
-			display:block;
-			position:relative;
-			overflow: visible !important;
-			float:none !important;
-			font-size:15pt;
-			line-height:15pt;
-			width:100%;
-			
-		}
-	
-		.directions-container div {
-			page-break-inside: avoid;
-		}
-		
-		
-	}
-	
-	
-
+        .print-only-header img {
+            display: inline;
+            padding-left: -3em;
+            height: 100% !important;
+            vertical-align: middle
+        }
+        #routeSummary {
+            position: relative;
+            display: block;
+            margin-top: 2em;
+        }
+        .directions-summary-container {
+            width: 100%;
+            float: none !important;
+        }
+        #directionsMainContainer {
+            display: block;
+            position: relative;
+            overflow: visible !important;
+            float: none !important;
+            font-size: 15pt;
+            line-height: 15pt;
+            width: 100%;
+        }
+        .directions-container, .directions-container div {
+            page-break-inside: avoid;
+        }
+    }
     /* ***************************************************************/
     /* END OF PRINTING STYLES (MEDIA QUERIES FOR PRINTING THE PAGE)  */
     /* ***************************************************************/

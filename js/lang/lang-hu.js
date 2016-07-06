@@ -384,5 +384,32 @@ var lang_hu = {
     'Sand': 'Homok',
     'Woodchips': 'Faforgács',
     'Grass': 'Fű',
-    'GrassPaver': 'Gyep rács kövek'
+    'GrassPaver': 'Gyep rács kövek',
+
+    //Tooltips 
+    'optimizeWP': 'Optimalizálja Waypoints',
+    'reorderWP': 'Újrarendezés Waypointss',
+    'reset': 'Visszaállítása Útvonal',
+    'zoom': 'Nagyítás az útvonal',
+    'analyzeAccess': 'Számítsuk megközelíthetőség',
+    'removeAccess': 'Eltávolít',
+    'exportGPX': 'Letöltés az aktuális útvonal GPX formátumbant',
+    'importGPX': 'Feltölteni több dalt GPX fájl',
+    'tt-ascent': 'Felemelkedés',
+    'tt-descent': 'Származás',
+    'tt-time': 'Idő',
+    'tt-distance': 'Távolság',
+    'tt-actdistance': 'Tényleges távolság',
+    'tt-route' : 'Útvonal',
+    'tt-access' : 'Megközelíthetőség',
+    'tt-cloud' : 'Import/ Export',
+    'tt-feedback' : 'Visszacsatolás',
+    'tt-car' : 'Autó',
+    'tt-bicycle' : 'Kerékpár',
+    'tt-pedestrian' :'Gyalogos',
+    'tt-wheelchair' : 'Hozzáférhető',
+    'tt-heavyvehicle' : 'Nehézgépjármű',
+    'tt-optionsMenu' : 'Lehetőségek',
+    'tt-sitePref' : 'Az oldal beállítások',
+    'tt-contactInfo': 'Kapcsolat információk'
 };		

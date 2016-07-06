@@ -391,5 +391,32 @@ var lang_cn = {
     'Sand': '砂',
     'Woodchips': '木屑',
     'Grass': '草',
-    'GrassPaver': '草攤舖機'
+    'GrassPaver': '草攤舖機',
+
+    //Tooltips cn
+    'optimizeWP': '優化航點',
+    'reorderWP': '航點重新排序',
+    'reset': '復位路由',
+    'zoom': '縮放到路線',
+    'analyzeAccess': '無障礙計算',
+    'removeAccess': '去掉',
+    'exportGPX': '在GPX格式當前路線下載',
+    'importGPX': '上傳GPX從文件中的多個音軌',
+    'tt-ascent': '上升',
+    'tt-descent': '降落',
+    'tt-time': '時間',
+    'tt-distance': '距離',
+    'tt-actdistance': '實際距離',
+    'tt-route' : '路線',
+    'tt-access' : '無障礙',
+    'tt-cloud' : '進口/ 出口',
+    'tt-feedback' : '反饋',
+    'tt-car' : '汽車',
+    'tt-bicycle' : '自行車',
+    'tt-pedestrian' :'行人',
+    'tt-wheelchair' : '無障礙',
+    'tt-heavyvehicle' : '重型車輛',
+    'tt-optionsMenu' : '選項',
+    'tt-sitePref' : '網站首選項',
+    'tt-contactInfo': '聯繫信息'
 };

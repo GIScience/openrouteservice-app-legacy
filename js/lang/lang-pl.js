@@ -391,5 +391,32 @@ var lang_pl = {
     'Sand': 'Piasek',
     'Woodchips': 'Trociny',
     'Grass': 'Trawa',
-    'GrassPaver': 'Trawa układarka'
+    'GrassPaver': 'Trawa układarka',
+
+     //Tooltips
+    'optimizeWP': 'Optymalizacja punktów trasy',
+    'reorderWP': 'Zmiana kolejności punktów trasy',
+    'reset': 'Trasa resetu',
+    'zoom': 'Przybliżyć do trasy',
+    'analyzeAccess': 'Oblicz dostępności',
+    'removeAccess': 'Usunąć',
+    'exportGPX': 'Pobieranie aktualnej trasy w formacie GPX',
+    'importGPX': 'Prześlij wiele ścieżek z pliku GPX',
+    'tt-ascent': 'Wzlot',
+    'tt-descent': 'Zejście',
+    'tt-time': 'Czas',
+    'tt-distance': 'Dystans',
+    'tt-actdistance': 'Rzeczywista odległość',
+    'tt-route' : 'Trasa',
+    'tt-access' : 'Dostępność',
+    'tt-cloud' : 'Import/ Eksport',
+    'tt-feedback' : 'Informacje zwrotne',
+    'tt-car' : 'Samochód',
+    'tt-bicycle' : 'Rower',
+    'tt-pedestrian' :'Pieszy',
+    'tt-wheelchair' : 'Dostępny',
+    'tt-heavyvehicle' : 'Ciężki pojazd',
+    'tt-optionsMenu' : 'Opcje',
+    'tt-sitePref' : 'Preferencje stron',
+    'tt-contactInfo': 'Informacje Kontakt'
 };

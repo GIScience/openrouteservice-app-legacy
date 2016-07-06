@@ -391,5 +391,32 @@ var lang_ru = {
     'Sand': 'песок',
     'Woodchips': 'щепки',
     'Grass': 'трава',
-    'GrassPaver': 'трава асфальтоукладчик'
+    'GrassPaver': 'трава асфальтоукладчик',
+
+    //Tooltips
+    'optimizeWP': 'Оптимизация путевую точку',
+    'reorderWP': 'Упорядочивание путевую точку',
+    'reset': 'Сбросить расчет маршрута',
+    'zoom': 'Увеличить до маршрута',
+    'analyzeAccess': 'Рассчитать доступность',
+    'removeAccess': 'Удалить',
+    'exportGPX': 'Загрузка текущего маршрута в формате GPX',
+    'importGPX': 'Загрузка нескольких дорожек из GPX файла',
+    'tt-ascent': 'восхождение',
+    'tt-descent': 'спуск',
+    'tt-time': 'Время',
+    'tt-distance': 'Расстояние',
+    'tt-actdistance': 'истинное расстояние',
+    'tt-route' : 'маршрут',
+    'tt-access' : 'доступность',
+    'tt-cloud' : 'Импортировать/ экспорт',
+    'tt-feedback' : 'Обратная связь',
+    'tt-car' : 'Автомобиль',
+    'tt-bicycle' : 'велосипед',
+    'tt-pedestrian' :'пешеход',
+    'tt-wheelchair' : 'доступной',
+    'tt-heavyvehicle' : 'Тяжелая машина',
+    'tt-optionsMenu' : 'Опции',
+    'tt-sitePref' : 'Настройки сайта',
+    'tt-contactInfo': 'Контактная информация'
 };

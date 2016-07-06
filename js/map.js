@@ -87,25 +87,20 @@ var Map = (function() {
             position: 'topright',
             separator: ', '
         });
-        if (screen.width>=320 && screen.width<=720){
-            
-            MousePosition.remove();        
-        }
-        else {
+        if (screen.width >= 320 && screen.width <= 720) {
+            MousePosition.remove();
+        } else {
             MousePosition.addTo(this.theMap);
         }
         /* ZOOM CONTROL */
         var ZoomControl = new L.Control.Zoom({
             position: 'topright'
         });
-
-        if (screen.width>=320 && screen.width<=720){
-            ZoomControl.remove();        
-        }
-        else {
+        if (screen.width >= 320 && screen.width <= 720) {
+            ZoomControl.remove();
+        } else {
             ZoomControl.addTo(this.theMap);
         }
-
         /* LOCATE CONTROL */
         function onLocationFound(e) {
             $('.leaflet-popup-content').remove();
@@ -161,15 +156,14 @@ var Map = (function() {
             },
         });
         this.theMap.addControl(new NavMenuToggle());
-        
         /* AVOID AREA CONTROLLER */
         L.NewPolygonControl = L.Control.extend({
             options: {
                 position: 'topright'
             },
             onAdd: function(map) {
-                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-avoidArea',container),
-                link = L.DomUtil.create('a', 'leaflet-avoidAreaContainer', container);
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-avoidArea', container),
+                    link = L.DomUtil.create('a', 'leaflet-avoidAreaContainer', container);
                 link.href = '#';
                 link.title = 'Create a new polygon';
                 link.innerHTML = '▱';
@@ -684,12 +678,19 @@ var Map = (function() {
     }
     /**
      * highlight given feature vectors defined by their ids
-     * @param [list] arr: layer of the map and array of vectorIds
+     * @param [list] layerIds: layer of the map and vectorId or array of vectorIds
      */
-    function highlightFeatures(arr) {
-        for (var i = 0; i < arr[1].length; i++) {
-            this[arr[0]].getLayer(arr[1][i]).bringToFront();
-            this[arr[0]].getLayer(arr[1][i]).setStyle({
+    function highlightFeatures(layerIds) {
+        if (layerIds[1].constructor === Array) {
+            for (var i = 0; i < layerIds[1].length; i++) {
+                this[layerIds[0]].getLayer(layerIds[1][i]).bringToFront();
+                this[layerIds[0]].getLayer(layerIds[1][i]).setStyle({
+                    opacity: 0.85,
+                });
+            }
+        } else {
+            this[layerIds[0]].getLayer(layerIds[1]).bringToFront();
+            this[layerIds[0]].getLayer(layerIds[1]).setStyle({
                 opacity: 0.85,
             });
         }
@@ -698,10 +699,17 @@ var Map = (function() {
      * reset highlight given feature vectors defined by their ids
      * @param [list] arr: layer of the map and array of vectorIds
      */
-    function resetFeatures(arr) {
-        for (var i = 0; i < arr[1].length; i++) {
-            this[arr[0]].getLayer(arr[1][i]).bringToBack();
-            this[arr[0]].getLayer(arr[1][i]).setStyle({
+    function resetFeatures(layerIds) {
+        if (layerIds[1].constructor === Array) {
+            for (var i = 0; i < layerIds[1].length; i++) {
+                this[layerIds[0]].getLayer(layerIds[1][i]).bringToBack();
+                this[layerIds[0]].getLayer(layerIds[1][i]).setStyle({
+                    opacity: 0,
+                });
+            }
+        } else {
+            this[layerIds[0]].getLayer(layerIds[1]).bringToBack();
+            this[layerIds[0]].getLayer(layerIds[1]).setStyle({
                 opacity: 0,
             });
         }
@@ -810,12 +818,57 @@ var Map = (function() {
                 icon_emph: Ui.markerIcons.emph
             });
             newMarker.addTo(this.layerRoutePoints);
-            newMarker.on('dragend', function(e) {
-                self.emit('map:waypointMoved', e.target);
-            });
+			if (type == Waypoint.type.ROUNDTRIP && wpIndex == 0){
+				newMarker.setOpacity(0);
+				newMarker.dragging.disable();
+				numWaypoints = $('.waypoint').length - 2;
+				// if($('#' + numWaypoints).hasClass('roundtrip')){
+					// var endMarkerId = Ui.getFeatureIdOfWaypoint(numWaypoints);
+					// var endMarker = self.layerRoutePoints.getLayer(endMarkerId);
+					// console.log(endMarker);
+					// endMarker.setLatLng(position);
+					// endMarker.setZIndexOffset(newMarker._zIndex + 1);
+					// self.emit('map:waypointMoved', endMarker);
+				// }
+				$('.waypoint.roundtrip').each(function (index){
+					var id = Ui.getFeatureIdOfWaypoint($(this).attr("id"));
+					var marker = self.layerRoutePoints.getLayer(id);
+					if (marker){
+						marker.setLatLng(position);
+						marker.setZIndexOffset(marker._zIndex + 1);
+						self.emit('map:waypointMoved', marker);
+					}
+				});
+			}
+			if(type == Waypoint.type.ROUNDTRIP && wpIndex != 0){
+				newMarker.on('dragend', function(e) {
+					$('.waypoint.roundtrip').each(function (index){
+						var startMarkerId = Ui.getFeatureIdOfWaypoint($(this).attr("id"));
+						var startMarker = self.layerRoutePoints.getLayer(startMarkerId);
+						if(startMarker === undefined) return true;
+						startMarker.setLatLng(e.target.getLatLng());
+						e.target.setZIndexOffset(startMarker._zIndex + 1);
+						self.emit('map:waypointMoved', startMarker);
+					});
+					self.emit('map:waypointMoved', e.target);
+					// self.emit('map:waypointMoved', e.target);
+					// console.log(e.target);
+					// console.log(Ui.getFeatureIdOfWaypoint(0));
+					// var startMarkerId = Ui.getFeatureIdOfWaypoint(0);
+					// var startMarker = self.layerRoutePoints.getLayer(startMarkerId);
+					// startMarker.setLatLng(e.target.getLatLng());
+					// self.emit('map:waypointMoved', startMarker);
+				});
+			}
+			else{
+				newMarker.on('dragend', function(e) {
+					self.emit('map:waypointMoved', e.target);
+				});
+			}
             newMarker.on('drag', function(e) {
                 panMapOnEdges(e);
             });
+			console.log(newMarker._leaflet_id);
             return newMarker._leaflet_id;
         }
     }
@@ -826,16 +879,64 @@ var Map = (function() {
      * @param type: type of the waypoint (start, via, end)
      */
     function addWaypointAtPos(position, wpIndex, type) {
-        newMarker = new L.marker(position, {
-            draggable: true,
-            icon: Ui.markerIcons[type],
-            icon_orig: Ui.markerIcons[type],
-            icon_emph: Ui.markerIcons.emph
-        });
+		newMarker = new L.marker(position, {
+			draggable: true,
+			icon: Ui.markerIcons[type],
+			icon_orig: Ui.markerIcons[type],
+			icon_emph: Ui.markerIcons.emph
+		});
         newMarker.addTo(this.layerRoutePoints);
-        newMarker.on('dragend', function(e) {
-            self.emit('map:waypointMoved', e.target);
-        });
+		
+		if (type == Waypoint.type.ROUNDTRIP && wpIndex == 0){
+			newMarker.setOpacity(0);
+			newMarker.dragging.disable();
+			numWaypoints = $('.waypoint').length - 2;
+			// if($('#' + numWaypoints).hasClass('end')){
+				// var endMarkerId = Ui.getFeatureIdOfWaypoint(numWaypoints);
+				// var endMarker = self.layerRoutePoints.getLayer(endMarkerId);
+				// console.log(endMarker);
+				// endMarker.setLatLng(position);
+				// endMarker.setZIndexOffset(newMarker._zIndex + 1);
+				// self.emit('map:waypointMoved', endMarker);
+			// }
+			$('.waypoint.roundtrip').each(function (index){
+					var id = Ui.getFeatureIdOfWaypoint($(this).attr("id"));
+					var marker = self.layerRoutePoints.getLayer(id);
+					if (marker){
+						marker.setLatLng(position);
+						marker.setZIndexOffset(marker._zIndex + 1);
+						self.emit('map:waypointMoved', marker);
+					}
+				});
+			// newMarker.dragging.disable();
+		}
+		
+		if(type == Waypoint.type.ROUNDTRIP && wpIndex != 0){
+			newMarker.on('dragend', function(e) {
+				var targetId = e.target._leaflet_id;
+				var startMarker = e.target;
+				if(startMarker !== undefined){ 
+					e.target.setZIndexOffset(999);
+					self.emit('map:waypointMoved', startMarker);
+				}
+				$('.waypoint.roundtrip').each(function (index){
+					var startMarkerId = Ui.getFeatureIdOfWaypoint($(this).attr("id"));
+					if (startMarkerId == targetId) return true;
+					var startMarker = self.layerRoutePoints.getLayer(startMarkerId);
+					
+					if(startMarker === undefined) return true;
+					startMarker.setLatLng(e.target.getLatLng());
+					e.target.setZIndexOffset(startMarker._zIndex + 1);
+					self.emit('map:waypointMoved', startMarker);
+				});
+				
+			});
+		}
+		else{
+			newMarker.on('dragend', function(e) {
+				self.emit('map:waypointMoved', e.target);
+			});
+		}
         newMarker.on('drag', function(e) {
             panMapOnEdges(e);
         });
@@ -844,9 +945,10 @@ var Map = (function() {
     /**
      * sets the type of the given waypoint identified by its feature ID
      * @param featureId: Leaflet feature ID as string
-     * @param type: type of the waypoint (start, via, end)
+     * @param type: type of the waypoint (start, via, end, roundtrip)
+	 * @param wpIndex: waypoint index of the corresponding waypoint
      */
-    function setWaypointType(featureId, type) {
+    function setWaypointType(featureId, type, wpIndex) {
         var feature = this.layerRoutePoints.getLayer(featureId);
         if (feature) {
             var newFeature = new L.marker(feature.getLatLng(), {
@@ -855,9 +957,46 @@ var Map = (function() {
                 icon_orig: Ui.markerIcons[type],
                 icon_emph: Ui.markerIcons.emph
             });
-            newFeature.on('dragend', function(e) {
-                self.emit('map:waypointMoved', e.target);
-            });
+			// if (wpIndex === undefined) wpIndex = ui.getWaypiontIndexByFeatureId(featureId);
+            if (type == Waypoint.type.ROUNDTRIP && wpIndex == 0){
+				newFeature.setOpacity(0);
+				var wpId = $($('.waypoint.roundtrip').get($('.waypoint.roundtrip').length - 1)).attr("id");
+					var id = Ui.getFeatureIdOfWaypoint(wpId);
+					var marker = self.layerRoutePoints.getLayer(id);
+					if (marker && featureId != id){
+						marker.setLatLng(feature.getLatLng());
+						marker.setZIndexOffset(marker._zIndex + 1);
+						self.emit('map:waypointMoved', marker);
+					}
+			}
+		
+			if(type == Waypoint.type.ROUNDTRIP && wpIndex != 0){
+				newFeature.on('dragend', function(e) {
+					$('.waypoint.roundtrip').each(function (index){
+						var startMarkerId = Ui.getFeatureIdOfWaypoint($(this).attr("id"));
+						var startMarker = self.layerRoutePoints.getLayer(startMarkerId);
+						if (startMarker === undefined) return true;
+						startMarker.setLatLng(e.target.getLatLng());
+						e.target.setZIndexOffset(startMarker._zIndex + 1);
+						self.emit('map:waypointMoved', startMarker);
+					});
+					// self.emit('map:waypointMoved', e.target);
+					// console.log($('#0'));
+					// console.log(Ui.getFeatureIdOfWaypoint(0));
+					// var startMarkerId = Ui.getFeatureIdOfWaypoint(0);
+					// var startMarker = self.layerRoutePoints.getLayer(startMarkerId);
+					// console.log(self.layerRoutePoints);
+					// startMarker.setLatLng(e.target.getLatLng());
+					// e.target.setZIndexOffset(startMarker._zIndex + 1);
+					// self.emit('map:waypointMoved', startMarker);
+					// self.emit('map:waypointMoved', e.target);
+				});
+			}
+			else{
+				newFeature.on('dragend', function(e) {
+					self.emit('map:waypointMoved', e.target);
+				});
+			}
             newFeature.on('drag', function(e) {
                 panMapOnEdges(e);
             });
@@ -1139,7 +1278,7 @@ var Map = (function() {
      * zooms the map so that the whole route becomes visible (i.e. all features of the route line layer)
      */
     function zoomToRoute() {
-        this.theMap.fitBounds(this.layerRoutePoints.getBounds());
+        this.theMap.fitBounds(new L.featureGroup([this.layerRouteLines, this.layerRoutePoints]).getBounds());
     }
     /*
      * AVOID AREAS

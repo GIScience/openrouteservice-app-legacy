@@ -73,7 +73,7 @@
         <div class="ORS-main">
 			<!-- HEADER OPTIONS FOR MOBILE -->
 			<div id="HeaderOptionsMenuMobile" style="display:none">
-				<ul id="ORS-topMenuMobile">
+				<ul>
 					<li>
 						<a data-toggle="modal" href="#feedbackModal" id="ORS-menuLinkFeedbackMobile">
 							Feedback
@@ -311,7 +311,7 @@
                                     </div>
                                     <div class="checkbox" id="hazardOptions">
                                         <label>
-                                            <input id="Hazardous" type="checkbox" value="hazmat">
+                                            <input id="Hazardous" type="checkbox" value="hazmat" class="ORS-avoid">
                                                 <span id="hazardous">
                                                     <i class="icon-tint">
                                                     </i>
@@ -467,7 +467,7 @@
                                     </h6>
                                     <div class="checkbox">
                                         <label>
-                                            <input id="Highway" type="checkbox">
+                                            <input id="Highway" type="checkbox" class="ORS-avoid">
                                                 <span id="avoidMotorLabel">
                                                     highways
                                                 </span>
@@ -476,7 +476,7 @@
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input id="Tollway" type="checkbox">
+                                            <input id="Tollway" type="checkbox" class="ORS-avoid">
                                                 <span id="avoidTollLabel">
                                                     toll roads
                                                 </span>
@@ -485,7 +485,7 @@
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input id="Tunnel" type="checkbox">
+                                            <input id="Tunnel" type="checkbox" class="ORS-avoid">
                                                 <span id="avoidTunnelLabel">
                                                     tunnels
                                                 </span>
@@ -494,7 +494,7 @@
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input id="Unpavedroads" type="checkbox">
+                                            <input id="Unpavedroads" type="checkbox" class="ORS-avoid">
                                                 <span id="avoidunpavedRoadsLabel">
                                                     unpaved roads
                                                 </span>
@@ -503,7 +503,7 @@
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input id="Ferry" type="checkbox">
+                                            <input id="Ferry" type="checkbox" class="ORS-avoid">
                                                 <span id="avoidFerryLabel">
                                                     ferrys
                                                 </span>
@@ -512,7 +512,7 @@
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input id="Fords" type="checkbox">
+                                            <input id="Fords" type="checkbox" class="ORS-avoid">
                                                 <span id="avoidFordsLabel">
                                                     fords
                                                 </span>
@@ -526,7 +526,7 @@
                                     </h6>
                                     <div class="checkbox">
                                         <label>
-                                            <input id="Ferry" type="checkbox">
+                                            <input id="Ferry" type="checkbox" class="ORS-avoid">
                                                 <span id="avoidFerryLabelPedestrian">
                                                     ferries
                                                 </span>
@@ -535,7 +535,7 @@
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input id="Steps" type="checkbox">
+                                            <input id="Steps" type="checkbox" class="ORS-avoid">
                                                 <span id="avoidStepsLabelPedestrian">
                                                     steps
                                                 </span>
@@ -544,7 +544,7 @@
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input id="Fords" type="checkbox">
+                                            <input id="Fords" type="checkbox" class="ORS-avoid">
                                                 <span id="avoidFordsLabelPedestrian">
                                                     fords
                                                 </span>
@@ -558,7 +558,7 @@
                                     </h6>
                                     <div class="checkbox">
                                         <label>
-                                            <input id="Ferry" type="checkbox">
+                                            <input id="Ferry" type="checkbox" class="ORS-avoid">
                                                 <span id="avoidFerryLabelBike">
                                                     ferries
                                                 </span>
@@ -567,7 +567,7 @@
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input id="Unpavedroads" type="checkbox">
+                                            <input id="Unpavedroads" type="checkbox" class="ORS-avoid">
                                                 <span id="avoidunpavedRoadsLabelBike">
                                                     unpaved roads
                                                 </span>
@@ -576,7 +576,7 @@
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input id="Pavedroads" type="checkbox">
+                                            <input id="Pavedroads" type="checkbox" class="ORS-avoid">
                                                 <span id="avoidpavedRoadsLabelBike">
                                                     paved roads
                                                 </span>
@@ -585,7 +585,7 @@
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input id="Steps" type="checkbox">
+                                            <input id="Steps" type="checkbox" class="ORS-avoid">
                                                 <span id="avoidStepsLabelBike">
                                                     steps
                                                 </span>
@@ -594,7 +594,7 @@
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input id="Fords" type="checkbox">
+                                            <input id="Fords" type="checkbox" class="ORS-avoid">
                                                 <span id="avoidFordsLabelBike">
                                                     fords
                                                 </span>
@@ -704,8 +704,8 @@
                                 </div>
                                 <div class="addWaypoint clickable" id="addWaypoint">
                                     <span class="fa-stack fa-lg">
-                                        <i id="mapMarker" class="fa fa-map-marker fa-stack-2x"></i>
-                                        <i id="plusSign" class="fa fa-plus fa-stack-1x"></i>
+                                        <i class="fa fa-map-marker fa-stack-2x mapMarker"></i>
+                                        <i class="fa fa-plus fa-stack-1x plusSign"></i>
                                     </span>
                                     <span id="addWaypointText">
                                         add waypoint
@@ -716,19 +716,21 @@
                             </div>
                             <div class="ORS-panel-sub ORS-hr-dark">
                                 <div class="clear">
-                                    <div class="left" id="viaOptimizePanel">
-                                        <button class="btn  ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="tt-optimize" title="Optimize Waypoints" type="button">
-                                            <i class="fa fa-fw fa-wrench"></i>
-                                            <input data-toggle="button" id="viaOptimize" type="checkbox"/>
+                                    <div class="left ORS-BtnPrimary-control transparent" id="viaOptimizePanel"  data-container=".ORS-mainPanel" data-toggle="tooltip" id="tt-optimize" title="Optimize Waypoints">
+                                        <i class="fa fa-fw fa-wrench"></i>
+                                        <input data-toggle="button" id="viaOptimize" type="checkbox"/>
+                                    </div>
+                                    <div class="left ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="tt-roundtrip" title="Roundtrip">
+                                        <i class="fa fa-fw fa-refresh"></i>
+                                        <input data-toggle="button" id="roundtrip" name="Roundtrip" value="Roundtrip" type="checkbox"/>
+                                    </div>
+                                    <div class="right">
+                                        <button class="btn ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="orderRoute" title="Reorder Waypoints" type="button">
+                                            <i class="fa fa-reorder"></i>
                                         </button>
                                     </div>
                                     <div class="right">
-                                        <button class="btn  ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="orderRoute" title="Reorder Waypoints" type="button">
-                                            <i class="fa fa-refresh"></i>
-                                        </button>
-                                    </div>
-                                    <div class="right">
-                                        <button class="btn  ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="resetRoute" title="Reset Route" type="button">
+                                        <button class="btn ORS-BtnPrimary-control transparent" data-container=".ORS-mainPanel" data-toggle="tooltip" id="resetRoute" title="Reset Route" type="button">
                                             <i class="fa fa-remove"></i>
                                         </button>
                                     </div>
@@ -745,12 +747,12 @@
                                 <div class="clear" id="routeSummary"></div>
                             </div>
                             <div class="ORS-panel-sub" id="routeTypesContainer" style="display: none;">
-                                <div id="wayType"></div>
-                                <div class="clear" id="wayTypeList"></div>
-                                <div id="surfaceType"></div>
-                                <div class="clear" id="surfaceTypeList"></div>
-                                <div id="steepnessType"></div>
-                                <div class="clear" id="steepnessTypeList"></div>
+                                <div id="wayType" class="ORS-types"></div>
+                                <div class="clear ORS-typesList" id="wayTypeList"></div>
+                                <div id="surfaceType" class="ORS-types"></div>
+                                <div class="clear ORS-typesList" id="surfaceTypeList"></div>
+                                <div id="steepnessType" class="ORS-types"></div>
+                                <div class="clear ORS-typesList" id="steepnessTypeList"></div>
                             </div>
                         </div>
                         <div class="ORS-panel" id="routeInstructionsContainer" style="display:none">
@@ -799,7 +801,7 @@
                                         </span>
                                     </td>
                                     <td>                                        
-                                    	<input class="form-control input-sm" id="accessibilityDistance" type="number" value="15" min="0"/>
+                                    	<input class="form-control input-sm" id="accessibilityDistance" type="number" min="1" max="30" placeholder="min: 1, max: 30" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -809,7 +811,7 @@
                                         </span>
                                     </td>
                                     <td>
-                                    	<input class="form-control input-sm" id="accessibilityAnalysisIsochronesIntervall" type="number" value="3"/>
+                                    	<input class="form-control input-sm" id="accessibilityAnalysisIsochronesIntervall" placeholder="must be smaller than distance" type="number" min="1" value="3"/>
                                     </td>
                                 </tr>
                             </table>
