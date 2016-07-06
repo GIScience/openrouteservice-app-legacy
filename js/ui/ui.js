@@ -3369,15 +3369,11 @@ var Ui = (function(w) {
         if ($('#HeaderOptionsMenuMobile').is(':hidden')) {
             $('#HeaderOptionsMenuMobile').show();
 			$('#HeaderOptionsMenuButtonMobile').css("background-color","#962636");
-            //$('.ORS-optionsButton').addClass('active');
         } else {
             $('#HeaderOptionsMenuMobile').hide();
 			$('#HeaderOptionsMenuButtonMobile').css("background-color","transparent");
-            //$('.ORS-optionsButton').removeClass('active');
-            //$('.ORS-optionsButton').blur();
         }
     }
-	
 	
     /* *********************************************************************
      * CLASS-SPECIFIC
