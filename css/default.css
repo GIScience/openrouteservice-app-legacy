@@ -764,6 +764,30 @@
         -o-transform: rotate(45deg);
         transform: rotate(45deg);
     }
+	
+	.fa-rotate-90 {
+        -webkit-transform: rotate(90deg);
+        -moz-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        -o-transform: rotate(90deg);
+        transform: rotate(90deg);
+    }
+	
+	.fa-rotate-180 {
+        -webkit-transform: rotate(180deg);
+        -moz-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+        -o-transform: rotate(180deg);
+        transform: rotate(180deg);
+    }
+	
+	.fa-rotate-270 {
+        -webkit-transform: rotate(270deg);
+        -moz-transform: rotate(270deg);
+        -ms-transform: rotate(270deg);
+        -o-transform: rotate(270deg);
+        transform: rotate(270deg);
+    }
     
     .fa-rotate-315 {
         -webkit-transform: rotate(315deg);
@@ -980,10 +1004,10 @@
         background-color: #FAFAFA;
     }
     
-    .leaflet-bottom .leaflet-control-scale {
+    /*.leaflet-bottom .leaflet-control-scale {
         /* for scale controller */
-        margin-bottom: 23px;
-    }
+        /*margin-bottom: 23px;
+    }*/
     
     .leaflet-control-customNavMenuToggle, .leaflet-control-customLocate {
         /* for locate controller */
@@ -1017,17 +1041,17 @@
         font-family: ruifont;
     }
     
-    .leaflet-control-customNavMenuToggle:before {
+    /*.leaflet-control-customNavMenuToggle:before {
         /* for toggle menu controller */
-        content: "\f07e";
+        /*content: "\f07e";
         font-family: FontAwesome;
-    }
+    }*/
     
-    .leaflet-control-customLocate:before {
+    /*.leaflet-control-customLocate:before {
         /* for locate controller */
-        content: "\f05b";
+        /*content: "\f05b";
         font-family: FontAwesome;
-    }
+    }*/
     
     .leaflet-control a:link, .leaflet-control a:visited, .leaflet-control a:hover {
         /* for all controllers */
@@ -1300,41 +1324,48 @@
             margin: 0 auto !important;
             clear: none !important;
         }
-        .leaflet-control-customNavMenuToggle {
+
+		
+		.leaflet-control-customNavMenuToggle{
             width: 30px !important;
             height: 30px !important;
-            margin-left: 10px;
-            position: absolute;
-            height: 50px;
         }
-        /* To hide the mouse position controller */
-        .leaflet-control-mouseposition {
-            display: none;
-        }
+		
+		.leaflet-control-customNavMenuToggle:before{
+			font-size:30px !important;
+			line-height: 30px !important;
+		}
+        
         .leaflet-control-customLocate {
-            width: 26px;
-            height: 26px;
-        }
-        .leaflet-control-layers-toggle:before {
-            width: 26px;
-            height: 26px;
-        }
-        .leaflet-control-customNavMenuToggle:before {
-            content: "\f07d";
-            font-family: FontAwesome;
             width: 30px !important;
             height: 30px !important;
-            width: 26px;
-            height: 26px;
         }
-        .leaflet-control-zoom-in {
-            width: 26px;
-            height: 26px;
+		
+		.leaflet-control-customLocate:before{
+			font-size:15px !important;
+			line-height: 30px !important;
+		}
+        
+		.leaflet-control-layers-toggle {
+            width: 30px !important;
+            height: 30px !important;
         }
-        .leaflet-control-zoom-out {
-            width: 26px;
-            height: 26px;
-        }
+		
+		.leaflet-control-layers-toggle:before {
+			font-size:15px !important;
+			line-height: 30px !important;
+		}
+		
+		.leaflet-avoidArea {
+			width: 30px !important;
+            height: 30px !important;
+		}
+		
+		.leaflet-avoidArea:before{
+			font-size:15px !important;
+			line-height: 30px !important;
+		}
+
         .ORS-sidebar {
             box-shadow: none;
         }

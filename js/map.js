@@ -82,16 +82,18 @@ var Map = (function() {
         this.overlays = {};
         var layerName6 = Preferences.translate('layer6');
         this.overlays[layerName6] = this.aster_hillshade;
-        /* MOUSE POSITION CONTROL */
+        
+		/* MOUSE POSITION CONTROL */
         var MousePosition = L.control.mousePosition({
             position: 'topright',
             separator: ', '
         });
-        if (screen.width >= 320 && screen.width <= 720) {
+        if (screen.width >= 319 && screen.width <= 720) {
             MousePosition.remove();
         } else {
             MousePosition.addTo(this.theMap);
         }
+		
         /* ZOOM CONTROL */
         var ZoomControl = new L.Control.Zoom({
             position: 'topright'
@@ -101,6 +103,7 @@ var Map = (function() {
         } else {
             ZoomControl.addTo(this.theMap);
         }
+		
         /* LOCATE CONTROL */
         function onLocationFound(e) {
             $('.leaflet-popup-content').remove();
@@ -125,20 +128,23 @@ var Map = (function() {
                 position: 'topright'
             },
             onAdd: function(map) {
-                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-customLocate');
-                container.title = "Zoom to current location";
-                container.onclick = function() {
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control', container), link = L.DomUtil.create('a','leaflet-control-customLocate',container);
+				link.href = '#';
+                link.title = "Zoom to current location";
+				link.innerHTML = '<i class="fa fa-crosshairs"></i>';
+                L.DomEvent.on(link ,'click', function() {
                     map.locate({
                         setView: true,
                         maxZoom: 20
                     });
                     map.on('locationfound', onLocationFound);
                     map.on('locationerror', onLocationError);
-                };
+                });
                 return container;
             },
         });
-        this.theMap.addControl(new LocateControl()); /* don't add this control for now */
+        this.theMap.addControl(new LocateControl());
+		
         /* TOGGLE NAVIGATION MENU CONROL */
         var timeout = this.theMap;
         var NavMenuToggle = L.Control.extend({
@@ -146,28 +152,40 @@ var Map = (function() {
                 position: 'topleft'
             },
             onAdd: function() {
-                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-customNavMenuToggle');
-                container.title = "Toggle navigation menu";
-                container.onclick = function() {
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control',container), link = L.DomUtil.create('a', 'leaflet-control-customNavMenuToggle', container);
+				link.href = '#';
+                link.title = "Toggle navigation menu";
+				if (screen.width >= 319 && screen.width <= 720) {
+					link.innerHTML = '<i class="fa fa-sign-in fa-rotate-90"></i>';
+				} else {
+					link.innerHTML = '<i class="fa fa-sign-in fa-rotate-180" ></i>';
+				} 
+				L.DomEvent.on(link,'click', function() {
                     jQuery("#sidebar").toggle();
+					if (screen.width >= 319 && screen.width <= 720) {
+						jQuery('.leaflet-control-customNavMenuToggle i').toggleClass('fa-rotate-270');
+					} else {
+						jQuery('.leaflet-control-customNavMenuToggle i').toggleClass('fa-rotate-180');
+					} 
                     timeout.invalidateSize(true); //Needed to update map visualization after toggling Menu
-                };
+                });
                 return container;
             },
         });
         this.theMap.addControl(new NavMenuToggle());
+		
         /* AVOID AREA CONTROLLER */
         L.NewPolygonControl = L.Control.extend({
             options: {
                 position: 'topright'
             },
             onAdd: function(map) {
-                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-avoidArea', container),
-                    link = L.DomUtil.create('a', 'leaflet-avoidAreaContainer', container);
+				var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control', container), link = L.DomUtil.create('a', 'leaflet-avoidArea', container);
                 link.href = '#';
-                link.title = 'Create a new polygon';
-                link.innerHTML = '▱';
-                L.DomEvent.on(link, 'click', L.DomEvent.stop).on(link, 'click', function() {
+                link.title = 'Create a new area avoid polygon';
+				link.innerHTML = '<i class="fa fa-square-o"></i>';
+				//return container;
+                L.DomEvent.on(link,'click', L.DomEvent.stop).on(link,'click', function() {
                     map.editTools.startPolygon();
                 });
                 return container;
@@ -202,10 +220,19 @@ var Map = (function() {
         this.theMap.on('editable:drawing:commit', shapeListener);
         this.theMap.on('editable:vertex:deleted', shapeListener);
         this.theMap.on('editable:vertex:dragend', shapeListener);
-        /* LAYER CONTROLLER */
+        
+		/* LAYER CONTROLLER */
         this.layerControls = L.control.layers(this.baseLayers, this.overlays);
         this.layerControls.addTo(this.theMap);
-        L.control.scale().addTo(this.theMap);
+        
+		/* SCALE CONTROL */
+		if (screen.width >= 320 && screen.width <= 720) {
+            L.control.scale().remove();
+        } else {
+            L.control.scale().addTo(this.theMap);
+        }
+		
+		
         var markers = [{
             "name": "Canada",
             "url": "https://en.wikipedia.org/wiki/Canada",
@@ -249,6 +276,7 @@ var Map = (function() {
         this.layerControls.addOverlay(this.layerTMC, layerName7);
         this.layerRestriction = L.featureGroup().addTo(this.theMap);
         this.layerAvoid.addTo(this.theMap);
+		
         /* *********************************************************************
          * MAP CONTROLS
          * *********************************************************************/
