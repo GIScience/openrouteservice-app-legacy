@@ -94,11 +94,12 @@ var Ui = (function(w) {
             });
         }, 3000);
     }
-    $(function() {
-        $("[data-hide]").on("click", function() {
-            $("." + $(this).attr("data-hide")).hide();
-        });
+   
+    $(function(){
+    $("[data-hide]").on("click", function(){
+        $(this).closest("." + $(this).attr("data-hide")).hide();
     });
+});
     /* *********************************************************************
      * ALL MARKER ELEMENTS
      * *********************************************************************/
