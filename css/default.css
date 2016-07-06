@@ -1451,7 +1451,7 @@
             width: 100%;
         }
         .directions-container, .directions-container div {
-            -page-break-inside: avoid;
+            page-break-inside: avoid;
         }
     }
     /* ***************************************************************/
