@@ -764,24 +764,24 @@
         -o-transform: rotate(45deg);
         transform: rotate(45deg);
     }
-	
-	.fa-rotate-90 {
+    
+    .fa-rotate-90 {
         -webkit-transform: rotate(90deg);
         -moz-transform: rotate(90deg);
         -ms-transform: rotate(90deg);
         -o-transform: rotate(90deg);
         transform: rotate(90deg);
     }
-	
-	.fa-rotate-180 {
+    
+    .fa-rotate-180 {
         -webkit-transform: rotate(180deg);
         -moz-transform: rotate(180deg);
         -ms-transform: rotate(180deg);
         -o-transform: rotate(180deg);
         transform: rotate(180deg);
     }
-	
-	.fa-rotate-270 {
+    
+    .fa-rotate-270 {
         -webkit-transform: rotate(270deg);
         -moz-transform: rotate(270deg);
         -ms-transform: rotate(270deg);
@@ -1003,10 +1003,9 @@
         border-radius: 0px;
         background-color: #FAFAFA;
     }
-    
     /*.leaflet-bottom .leaflet-control-scale {
         /* for scale controller */
-        /*margin-bottom: 23px;
+    /*margin-bottom: 23px;
     }*/
     
     .leaflet-control-customNavMenuToggle, .leaflet-control-customLocate {
@@ -1040,16 +1039,14 @@
         content: "\e804";
         font-family: ruifont;
     }
-    
     /*.leaflet-control-customNavMenuToggle:before {
         /* for toggle menu controller */
-        /*content: "\f07e";
+    /*content: "\f07e";
         font-family: FontAwesome;
     }*/
-    
     /*.leaflet-control-customLocate:before {
         /* for locate controller */
-        /*content: "\f05b";
+    /*content: "\f05b";
         font-family: FontAwesome;
     }*/
     
@@ -1274,7 +1271,7 @@
             background-color: #FFF;
             width: 170px;
             border-radius: 5px;
-            box-shadow: 0 2px 5px 0 rgba(0,0,0,.26),0 2px 10px 0 rgba(0,0,0,.16);
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26), 0 2px 10px 0 rgba(0, 0, 0, .16);
         }
         #HeaderOptionsMenuMobile ul li {
             position: relative;
@@ -1288,7 +1285,7 @@
             height: 50px;
             float: left;
         }
-        #HeaderOptionsMenuMobile ul li:active, #HeaderOptionsMenuMobile ul li:hover  {
+        #HeaderOptionsMenuMobile ul li:active, #HeaderOptionsMenuMobile ul li:hover {
             background-color: #CCC;
         }
         #HeaderOptionsMenuMobile ul li a {
@@ -1312,60 +1309,54 @@
         .ORS-map {
             order: 1;
         }
-
         #ORS-title {
             margin-left: 10px;
             position: absolute;
             height: 50px;
             font-size: 150%;
-        } 
-		
+        }
         .leaflet-control-container .leaflet-top .leaflet-right {
             margin: 0 auto !important;
             clear: none !important;
         }
-
-		
-		.leaflet-control-customNavMenuToggle{
+        .leaflet-control-customNavMenuToggle {
             width: 30px !important;
             height: 30px !important;
         }
-		
-		.leaflet-control-customNavMenuToggle:before{
-			font-size:30px !important;
-			line-height: 30px !important;
-		}
-        
+        .leaflet-control-customNavMenuToggle:before {
+            font-size: 30px !important;
+            line-height: 30px !important;
+        }
         .leaflet-control-customLocate {
             width: 30px !important;
             height: 30px !important;
         }
-		
-		.leaflet-control-customLocate:before{
-			font-size:15px !important;
-			line-height: 30px !important;
-		}
-        
-		.leaflet-control-layers-toggle {
+        .leaflet-control-customLocate:before {
+            font-size: 15px !important;
+            line-height: 30px !important;
+        }
+        .leaflet-control-layers-toggle {
             width: 30px !important;
             height: 30px !important;
         }
-		
-		.leaflet-control-layers-toggle:before {
-			font-size:15px !important;
-			line-height: 30px !important;
-		}
-		
-		.leaflet-avoidArea {
-			width: 30px !important;
+        .leaflet-control-layers-toggle:before {
+            font-size: 15px !important;
+            line-height: 30px !important;
+        }
+        .leaflet-avoidArea {
+            width: 30px !important;
             height: 30px !important;
-		}
-		
-		.leaflet-avoidArea:before{
-			font-size:15px !important;
-			line-height: 30px !important;
-		}
-
+        }
+        .leaflet-avoidArea:before {
+            font-size: 15px !important;
+            line-height: 30px !important;
+        }
+        .steelblue-theme.leaflet-control.elevation .elevation-toggle {
+            border-radius: 0;
+            -webkit-border-radius: 0;
+            width: 30px;
+            height: 30px;
+        }
         .ORS-sidebar {
             box-shadow: none;
         }
@@ -1384,7 +1375,6 @@
         .ORS-mainPanel {
             width: calc(100% - 41px) !important;
         }
-
         .leaflet-bottom .leaflet-control-scale {
             /* for scale controller */
             display: none;
@@ -1405,6 +1395,7 @@
     /* *****************************************************************/
     /* START OF PRINTING STYLES (MEDIA QUERIES FOR PRINTING THE PAGE)  */
     /* *****************************************************************/
+    
     @media print {
         @page {
             margin-top: 1cm;

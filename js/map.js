@@ -82,8 +82,7 @@ var Map = (function() {
         this.overlays = {};
         var layerName6 = Preferences.translate('layer6');
         this.overlays[layerName6] = this.aster_hillshade;
-        
-		/* MOUSE POSITION CONTROL */
+        /* MOUSE POSITION CONTROL */
         var MousePosition = L.control.mousePosition({
             position: 'topright',
             separator: ', '
@@ -93,7 +92,6 @@ var Map = (function() {
         } else {
             MousePosition.addTo(this.theMap);
         }
-		
         /* ZOOM CONTROL */
         var ZoomControl = new L.Control.Zoom({
             position: 'topright'
@@ -103,7 +101,6 @@ var Map = (function() {
         } else {
             ZoomControl.addTo(this.theMap);
         }
-		
         /* LOCATE CONTROL */
         function onLocationFound(e) {
             $('.leaflet-popup-content').remove();
@@ -128,11 +125,12 @@ var Map = (function() {
                 position: 'topright'
             },
             onAdd: function(map) {
-                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control', container), link = L.DomUtil.create('a','leaflet-control-customLocate',container);
-				link.href = '#';
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control', container),
+                    link = L.DomUtil.create('a', 'leaflet-control-customLocate', container);
+                link.href = '#';
                 link.title = "Zoom to current location";
-				link.innerHTML = '<i class="fa fa-crosshairs"></i>';
-                L.DomEvent.on(link ,'click', function() {
+                link.innerHTML = '<i class="fa fa-crosshairs"></i>';
+                L.DomEvent.on(link, 'click', function() {
                     map.locate({
                         setView: true,
                         maxZoom: 20
@@ -144,7 +142,6 @@ var Map = (function() {
             },
         });
         this.theMap.addControl(new LocateControl());
-		
         /* TOGGLE NAVIGATION MENU CONROL */
         var timeout = this.theMap;
         var NavMenuToggle = L.Control.extend({
@@ -152,40 +149,41 @@ var Map = (function() {
                 position: 'topleft'
             },
             onAdd: function() {
-                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control',container), link = L.DomUtil.create('a', 'leaflet-control-customNavMenuToggle', container);
-				link.href = '#';
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control', container),
+                    link = L.DomUtil.create('a', 'leaflet-control-customNavMenuToggle', container);
+                link.href = '#';
                 link.title = "Toggle navigation menu";
-				if (screen.width >= 319 && screen.width <= 720) {
-					link.innerHTML = '<i class="fa fa-sign-in fa-rotate-90"></i>';
-				} else {
-					link.innerHTML = '<i class="fa fa-sign-in fa-rotate-180" ></i>';
-				} 
-				L.DomEvent.on(link,'click', function() {
+                if (screen.width >= 319 && screen.width <= 720) {
+                    link.innerHTML = '<i class="fa fa-sign-in fa-rotate-90"></i>';
+                } else {
+                    link.innerHTML = '<i class="fa fa-sign-in fa-rotate-180" ></i>';
+                }
+                L.DomEvent.on(link, 'click', function() {
                     jQuery("#sidebar").toggle();
-					if (screen.width >= 319 && screen.width <= 720) {
-						jQuery('.leaflet-control-customNavMenuToggle i').toggleClass('fa-rotate-270');
-					} else {
-						jQuery('.leaflet-control-customNavMenuToggle i').toggleClass('fa-rotate-180');
-					} 
+                    if (screen.width >= 319 && screen.width <= 720) {
+                        jQuery('.leaflet-control-customNavMenuToggle i').toggleClass('fa-rotate-270');
+                    } else {
+                        jQuery('.leaflet-control-customNavMenuToggle i').toggleClass('fa-rotate-180');
+                    }
                     timeout.invalidateSize(true); //Needed to update map visualization after toggling Menu
                 });
                 return container;
             },
         });
         this.theMap.addControl(new NavMenuToggle());
-		
         /* AVOID AREA CONTROLLER */
         L.NewPolygonControl = L.Control.extend({
             options: {
                 position: 'topright'
             },
             onAdd: function(map) {
-				var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control', container), link = L.DomUtil.create('a', 'leaflet-avoidArea', container);
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control', container),
+                    link = L.DomUtil.create('a', 'leaflet-avoidArea', container);
                 link.href = '#';
                 link.title = 'Create a new area avoid polygon';
-				link.innerHTML = '<i class="fa fa-square-o"></i>';
-				//return container;
-                L.DomEvent.on(link,'click', L.DomEvent.stop).on(link,'click', function() {
+                link.innerHTML = '<i class="fa fa-square-o"></i>';
+                //return container;
+                L.DomEvent.on(link, 'click', L.DomEvent.stop).on(link, 'click', function() {
                     map.editTools.startPolygon();
                 });
                 return container;
@@ -220,29 +218,31 @@ var Map = (function() {
         this.theMap.on('editable:drawing:commit', shapeListener);
         this.theMap.on('editable:vertex:deleted', shapeListener);
         this.theMap.on('editable:vertex:dragend', shapeListener);
-        
-		/* LAYER CONTROLLER */
+        /* LAYER CONTROLLER */
         this.layerControls = L.control.layers(this.baseLayers, this.overlays);
         this.layerControls.addTo(this.theMap);
-        
-		/* SCALE CONTROL */
-		if (screen.width >= 320 && screen.width <= 720) {
+        /* SCALE CONTROL */
+        if (screen.width >= 320 && screen.width <= 720) {
             L.control.scale().remove();
         } else {
             L.control.scale().addTo(this.theMap);
         }
-		
-		
         var markers = [{
             "name": "Canada",
             "url": "https://en.wikipedia.org/wiki/Canada",
             "lat": 49.409445,
             "lng": 8.692953
         }, ];
+        var elevationWidth;
+        if (screen.width >= 319 && screen.width <= 720) {
+            elevationWidth = 300;
+        } else {
+            elevationWidth = 400;
+        }
         this.elevationControl = L.control.elevation({
             position: "topright",
             theme: "steelblue-theme", //default: lime-theme
-            width: 400,
+            width: elevationWidth,
             height: 145,
             margins: {
                 top: 50,
@@ -276,7 +276,6 @@ var Map = (function() {
         this.layerControls.addOverlay(this.layerTMC, layerName7);
         this.layerRestriction = L.featureGroup().addTo(this.theMap);
         this.layerAvoid.addTo(this.theMap);
-		
         /* *********************************************************************
          * MAP CONTROLS
          * *********************************************************************/
@@ -846,57 +845,56 @@ var Map = (function() {
                 icon_emph: Ui.markerIcons.emph
             });
             newMarker.addTo(this.layerRoutePoints);
-			if (type == Waypoint.type.ROUNDTRIP && wpIndex == 0){
-				newMarker.setOpacity(0);
-				newMarker.dragging.disable();
-				numWaypoints = $('.waypoint').length - 2;
-				// if($('#' + numWaypoints).hasClass('roundtrip')){
-					// var endMarkerId = Ui.getFeatureIdOfWaypoint(numWaypoints);
-					// var endMarker = self.layerRoutePoints.getLayer(endMarkerId);
-					// console.log(endMarker);
-					// endMarker.setLatLng(position);
-					// endMarker.setZIndexOffset(newMarker._zIndex + 1);
-					// self.emit('map:waypointMoved', endMarker);
-				// }
-				$('.waypoint.roundtrip').each(function (index){
-					var id = Ui.getFeatureIdOfWaypoint($(this).attr("id"));
-					var marker = self.layerRoutePoints.getLayer(id);
-					if (marker){
-						marker.setLatLng(position);
-						marker.setZIndexOffset(marker._zIndex + 1);
-						self.emit('map:waypointMoved', marker);
-					}
-				});
-			}
-			if(type == Waypoint.type.ROUNDTRIP && wpIndex != 0){
-				newMarker.on('dragend', function(e) {
-					$('.waypoint.roundtrip').each(function (index){
-						var startMarkerId = Ui.getFeatureIdOfWaypoint($(this).attr("id"));
-						var startMarker = self.layerRoutePoints.getLayer(startMarkerId);
-						if(startMarker === undefined) return true;
-						startMarker.setLatLng(e.target.getLatLng());
-						e.target.setZIndexOffset(startMarker._zIndex + 1);
-						self.emit('map:waypointMoved', startMarker);
-					});
-					self.emit('map:waypointMoved', e.target);
-					// self.emit('map:waypointMoved', e.target);
-					// console.log(e.target);
-					// console.log(Ui.getFeatureIdOfWaypoint(0));
-					// var startMarkerId = Ui.getFeatureIdOfWaypoint(0);
-					// var startMarker = self.layerRoutePoints.getLayer(startMarkerId);
-					// startMarker.setLatLng(e.target.getLatLng());
-					// self.emit('map:waypointMoved', startMarker);
-				});
-			}
-			else{
-				newMarker.on('dragend', function(e) {
-					self.emit('map:waypointMoved', e.target);
-				});
-			}
+            if (type == Waypoint.type.ROUNDTRIP && wpIndex == 0) {
+                newMarker.setOpacity(0);
+                newMarker.dragging.disable();
+                numWaypoints = $('.waypoint').length - 2;
+                // if($('#' + numWaypoints).hasClass('roundtrip')){
+                // var endMarkerId = Ui.getFeatureIdOfWaypoint(numWaypoints);
+                // var endMarker = self.layerRoutePoints.getLayer(endMarkerId);
+                // console.log(endMarker);
+                // endMarker.setLatLng(position);
+                // endMarker.setZIndexOffset(newMarker._zIndex + 1);
+                // self.emit('map:waypointMoved', endMarker);
+                // }
+                $('.waypoint.roundtrip').each(function(index) {
+                    var id = Ui.getFeatureIdOfWaypoint($(this).attr("id"));
+                    var marker = self.layerRoutePoints.getLayer(id);
+                    if (marker) {
+                        marker.setLatLng(position);
+                        marker.setZIndexOffset(marker._zIndex + 1);
+                        self.emit('map:waypointMoved', marker);
+                    }
+                });
+            }
+            if (type == Waypoint.type.ROUNDTRIP && wpIndex != 0) {
+                newMarker.on('dragend', function(e) {
+                    $('.waypoint.roundtrip').each(function(index) {
+                        var startMarkerId = Ui.getFeatureIdOfWaypoint($(this).attr("id"));
+                        var startMarker = self.layerRoutePoints.getLayer(startMarkerId);
+                        if (startMarker === undefined) return true;
+                        startMarker.setLatLng(e.target.getLatLng());
+                        e.target.setZIndexOffset(startMarker._zIndex + 1);
+                        self.emit('map:waypointMoved', startMarker);
+                    });
+                    self.emit('map:waypointMoved', e.target);
+                    // self.emit('map:waypointMoved', e.target);
+                    // console.log(e.target);
+                    // console.log(Ui.getFeatureIdOfWaypoint(0));
+                    // var startMarkerId = Ui.getFeatureIdOfWaypoint(0);
+                    // var startMarker = self.layerRoutePoints.getLayer(startMarkerId);
+                    // startMarker.setLatLng(e.target.getLatLng());
+                    // self.emit('map:waypointMoved', startMarker);
+                });
+            } else {
+                newMarker.on('dragend', function(e) {
+                    self.emit('map:waypointMoved', e.target);
+                });
+            }
             newMarker.on('drag', function(e) {
                 panMapOnEdges(e);
             });
-			console.log(newMarker._leaflet_id);
+            console.log(newMarker._leaflet_id);
             return newMarker._leaflet_id;
         }
     }
@@ -907,64 +905,59 @@ var Map = (function() {
      * @param type: type of the waypoint (start, via, end)
      */
     function addWaypointAtPos(position, wpIndex, type) {
-		newMarker = new L.marker(position, {
-			draggable: true,
-			icon: Ui.markerIcons[type],
-			icon_orig: Ui.markerIcons[type],
-			icon_emph: Ui.markerIcons.emph
-		});
+        newMarker = new L.marker(position, {
+            draggable: true,
+            icon: Ui.markerIcons[type],
+            icon_orig: Ui.markerIcons[type],
+            icon_emph: Ui.markerIcons.emph
+        });
         newMarker.addTo(this.layerRoutePoints);
-		
-		if (type == Waypoint.type.ROUNDTRIP && wpIndex == 0){
-			newMarker.setOpacity(0);
-			newMarker.dragging.disable();
-			numWaypoints = $('.waypoint').length - 2;
-			// if($('#' + numWaypoints).hasClass('end')){
-				// var endMarkerId = Ui.getFeatureIdOfWaypoint(numWaypoints);
-				// var endMarker = self.layerRoutePoints.getLayer(endMarkerId);
-				// console.log(endMarker);
-				// endMarker.setLatLng(position);
-				// endMarker.setZIndexOffset(newMarker._zIndex + 1);
-				// self.emit('map:waypointMoved', endMarker);
-			// }
-			$('.waypoint.roundtrip').each(function (index){
-					var id = Ui.getFeatureIdOfWaypoint($(this).attr("id"));
-					var marker = self.layerRoutePoints.getLayer(id);
-					if (marker){
-						marker.setLatLng(position);
-						marker.setZIndexOffset(marker._zIndex + 1);
-						self.emit('map:waypointMoved', marker);
-					}
-				});
-			// newMarker.dragging.disable();
-		}
-		
-		if(type == Waypoint.type.ROUNDTRIP && wpIndex != 0){
-			newMarker.on('dragend', function(e) {
-				var targetId = e.target._leaflet_id;
-				var startMarker = e.target;
-				if(startMarker !== undefined){ 
-					e.target.setZIndexOffset(999);
-					self.emit('map:waypointMoved', startMarker);
-				}
-				$('.waypoint.roundtrip').each(function (index){
-					var startMarkerId = Ui.getFeatureIdOfWaypoint($(this).attr("id"));
-					if (startMarkerId == targetId) return true;
-					var startMarker = self.layerRoutePoints.getLayer(startMarkerId);
-					
-					if(startMarker === undefined) return true;
-					startMarker.setLatLng(e.target.getLatLng());
-					e.target.setZIndexOffset(startMarker._zIndex + 1);
-					self.emit('map:waypointMoved', startMarker);
-				});
-				
-			});
-		}
-		else{
-			newMarker.on('dragend', function(e) {
-				self.emit('map:waypointMoved', e.target);
-			});
-		}
+        if (type == Waypoint.type.ROUNDTRIP && wpIndex == 0) {
+            newMarker.setOpacity(0);
+            newMarker.dragging.disable();
+            numWaypoints = $('.waypoint').length - 2;
+            // if($('#' + numWaypoints).hasClass('end')){
+            // var endMarkerId = Ui.getFeatureIdOfWaypoint(numWaypoints);
+            // var endMarker = self.layerRoutePoints.getLayer(endMarkerId);
+            // console.log(endMarker);
+            // endMarker.setLatLng(position);
+            // endMarker.setZIndexOffset(newMarker._zIndex + 1);
+            // self.emit('map:waypointMoved', endMarker);
+            // }
+            $('.waypoint.roundtrip').each(function(index) {
+                var id = Ui.getFeatureIdOfWaypoint($(this).attr("id"));
+                var marker = self.layerRoutePoints.getLayer(id);
+                if (marker) {
+                    marker.setLatLng(position);
+                    marker.setZIndexOffset(marker._zIndex + 1);
+                    self.emit('map:waypointMoved', marker);
+                }
+            });
+            // newMarker.dragging.disable();
+        }
+        if (type == Waypoint.type.ROUNDTRIP && wpIndex != 0) {
+            newMarker.on('dragend', function(e) {
+                var targetId = e.target._leaflet_id;
+                var startMarker = e.target;
+                if (startMarker !== undefined) {
+                    e.target.setZIndexOffset(999);
+                    self.emit('map:waypointMoved', startMarker);
+                }
+                $('.waypoint.roundtrip').each(function(index) {
+                    var startMarkerId = Ui.getFeatureIdOfWaypoint($(this).attr("id"));
+                    if (startMarkerId == targetId) return true;
+                    var startMarker = self.layerRoutePoints.getLayer(startMarkerId);
+                    if (startMarker === undefined) return true;
+                    startMarker.setLatLng(e.target.getLatLng());
+                    e.target.setZIndexOffset(startMarker._zIndex + 1);
+                    self.emit('map:waypointMoved', startMarker);
+                });
+            });
+        } else {
+            newMarker.on('dragend', function(e) {
+                self.emit('map:waypointMoved', e.target);
+            });
+        }
         newMarker.on('drag', function(e) {
             panMapOnEdges(e);
         });
@@ -974,7 +967,7 @@ var Map = (function() {
      * sets the type of the given waypoint identified by its feature ID
      * @param featureId: Leaflet feature ID as string
      * @param type: type of the waypoint (start, via, end, roundtrip)
-	 * @param wpIndex: waypoint index of the corresponding waypoint
+     * @param wpIndex: waypoint index of the corresponding waypoint
      */
     function setWaypointType(featureId, type, wpIndex) {
         var feature = this.layerRoutePoints.getLayer(featureId);
@@ -985,46 +978,44 @@ var Map = (function() {
                 icon_orig: Ui.markerIcons[type],
                 icon_emph: Ui.markerIcons.emph
             });
-			// if (wpIndex === undefined) wpIndex = ui.getWaypiontIndexByFeatureId(featureId);
-            if (type == Waypoint.type.ROUNDTRIP && wpIndex == 0){
-				newFeature.setOpacity(0);
-				var wpId = $($('.waypoint.roundtrip').get($('.waypoint.roundtrip').length - 1)).attr("id");
-					var id = Ui.getFeatureIdOfWaypoint(wpId);
-					var marker = self.layerRoutePoints.getLayer(id);
-					if (marker && featureId != id){
-						marker.setLatLng(feature.getLatLng());
-						marker.setZIndexOffset(marker._zIndex + 1);
-						self.emit('map:waypointMoved', marker);
-					}
-			}
-		
-			if(type == Waypoint.type.ROUNDTRIP && wpIndex != 0){
-				newFeature.on('dragend', function(e) {
-					$('.waypoint.roundtrip').each(function (index){
-						var startMarkerId = Ui.getFeatureIdOfWaypoint($(this).attr("id"));
-						var startMarker = self.layerRoutePoints.getLayer(startMarkerId);
-						if (startMarker === undefined) return true;
-						startMarker.setLatLng(e.target.getLatLng());
-						e.target.setZIndexOffset(startMarker._zIndex + 1);
-						self.emit('map:waypointMoved', startMarker);
-					});
-					// self.emit('map:waypointMoved', e.target);
-					// console.log($('#0'));
-					// console.log(Ui.getFeatureIdOfWaypoint(0));
-					// var startMarkerId = Ui.getFeatureIdOfWaypoint(0);
-					// var startMarker = self.layerRoutePoints.getLayer(startMarkerId);
-					// console.log(self.layerRoutePoints);
-					// startMarker.setLatLng(e.target.getLatLng());
-					// e.target.setZIndexOffset(startMarker._zIndex + 1);
-					// self.emit('map:waypointMoved', startMarker);
-					// self.emit('map:waypointMoved', e.target);
-				});
-			}
-			else{
-				newFeature.on('dragend', function(e) {
-					self.emit('map:waypointMoved', e.target);
-				});
-			}
+            // if (wpIndex === undefined) wpIndex = ui.getWaypiontIndexByFeatureId(featureId);
+            if (type == Waypoint.type.ROUNDTRIP && wpIndex == 0) {
+                newFeature.setOpacity(0);
+                var wpId = $($('.waypoint.roundtrip').get($('.waypoint.roundtrip').length - 1)).attr("id");
+                var id = Ui.getFeatureIdOfWaypoint(wpId);
+                var marker = self.layerRoutePoints.getLayer(id);
+                if (marker && featureId != id) {
+                    marker.setLatLng(feature.getLatLng());
+                    marker.setZIndexOffset(marker._zIndex + 1);
+                    self.emit('map:waypointMoved', marker);
+                }
+            }
+            if (type == Waypoint.type.ROUNDTRIP && wpIndex != 0) {
+                newFeature.on('dragend', function(e) {
+                    $('.waypoint.roundtrip').each(function(index) {
+                        var startMarkerId = Ui.getFeatureIdOfWaypoint($(this).attr("id"));
+                        var startMarker = self.layerRoutePoints.getLayer(startMarkerId);
+                        if (startMarker === undefined) return true;
+                        startMarker.setLatLng(e.target.getLatLng());
+                        e.target.setZIndexOffset(startMarker._zIndex + 1);
+                        self.emit('map:waypointMoved', startMarker);
+                    });
+                    // self.emit('map:waypointMoved', e.target);
+                    // console.log($('#0'));
+                    // console.log(Ui.getFeatureIdOfWaypoint(0));
+                    // var startMarkerId = Ui.getFeatureIdOfWaypoint(0);
+                    // var startMarker = self.layerRoutePoints.getLayer(startMarkerId);
+                    // console.log(self.layerRoutePoints);
+                    // startMarker.setLatLng(e.target.getLatLng());
+                    // e.target.setZIndexOffset(startMarker._zIndex + 1);
+                    // self.emit('map:waypointMoved', startMarker);
+                    // self.emit('map:waypointMoved', e.target);
+                });
+            } else {
+                newFeature.on('dragend', function(e) {
+                    self.emit('map:waypointMoved', e.target);
+                });
+            }
             newFeature.on('drag', function(e) {
                 panMapOnEdges(e);
             });
