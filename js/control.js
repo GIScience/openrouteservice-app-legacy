@@ -180,7 +180,10 @@ var Controller = (function(w) {
      * @param atts: pos: position of the new waypoint, type: type of the waypoint
      * @param noRouteRequest: if noRouteRequest is true, then no route request is fired
      */
-    function handleAddWaypointByRightclick(atts, noRouteRequest, staticOrder = true, forceENDType = false) {
+    function handleAddWaypointByRightclick(atts, noRouteRequest, staticOrder, forceENDType) {
+		staticOrder = typeof staticOrder !== 'undefined' ? staticOrder : true;
+		forceENDType = typeof forceENDType !== 'undefined' ? forceENDType : false;
+		
         var pos = atts.pos;
         var wpType = atts.type;
         var featureId;
@@ -528,7 +531,8 @@ var Controller = (function(w) {
      * @param newStatus: boolean to set roundtrip on/off
      * @param copy: boolean to copy the old start/end wps if existing
      */
-    function handleSpecifyRoundtrip(newStatus, copy = true) {
+    function handleSpecifyRoundtrip(newStatus, copy) {
+		var copy = typeof copy !== 'undefined' ? copy : true;
         if(newStatus == true){
 			var rP = ui.getRoutePoints();
 			var coordinates;
