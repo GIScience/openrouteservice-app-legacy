@@ -1003,63 +1003,64 @@
         border-radius: 0px;
         background-color: #FAFAFA;
     }
-    
-    /*.leaflet-bottom .leaflet-control-scale {
-        /* for scale controller */
-        /*margin-bottom: 23px;
-    }*/
-    
-    .leaflet-control-customNavMenuToggle, .leaflet-control-customLocate {
-        /* for locate controller */
-        width: 26px;
-        height: 26px;
-        position: relative;
-        text-align: center;
-        line-height: 26px;
-        color: #70707D;
-        cursor: pointer;
-    }
-    
+
     .leaflet-retina .leaflet-control-layers-toggle, .leaflet-control-layers-toggle {
         /* for layers controller */
         background-image: none;
     }
     
-    .leaflet-control-layers a.leaflet-control-layers-toggle {
-        /* for layers controller */
-        width: 26px;
-        height: 26px;
-        position: relative;
-        text-align: center;
-        line-height: 26px;
-        color: #70707D;
-    }
-    
-    .leaflet-control-layers a.leaflet-control-layers-toggle:before {
+    .leaflet-control-layers-toggle:before {
         /* for layers controller */
         content: "\e804";
         font-family: ruifont;
     }
-    
-    /*.leaflet-control-customNavMenuToggle:before {
-        /* for toggle menu controller */
-        /*content: "\f07e";
-        font-family: FontAwesome;
-    }*/
-    
-    /*.leaflet-control-customLocate:before {
-        /* for locate controller */
-        /*content: "\f05b";
-        font-family: FontAwesome;
-    }*/
-    
-    .leaflet-control a:link, .leaflet-control a:visited, .leaflet-control a:hover {
-        /* for all controllers */
-        text-decoration: none;
-        color: #707070;
+	
+    .leaflet-control-zoom-in{
+		width: 26px !important;
+        height: 26px !important;
+		font-size:15px !important;
+		line-height: 26px !important;
+	}
+	
+	.leaflet-control-zoom-out{
+		width: 26px !important;
+        height: 26px !important;
+		font-size:15px !important;
+		line-height: 26px !important;
+	}
+
+    .leaflet-control-customNavMenuToggle{
+        width: 26px !important;
+        height: 26px !important;
+		font-size:15px !important;
+		line-height: 26px !important;
     }
-    
-    .elevation-collapsed {
+
+    .leaflet-control-customLocate {
+        width: 26px !important;
+        height: 26px !important;
+		font-size:15px !important;
+		line-height: 26px !important;
+    }
+  
+	.leaflet-control-layers-toggle {
+        width: 26px !important;
+        height: 26px !important;
+		font-size:15px !important;
+		line-height: 26px !important;
+		position: relative;
+        text-align: center;
+        color: #70707D;
+    }
+	
+	.leaflet-avoidArea {
+		width: 26px !important;
+        height: 26px !important;
+		font-size:15px !important;
+		line-height: 26px !important;
+	}
+	
+	.elevation-collapsed {
         background: #FAFAFA;
         border-radius: 0;
     }
@@ -1074,6 +1075,29 @@
     .steelblue-theme.leaflet-control.elevation .elevation-toggle-icon {
         background-size: 16px 11px;
     }
+	
+	
+	
+    .leaflet-control a:link, .leaflet-control a:visited, .leaflet-control a:hover {
+        /* for all controllers */
+        text-decoration: none;
+        color: #707070;
+    }
+    
+    /*.steelblue-theme.leaflet-control.elevation .elevation-toggle {
+        border-radius: 0;
+        -webkit-border-radius: 0;
+        width: 26px;
+        height: 26px;
+    }*/
+    
+    /*.steelblue-theme.leaflet-control.elevation .elevation-toggle-icon {
+        background-size: 16px 11px;
+    }
+	
+	.steelblue-theme.leaflet-control.elevation .elevation-toggle-icon:before{
+		
+	}*/
     
     .ORS-mapContextMenu .ORS-contextWaypoint {
         /* Context menu styles (when clicking with the right mouse button on the map area */
@@ -1320,52 +1344,65 @@
             font-size: 150%;
         } 
 		
-        .leaflet-control-container .leaflet-top .leaflet-right {
-            margin: 0 auto !important;
-            clear: none !important;
-        }
-
+        .leaflet-control-zoom-in{
+			width: 30px !important;
+			height: 30px !important;
+			font-size:18px !important;
+			line-height: 30px !important;
+		}
 		
+		.leaflet-control-zoom-out{
+			width: 30px !important;
+			height: 30px !important;
+			font-size:18px !important;
+			line-height: 30px !important;
+		}
+	
 		.leaflet-control-customNavMenuToggle{
-            width: 30px !important;
-            height: 30px !important;
-        }
-		
-		.leaflet-control-customNavMenuToggle:before{
-			font-size:30px !important;
+			width: 30px !important;
+			height: 30px !important;
+			font-size:18px !important;
 			line-height: 30px !important;
 		}
-        
-        .leaflet-control-customLocate {
-            width: 30px !important;
-            height: 30px !important;
-        }
-		
-		.leaflet-control-customLocate:before{
-			font-size:15px !important;
+	
+		.leaflet-control-customLocate {
+			width: 30px !important;
+			height: 30px !important;
+			font-size:18px !important;
 			line-height: 30px !important;
 		}
-        
+	
 		.leaflet-control-layers-toggle {
-            width: 30px !important;
-            height: 30px !important;
-        }
-		
-		.leaflet-control-layers-toggle:before {
+			width: 30px !important;
+			height: 30px !important;
 			font-size:15px !important;
 			line-height: 30px !important;
+			position: relative;
+			text-align: center;
+			color: #70707D;
 		}
 		
 		.leaflet-avoidArea {
 			width: 30px !important;
-            height: 30px !important;
-		}
-		
-		.leaflet-avoidArea:before{
-			font-size:15px !important;
+			height: 30px !important;
+			font-size:18px !important;
 			line-height: 30px !important;
 		}
+		
+		.steelblue-theme.leaflet-control.elevation .elevation-toggle {
+			width: 30px !important;
+			height: 30px !important;
+			font-size:18px !important;
+			line-height: 30px !important;
+			position: relative;
+			text-align: center;
+			color: #70707D;
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+		}
 
+		
         .ORS-sidebar {
             box-shadow: none;
         }
