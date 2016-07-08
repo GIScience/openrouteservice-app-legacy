@@ -189,6 +189,7 @@ var Route = (function(w) {
                 }
             }
         }
+        console.log(avoidableParams)
         if (avoidableParams[0] == 'true' || avoidableParams[0] === true) {
             writer.writeElementString('xls:AvoidFeature', 'Highway');
         }
@@ -212,6 +213,9 @@ var Route = (function(w) {
         }
         if (avoidableParams[7] == 'true' || avoidableParams[7] === true) {
             writer.writeElementString('xls:AvoidFeature', 'Tunnels');
+        }
+        if (avoidableParams[8] == 'true' || avoidableParams[8] === true) {
+            writer.writeElementString('xls:AvoidFeature', 'Tracks');
         }
         //</xls:AvoidList>
         writer.writeEndElement();

@@ -117,7 +117,7 @@ var lang_de = {
 	'avoidFerry':  'F&aumlhrverbindungen',
 	'avoidTunnel' : 'Tunnel',
 	'avoidFord': 'Furten',
-			
+	'avoidTracks': 'Wege',
 	'avoidFerryBike' : 'F&aumlhrverbindungen' ,
 	'avoidunpavedRoadsBike' : 'Unbefestigte Straßen',
 	'avoidpavedRoadsBike' : 'Befestigte Straßen',

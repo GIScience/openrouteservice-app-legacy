@@ -77,6 +77,7 @@ var Languages = (function(w) {'use strict';
 		$('#avoidFerryLabel').html(p.translate('avoidFerry'));
 		$('#avoidTunnelLabel').html(p.translate('avoidTunnel'));
 		$('#avoidFordsLabel').html(p.translate('avoidFord'));
+		$('#avoidTracksLabel').html(p.translate('avoidTracks'));
 			
 		//wheelchair parameters
 		$('#surfaceLabel').html(p.translate('surface'));

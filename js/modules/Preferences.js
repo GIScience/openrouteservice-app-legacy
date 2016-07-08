@@ -45,6 +45,7 @@ var Preferences = (function(w) {
         this.avoidTunnelIdx = 31;
         this.optimizeViaIdx = 32;
         this.roundtripIdx = 33;
+        this.avoidTracksIdx = 34;
         //define variables
         this.language = 'en';
         this.routingLanguage = 'en';
@@ -441,8 +442,8 @@ var Preferences = (function(w) {
      * @param highway, tollway,unpaved, ferry, steps, fords, paved, tunnel: extracted from the GET variables in readGetVars()
      * @return the avoidables
      */
-    function loadAvoidables(highway, tollway, unpaved, ferry, steps, fords, paved, tunnel) {
-        var avoidables = [false, false, false, false, false, false, false, false];
+    function loadAvoidables(highway, tollway, unpaved, ferry, steps, fords, paved, tunnel, tracks) {
+        var avoidables = [false, false, false, false, false, false, false, false, false];
         // highway
         if (highway == true || highway == 'true') {
             permaInfo[this.avoidHighwayIdx] = true;
@@ -498,6 +499,12 @@ var Preferences = (function(w) {
             avoidables[5] = true;
         } else {
             permaInfo[this.avoidFordsIdx] = false;
+        }
+        if (tracks == true || tracks == 'true') {
+            permaInfo[this.avoidTracksIdx] = true;
+            avoidables[8] = true;
+        } else {
+            permaInfo[this.avoidTracksIdx] = false;
         }
         return avoidables;
     }
@@ -692,7 +699,6 @@ var Preferences = (function(w) {
         }
         //slice away last '&'
         query = query.substring(0, query.length - 1);
-        console.log(query)
         jQuery.ajax({
             url: url,
             type: "POST",

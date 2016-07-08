@@ -912,6 +912,8 @@ var Controller = (function(w) {
             var avoidFerry = permaInfo[preferences.avoidFerryIdx];
             var avoidSteps = permaInfo[preferences.avoidStepsIdx];
             var avoidFords = permaInfo[preferences.avoidFordsIdx];
+            var avoidTracks = permaInfo[preferences.avoidTracksIdx];
+            console.log(avoidTracks)
             avoidableParams[0] = avoidHighway;
             avoidableParams[1] = avoidTollway;
             avoidableParams[2] = avoidUnpavedRoads;
@@ -920,6 +922,7 @@ var Controller = (function(w) {
             avoidableParams[5] = avoidFords;
             avoidableParams[6] = avoidPavedRoads;
             avoidableParams[7] = avoidTunnel;
+            avoidableParams[8] = avoidTracks;
             var truckParams = [];
             var truck_length = permaInfo[preferences.value_lengthIdx];
             var truck_height = permaInfo[preferences.value_heightIdx];
@@ -1448,6 +1451,7 @@ var Controller = (function(w) {
         var paved = getVars[preferences.getPrefName(preferences.avoidPavedIdx)];
         var ferry = getVars[preferences.getPrefName(preferences.avoidFerryIdx)];
         var steps = getVars[preferences.getPrefName(preferences.avoidStepsIdx)];
+        var tracks = getVars[preferences.getPrefName(preferences.avoidTracksIdx)];
         var avoidAreas = getVars[preferences.getPrefName(preferences.avoidAreasIdx)];
         var truck_length = getVars[preferences.getPrefName(preferences.value_lengthIdx)];
         var truck_height = getVars[preferences.getPrefName(preferences.value_heightIdx)];
@@ -1506,7 +1510,7 @@ var Controller = (function(w) {
         ui.setOptimizeVia(viaoptimize);
         roundtrip = preferences.loadRoundtrip(roundtrip);
         ui.setRoundtrip(roundtrip);
-        var avSettings = preferences.loadAvoidables(motorways, tollways, unpaved, ferry, steps, fords, paved, tunnels);
+        var avSettings = preferences.loadAvoidables(motorways, tollways, unpaved, ferry, steps, fords, paved, tunnels, tracks);
         motorways = avSettings[0];
         tollways = avSettings[1];
         unpaved = avSettings[2];
@@ -1515,7 +1519,8 @@ var Controller = (function(w) {
         fords = avSettings[5];
         paved = avSettings[6];
         tunnels = avSettings[7];
-        ui.setAvoidables(motorways, tollways, unpaved, ferry, steps, fords, paved, tunnels);
+        tracks = avSettings[8];
+        ui.setAvoidables(motorways, tollways, unpaved, ferry, steps, fords, paved, tunnels, tracks);
         // get wheelchair parameters from getVars
         var wheelParameters = preferences.loadWheelParameters(surface, incline, slopedCurb, trackType, smoothness);
         if (wheelParameters.length > 0) {

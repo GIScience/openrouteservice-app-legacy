@@ -2756,6 +2756,16 @@ var Ui = (function(w) {
                     key: preferences.avoidTunnelIdx,
                     value: boolVar
                 });
+            } else if (itemId === list.routeAvoidables[8]) {
+                if (permaInfo[preferences.avoidTracksIdx] == "true" || permaInfo[preferences.avoidTracksIdx] == true) {
+                    boolVar = false;
+                } else {
+                    boolVar = true;
+                }
+                theInterface.emit('ui:prefsChanged', {
+                    key: preferences.avoidTracksIdx,
+                    value: boolVar
+                });
             }
             // if heavy vehicle type
         } else if ($.inArray(itemValue, list.routePreferencesTypes.get('heavyvehicle')) >= 0) {
@@ -2993,7 +3003,7 @@ var Ui = (function(w) {
      * @param fords: accordingly.
      * @param paved: accordingly.
      */
-    function setAvoidables(highway, tollway, unpaved, ferry, steps, fords, paved, tunnel) {
+    function setAvoidables(highway, tollway, unpaved, ferry, steps, fords, paved, tunnel, tracks) {
         var highwayTrue = (highway === 'true') || highway == true;
         var tollwayTrue = (tollway === 'true') || tollway == true;
         var tunnelTrue = (tunnel === 'true') || tunnel == true;
@@ -3002,6 +3012,7 @@ var Ui = (function(w) {
         var ferryTrue = (ferry === 'true') || ferry == true;
         var stepsTrue = (steps === 'true') || steps == true;
         var fordsTrue = (fords === 'true') || fords == true;
+        var tracksTrue = (tracks === 'true') || tracks == true;
         $('[type="checkbox"]').filter('#Highway').prop('checked', highwayTrue);
         $('[type="checkbox"]').filter('#Tollway').prop('checked', tollwayTrue);
         $('[type="checkbox"]').filter('#Tunnel').prop('checked', tunnelTrue);
@@ -3010,6 +3021,7 @@ var Ui = (function(w) {
         $('[type="checkbox"]').filter('#Ferry').prop('checked', ferryTrue);
         $('[type="checkbox"]').filter('#Steps').prop('checked', stepsTrue);
         $('[type="checkbox"]').filter('#Fords').prop('checked', fordsTrue);
+        $('[type="checkbox"]').filter('#Tracks').prop('checked', tracksTrue);
     }
     /**
      * shows or hides an avoid area error message, e.g. if one avoid area intersects itself

@@ -103,6 +103,7 @@ var lang_en = {
     'avoidFerry': 'ferry connections',
     'avoidTunnel': 'tunnels',
     'avoidFord': 'fords',
+    'avoidTracks': 'tracks',
     'viaOptimize': 'Optimize waypoint arrangement',
     'avoidRoadMain': 'avoid road types',
     'avoidBikeMain': 'avoid road types',
