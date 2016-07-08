@@ -61,23 +61,23 @@ list = {
     showElements: {
         car: {
             show: ['.ORS-car', '.ORS-all'],
-            hide: ['.ORS-ped', '.ORS-bike', '.ORS-hgv', '.ORS-ped-wc']
+            hide: ['.ORS-ped', '.ORS-bike', '.ORS-hgv', '.ORS-ped']
         },
         wheelchair: {
-            show: ['.ORS-wc', '.ORS-all', '.ORS-ped-wc'],
+            show: ['.ORS-wc', '.ORS-all'],
             hide: ['.ORS-ped', '.ORS-bike', '.ORS-hgv', '.ORS-car']
         },
         pedestrian: {
-            show: ['.ORS-ped-wc', '.ORS-ped', '.ORS-all'],
+            show: ['.ORS-ped', '.ORS-ped', '.ORS-all'],
             hide: ['.ORS-wc', '.ORS-bike', '.ORS-hgv', '.ORS-car']
         },
         bicycle: {
             show: ['.ORS-bike', '.ORS-all'],
-            hide: ['.ORS-wc', '.ORS-ped', '.ORS-hgv', '.ORS-car', '.ORS-ped-wc']
+            hide: ['.ORS-wc', '.ORS-ped', '.ORS-hgv', '.ORS-car', '.ORS-ped']
         },
         heavyvehicle: {
             show: ['.ORS-hgv', '.ORS-car', '.ORS-all'],
-            hide: ['.ORS-wc', '.ORS-ped', '.ORS-bike', '.ORS-ped-wc']
+            hide: ['.ORS-wc', '.ORS-ped', '.ORS-bike']
         },
     },
     menuElements: ['ORS-routeContent', 'ORS-aaContent', 'ORS-cloudContent'],
