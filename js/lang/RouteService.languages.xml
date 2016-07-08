@@ -353,6 +353,7 @@
            <Right>à droite</Right>
            <SharpRight>fortement à droite</SharpRight>
            <UTurn>Si possible, faites demi-tour</UTurn>
+           <InitialHeading>nord, nord-est, est, sud-est, sud, sud-ouest, ouest, nord-ouest</InitialHeading>
        </Direction>
        <ActionNumber>Numéro instruction</ActionNumber>
        <FillWord>
