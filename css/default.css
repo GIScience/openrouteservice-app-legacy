@@ -1130,7 +1130,7 @@
     #infoPermalink {
         /* for elements on permalink */
         position: absolute;
-        bottom: 2px;
+        bottom: 45px;
         cursor: pointer;
         width: 80px;
         text-align: center;
@@ -1150,7 +1150,7 @@
         margin-left: 110px;
         height: 50px;
         padding: 0px;
-        bottom: 3px;
+        bottom: 40px;
         background: rgba(255, 255, 255, 0.5);
         z-index: 999;
         -webkit-border-radius: 5px;
@@ -1375,19 +1375,10 @@
         .ORS-mainPanel {
             width: calc(100% - 41px) !important;
         }
-        .leaflet-bottom .leaflet-control-scale {
+        .leaflet-bottom .leaflet-control-scale, #infoPermalink {
             /* for scale controller */
             display: none;
-        }
-        #infoPermalink {
-            position: absolute;
-            margin-bottom: 30px;
-            margin-left: 5px;
-        }
-        #bubble {
-            position: absolute;
-            margin-bottom: 30px;
-        }
+        } 
     }
     /* ****************************************************************/
     /* END OF MOBILE STYLES (MEDIA QUERIES FOR MOBILE VISUALIZATION)  */

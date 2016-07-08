@@ -44,6 +44,7 @@ var Preferences = (function(w) {
         this.avoidPavedIdx = 30;
         this.avoidTunnelIdx = 31;
         this.optimizeViaIdx = 32;
+        this.roundtripIdx = 33;
         //define variables
         this.language = 'en';
         this.routingLanguage = 'en';
@@ -317,6 +318,17 @@ var Preferences = (function(w) {
         optimizeVia = ((optimizeVia == 'undefined' || optimizeVia === undefined) ? false : optimizeVia);
         permaInfo[this.optimizeViaIdx] = optimizeVia;
         return optimizeVia;
+    }
+    /**
+     * determines route options by GET variable
+     * @param roundtrip: extracted from the GET variables in readGetVars()
+     * @return the roundtrip option
+     */
+    function loadRoundtrip(roundtrip) {
+        roundtrip = unescape(roundtrip);
+        roundtrip = ((roundtrip == 'undefined' || roundtrip === undefined) ? false : roundtrip);
+        permaInfo[this.roundtripIdx] = roundtrip;
+        return roundtrip;
     }
     /**
      * determines route option types by GET variable
@@ -680,6 +692,7 @@ var Preferences = (function(w) {
         }
         //slice away last '&'
         query = query.substring(0, query.length - 1);
+        console.log(query)
         jQuery.ajax({
             url: url,
             type: "POST",
@@ -730,6 +743,7 @@ var Preferences = (function(w) {
     Preferences.prototype.loadRouteWeight = loadRouteWeight;
     Preferences.prototype.loadMaxspeed = loadMaxspeed;
     Preferences.prototype.loadViaOptimize = loadViaOptimize;
+    Preferences.prototype.loadRoundtrip = loadRoundtrip;
     Preferences.prototype.loadRouteOptionsType = loadRouteOptionsType;
     Preferences.prototype.loadAvoidables = loadAvoidables;
     Preferences.prototype.loadAvoidAreas = loadAvoidAreas;

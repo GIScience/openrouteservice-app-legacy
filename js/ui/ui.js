@@ -94,12 +94,11 @@ var Ui = (function(w) {
             });
         }, 3000);
     }
-   
-    $(function(){
-    $("[data-hide]").on("click", function(){
-        $(this).closest("." + $(this).attr("data-hide")).hide();
+    $(function() {
+        $("[data-hide]").on("click", function() {
+            $(this).closest("." + $(this).attr("data-hide")).hide();
+        });
     });
-});
     /* *********************************************************************
      * ALL MARKER ELEMENTS
      * *********************************************************************/
@@ -2190,57 +2189,41 @@ var Ui = (function(w) {
     /**
      * opens the print dialogue
      */
-	
-	
     function handlePrintRouteInstructionsClick() {
-		
-		
-		// opens new popup window
-		var printableWindow = window.open('_top','width=600,height=800');
-		var doc = printableWindow.document;
-		
-		// gets original html for printing
-		var printingHeader = document.getElementById("printableHeader").outerHTML;
-		var printingRouteSummary = document.getElementById("routeSummary").outerHTML;
-		var routeContainer = document.getElementById("directionsMainContainer").outerHTML;
-		
-		// load the required css files
-		var bootstrap = "<link href=\"lib/bootstrap3/css/bootstrap.css\" rel=\"stylesheet\" type=\"text/css\">"
-		var font1 = "<link href=\"https://fonts.googleapis.com/css?family=Source+Sans+Pro\" rel=\"stylesheet\" type=\"text/css\">"
-		var font2 = "<link href=\"https://fonts.googleapis.com/css?family=Roboto\" rel=\"stylesheet\">"
-		var font3 = "<link href=\"css/font-awesome.css\" rel=\"stylesheet\" type=\"text/css\">" 
-		var printable = "<link href=\"css/default.css\" rel=\"stylesheet\" type=\"text/css\">"
-		
-		var styles = font1 + font2 + font3 + printable;
-		
-		// create the new html layout for printing
-		var printContents = "<html> \
-								<head> \
-									<title></title>" +
-									styles +
-								"</head> \
-								<body>" + 
-									printingHeader +
-									printingRouteSummary +
-									routeContainer +
-								"</body> \
-							</html>";
-		doc.write(printContents); 
-		doc.close();
-		
-		
-		function show() {
-          if (doc.readyState === "complete") {
-              printableWindow.focus();
-              printableWindow.print();
-              printableWindow.close();
-          } else {
-              setTimeout(show, 100);
-          }
+        // opens new popup window
+        var printableWindow = window.open('_top', 'width=600,height=800');
+        var doc = printableWindow.document;
+        // gets original html for printing
+        var printingHeader = document.getElementById("printableHeader").outerHTML;
+        var printingRouteSummary = document.getElementById("routeSummary").outerHTML;
+        var routeContainer = document.getElementById("directionsMainContainer").outerHTML;
+        // load the required css files
+        var bootstrap = "<link href=\"lib/bootstrap3/css/bootstrap.css\" rel=\"stylesheet\" type=\"text/css\">"
+        var font1 = "<link href=\"https://fonts.googleapis.com/css?family=Source+Sans+Pro\" rel=\"stylesheet\" type=\"text/css\">"
+        var font2 = "<link href=\"https://fonts.googleapis.com/css?family=Roboto\" rel=\"stylesheet\">"
+        var font3 = "<link href=\"css/font-awesome.css\" rel=\"stylesheet\" type=\"text/css\">"
+        var printable = "<link href=\"css/default.css\" rel=\"stylesheet\" type=\"text/css\">"
+        var styles = font1 + font2 + font3 + printable;
+        // create the new html layout for printing
+        var printContents = "<html> \
+                                <head> \
+                                    <title></title>" + styles + "</head> \
+                                <body>" + printingHeader + printingRouteSummary + routeContainer + "</body> \
+                            </html>";
+        doc.write(printContents);
+        doc.close();
+
+        function show() {
+            if (doc.readyState === "complete") {
+                printableWindow.focus();
+                printableWindow.print();
+                printableWindow.close();
+            } else {
+                setTimeout(show, 100);
+            }
         };
         show();
-								
-	}
+    }
     /* *********************************************************************
      * ROUTE OPTIONS
      * *********************************************************************/
@@ -2641,11 +2624,20 @@ var Ui = (function(w) {
     }
     /** 
      * set viaoptimize
-     * @params viaoptimize: is either true or false
+     * @params bool: is either true or false
      */
     function setOptimizeVia(bool) {
         if (bool == 'true' ||  bool === true) {
             $('#viaOptimize').prop('checked', true);
+        }
+    }
+    /** 
+     * set roundtrip
+     * @params bool: is either true or false
+     */
+    function setRoundtrip(bool) {
+        if (bool == 'true' ||  bool === true) {
+            $('#roundtrip').prop('checked', true);
         }
     }
     /**
@@ -2874,6 +2866,16 @@ var Ui = (function(w) {
             }
             theInterface.emit('ui:prefsChanged', {
                 key: preferences.optimizeViaIdx,
+                value: boolVar
+            });
+        } else if (itemId == 'roundtrip') {
+            if (permaInfo[preferences.roundtripIdx] == "true" || permaInfo[preferences.roundtripIdx] === true) {
+                boolVar = false;
+            } else {
+                boolVar = true;
+            }
+            theInterface.emit('ui:prefsChanged', {
+                key: preferences.roundtripIdx,
                 value: boolVar
             });
         } else if (itemId != 'maxSpeedInput') {
@@ -3357,25 +3359,22 @@ var Ui = (function(w) {
             }
         }
     }
-	
-	/* *********************************************************************
+    /* *********************************************************************
      * OPTIONS MENU IN HEADER FOR MOBILE VERSION
      * *********************************************************************/
     /**
      * used to control the menu in the header on the mobile version
      */
-	
-	function handleShowHeaderOptionsMobile(e) {
+    function handleShowHeaderOptionsMobile(e) {
         // toggle options
         if ($('#HeaderOptionsMenuMobile').is(':hidden')) {
             $('#HeaderOptionsMenuMobile').show();
-			$('#HeaderOptionsMenuButtonMobile').css("background-color","#962636");
+            $('#HeaderOptionsMenuButtonMobile').css("background-color", "#962636");
         } else {
             $('#HeaderOptionsMenuMobile').hide();
-			$('#HeaderOptionsMenuButtonMobile').css("background-color","transparent");
+            $('#HeaderOptionsMenuButtonMobile').css("background-color", "transparent");
         }
     }
-	
     /* *********************************************************************
      * CLASS-SPECIFIC
      * *********************************************************************/
@@ -3429,8 +3428,9 @@ var Ui = (function(w) {
         $('#wheelchair').click(switchRouteOptionsPane);
         $('.routeOptions').change(handleOptionsChanged);
         $('.ORS-optionsButton').click(handleShowOptions);
-		$('#HeaderOptionsMenuButtonMobile').click(handleShowHeaderOptionsMobile);
+        $('#HeaderOptionsMenuButtonMobile').click(handleShowHeaderOptionsMobile);
         $('#viaOptimize').click(handleOptionsChanged);
+        $('#roundtrip').click(handleOptionsChanged);
         //permalink
         $('#infoPermalink').click(handleOpenPermaOptions);
         $('#open').click(handleGeneratePerma);
@@ -3467,21 +3467,19 @@ var Ui = (function(w) {
         });
         // menuButtons
         $('.ORS-menuButton').click(handleSwitchMenu);
-		
-		// Mobile top menu
-		$('#ORS-menuLinkFeedbackMobile').click(function(){
-			$('#HeaderOptionsMenuMobile').hide();
-			$('#HeaderOptionsMenuButtonMobile').css("background-color","transparent");
-		});
-		$('#ORS-menuLinkSitePrefsMobile').click(function(){
-			$('#HeaderOptionsMenuMobile').hide();
-			$('#HeaderOptionsMenuButtonMobile').css("background-color","transparent");
-		});
-		$('#ORS-menuLinkInfoMobile').click(function(){
-			$('#HeaderOptionsMenuMobile').hide();
-			$('#HeaderOptionsMenuButtonMobile').css("background-color","transparent");
-		});
-		
+        // Mobile top menu
+        $('#ORS-menuLinkFeedbackMobile').click(function() {
+            $('#HeaderOptionsMenuMobile').hide();
+            $('#HeaderOptionsMenuButtonMobile').css("background-color", "transparent");
+        });
+        $('#ORS-menuLinkSitePrefsMobile').click(function() {
+            $('#HeaderOptionsMenuMobile').hide();
+            $('#HeaderOptionsMenuButtonMobile').css("background-color", "transparent");
+        });
+        $('#ORS-menuLinkInfoMobile').click(function() {
+            $('#HeaderOptionsMenuMobile').hide();
+            $('#HeaderOptionsMenuButtonMobile').css("background-color", "transparent");
+        });
     }
     Ui.prototype = new EventEmitter();
     Ui.prototype.constructor = Ui;
@@ -3542,6 +3540,7 @@ var Ui = (function(w) {
     Ui.prototype.setHazardousParameter = setHazardousParameter;
     Ui.prototype.setMaxspeedParameter = setMaxspeedParameter;
     Ui.prototype.setOptimizeVia = setOptimizeVia;
+    Ui.prototype.setRoundtrip = setRoundtrip;
     Ui.prototype.handleGpxFiles = handleGpxFiles;
     Ui.prototype.handleResetRoute = handleResetRoute;
     Ui.prototype.handleMaxspeed = handleMaxspeed;
