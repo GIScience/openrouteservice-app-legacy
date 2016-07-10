@@ -200,7 +200,7 @@ var lang_hu = {
     'se':'Sv&eacute;d - Svenska',
     'dk':'D&aacute;n - Dansk',
     'tr':'Turkish - T&uuml;rk',
-    'ca':'Katal&aacute;n - Catal&aacute;n',
+    'ca':'Katal&aacute;n - Catal&agrave;',
     'ja':'Jap&aacute;n - 日本人',
     'no':'Norv&eacute;g - Norsk',
 	'ua' : 'Ucranian - Український',
