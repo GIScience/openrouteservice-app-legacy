@@ -200,7 +200,7 @@ var lang_cn = {
 	'se' : '瑞典語 - Svenska',
 	'dk' : '丹麥語 - Dansk',
 	'tr' : '土耳其語 - T&uuml;rk',
-	'ca' : '加泰蘭語 - Catal&aacute;n',
+	'ca' : '加泰蘭語 - Catal&agrave;',
 	'ja' : '日語 - 日本人',
 	'no' : '挪威語 - Norsk',
 	'ua' : '烏克蘭 - Український',
