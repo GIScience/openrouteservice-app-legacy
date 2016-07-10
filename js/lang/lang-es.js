@@ -245,7 +245,7 @@ var lang_es = {
     'leisure':'ocio',
     'sport':'deportes',
     //POI types
-    'atm':'ATM',
+    'atm':'cajero',
     'bank':'banco',
     'bureau_de_change':'oficina de cambio',
     'biergarten':'terraza',
