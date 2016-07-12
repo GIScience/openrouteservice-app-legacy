@@ -131,6 +131,15 @@ styles = {
             zoomChange: 'route'
         };
     },
+	routeRetour: function(zoomlvl) {
+        return {
+            color: '#E8880C',
+            opacity: opacity(zoomlvl),
+            weight: routeWeight(zoomlvl, routeSettings.lineWeight),
+            zoomChange: 'route',
+			retour: true
+        };
+    },
     routeCornersBase: function() {
         return {
             opacity: 0,
@@ -147,6 +156,22 @@ styles = {
             weight: weight(zoomlvl),
             type: 'circle',
             zoomChange: 'routeCorners'
+        };
+    },
+	routeArrows: function(zoomlvl) {
+        return {
+            color: '#FF0000',
+			fillColor: '#FFFF00',
+            opacity: fillOpacity(zoomlvl),
+            zoomChange: 'route'
+        };
+    },
+	routeArrowsRetour: function(zoomlvl) {
+        return {
+            color: '#FFFF00',
+			fillColor: '#FFFF00',
+            opacity: fillOpacity(zoomlvl),
+            zoomChange: 'route'
         };
     },
     gpxTrack: function() {
