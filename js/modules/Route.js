@@ -336,6 +336,43 @@ var Route = (function(w) {
         return listOfCornerPoints;
     }
     /**
+     * Via waypoints are waypoints with directionCode 100
+     * @param {Object} results: XML response
+     */
+    function parseResultsToViaWaypoints(results) {
+        var routeInstructions = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstructionsList')[0];
+		var segment = [];
+		var routeLineBefore = [];
+		var routeLineAfter = [];
+        if (routeInstructions) {
+            routeInstructions = util.getElementsByTagNameNS(routeInstructions, namespaces.xls, 'RouteInstruction');
+            $A(routeInstructions).each(function(instructionElement) {
+                var directionCode = util.getElementsByTagNameNS(instructionElement, namespaces.xls, 'DirectionCode')[0];
+                directionCode = directionCode.textContent;
+                //skip directionCode 100 for now
+                if (directionCode == '100') {
+					routeLineBefore.push(routeLineAfter);
+					routeLineAfter = [];
+                    return;
+                }
+                segment = [];
+                $A(util.getElementsByTagNameNS(instructionElement, namespaces.gml, 'pos')).each(function(point) {
+                    point = point.text || point.textContent;
+                    point = point.split(' ');
+                    point = L.latLng(point[1], point[0]);
+                    segment.push(point);
+                });
+				routeLineAfter.push(segment);
+            });
+        }
+
+		if(routeLineBefore.length == 0){
+			routeLineBefore.push(routeLineAfter);
+			routeLineAfter = [];
+		}
+        return [routeLineBefore, routeLineAfter];
+    }
+    /**
      * checks if the routing request was successful but the response doesn't contain a route but an error message
      * @param {Object} results XML result of routing request
      * @return: true, if it contains errors, false otherwise
@@ -359,6 +396,7 @@ var Route = (function(w) {
     Route.prototype.writeRouteToSingleLineString = writeRouteToSingleLineString;
     Route.prototype.parseResultsToLineStrings = parseResultsToLineStrings;
     Route.prototype.parseResultsToCornerPoints = parseResultsToCornerPoints;
+    Route.prototype.parseResultsToViaWaypoints = parseResultsToViaWaypoints;
     Route.prototype.hasRoutingErrors = hasRoutingErrors;
     return new Route();
 }(window));

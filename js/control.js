@@ -171,6 +171,7 @@ var Controller = (function(w) {
      */
     function selectWaypointType(wpIndex) {
         var type = waypoint.determineWaypointType(wpIndex);
+		// if (type == Waypoint.type.ROUNDTRIP && wpIndex != 0) $('#' + wpIndex).hide();
         ui.setWaypointType(wpIndex, type);
         return type;
     }
@@ -987,10 +988,11 @@ var Controller = (function(w) {
                 route.routeString = routeString;
                 var routeLinestring = route.parseResultsToLineStrings(results);
                 var cornerPoints = route.parseResultsToCornerPoints(results);
+				var routeSegmentation = route.parseResultsToViaWaypoints(results);
                 //Get the restrictions along the route
                 //map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString), permaInfo[preferences.routeOptionsIdx]);
                 map.removeElevationControl();
-                var featureIds = map.updateRoute(routeLinestring, cornerPoints, routePref);
+                var featureIds = map.updateRoute(routeLinestring, cornerPoints, routePref, routeSegmentation);
                 var errors = route.hasRoutingErrors(results);
                 if (!errors) {
                     var mapLayers = ['layerRouteLines', 'layerCornerPoints'];

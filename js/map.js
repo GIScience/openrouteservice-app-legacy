@@ -265,6 +265,7 @@ var Map = (function() {
         this.layerRouteLines = L.featureGroup().addTo(this.theMap);
         this.layerSteepnessLines = L.featureGroup().addTo(this.theMap);
         this.layerCornerPoints = L.featureGroup().addTo(this.theMap);
+		this.layerRouteArrows = L.featureGroup().addTo(this.theMap);
         this.layerGeolocation = L.featureGroup().addTo(this.theMap);
         this.layerPoi = L.featureGroup().addTo(this.theMap);
         this.layerSearch = L.featureGroup().addTo(this.theMap);
@@ -381,9 +382,10 @@ var Map = (function() {
             for (var i = 0; i < layer.length; i++) {
                 if (layer[i].options.zoomChange === 'routeOutline') layer[i].setStyle(styles.routeOutline(currentZoom, true));
                 else if (layer[i].options.zoomChange === 'routePadding') layer[i].setStyle(styles.routePadding(currentZoom));
-                else if (layer[i].options.zoomChange === 'route') layer[i].setStyle(styles.route(currentZoom));
+                // else if (layer[i].options.zoomChange === 'route') layer[i].setStyle(styles.route(currentZoom));
                 else if (layer[i].options.zoomChange === 'routeCorners') layer[i].setStyle(styles.routeCorners(currentZoom));
             }
+			colorRouteLines();
         }
 
         function emitMapChangeBaseMap(e) {
@@ -1251,15 +1253,21 @@ var Map = (function() {
      * @param routePref: Bike, Car etc..
      * @return array of Leaflet Ids added to the layer
      */
-    function updateRoute(routeLineSegments, routeLinePoints, routePref) {
+    function updateRoute(routeLineSegments, routeLinePoints, routePref, routeSegmentation) {
         this.layerSteepnessLines.clearLayers();
         this.layerRouteLines.clearLayers();
         this.layerCornerPoints.clearLayers();
+		this.layerRouteArrows.clearLayers();
+		var waypointCoordinates = Ui.getRoutePoints();
         var ftIds = [];
         if (routeLineSegments && routeLineSegments.length > 0) {
             var self = this;
             var routeString = [];
             var routeStringCorners = [];
+			var routeStringBefore = [];
+			var routeStringAfter = [];
+			var routeLineBeforeLastVia = routeSegmentation[0];
+			var routeLineAfterLastVia = routeSegmentation[1];
             for (var i = 0; i < routeLineSegments.length; i++) {
                 //lines of the route, these are invisible and only used for 
                 // click to segment
@@ -1278,10 +1286,50 @@ var Map = (function() {
                 routeStringCorners.push(routeLinePoints[i]);
                 ftIds.push(segmentBase._leaflet_id, routeCornerBase._leaflet_id);
             }
-            // this is a combined linestring of all sub segments with a border
+			
+			
+			for (var i = 0; i < routeLineBeforeLastVia.length; i++) {
+                var segment = [];
+                for (var j = 0; j < routeLineBeforeLastVia[i].length; j++) {
+                    segment.push(routeLineBeforeLastVia[i][j]);
+                    routeStringBefore.push(routeLineBeforeLastVia[i][j]);
+                }
+			}
+			if(typeof routeLineAfterLastVia !== 'undefined' && routeLineAfterLastVia.length > 0){
+				for (var i = 0; i < routeLineAfterLastVia.length; i++) {
+					var segment = [];
+					for (var j = 0; j < routeLineAfterLastVia[i].length; j++) {
+						segment.push(routeLineAfterLastVia[i][j]);
+						routeStringAfter.push(routeLineAfterLastVia[i][j]);
+					}
+				}
+			}
+			// this is a combined linestring of all sub segments with a border
             L.polyline(routeString, styles.routeOutline(self.theMap.getZoom())).addTo(self.layerRouteLines);
             L.polyline(routeString, styles.routePadding(self.theMap.getZoom())).addTo(self.layerRouteLines);
-            L.polyline(routeString, styles.route(self.theMap.getZoom())).addTo(self.layerRouteLines);
+			
+			if ($('#roundtrip')[0].checked) L.polyline(routeStringAfter, styles.routeRetour(self.theMap.getZoom())).addTo(self.layerRouteLines);
+            else L.polyline(routeStringAfter, styles.route(self.theMap.getZoom())).addTo(self.layerRouteLines);
+            L.polyline(routeStringBefore, styles.route(self.theMap.getZoom())).addTo(self.layerRouteLines);
+            
+			L.polylineDecorator(L.polyline(routeString, styles.routeArrows(self.theMap.getZoom())),  {
+						patterns: [
+							// defines a pattern of 10px-wide dashes, repeated every 20px on the line
+							{offset: 20, endOffset: 0, repeat: 100, symbol: L.Symbol.arrowHead({
+								pixelSize: 10,
+								pathOptions: {
+									// color: '#4682B4',
+									color: '#FFFFFF',
+									fillOpacity: 0.9,
+									stroke: false,
+									weight: 2,
+									zoomChange: 'route'
+								}
+								})}
+						]
+					}).addTo(this.layerRouteArrows);
+
+			
             // add corner points on top 
             for (var k = 0; k < routeStringCorners.length; k++) {
                 new L.CircleMarker(routeStringCorners[k], styles.routeCorners(self.theMap.getZoom())).addTo(this.layerRouteLines);
@@ -1292,6 +1340,19 @@ var Map = (function() {
         // bring route markers to front
         this.layerRoutePoints.bringToFront();
         return ftIds;
+    }
+	/**
+     * recolor the routelines to be blue when going to last via and orange if going back from end to start (roundtrip)
+     */
+    function colorRouteLines() {
+		var currentZoom = self.theMap.getZoom();
+		self.layerRouteLines.eachLayer(function (layer) {
+			if (layer.options.zoomChange == 'route'){
+				if (typeof layer.options.retour !== 'undefined' && $('#roundtrip')[0].checked) layer.setStyle(styles.routeRetour(currentZoom));
+				else layer.setStyle(styles.route(currentZoom));
+			}
+		});
+
     }
     /**
      * zooms the map so that the whole route becomes visible (i.e. all features of the route line layer)
