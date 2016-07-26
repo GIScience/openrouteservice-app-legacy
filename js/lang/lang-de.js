@@ -6,7 +6,7 @@ var lang_de = {
 	'saveBtn': 'Speichern',
 	'untitled' :  'Unbenannt',
 	'infoTextVersions' :  'Neu auf OpenRouteService? Nutzen Sie erweiterte Routen-Optionen &uuml;ber die Seiteneinstellungen. ',
-	'infoAboutAvoidables': 'Hiermit k&ouml;nnen Sie vermeidbare Polygone zeichnen',
+	'infoAboutAvoidables': 'Hiermit k&ouml;nnen Sie Polygone als vermeidbare Gebiete zeichnen',
 	'endAsViaInfo': 'Endpunkt als Zwischenstopp eingefügt, da Rundtour ausgew&auml;hlt ist',
 	'routePlanner':  'Routen-Planer ',
 	'search':  'Suche',
