@@ -250,6 +250,7 @@ var Route = (function(w) {
             crossDomain: false,
             data: xmlRequest,
             success: function(response) {
+                console.log(response)
                 successCallback(response, calcRouteID, routePref, routePoints);
             },
             error: function(response) {

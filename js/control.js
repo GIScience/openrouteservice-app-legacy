@@ -969,6 +969,7 @@ var Controller = (function(w) {
      * @param results: XML route service results
      */
     function routeCalculationSuccess(results, routeID, routePref, routePoints) {
+        console.log(results)
         // only fire if returned routeID from callback is same as current global calcRouteID
         if (routeID == calcRouteID) {
             //var zoomToMap = !route.routePresent;
