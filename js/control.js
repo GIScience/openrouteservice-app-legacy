@@ -171,7 +171,7 @@ var Controller = (function(w) {
      */
     function selectWaypointType(wpIndex) {
         var type = waypoint.determineWaypointType(wpIndex);
-		// if (type == Waypoint.type.ROUNDTRIP && wpIndex != 0) $('#' + wpIndex).hide();
+        // if (type == Waypoint.type.ROUNDTRIP && wpIndex != 0) $('#' + wpIndex).hide();
         ui.setWaypointType(wpIndex, type);
         return type;
     }
@@ -185,6 +185,7 @@ var Controller = (function(w) {
         forceENDType = typeof forceENDType !== 'undefined' ? forceENDType : false;
         var pos = atts.pos;
         var wpType = atts.type;
+        var wpDirect = atts.direct;
         var featureId;
         //index of the waypoint to set (start at the beginning, end at the end, via in the middle)
         var wpIndex = 0;
@@ -223,13 +224,13 @@ var Controller = (function(w) {
         //add lat lon to input field 
         waypoint.setWaypoint(wpIndex, true);
         var position = map.convertFeatureIdToPositionString(newFeatureId, map.layerRoutePoints);
-        var newIndex = ui.addWaypointResultByRightclick(wpType, wpIndex, position, true);
+        var newIndex = ui.addWaypointResultByRightclick(wpType, wpIndex, position, true, wpDirect);
         ui.setWaypointFeatureId(newIndex, newFeatureId, position, 'layerRoutePoints');
         //If roundtrip and no second roundtrip-wp set: add it
         if (wpType == Waypoint.type.ROUNDTRIP && roundtrip && !$('#' + (waypoint.getNumWaypoints() - 1)).hasClass('roundtrip')) {
             handleAddWaypointByRightclick({
                 pos: atts.pos,
-                type: 'roundtrip'
+                type: 'roundtrip',
             }, false, false, true);
         }
         if (!noRouteRequest) {
@@ -914,7 +915,7 @@ var Controller = (function(w) {
             var avoidSteps = permaInfo[preferences.avoidStepsIdx];
             var avoidFords = permaInfo[preferences.avoidFordsIdx];
             var avoidTracks = permaInfo[preferences.avoidTracksIdx];
-            console.log(avoidTracks)
+            var directWaypoints = permaInfo[preferences.directwaypointsIdx];
             avoidableParams[0] = avoidHighway;
             avoidableParams[1] = avoidTollway;
             avoidableParams[2] = avoidUnpavedRoads;
@@ -950,7 +951,7 @@ var Controller = (function(w) {
             wheelChairParams[2] = wheelchairSloped;
             wheelChairParams[3] = wheelchairTrackType;
             wheelChairParams[4] = wheelchairSmoothness;
-            route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferencesType, wheelChairParams, truckParams, avoidableParams, avoidAreas, extendedRoutePreferencesWeight, extendedRoutePreferencesMaxspeed, calcRouteID);
+            route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferencesType, wheelChairParams, truckParams, avoidableParams, avoidAreas, extendedRoutePreferencesWeight, extendedRoutePreferencesMaxspeed, calcRouteID, directWaypoints);
             //try to read a variable that is set after the service response was received. If this variable is not set after a while -> timeout.
             clearTimeout(timerRoute);
         } else {
@@ -969,7 +970,6 @@ var Controller = (function(w) {
      * @param results: XML route service results
      */
     function routeCalculationSuccess(results, routeID, routePref, routePoints) {
-        console.log(results)
         // only fire if returned routeID from callback is same as current global calcRouteID
         if (routeID == calcRouteID) {
             //var zoomToMap = !route.routePresent;
@@ -989,7 +989,7 @@ var Controller = (function(w) {
                 route.routeString = routeString;
                 var routeLinestring = route.parseResultsToLineStrings(results);
                 var cornerPoints = route.parseResultsToCornerPoints(results);
-				var routeSegmentation = route.parseResultsToViaWaypoints(results);
+                var routeSegmentation = route.parseResultsToViaWaypoints(results);
                 //Get the restrictions along the route
                 //map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString), permaInfo[preferences.routeOptionsIdx]);
                 map.removeElevationControl();
@@ -1472,6 +1472,7 @@ var Controller = (function(w) {
         var maxspeed = getVars[preferences.getPrefName(preferences.maxspeedIdx)];
         var viaoptimize = getVars[preferences.getPrefName(preferences.optimizeViaIdx)];
         var roundtrip = getVars[preferences.getPrefName(preferences.roundtripIdx)];
+        var directwaypoints = getVars[preferences.getPrefName(preferences.directwaypointsIdx)];
         // either layer, pos or zoom is read, as soon as one is read the eventlistener on map
         // updates the other two and overwrites the cookie info
         pos = preferences.loadMapPosition(pos);
@@ -1513,6 +1514,7 @@ var Controller = (function(w) {
         ui.setOptimizeVia(viaoptimize);
         roundtrip = preferences.loadRoundtrip(roundtrip);
         ui.setRoundtrip(roundtrip);
+        directwaypoints = preferences.loadDirectWaypoints(directwaypoints);
         var avSettings = preferences.loadAvoidables(motorways, tollways, unpaved, ferry, steps, fords, paved, tunnels, tracks);
         motorways = avSettings[0];
         tollways = avSettings[1];
@@ -1565,9 +1567,11 @@ var Controller = (function(w) {
                 } else {
                     type = Waypoint.type.VIA;
                 }
+                // direct waypoint starts at index 1
                 handleAddWaypointByRightclick({
                     pos: waypoints[i],
-                    type: type
+                    type: type,
+                    direct: directwaypoints[i]
                 }, true);
             }
             if (waypoints.length >= 2) {

@@ -416,22 +416,32 @@ var Ui = (function(w) {
             //the waypoint which has been moved up is the first waypoint: hide move up button
             $(waypointElement.get(0).querySelector('.moveUpWaypoint')).hide();
             $(waypointElement.get(0).querySelector('.moveDownWaypoint')).show();
+            $(waypointElement.get(0).querySelector('.tt-directwp')).hide();
         } else {
             //show both
             $(waypointElement.get(0).querySelector('.moveUpWaypoint')).show();
             $(waypointElement.get(0).querySelector('.moveDownWaypoint')).show();
+            $(waypointElement.get(0).querySelector('.tt-directwp')).show();
         }
         if (succIndex == (numWaypoints - 1)) {
             //the waypoint which has been moved down is the last waypoint: hide the move down button
             $(previousElement.get(0).querySelector('.moveUpWaypoint')).show();
             $(previousElement.get(0).querySelector('.moveDownWaypoint')).hide();
+            $(previousElement.get(0).querySelector('.tt-directwp')).show();
             $('#roundtrip').attr('checked', false);
             theInterface.emit('ui:specifyRoundtrip', false);
         } else {
             //show both
             $(previousElement.get(0).querySelector('.moveUpWaypoint')).show();
             $(previousElement.get(0).querySelector('.moveDownWaypoint')).show();
+            $(previousElement.get(0).querySelector('.tt-directwp')).show();
         }
+        // update direct waypoint settings
+        var directwaypointSettings = preferences.updateDirectWaypoints();
+        theInterface.emit('ui:prefsChanged', {
+            key: preferences.directwaypointsIdx,
+            value: directwaypointSettings
+        });
         //adapt marker-IDs, decide about wpType
         theInterface.emit('ui:movedWaypoints', {
             id1: currentIndex,
@@ -468,20 +478,30 @@ var Ui = (function(w) {
             //the waypoint which has been moved down is the last waypoint: hide move down button
             $(waypointElement.get(0).querySelector('.moveUpWaypoint')).show();
             $(waypointElement.get(0).querySelector('.moveDownWaypoint')).hide();
+            $(waypointElement.get(0).querySelector('.tt-directwp')).show();
         } else {
             //show both
             $(waypointElement.get(0).querySelector('.moveUpWaypoint')).show();
             $(waypointElement.get(0).querySelector('.moveDownWaypoint')).show();
+            $(waypointElement.get(0).querySelector('.tt-directwp')).show();
         }
         if (prevIndex == 0) {
             //the waypoint which has been moved up is the first waypoint: hide the move up button
             $(succElement.get(0).querySelector('.moveUpWaypoint')).hide();
             $(succElement.get(0).querySelector('.moveDownWaypoint')).show();
+            $(succElement.get(0).querySelector('.tt-directwp')).hide();
         } else {
             //show both
             $(succElement.get(0).querySelector('.moveUpWaypoint')).show();
             $(succElement.get(0).querySelector('.moveDownWaypoint')).show();
+            $(succElement.get(0).querySelector('.tt-directwp')).show();
         }
+        // update direct waypoint settings
+        var directwaypointSettings = preferences.updateDirectWaypoints();
+        theInterface.emit('ui:prefsChanged', {
+            key: preferences.directwaypointsIdx,
+            value: directwaypointSettings
+        });
         //adapt marker-IDs, decide about wpType
         theInterface.emit('ui:movedWaypoints', {
             id1: currentIndex,
@@ -497,7 +517,6 @@ var Ui = (function(w) {
         //id of prior to last waypoint:
         var waypointId = $(e.currentTarget).prev().attr('id');
         var oldIndex = parseInt(waypointId);
-        console.log(oldIndex);
         // If roundtrip is enabled, add the waypoint in front of the last (roundtrip) waypoint
         var numWaypoints = oldIndex + 1;
         if ($('#roundtrip')[0].checked && $('.waypoint.roundtrip').length > 1 && $('#' + oldIndex).hasClass('roundtrip')) oldIndex -= 1;
@@ -505,7 +524,7 @@ var Ui = (function(w) {
         theInterface.emit('ui:selectWaypointType', oldIndex);
     }
     /**
-     *adds a new waypoint element after given waypoint index
+     * adds a new waypoint element after given waypoint index
      * @param idx: (int) index of the predecessor waypoint
      * @param numWaypoints: (int) number of waypoints BEFORE inserting the new one
      */
@@ -552,16 +571,19 @@ var Ui = (function(w) {
         newWp.querySelector('.removeWaypoint').addEventListener('click', handleRemoveWaypointClick);
         newWp.querySelector('.searchAgainButton').addEventListener('click', handleSearchAgainWaypointClick);
         newWp.querySelector('.waypoint-icon').addEventListener('click', handleZoomToWaypointClick);
+        newWp.querySelector('.tt-directwp').addEventListener('click', handleOptionsChanged);
         theInterface.emit('ui:addWaypoint', newIndex);
     }
     /**
      * set a waypoint with the service response after the user requested to set a waypoint by clicking on the map (right click).
-     * @param resultsOrLatlon: the service response in XML format or a latlon position
+     * @param results: the service response in XML format or a latlon position
      * @param typeOfWaypoint: one of START, VIA or END
      * @param index: index of the waypoint
+     * @param latlon: a latlng position
+     * @param wpDirect: if the waypoint is direct or not
      * @return: the index of the wayoint
      */
-    function addWaypointResultByRightclick(typeOfWaypoint, index, results, latlon) {
+    function addWaypointResultByRightclick(typeOfWaypoint, index, results, latlon, wpDirect) {
         var numWaypoints = $('.waypoint').length - 1;
         while (index >= numWaypoints) {
             addWaypointAfter(numWaypoints - 1);
@@ -598,14 +620,26 @@ var Ui = (function(w) {
         var children = rootElement.children();
         //show waypoint result and searchAgain button
         //children[3].show();
-        var waypointResultElement = children[5];
+        var waypointResultElement = children[6];
         while (waypointResultElement.hasChildNodes()) {
             waypointResultElement.removeChild(waypointResultElement.lastChild);
         }
         waypointResultElement.appendChild(address);
+        if (wpDirect === true ||  wpDirect === false) {
+            waypointResultElement.setAttribute('data-directwaypoint', wpDirect);
+            // check direct waypoint if true
+            var waypointDirectElement = children[0].childNodes[3];
+            $(waypointDirectElement).prop('checked', wpDirect);
+            // update direct waypoint settings
+            var directwaypointSettings = preferences.updateDirectWaypoints();
+            theInterface.emit('ui:prefsChanged', {
+                key: preferences.directwaypointsIdx,
+                value: directwaypointSettings
+            });
+        }
         waypointResultElement.show();
         //hide input field with search result list
-        children[6].hide();
+        children[7].hide();
         //remove the search result markers
         invalidateWaypointSearch(index);
         //event handling
@@ -692,6 +726,12 @@ var Ui = (function(w) {
             newWp.querySelector('.searchAgainButton').addEventListener('click', handleSearchAgainWaypointClick);
             newWp.querySelector('.waypoint-icon').addEventListener('click', handleZoomToWaypointClick);
         }
+        // update direct waypoint settings
+        var directwaypointSettings = preferences.updateDirectWaypoints();
+        theInterface.emit('ui:prefsChanged', {
+            key: preferences.directwaypointsIdx,
+            value: directwaypointSettings
+        });
         theInterface.emit('ui:removeWaypoint', {
             wpIndex: currentId,
             featureId: featureId
@@ -1551,7 +1591,7 @@ var Ui = (function(w) {
                 contentDiv.appendChild(unit);
                 // save elevation true if ascent or descent over 40 meters
                 if (key == 'ascent' ||  key == 'descent') {
-                    if (routeSummary[key][1] > 20) elevation = true;
+                    elevation = true;
                 }
             }
             summaryItem.appendChild(iconDiv);
@@ -2666,9 +2706,17 @@ var Ui = (function(w) {
         e = e || window.event;
         var target = e.target || e.srcElement;
         var itemId = target.id;
+        var itemClass = target.className;
         //for extended route options
         var itemValue = target.value;
-        if ($.inArray(itemId, list.routeAvoidables) >= 0) {
+        if (itemClass == 'directwaypoint') {
+            // update direct waypoint settings
+            var directwaypointSettings = preferences.updateDirectWaypoints();
+            theInterface.emit('ui:prefsChanged', {
+                key: preferences.directwaypointsIdx,
+                value: directwaypointSettings
+            });
+        } else if ($.inArray(itemId, list.routeAvoidables) >= 0) {
             //is a route avoidable
             if (itemId === list.routeAvoidables[0]) {
                 //if the avoidable is set, remove it (and vice versa)
@@ -3440,6 +3488,7 @@ var Ui = (function(w) {
         $('#wheelchair').click(switchRouteOptionsPane);
         $('.routeOptions').change(handleOptionsChanged);
         $('.ORS-optionsButton').click(handleShowOptions);
+        $('.tt-directwp').click(handleOptionsChanged);
         $('#HeaderOptionsMenuButtonMobile').click(handleShowHeaderOptionsMobile);
         $('#viaOptimize').click(handleOptionsChanged);
         $('#roundtrip').click(handleOptionsChanged);

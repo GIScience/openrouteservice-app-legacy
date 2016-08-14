@@ -72,7 +72,7 @@
     /* GENERAL ELEMENTS */
     
     .searchWaypoint {
-        width: 220px;
+        width: 200px;
         font-size: 100%;
     }
     
@@ -134,7 +134,7 @@
     
     .ORS-panel-sub {
         padding-left: 10px;
-        padding-right: 10px;
+        padding-right: 12px;
         padding-bottom: 10px;
         padding-top: 10px;
     }
@@ -627,6 +627,11 @@
         content: "\f041";
         font-family: FontAwesome;
     }
+
+    .tt-directwp {
+        padding-top: 6px;
+        padding-left: 5px;
+    }
     
     .resultList {
         /* General styles for address list dropdown (this list will popup when you type something in the "search address" input box) */
@@ -1072,11 +1077,47 @@
         background-size: 16px 11px;
     }
     
+    .ORS-mapContextMenu .ORS-contextControls {
+        margin-left: 130px;
+        top: 14px;
+        position: absolute;
+        background-color: #b5152b;
+        padding: 5px;
+        color: #fff;
+        border-radius: 3px;
+    }
+    
+    .ORS-mapContextMenu .ORS-contextControls:before {
+        content: "\f142";
+        font-family: FontAwesome;
+        display: inline-block;
+        font-size: 16px;
+        line-height: 15px;
+        color: white;
+        vertical-align: bottom;
+        cursor: pointer;
+        width: 15px;
+        height: 15px;
+        text-align: center;
+    }
+    
+    .ORS-mapContextMenu .ORS-expandControls {
+        display: none;
+        margin-left: 130px;
+        top: 43px;
+        position: absolute;
+        background-color: #b5152b;
+        padding: 5px;
+        color: #fff;
+        border-radius: 3px;
+    }
+        
     .ORS-mapContextMenu .ORS-contextWaypoint {
         /* Context menu styles (when clicking with the right mouse button on the map area */
         padding: 3px 10px 3px 10px;
         white-space: nowrap;
         cursor: pointer;
+        border-radius: 3px;
         margin-bottom: 3px;
         background-color: #b5152b;
         border-left: 2px solid #F0F0F0;
@@ -1123,8 +1164,8 @@
         box-shadow: none;
         background-color: transparent;
         border-radius: 50%;
-        width: 10px;
-        height: 10px;
+        width: 12px;
+        height: 12px;
     }
     
     #infoPermalink {
@@ -1378,7 +1419,7 @@
         .leaflet-bottom .leaflet-control-scale, #infoPermalink {
             /* for scale controller */
             display: none;
-        } 
+        }
     }
     /* ****************************************************************/
     /* END OF MOBILE STYLES (MEDIA QUERIES FOR MOBILE VISUALIZATION)  */

@@ -23,7 +23,7 @@ var Route = (function(w) {
      * @param avoidFerry: flag set to true if ferrys should be avoided in the route; else: false
      * @param avoidAreas: array of avoid areas represented by OL.Geometry.Polygons
      */
-    function calculate(routePoints, successCallback, failureCallback, language, routePref, extendedRoutePreferencesType, wheelChairParams, truckParams, avoidableParams, avoidAreas, extendedRoutePreferencesWeight, extendedRoutePreferencesMaxspeed, calcRouteID) {
+    function calculate(routePoints, successCallback, failureCallback, language, routePref, extendedRoutePreferencesType, wheelChairParams, truckParams, avoidableParams, avoidAreas, extendedRoutePreferencesWeight, extendedRoutePreferencesMaxspeed, calcRouteID, directWaypoints) {
         var writer = new XMLWriter('UTF-8', '1.0');
         writer.writeStartDocument();
         //<xls:XLS>
@@ -125,13 +125,17 @@ var Route = (function(w) {
         writer.writeEndElement();
         //<xls:WayPointList>
         writer.writeStartElement('xls:WayPointList');
+        // remove first element of directWaypoints
+        directWaypoints = directWaypoints.slice(1,directWaypoints.length);
         for (var i = 0; i < routePoints.length; i++) {
             if (i === 0) {
                 writer.writeStartElement('xls:StartPoint');
+                if (directWaypoints[i] === true) writer.writeAttributeString('code', '1');
             } else if (i == (routePoints.length - 1)) {
                 writer.writeStartElement('xls:EndPoint');
             } else {
                 writer.writeStartElement('xls:ViaPoint');
+                if (directWaypoints[i] === true) writer.writeAttributeString('code', '1');
             }
             //<xls:Position>
             writer.writeStartElement('xls:Position');
@@ -189,7 +193,6 @@ var Route = (function(w) {
                 }
             }
         }
-        console.log(avoidableParams)
         if (avoidableParams[0] == 'true' || avoidableParams[0] === true) {
             writer.writeElementString('xls:AvoidFeature', 'Highway');
         }
@@ -342,9 +345,9 @@ var Route = (function(w) {
      */
     function parseResultsToViaWaypoints(results) {
         var routeInstructions = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstructionsList')[0];
-		var segment = [];
-		var routeLineBefore = [];
-		var routeLineAfter = [];
+        var segment = [];
+        var routeLineBefore = [];
+        var routeLineAfter = [];
         if (routeInstructions) {
             routeInstructions = util.getElementsByTagNameNS(routeInstructions, namespaces.xls, 'RouteInstruction');
             $A(routeInstructions).each(function(instructionElement) {
@@ -352,8 +355,8 @@ var Route = (function(w) {
                 directionCode = directionCode.textContent;
                 //skip directionCode 100 for now
                 if (directionCode == '100') {
-					routeLineBefore.push(routeLineAfter);
-					routeLineAfter = [];
+                    routeLineBefore.push(routeLineAfter);
+                    routeLineAfter = [];
                     return;
                 }
                 segment = [];
@@ -363,14 +366,13 @@ var Route = (function(w) {
                     point = L.latLng(point[1], point[0]);
                     segment.push(point);
                 });
-				routeLineAfter.push(segment);
+                routeLineAfter.push(segment);
             });
         }
-
-		if(routeLineBefore.length == 0){
-			routeLineBefore.push(routeLineAfter);
-			routeLineAfter = [];
-		}
+        if (routeLineBefore.length == 0) {
+            routeLineBefore.push(routeLineAfter);
+            routeLineAfter = [];
+        }
         return [routeLineBefore, routeLineAfter];
     }
     /**

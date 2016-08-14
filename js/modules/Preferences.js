@@ -3,6 +3,7 @@ var Preferences = (function(w) {
     'use strict';
     //are there any cookies of thie page yet?
     var cookiesAvailable = false;
+    var $ = w.jQuery;
     var prefNames = list.prefNames;
     //store information that can be used for the permalink
     permaInfo = Array.apply(null, new Array(prefNames.length)).map(String.prototype.valueOf, 'null');
@@ -46,6 +47,7 @@ var Preferences = (function(w) {
         this.optimizeViaIdx = 32;
         this.roundtripIdx = 33;
         this.avoidTracksIdx = 34;
+        this.directwaypointsIdx = 35;
         //define variables
         this.language = 'en';
         this.routingLanguage = 'en';
@@ -56,6 +58,7 @@ var Preferences = (function(w) {
         permaInfo[this.languageIdx] = this.language;
         permaInfo[this.routingLanguageIdx] = this.routingLanguage;
         permaInfo[this.distanceUnitIdx] = this.distanceUnit;
+        permaInfo[this.directwaypointsIdx] = [false, false];
         //other fields are filled with default values when reading GET variables/ cookies etc.
         cookiesAvailable = false;
     }
@@ -284,6 +287,20 @@ var Preferences = (function(w) {
         }
         return waypoints;
     }
+
+    function loadDirectWaypoints(directwaypoints) {
+        if (directwaypoints) {
+            directwaypoints = unescape(directwaypoints);
+            directwaypoints = directwaypoints.split(',');
+            var directwaypointsArr = [];
+            for (var i = 0; i < directwaypoints.length; i++) {
+                var val = (directwaypoints[i] === "true");
+                directwaypointsArr.push(val);
+            }
+            directwaypoints = directwaypointsArr;
+        }
+        return directwaypoints;
+    }
     /**
      * determines route options by GET variable
      * @param routeWeight: extracted from the GET variables in readGetVars()
@@ -319,6 +336,18 @@ var Preferences = (function(w) {
         optimizeVia = ((optimizeVia == 'undefined' || optimizeVia === undefined) ? false : optimizeVia);
         permaInfo[this.optimizeViaIdx] = optimizeVia;
         return optimizeVia;
+    }
+    /** updates direct waypoints indices 
+     */
+    function updateDirectWaypoints() {
+        var directwaypointSettings = [];
+        $.each($('.directwaypoint'), function(i, value) {
+            // skip unset waypoint div
+            if (i > 0) {
+                directwaypointSettings.push($(value).prop('checked'));
+            }
+        });
+        return directwaypointSettings;
     }
     /**
      * determines route options by GET variable
@@ -636,7 +665,6 @@ var Preferences = (function(w) {
         document.cookie = prefNames[this.layerIdx] + "=" + escape(layerCode) + ";expires=" + exdate.toUTCString();
         permaInfo[this.layerIdx] = escape(layerCode);
         cookiesAvailable = true;
-
     }
     /**
      * Used to write all information at once; e.g. if no cookies ara available so far
@@ -693,7 +721,10 @@ var Preferences = (function(w) {
     function generatePermalink(option) {
         var query = 'http://www.openrouteservice.org?';
         for (var i = 0; i < prefNames.length; i++) {
-            if (permaInfo[i] != null && permaInfo[i] != 'null' && permaInfo[i] != false && permaInfo[i] != 'false') {
+            // this is an array of bools we need
+            if (prefNames[i] == 'directWaypoints') {
+                query += prefNames[i] + '=' + permaInfo[i] + '&';
+            } else if (permaInfo[i] != null && permaInfo[i] != 'null' && permaInfo[i] != false && permaInfo[i] != 'false') {
                 query += prefNames[i] + '=' + permaInfo[i] + '&';
             }
         }
@@ -745,10 +776,12 @@ var Preferences = (function(w) {
     Preferences.prototype.loadMapZoom = loadMapZoom;
     Preferences.prototype.loadMapLayer = loadMapLayer;
     Preferences.prototype.loadWaypoints = loadWaypoints;
+    Preferences.prototype.loadDirectWaypoints = loadDirectWaypoints;
     Preferences.prototype.loadRouteOptions = loadRouteOptions;
     Preferences.prototype.loadRouteWeight = loadRouteWeight;
     Preferences.prototype.loadMaxspeed = loadMaxspeed;
     Preferences.prototype.loadViaOptimize = loadViaOptimize;
+    Preferences.prototype.updateDirectWaypoints = updateDirectWaypoints;
     Preferences.prototype.loadRoundtrip = loadRoundtrip;
     Preferences.prototype.loadRouteOptionsType = loadRouteOptionsType;
     Preferences.prototype.loadAvoidables = loadAvoidables;
