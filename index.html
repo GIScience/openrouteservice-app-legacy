@@ -35,65 +35,29 @@
     <body class="ORS">
         <!-- START OF HEADER SECTION -->
 		<div class="print-only-header" id="printableHeader"> 
-				<img src="img/logo_unihd_2.png"/>
-				OpenRouteService
+			<img src="img/logo_unihd_2.png"/>OpenRouteService
 		</div>
         <header class="ORS-header">
             <a href="http://www.geog.uni-heidelberg.de/giscience.html" id="ORS-headIcon"></a>
             <a href="http://www.openrouteservice.org" id="ORS-title">OpenRouteService</a>
-			<!-- MENU BUTTON FOR MOBILE VERSION -->
-			<div id="HeaderOptionsMenuButtonMobile">
-                <i class="fa fa-ellipsis-v"></i>
-            </div> 
 			<!-- END OF MENU BUTTON FOR MOBILE VERSION -->
-			<ul id="ORS-topMenu">
-                <li>
-                    <a data-toggle="modal" href="#feedbackModal" id="ORS-menuLinkFeedback">
-                        <i class="fa fa-comment" id="feedbackContentMenu" data-container="body" id="feedbackContentMenu" type="button" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Feedback">
-                        </i>
-                    </a>
-                </li>
-                <li>
-                    <a data-toggle="modal" href="#sitePrefsModal" id="ORS-menuLinkSitePrefs">
-                        <i class="fa fa-cogs" id="sitePrefsMenu" data-container="body" data-toggle="tooltip" data-placement="bottom" data-original-title="Site Preferences">
-                        </i>
-                    </a>
-                </li>
-                <li>
-                    <a href="contact.html#top" id="ORS-menuLinkInfo" target="_blank">
-                        <i class="fa fa-info" id="contactMenu" data-container="body" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Contact info">
-                        </i>
-                    </a>
-                </li>
-            </ul>
-			
+			<div id="ORS-topMenu">
+                <div class="dropdown" style="z-index: 9999;">
+                    <button class="btn btn-default dropdown-toggle ORS-BtnPrimary-control transparent" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fa fa-info-circle fa-fw" style="color:#fff; font-size: 24px;"></i></button>
+                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+                        <li class="dropdown-header">Settings</li>
+                        <li><a data-toggle="modal" href="#sitePrefsModal" data-target="#sitePrefsModal"><i class="fa fa-cogs fa-fw"></i>User preferences</a></li>
+                        <li class="dropdown-header">Information</li>
+                        <li><a href="https://groups.google.com/forum/#!forum/openrouteservice" target="_blank"><i class="fa fa-comments fa-fw"></i>Google Groups</a></li>
+                        <li><a data-toggle="modal" href="#feedbackModal" data-target="#feedbackModal"><i class="fa fa-pencil fa-fw"></i>Feedback</a></li>
+                        <li><a href="contact.html#top" target="_blank"><i class="fa fa-info fa-fw"></i>About</a></li>
+                    </ul>
+                </div>
+            </div>
         </header>
         <!-- END OF HEADER SECTION -->
         <!-- START OF MAIN SECTION -->
         <div class="ORS-main">
-			<!-- HEADER OPTIONS FOR MOBILE -->
-			<div id="HeaderOptionsMenuMobile" style="display:none">
-				<ul>
-					<li>
-						<a data-toggle="modal" href="#feedbackModal" id="ORS-menuLinkFeedbackMobile">
-							Feedback
-						</a>
-					</li>
-					<br>
-					<li>
-						<a data-toggle="modal" href="#sitePrefsModal" id="ORS-menuLinkSitePrefsMobile">
-							User preferences
-						</a>
-					</li>
-					<br>
-					<li>
-						<a href="contact.html#top" id="ORS-menuLinkInfoMobile" target="_blank">
-							Info & contacts
-						</a>
-					</li>
-				</ul> 
-			</div>
-			<!-- END OF HEADER OPTIONS FOR MOBILE -->
             <div class="ORS-sidebar" id="sidebar">
                 <!-- sidebar content -->
                 <div class="ORS-menuPanel" id="menuPanel">
@@ -944,7 +908,7 @@
         </div>
         <!-- END OF MAIN SECTION -->
         <!-- modal for user preferences (language, distance unit,...) -->
-        <div aria-labelledby="sitePrefs" class="modal fade"Pop id="sitePrefsModal" role="dialog" tabindex="-1">
+        <div aria-labelledby="sitePrefs" class="modal fade" id="sitePrefsModal" role="dialog" tabindex="-1">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -1111,6 +1075,48 @@
         <script src="js/lang/lang-ua.js" type="text/javascript"></script>
         <script src="js/lang/lang-cn.js" type="text/javascript"></script>
         <script src="js/lang/lang-cnsimple.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            // bootstrap and prototypejs have a conflict on hiding elements
+            (function() {
+                var isBootstrapEvent = false;
+                if (window.jQuery) {
+                    var all = jQuery('*');
+                    jQuery.each(['hide.bs.dropdown', 
+                        'hide.bs.collapse', 
+                        'hide.bs.modal', 
+                        'hide.bs.tooltip',
+                        'hide.bs.popover',
+                        'hide.bs.tab'], function(index, eventName) {
+                        all.on(eventName, function( event ) {
+                            isBootstrapEvent = true;
+                        });
+                    });
+                }
+                var originalHide = Element.hide;
+                Element.addMethods({
+                    hide: function(element) {
+                        if(isBootstrapEvent) {
+                            isBootstrapEvent = false;
+                            return element;
+                        }
+                        return originalHide(element);
+                    }
+                });
+            })();
+        </script>
+        <!-- ENABLE MODALS TO BE CALLED FROM DROPDOWN MENU -->
+        <script>
+             (function($){
+                $(window).on("load",function(){
+                    $('.dropdown-menu').click(function(e) {
+                        e.stopPropagation();
+                        if ($(e.target).is('[data-toggle=modal]')) {
+                            $($(e.target).data('target')).modal()
+                        }
+                    });
+                });
+            })(jQuery);
+        </script>
         <!-- CALL CUSTOM SCROLLBAR -->
         <script>
             (function($){

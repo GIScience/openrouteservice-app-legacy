@@ -1,132 +1,168 @@
 body, html {
     font-family: 'Source Sans Pro', sans-serif;
-	font-size: 13px;
+    font-size: 13px;
 }
 
 table {
-	font-size: 13px;
+    font-size: 13px;
 }
 
+
 /* Nav-bar */
+
 #navbar {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	padding: 0px 10px 0px 20px;
-	border-bottom: 1px solid black;
+    position: absolute;
+    border-bottom: 1px solid black;
 }
 
 #navbar .logo {
-	height: 30px;
-	width: 30px;
-	padding-right: 10px;
-}
-
-#navbar a.brand {
-	padding-right: 10px;
+    height: 30px;
+    width: auto;
+    padding-right: 10px;
 }
 
 .logo_big {
-	height: 70px;
-	padding-right: 10px;
-	vertical-align: middle;
+    height: 70px;
+    padding-right: 10px;
+    vertical-align: middle;
 }
+
 .links {
-	height: 36px;
-	width: 36px;
-	padding-top: 2px;
-	padding-bottom: 2px;
+    height: 36px;
+    width: 36px;
+    padding-top: 2px;
+    padding-bottom: 2px;
 }
+
 #topMenu {
-	/* contains link to Uni Heidelberg, etc. */
-	position: fixed;
-	top: 5px;
-	right: 4px;
-	float: right;
-	list-style: none;
+    /* contains link to Uni Heidelberg, etc. */
+    position: fixed;
+    top: 5px;
+    right: 4px;
+    float: right;
+    list-style: none;
 }
+
 #topMenu > li {
-	height: 40px;
-	float: left;
-	margin: 0px 10px 0px 0;
-	line-height: 40px;
+    height: 40px;
+    float: left;
+    margin: 0px 10px 0px 0;
+    line-height: 40px;
 }
+
 #topMenu > li > a, #title {
-	color: #000000;
-	padding-top: 15px;
+    color: #000000;
+    padding-top: 15px !important;
 }
+
 #topMenu > li > a:hover, #title:hover {
-	text-decoration: none;
-	color: #333333;
+    text-decoration: none;
+    color: #333333;
 }
+
 
 /* content of page */
 
 #sidebar {
-	position: fixed;
-	top: 65px;
-	left: 0px;
-	width: 390px;
-	padding-top: 10px;
-	/*	overflow: auto;*/
+    position: fixed;
+    top: 65px;
+    left: 0px;
+    width: 390px;
+    padding-top: 10px;
+    overflow: auto;
 }
+
 #pageContent {
-	position: absolute;
-	top: 70px;
-	left: 400px;
-	right: 0px;
-	bottom: 0px;
-	padding: 0 20px 20px 20px;
-	overflow: auto;
+    position: absolute;
+    top: 50px;
+    left: 400px;
+    right: 0px;
+    bottom: 0px;
+    padding: 0 20px 20px 20px;
+    overflow: auto;
 }
 
 #pageContent p, #pageContent li {
-	line-height: 1.5;
+    line-height: 1.5;
 }
 
 #pageContent ul.references {
-	margin-top: 1em;
+    margin-top: 1em;
 }
 
 #pageContent ul.references li {
-	padding-left: 2em;
-	text-indent: -2em;
-	margin-bottom: 0.3em;
+    padding-left: 2em;
+    text-indent: -2em;
+    margin-bottom: 0.3em;
 }
 
 #pageContent h1, #pageContent h2, #pageContent h3 {
-	margin-bottom: 0.2em;
+    margin-bottom: 0.2em;
 }
 
 .topOfPage {
-	float: right;
-	padding-right: 40px;
+    float: right;
+    padding-right: 40px;
 }
+
 .space {
-	height: 20px;
+    height: 20px;
 }
+
 .space_small {
-	height: 10px;
+    height: 10px;
 }
+
 .space_big {
-	height: 800px;
+    height: 800px;
 }
+
 #dl-horizontal_mod dt {
-	width: 300px;
-	line-height: 1.5em;
-	text-align: left;
+    width: 300px;
+    line-height: 1.5em;
+    text-align: left;
 }
+
 #dl-horizontal_mod dd {
-	line-height: 1.5em;
+    line-height: 1.5em;
 }
+
+
 /*overwrite bootstrap*/
+
 a {
-	color: #990000;
+    color: #990000;
+    padding: 5px 15px !important;
 }
-.nav-list>.active>a, .nav-list>.active>a:hover {
-	background-color: #990000;
+
+.panel-group>.active>a, .panel-group>.active>a:hover {
+    background-color: #990000;
+    color: #fff;
 }
+
 a:hover {
-	color: #909090;
+    color: #909090;
+}
+
+.divider {
+    height: 1px;
+    width: 100%;
+    display: block;
+    /* for use on default inline elements like span */
+    margin: 9px 0;
+    overflow: hidden;
+    background-color: #e5e5e5;
+}
+
+ul {
+    width: 300px;
+}
+
+.nav > li.nav-header > a {
+    cursor: default;
+    font-size: 12px;
+    font-weight: bold;
+    color: #999;
+    text-transform: uppercase;
+    padding: 5px 15px !important;
 }

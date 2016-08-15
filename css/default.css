@@ -297,13 +297,8 @@
     /* *******************************************/
     /* *********************************************/
     /* START OF ELEMENT STYLES (CLASSES AND ID's)  */
-    /* *********************************************/
-    /* STYLE FOR ELEMENTS ON HEADER SECTION */
-    
-    #HeaderOptionsMenuButtonMobile {
-        display: none;
-    }
-    
+    /* ******************************************s***/
+    /* STYLE FOR ELEMENTS ON HEADER SECTION */ 
     #ORS-title {
         /* Main ORS title */
         background-color: #b5152b;
@@ -334,16 +329,6 @@
         right: 4px;
         float: right;
         list-style: none;
-    }
-    
-    #ORS-topMenu > li, #ORS-topMenu > li >a {
-        /* Style for individual elements on ORS menu on top right side */
-        height: 40px;
-        float: left;
-        margin: 0px 10px 0px 0;
-        line-height: 40px;
-        color: white;
-        font-size: 18px;
     }
     
     #contact_form {
@@ -627,7 +612,7 @@
         content: "\f041";
         font-family: FontAwesome;
     }
-
+    
     .tt-directwp {
         padding-top: 6px;
         padding-left: 5px;
@@ -1111,7 +1096,7 @@
         color: #fff;
         border-radius: 3px;
     }
-        
+    
     .ORS-mapContextMenu .ORS-contextWaypoint {
         /* Context menu styles (when clicking with the right mouse button on the map area */
         padding: 3px 10px 3px 10px;
@@ -1287,59 +1272,6 @@
     /* ******************************************************************/
     
     @media screen and (min-width: 319px) and (max-width: 720px) {
-        #HeaderOptionsMenuButtonMobile {
-            display: inline-block;
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            float: right;
-            color: white;
-            height: 40px;
-            width: 40px;
-            line-height: 40px;
-            color: white;
-            font-size: 20px;
-            text-align: center;
-            border-radius: 20px;
-        }
-        #HeaderOptionsMenuMobile {
-            float: right !important;
-            right: 5px;
-            top: 50px;
-            display: inline-block;
-            position: absolute;
-            z-index: 9998;
-            background-color: #FFF;
-            width: 170px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26), 0 2px 10px 0 rgba(0, 0, 0, .16);
-        }
-        #HeaderOptionsMenuMobile ul li {
-            position: relative;
-            line-height: 50px;
-            width: 150px;
-            color: #F0F0F0;
-            font-size: 120%;
-            list-style-type: none;
-            padding: 0;
-            margin-left: -30px;
-            height: 50px;
-            float: left;
-        }
-        #HeaderOptionsMenuMobile ul li:active, #HeaderOptionsMenuMobile ul li:hover {
-            background-color: #CCC;
-        }
-        #HeaderOptionsMenuMobile ul li a {
-            text-decoration: none;
-            outline: none;
-            float: left;
-            color: black;
-            width: 80%;
-            left: 5px;
-        }
-        #ORS-topMenu {
-            display: none;
-        }
         .ORS-main {
             flex-direction: column;
         }

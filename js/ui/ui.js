@@ -1628,61 +1628,64 @@ var Ui = (function(w) {
      * @param list: div list element for type
      */
     function horizontalBarchart(layer, types, list, data, colors) {
-        d3.select(types).selectAll("svg").remove();
-        var tip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) {
-            var dist = util.convertDistanceFormat(d.distance, preferences.distanceUnit);
-            return d.percentage + '% ' + d.typetranslated + ' (' + dist[1] + ' ' + dist[2] + ')';
-        });
-        var margin = {
-                top: 0,
-                right: 0,
-                bottom: 0,
-                left: 0
-            },
-            width = 315 - margin.left - margin.right,
-            height = 24 - margin.top - margin.bottom;
-        var y = d3.scale.ordinal().rangeRoundBands([height, 0]);
-        var x = d3.scale.linear().rangeRound([0, width]);
-        var yAxis = d3.svg.axis().scale(y).orient("left");
-        var xAxis = d3.svg.axis().scale(x).orient("bottom");
-        var svg = d3.select(types).append("svg").attr("width", width).attr("height", height).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-        y.domain([0]);
-        x.domain([0, data[Object.keys(data)[Object.keys(data).length - 1]].y1]);
-        svg.selectAll("rect").data(data).enter().append("rect").attr("height", 24).attr("x", function(d) {
-            return x(d.y0) / 1;
-        }).attr("width", function(d) {
-            return x(d.y1) / 1 - x(d.y0) / 1;
-        }).attr("title", function(d) {
-            return (d.y1 - d.y0) + "% : " + d.typetranslated;
-        }).style("fill", function(d, i) {
-            if (colors) {
-                return colors[i];
-            } else {
-                return d.color;
+        // data may be empty if only direct route
+        if (data.length > 0) {
+            d3.select(types).selectAll("svg").remove();
+            var tip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) {
+                var dist = util.convertDistanceFormat(d.distance, preferences.distanceUnit);
+                return d.percentage + '% ' + d.typetranslated + ' (' + dist[1] + ' ' + dist[2] + ')';
+            });
+            var margin = {
+                    top: 0,
+                    right: 0,
+                    bottom: 0,
+                    left: 0
+                },
+                width = 315 - margin.left - margin.right,
+                height = 24 - margin.top - margin.bottom;
+            var y = d3.scale.ordinal().rangeRoundBands([height, 0]);
+            var x = d3.scale.linear().rangeRound([0, width]);
+            var yAxis = d3.svg.axis().scale(y).orient("left");
+            var xAxis = d3.svg.axis().scale(x).orient("bottom");
+            var svg = d3.select(types).append("svg").attr("width", width).attr("height", height).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            y.domain([0]);
+            x.domain([0, data[Object.keys(data)[Object.keys(data).length - 1]].y1]);
+            svg.selectAll("rect").data(data).enter().append("rect").attr("height", 24).attr("x", function(d) {
+                return x(d.y0) / 1;
+            }).attr("width", function(d) {
+                return x(d.y1) / 1 - x(d.y0) / 1;
+            }).attr("title", function(d) {
+                return (d.y1 - d.y0) + "% : " + d.typetranslated;
+            }).style("fill", function(d, i) {
+                if (colors) {
+                    return colors[i];
+                } else {
+                    return d.color;
+                }
+            }).on('mouseover', function(d) {
+                handleHighlightTypes(d.ids, layer);
+                tip.show(d);
+            }).on('mouseout', function(d) {
+                handleResetTypes(d.ids, layer);
+                tip.hide(d);
+            }).on('click', function(d) {
+                handleClickRouteIds(d.ids, layer);
+            });
+            $(list).empty();
+            $(list).append("<ul></ul>");
+            for (var i = 0; i < data.length; i++) {
+                var li = $('<li>');
+                li.html(data[i].percentage + '% ' + data[i].typetranslated);
+                li.wrapInner('<span />');
+                if (colors) {
+                    li.css('color', colors[i]);
+                } else {
+                    li.css('color', data[i].color);
+                }
+                if (i !== "type" && i !== "total") $(list + "> ul").append(li);
             }
-        }).on('mouseover', function(d) {
-            handleHighlightTypes(d.ids, layer);
-            tip.show(d);
-        }).on('mouseout', function(d) {
-            handleResetTypes(d.ids, layer);
-            tip.hide(d);
-        }).on('click', function(d) {
-            handleClickRouteIds(d.ids, layer);
-        });
-        $(list).empty();
-        $(list).append("<ul></ul>");
-        for (var i = 0; i < data.length; i++) {
-            var li = $('<li>');
-            li.html(data[i].percentage + '% ' + data[i].typetranslated);
-            li.wrapInner('<span />');
-            if (colors) {
-                li.css('color', colors[i]);
-            } else {
-                li.css('color', data[i].color);
-            }
-            if (i !== "type" && i !== "total") $(list + "> ul").append(li);
+            svg.call(tip);
         }
-        svg.call(tip);
     }
     /** 
      * adds steepness segments and prepares information for barchart
@@ -1769,6 +1772,7 @@ var Ui = (function(w) {
      * @return WayTypesObject: Object containing Names and Percetages
      */
     function calculateChart(results, featureIds, types, distArrAll) {
+        console.log(results, types)
         var information, typelist, type;
         // keep route feature ids remove corner ids
         featureIds = featureIds.filter(function(el, index) {
@@ -1807,6 +1811,7 @@ var Ui = (function(w) {
                 });
             }
         }
+        console.log(typelist)
         var totaldistance = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteSummary')[1];
         totaldistance = util.getElementsByTagNameNS(results, namespaces.xls, 'TotalDistance')[0];
         var totaldistancevalue = totaldistance.getAttribute('value');
@@ -1830,6 +1835,11 @@ var Ui = (function(w) {
             toPrev = to;
             var typenumber = util.getElementsByTagNameNS(WayType, namespaces.xls, 'Type')[0];
             typenumber = typenumber.textContent;
+            // direct segments
+            console.log(typenumber)
+            if (typenumber == -1 ) {
+                return;
+            }
             if (fr == to) {
                 typelist[typenumber].distance += distArrAll[fr - stopoverDiff];
                 typelist[typenumber].segments.push(parseInt(fr - stopoverDiff));
@@ -3528,19 +3538,6 @@ var Ui = (function(w) {
         });
         // menuButtons
         $('.ORS-menuButton').click(handleSwitchMenu);
-        // Mobile top menu
-        $('#ORS-menuLinkFeedbackMobile').click(function() {
-            $('#HeaderOptionsMenuMobile').hide();
-            $('#HeaderOptionsMenuButtonMobile').css("background-color", "transparent");
-        });
-        $('#ORS-menuLinkSitePrefsMobile').click(function() {
-            $('#HeaderOptionsMenuMobile').hide();
-            $('#HeaderOptionsMenuButtonMobile').css("background-color", "transparent");
-        });
-        $('#ORS-menuLinkInfoMobile').click(function() {
-            $('#HeaderOptionsMenuMobile').hide();
-            $('#HeaderOptionsMenuButtonMobile').css("background-color", "transparent");
-        });
     }
     Ui.prototype = new EventEmitter();
     Ui.prototype.constructor = Ui;
