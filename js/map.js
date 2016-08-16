@@ -6,7 +6,7 @@ var Map = (function() {
      * STYLES
      * *********************************************************************/
     var $ = window.jQuery;
-    var self, directWaypointActive;
+    var self, directWaypointActive, directWpOn = false;
     /**
      * Constructor
      * @param  {[type]} container [description]
@@ -317,6 +317,12 @@ var Map = (function() {
             options[3].onclick = function(e) {
                 $(options[4]).toggle();
             };
+            // update global toggle checkbox option
+            $(function() {
+                $('#toggle-direct-waypoint').change(function() {
+                    directWpOn = $(this).prop('checked');
+                });
+            });
         }
         this.theMap.on('contextmenu', function(e) {
             var displayPos = e.latlng;
@@ -369,6 +375,7 @@ var Map = (function() {
                 'id': 'toggle-direct-waypoint',
                 'type': 'checkbox',
                 'data-size': 'mini',
+                'checked': directWpOn,
                 'data-toggle': 'toggle',
                 'data-onstyle': 'success',
             });

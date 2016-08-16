@@ -1688,6 +1688,46 @@ var Ui = (function(w) {
         }
     }
     /** 
+     * Processes steepness segments and prepares information for barchart
+     * @param routeLineString: linestring of route
+     * @param results: XML response of route
+     * @return elevationData: Object containing Names and Percetages
+     */
+    function processHeightProfile(routeLineString, results) {
+        var information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySteepnessList')[0];
+        information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySteepness');
+        var data = [];
+        $A(information).each(function(WayType, i) {
+            var fr = util.getElementsByTagNameNS(WayType, namespaces.xls, 'From')[0];
+            fr = parseInt(fr.textContent);
+            var to = util.getElementsByTagNameNS(WayType, namespaces.xls, 'To')[0];
+            to = parseInt(to.textContent);
+            var elevationChunk = {};
+            elevationChunk.line = [];
+            if (fr !== to) {
+                var typenumber = util.getElementsByTagNameNS(WayType, namespaces.xls, 'Type')[0];
+                typenumber = typenumber.textContent;
+                // add 5 as types start at -5
+                typenumber = parseInt(typenumber) + 5;
+                var steepnessSegment = routeLineString.slice(fr, to);
+                for (var i = 0; i < steepnessSegment.length; i++) {
+                    elevationChunk.line.push([steepnessSegment[i].lat, steepnessSegment[i].lng, steepnessSegment[i].alt]);
+                }
+                elevationChunk.steepness = typenumber;
+            }
+            data.push(elevationChunk);
+        });
+        var elevationData = GeoJSON.parse(data, {
+            LineString: 'line',
+            extraGlobal: {
+                'Creator': 'OpenRouteService.org',
+                'records': data.length,
+                'summary': 'Bins of elevation types in route'
+            }
+        });
+        return elevationData;
+    }
+    /** 
      * adds steepness segments and prepares information for barchart
      * @param results: XML response of route
      * @return WaySteepnessObject: Object containing Names and Percetages
@@ -1698,6 +1738,7 @@ var Ui = (function(w) {
         var information, type, text, typelist = [];
         information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySteepnessList')[0];
         information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySteepness');
+        console.log(information)
         for (var i = 0; i < (list.SteepnessType).length; i++) {
             if (Object.keys(list.SteepnessType[i])[0] > 0) {
                 text = '<i class="fa fa-caret-up"></i> ' + list.SteepnessType[i][Object.keys(list.SteepnessType[i])[0]].text;
@@ -1837,7 +1878,7 @@ var Ui = (function(w) {
             typenumber = typenumber.textContent;
             // direct segments
             console.log(typenumber)
-            if (typenumber == -1 ) {
+            if (typenumber == -1) {
                 return;
             }
             if (fr == to) {
@@ -3602,6 +3643,7 @@ var Ui = (function(w) {
     Ui.prototype.handleGpxFiles = handleGpxFiles;
     Ui.prototype.handleResetRoute = handleResetRoute;
     Ui.prototype.handleMaxspeed = handleMaxspeed;
+    Ui.prototype.processHeightProfile = processHeightProfile;
     theInterface = new Ui();
     return theInterface;
 }(window));

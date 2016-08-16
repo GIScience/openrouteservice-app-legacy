@@ -1002,6 +1002,8 @@ var Controller = (function(w) {
                     if ($.inArray(routePref, list.elevationProfiles) >= 0) {
                         // Surface and waytype information
                         ui.updateSurfaceSteepness(results, featureIds, 'layerRouteLines', totalDistance);
+                        // Generated for height profile
+                        var elevationData = ui.processHeightProfile(routeLineString, results);
                         // Elevation information
                         if (elevation) {
                             var viaPoints = [];
