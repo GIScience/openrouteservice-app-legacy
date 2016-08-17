@@ -126,7 +126,7 @@ var Route = (function(w) {
         //<xls:WayPointList>
         writer.writeStartElement('xls:WayPointList');
         // remove first element of directWaypoints
-        directWaypoints = directWaypoints.slice(1,directWaypoints.length);
+        directWaypoints = directWaypoints.slice(1, directWaypoints.length);
         for (var i = 0; i < routePoints.length; i++) {
             if (i === 0) {
                 writer.writeStartElement('xls:StartPoint');
@@ -239,12 +239,11 @@ var Route = (function(w) {
         writer.writeEndDocument();
         var xmlRequest = writer.flush();
         writer.close();
-        var url;
+        var url = namespaces.services.routing + "?" + ak;
+        //url = namespaces.services.routing + "?" + ak;
         if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
-            url = "cgi-bin/proxy.cgi?url=" + namespaces.services.routing;
-        } else {
-            url = namespaces.services.routing;
-        }
+            url = "cgi-bin/proxy.cgi?url=" + url;
+        } 
         jQuery.ajax({
             url: url,
             processData: false,
@@ -253,7 +252,6 @@ var Route = (function(w) {
             crossDomain: false,
             data: xmlRequest,
             success: function(response) {
-                console.log(response)
                 successCallback(response, calcRouteID, routePref, routePoints);
             },
             error: function(response) {

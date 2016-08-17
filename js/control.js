@@ -1,6 +1,6 @@
 // global variable which is set to false after init is run
 // is needed in order for cookies to be loaded properly
-var map, initMap = true;
+var map, ak, initMap = true;
 var Controller = (function(w) {
     'use strict';
     var $ = w.jQuery,
@@ -1441,6 +1441,8 @@ var Controller = (function(w) {
      * apply GET variables, read cookies or apply standard values to initialize the ORS page
      */
     function initializeOrs() {
+        // read api key
+        var ak = readApiKey();
         //apply GET variables and/or cookies and set the user's language,...
         var getVars = preferences.loadPreferencesOnStartup();
         var pos = getVars[preferences.getPrefName(preferences.positionIdx)];
@@ -1596,6 +1598,26 @@ var Controller = (function(w) {
         setInterval(function() {
             map.graphInfo();
         }, 300000);
+    }
+    /** 
+     * reads API key from file
+     * @return: api key
+     */
+    function readApiKey() {
+        function readTextFile(file) {
+            var rawFile = new XMLHttpRequest();
+            rawFile.open("GET", file, false);
+            rawFile.onreadystatechange = function() {
+                if (rawFile.readyState === 4) {
+                    if (rawFile.status === 200 || rawFile.status == 0) {
+                        ak = "api_key=" + rawFile.responseText;
+                        console.log(ak)
+                    }
+                }
+            };
+            rawFile.send(null);
+        }
+        readTextFile(list.key);
     }
     /**
      * apply selected site language, load dynamic menus, etc.

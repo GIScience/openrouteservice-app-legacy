@@ -9,7 +9,7 @@ var Waypoint = (function(w) {
     'use strict';
     var waypointsSet = [false, false];
     var requestCounterWaypoints = [0, 0];
-	var $ = w.jQuery;
+    var $ = w.jQuery;
     /**
      * Constructor
      */
@@ -69,11 +69,9 @@ var Waypoint = (function(w) {
         var failure = function() {
             failureCallback(wpIndex);
         };
-        var url;
+        var url = namespaces.services.geocoding + "?" + ak;
         if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
-            url = "cgi-bin/proxy.cgi?url=" + namespaces.services.geocoding;
-        } else {
-            url = namespaces.services.geocoding;
+            url = "cgi-bin/proxy.cgi?url=" + url;
         }
         var request = jQuery.ajax({
             url: url,
@@ -117,15 +115,13 @@ var Waypoint = (function(w) {
         /*jshint validthis: true */
         var type;
         if (wpIndex == '0') {
-			if ($('#roundtrip')[0].checked){
-				type = this.type.ROUNDTRIP;
-			}
-			else type = this.type.START;
+            if ($('#roundtrip')[0].checked) {
+                type = this.type.ROUNDTRIP;
+            } else type = this.type.START;
         } else if (wpIndex == waypointsSet.length - 1) {
-			if ($('#roundtrip')[0].checked){
-				type = this.type.ROUNDTRIP;
-			}
-			else type = this.type.END;
+            if ($('#roundtrip')[0].checked) {
+                type = this.type.ROUNDTRIP;
+            } else type = this.type.END;
         } else {
             type = this.type.VIA;
         }
@@ -261,6 +257,6 @@ Waypoint.type = {
     START: 'start',
     VIA: 'via',
     END: 'end',
-	ROUNDTRIP: 'roundtrip',
+    ROUNDTRIP: 'roundtrip',
     UNSET: 'unset'
 };

@@ -77,11 +77,9 @@ var Geolocator = (function(w) {
         var success = function(result) {
             successCallback(result, waypointType, waypointIndex, featureId, routePresent);
         };
-        var url;
+        var url = namespaces.services.geocoding + "?" + ak;
         if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
-            url = "cgi-bin/proxy.cgi?url=" + namespaces.services.geocoding;
-        } else {
-            url = namespaces.services.geocoding;
+            url = "cgi-bin/proxy.cgi?url=" + url;
         }
         var request = jQuery.ajax({
             url: url,

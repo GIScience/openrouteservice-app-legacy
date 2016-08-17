@@ -86,11 +86,9 @@ var AccessibilityAnalysis = (function(w) {
         writer.writeEndDocument();
         var xmlRequest = writer.flush();
         writer.close();
-        var url;
+        var url = namespaces.services.analyse + "?" + ak;
         if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
-            url = "cgi-bin/proxy.cgi?url=" + namespaces.services.analyse;
-        } else {
-            url = namespaces.services.analyse;
+            url = "cgi-bin/proxy.cgi?url=" + url;
         }
         var request = jQuery.ajax({
             url: url,
