@@ -615,11 +615,9 @@ var Map = (function() {
      * *********************************************************************/
     // load graph info when map loaded
     function graphInfo() {
-        var url;
+        var url = namespaces.services.routing + "?info" + "?" + ak;
         if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
-            url = "cgi-bin/proxy.cgi?url=" + namespaces.services.routing + "?info";
-        } else {
-            url = namespaces.services.routing + "?info";
+            url = "cgi-bin/proxy.cgi?url=" + url;
         }
         jQuery.ajax({
             url: url,

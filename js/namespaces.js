@@ -78,11 +78,9 @@ namespaces.stamenUrl = 'http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png';
 namespaces.overlayTmc = '';
 namespaces.overlayTmcLines = '';
 var generateUrl = function(service) {
-    var url;
+    var url = service + "?" + ak;
     if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
-        url = "cgi-bin/proxy.cgi?url=" + service;
-    } else {
-        url = service;
-    }
+        url = "cgi-bin/proxy.cgi?url=" + url;
+    } 
     return url;
 };
