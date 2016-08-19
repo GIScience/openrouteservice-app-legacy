@@ -1332,7 +1332,7 @@ var Controller = (function(w) {
      * @param forceUpdate: when auto refreshed after 5 minutes, force update the tmc messages, otherwise proceed as usual
      */
     function compareBoundingBoxes(url, forceUpdate) {
-        var tmcUrl = url + '&bbox=' + map.theMap.getBounds().getSouthWest().lng + ',' + map.theMap.getBounds().getSouthWest().lat + ',' + map.theMap.getBounds().getNorthEast().lng + ',' + map.theMap.getBounds().getNorthEast().lat;
+        var tmcUrl = url + '&bbox=' + map.theMap.getBounds().getSouthWest().lng + ',' + map.theMap.getBounds().getSouthWest().lat + ',' + map.theMap.getBounds().getNorthEast().lng + ',' + map.theMap.getBounds().getNorthEast().lat + '?' + ak;
         if (forceUpdate === true) {
             getTMC(tmcUrl);
         } else {
@@ -1611,7 +1611,6 @@ var Controller = (function(w) {
                 if (rawFile.readyState === 4) {
                     if (rawFile.status === 200 || rawFile.status == 0) {
                         ak = "api_key=" + rawFile.responseText;
-                        console.log(ak)
                     }
                 }
             };

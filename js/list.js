@@ -2,7 +2,7 @@
  * various keyword lists used in the ORS application
  */
 list = {
-    key: 'key.txt',
+    key: '03be7b5879f93f3de20e76e441e6568f',
     dontUpdateRoute: ["maxSpeedInput", "viaOptimize"],
     prefNames: ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version', 'avUnpaved', 'avFerry', 'value_length', 'value_height', 'value_weight', 'value_width', 'value_axleload', 'surface', 'incline', 'slopedCurb', 'hazardous', 'routeWeight', 'avSteps', 'routeOptType', 'trackType', 'smoothness', 'avFords', 'maxspeed', 'avPaved', 'avTunnel', 'optimizeVia', 'roundtrip', 'avTracks', 'directWaypoints'],
     languages: ['de', 'en', 'es', 'fr', 'it', 'nl', 'hu', 'ru', 'ua', 'cz', 'pl', 'cnsimple', 'cn'],

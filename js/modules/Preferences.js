@@ -711,11 +711,9 @@ var Preferences = (function(w) {
     /**
      * open new window with the permalink
      */
-    var url;
+    var url = namespaces.services.shorten + "?" + ak;
     if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
-        url = "cgi-bin/proxy.cgi?url=" + namespaces.services.shorten;
-    } else {
-        url = namespaces.services.shorten;
+        url = "cgi-bin/proxy.cgi?url=" + url;
     }
 
     function generatePermalink(option) {

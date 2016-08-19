@@ -1717,6 +1717,7 @@ var Ui = (function(w) {
             }
             data.push(elevationChunk);
         });
+
         var elevationData = GeoJSON.parse(data, {
             LineString: 'line',
             extraGlobal: {
@@ -1725,6 +1726,8 @@ var Ui = (function(w) {
                 'summary': 'Bins of elevation types in route'
             }
         });
+        console.log(JSON.stringify(elevationData));
+        
         return elevationData;
     }
     /** 
@@ -1738,7 +1741,6 @@ var Ui = (function(w) {
         var information, type, text, typelist = [];
         information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySteepnessList')[0];
         information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySteepness');
-        console.log(information)
         for (var i = 0; i < (list.SteepnessType).length; i++) {
             if (Object.keys(list.SteepnessType[i])[0] > 0) {
                 text = '<i class="fa fa-caret-up"></i> ' + list.SteepnessType[i][Object.keys(list.SteepnessType[i])[0]].text;
@@ -1813,7 +1815,6 @@ var Ui = (function(w) {
      * @return WayTypesObject: Object containing Names and Percetages
      */
     function calculateChart(results, featureIds, types, distArrAll) {
-        console.log(results, types)
         var information, typelist, type;
         // keep route feature ids remove corner ids
         featureIds = featureIds.filter(function(el, index) {
@@ -1852,7 +1853,6 @@ var Ui = (function(w) {
                 });
             }
         }
-        console.log(typelist)
         var totaldistance = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteSummary')[1];
         totaldistance = util.getElementsByTagNameNS(results, namespaces.xls, 'TotalDistance')[0];
         var totaldistancevalue = totaldistance.getAttribute('value');
@@ -1877,7 +1877,6 @@ var Ui = (function(w) {
             var typenumber = util.getElementsByTagNameNS(WayType, namespaces.xls, 'Type')[0];
             typenumber = typenumber.textContent;
             // direct segments
-            console.log(typenumber)
             if (typenumber == -1) {
                 return;
             }

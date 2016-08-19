@@ -78,9 +78,11 @@ var Geolocator = (function(w) {
             successCallback(result, waypointType, waypointIndex, featureId, routePresent);
         };
         var url = namespaces.services.geocoding + "?" + ak;
-        if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
-            url = "cgi-bin/proxy.cgi?url=" + url;
-        }
+        
+        // var url = namespaces.services.geocoding + "?" + ak;
+        // if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
+        //     url = "cgi-bin/proxy.cgi?url=" + url;
+        // }
         var request = jQuery.ajax({
             url: url,
             processData: false,
