@@ -708,15 +708,14 @@ var Preferences = (function(w) {
     /*
      * PERMALINK
      */
-    /**
-     * open new window with the permalink
-     */
-    var url = namespaces.services.shorten + "?" + ak;
-    if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
-        url = "cgi-bin/proxy.cgi?url=" + url;
-    }
-
     function generatePermalink(option) {
+        /**
+         * open new window with the permalink
+         */
+        var url = namespaces.services.shorten + "?" + ak;
+        if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
+            url = "cgi-bin/proxy.cgi?url=" + url;
+        }
         var query = 'http://www.openrouteservice.org?';
         for (var i = 0; i < prefNames.length; i++) {
             // this is an array of bools we need

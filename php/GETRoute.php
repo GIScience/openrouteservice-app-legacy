@@ -14,8 +14,8 @@
  *
  * <p><b>Copyright:</b> Copyright (c) 2015</p>
  * <p><b>Institution:</b> University of Heidelberg, Department of Geography</p>
- * @author Pascal Neis, Enrico Steiger , openrouteservice at geog.uni-heidelberg.de
- * @version 1.0 2015-02-01
+ * @author Timothy Ellersiek, openrouteservice at geog.uni-heidelberg.de
+ * @version 1.0 2016-08
  */
  
 	include ('CreateRSRequest.php');
@@ -26,8 +26,7 @@
 	//?start=8.001551792162187,52.267593720674526&end=8.068890507570062,52.29003995914382
 	// start=7.040837,50.723612&end=7.040036,50.72591&via=7.026576,50.720379
 	// &routepref=Shortest&weighting=Car&lang=de&noMotorways=true&noTollways=true&distunit=M&instructions=true
-	if(isset($_GET["start"]) && isset($_GET["end"]) && isset($_GET["via"])&& isset($_GET["lang"]) && isset($_GET["distunit"]) 
-		&& isset($_GET["routepref"]) && isset($_GET["weighting"])&& isset($_GET["noMotorways"]) && isset($_GET["noTollways"]) && isset($_GET["noFerries"])&& isset($_GET["noSteps"])&& isset($_GET["noUnpavedroads"]) && isset($_GET["instructions"])){
+	if(isset($_GET["start"]) && isset($_GET["end"]) && isset($_GET["via"])&& isset($_GET["lang"]) && isset($_GET["distunit"]) && isset($_GET["routepref"]) && isset($_GET["weighting"])&& isset($_GET["noMotorways"]) && isset($_GET["noTollways"]) && isset($_GET["noFerries"])&& isset($_GET["noSteps"])&& isset($_GET["noUnpavedroads"]) && isset($_GET["instructions"]) && isset($_GET["api_key"])){
 	
 		$startcoordinate = $_GET["start"];
 		$endcoordinate = $_GET["end"];
@@ -43,16 +42,17 @@
 		$noUnpavedroads = $_GET["noUnpavedroads"];
 		$noSteps = $_GET["noSteps"];
 		$instructions = $_GET["instructions"];
-		
+		$api_key = $_GET["api_key"];
+
 		if (isset($_GET["value_width"])&& isset($_GET["value_height"])&& isset($_GET["value_weight"])&& isset($_GET["value_length"])&& isset($_GET["value_axleload"])){
 		
-		$hgv = '';
-		$hazardous = $_GET["hazardous"];
-		$value_width =  $_GET["value_width"];
-		$value_weight =  $_GET["value_weight"];
-		$value_height =  $_GET["value_height"];
-		$value_length =  $_GET["value_length"];
-		$value_axleload =  $_GET["value_axleload"];
+			$hgv = '';
+			$hazardous = $_GET["hazardous"];
+			$value_width =  $_GET["value_width"];
+			$value_weight =  $_GET["value_weight"];
+			$value_height =  $_GET["value_height"];
+			$value_length =  $_GET["value_length"];
+			$value_axleload =  $_GET["value_axleload"];
 		
 			if($routepref == 'HeavyVehicle'){
 			$haz='';
@@ -90,11 +90,11 @@
 		}
 		
 		if(isset($_GET["maxspeed"])){
-		$speed = $_GET["maxspeed"];
-			if ($speed > 0){
-			$maxspeed=$maxspeed.'<xls:MaxSpeed>';
-			$maxspeed=$maxspeed.+$speed;
-			$maxspeed=$maxspeed.'</xls:MaxSpeed>';
+			$speed = $_GET["maxspeed"];
+				if ($speed > 0){
+				$maxspeed=$maxspeed.'<xls:MaxSpeed>';
+				$maxspeed=$maxspeed.+$speed;
+				$maxspeed=$maxspeed.'</xls:MaxSpeed>';
 			}
 		}
 		
@@ -121,9 +121,6 @@
 		else{
 			$instructions = '';
 		}
-		
-		
-		
 				
 		$startcoordinate = str_replace(",", " ", $startcoordinate);
 		$endcoordinate = str_replace(",", " ", $endcoordinate);
@@ -139,14 +136,13 @@
 		else
 			$viaPoints_xml = "";
 	
-
 		///////////////////////////////////////////////////
 		//*** Sende Request an Web Service ***
 		$request = createRequest($startcoordinate, $endcoordinate, $viaPoints_xml, $language, $distanceunit, $routepref, $weighting,
 				$avoidAreas, $avoidFeatures, $hgv, $haz, $sur, $ele, $maxspeed, $instructions);
 
 		//Server
-		$http_response = post('openls.geog.uni-heidelberg.de', '/osm/routing', $request, 20, 80);
+		$http_response = post('openls.geog.uni-heidelberg.de', '/osm/routing'.'?api_key='.$api_key, $request, 20, 80);
 		
 		///////////////////////////////////////////////////
 		//*** Request auswerten ***

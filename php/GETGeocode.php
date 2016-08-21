@@ -26,11 +26,12 @@
 	
 
 		//?FreeFormAdress=Bonn, Meckenheimer Allee&MaxResponse=20
-	if(isset($_GET["FreeFormAdress"]) && isset($_GET["MaxResponse"])){
+	if(isset($_GET["FreeFormAdress"]) && isset($_GET["MaxResponse"]) && isset($_GET["api_key"])){
 		$freeform = $_GET["FreeFormAdress"];
 		$maxresponse = $_GET["MaxResponse"];
 		$lang = $_GET["lang"];
-		
+		$api_key = $_GET["api_key"];
+
 		if (isset($_GET["lang"])==''){
 		$lang='de';
 		}
@@ -40,7 +41,7 @@
 		//*** Sende Request an Web Service ***
 		
 		//Server
-		$http_response = post('openls.geog.uni-heidelberg.de', '/osm/geocoding', $request, 20, 80);
+		$http_response = post('openls.geog.uni-heidelberg.de', '/osm/geocoding'.'?api_key='.$api_key, $request, 20, 80);
 
 		//*** Request auswerten ***
 		//Header entfernen

@@ -1697,6 +1697,7 @@ var Ui = (function(w) {
         var information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySteepnessList')[0];
         information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySteepness');
         var data = [];
+        console.log(routeLineString)
         $A(information).each(function(WayType, i) {
             var fr = util.getElementsByTagNameNS(WayType, namespaces.xls, 'From')[0];
             fr = parseInt(fr.textContent);
@@ -1704,20 +1705,25 @@ var Ui = (function(w) {
             to = parseInt(to.textContent);
             var elevationChunk = {};
             elevationChunk.line = [];
-            if (fr !== to) {
-                var typenumber = util.getElementsByTagNameNS(WayType, namespaces.xls, 'Type')[0];
-                typenumber = typenumber.textContent;
-                // add 5 as types start at -5
-                typenumber = parseInt(typenumber) + 5;
-                var steepnessSegment = routeLineString.slice(fr, to);
-                for (var i = 0; i < steepnessSegment.length; i++) {
-                    elevationChunk.line.push([steepnessSegment[i].lat, steepnessSegment[i].lng, steepnessSegment[i].alt]);
-                }
-                elevationChunk.steepness = typenumber;
+            var typenumber = util.getElementsByTagNameNS(WayType, namespaces.xls, 'Type')[0];
+            typenumber = typenumber.textContent;
+            // add 5 as types start at -5
+            typenumber = parseInt(typenumber) + 5;
+            console.log(fr, to)
+            var steepnessSegment;
+            if (i == information.length - 1) {
+                // include very last position if last block is reached
+                steepnessSegment = routeLineString.slice(fr, to + 1);
+            } else {
+                steepnessSegment = routeLineString.slice(fr, to);
             }
+            console.log(steepnessSegment)
+            for (var i = 0; i < steepnessSegment.length; i++) {
+                elevationChunk.line.push([steepnessSegment[i].lat, steepnessSegment[i].lng, steepnessSegment[i].alt]);
+            }
+            elevationChunk.steepness = typenumber;
             data.push(elevationChunk);
         });
-
         var elevationData = GeoJSON.parse(data, {
             LineString: 'line',
             extraGlobal: {
@@ -1727,7 +1733,6 @@ var Ui = (function(w) {
             }
         });
         console.log(JSON.stringify(elevationData));
-        
         return elevationData;
     }
     /** 
