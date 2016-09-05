@@ -992,7 +992,7 @@ var Controller = (function(w) {
                 var routeSegmentation = route.parseResultsToViaWaypoints(results);
                 //Get the restrictions along the route
                 //map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString), permaInfo[preferences.routeOptionsIdx]);
-                map.removeElevationControl();
+                map.removeElevationControl(routePref);
                 var featureIds = map.updateRoute(routeLinestring, cornerPoints, routePref, routeSegmentation);
                 var errors = route.hasRoutingErrors(results);
                 if (!errors) {
@@ -1002,8 +1002,7 @@ var Controller = (function(w) {
                     if ($.inArray(routePref, list.elevationProfiles) >= 0) {
                         // Surface and waytype information
                         ui.updateSurfaceSteepness(results, featureIds, 'layerRouteLines', totalDistance);
-                        // Generated for height profile
-                        var elevationData = ui.processHeightProfile(routeLineString, results);
+                        
                         // Elevation information
                         if (elevation) {
                             var viaPoints = [];
@@ -1012,7 +1011,11 @@ var Controller = (function(w) {
                                 routePoints.pop();
                                 viaPoints = routePoints;
                             }
-                            map.updateHeightprofiles(routeLineString, viaPoints);
+
+                            // Generated for height profile
+                            var elevationData = ui.processHeightProfile(routeLineString, results, viaPoints);
+
+                            map.updateHeightprofiles(elevationData);
                         }
                         $('#routeTypesContainer').show();
                     } else {
@@ -1572,10 +1575,14 @@ var Controller = (function(w) {
                     type = Waypoint.type.VIA;
                 }
                 // direct waypoint starts at index 1
+                var directwaypoint = undefined;
+                if (directwaypoints) {
+                    directwaypoint = directwaypoints[i];  
+                } 
                 handleAddWaypointByRightclick({
                     pos: waypoints[i],
                     type: type,
-                    direct: directwaypoints[i]
+                    direct: directwaypoint
                 }, true);
             }
             if (waypoints.length >= 2) {

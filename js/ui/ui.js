@@ -1691,13 +1691,14 @@ var Ui = (function(w) {
      * Processes steepness segments and prepares information for barchart
      * @param routeLineString: linestring of route
      * @param results: XML response of route
+     * @param viaPoints: List of waypoint coordinates
      * @return elevationData: Object containing Names and Percetages
      */
-    function processHeightProfile(routeLineString, results) {
+    function processHeightProfile(routeLineString, results, viaPoints) {
+        console.log(viaPoints)
         var information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySteepnessList')[0];
         information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySteepness');
         var data = [];
-        console.log(routeLineString)
         $A(information).each(function(WayType, i) {
             var fr = util.getElementsByTagNameNS(WayType, namespaces.xls, 'From')[0];
             fr = parseInt(fr.textContent);
@@ -1709,7 +1710,6 @@ var Ui = (function(w) {
             typenumber = typenumber.textContent;
             // add 5 as types start at -5
             typenumber = parseInt(typenumber) + 5;
-            console.log(fr, to)
             var steepnessSegment;
             if (i == information.length - 1) {
                 // include very last position if last block is reached
@@ -1717,9 +1717,8 @@ var Ui = (function(w) {
             } else {
                 steepnessSegment = routeLineString.slice(fr, to);
             }
-            console.log(steepnessSegment)
             for (var i = 0; i < steepnessSegment.length; i++) {
-                elevationChunk.line.push([steepnessSegment[i].lat, steepnessSegment[i].lng, steepnessSegment[i].alt]);
+                elevationChunk.line.push([steepnessSegment[i].lng, steepnessSegment[i].lat, steepnessSegment[i].alt]);
             }
             elevationChunk.steepness = typenumber;
             data.push(elevationChunk);
@@ -1729,7 +1728,8 @@ var Ui = (function(w) {
             extraGlobal: {
                 'Creator': 'OpenRouteService.org',
                 'records': data.length,
-                'summary': 'Bins of elevation types in route'
+                'summary': 'Bins of elevation types in route',
+                'waypoint_coordinates': viaPoints
             }
         });
         console.log(JSON.stringify(elevationData));

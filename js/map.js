@@ -6,7 +6,7 @@ var Map = (function() {
      * STYLES
      * *********************************************************************/
     var $ = window.jQuery;
-    var self, directWaypointActive, directWpOn = false;
+    var self, directWaypointActive, heightGraphControl, navMenuToggle, directWpOn = false;
     /**
      * Constructor
      * @param  {[type]} container [description]
@@ -144,33 +144,6 @@ var Map = (function() {
         this.theMap.addControl(new LocateControl());
         /* TOGGLE NAVIGATION MENU CONROL */
         var timeout = this.theMap;
-        var NavMenuToggle = L.Control.extend({
-            options: {
-                position: 'topleft'
-            },
-            onAdd: function() {
-                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control', container),
-                    link = L.DomUtil.create('a', 'leaflet-control-customNavMenuToggle', container);
-                link.href = '#';
-                link.title = "Toggle navigation menu";
-                if (screen.width >= 319 && screen.width <= 720) {
-                    link.innerHTML = '<i class="fa fa-sign-in fa-rotate-90"></i>';
-                } else {
-                    link.innerHTML = '<i class="fa fa-sign-in fa-rotate-180" ></i>';
-                }
-                L.DomEvent.on(link, 'click', function() {
-                    jQuery("#sidebar").toggle();
-                    if (screen.width >= 319 && screen.width <= 720) {
-                        jQuery('.leaflet-control-customNavMenuToggle i').toggleClass('fa-rotate-270');
-                    } else {
-                        jQuery('.leaflet-control-customNavMenuToggle i').toggleClass('fa-rotate-180');
-                    }
-                    timeout.invalidateSize(true); //Needed to update map visualization after toggling Menu
-                });
-                return container;
-            },
-        });
-        this.theMap.addControl(new NavMenuToggle());
         /* AVOID AREA CONTROLLER */
         L.NewPolygonControl = L.Control.extend({
             options: {
@@ -239,28 +212,48 @@ var Map = (function() {
         } else {
             elevationWidth = 400;
         }
-        this.elevationControl = L.control.elevation({
-            position: "topright",
-            theme: "steelblue-theme", //default: lime-theme
-            width: elevationWidth,
-            height: 145,
+        this.heightGraphControl = L.control.heightgraph({
+            width: 750,
+            height: 125,
             margins: {
-                top: 50,
+                top: 45,
                 right: 20,
                 bottom: 30,
-                left: 70
-            },
-            useHeightIndicator: true, //if false a marker is drawn at map position
-            interpolation: "basis", //see https://github.com/mbostock/d3/wiki/SVG-Shapes#wiki-area_interpolate
-            hoverNumber: {
-                decimalsX: 3, //decimals on distance (always in km)
-                decimalsY: 0, //deciamls on height (always in m)
-                formatter: undefined //custom formatter function may be injected
-            },
-            xTicks: undefined, //number of ticks in x axis, calculated by default according to width
-            yTicks: undefined, //number of ticks on y axis, calculated by default according to height
-            collapsed: true, //collapsed mode, show chart on click or mouseover,
+                left: 50
+            }
         });
+        //this.theMap.addControl(this.heightGraphControl);
+        this.NavMenuToggle = L.Control.extend({
+            options: {
+                position: 'topleft'
+            },
+            onAdd: function(map) {
+                var container = this._container = L.DomUtil.create('div', 'leaflet-bar leaflet-control', container),
+                    link = L.DomUtil.create('a', 'leaflet-control-customNavMenuToggle', container);
+                link.href = '#';
+                link.title = "Toggle navigation menu";
+                if (screen.width >= 319 && screen.width <= 720) {
+                    link.innerHTML = '<i class="fa fa-sign-in fa-rotate-90"></i>';
+                } else {
+                    link.innerHTML = '<i class="fa fa-sign-in fa-rotate-180" ></i>';
+                }
+                L.DomEvent.on(link, 'click', function() {
+                    jQuery("#sidebar").toggle();
+                    if (screen.width >= 319 && screen.width <= 720) {
+                        jQuery('.leaflet-control-customNavMenuToggle i').toggleClass('fa-rotate-270');
+                    } else {
+                        jQuery('.leaflet-control-customNavMenuToggle i').toggleClass('fa-rotate-180');
+                    }
+                    timeout.invalidateSize(true); //Needed to update map visualization after toggling Menu
+                });
+                return container;
+            },
+            onRemove: function(map) {
+                this._container = null;
+            },
+        });
+        navMenuControl = new this.NavMenuToggle();
+        this.theMap.addControl(navMenuControl);
         this.layerRoutePoints = L.featureGroup().addTo(this.theMap);
         this.layerRouteLines = L.featureGroup().addTo(this.theMap);
         this.layerSteepnessLines = L.featureGroup().addTo(this.theMap);
@@ -822,6 +815,7 @@ var Map = (function() {
         featureId = parseInt(featureId);
         var ft = layer.getLayer(featureId);
         if (ft && ft._latlng) {
+            console.log(ft._latlng)
             return ft._latlng.lat + ' ' + ft._latlng.lng;
         }
     }
@@ -1238,25 +1232,19 @@ var Map = (function() {
      * route is hidden with opacity 0
      * @param {Object} routeLineSegments: array of Leaflet Linestrings with height information
      */
-    function updateHeightprofiles(routeLineHeights, viaPoints) {
-        var i, latLng, viaPointsList = [];
-        var el = this.elevationControl;
-        el.addTo(this.theMap);
-        //this.layerRouteLines.clearLayers();
-        el.clear();
-        var polyline = L.polyline(routeLineHeights).toGeoJSON();
-        // add waypoints in elevation diagram
-        if (viaPoints.length > 0) {
-            for (i = 0; i < viaPoints.length; i++) {
-                latLng = [parseFloat(viaPoints[i].lon), parseFloat(viaPoints[i].lat)];
-                viaPointsList.push(latLng);
-            }
-            polyline.properties.waypoint_coordinates = viaPointsList;
-        }
-        var gjl = L.geoJson(polyline, {
-            opacity: '0',
-            onEachFeature: el.addData.bind(el)
-        }).addTo(this.layerRouteLines);
+    function updateHeightprofiles(data, viaPoints) {
+        var hg = this.heightGraphControl;
+        //hg.addTo(this.theMap);
+        // #1
+        this.theMap.addControl(hg);
+        // #2
+        this.theMap.addControl(navMenuControl);
+        
+        hg.clear();
+        
+        // update heightgraphControl..
+        hg.addData(data);
+
     }
     /**
      * Ads segments
@@ -1271,11 +1259,15 @@ var Map = (function() {
     /**
      * removes elevation profile if not needed
      */
-    function removeElevationControl() {
+    function removeElevationControl(profile) {
+        console.log('removing..')
         // clear elevation info if not bike
-        var el = this.elevationControl;
-        el.clear();
-        el.remove();
+        var hg = this.heightGraphControl;
+        hg.clear();
+        hg.remove();
+        if ($.inArray(profile, list.elevationProfiles) >= 0) {
+            navMenuControl.remove();
+        }
     }
     /**
      * draws given points as route line on the map
