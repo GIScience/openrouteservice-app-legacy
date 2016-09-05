@@ -578,7 +578,45 @@
                                         </label>
                                     </div>
                                 </div>
+                                <div class="ORS-steepness ORS-panel-sub ORS-hr-dark" id="difficultySteepness" style="display: none;">
+                                    <h6 id="difficultyHeadingLabel">
+                                        Route difficulty settings
+                                    </h6>
+                                     <div class="checkbox">
+                                        <label>
+                                            <input id="Hills" type="checkbox" class="ORS-avoid">
+                                                <span id="avoidHillsLabel">
+                                                    avoid hills
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <h6 id="difficultyLabel">
+                                        set your fitness level
+                                    </h6>
+                                    <select class="form-control" id="routeDifficulty">
+                                        <option value="-1">not set</option>
+                                        <option value="0">easy</option>
+                                        <option value="1">average</option>
+                                        <option value="2">athletic</option>
+                                    </select>
+                                    <h6 id="maxSteepness">
+                                        Maximum Steepness
+                                    </h6>
+                                    <div class="input-group">
+                                        <input class="form-control input-sm" id="maxSteepnessInput" placeholder="between 1-15" type="number" min="1" max="15">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default btn-sm" disabled="true" id="maxSteepnessBtn" type="button">
+                                                    set
+                                                </button>
+                                            </span>
+                                        </input>
+                                    </div>
+                                </div>
                                 <div class="ORS-all ORS-panel-sub" id="maxSpeed" style="display: none;">
+                                    <h6>
+                                        Maximum speed
+                                    </h6>
                                     <div class="row">
                                         <div class="col-lg-8">
                                             <div class="input-group">

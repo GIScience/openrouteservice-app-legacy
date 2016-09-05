@@ -903,7 +903,6 @@ var Controller = (function(w) {
             if (preferences.distanceUnit == 'yd') {
                 extendedRoutePreferencesMaxspeed = (Number(extendedRoutePreferencesMaxspeed) * 1.60934).toString();
             }
-            // TO DO
             var avoidAreas = map.getAvoidAreas();
             var avoidableParams = [];
             var avoidHighway = permaInfo[preferences.avoidHighwayIdx];
@@ -951,7 +950,13 @@ var Controller = (function(w) {
             wheelChairParams[2] = wheelchairSloped;
             wheelChairParams[3] = wheelchairTrackType;
             wheelChairParams[4] = wheelchairSmoothness;
-            route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferencesType, wheelChairParams, truckParams, avoidableParams, avoidAreas, extendedRoutePreferencesWeight, extendedRoutePreferencesMaxspeed, calcRouteID, directWaypoints);
+
+            var maxSteepness = permaInfo[preferences.maxsteepnessIdx];
+            var avoidHills = permaInfo[preferences.avoidHillsIdx];
+            var fitness = permaInfo[preferences.fitnessIdx];
+
+            console.log(routePref)
+            route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferencesType, wheelChairParams, truckParams, avoidableParams, avoidAreas, extendedRoutePreferencesWeight, extendedRoutePreferencesMaxspeed, calcRouteID, directWaypoints, maxSteepness, avoidHills, fitness);
             //try to read a variable that is set after the service response was received. If this variable is not set after a while -> timeout.
             clearTimeout(timerRoute);
         } else {

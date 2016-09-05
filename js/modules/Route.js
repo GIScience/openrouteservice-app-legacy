@@ -23,7 +23,8 @@ var Route = (function(w) {
      * @param avoidFerry: flag set to true if ferrys should be avoided in the route; else: false
      * @param avoidAreas: array of avoid areas represented by OL.Geometry.Polygons
      */
-    function calculate(routePoints, successCallback, failureCallback, language, routePref, extendedRoutePreferencesType, wheelChairParams, truckParams, avoidableParams, avoidAreas, extendedRoutePreferencesWeight, extendedRoutePreferencesMaxspeed, calcRouteID, directWaypoints) {
+    function calculate(routePoints, successCallback, failureCallback, language, routePref, extendedRoutePreferencesType, wheelChairParams, truckParams, avoidableParams, avoidAreas, extendedRoutePreferencesWeight, extendedRoutePreferencesMaxspeed, calcRouteID, directWaypoints, maxsteepness, avHills, fitness) {
+        console.log(routePref)
         var writer = new XMLWriter('UTF-8', '1.0');
         writer.writeStartDocument();
         //<xls:XLS>
@@ -120,6 +121,12 @@ var Route = (function(w) {
             if (wheelChairParams[2] != 'null') {
                 writer.writeElementString('xls:SlopedCurb', wheelChairParams[2]);
             }
+        }
+        if (maxsteepness >= 0 & maxsteepness <= 15) {
+            writer.writeElementString('xls:MaxSteepness', maxsteepness);
+        }
+        if (fitness >= 0 & fitness <= 2) {
+            writer.writeElementString('xls:DifficultyLevel', fitness);
         }
         //</xls:ExtendedRoutePreference>            
         writer.writeEndElement();
@@ -220,6 +227,9 @@ var Route = (function(w) {
         if (avoidableParams[8] == 'true' || avoidableParams[8] === true) {
             writer.writeElementString('xls:AvoidFeature', 'Tracks');
         }
+        if (avHills === true) {
+            writer.writeElementString('xls:AvoidFeature', 'Hills');
+        }
         //</xls:AvoidList>
         writer.writeEndElement();
         //</xls:RoutePlan>
@@ -243,7 +253,8 @@ var Route = (function(w) {
         //url = namespaces.services.routing + "?" + ak;
         if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
             url = "cgi-bin/proxy.cgi?url=" + url;
-        } 
+        }
+        console.log(xmlRequest)
         jQuery.ajax({
             url: url,
             processData: false,

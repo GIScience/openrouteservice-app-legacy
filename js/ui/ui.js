@@ -2991,7 +2991,47 @@ var Ui = (function(w) {
                 key: preferences.roundtripIdx,
                 value: boolVar
             });
-        } else if (itemId != 'maxSpeedInput') {
+        }
+        // steepness and difficulty options
+        else if (itemId == 'routeDifficulty') {
+            var fitnessVal = $('#routeDifficulty').find("option:selected").val();
+            if (fitnessVal != -1) {
+                theInterface.emit('ui:prefsChanged', {
+                    key: preferences.fitnessIdx,
+                    value: fitnessVal
+                });
+                $('#Hills').prop('disabled', true);
+                $('#maxSteepnessBtn').prop('disabled', false);
+            } else {
+                $('#Hills').prop('disabled', false);
+                $('#maxSteepnessBtn').prop('disabled', true);
+                theInterface.emit('ui:prefsChanged', {
+                    key: preferences.fitnessIdx,
+                    value: fitnessVal
+                });
+            }
+        } else if (itemId == 'Hills') {
+            if ($('#Hills').is(':checked')) {
+                $('#routeDifficulty').prop('disabled', true);
+                $('#maxSteepnessBtn').prop('disabled', false);
+                theInterface.emit('ui:prefsChanged', {
+                    key: preferences.avoidHillsIdx,
+                    value: true
+                });
+            } else {
+                $('#routeDifficulty').prop('disabled', false);
+                $('#maxSteepnessBtn').prop('disabled', true);
+                theInterface.emit('ui:prefsChanged', {
+                    key: preferences.avoidHillsIdx,
+                    value: false
+                });
+            }
+        } else if (itemId == 'maxSteepnessBtn') {
+            theInterface.emit('ui:prefsChanged', {
+                key: preferences.maxsteepnessIdx,
+                value: $('#maxSteepnessInput').val()
+            });
+        } else if (itemId != 'maxSpeedInput' || itemId != 'maxSteepnessInput') {
             // update route type if not maxspeedinput updated
             theInterface.emit('ui:prefsChanged', {
                 key: preferences.routeOptionsIdx,
@@ -3544,6 +3584,7 @@ var Ui = (function(w) {
         $('.routeOptions').change(handleOptionsChanged);
         $('.ORS-optionsButton').click(handleShowOptions);
         $('.tt-directwp').click(handleOptionsChanged);
+        $('#maxSteepnessBtn').click(handleOptionsChanged);
         $('#HeaderOptionsMenuButtonMobile').click(handleShowHeaderOptionsMobile);
         $('#viaOptimize').click(handleOptionsChanged);
         $('#roundtrip').click(handleOptionsChanged);

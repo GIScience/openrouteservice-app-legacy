@@ -48,6 +48,9 @@ var Preferences = (function(w) {
         this.roundtripIdx = 33;
         this.avoidTracksIdx = 34;
         this.directwaypointsIdx = 35;
+        this.avoidHillsIdx = 36;
+        this.maxsteepnessIdx = 37;
+        this.fitnessIdx = 38;
         //define variables
         this.language = 'en';
         this.routingLanguage = 'en';
@@ -59,6 +62,9 @@ var Preferences = (function(w) {
         permaInfo[this.routingLanguageIdx] = this.routingLanguage;
         permaInfo[this.distanceUnitIdx] = this.distanceUnit;
         permaInfo[this.directwaypointsIdx] = [false, false];
+        permaInfo[this.avoidHillsIdx] = false;
+        permaInfo[this.maxsteepnessIdx] = -1;
+        permaInfo[this.fitnessIdx] = -1;        
         //other fields are filled with default values when reading GET variables/ cookies etc.
         cookiesAvailable = false;
     }
