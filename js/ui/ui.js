@@ -1695,7 +1695,7 @@ var Ui = (function(w) {
      * @return elevationData: Object containing Names and Percetages
      */
     function processHeightProfile(routeLineString, results, viaPoints) {
-        console.log(viaPoints)
+        console.log('processing height profile')
         var information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySteepnessList')[0];
         information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySteepness');
         var data = [];
@@ -1732,7 +1732,7 @@ var Ui = (function(w) {
                 'waypoint_coordinates': viaPoints
             }
         });
-        console.log(JSON.stringify(elevationData));
+        //console.log(JSON.stringify(elevationData));
         return elevationData;
     }
     /** 

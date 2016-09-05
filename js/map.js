@@ -815,7 +815,6 @@ var Map = (function() {
         featureId = parseInt(featureId);
         var ft = layer.getLayer(featureId);
         if (ft && ft._latlng) {
-            console.log(ft._latlng)
             return ft._latlng.lat + ' ' + ft._latlng.lng;
         }
     }

@@ -24,7 +24,6 @@ var Route = (function(w) {
      * @param avoidAreas: array of avoid areas represented by OL.Geometry.Polygons
      */
     function calculate(routePoints, successCallback, failureCallback, language, routePref, extendedRoutePreferencesType, wheelChairParams, truckParams, avoidableParams, avoidAreas, extendedRoutePreferencesWeight, extendedRoutePreferencesMaxspeed, calcRouteID, directWaypoints, maxsteepness, avHills, fitness) {
-        console.log(routePref)
         var writer = new XMLWriter('UTF-8', '1.0');
         writer.writeStartDocument();
         //<xls:XLS>
@@ -254,7 +253,6 @@ var Route = (function(w) {
         if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
             url = "cgi-bin/proxy.cgi?url=" + url;
         }
-        console.log(xmlRequest)
         jQuery.ajax({
             url: url,
             processData: false,
