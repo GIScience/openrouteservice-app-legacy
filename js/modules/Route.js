@@ -316,36 +316,6 @@ var Route = (function(w) {
         return listOfLineStrings;
     }
     /**
-     * the line strings represent a part of the route when driving on one street (e.g. 7km on autoroute A7)
-     * we examine the lineStrings from the instruction list to get one lineString-ID per route segment so that we can support mouseover/mouseout events on the route and the instructions
-     * @param {Object} results: XML response
-     */
-    function parseResultsToLineStringSegments(results) {
-        var listOfLineStringsSegments = [];
-        var routeInstructions = util.getElementsByTagNameNS(results, namespaces.xls, 'RouteInstructionsList')[0];
-        if (routeInstructions) {
-            routeInstructions = util.getElementsByTagNameNS(routeInstructions, namespaces.xls, 'RouteInstruction');
-            $A(routeInstructions).each(function(instructionElement) {
-                var directionCode = util.getElementsByTagNameNS(instructionElement, namespaces.xls, 'DirectionCode')[0];
-                directionCode = directionCode.textContent;
-                //skip directionCode 100 for now
-                if (directionCode == '100') {
-                    return;
-                }
-                var segment = [];
-                $A(util.getElementsByTagNameNS(instructionElement, namespaces.gml, 'pos')).each(function(point) {
-                    point = point.text || point.textContent;
-                    point = point.split(' ');
-                    point = L.latLng(point[1], point[0]);
-                    segment.push(point);
-                });
-                listOfLineStringsSegments.push(segment);
-            });
-        }
-        console.log(listOfLineStringsSegments)
-        return listOfLineStringsSegments;
-    }
-    /**
      * corner points are points in the route where the direction changes (turn right at street xy...)
      * @param {Object} results: XML response
      * @param {Object} converterFunction
@@ -431,7 +401,6 @@ var Route = (function(w) {
     Route.prototype.calculate = calculate;
     Route.prototype.writeRouteToSingleLineString = writeRouteToSingleLineString;
     Route.prototype.parseResultsToLineStrings = parseResultsToLineStrings;
-    Route.prototype.parseResultsToLineStringSegments = parseResultsToLineStringSegments;
     Route.prototype.parseResultsToCornerPoints = parseResultsToCornerPoints;
     Route.prototype.parseResultsToViaWaypoints = parseResultsToViaWaypoints;
     Route.prototype.hasRoutingErrors = hasRoutingErrors;

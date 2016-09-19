@@ -1764,10 +1764,10 @@ var Ui = (function(w) {
                     'waypoint_coordinates': viaPoints
                 }
             });
-            console.log(JSON.stringify(data));
+            //console.log(JSON.stringify(data));
             heightgraphData.push(data);
         });
-        //console.log(JSON.stringify(elevationData));
+        //console.log(JSON.stringify(heightgraphData));
         return heightgraphData;
     }
     /** 

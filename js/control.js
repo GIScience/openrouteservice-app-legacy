@@ -993,7 +993,7 @@ var Controller = (function(w) {
                 var routeString = map.writeRouteToString(routeLineString);
                 route.routeString = routeString;
                 var routeLinestring = route.parseResultsToLineStrings(results);
-                var routeLinestringSegments = route.parseResultsToLineStringSegments(results);
+                var routeLinestringSegments = route.parseResultsToLineStrings(results);
                 var cornerPoints = route.parseResultsToCornerPoints(results);
                 var routeSegmentation = route.parseResultsToViaWaypoints(results);
 
@@ -1020,9 +1020,8 @@ var Controller = (function(w) {
                             }
 
                             // Generated for height profile
-                            var elevationData = ui.processHeightProfile(routeLineString, routeLinestringSegments, results, viaPoints);
-
-                            map.updateHeightprofiles(elevationData);
+                            var elevationData = ui.processHeightProfile(routeLineString, routeLinestring, results, viaPoints);
+                            //map.updateHeightprofiles(elevationData);
                         }
                         $('#routeTypesContainer').show();
                     } else {
