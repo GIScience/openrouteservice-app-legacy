@@ -992,8 +992,10 @@ var Controller = (function(w) {
                 var routeString = map.writeRouteToString(routeLineString);
                 route.routeString = routeString;
                 var routeLinestring = route.parseResultsToLineStrings(results);
+                var routeLinestringSegments = route.parseResultsToLineStringSegments(results);
                 var cornerPoints = route.parseResultsToCornerPoints(results);
                 var routeSegmentation = route.parseResultsToViaWaypoints(results);
+
                 //Get the restrictions along the route
                 //map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString), permaInfo[preferences.routeOptionsIdx]);
                 map.removeElevationControl(routePref);
@@ -1017,7 +1019,7 @@ var Controller = (function(w) {
                             }
 
                             // Generated for height profile
-                            var elevationData = ui.processHeightProfile(routeLineString, results, viaPoints);
+                            var elevationData = ui.processHeightProfile(routeLineString, routeLinestringSegments, results, viaPoints);
 
                             map.updateHeightprofiles(elevationData);
                         }

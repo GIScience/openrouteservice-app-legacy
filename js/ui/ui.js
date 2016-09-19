@@ -1690,50 +1690,86 @@ var Ui = (function(w) {
     /** 
      * Processes steepness segments and prepares information for barchart
      * @param routeLineString: linestring of route
+     * @param routeLineStringSegments: segments of linestrings of route
      * @param results: XML response of route
      * @param viaPoints: List of waypoint coordinates
      * @return elevationData: Object containing Names and Percetages
      */
-    function processHeightProfile(routeLineString, results, viaPoints) {
+    function processHeightProfile(routeLineString, routeLineStringSegments, results, viaPoints) {
         console.log('processing height profile')
-        var information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySteepnessList')[0];
-        information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySteepness');
-        var data = [];
-        $A(information).each(function(WayType, i) {
-            var fr = util.getElementsByTagNameNS(WayType, namespaces.xls, 'From')[0];
-            fr = parseInt(fr.textContent);
-            var to = util.getElementsByTagNameNS(WayType, namespaces.xls, 'To')[0];
-            to = parseInt(to.textContent);
-            var elevationChunk = {};
-            elevationChunk.line = [];
-            var typenumber = util.getElementsByTagNameNS(WayType, namespaces.xls, 'Type')[0];
-            typenumber = typenumber.textContent;
-            // add 5 as types start at -5
-            typenumber = parseInt(typenumber) + 5;
-            var steepnessSegment;
-            if (i == information.length - 1) {
-                // include very last position if last block is reached
-                steepnessSegment = routeLineString.slice(fr, to + 1);
-            } else {
-                steepnessSegment = routeLineString.slice(fr, to);
-            }
-            for (var i = 0; i < steepnessSegment.length; i++) {
-                elevationChunk.line.push([steepnessSegment[i].lng, steepnessSegment[i].lat, steepnessSegment[i].alt]);
-            }
-            elevationChunk.steepness = typenumber;
-            data.push(elevationChunk);
-        });
-        var elevationData = GeoJSON.parse(data, {
-            LineString: 'line',
-            extraGlobal: {
-                'Creator': 'OpenRouteService.org',
-                'records': data.length,
-                'summary': 'Bins of elevation types in route',
-                'waypoint_coordinates': viaPoints
-            }
+        var heightgraphData = [];
+        var heightgraphList = [{
+            list: 'WayTypeList',
+            info: 'WayType'
+        }, {
+            list: 'WaySurfaceList',
+            info: 'WaySurface'
+        }, {
+            list: 'WaySteepnessList',
+            info: 'WaySteepness'
+        }];
+        $A(heightgraphList).each(function(item) {
+            var information = util.getElementsByTagNameNS(results, namespaces.xls, item.list)[0];
+            information = util.getElementsByTagNameNS(results, namespaces.xls, item.info);
+            var data = [];
+            // needed to merge hight information to route segments
+            var j, cnt = 0;
+            $A(information).each(function(type, i) {
+                var fr = util.getElementsByTagNameNS(type, namespaces.xls, 'From')[0];
+                fr = parseInt(fr.textContent);
+                var to = util.getElementsByTagNameNS(type, namespaces.xls, 'To')[0];
+                to = parseInt(to.textContent);
+                var chunk = {};
+                chunk.line = [];
+                var typenumber = util.getElementsByTagNameNS(type, namespaces.xls, 'Type')[0];
+                typenumber = typenumber.textContent;
+                // add 5 as types start at -5
+                typenumber = parseInt(typenumber) + 5;
+                // either we are looking at routelinestring or route segments!
+                if (item.list == 'WaySteepnessList') {
+                    var segment;
+                    if (i == information.length - 1) {
+                        // include very last position if last block is reached
+                        segment = routeLineString.slice(fr, to + 1);
+                    } else {
+                        segment = routeLineString.slice(fr, to);
+                    }
+                    for (j = 0; j < segment.length; j++) {
+                        chunk.line.push([segment[j].lng, segment[j].lat, segment[j].alt]);
+                    }
+                    chunk.attributeType = typenumber;
+                    data.push(chunk);
+                } else if (item.list == 'WayTypeList' ||  item.list == 'WaySurfaceList') {
+                    // ignore last index, corrupt? max?
+                    if (to < routeLineStringSegments.length) {
+                        var segments;
+                        segments = routeLineStringSegments.slice(fr, to + 1);
+                        for (j = 0; j < segments.length; j++) {
+                            for (var k = 0; k < segments[j].length; k++) {
+                                chunk.line.push([segments[j][k].lng, segments[j][k].lat, routeLineString[cnt].alt]);
+                                // increment counter until last element reached
+                                if (k < segments[j].length - 1) cnt += 1;
+                            }
+                        }
+                        chunk.attributeType = typenumber;
+                        data.push(chunk);
+                    }
+                }
+            });
+            data = GeoJSON.parse(data, {
+                LineString: 'line',
+                extraGlobal: {
+                    'Creator': 'OpenRouteService.org',
+                    'records': data.length,
+                    'summary': item.info,
+                    'waypoint_coordinates': viaPoints
+                }
+            });
+            console.log(JSON.stringify(data));
+            heightgraphData.push(data);
         });
         //console.log(JSON.stringify(elevationData));
-        return elevationData;
+        return heightgraphData;
     }
     /** 
      * adds steepness segments and prepares information for barchart
@@ -3031,8 +3067,9 @@ var Ui = (function(w) {
                 key: preferences.maxsteepnessIdx,
                 value: $('#maxSteepnessInput').val()
             });
-        } else if (itemId != 'maxSpeedInput' || itemId != 'maxSteepnessInput') {
-            // update route type if not maxspeedinput updated
+        } else if (itemId != 'maxSpeedInput' && itemId != 'maxSteepnessInput') {
+            console.log(itemId)
+                // update route type if not maxspeedinput updated
             theInterface.emit('ui:prefsChanged', {
                 key: preferences.routeOptionsIdx,
                 value: itemId
