@@ -129,6 +129,7 @@ var Controller = (function(w) {
             var newIndex = waypoint.getNumWaypoints() - 1;
             //Replace the waypoint adress with the one selected in the first waypoint
             var rootElement = $('#' + newIndex);
+			rootElement.hide();
             rootElement.removeClass('unset');
             var guiComponent = rootElement.find('.guiComponent');
             guiComponent.hide();
@@ -227,15 +228,18 @@ var Controller = (function(w) {
         var newIndex = ui.addWaypointResultByRightclick(wpType, wpIndex, position, true, wpDirect);
         ui.setWaypointFeatureId(newIndex, newFeatureId, position, 'layerRoutePoints');
         //If roundtrip and no second roundtrip-wp set: add it
-        if (wpType == Waypoint.type.ROUNDTRIP && roundtrip && !$('#' + (waypoint.getNumWaypoints() - 1)).hasClass('roundtrip')) {
+        if (wpType == Waypoint.type.ROUNDTRIP && roundtrip && $(".waypoint.roundtrip").length != 2) {
             handleAddWaypointByRightclick({
                 pos: atts.pos,
                 type: 'roundtrip',
             }, false, false, true);
         }
+		//If there is only the start and end point for roundtrip, do not calculate a route
+		if (waypoint.getNumWaypoints() <= 2 && roundtrip) noRouteRequest = true;
         if (!noRouteRequest) {
             handleWaypointChanged();
         }
+		if (wpType == Waypoint.type.ROUNDTRIP && wpIndex != 0) $('#' + wpIndex).hide();
         //start geocoding process and replace lat lon in input if response
         geolocator.reverseGeolocate(pos, reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, wpType, wpIndex, newFeatureId);
         // show loading
@@ -351,9 +355,13 @@ var Controller = (function(w) {
             waypoint.setWaypoint(idx, false);
         }
         //re-calculate the waypoint types
+		if(!$('#roundtrip')[0].checked) {
+			$(".waypoint.roundtrip").each(function() {
+				this.show();
+			});
+		}
         for (var i = 0; i < waypoint.getNumWaypoints() + $('unset').length; i++) {
             var type = waypoint.determineWaypointType(i);
-            // 
             ui.setWaypointType(i, type);
             featureId = ui.getFeatureIdOfWaypoint(i);
             if (featureId === undefined) {
@@ -361,7 +369,6 @@ var Controller = (function(w) {
                 continue;
             }
             var newId = 0;
-            // newId = map.setWaypointType(featureId, type, ui.getWaypiontIndexByFeatureId(featureId));
             newId = map.setWaypointType(featureId, type, ui.getWaypiontIndexByFeatureId(featureId) == 0 ? 0 : null);
             var position = map.convertFeatureIdToPositionString(newId, map.layerRoutePoints);
             ui.setWaypointFeatureId(i, newId, position, 'layerRoutePoints');
@@ -568,16 +575,9 @@ var Controller = (function(w) {
                     },
                     type: 'roundtrip'
                 }, false, false, false);
-                handleAddWaypointByRightclick({
-                    pos: {
-                        lat: coordinates[0],
-                        lng: coordinates[1]
-                    },
-                    type: 'roundtrip'
-                }, false, false, true);
                 //If the user has only set start and end point, add new empty waypoint for convenience
                 if ($('.waypoint').length == $('.waypoint.roundtrip').length) {
-                    ui.addWaypintAfter(0, 2);
+                    ui.addWaypointAfter(0, 2);
                     selectWaypointType(0);
                 }
             }
@@ -883,6 +883,7 @@ var Controller = (function(w) {
      */
     function handleRoutePresent() {
         var isRoutePresent = waypoint.getNumWaypointsSet() >= 2;
+		if ($('#roundtrip')[0].checked && waypoint.getNumWaypointsSet() <= 2) isRoutePresent = false;
         if (isRoutePresent) {
             calcRouteID++;
             ui.startRouteCalculation();
@@ -1627,6 +1628,7 @@ var Controller = (function(w) {
                     }
                 }
             };
+			// ak = "api_key=eb85f2a6a61aafaebe7e2f2a89b102f5";
             rawFile.send(null);
         }
         readTextFile(list.key);

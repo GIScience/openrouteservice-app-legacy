@@ -823,7 +823,6 @@ var Ui = (function(w) {
      * @param type: type of the wayoint, one of START, VIA, END or UNSET
      */
     function setWaypointType(wpIndex, type) {
-        //Keep this in order to not cause any bugs in functions relying on this
         var el = $('#' + wpIndex);
         // var el = $('#' + wpIndex);
         el.removeClass('unset');

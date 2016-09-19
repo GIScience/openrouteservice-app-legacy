@@ -222,7 +222,7 @@ var Map = (function() {
                 left: 50
             }
         });
-        //this.theMap.addControl(this.heightGraphControl);
+        this.theMap.addControl(this.heightGraphControl);
         this.NavMenuToggle = L.Control.extend({
             options: {
                 position: 'topleft'
@@ -878,14 +878,6 @@ var Map = (function() {
                 newMarker.setOpacity(0);
                 newMarker.dragging.disable();
                 numWaypoints = $('.waypoint').length - 2;
-                // if($('#' + numWaypoints).hasClass('roundtrip')){
-                // var endMarkerId = Ui.getFeatureIdOfWaypoint(numWaypoints);
-                // var endMarker = self.layerRoutePoints.getLayer(endMarkerId);
-                // console.log(endMarker);
-                // endMarker.setLatLng(position);
-                // endMarker.setZIndexOffset(newMarker._zIndex + 1);
-                // self.emit('map:waypointMoved', endMarker);
-                // }
                 $('.waypoint.roundtrip').each(function(index) {
                     var id = Ui.getFeatureIdOfWaypoint($(this).attr("id"));
                     var marker = self.layerRoutePoints.getLayer(id);
@@ -907,13 +899,6 @@ var Map = (function() {
                         self.emit('map:waypointMoved', startMarker);
                     });
                     self.emit('map:waypointMoved', e.target);
-                    // self.emit('map:waypointMoved', e.target);
-                    // console.log(e.target);
-                    // console.log(Ui.getFeatureIdOfWaypoint(0));
-                    // var startMarkerId = Ui.getFeatureIdOfWaypoint(0);
-                    // var startMarker = self.layerRoutePoints.getLayer(startMarkerId);
-                    // startMarker.setLatLng(e.target.getLatLng());
-                    // self.emit('map:waypointMoved', startMarker);
                 });
             } else {
                 newMarker.on('dragend', function(e) {
@@ -923,7 +908,6 @@ var Map = (function() {
             newMarker.on('drag', function(e) {
                 panMapOnEdges(e);
             });
-            console.log(newMarker._leaflet_id);
             return newMarker._leaflet_id;
         }
     }
@@ -945,14 +929,6 @@ var Map = (function() {
             newMarker.setOpacity(0);
             newMarker.dragging.disable();
             numWaypoints = $('.waypoint').length - 2;
-            // if($('#' + numWaypoints).hasClass('end')){
-            // var endMarkerId = Ui.getFeatureIdOfWaypoint(numWaypoints);
-            // var endMarker = self.layerRoutePoints.getLayer(endMarkerId);
-            // console.log(endMarker);
-            // endMarker.setLatLng(position);
-            // endMarker.setZIndexOffset(newMarker._zIndex + 1);
-            // self.emit('map:waypointMoved', endMarker);
-            // }
             $('.waypoint.roundtrip').each(function(index) {
                 var id = Ui.getFeatureIdOfWaypoint($(this).attr("id"));
                 var marker = self.layerRoutePoints.getLayer(id);
@@ -1007,16 +983,13 @@ var Map = (function() {
                 icon_orig: Ui.markerIcons[type],
                 icon_emph: Ui.markerIcons.emph
             });
-            // if (wpIndex === undefined) wpIndex = ui.getWaypiontIndexByFeatureId(featureId);
             if (type == Waypoint.type.ROUNDTRIP && wpIndex == 0) {
                 newFeature.setOpacity(0);
                 var wpId = $($('.waypoint.roundtrip').get($('.waypoint.roundtrip').length - 1)).attr("id");
                 var id = Ui.getFeatureIdOfWaypoint(wpId);
                 var marker = self.layerRoutePoints.getLayer(id);
                 if (marker && featureId != id) {
-                    marker.setLatLng(feature.getLatLng());
                     marker.setZIndexOffset(marker._zIndex + 1);
-                    self.emit('map:waypointMoved', marker);
                 }
             }
             if (type == Waypoint.type.ROUNDTRIP && wpIndex != 0) {
@@ -1029,16 +1002,6 @@ var Map = (function() {
                         e.target.setZIndexOffset(startMarker._zIndex + 1);
                         self.emit('map:waypointMoved', startMarker);
                     });
-                    // self.emit('map:waypointMoved', e.target);
-                    // console.log($('#0'));
-                    // console.log(Ui.getFeatureIdOfWaypoint(0));
-                    // var startMarkerId = Ui.getFeatureIdOfWaypoint(0);
-                    // var startMarker = self.layerRoutePoints.getLayer(startMarkerId);
-                    // console.log(self.layerRoutePoints);
-                    // startMarker.setLatLng(e.target.getLatLng());
-                    // e.target.setZIndexOffset(startMarker._zIndex + 1);
-                    // self.emit('map:waypointMoved', startMarker);
-                    // self.emit('map:waypointMoved', e.target);
                 });
             } else {
                 newFeature.on('dragend', function(e) {
