@@ -158,7 +158,7 @@ var lang_en = {
     'accessibilityAnalysisIsochrones': 'Isochrone intervall in minutes',
     'accessibilityAnalysisMethod': 'Isochrone method',
     'calculatingAccessibility': 'The accessibility is being analyzed...',
-    'accessibilityError': 'An error occured during the accessibility analysis. Did you forget to set a start point?',
+    'accessibilityError': 'An error occured during the accessibility analysis. Did you forget to set a start point or to specify the time interval?',
     // List languages alphabetically sorted
     'bg': 'Bulgarian - български',
     'ca': 'Catalan - Catal&aacute;n',

@@ -220,7 +220,7 @@ var lang_de = {
 	'accessibilityAnalysisIsochrones' : 'Isochronenintervall in Minuten ausw&auml;hlen',
 	'accessibilityAnalysisMethod' : 'Isochronenmethode ausw&auml;hlen',
 	'calculatingAccessibility' : 'Die Erreichbarkeit wird analysiert...',
-	'accessibilityError' : 'W&auml;hrend der Erreichbarkeits-Analyse ist leider ein Fehler aufgetreten. Haben Sie vergessen einen Startpunkt zu setzen?',
+	'accessibilityError' : 'W&auml;hrend der Erreichbarkeits-Analyse ist leider ein Fehler aufgetreten. Haben Sie vergessen einen Startpunkt zu setzen oder ein Zeitintervall anzugeben?',
 
 	// List languages alphabetically sorted
 	'bg' : 'Bulgarisch - български',
