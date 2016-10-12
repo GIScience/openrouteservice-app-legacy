@@ -5,7 +5,7 @@
  *|      _|  |_ |     GIScience Research Group                             *
  *|    _/      \|                                                          *
  *|___|         |                                                          *
- *|             |     Berliner Straﬂe 48	                               *
+ *|             |     Berliner Stra√üe 48	                               *
  *|             |     D-69221 Heidelberg, Germany                          *
  *+-------------+----------------------------------------------------------*/
 /**
@@ -19,7 +19,7 @@
  */
  
 	///////////////////////////////////////////////////
-	//*** Request erstellen f¸r OpenLS Location Utility Service ***
+	//*** Request erstellen f√ºr OpenLS Location Utility Service ***
 	
 	include ('CreateLUSRequest.php');
 	include ('ConnectToWebService.php');
@@ -63,13 +63,14 @@
 		$lon = $_GET["lon"];
 		$lat = $_GET["lat"];
 		$maxresponse = $_GET["MaxResponse"];
-
+                $api_key = $_GET["api_key"];
+		
 		$request = createReverseGeocodeRequest($lon, $lat, $maxresponse);
 
 		//*** Sende Request an Web Service ***
 		
 		//Server
-		$http_response = post('openls.geog.uni-heidelberg.de', '/osm/geocoding', $request, 20, 80);
+		$http_response = post('openls.geog.uni-heidelberg.de', '/osm/geocoding'.'?api_key='.$api_key, $request, 20, 80);
 
 		//*** Request auswerten ***
 		//Header entfernen
