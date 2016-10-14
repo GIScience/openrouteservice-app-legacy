@@ -1,50 +1,38 @@
 /* container styles */
 
-.heightGraph {
-    width: 26px !important;
-    height: 26px;
-    display: block;
-    box-shadow: 0 1px 7px rgba(0, 0, 0, 0.65);
-    cursor: auto;
-    background-color: #FFFFFF;
-    -webkit-touch-callout: none;
-    /* iOS Safari */
-    -webkit-user-select: none;
-    /* Chrome/Safari/Opera */
-    -khtml-user-select: none;
-    /* Konqueror */
-    -moz-user-select: none;
-    /* Firefox */
-    -ms-user-select: none;
-    /* Internet Explorer/Edge */
-    user-select: none;
-    /* Non-prefixed version, currently
-                                  not supported by any browser */
-}
-
-.heightGraph:before {
-    content: "\f1fe";
-    font-family: FontAwesome;
-    color: #707070;
-    position: absolute;
-    z-index: -1;
-    margin-top: 5px;
-    margin-left: 6px;
-}
-
-.heightGraph .background {
-    position: absolute;
-    margin-left: 35px;
-    background-color: rgba(0, 0, 0, 0.6);
+.background {
+    background-color: #FFF;
     border-radius: 10px;
-}
-
-.heightGraph-collapsed .background {
     display: none;
 }
 
-.heightGraph-collapsed .elevation-toggle {
+.heightgraph-toggle {
+    cursor: pointer;
+    box-shadow: 0 1px 7px rgba(0, 0, 0, .4);
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    width: 28px;
+    height: 28px;
+    background: #f8f8f9;
     display: block;
+}
+
+.heightgraph-toggle-icon {
+    background: url(images/area-chart.svg) no-repeat center center;
+    background-size: 14px 14px;
+    width: 26px;
+    height: 26px;
+    position: absolute;
+}
+
+.heightgraph-close-icon {
+    background: url(images/remove.svg) no-repeat center center;
+    background-size: 14px 14px;
+    width: 26px;
+    height: 26px;
+    position: absolute;
+    right: 0;
+    display: none;
 }
 
 .bars {
@@ -53,24 +41,17 @@
 }
 
 .borderTop {
-    stroke-width: 2;
-    stroke: #fff;
+    stroke-width: 1;
+    stroke: #444;
     fill: none;
 }
 
 
 /* d3 styles */
 
-.focus rect {
-    width: 53;
-    height: 14;
-    fill: #000;
-}
-
 .focusLine line {
     stroke-width: 1;
-    stroke: black;
-    fill: #fff;
+    stroke: #444;
     display: none;
     cursor: default;
 }
@@ -88,139 +69,75 @@
 }
 
 .legend-rect {
-    width: 6;
-    height: 6;
+    pointer-events: none;
 }
 
 .legend-text {
-    fill: #fff;
-    font-size: 9;
+    fill: #000;
+    font-size: 10;
     text-align: right;
+    pointer-events: none;
 }
 
 .tick, .tick text {
-    fill: #fff;
-}
-
-
-/* d3 tip styles */
-
-.d3-tip {
-    font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
-    line-height: 1;
-    padding: 4px;
-    background: rgba(0, 0, 0, 1);
-    color: #fff;
-    font-size: 10px;
-    border-radius: 4px;
-    pointer-events: none;
-    overflow: visible;
-    z-index: 9999;
-}
-
-
-/* Creates a small triangle extender for the tooltip */
-
-.d3-tip:after {
-    box-sizing: border-box;
-    display: inline;
-    width: 100%;
-    line-height: 1;
-    color: rgba(0, 0, 0, 0.8);
-    position: absolute;
-    pointer-events: none;
-}
-
-.d3-tip.n:after {
-    content: "\25BC";
-    margin: -3px 0 0 0;
-    top: 100%;
-    left: 0;
-    text-align: center;
-}
-
-.legend-rect {
-    pointer-events: none;
-}
-
-.legend-text {
-    pointer-events: none;
+    fill: #000;
 }
 
 .axisText {
     text-anchor: middle;
     color: #fff;
     fill: #fff;
-    font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
 .axis path {
-    stroke: #fff;
+    stroke: #000;
     fill: none;
     stroke-width: 1;
 }
 
 .axis line {
-    fill: white;
-    stroke: white;
+    stroke: #000;
     shape-rendering: crispEdges;
 }
 
 .focus {
     display: none;
     font-size: 10px;
-    background: black;
-    fill: #fff;
+    fill: #000;
+    pointer-events: none;
 }
 
-.height-focus-label {
+.focus rect {
+    fill: rgba(255, 255, 255, 0.8);
+    stroke-width: 1;
+    stroke: #000;
     pointer-events: none;
-    visibility: visible;
-    background-color: black;
-    font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
-    fill: white;
-    font-size: 12px;
+}
+
+.height-focus.label {
+    fill: #444;
 }
 
 .height-focus.line {
-    stroke: black;
+    stroke: #444;
     stroke-width: 1;
-    opacity: 1;
-    visibility: visible;
 }
 
 .height-focus.circle {
-    stroke: black;
+    stroke: #444;
 }
 
 .height-focus.circle-lower {
-    /*fill: #ff7800;*/
-    color: "#000";
     weight: 1;
-    opacity: 1;
-    fillOpacity: 0.8;
     visibility: visible;
 }
 
-.height-focus-label-rect {
-    width: 53;
-    height: 14;
-    fill: #000;
-    visibility: visible;
-}
 .selection {
     position: absolute;
-    bottom : 2px;
-    left: 90px;
+    top: 7px;
+    left: 7px;
     z-index: 1;
-}
-.dataButton {
-    position: absolute;
-    left:810px;
-    bottom: 2px;
-    z-index: 1;
-    color:white;
-    background:black;
-    border:none;
-    opacity: 0.5;
+    background: #FFF;
+    color: #000;
+    display: none;
 }

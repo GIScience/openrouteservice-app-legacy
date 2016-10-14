@@ -213,16 +213,17 @@ var Map = (function() {
             elevationWidth = 400;
         }
         this.heightGraphControl = L.control.heightgraph({
-            width: 750,
-            height: 125,
+            width: 850,
+            height: 180,
             margins: {
-                top: 45,
-                right: 20,
-                bottom: 30,
+                top: 65,
+                right: 150,
+                bottom: 40,
                 left: 50
-            }
+            },
+            position: "bottomright"
         });
-        this.theMap.addControl(this.heightGraphControl);
+        //this.theMap.addControl(this.heightGraphControl);
         this.NavMenuToggle = L.Control.extend({
             options: {
                 position: 'topleft'
@@ -1196,14 +1197,9 @@ var Map = (function() {
      */
     function updateHeightprofiles(data, viaPoints) {
         var hg = this.heightGraphControl;
-        //hg.addTo(this.theMap);
         // #1
         this.theMap.addControl(hg);
-        // #2
-        this.theMap.addControl(navMenuControl);
-        
-        hg.clear();
-        
+                
         // update heightgraphControl..
         hg.addData(data);
 
@@ -1225,11 +1221,7 @@ var Map = (function() {
         console.log('removing..')
         // clear elevation info if not bike
         var hg = this.heightGraphControl;
-        hg.clear();
         hg.remove();
-        if ($.inArray(profile, list.elevationProfiles) >= 0) {
-            navMenuControl.remove();
-        }
     }
     /**
      * draws given points as route line on the map

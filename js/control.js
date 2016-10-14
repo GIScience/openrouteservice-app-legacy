@@ -1021,7 +1021,7 @@ var Controller = (function(w) {
 
                             // Generated for height profile
                             var elevationData = ui.processHeightProfile(routeLineString, routeLinestring, results, viaPoints);
-                            //map.updateHeightprofiles(elevationData);
+                            map.updateHeightprofiles(elevationData);
                         }
                         $('#routeTypesContainer').show();
                     } else {

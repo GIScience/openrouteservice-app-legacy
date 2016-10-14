@@ -1712,7 +1712,7 @@ var Ui = (function(w) {
             information = util.getElementsByTagNameNS(results, namespaces.xls, item.info);
             var data = [];
             // needed to merge hight information to route segments
-            var j, cnt = 0;
+            var j, to_previous, diff, cnt = 0;
             $A(information).each(function(type, i) {
                 var fr = util.getElementsByTagNameNS(type, namespaces.xls, 'From')[0];
                 fr = parseInt(fr.textContent);
@@ -1722,10 +1722,12 @@ var Ui = (function(w) {
                 chunk.line = [];
                 var typenumber = util.getElementsByTagNameNS(type, namespaces.xls, 'Type')[0];
                 typenumber = typenumber.textContent;
-                // add 5 as types start at -5
-                typenumber = parseInt(typenumber) + 5;
                 // either we are looking at routelinestring or route segments!
                 if (item.list == 'WaySteepnessList') {
+                    // add 5 as types start at -5
+                    typenumber = parseInt(typenumber) + 5;
+                    // last of block should be first of next block
+                    if (i > 0) fr = fr - 1;
                     var segment;
                     if (i == information.length - 1) {
                         // include very last position if last block is reached
@@ -1739,20 +1741,26 @@ var Ui = (function(w) {
                     chunk.attributeType = typenumber;
                     data.push(chunk);
                 } else if (item.list == 'WayTypeList' ||  item.list == 'WaySurfaceList') {
-                    // ignore last index, corrupt? max?
-                    if (to < routeLineStringSegments.length) {
-                        var segments;
-                        segments = routeLineStringSegments.slice(fr, to + 1);
-                        for (j = 0; j < segments.length; j++) {
-                            for (var k = 0; k < segments[j].length; k++) {
-                                chunk.line.push([segments[j][k].lng, segments[j][k].lat, routeLineString[cnt].alt]);
-                                // increment counter until last element reached
-                                if (k < segments[j].length - 1) cnt += 1;
-                            }
+                    // workaround as indices are incremented when via points are added, not good
+                    if (i > 0) {
+                        diff = fr - to_previous;
+                        if (diff > 1) {
+                            fr = fr - (diff - 1);
+                            to = to - (diff - 1);
                         }
-                        chunk.attributeType = typenumber;
-                        data.push(chunk);
                     }
+                    var segments;
+                    segments = routeLineStringSegments.slice(fr, to + 1);
+                    for (j = 0; j < segments.length; j++) {
+                        for (var k = 0; k < segments[j].length; k++) {
+                            chunk.line.push([segments[j][k].lng, segments[j][k].lat, routeLineString[cnt].alt]);
+                            // increment counter until last element reached
+                            if (k < segments[j].length - 1) cnt += 1;
+                        }
+                    }
+                    chunk.attributeType = typenumber;
+                    data.push(chunk);
+                    to_previous = to;
                 }
             });
             data = GeoJSON.parse(data, {
