@@ -1218,7 +1218,6 @@ var Map = (function() {
      * removes elevation profile if not needed
      */
     function removeElevationControl(profile) {
-        console.log('removing..')
         // clear elevation info if not bike
         var hg = this.heightGraphControl;
         hg.remove();

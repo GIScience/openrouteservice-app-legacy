@@ -1695,7 +1695,6 @@ var Ui = (function(w) {
      * @return elevationData: Object containing Names and Percetages
      */
     function processHeightProfile(routeLineString, routeLineStringSegments, results, viaPoints) {
-        console.log('processing height profile')
         var heightgraphData = [];
         var heightgraphList = [{
             list: 'WayTypeList',
