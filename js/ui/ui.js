@@ -1576,6 +1576,7 @@ var Ui = (function(w) {
         var WayTypeResult = calculateChart(results, mapFeatureIds, "WayType", totalDistance);
         var WaySurfaceResult = calculateChart(results, mapFeatureIds, "WaySurface", totalDistance);
         var WaySteepnessResult = calculateSteepness(results);
+        var WaySteepnessResultChart = calculateBarChart(results);
         horizontalBarchart('layerRouteLines', list.divWayTypes, list.listWayTypesContainer, WayTypeResult, list.WayTypeColors);
         horizontalBarchart('layerRouteLines', list.divSurfaceTypes, list.listSurfaceTypesContainer, WaySurfaceResult, list.SurfaceTypeColors);
         horizontalBarchart('layerSteepnessLines', list.divSteepnessTypes, list.listSteepnessTypesContainer, WaySteepnessResult);
