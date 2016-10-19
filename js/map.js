@@ -6,7 +6,7 @@ var Map = (function() {
      * STYLES
      * *********************************************************************/
     var $ = window.jQuery;
-    var self;
+    var self, directWaypointActive, heightGraphControl, navMenuToggle, directWpOn = false;
     /**
      * Constructor
      * @param  {[type]} container [description]
@@ -144,33 +144,6 @@ var Map = (function() {
         this.theMap.addControl(new LocateControl());
         /* TOGGLE NAVIGATION MENU CONROL */
         var timeout = this.theMap;
-        var NavMenuToggle = L.Control.extend({
-            options: {
-                position: 'topleft'
-            },
-            onAdd: function() {
-                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control', container),
-                    link = L.DomUtil.create('a', 'leaflet-control-customNavMenuToggle', container);
-                link.href = '#';
-                link.title = "Toggle navigation menu";
-                if (screen.width >= 319 && screen.width <= 720) {
-                    link.innerHTML = '<i class="fa fa-sign-in fa-rotate-90"></i>';
-                } else {
-                    link.innerHTML = '<i class="fa fa-sign-in fa-rotate-180" ></i>';
-                }
-                L.DomEvent.on(link, 'click', function() {
-                    jQuery("#sidebar").toggle();
-                    if (screen.width >= 319 && screen.width <= 720) {
-                        jQuery('.leaflet-control-customNavMenuToggle i').toggleClass('fa-rotate-270');
-                    } else {
-                        jQuery('.leaflet-control-customNavMenuToggle i').toggleClass('fa-rotate-180');
-                    }
-                    timeout.invalidateSize(true); //Needed to update map visualization after toggling Menu
-                });
-                return container;
-            },
-        });
-        this.theMap.addControl(new NavMenuToggle());
         /* AVOID AREA CONTROLLER */
         L.NewPolygonControl = L.Control.extend({
             options: {
@@ -239,33 +212,54 @@ var Map = (function() {
         } else {
             elevationWidth = 400;
         }
-        this.elevationControl = L.control.elevation({
-            position: "topright",
-            theme: "steelblue-theme", //default: lime-theme
-            width: elevationWidth,
-            height: 145,
+        this.heightGraphControl = L.control.heightgraph({
+            width: 850,
+            height: 180,
             margins: {
-                top: 50,
-                right: 20,
-                bottom: 30,
-                left: 70
+                top: 65,
+                right: 150,
+                bottom: 40,
+                left: 50
             },
-            useHeightIndicator: true, //if false a marker is drawn at map position
-            interpolation: "basis", //see https://github.com/mbostock/d3/wiki/SVG-Shapes#wiki-area_interpolate
-            hoverNumber: {
-                decimalsX: 3, //decimals on distance (always in km)
-                decimalsY: 0, //deciamls on height (always in m)
-                formatter: undefined //custom formatter function may be injected
-            },
-            xTicks: undefined, //number of ticks in x axis, calculated by default according to width
-            yTicks: undefined, //number of ticks on y axis, calculated by default according to height
-            collapsed: true, //collapsed mode, show chart on click or mouseover,
+            position: "bottomright"
         });
+        //this.theMap.addControl(this.heightGraphControl);
+        this.NavMenuToggle = L.Control.extend({
+            options: {
+                position: 'topleft'
+            },
+            onAdd: function(map) {
+                var container = this._container = L.DomUtil.create('div', 'leaflet-bar leaflet-control', container),
+                    link = L.DomUtil.create('a', 'leaflet-control-customNavMenuToggle', container);
+                link.href = '#';
+                link.title = "Toggle navigation menu";
+                if (screen.width >= 319 && screen.width <= 720) {
+                    link.innerHTML = '<i class="fa fa-sign-in fa-rotate-90"></i>';
+                } else {
+                    link.innerHTML = '<i class="fa fa-sign-in fa-rotate-180" ></i>';
+                }
+                L.DomEvent.on(link, 'click', function() {
+                    jQuery("#sidebar").toggle();
+                    if (screen.width >= 319 && screen.width <= 720) {
+                        jQuery('.leaflet-control-customNavMenuToggle i').toggleClass('fa-rotate-270');
+                    } else {
+                        jQuery('.leaflet-control-customNavMenuToggle i').toggleClass('fa-rotate-180');
+                    }
+                    timeout.invalidateSize(true); //Needed to update map visualization after toggling Menu
+                });
+                return container;
+            },
+            onRemove: function(map) {
+                this._container = null;
+            },
+        });
+        navMenuControl = new this.NavMenuToggle();
+        this.theMap.addControl(navMenuControl);
         this.layerRoutePoints = L.featureGroup().addTo(this.theMap);
         this.layerRouteLines = L.featureGroup().addTo(this.theMap);
         this.layerSteepnessLines = L.featureGroup().addTo(this.theMap);
         this.layerCornerPoints = L.featureGroup().addTo(this.theMap);
-		this.layerRouteArrows = L.featureGroup().addTo(this.theMap);
+        this.layerRouteArrows = L.featureGroup().addTo(this.theMap);
         this.layerGeolocation = L.featureGroup().addTo(this.theMap);
         this.layerPoi = L.featureGroup().addTo(this.theMap);
         this.layerSearch = L.featureGroup().addTo(this.theMap);
@@ -287,7 +281,8 @@ var Map = (function() {
                 //click on start point
                 self.emit('map:addWaypoint', {
                     pos: displayPos,
-                    type: Waypoint.type.START
+                    type: Waypoint.type.START,
+                    direct: $('#toggle-direct-waypoint').prop('checked')
                 });
                 self.theMap.closePopup(popup);
             };
@@ -298,7 +293,8 @@ var Map = (function() {
                 //click on via point
                 self.emit('map:addWaypoint', {
                     pos: displayPos,
-                    type: Waypoint.type.VIA
+                    type: Waypoint.type.VIA,
+                    direct: $('#toggle-direct-waypoint').prop('checked')
                 });
                 self.theMap.closePopup(popup);
             };
@@ -306,10 +302,21 @@ var Map = (function() {
                 //click on end point
                 self.emit('map:addWaypoint', {
                     pos: displayPos,
-                    type: Waypoint.type.END
+                    type: Waypoint.type.END,
+                    direct: $('#toggle-direct-waypoint').prop('checked')
                 });
                 self.theMap.closePopup(popup);
             };
+            // toggle controls
+            options[3].onclick = function(e) {
+                $(options[4]).toggle();
+            };
+            // update global toggle checkbox option
+            $(function() {
+                $('#toggle-direct-waypoint').change(function() {
+                    directWpOn = $(this).prop('checked');
+                });
+            });
         }
         this.theMap.on('contextmenu', function(e) {
             var displayPos = e.latlng;
@@ -322,6 +329,7 @@ var Map = (function() {
                 className: 'ORS-mapContextMenu'
             }).setContent(menuObject.innerHTML).setLatLng(e.latlng);
             self.theMap.openPopup(popup);
+            $('#toggle-direct-waypoint').bootstrapToggle();
             contextMenuListeners(displayPos, popup);
         });
         // create a new contextMenu
@@ -351,9 +359,31 @@ var Map = (function() {
                 'id': 'contextEnd',
             }).update('Set as destination');
             useAsEndPointContainer.appendChild(endSpan);
+            var contextControls = new Element('div', {
+                'class': 'ORS-contextControls'
+            });
+            var contextControlsExpand = new Element('div', {
+                'class': 'ORS-expandControls'
+            });
+            var directWaypointToggle = new Element('input', {
+                'id': 'toggle-direct-waypoint',
+                'type': 'checkbox',
+                'data-size': 'mini',
+                'checked': directWpOn,
+                'data-toggle': 'toggle',
+                'data-onstyle': 'success',
+            });
+            var directWaypointSpan = new Element('span', {
+                'id': 'controlsSpan',
+                'style': 'padding-right: 5px; white-space: nowrap;'
+            }).update('Direct waypoint');
+            contextControlsExpand.appendChild(directWaypointSpan);
+            contextControlsExpand.appendChild(directWaypointToggle);
             mapContextMenuContainer.appendChild(useAsStartPointContainer);
             mapContextMenuContainer.appendChild(useAsViaPointContainer);
             mapContextMenuContainer.appendChild(useAsEndPointContainer);
+            mapContextMenuContainer.appendChild(contextControls);
+            mapContextMenuContainer.appendChild(contextControlsExpand);
             return mapContextMenuContainer;
         }
         /* *********************************************************************
@@ -385,7 +415,7 @@ var Map = (function() {
                 // else if (layer[i].options.zoomChange === 'route') layer[i].setStyle(styles.route(currentZoom));
                 else if (layer[i].options.zoomChange === 'routeCorners') layer[i].setStyle(styles.routeCorners(currentZoom));
             }
-			colorRouteLines();
+            colorRouteLines();
         }
 
         function emitMapChangeBaseMap(e) {
@@ -579,11 +609,9 @@ var Map = (function() {
      * *********************************************************************/
     // load graph info when map loaded
     function graphInfo() {
-        var url;
+        var url = namespaces.services.routing + "?info" + "?" + ak;
         if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
-            url = "cgi-bin/proxy.cgi?url=" + namespaces.services.routing + "?info";
-        } else {
-            url = namespaces.services.routing + "?info";
+            url = "cgi-bin/proxy.cgi?url=" + url;
         }
         jQuery.ajax({
             url: url,
@@ -851,14 +879,6 @@ var Map = (function() {
                 newMarker.setOpacity(0);
                 newMarker.dragging.disable();
                 numWaypoints = $('.waypoint').length - 2;
-                // if($('#' + numWaypoints).hasClass('roundtrip')){
-                // var endMarkerId = Ui.getFeatureIdOfWaypoint(numWaypoints);
-                // var endMarker = self.layerRoutePoints.getLayer(endMarkerId);
-                // console.log(endMarker);
-                // endMarker.setLatLng(position);
-                // endMarker.setZIndexOffset(newMarker._zIndex + 1);
-                // self.emit('map:waypointMoved', endMarker);
-                // }
                 $('.waypoint.roundtrip').each(function(index) {
                     var id = Ui.getFeatureIdOfWaypoint($(this).attr("id"));
                     var marker = self.layerRoutePoints.getLayer(id);
@@ -880,13 +900,6 @@ var Map = (function() {
                         self.emit('map:waypointMoved', startMarker);
                     });
                     self.emit('map:waypointMoved', e.target);
-                    // self.emit('map:waypointMoved', e.target);
-                    // console.log(e.target);
-                    // console.log(Ui.getFeatureIdOfWaypoint(0));
-                    // var startMarkerId = Ui.getFeatureIdOfWaypoint(0);
-                    // var startMarker = self.layerRoutePoints.getLayer(startMarkerId);
-                    // startMarker.setLatLng(e.target.getLatLng());
-                    // self.emit('map:waypointMoved', startMarker);
                 });
             } else {
                 newMarker.on('dragend', function(e) {
@@ -896,7 +909,6 @@ var Map = (function() {
             newMarker.on('drag', function(e) {
                 panMapOnEdges(e);
             });
-            console.log(newMarker._leaflet_id);
             return newMarker._leaflet_id;
         }
     }
@@ -918,14 +930,6 @@ var Map = (function() {
             newMarker.setOpacity(0);
             newMarker.dragging.disable();
             numWaypoints = $('.waypoint').length - 2;
-            // if($('#' + numWaypoints).hasClass('end')){
-            // var endMarkerId = Ui.getFeatureIdOfWaypoint(numWaypoints);
-            // var endMarker = self.layerRoutePoints.getLayer(endMarkerId);
-            // console.log(endMarker);
-            // endMarker.setLatLng(position);
-            // endMarker.setZIndexOffset(newMarker._zIndex + 1);
-            // self.emit('map:waypointMoved', endMarker);
-            // }
             $('.waypoint.roundtrip').each(function(index) {
                 var id = Ui.getFeatureIdOfWaypoint($(this).attr("id"));
                 var marker = self.layerRoutePoints.getLayer(id);
@@ -980,16 +984,13 @@ var Map = (function() {
                 icon_orig: Ui.markerIcons[type],
                 icon_emph: Ui.markerIcons.emph
             });
-            // if (wpIndex === undefined) wpIndex = ui.getWaypiontIndexByFeatureId(featureId);
             if (type == Waypoint.type.ROUNDTRIP && wpIndex == 0) {
                 newFeature.setOpacity(0);
                 var wpId = $($('.waypoint.roundtrip').get($('.waypoint.roundtrip').length - 1)).attr("id");
                 var id = Ui.getFeatureIdOfWaypoint(wpId);
                 var marker = self.layerRoutePoints.getLayer(id);
                 if (marker && featureId != id) {
-                    marker.setLatLng(feature.getLatLng());
                     marker.setZIndexOffset(marker._zIndex + 1);
-                    self.emit('map:waypointMoved', marker);
                 }
             }
             if (type == Waypoint.type.ROUNDTRIP && wpIndex != 0) {
@@ -1002,16 +1003,6 @@ var Map = (function() {
                         e.target.setZIndexOffset(startMarker._zIndex + 1);
                         self.emit('map:waypointMoved', startMarker);
                     });
-                    // self.emit('map:waypointMoved', e.target);
-                    // console.log($('#0'));
-                    // console.log(Ui.getFeatureIdOfWaypoint(0));
-                    // var startMarkerId = Ui.getFeatureIdOfWaypoint(0);
-                    // var startMarker = self.layerRoutePoints.getLayer(startMarkerId);
-                    // console.log(self.layerRoutePoints);
-                    // startMarker.setLatLng(e.target.getLatLng());
-                    // e.target.setZIndexOffset(startMarker._zIndex + 1);
-                    // self.emit('map:waypointMoved', startMarker);
-                    // self.emit('map:waypointMoved', e.target);
                 });
             } else {
                 newFeature.on('dragend', function(e) {
@@ -1204,25 +1195,14 @@ var Map = (function() {
      * route is hidden with opacity 0
      * @param {Object} routeLineSegments: array of Leaflet Linestrings with height information
      */
-    function updateHeightprofiles(routeLineHeights, viaPoints) {
-        var i, latLng, viaPointsList = [];
-        var el = this.elevationControl;
-        el.addTo(this.theMap);
-        //this.layerRouteLines.clearLayers();
-        el.clear();
-        var polyline = L.polyline(routeLineHeights).toGeoJSON();
-        // add waypoints in elevation diagram
-        if (viaPoints.length > 0) {
-            for (i = 0; i < viaPoints.length; i++) {
-                latLng = [parseFloat(viaPoints[i].lon), parseFloat(viaPoints[i].lat)];
-                viaPointsList.push(latLng);
-            }
-            polyline.properties.waypoint_coordinates = viaPointsList;
-        }
-        var gjl = L.geoJson(polyline, {
-            opacity: '0',
-            onEachFeature: el.addData.bind(el)
-        }).addTo(this.layerRouteLines);
+    function updateHeightprofiles(data, viaPoints) {
+        var hg = this.heightGraphControl;
+        // #1
+        this.theMap.addControl(hg);
+                
+        // update heightgraphControl..
+        hg.addData(data);
+
     }
     /**
      * Ads segments
@@ -1237,11 +1217,10 @@ var Map = (function() {
     /**
      * removes elevation profile if not needed
      */
-    function removeElevationControl() {
+    function removeElevationControl(profile) {
         // clear elevation info if not bike
-        var el = this.elevationControl;
-        el.clear();
-        el.remove();
+        var hg = this.heightGraphControl;
+        hg.remove();
     }
     /**
      * draws given points as route line on the map
@@ -1257,17 +1236,17 @@ var Map = (function() {
         this.layerSteepnessLines.clearLayers();
         this.layerRouteLines.clearLayers();
         this.layerCornerPoints.clearLayers();
-		this.layerRouteArrows.clearLayers();
-		var waypointCoordinates = Ui.getRoutePoints();
+        this.layerRouteArrows.clearLayers();
+        var waypointCoordinates = Ui.getRoutePoints();
         var ftIds = [];
         if (routeLineSegments && routeLineSegments.length > 0) {
             var self = this;
             var routeString = [];
             var routeStringCorners = [];
-			var routeStringBefore = [];
-			var routeStringAfter = [];
-			var routeLineBeforeLastVia = routeSegmentation[0];
-			var routeLineAfterLastVia = routeSegmentation[1];
+            var routeStringBefore = [];
+            var routeStringAfter = [];
+            var routeLineBeforeLastVia = routeSegmentation[0];
+            var routeLineAfterLastVia = routeSegmentation[1];
             for (var i = 0; i < routeLineSegments.length; i++) {
                 //lines of the route, these are invisible and only used for 
                 // click to segment
@@ -1286,50 +1265,49 @@ var Map = (function() {
                 routeStringCorners.push(routeLinePoints[i]);
                 ftIds.push(segmentBase._leaflet_id, routeCornerBase._leaflet_id);
             }
-			
-			
-			for (var i = 0; i < routeLineBeforeLastVia.length; i++) {
+            for (var i = 0; i < routeLineBeforeLastVia.length; i++) {
                 var segment = [];
                 for (var j = 0; j < routeLineBeforeLastVia[i].length; j++) {
                     segment.push(routeLineBeforeLastVia[i][j]);
                     routeStringBefore.push(routeLineBeforeLastVia[i][j]);
                 }
-			}
-			if(typeof routeLineAfterLastVia !== 'undefined' && routeLineAfterLastVia.length > 0){
-				for (var i = 0; i < routeLineAfterLastVia.length; i++) {
-					var segment = [];
-					for (var j = 0; j < routeLineAfterLastVia[i].length; j++) {
-						segment.push(routeLineAfterLastVia[i][j]);
-						routeStringAfter.push(routeLineAfterLastVia[i][j]);
-					}
-				}
-			}
-			// this is a combined linestring of all sub segments with a border
+            }
+            if (typeof routeLineAfterLastVia !== 'undefined' && routeLineAfterLastVia.length > 0) {
+                for (var i = 0; i < routeLineAfterLastVia.length; i++) {
+                    var segment = [];
+                    for (var j = 0; j < routeLineAfterLastVia[i].length; j++) {
+                        segment.push(routeLineAfterLastVia[i][j]);
+                        routeStringAfter.push(routeLineAfterLastVia[i][j]);
+                    }
+                }
+            }
+            // this is a combined linestring of all sub segments with a border
             L.polyline(routeString, styles.routeOutline(self.theMap.getZoom())).addTo(self.layerRouteLines);
             L.polyline(routeString, styles.routePadding(self.theMap.getZoom())).addTo(self.layerRouteLines);
-			
-			if ($('#roundtrip')[0].checked) L.polyline(routeStringAfter, styles.routeRetour(self.theMap.getZoom())).addTo(self.layerRouteLines);
+            if ($('#roundtrip')[0].checked) L.polyline(routeStringAfter, styles.routeRetour(self.theMap.getZoom())).addTo(self.layerRouteLines);
             else L.polyline(routeStringAfter, styles.route(self.theMap.getZoom())).addTo(self.layerRouteLines);
             L.polyline(routeStringBefore, styles.route(self.theMap.getZoom())).addTo(self.layerRouteLines);
-            
-			L.polylineDecorator(L.polyline(routeString, styles.routeArrows(self.theMap.getZoom())),  {
-						patterns: [
-							// defines a pattern of 10px-wide dashes, repeated every 20px on the line
-							{offset: 20, endOffset: 0, repeat: 100, symbol: L.Symbol.arrowHead({
-								pixelSize: 10,
-								pathOptions: {
-									// color: '#4682B4',
-									color: '#FFFFFF',
-									fillOpacity: 0.9,
-									stroke: false,
-									weight: 2,
-									zoomChange: 'route'
-								}
-								})}
-						]
-					}).addTo(this.layerRouteArrows);
-
-			
+            L.polylineDecorator(L.polyline(routeString, styles.routeArrows(self.theMap.getZoom())), {
+                patterns: [
+                    // defines a pattern of 10px-wide dashes, repeated every 20px on the line
+                    {
+                        offset: 20,
+                        endOffset: 0,
+                        repeat: 100,
+                        symbol: L.Symbol.arrowHead({
+                            pixelSize: 10,
+                            pathOptions: {
+                                // color: '#4682B4',
+                                color: '#FFFFFF',
+                                fillOpacity: 0.9,
+                                stroke: false,
+                                weight: 2,
+                                zoomChange: 'route'
+                            }
+                        })
+                    }
+                ]
+            }).addTo(this.layerRouteArrows);
             // add corner points on top 
             for (var k = 0; k < routeStringCorners.length; k++) {
                 new L.CircleMarker(routeStringCorners[k], styles.routeCorners(self.theMap.getZoom())).addTo(this.layerRouteLines);
@@ -1341,18 +1319,17 @@ var Map = (function() {
         this.layerRoutePoints.bringToFront();
         return ftIds;
     }
-	/**
+    /**
      * recolor the routelines to be blue when going to last via and orange if going back from end to start (roundtrip)
      */
     function colorRouteLines() {
-		var currentZoom = self.theMap.getZoom();
-		self.layerRouteLines.eachLayer(function (layer) {
-			if (layer.options.zoomChange == 'route'){
-				if (typeof layer.options.retour !== 'undefined' && $('#roundtrip')[0].checked) layer.setStyle(styles.routeRetour(currentZoom));
-				else layer.setStyle(styles.route(currentZoom));
-			}
-		});
-
+        var currentZoom = self.theMap.getZoom();
+        self.layerRouteLines.eachLayer(function(layer) {
+            if (layer.options.zoomChange == 'route') {
+                if (typeof layer.options.retour !== 'undefined' && $('#roundtrip')[0].checked) layer.setStyle(styles.routeRetour(currentZoom));
+                else layer.setStyle(styles.route(currentZoom));
+            }
+        });
     }
     /**
      * zooms the map so that the whole route becomes visible (i.e. all features of the route line layer)

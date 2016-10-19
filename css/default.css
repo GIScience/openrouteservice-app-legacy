@@ -72,7 +72,7 @@
     /* GENERAL ELEMENTS */
     
     .searchWaypoint {
-        width: 220px;
+        width: 200px;
         font-size: 100%;
     }
     
@@ -134,7 +134,7 @@
     
     .ORS-panel-sub {
         padding-left: 10px;
-        padding-right: 10px;
+        padding-right: 12px;
         padding-bottom: 10px;
         padding-top: 10px;
     }
@@ -297,12 +297,8 @@
     /* *******************************************/
     /* *********************************************/
     /* START OF ELEMENT STYLES (CLASSES AND ID's)  */
-    /* *********************************************/
+    /* ******************************************s***/
     /* STYLE FOR ELEMENTS ON HEADER SECTION */
-    
-    #HeaderOptionsMenuButtonMobile {
-        display: none;
-    }
     
     #ORS-title {
         /* Main ORS title */
@@ -334,16 +330,6 @@
         right: 4px;
         float: right;
         list-style: none;
-    }
-    
-    #ORS-topMenu > li, #ORS-topMenu > li >a {
-        /* Style for individual elements on ORS menu on top right side */
-        height: 40px;
-        float: left;
-        margin: 0px 10px 0px 0;
-        line-height: 40px;
-        color: white;
-        font-size: 18px;
     }
     
     #contact_form {
@@ -628,6 +614,11 @@
         font-family: FontAwesome;
     }
     
+    .tt-directwp {
+        padding-top: 6px;
+        padding-left: 5px;
+    }
+    
     .resultList {
         /* General styles for address list dropdown (this list will popup when you type something in the "search address" input box) */
         margin-bottom: 1em;
@@ -878,7 +869,7 @@
         border-radius: 4px;
         pointer-events: none;
         overflow: visible;
-        z-index: 401;
+        z-index: 9999;
     }
     /* Creates a small triangle extender for the tooltip */
     
@@ -1039,37 +1030,46 @@
         content: "\e804";
         font-family: ruifont;
     }
-    /*.leaflet-control-customNavMenuToggle:before {
-        /* for toggle menu controller */
-    /*content: "\f07e";
-        font-family: FontAwesome;
-    }*/
-    /*.leaflet-control-customLocate:before {
-        /* for locate controller */
-    /*content: "\f05b";
-        font-family: FontAwesome;
-    }*/
     
     .leaflet-control a:link, .leaflet-control a:visited, .leaflet-control a:hover {
         /* for all controllers */
         text-decoration: none;
         color: #707070;
     }
-    
-    .elevation-collapsed {
-        background: #FAFAFA;
-        border-radius: 0;
+        
+    .ORS-mapContextMenu .ORS-contextControls {
+        margin-left: 130px;
+        top: 14px;
+        position: absolute;
+        background-color: #b5152b;
+        padding: 5px;
+        color: #fff;
+        border-radius: 3px;
     }
     
-    .steelblue-theme.leaflet-control.elevation .elevation-toggle {
-        border-radius: 0;
-        -webkit-border-radius: 0;
-        width: 26px;
-        height: 26px;
+    .ORS-mapContextMenu .ORS-contextControls:before {
+        content: "\f142";
+        font-family: FontAwesome;
+        display: inline-block;
+        font-size: 16px;
+        line-height: 15px;
+        color: white;
+        vertical-align: bottom;
+        cursor: pointer;
+        width: 15px;
+        height: 15px;
+        text-align: center;
     }
     
-    .steelblue-theme.leaflet-control.elevation .elevation-toggle-icon {
-        background-size: 16px 11px;
+    .ORS-mapContextMenu .ORS-expandControls {
+        display: none;
+        margin-left: 130px;
+        top: 43px;
+        position: absolute;
+        background-color: #b5152b;
+        padding: 5px;
+        color: #fff;
+        border-radius: 3px;
     }
     
     .ORS-mapContextMenu .ORS-contextWaypoint {
@@ -1077,6 +1077,7 @@
         padding: 3px 10px 3px 10px;
         white-space: nowrap;
         cursor: pointer;
+        border-radius: 3px;
         margin-bottom: 3px;
         background-color: #b5152b;
         border-left: 2px solid #F0F0F0;
@@ -1123,8 +1124,8 @@
         box-shadow: none;
         background-color: transparent;
         border-radius: 50%;
-        width: 10px;
-        height: 10px;
+        width: 12px;
+        height: 12px;
     }
     
     #infoPermalink {
@@ -1246,59 +1247,6 @@
     /* ******************************************************************/
     
     @media screen and (min-width: 319px) and (max-width: 720px) {
-        #HeaderOptionsMenuButtonMobile {
-            display: inline-block;
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            float: right;
-            color: white;
-            height: 40px;
-            width: 40px;
-            line-height: 40px;
-            color: white;
-            font-size: 20px;
-            text-align: center;
-            border-radius: 20px;
-        }
-        #HeaderOptionsMenuMobile {
-            float: right !important;
-            right: 5px;
-            top: 50px;
-            display: inline-block;
-            position: absolute;
-            z-index: 9998;
-            background-color: #FFF;
-            width: 170px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26), 0 2px 10px 0 rgba(0, 0, 0, .16);
-        }
-        #HeaderOptionsMenuMobile ul li {
-            position: relative;
-            line-height: 50px;
-            width: 150px;
-            color: #F0F0F0;
-            font-size: 120%;
-            list-style-type: none;
-            padding: 0;
-            margin-left: -30px;
-            height: 50px;
-            float: left;
-        }
-        #HeaderOptionsMenuMobile ul li:active, #HeaderOptionsMenuMobile ul li:hover {
-            background-color: #CCC;
-        }
-        #HeaderOptionsMenuMobile ul li a {
-            text-decoration: none;
-            outline: none;
-            float: left;
-            color: black;
-            width: 80%;
-            left: 5px;
-        }
-        #ORS-topMenu {
-            display: none;
-        }
         .ORS-main {
             flex-direction: column;
         }
@@ -1378,7 +1326,7 @@
         .leaflet-bottom .leaflet-control-scale, #infoPermalink {
             /* for scale controller */
             display: none;
-        } 
+        }
     }
     /* ****************************************************************/
     /* END OF MOBILE STYLES (MEDIA QUERIES FOR MOBILE VISUALIZATION)  */

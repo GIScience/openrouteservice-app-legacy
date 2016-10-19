@@ -2,8 +2,9 @@
  * various keyword lists used in the ORS application
  */
 list = {
-    dontUpdateRoute: ["maxSpeedInput", "viaOptimize"],
-    prefNames: ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version', 'avUnpaved', 'avFerry', 'value_length', 'value_height', 'value_weight', 'value_width', 'value_axleload', 'surface', 'incline', 'slopedCurb', 'hazardous', 'routeWeight', 'avSteps', 'routeOptType', 'trackType', 'smoothness', 'avFords', 'maxspeed', 'avPaved', 'avTunnel', 'optimizeVia', 'roundtrip', 'avTracks'],
+    key: '03be7b5879f93f3de20e76e441e6568f',
+    dontUpdateRoute: ["maxSpeedInput", "viaOptimize", "maxSteepnessInput"],
+    prefNames: ['pos', 'zoom', 'layer', 'routeOpt', 'avHigh', 'avToll', 'avArea', 'wp', 'lang', 'routeLang', 'distUnit', 'version', 'avUnpaved', 'avFerry', 'value_length', 'value_height', 'value_weight', 'value_width', 'value_axleload', 'surface', 'incline', 'slopedCurb', 'hazardous', 'routeWeight', 'avSteps', 'routeOptType', 'trackType', 'smoothness', 'avFords', 'maxspeed', 'avPaved', 'avTunnel', 'optimizeVia', 'roundtrip', 'avTracks', 'directWaypoints', 'avHills', 'maxsteepness', 'fitness'],
     languages: ['de', 'en', 'es', 'fr', 'it', 'nl', 'hu', 'ru', 'ua', 'cz', 'pl', 'cnsimple', 'cn'],
     routingLanguages: ['de', 'en', 'es', 'fr', 'it', 'nl', 'hu', 'ru', 'ua', 'cz', 'pl', 'cnsimple', 'cn', 'bg', 'hr', 'nl_BE', 'eo', 'fi', 'fr', 'pl', 'pt_BR', 'ro', 'se', 'dk', 'tr', 'ca', 'ja', 'no', 'vi', 'nb', 'de-rheinl', 'de-opplat', 'de-berlin', 'de-swabia', 'de-ruhrpo', 'de-at-ooe', 'de-bay'],
     distanceUnits: ['m', 'km', 'yd', 'mi'],
@@ -61,23 +62,23 @@ list = {
     showElements: {
         car: {
             show: ['.ORS-car', '.ORS-all'],
-            hide: ['.ORS-ped', '.ORS-bike', '.ORS-hgv', '.ORS-ped']
+            hide: ['.ORS-ped', '.ORS-bike', '.ORS-steepness', '.ORS-hgv', '.ORS-ped']
         },
         wheelchair: {
             show: ['.ORS-wc', '.ORS-all'],
-            hide: ['.ORS-ped', '.ORS-bike', '.ORS-hgv', '.ORS-car']
+            hide: ['.ORS-ped', '.ORS-bike', '.ORS-steepness', '.ORS-hgv', '.ORS-car']
         },
         pedestrian: {
-            show: ['.ORS-ped', '.ORS-ped', '.ORS-all'],
+            show: ['.ORS-ped', '.ORS-steepness', '.ORS-ped', '.ORS-all'],
             hide: ['.ORS-wc', '.ORS-bike', '.ORS-hgv', '.ORS-car']
         },
         bicycle: {
-            show: ['.ORS-bike', '.ORS-all'],
+            show: ['.ORS-bike', '.ORS-steepness', '.ORS-all'],
             hide: ['.ORS-wc', '.ORS-ped', '.ORS-hgv', '.ORS-car', '.ORS-ped']
         },
         heavyvehicle: {
             show: ['.ORS-hgv', '.ORS-car', '.ORS-all'],
-            hide: ['.ORS-wc', '.ORS-ped', '.ORS-bike']
+            hide: ['.ORS-wc', '.ORS-ped', '.ORS-steepness', '.ORS-bike']
         },
     },
     menuElements: ['ORS-routeContent', 'ORS-aaContent', 'ORS-cloudContent'],
@@ -204,3 +205,174 @@ for (var key in tmcCodes) {
         if (key == 'COMPLETELY_CLOSED') list.tmc[tmcCodes[key][i]] = ['./img/warning_road_closed.png', '#A5A5A5'];
     }
 }
+var mappings = {};
+mappings.steepnessTypes = {
+    '0': {
+        text: '16%+',
+        color: '#028306'
+    },
+    '1': {
+        text: '10-15%',
+        color: '#2AA12E'
+    },
+    '2': {
+        text: '7-9%',
+        color: '#53BF56'
+    },
+    '3': {
+        text: '4-6%',
+        color: '#7BDD7E'
+    },
+    '4': {
+        text: '1-3%',
+        color: '#A4FBA6'
+    },
+    '5': {
+        text: '0%',
+        color: '#ffcc99'
+    },
+    '6': {
+        text: '1-3%',
+        color: '#F29898'
+    },
+    '7': {
+        text: '4-6%',
+        color: '#E07575'
+    },
+    '8': {
+        text: '7-9%',
+        color: '#CF5352'
+    },
+    '9': {
+        text: '10-15%',
+        color: '#BE312F'
+    },
+    '10': {
+        text: '16%+',
+        color: '#AD0F0C'
+    }
+};
+mappings.wayTypes = {
+    '0': {
+        text: 'Other',
+        color: '#e6e6fa'
+    },
+    '1': {
+        text: 'StateRoad',
+        color: '#dad3f5'
+    },
+    '2': {
+        text: 'Road',
+        color: '#cebfef'
+    },
+    '3': {
+        text: 'Street',
+        color: '#c3ace7'
+    },
+    '4': {
+        text: 'Path',
+        color: '#b999df'
+    },
+    '5': {
+        text: 'Track',
+        color: '#af84d5'
+    },
+    '6': {
+        text: 'Cycleway',
+        color: '#a671ca'
+    },
+    '7': {
+        text: 'Footway',
+        color: '#9e5cbd'
+    },
+    '8': {
+        text: 'Steps',
+        color: '#9747ae'
+    },
+    '9': {
+        text: 'Ferry',
+        color: '#912e9e'
+    },
+    '10': {
+        text: 'Construction',
+        color: '#8b008b'
+    }
+};
+mappings.surfaceTypes = {
+    '0': {
+        text: 'Other',
+        color: '#add8e6'
+    },
+    '1': {
+        text: 'Paved',
+        color: '#96ceea'
+    },
+    '2': {
+        text: 'Unpaved',
+        color: '#85c4ea'
+    },
+    '3': {
+        text: 'Asphalt',
+        color: '#78b8e8'
+    },
+    '4': {
+        text: 'Concrete',
+        color: '#6cace5'
+    },
+    '5': {
+        text: 'Cobblestone',
+        color: '#62a1e0'
+    },
+    '6': {
+        text: 'Metal',
+        color: '#5995db'
+    },
+    '7': {
+        text: 'Wood',
+        color: '#528ad6'
+    },
+    '8': {
+        text: 'CompactedGravel',
+        color: '#4b7ed0'
+    },
+    '9': {
+        text: 'FineGravel',
+        color: '#4474ca'
+    },
+    '10': {
+        text: 'Gravel',
+        color: '#3e67c4'
+    },
+    '11': {
+        text: 'Dirt',
+        color: '#385dbd'
+    },
+    '12': {
+        text: 'Ground',
+        color: '#3351b6'
+    },
+    '13': {
+        text: 'Ice',
+        color: '#2d46af'
+    },
+    '14': {
+        text: 'Salt',
+        color: '#263aa8'
+    },
+    '15': {
+        text: 'Sand',
+        color: '#202ea1'
+    },
+    '16': {
+        text: 'Woodchips',
+        color: '#18219a'
+    },
+    '17': {
+        text: 'Grass',
+        color: '#0e1392'
+    },
+    '18': {
+        text: 'GrassPaver',
+        color: '#00008b'
+    }
+};

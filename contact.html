@@ -1,14 +1,14 @@
 <html>
 	<head>
 		<title>OpenRouteService.org Contact</title>
-		<link id="stylesheet" rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+		<link id="stylesheet" rel="stylesheet" type="text/css" href="lib/bootstrap3/css/bootstrap.min.css">
 		<link id="stylesheet" rel="stylesheet" type="text/css" href="css/contactPage.css">
 		<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 	</head>
 	<body data-spy="scroll" data-target=".sidebar">
-		<div class="navbar navbar-fixed-top" id="navbar">
-			<a class="brand" href="http://www.openrouteservice.org"> <img src="img/logo_ors.png" class="logo" alt="ORS"/></a>
-			<a class="brand" id="title"  href="http://www.openrouteservice.org">OpenRouteService</a>
+		<div class="navbar-nav navbar-fixed-top" id="navbar">
+			<a class="navbar-brand" href="http://www.openrouteservice.org"> <img src="img/logo_ors.png" class="logo" alt="ORS"/></a>
+			<a class="navbar-brand" id="title"  href="http://www.openrouteservice.org" style="font-size: 20px;">OpenRouteService</a>
 			<ul id="topMenu">
 				<li>
 					<a href="http://www.geog.uni-heidelberg.de/giscience.html" target="_blank"><img src="img/logo_giscience.png" style="width: 45px; height: auto" alt="GIScience" class="links"/></a>
@@ -16,12 +16,11 @@
 				<li>
 					<a href="http://www.geog.uni-heidelberg.de/giscience.html" target="_blank"><img src="img/unihd.png" alt="Uni HD" class="links" style="width: 70px; height: auto"/></a>
 				</li>
-				<li></li>
 			</ul>
 		</div>
 		<div id="sidebar">
 			<!-- content menu -->
-			<ul class="nav nav-list">
+			<ul class="nav nav-stacked panel-group">
 				<li class="active">
 					<a href="#home">Home</a>
 				</li>
@@ -29,7 +28,7 @@
 					&nbsp;
 				</li>
 				<li class="nav-header">
-					ORS Info
+					<a>ORS Info</a>
 				</li>
 				<li>
 					<a href="#contact">Contact</a>
@@ -56,7 +55,7 @@
 					&nbsp;
 				</li>
 				<li class="nav-header">
-					Acknowledgements
+					<a>Acknowledgements</a>
 				</li>
 				<li>
 					<a href="#thanks">Thanks to</a>
@@ -68,7 +67,7 @@
 					&nbsp;
 				</li>
 				<li class="nav-header">
-					Disclaimer and License
+					<a>Disclaimer and License</a>
 				</li>
 				<li>
 					<a href="#disclaimer">Disclaimer</a>
@@ -129,7 +128,7 @@
 				</p>
 				<p><br>
 					<a href="http://www.geog.uni-heidelberg.de/giscience.html" target="_blank"><img src="img/logo_giscience.png" class="logo_big" alt="logo GIScience" />
-					<img src="img/siegel_uni_hd_mittel.gif" class="logo_big" alt="logo University of Heidelberg" /></a>
+					<img src="img/unihd.png" class="logo_big" alt="logo University of Heidelberg" /></a>
 				</p>
 				<div class="space_small">
 					&nbsp;
@@ -236,7 +235,6 @@
 				OpenRouteService APIs and services are currently available worldwide, except for North- and South America (see <a href="http://wiki.openstreetmap.org/wiki/File:ORS_Coverage.png" target="_blank">Figure</a> of current coverage), due to our limited server capacities. We are planning on providing ORS also worldwide in the future but cannot provide any timeline at the moment.
 				</p>
 				<p>
-				
 				<section id="services">
 				<div class="space">
 					&nbsp;
@@ -533,9 +531,7 @@
 						<a href="http://koenigstuhl.geog.uni-heidelberg.de/publications/bonn/WSO-ERS.GISSCience.09.2006.pdf" target="_blank" >Orchestrierung von OGC Web Diensten im Katastrophenmanagement - am Beispiel eines Emergency Route Service auf Basis der OpenLS Spezifikation</a>.
 						In: <a href="http://www.geopoint.de/gis/" target="_blank" >GIS - Zeitschrift f&uuml;r Geoinformatik.</a>. 09/2006. pp. 35-41.
 					</li>
-				</ul>
-				
-					
+				</ul>	
 				<div class="topOfPage">
 					<a href="#top">Top of page &nbsp;<i class="icon-chevron-up">&nbsp;</i></a>
 				</div>
@@ -799,7 +795,7 @@
 				</div>
 			</section>
 		</div>
-		<script type="text/javascript" src="lib/jquery-1.7.2.min.js"></script>
-		<script type="text/javascript" src="lib/bootstrap/bootstrap.min.js"></script>
+		<script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+		<script type="text/javascript" src="lib/bootstrap3/js/bootstrap.min.js"></script>
 	</body>
 </html>

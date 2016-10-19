@@ -23,13 +23,14 @@
 
 	///////////////////////////////////////////////////
 	//*** Request erstellen POST ***
-	if(isset($_GET["position"])&& isset($_GET["minutes"]) && isset($_GET["routePreference"])&& isset($_GET["method"])&& isset($_GET["interval"])){
+	if(isset($_GET["position"])&& isset($_GET["minutes"]) && isset($_GET["routePreference"])&& isset($_GET["method"])&& isset($_GET["interval"]) && isset($_GET["api_key"])){
 		$position = $_GET["position"];
 		$minutes = $_GET["minutes"];
 		$method = $_GET["method"];
 		$interval = $_GET["interval"];
 		$routepreference = $_GET["routePreference"];
-		
+		$api_key = $_GET["api_key"];
+
 		$position = str_replace(",", " ", $position);
 
 		$request = createAnalysisRequest($position, $minutes, $routepreference, $method, $interval);
@@ -38,7 +39,7 @@
 		///////////////////////////////////////////////////
 		//*** Sende Request an Web Service ***
 		//Server
-		$http_response = post('openls.geog.uni-heidelberg.de', '/osm/analysis', $request, 20, 80);
+		$http_response = post('openls.geog.uni-heidelberg.de', '/osm/analysis'.'?api_key='.$api_key, $request, 20, 80);
 
 		///////////////////////////////////////////////////
 		//*** Request auswerten ***

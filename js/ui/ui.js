@@ -416,22 +416,32 @@ var Ui = (function(w) {
             //the waypoint which has been moved up is the first waypoint: hide move up button
             $(waypointElement.get(0).querySelector('.moveUpWaypoint')).hide();
             $(waypointElement.get(0).querySelector('.moveDownWaypoint')).show();
+            $(waypointElement.get(0).querySelector('.tt-directwp')).hide();
         } else {
             //show both
             $(waypointElement.get(0).querySelector('.moveUpWaypoint')).show();
             $(waypointElement.get(0).querySelector('.moveDownWaypoint')).show();
+            $(waypointElement.get(0).querySelector('.tt-directwp')).show();
         }
         if (succIndex == (numWaypoints - 1)) {
             //the waypoint which has been moved down is the last waypoint: hide the move down button
             $(previousElement.get(0).querySelector('.moveUpWaypoint')).show();
             $(previousElement.get(0).querySelector('.moveDownWaypoint')).hide();
+            $(previousElement.get(0).querySelector('.tt-directwp')).show();
             $('#roundtrip').attr('checked', false);
             theInterface.emit('ui:specifyRoundtrip', false);
         } else {
             //show both
             $(previousElement.get(0).querySelector('.moveUpWaypoint')).show();
             $(previousElement.get(0).querySelector('.moveDownWaypoint')).show();
+            $(previousElement.get(0).querySelector('.tt-directwp')).show();
         }
+        // update direct waypoint settings
+        var directwaypointSettings = preferences.updateDirectWaypoints();
+        theInterface.emit('ui:prefsChanged', {
+            key: preferences.directwaypointsIdx,
+            value: directwaypointSettings
+        });
         //adapt marker-IDs, decide about wpType
         theInterface.emit('ui:movedWaypoints', {
             id1: currentIndex,
@@ -468,20 +478,30 @@ var Ui = (function(w) {
             //the waypoint which has been moved down is the last waypoint: hide move down button
             $(waypointElement.get(0).querySelector('.moveUpWaypoint')).show();
             $(waypointElement.get(0).querySelector('.moveDownWaypoint')).hide();
+            $(waypointElement.get(0).querySelector('.tt-directwp')).show();
         } else {
             //show both
             $(waypointElement.get(0).querySelector('.moveUpWaypoint')).show();
             $(waypointElement.get(0).querySelector('.moveDownWaypoint')).show();
+            $(waypointElement.get(0).querySelector('.tt-directwp')).show();
         }
         if (prevIndex == 0) {
             //the waypoint which has been moved up is the first waypoint: hide the move up button
             $(succElement.get(0).querySelector('.moveUpWaypoint')).hide();
             $(succElement.get(0).querySelector('.moveDownWaypoint')).show();
+            $(succElement.get(0).querySelector('.tt-directwp')).hide();
         } else {
             //show both
             $(succElement.get(0).querySelector('.moveUpWaypoint')).show();
             $(succElement.get(0).querySelector('.moveDownWaypoint')).show();
+            $(succElement.get(0).querySelector('.tt-directwp')).show();
         }
+        // update direct waypoint settings
+        var directwaypointSettings = preferences.updateDirectWaypoints();
+        theInterface.emit('ui:prefsChanged', {
+            key: preferences.directwaypointsIdx,
+            value: directwaypointSettings
+        });
         //adapt marker-IDs, decide about wpType
         theInterface.emit('ui:movedWaypoints', {
             id1: currentIndex,
@@ -497,7 +517,6 @@ var Ui = (function(w) {
         //id of prior to last waypoint:
         var waypointId = $(e.currentTarget).prev().attr('id');
         var oldIndex = parseInt(waypointId);
-        console.log(oldIndex);
         // If roundtrip is enabled, add the waypoint in front of the last (roundtrip) waypoint
         var numWaypoints = oldIndex + 1;
         if ($('#roundtrip')[0].checked && $('.waypoint.roundtrip').length > 1 && $('#' + oldIndex).hasClass('roundtrip')) oldIndex -= 1;
@@ -505,7 +524,7 @@ var Ui = (function(w) {
         theInterface.emit('ui:selectWaypointType', oldIndex);
     }
     /**
-     *adds a new waypoint element after given waypoint index
+     * adds a new waypoint element after given waypoint index
      * @param idx: (int) index of the predecessor waypoint
      * @param numWaypoints: (int) number of waypoints BEFORE inserting the new one
      */
@@ -552,16 +571,19 @@ var Ui = (function(w) {
         newWp.querySelector('.removeWaypoint').addEventListener('click', handleRemoveWaypointClick);
         newWp.querySelector('.searchAgainButton').addEventListener('click', handleSearchAgainWaypointClick);
         newWp.querySelector('.waypoint-icon').addEventListener('click', handleZoomToWaypointClick);
+        newWp.querySelector('.tt-directwp').addEventListener('click', handleOptionsChanged);
         theInterface.emit('ui:addWaypoint', newIndex);
     }
     /**
      * set a waypoint with the service response after the user requested to set a waypoint by clicking on the map (right click).
-     * @param resultsOrLatlon: the service response in XML format or a latlon position
+     * @param results: the service response in XML format or a latlon position
      * @param typeOfWaypoint: one of START, VIA or END
      * @param index: index of the waypoint
+     * @param latlon: a latlng position
+     * @param wpDirect: if the waypoint is direct or not
      * @return: the index of the wayoint
      */
-    function addWaypointResultByRightclick(typeOfWaypoint, index, results, latlon) {
+    function addWaypointResultByRightclick(typeOfWaypoint, index, results, latlon, wpDirect) {
         var numWaypoints = $('.waypoint').length - 1;
         while (index >= numWaypoints) {
             addWaypointAfter(numWaypoints - 1);
@@ -598,14 +620,26 @@ var Ui = (function(w) {
         var children = rootElement.children();
         //show waypoint result and searchAgain button
         //children[3].show();
-        var waypointResultElement = children[5];
+        var waypointResultElement = children[6];
         while (waypointResultElement.hasChildNodes()) {
             waypointResultElement.removeChild(waypointResultElement.lastChild);
         }
         waypointResultElement.appendChild(address);
+        if (wpDirect === true ||  wpDirect === false) {
+            waypointResultElement.setAttribute('data-directwaypoint', wpDirect);
+            // check direct waypoint if true
+            var waypointDirectElement = children[0].childNodes[3];
+            $(waypointDirectElement).prop('checked', wpDirect);
+            // update direct waypoint settings
+            var directwaypointSettings = preferences.updateDirectWaypoints();
+            theInterface.emit('ui:prefsChanged', {
+                key: preferences.directwaypointsIdx,
+                value: directwaypointSettings
+            });
+        }
         waypointResultElement.show();
         //hide input field with search result list
-        children[6].hide();
+        children[7].hide();
         //remove the search result markers
         invalidateWaypointSearch(index);
         //event handling
@@ -692,6 +726,12 @@ var Ui = (function(w) {
             newWp.querySelector('.searchAgainButton').addEventListener('click', handleSearchAgainWaypointClick);
             newWp.querySelector('.waypoint-icon').addEventListener('click', handleZoomToWaypointClick);
         }
+        // update direct waypoint settings
+        var directwaypointSettings = preferences.updateDirectWaypoints();
+        theInterface.emit('ui:prefsChanged', {
+            key: preferences.directwaypointsIdx,
+            value: directwaypointSettings
+        });
         theInterface.emit('ui:removeWaypoint', {
             wpIndex: currentId,
             featureId: featureId
@@ -783,7 +823,6 @@ var Ui = (function(w) {
      * @param type: type of the wayoint, one of START, VIA, END or UNSET
      */
     function setWaypointType(wpIndex, type) {
-        //Keep this in order to not cause any bugs in functions relying on this
         var el = $('#' + wpIndex);
         // var el = $('#' + wpIndex);
         el.removeClass('unset');
@@ -1551,7 +1590,7 @@ var Ui = (function(w) {
                 contentDiv.appendChild(unit);
                 // save elevation true if ascent or descent over 40 meters
                 if (key == 'ascent' ||  key == 'descent') {
-                    if (routeSummary[key][1] > 20) elevation = true;
+                    elevation = true;
                 }
             }
             summaryItem.appendChild(iconDiv);
@@ -1589,61 +1628,155 @@ var Ui = (function(w) {
      * @param list: div list element for type
      */
     function horizontalBarchart(layer, types, list, data, colors) {
-        d3.select(types).selectAll("svg").remove();
-        var tip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) {
-            var dist = util.convertDistanceFormat(d.distance, preferences.distanceUnit);
-            return d.percentage + '% ' + d.typetranslated + ' (' + dist[1] + ' ' + dist[2] + ')';
-        });
-        var margin = {
-                top: 0,
-                right: 0,
-                bottom: 0,
-                left: 0
-            },
-            width = 315 - margin.left - margin.right,
-            height = 24 - margin.top - margin.bottom;
-        var y = d3.scale.ordinal().rangeRoundBands([height, 0]);
-        var x = d3.scale.linear().rangeRound([0, width]);
-        var yAxis = d3.svg.axis().scale(y).orient("left");
-        var xAxis = d3.svg.axis().scale(x).orient("bottom");
-        var svg = d3.select(types).append("svg").attr("width", width).attr("height", height).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-        y.domain([0]);
-        x.domain([0, data[Object.keys(data)[Object.keys(data).length - 1]].y1]);
-        svg.selectAll("rect").data(data).enter().append("rect").attr("height", 24).attr("x", function(d) {
-            return x(d.y0) / 1;
-        }).attr("width", function(d) {
-            return x(d.y1) / 1 - x(d.y0) / 1;
-        }).attr("title", function(d) {
-            return (d.y1 - d.y0) + "% : " + d.typetranslated;
-        }).style("fill", function(d, i) {
-            if (colors) {
-                return colors[i];
-            } else {
-                return d.color;
+        // data may be empty if only direct route
+        if (data.length > 0) {
+            d3.select(types).selectAll("svg").remove();
+            var tip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) {
+                var dist = util.convertDistanceFormat(d.distance, preferences.distanceUnit);
+                return d.percentage + '% ' + d.typetranslated + ' (' + dist[1] + ' ' + dist[2] + ')';
+            });
+            var margin = {
+                    top: 0,
+                    right: 0,
+                    bottom: 0,
+                    left: 0
+                },
+                width = 315 - margin.left - margin.right,
+                height = 24 - margin.top - margin.bottom;
+            var y = d3.scale.ordinal().rangeRoundBands([height, 0]);
+            var x = d3.scale.linear().rangeRound([0, width]);
+            var yAxis = d3.svg.axis().scale(y).orient("left");
+            var xAxis = d3.svg.axis().scale(x).orient("bottom");
+            var svg = d3.select(types).append("svg").attr("width", width).attr("height", height).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            y.domain([0]);
+            x.domain([0, data[Object.keys(data)[Object.keys(data).length - 1]].y1]);
+            svg.selectAll("rect").data(data).enter().append("rect").attr("height", 24).attr("x", function(d) {
+                return x(d.y0) / 1;
+            }).attr("width", function(d) {
+                return x(d.y1) / 1 - x(d.y0) / 1;
+            }).attr("title", function(d) {
+                return (d.y1 - d.y0) + "% : " + d.typetranslated;
+            }).style("fill", function(d, i) {
+                if (colors) {
+                    return colors[i];
+                } else {
+                    return d.color;
+                }
+            }).on('mouseover', function(d) {
+                handleHighlightTypes(d.ids, layer);
+                tip.show(d);
+            }).on('mouseout', function(d) {
+                handleResetTypes(d.ids, layer);
+                tip.hide(d);
+            }).on('click', function(d) {
+                handleClickRouteIds(d.ids, layer);
+            });
+            $(list).empty();
+            $(list).append("<ul></ul>");
+            for (var i = 0; i < data.length; i++) {
+                var li = $('<li>');
+                li.html(data[i].percentage + '% ' + data[i].typetranslated);
+                li.wrapInner('<span />');
+                if (colors) {
+                    li.css('color', colors[i]);
+                } else {
+                    li.css('color', data[i].color);
+                }
+                if (i !== "type" && i !== "total") $(list + "> ul").append(li);
             }
-        }).on('mouseover', function(d) {
-            handleHighlightTypes(d.ids, layer);
-            tip.show(d);
-        }).on('mouseout', function(d) {
-            handleResetTypes(d.ids, layer);
-            tip.hide(d);
-        }).on('click', function(d) {
-            handleClickRouteIds(d.ids, layer);
-        });
-        $(list).empty();
-        $(list).append("<ul></ul>");
-        for (var i = 0; i < data.length; i++) {
-            var li = $('<li>');
-            li.html(data[i].percentage + '% ' + data[i].typetranslated);
-            li.wrapInner('<span />');
-            if (colors) {
-                li.css('color', colors[i]);
-            } else {
-                li.css('color', data[i].color);
-            }
-            if (i !== "type" && i !== "total") $(list + "> ul").append(li);
+            svg.call(tip);
         }
-        svg.call(tip);
+    }
+    /** 
+     * Processes steepness segments and prepares information for barchart
+     * @param routeLineString: linestring of route
+     * @param routeLineStringSegments: segments of linestrings of route
+     * @param results: XML response of route
+     * @param viaPoints: List of waypoint coordinates
+     * @return elevationData: Object containing Names and Percetages
+     */
+    function processHeightProfile(routeLineString, routeLineStringSegments, results, viaPoints) {
+        var heightgraphData = [];
+        var heightgraphList = [{
+            list: 'WayTypeList',
+            info: 'WayType'
+        }, {
+            list: 'WaySurfaceList',
+            info: 'WaySurface'
+        }, {
+            list: 'WaySteepnessList',
+            info: 'WaySteepness'
+        }];
+        $A(heightgraphList).each(function(item) {
+            var information = util.getElementsByTagNameNS(results, namespaces.xls, item.list)[0];
+            information = util.getElementsByTagNameNS(results, namespaces.xls, item.info);
+            var data = [];
+            // needed to merge hight information to route segments
+            var j, to_previous, diff, cnt = 0;
+            $A(information).each(function(type, i) {
+                var fr = util.getElementsByTagNameNS(type, namespaces.xls, 'From')[0];
+                fr = parseInt(fr.textContent);
+                var to = util.getElementsByTagNameNS(type, namespaces.xls, 'To')[0];
+                to = parseInt(to.textContent);
+                var chunk = {};
+                chunk.line = [];
+                var typenumber = util.getElementsByTagNameNS(type, namespaces.xls, 'Type')[0];
+                typenumber = typenumber.textContent;
+                // either we are looking at routelinestring or route segments!
+                if (item.list == 'WaySteepnessList') {
+                    // add 5 as types start at -5
+                    typenumber = parseInt(typenumber) + 5;
+                    // last of block should be first of next block
+                    if (i > 0) fr = fr - 1;
+                    var segment;
+                    if (i == information.length - 1) {
+                        // include very last position if last block is reached
+                        segment = routeLineString.slice(fr, to + 1);
+                    } else {
+                        segment = routeLineString.slice(fr, to);
+                    }
+                    for (j = 0; j < segment.length; j++) {
+                        chunk.line.push([segment[j].lng, segment[j].lat, segment[j].alt]);
+                    }
+                    chunk.attributeType = typenumber;
+                    data.push(chunk);
+                } else if (item.list == 'WayTypeList' ||  item.list == 'WaySurfaceList') {
+                    // workaround as indices are incremented when via points are added, not good
+                    if (i > 0) {
+                        diff = fr - to_previous;
+                        if (diff > 1) {
+                            fr = fr - (diff - 1);
+                            to = to - (diff - 1);
+                        }
+                    }
+                    var segments;
+                    segments = routeLineStringSegments.slice(fr, to + 1);
+                    for (j = 0; j < segments.length; j++) {
+                        for (var k = 0; k < segments[j].length; k++) {
+                            chunk.line.push([segments[j][k].lng, segments[j][k].lat, routeLineString[cnt].alt]);
+                            // increment counter until last element reached
+                            if (k < segments[j].length - 1) cnt += 1;
+                        }
+                    }
+                    chunk.attributeType = typenumber;
+                    data.push(chunk);
+                    to_previous = to;
+                }
+            });
+            data = GeoJSON.parse(data, {
+                LineString: 'line',
+                extraGlobal: {
+                    'Creator': 'OpenRouteService.org',
+                    'records': data.length,
+                    'summary': item.info,
+                    'waypoint_coordinates': viaPoints
+                }
+            });
+            //console.log(JSON.stringify(data));
+            heightgraphData.push(data);
+        });
+        //console.log(JSON.stringify(heightgraphData));
+        return heightgraphData;
     }
     /** 
      * adds steepness segments and prepares information for barchart
@@ -1791,6 +1924,10 @@ var Ui = (function(w) {
             toPrev = to;
             var typenumber = util.getElementsByTagNameNS(WayType, namespaces.xls, 'Type')[0];
             typenumber = typenumber.textContent;
+            // direct segments
+            if (typenumber == -1) {
+                return;
+            }
             if (fr == to) {
                 typelist[typenumber].distance += distArrAll[fr - stopoverDiff];
                 typelist[typenumber].segments.push(parseInt(fr - stopoverDiff));
@@ -2667,9 +2804,17 @@ var Ui = (function(w) {
         e = e || window.event;
         var target = e.target || e.srcElement;
         var itemId = target.id;
+        var itemClass = target.className;
         //for extended route options
         var itemValue = target.value;
-        if ($.inArray(itemId, list.routeAvoidables) >= 0) {
+        if (itemClass == 'directwaypoint') {
+            // update direct waypoint settings
+            var directwaypointSettings = preferences.updateDirectWaypoints();
+            theInterface.emit('ui:prefsChanged', {
+                key: preferences.directwaypointsIdx,
+                value: directwaypointSettings
+            });
+        } else if ($.inArray(itemId, list.routeAvoidables) >= 0) {
             //is a route avoidable
             if (itemId === list.routeAvoidables[0]) {
                 //if the avoidable is set, remove it (and vice versa)
@@ -2889,7 +3034,47 @@ var Ui = (function(w) {
                 key: preferences.roundtripIdx,
                 value: boolVar
             });
-        } else if (itemId != 'maxSpeedInput') {
+        }
+        // steepness and difficulty options
+        else if (itemId == 'routeDifficulty') {
+            var fitnessVal = $('#routeDifficulty').find("option:selected").val();
+            if (fitnessVal != -1) {
+                theInterface.emit('ui:prefsChanged', {
+                    key: preferences.fitnessIdx,
+                    value: fitnessVal
+                });
+                $('#Hills').prop('disabled', true);
+                $('#maxSteepnessBtn').prop('disabled', false);
+            } else {
+                $('#Hills').prop('disabled', false);
+                $('#maxSteepnessBtn').prop('disabled', true);
+                theInterface.emit('ui:prefsChanged', {
+                    key: preferences.fitnessIdx,
+                    value: fitnessVal
+                });
+            }
+        } else if (itemId == 'Hills') {
+            if ($('#Hills').is(':checked')) {
+                $('#routeDifficulty').prop('disabled', true);
+                $('#maxSteepnessBtn').prop('disabled', false);
+                theInterface.emit('ui:prefsChanged', {
+                    key: preferences.avoidHillsIdx,
+                    value: true
+                });
+            } else {
+                $('#routeDifficulty').prop('disabled', false);
+                $('#maxSteepnessBtn').prop('disabled', true);
+                theInterface.emit('ui:prefsChanged', {
+                    key: preferences.avoidHillsIdx,
+                    value: false
+                });
+            }
+        } else if (itemId == 'maxSteepnessBtn') {
+            theInterface.emit('ui:prefsChanged', {
+                key: preferences.maxsteepnessIdx,
+                value: $('#maxSteepnessInput').val()
+            });
+        } else if (itemId != 'maxSpeedInput' && itemId != 'maxSteepnessInput') {
             // update route type if not maxspeedinput updated
             theInterface.emit('ui:prefsChanged', {
                 key: preferences.routeOptionsIdx,
@@ -3441,6 +3626,8 @@ var Ui = (function(w) {
         $('#wheelchair').click(switchRouteOptionsPane);
         $('.routeOptions').change(handleOptionsChanged);
         $('.ORS-optionsButton').click(handleShowOptions);
+        $('.tt-directwp').click(handleOptionsChanged);
+        $('#maxSteepnessBtn').click(handleOptionsChanged);
         $('#HeaderOptionsMenuButtonMobile').click(handleShowHeaderOptionsMobile);
         $('#viaOptimize').click(handleOptionsChanged);
         $('#roundtrip').click(handleOptionsChanged);
@@ -3480,19 +3667,6 @@ var Ui = (function(w) {
         });
         // menuButtons
         $('.ORS-menuButton').click(handleSwitchMenu);
-        // Mobile top menu
-        $('#ORS-menuLinkFeedbackMobile').click(function() {
-            $('#HeaderOptionsMenuMobile').hide();
-            $('#HeaderOptionsMenuButtonMobile').css("background-color", "transparent");
-        });
-        $('#ORS-menuLinkSitePrefsMobile').click(function() {
-            $('#HeaderOptionsMenuMobile').hide();
-            $('#HeaderOptionsMenuButtonMobile').css("background-color", "transparent");
-        });
-        $('#ORS-menuLinkInfoMobile').click(function() {
-            $('#HeaderOptionsMenuMobile').hide();
-            $('#HeaderOptionsMenuButtonMobile').css("background-color", "transparent");
-        });
     }
     Ui.prototype = new EventEmitter();
     Ui.prototype.constructor = Ui;
@@ -3557,6 +3731,7 @@ var Ui = (function(w) {
     Ui.prototype.handleGpxFiles = handleGpxFiles;
     Ui.prototype.handleResetRoute = handleResetRoute;
     Ui.prototype.handleMaxspeed = handleMaxspeed;
+    Ui.prototype.processHeightProfile = processHeightProfile;
     theInterface = new Ui();
     return theInterface;
 }(window));

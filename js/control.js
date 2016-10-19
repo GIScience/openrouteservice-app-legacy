@@ -1,6 +1,6 @@
 // global variable which is set to false after init is run
 // is needed in order for cookies to be loaded properly
-var map, initMap = true;
+var map, ak, initMap = true;
 var Controller = (function(w) {
     'use strict';
     var $ = w.jQuery,
@@ -129,6 +129,7 @@ var Controller = (function(w) {
             var newIndex = waypoint.getNumWaypoints() - 1;
             //Replace the waypoint adress with the one selected in the first waypoint
             var rootElement = $('#' + newIndex);
+			rootElement.hide();
             rootElement.removeClass('unset');
             var guiComponent = rootElement.find('.guiComponent');
             guiComponent.hide();
@@ -171,7 +172,7 @@ var Controller = (function(w) {
      */
     function selectWaypointType(wpIndex) {
         var type = waypoint.determineWaypointType(wpIndex);
-		// if (type == Waypoint.type.ROUNDTRIP && wpIndex != 0) $('#' + wpIndex).hide();
+        // if (type == Waypoint.type.ROUNDTRIP && wpIndex != 0) $('#' + wpIndex).hide();
         ui.setWaypointType(wpIndex, type);
         return type;
     }
@@ -185,6 +186,7 @@ var Controller = (function(w) {
         forceENDType = typeof forceENDType !== 'undefined' ? forceENDType : false;
         var pos = atts.pos;
         var wpType = atts.type;
+        var wpDirect = atts.direct;
         var featureId;
         //index of the waypoint to set (start at the beginning, end at the end, via in the middle)
         var wpIndex = 0;
@@ -223,18 +225,21 @@ var Controller = (function(w) {
         //add lat lon to input field 
         waypoint.setWaypoint(wpIndex, true);
         var position = map.convertFeatureIdToPositionString(newFeatureId, map.layerRoutePoints);
-        var newIndex = ui.addWaypointResultByRightclick(wpType, wpIndex, position, true);
+        var newIndex = ui.addWaypointResultByRightclick(wpType, wpIndex, position, true, wpDirect);
         ui.setWaypointFeatureId(newIndex, newFeatureId, position, 'layerRoutePoints');
         //If roundtrip and no second roundtrip-wp set: add it
-        if (wpType == Waypoint.type.ROUNDTRIP && roundtrip && !$('#' + (waypoint.getNumWaypoints() - 1)).hasClass('roundtrip')) {
+        if (wpType == Waypoint.type.ROUNDTRIP && roundtrip && $(".waypoint.roundtrip").length != 2) {
             handleAddWaypointByRightclick({
                 pos: atts.pos,
-                type: 'roundtrip'
+                type: 'roundtrip',
             }, false, false, true);
         }
+		//If there is only the start and end point for roundtrip, do not calculate a route
+		if (waypoint.getNumWaypoints() <= 2 && roundtrip) noRouteRequest = true;
         if (!noRouteRequest) {
             handleWaypointChanged();
         }
+		if (wpType == Waypoint.type.ROUNDTRIP && wpIndex != 0) $('#' + wpIndex).hide();
         //start geocoding process and replace lat lon in input if response
         geolocator.reverseGeolocate(pos, reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, wpType, wpIndex, newFeatureId);
         // show loading
@@ -350,9 +355,13 @@ var Controller = (function(w) {
             waypoint.setWaypoint(idx, false);
         }
         //re-calculate the waypoint types
+		if(!$('#roundtrip')[0].checked) {
+			$(".waypoint.roundtrip").each(function() {
+				this.show();
+			});
+		}
         for (var i = 0; i < waypoint.getNumWaypoints() + $('unset').length; i++) {
             var type = waypoint.determineWaypointType(i);
-            // 
             ui.setWaypointType(i, type);
             featureId = ui.getFeatureIdOfWaypoint(i);
             if (featureId === undefined) {
@@ -360,7 +369,6 @@ var Controller = (function(w) {
                 continue;
             }
             var newId = 0;
-            // newId = map.setWaypointType(featureId, type, ui.getWaypiontIndexByFeatureId(featureId));
             newId = map.setWaypointType(featureId, type, ui.getWaypiontIndexByFeatureId(featureId) == 0 ? 0 : null);
             var position = map.convertFeatureIdToPositionString(newId, map.layerRoutePoints);
             ui.setWaypointFeatureId(i, newId, position, 'layerRoutePoints');
@@ -567,16 +575,9 @@ var Controller = (function(w) {
                     },
                     type: 'roundtrip'
                 }, false, false, false);
-                handleAddWaypointByRightclick({
-                    pos: {
-                        lat: coordinates[0],
-                        lng: coordinates[1]
-                    },
-                    type: 'roundtrip'
-                }, false, false, true);
                 //If the user has only set start and end point, add new empty waypoint for convenience
                 if ($('.waypoint').length == $('.waypoint.roundtrip').length) {
-                    ui.addWaypintAfter(0, 2);
+                    ui.addWaypointAfter(0, 2);
                     selectWaypointType(0);
                 }
             }
@@ -882,6 +883,7 @@ var Controller = (function(w) {
      */
     function handleRoutePresent() {
         var isRoutePresent = waypoint.getNumWaypointsSet() >= 2;
+		if ($('#roundtrip')[0].checked && waypoint.getNumWaypointsSet() <= 2) isRoutePresent = false;
         if (isRoutePresent) {
             calcRouteID++;
             ui.startRouteCalculation();
@@ -902,7 +904,6 @@ var Controller = (function(w) {
             if (preferences.distanceUnit == 'yd') {
                 extendedRoutePreferencesMaxspeed = (Number(extendedRoutePreferencesMaxspeed) * 1.60934).toString();
             }
-            // TO DO
             var avoidAreas = map.getAvoidAreas();
             var avoidableParams = [];
             var avoidHighway = permaInfo[preferences.avoidHighwayIdx];
@@ -914,7 +915,7 @@ var Controller = (function(w) {
             var avoidSteps = permaInfo[preferences.avoidStepsIdx];
             var avoidFords = permaInfo[preferences.avoidFordsIdx];
             var avoidTracks = permaInfo[preferences.avoidTracksIdx];
-            console.log(avoidTracks)
+            var directWaypoints = permaInfo[preferences.directwaypointsIdx];
             avoidableParams[0] = avoidHighway;
             avoidableParams[1] = avoidTollway;
             avoidableParams[2] = avoidUnpavedRoads;
@@ -950,7 +951,12 @@ var Controller = (function(w) {
             wheelChairParams[2] = wheelchairSloped;
             wheelChairParams[3] = wheelchairTrackType;
             wheelChairParams[4] = wheelchairSmoothness;
-            route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferencesType, wheelChairParams, truckParams, avoidableParams, avoidAreas, extendedRoutePreferencesWeight, extendedRoutePreferencesMaxspeed, calcRouteID);
+
+            var maxSteepness = permaInfo[preferences.maxsteepnessIdx];
+            var avoidHills = permaInfo[preferences.avoidHillsIdx];
+            var fitness = permaInfo[preferences.fitnessIdx];
+
+            route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferencesType, wheelChairParams, truckParams, avoidableParams, avoidAreas, extendedRoutePreferencesWeight, extendedRoutePreferencesMaxspeed, calcRouteID, directWaypoints, maxSteepness, avoidHills, fitness);
             //try to read a variable that is set after the service response was received. If this variable is not set after a while -> timeout.
             clearTimeout(timerRoute);
         } else {
@@ -987,11 +993,13 @@ var Controller = (function(w) {
                 var routeString = map.writeRouteToString(routeLineString);
                 route.routeString = routeString;
                 var routeLinestring = route.parseResultsToLineStrings(results);
+                var routeLinestringSegments = route.parseResultsToLineStrings(results);
                 var cornerPoints = route.parseResultsToCornerPoints(results);
-				var routeSegmentation = route.parseResultsToViaWaypoints(results);
+                var routeSegmentation = route.parseResultsToViaWaypoints(results);
+
                 //Get the restrictions along the route
                 //map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString), permaInfo[preferences.routeOptionsIdx]);
-                map.removeElevationControl();
+                map.removeElevationControl(routePref);
                 var featureIds = map.updateRoute(routeLinestring, cornerPoints, routePref, routeSegmentation);
                 var errors = route.hasRoutingErrors(results);
                 if (!errors) {
@@ -1001,6 +1009,7 @@ var Controller = (function(w) {
                     if ($.inArray(routePref, list.elevationProfiles) >= 0) {
                         // Surface and waytype information
                         ui.updateSurfaceSteepness(results, featureIds, 'layerRouteLines', totalDistance);
+                        
                         // Elevation information
                         if (elevation) {
                             var viaPoints = [];
@@ -1009,7 +1018,10 @@ var Controller = (function(w) {
                                 routePoints.pop();
                                 viaPoints = routePoints;
                             }
-                            map.updateHeightprofiles(routeLineString, viaPoints);
+
+                            // Generated for height profile
+                            var elevationData = ui.processHeightProfile(routeLineString, routeLinestring, results, viaPoints);
+                            map.updateHeightprofiles(elevationData);
                         }
                         $('#routeTypesContainer').show();
                     } else {
@@ -1329,7 +1341,7 @@ var Controller = (function(w) {
      * @param forceUpdate: when auto refreshed after 5 minutes, force update the tmc messages, otherwise proceed as usual
      */
     function compareBoundingBoxes(url, forceUpdate) {
-        var tmcUrl = url + '&bbox=' + map.theMap.getBounds().getSouthWest().lng + ',' + map.theMap.getBounds().getSouthWest().lat + ',' + map.theMap.getBounds().getNorthEast().lng + ',' + map.theMap.getBounds().getNorthEast().lat;
+        var tmcUrl = url + '&bbox=' + map.theMap.getBounds().getSouthWest().lng + ',' + map.theMap.getBounds().getSouthWest().lat + ',' + map.theMap.getBounds().getNorthEast().lng + ',' + map.theMap.getBounds().getNorthEast().lat + '?' + ak;
         if (forceUpdate === true) {
             getTMC(tmcUrl);
         } else {
@@ -1438,6 +1450,8 @@ var Controller = (function(w) {
      * apply GET variables, read cookies or apply standard values to initialize the ORS page
      */
     function initializeOrs() {
+        // read api key
+        var ak = readApiKey();
         //apply GET variables and/or cookies and set the user's language,...
         var getVars = preferences.loadPreferencesOnStartup();
         var pos = getVars[preferences.getPrefName(preferences.positionIdx)];
@@ -1471,6 +1485,7 @@ var Controller = (function(w) {
         var maxspeed = getVars[preferences.getPrefName(preferences.maxspeedIdx)];
         var viaoptimize = getVars[preferences.getPrefName(preferences.optimizeViaIdx)];
         var roundtrip = getVars[preferences.getPrefName(preferences.roundtripIdx)];
+        var directwaypoints = getVars[preferences.getPrefName(preferences.directwaypointsIdx)];
         // either layer, pos or zoom is read, as soon as one is read the eventlistener on map
         // updates the other two and overwrites the cookie info
         pos = preferences.loadMapPosition(pos);
@@ -1512,6 +1527,7 @@ var Controller = (function(w) {
         ui.setOptimizeVia(viaoptimize);
         roundtrip = preferences.loadRoundtrip(roundtrip);
         ui.setRoundtrip(roundtrip);
+        directwaypoints = preferences.loadDirectWaypoints(directwaypoints);
         var avSettings = preferences.loadAvoidables(motorways, tollways, unpaved, ferry, steps, fords, paved, tunnels, tracks);
         motorways = avSettings[0];
         tollways = avSettings[1];
@@ -1564,9 +1580,15 @@ var Controller = (function(w) {
                 } else {
                     type = Waypoint.type.VIA;
                 }
+                // direct waypoint starts at index 1
+                var directwaypoint = undefined;
+                if (directwaypoints) {
+                    directwaypoint = directwaypoints[i];  
+                } 
                 handleAddWaypointByRightclick({
                     pos: waypoints[i],
-                    type: type
+                    type: type,
+                    direct: directwaypoint
                 }, true);
             }
             if (waypoints.length >= 2) {
@@ -1589,6 +1611,26 @@ var Controller = (function(w) {
         setInterval(function() {
             map.graphInfo();
         }, 300000);
+    }
+    /** 
+     * reads API key from file
+     * @return: api key
+     */
+    function readApiKey() {
+        function readTextFile(file) {
+            var rawFile = new XMLHttpRequest();
+            rawFile.open("GET", file, false);
+            rawFile.onreadystatechange = function() {
+                if (rawFile.readyState === 4) {
+                    if (rawFile.status === 200 || rawFile.status == 0) {
+                        ak = "api_key=" + rawFile.responseText;
+                    }
+                }
+            };
+			// ak = "api_key=eb85f2a6a61aafaebe7e2f2a89b102f5";
+            rawFile.send(null);
+        }
+        readTextFile(list.key);
     }
     /**
      * apply selected site language, load dynamic menus, etc.

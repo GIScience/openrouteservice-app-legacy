@@ -12,10 +12,11 @@
         <!-- BOOTSTRAP -->
         <!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
         <link href="lib/bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css">
+        <link href="css/bootstrap-toggle.min.css" rel="stylesheet" type="text/css">
         <!-- LEAFLET -->
         <link href="css/leaflet.css" rel="stylesheet" type="text/css">
         <!-- LEAFLET PLUGINS -->
-        <link href="css/leaflet.elevation-0.0.4.css" rel="stylesheet" type="text/css">
+        <link href="css/L.Control.Heightgraph.css" rel="stylesheet" type="text/css">
         <!-- ELEVATION PLUGIN -->
         <link href="css/MarkerCluster.css" rel="stylesheet" type="text/css">
         <!-- MARKER CLUSTER PLUGIN -->
@@ -34,76 +35,43 @@
     <body class="ORS">
         <!-- START OF HEADER SECTION -->
 		<div class="print-only-header" id="printableHeader"> 
-				<img src="img/logo_unihd_2.png"/>
-				OpenRouteService
+			<img src="img/logo_unihd_2.png"/>OpenRouteService
 		</div>
         <header class="ORS-header">
             <a href="http://www.geog.uni-heidelberg.de/giscience.html" id="ORS-headIcon"></a>
             <a href="http://www.openrouteservice.org" id="ORS-title">OpenRouteService</a>
-			<!-- MENU BUTTON FOR MOBILE VERSION -->
-			<div id="HeaderOptionsMenuButtonMobile">
-                <i class="fa fa-ellipsis-v"></i>
-            </div> 
+            <!-- <div class="alert alert-warning"  style="line-height: 25px; margin-top: 8px; margin-left: 15px; display: flex; justify-content: center;align-items:center; text-decoration: none;">
+                We are currently monitoring a DDOS attack against our API which is affecting latency/connections to our routing service. Sorry for this inconvenience.
+            </div> -->
 			<!-- END OF MENU BUTTON FOR MOBILE VERSION -->
-			<ul id="ORS-topMenu">
-                <li>
-                    <a data-toggle="modal" href="#feedbackModal" id="ORS-menuLinkFeedback">
-                        <i class="fa fa-comment" id="feedbackContentMenu" data-container="body" id="feedbackContentMenu" type="button" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Feedback">
-                        </i>
-                    </a>
-                </li>
-                <li>
-                    <a data-toggle="modal" href="#sitePrefsModal" id="ORS-menuLinkSitePrefs">
-                        <i class="fa fa-cogs" id="sitePrefsMenu" data-container="body" data-toggle="tooltip" data-placement="bottom" data-original-title="Site Preferences">
-                        </i>
-                    </a>
-                </li>
-                <li>
-                    <a href="contact.html#top" id="ORS-menuLinkInfo" target="_blank">
-                        <i class="fa fa-info" id="contactMenu" data-container="body" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Contact info">
-                        </i>
-                    </a>
-                </li>
-            </ul>
-			
+			<div id="ORS-topMenu">
+                <div class="dropdown" style="z-index: 9999;">
+                    <button class="btn btn-default dropdown-toggle ORS-BtnPrimary-control transparent" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fa fa-info-circle fa-fw" style="color:#fff; font-size: 24px;"></i></button>
+                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+                        <li class="dropdown-header"> Settings</li>
+                        <li><a data-toggle="modal" href="#sitePrefsModal" data-target="#sitePrefsModal"><i class="fa fa-cogs fa-fw"></i> User preferences</a></li>
+                        <li class="dropdown-header">Information</li>
+                        <li><a href="https://groups.google.com/forum/#!forum/openrouteservice" target="_blank"><i class="fa fa-comments fa-fw"></i> Google Groups</a></li>
+                        <li><a data-toggle="modal" href="#feedbackModal" data-target="#feedbackModal"><i class="fa fa-pencil fa-fw"></i> Feedback</a></li>
+                        <li><a href="contact.html#top" target="_blank"><i class="fa fa-info fa-fw"></i> About</a></li>
+                    </ul>
+                </div>
+            </div>
         </header>
         <!-- END OF HEADER SECTION -->
         <!-- START OF MAIN SECTION -->
         <div class="ORS-main">
-			<!-- HEADER OPTIONS FOR MOBILE -->
-			<div id="HeaderOptionsMenuMobile" style="display:none">
-				<ul>
-					<li>
-						<a data-toggle="modal" href="#feedbackModal" id="ORS-menuLinkFeedbackMobile">
-							Feedback
-						</a>
-					</li>
-					<br>
-					<li>
-						<a data-toggle="modal" href="#sitePrefsModal" id="ORS-menuLinkSitePrefsMobile">
-							User preferences
-						</a>
-					</li>
-					<br>
-					<li>
-						<a href="contact.html#top" id="ORS-menuLinkInfoMobile" target="_blank">
-							Info & contacts
-						</a>
-					</li>
-				</ul> 
-			</div>
-			<!-- END OF HEADER OPTIONS FOR MOBILE -->
             <div class="ORS-sidebar" id="sidebar">
                 <!-- sidebar content -->
                 <div class="ORS-menuPanel" id="menuPanel">
                     <div>
-                        <button class="btn  ORS-menuButton ORS-BtnPrimary-menu active" select-id="ORS-routeContent"  data-container=".ORS-mainPanel" id="routeContentMenu" type="button" data-toggle="tooltip" title="" data-placement="right" data-original-title="Route">
+                        <button class="btn ORS-menuButton ORS-BtnPrimary-menu active" select-id="ORS-routeContent"  data-container=".ORS-mainPanel" id="routeContentMenu" type="button" data-toggle="tooltip" title="" data-placement="right" data-original-title="Route">
                             <i class="fa fa-road"></i>
                         </button>
-                        <button class="btn  ORS-menuButton ORS-BtnPrimary-menu" select-id="ORS-aaContent" data-container=".ORS-mainPanel" id="aaContentMenu" type="button" data-toggle="tooltip" title="" data-placement="right" data-original-title="Accessibility">
+                        <button class="btn ORS-menuButton ORS-BtnPrimary-menu" select-id="ORS-aaContent" data-container=".ORS-mainPanel" id="aaContentMenu" type="button" data-toggle="tooltip" title="" data-placement="right" data-original-title="Accessibility">
                             <i class="fa fa-bullseye"></i>
                         </button>
-                        <button class="btn  ORS-menuButton ORS-BtnPrimary-menu" select-id="ORS-cloudContent" data-container=".ORS-mainPanel" id="cloudContentMenu" type="button" data-toggle="tooltip" title="" data-placement="right" data-original-title="Import/ Export">
+                        <button class="btn ORS-menuButton ORS-BtnPrimary-menu" select-id="ORS-cloudContent" data-container=".ORS-mainPanel" id="cloudContentMenu" type="button" data-toggle="tooltip" title="" data-placement="right" data-original-title="Import/ Export">
                             <i class="fa fa-cloud-download"></i>
                         </button>
                     </div>
@@ -610,7 +578,45 @@
                                         </label>
                                     </div>
                                 </div>
+                                <div class="ORS-steepness ORS-panel-sub ORS-hr-dark" id="difficultySteepness" style="display: none;">
+                                    <h6 id="difficultyHeadingLabel">
+                                        Route difficulty settings
+                                    </h6>
+                                     <div class="checkbox">
+                                        <label>
+                                            <input id="Hills" type="checkbox" class="ORS-avoid">
+                                                <span id="avoidHillsLabel">
+                                                    avoid hills
+                                                </span>
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <h6 id="difficultyLabel">
+                                        set your fitness level
+                                    </h6>
+                                    <select class="form-control" id="routeDifficulty">
+                                        <option value="-1">not set</option>
+                                        <option value="0">easy</option>
+                                        <option value="1">average</option>
+                                        <option value="2">athletic</option>
+                                    </select>
+                                    <h6 id="maxSteepness">
+                                        Maximum Steepness
+                                    </h6>
+                                    <div class="input-group">
+                                        <input class="form-control input-sm" id="maxSteepnessInput" placeholder="between 1-15" type="number" min="1" max="15">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default btn-sm" disabled="true" id="maxSteepnessBtn" type="button">
+                                                    set
+                                                </button>
+                                            </span>
+                                        </input>
+                                    </div>
+                                </div>
                                 <div class="ORS-all ORS-panel-sub" id="maxSpeed" style="display: none;">
+                                    <h6>
+                                        Maximum speed
+                                    </h6>
                                     <div class="row">
                                         <div class="col-lg-8">
                                             <div class="input-group">
@@ -633,6 +639,10 @@
                         	</div>
                             <div class="ORS-panel-sub ORS-hr-dark ORS-padding">
                                 <div class="guiComponent waypoint unset" draggable="draggable" id="Draft" style="display: none">
+                                    <div class="right transparent tt-directwp" data-container=".ORS-mainPanel" data-toggle="tooltip" title="Direct waypoint">
+                                        <i class="fa fa-ellipsis-v"></i>
+                                        <input data-toggle="button" type="checkbox" class="directwaypoint"/>
+                                    </div>
                                     <span class="clickable waypoint-icon unset" title="Zoom to waypoint">
                                     </span>
                                     <span class="clickable removeWaypoint" title="Remove waypoint">
@@ -659,6 +669,10 @@
                                     </div>
                                 </div>
                                 <div class="guiComponent waypoint unset" draggable="draggable" id="0">
+                                    <div style="display: none;" class="right transparent tt-directwp" data-container=".ORS-mainPanel" data-toggle="tooltip" title="Direct waypoint">
+                                        <i class="fa fa-ellipsis-v"></i>
+                                        <input data-toggle="button" type="checkbox" class="directwaypoint"/>
+                                    </div>
                                     <span class="clickable waypoint-icon unset" title="Zoom to waypoint">
                                     </span>
                                     <span class="clickable removeWaypoint" title="Remove waypoint">
@@ -685,6 +699,10 @@
                                     </div>
                                 </div>
                                 <div class="guiComponent waypoint unset" draggable="draggable" id="1">
+                                    <div class="right transparent tt-directwp" data-container=".ORS-mainPanel" data-toggle="tooltip" title="Direct waypoint">
+                                        <i class="fa fa-ellipsis-v"></i>
+                                        <input data-toggle="button" type="checkbox" class="directwaypoint"/>
+                                    </div>
                                     <span class="clickable waypoint-icon unset" title="Zoom to waypoint">
                                     </span>
                                     <span class="clickable removeWaypoint" title="Remove waypoint">
@@ -931,7 +949,7 @@
         </div>
         <!-- END OF MAIN SECTION -->
         <!-- modal for user preferences (language, distance unit,...) -->
-        <div aria-labelledby="sitePrefs" class="modal fade"Pop id="sitePrefsModal" role="dialog" tabindex="-1">
+        <div aria-labelledby="sitePrefs" class="modal fade" id="sitePrefsModal" role="dialog" tabindex="-1">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -1045,9 +1063,8 @@
         <!-- CALL JAVASCRIPT FUNCTIONS -->
         <!-- 	important: jQuery must be included before properties type	 -->
         <script src="lib/jquery-2.2.4.min.js" type="text/javascript"> </script>
-        <!--<script type="text/javascript" src="lib/bootstrap/bootstrap.js"></script>-->
         <script src="lib/bootstrap3/js/bootstrap.js" type="text/javascript"></script>
-        <!--<script type="text/javascript" src="lib/bootstrap3/js/bootstrap.min.js"></script>-->
+        <script src="lib/bootstrap-toggle.min.js" type="text/javascript"></script>
         <script src="lib/prototype.1.7.minified.js" type="text/javascript"></script>
         <script src="lib/leaflet-1.0.0-beta.2.js" type="text/javascript"></script>
         <script src="lib/Leaflet.Editable.js" type="text/javascript"></script>
@@ -1056,11 +1073,12 @@
         <script src="lib/L.Control.MousePosition.js" type="text/javascript"></script>
         <script src="lib/togpx.js" type="text/javascript"></script>
         <script src="lib/togeojson.js" type="text/javascript"></script>
+        <script src="lib/geojson.min.js" type="text/javascript"></script>
         <script src="lib/leaflet-drag-marker-edges.js" type="text/javascript"></script>
         <script src="lib/Leaflet.MakiMarkers.js" type="text/javascript"></script>
         <script src="lib/d3.v3.min.js" type="text/javascript"></script>
         <script src="lib/d3.tip.js" type="text/javascript"></script>
-        <script src="lib/leaflet.elevation-0.0.4.src.js" type="text/javascript"></script>
+        <script src="lib/L.Control.Heightgraph.js" type="text/javascript"></script>        
         <script src="lib/XMLWriter-1.0.0-min.js" type="text/javascript"></script>
         <script src="lib/javascript.util.min.js" type="text/javascript"></script>
         <script src="lib/jsts.min.js" type="text/javascript"></script>
@@ -1099,6 +1117,48 @@
         <script src="js/lang/lang-ua.js" type="text/javascript"></script>
         <script src="js/lang/lang-cn.js" type="text/javascript"></script>
         <script src="js/lang/lang-cnsimple.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            // bootstrap and prototypejs have a conflict on hiding elements
+            (function() {
+                var isBootstrapEvent = false;
+                if (window.jQuery) {
+                    var all = jQuery('*');
+                    jQuery.each(['hide.bs.dropdown', 
+                        'hide.bs.collapse', 
+                        'hide.bs.modal', 
+                        'hide.bs.tooltip',
+                        'hide.bs.popover',
+                        'hide.bs.tab'], function(index, eventName) {
+                        all.on(eventName, function( event ) {
+                            isBootstrapEvent = true;
+                        });
+                    });
+                }
+                var originalHide = Element.hide;
+                Element.addMethods({
+                    hide: function(element) {
+                        if(isBootstrapEvent) {
+                            isBootstrapEvent = false;
+                            return element;
+                        }
+                        return originalHide(element);
+                    }
+                });
+            })();
+        </script>
+        <!-- ENABLE MODALS TO BE CALLED FROM DROPDOWN MENU -->
+        <script>
+             (function($){
+                $(window).on("load",function(){
+                    $('.dropdown-menu').click(function(e) {
+                        e.stopPropagation();
+                        if ($(e.target).is('[data-toggle=modal]')) {
+                            $($(e.target).data('target')).modal()
+                        }
+                    });
+                });
+            })(jQuery);
+        </script>
         <!-- CALL CUSTOM SCROLLBAR -->
         <script>
             (function($){
