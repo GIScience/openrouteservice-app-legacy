@@ -1615,7 +1615,7 @@ var Ui = (function(w) {
         var WayTypeResult = calculateChart(results, mapFeatureIds, "WayType", totalDistance);
         var WaySurfaceResult = calculateChart(results, mapFeatureIds, "WaySurface", totalDistance);
         var WaySteepnessResult = calculateSteepness(results);
-        var WaySteepnessResultChart = calculateBarChart(results);
+        //var WaySteepnessResultChart = calculateBarChart(results);
         horizontalBarchart('layerRouteLines', list.divWayTypes, list.listWayTypesContainer, WayTypeResult, list.WayTypeColors);
         horizontalBarchart('layerRouteLines', list.divSurfaceTypes, list.listSurfaceTypesContainer, WaySurfaceResult, list.SurfaceTypeColors);
         horizontalBarchart('layerSteepnessLines', list.divSteepnessTypes, list.listSteepnessTypesContainer, WaySteepnessResult);
@@ -1657,11 +1657,7 @@ var Ui = (function(w) {
             }).attr("title", function(d) {
                 return (d.y1 - d.y0) + "% : " + d.typetranslated;
             }).style("fill", function(d, i) {
-                if (colors) {
-                    return colors[i];
-                } else {
                     return d.color;
-                }
             }).on('mouseover', function(d) {
                 handleHighlightTypes(d.ids, layer);
                 tip.show(d);
@@ -1789,25 +1785,33 @@ var Ui = (function(w) {
         var information, type, text, typelist = [];
         information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySteepnessList')[0];
         information = util.getElementsByTagNameNS(results, namespaces.xls, 'WaySteepness');
-        for (var i = 0; i < (list.SteepnessType).length; i++) {
-            if (Object.keys(list.SteepnessType[i])[0] > 0) {
-                text = '<i class="fa fa-caret-up"></i> ' + list.SteepnessType[i][Object.keys(list.SteepnessType[i])[0]].text;
-            } else if (Object.keys(list.SteepnessType[i])[0] < 0) {
-                text = '<i class="fa fa-caret-down"></i> ' + list.SteepnessType[i][Object.keys(list.SteepnessType[i])[0]].text;
-            } else {
-                text = '<i class="fa fa-caret-right"></i> ' + list.SteepnessType[i][Object.keys(list.SteepnessType[i])[0]].text;
+        Object.size = function(obj) {
+            var size = 0, key;
+            for (key in obj) {
+                if (obj.hasOwnProperty(key)) size++;
             }
-            var color = list.SteepnessType[i][Object.keys(list.SteepnessType[i])[0]].color;
+            return size;
+        };
+        // Get the size of an object
+        var size = Object.size(mappings.steepnessTypes);
+        for (var i = 0; i < size; i++) {
+            if (i > 5) {
+                text = '<i class="fa fa-caret-up"></i> ' + mappings.steepnessTypes[i].text;
+            } else if (i < 5) {
+                text = '<i class="fa fa-caret-down"></i> ' + mappings.steepnessTypes[i].text;
+            } else {
+                text = '<i class="fa fa-caret-right"></i> ' +  mappings.steepnessTypes[i].text;
+            }
             typelist.push({
                 type: text,
                 typetranslated: text,
-                color: color,
                 distance: 0,
                 ids: [],
                 segments: [],
                 percentage: 0,
                 y0: 0,
-                y1: 0
+                y1: 0,
+                color: mappings.steepnessTypes[i].color
             });
         }
         var totaldistancevalue = 0;
@@ -1874,14 +1878,15 @@ var Ui = (function(w) {
             typelist = [];
             for (type in list.WayType) {
                 typelist.push({
-                    type: list.WayType[type],
-                    typetranslated: preferences.translate(list.WayType[type]),
+                    type: mappings.wayTypes[type].text,
+                    typetranslated: preferences.translate(mappings.wayTypes[type].text),
                     distance: 0,
                     ids: [],
                     segments: [],
                     percentage: 0,
                     y0: 0,
-                    y1: 0
+                    y1: 0,
+                    color: mappings.wayTypes[type].color
                 });
             }
         } else if (types == "WaySurface") {
@@ -1890,14 +1895,15 @@ var Ui = (function(w) {
             typelist = [];
             for (type in list.SurfaceType) {
                 typelist.push({
-                    type: list.SurfaceType[type],
-                    typetranslated: preferences.translate(list.SurfaceType[type]),
+                    type: mappings.surfaceTypes[type].text,
+                    typetranslated: preferences.translate(mappings.surfaceTypes[type].text),
                     distance: 0,
                     ids: [],
                     segments: [],
                     percentage: 0,
                     y0: 0,
-                    y1: 0
+                    y1: 0,
+                    color: mappings.surfaceTypes[type].color
                 });
             }
         }

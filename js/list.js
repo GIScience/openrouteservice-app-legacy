@@ -179,7 +179,7 @@ list = {
         17: 'Grass',
         18: 'GrassPaver'
     },
-    SurfaceTypeColors: ['#45C4F9', '#37A4F5', '#339AF3', '#257AEF', '#2070EE', '#1250EA', '#0D46E9', '#0431E6', '#0431E6', '#0027E5'],
+    SurfaceTypeColors: ['#45c4f9','#48bcf8','#49b3f7','#4babf6','#4ba3f5','#4b9bf4','#4b93f3','#4a89f2','#4881f1','#467af0','#4471ef','#4168ee','#3d60ec','#3858eb','#334eea','#2c46e9','#233ce8','#1833e6','#0027e5'],
     divSurfaceTypes: '#surfaceType',
     listSurfaceTypesContainer: '#surfaceTypeList'
 };
