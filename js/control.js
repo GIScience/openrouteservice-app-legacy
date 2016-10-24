@@ -1627,7 +1627,6 @@ var Controller = (function(w) {
                     }
                 }
             };
-			// ak = "api_key=eb85f2a6a61aafaebe7e2f2a89b102f5";
             rawFile.send(null);
         }
         readTextFile(list.key);
