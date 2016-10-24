@@ -1327,7 +1327,7 @@ var Controller = (function(w) {
      * clearInterval has to be called to remove any old timeouts
      */
     function loadTMC() {
-        var url = generateUrl(namespaces.services.tmc);
+        var url = namespaces.services.tmc;
         clearInterval(refreshIntervalIdTMC);
         compareBoundingBoxes(url, false);
         refreshIntervalIdTMC = setInterval(function() {
@@ -1341,7 +1341,7 @@ var Controller = (function(w) {
      * @param forceUpdate: when auto refreshed after 5 minutes, force update the tmc messages, otherwise proceed as usual
      */
     function compareBoundingBoxes(url, forceUpdate) {
-        var tmcUrl = url + '&bbox=' + map.theMap.getBounds().getSouthWest().lng + ',' + map.theMap.getBounds().getSouthWest().lat + ',' + map.theMap.getBounds().getNorthEast().lng + ',' + map.theMap.getBounds().getNorthEast().lat + '?' + ak;
+        var tmcUrl = url + '&bbox=' + map.theMap.getBounds().getSouthWest().lng + ',' + map.theMap.getBounds().getSouthWest().lat + ',' + map.theMap.getBounds().getNorthEast().lng + ',' + map.theMap.getBounds().getNorthEast().lat + '&' + ak;
         if (forceUpdate === true) {
             getTMC(tmcUrl);
         } else {
@@ -1603,7 +1603,7 @@ var Controller = (function(w) {
         // set new bounding box after map and new bounding box are loaded from permalink
         map.previousBoundingbox = new L.latLngBounds(map.theMap.getBounds().getSouthWest(), map.theMap.getBounds().getNorthEast());
         // force tmc service once
-        compareBoundingBoxes(generateUrl(namespaces.services.tmc), true);
+        compareBoundingBoxes(namespaces.services.tmc, true);
         // this listener is added here, otherwise tmc service will be requested several times during map init
         map.theMap.on('moveend', map.emitloadTMC);
         //set Interval for ServerTimeOut control

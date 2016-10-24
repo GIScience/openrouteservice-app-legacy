@@ -124,7 +124,7 @@ var Route = (function(w) {
         if (maxsteepness >= 0 & maxsteepness <= 15) {
             writer.writeElementString('xls:MaxSteepness', maxsteepness);
         }
-        if (fitness >= 0 & fitness <= 2) {
+        if (fitness >= 0 & fitness <= 3) {
             writer.writeElementString('xls:DifficultyLevel', fitness);
         }
         //</xls:ExtendedRoutePreference>            

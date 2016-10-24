@@ -609,10 +609,7 @@ var Map = (function() {
      * *********************************************************************/
     // load graph info when map loaded
     function graphInfo() {
-        var url = namespaces.services.routing + "?info" + "?" + ak;
-        if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
-            url = "cgi-bin/proxy.cgi?url=" + url;
-        }
+        var url = namespaces.services.routing + "?info" + "&" + ak;
         jQuery.ajax({
             url: url,
             type: 'GET',
