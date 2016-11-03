@@ -1,5 +1,5 @@
 <?php
-/*+-------------+----------------------------------------------------------*
+/*+-------------+----------------------------------------------------------* 
  *|        /\   |     University of Heidelberg                             *
  *|       |  |  |     Department of Geography                              *
  *|      _|  |_ |     GIScience Research Group                             *
@@ -14,10 +14,13 @@
  *
  * <p><b>Copyright:</b> Copyright (c) 2015</p>
  * <p><b>Institution:</b> University of Heidelberg, Department of Geography</p>
- * @author Timothy Ellersiek, openrouteservice at geog.uni-heidelberg.de
- * @version 1.0 2016-08
+ * @author Timothy Ellersiek, Amandus Butzer, openrouteservice at geog.uni-heidelberg.de
+ * @version 1.1 2016-10
  */
  
+	require('../FirePHPCore/fb.php');
+	ob_start();
+
 	include ('CreateRSRequest.php');
 	include ('ConnectToWebService.php');
 
@@ -26,127 +29,245 @@
 	//?start=8.001551792162187,52.267593720674526&end=8.068890507570062,52.29003995914382
 	// start=7.040837,50.723612&end=7.040036,50.72591&via=7.026576,50.720379
 	// &routepref=Shortest&weighting=Car&lang=de&noMotorways=true&noTollways=true&distunit=M&instructions=true
-	if(isset($_GET["start"]) && isset($_GET["end"]) && isset($_GET["via"])&& isset($_GET["lang"]) && isset($_GET["distunit"]) && isset($_GET["routepref"]) && isset($_GET["weighting"])&& isset($_GET["noMotorways"]) && isset($_GET["noTollways"]) && isset($_GET["noFerries"])&& isset($_GET["noSteps"])&& isset($_GET["noUnpavedroads"]) && isset($_GET["instructions"]) && isset($_GET["api_key"])){
-	
-		$startcoordinate = $_GET["start"];
-		$endcoordinate = $_GET["end"];
-		$viaPoints_xml = $_GET["via"];
-		$language = $_GET["lang"];
-		$distanceunit = $_GET["distunit"];
-		$routepref = $_GET["routepref"];
-		$weighting = $_GET["weighting"];
-		$avoidAreas = '';
-		$noMotorways = $_GET["noMotorways"];
-		$noTollways = $_GET["noTollways"];
-		$noFerries = $_GET["noFerries"];
-		$noUnpavedroads = $_GET["noUnpavedroads"];
-		$noSteps = $_GET["noSteps"];
-		$instructions = $_GET["instructions"];
-		$api_key = $_GET["api_key"];
 
-		if (isset($_GET["value_width"])&& isset($_GET["value_height"])&& isset($_GET["value_weight"])&& isset($_GET["value_length"])&& isset($_GET["value_axleload"])){
-		
-			$hgv = '';
-			$hazardous = $_GET["hazardous"];
-			$value_width =  $_GET["value_width"];
-			$value_weight =  $_GET["value_weight"];
-			$value_height =  $_GET["value_height"];
-			$value_length =  $_GET["value_length"];
-			$value_axleload =  $_GET["value_axleload"];
-		
-			if($routepref == 'HeavyVehicle'){
-			$haz='';
-			$hgv='<xls:VehicleType>hgv</xls:VehicleType>';	
-			$hgv=$hgv.'<xls:Width>'.$value_width.'</xls:Width>';
-			$hgv=$hgv.'<xls:Height>'.$value_height.'</xls:Height>';
-			$hgv=$hgv.'<xls:Weight>'.$value_weight.'</xls:Weight>';	
-			$hgv=$hgv.'<xls:Length>'.$value_length.'</xls:Length>';	
-			$hgv=$hgv.'<xls:AxleLoad>'.$value_axleload.'</xls:AxleLoad>';	
-				if($hazardous == true){		
-				$haz='<xls:LoadCharacteristics>
-						<xls:LoadCharacteristic>hazmat</xls:LoadCharacteristic>
-					 </xls:LoadCharacteristics>';	
-				}
-			}
-		}
-		
-		if (isset($_GET["surface"])&& isset($_GET["elevation"])){
-		$surface = $_GET["surface"];
-		$elevation = $_GET["elevation"];
-		$sur = '';
-		$ele = '';
-			if(($routepref == 'Bicycle')||($routepref == 'BicycleSafety')||($routepref == 'BicycleTour')||($routepref == 'BicycleMTB')||($routepref == 'BicycleRacer')){
-				if ($surface == 'true'){
-				$sur=$sur.'<xls:SurfaceInformation>true</xls:SurfaceInformation>';
-				}else{
-				$sur=$sur.'<xls:ElevationInformation>false</xls:ElevationInformation>';
-				}
-				if ($elevation == 'true'){
-				$ele=$ele.'<xls:ElevationInformation>true</xls:ElevationInformation>';
-				}else{
-				$ele=$ele.'<xls:ElevationInformation>false</xls:ElevationInformation>';
-				}
-			}
-		}
-		
-		if(isset($_GET["maxspeed"])){
-			$speed = $_GET["maxspeed"];
-				if ($speed > 0){
-				$maxspeed=$maxspeed.'<xls:MaxSpeed>';
-				$maxspeed=$maxspeed.+$speed;
-				$maxspeed=$maxspeed.'</xls:MaxSpeed>';
-			}
-		}
-		
-		$avoidFeatures = '';
-		if($noMotorways == 'true'){
-			$avoidFeatures = '<xls:AvoidFeature>Highway</xls:AvoidFeature>';
-		}
-		if($noTollways == 'true'){
-			$avoidFeatures = $avoidFeatures.'<xls:AvoidFeature>Tollway</xls:AvoidFeature>';
-		}
-		if($noFerries == 'true'){
-			$avoidFeatures = $avoidFeatures.'<xls:AvoidFeature>Ferry</xls:AvoidFeature>';
-		}
-		if($noUnpavedroads == 'true'){
-			$avoidFeatures = $avoidFeatures.'<xls:AvoidFeature>Unpavedroads</xls:AvoidFeature>';
-		}
-		if($noSteps == 'true'){
-			$avoidFeatures = $avoidFeatures.'<xls:AvoidFeature>Steps</xls:AvoidFeature>';
-		}
-		
-		if($instructions == 'true'){
-			$instructions = '<xls:RouteInstructionsRequest format="text/plain" provideGeometry="true"/>';
-		}
-		else{
-			$instructions = '';
-		}
-				
-		$startcoordinate = str_replace(",", " ", $startcoordinate);
-		$endcoordinate = str_replace(",", " ", $endcoordinate);
-		
-		if(strlen($viaPoints_xml) > 0){
-			$points = explode(" ", $viaPoints_xml);
-			$viaPoints_xml = "";
-			for($i = 0; $i < count($points) ; $i++){
-				$p = explode(",", $points[$i]);
-				$viaPoints_xml = $viaPoints_xml."<xls:ViaPoint><xls:Position><gml:Point><gml:pos>".$p[0]." ".$p[1]."</gml:pos></gml:Point></xls:Position></xls:ViaPoint>";
-			}
-		}
-		else
-			$viaPoints_xml = "";
+
+	//create default object for parameter storage
+	$object = new stdClass;
+	//
+	$object->start = str_replace(",", " ", $_GET["start"]);
+	$object->end = str_replace(",", " ", $_GET["end"]);
+	$object->api_key = $_GET["api_key"];
+
+	$object->via = (isset($_GET["via"])) ? explode(" ", $_GET["via"]) : Null;
+	if ($object->via == Null){unset($object->via);}
+
+	//
+	$object->language = (isset($_GET["lang"])) ? $_GET["lang"] : "en"; 
+	$object->distunit = (isset($_GET["distunit"])) ? $_GET["distunit"] : "KM";
+	$object->routepref = (isset($_GET["routepref"])) ? $_GET["routepref"] : "Car";
+	$object->weighting = (isset($_GET["weighting"])) ? $_GET["weighting"] : "Fastest";
+	$object->instructions = (isset($_GET["instructions"])) ? $_GET["instructions"] : "false";
+	$object->AvoidFeatures = (isset($_GET["noTollways"]) or isset($_GET["noMotorways"]) or isset($_GET["noTunnels"]) or isset($_GET["noUnpavedroads"]) or isset($_GET["noPavedroads"]) or isset($_GET["noFerries"]) or isset($_GET["noFords"]) or isset($_GET["noTracks"]) or isset($_GET["noSteps"])) ? [] : Null;
+	$object->AvoidAreas = (isset($_GET["avAreas"])) ? explode(";", $_GET["avAreas"]) : Null ;
+	if ($object->AvoidAreas == Null){unset($object->AvoidAreas);} 
 	
+
+
+	//if there is no api key or start or end parameter -> No result
+	if (is_null($object->start) or is_null($object->end) or is_null($object->api_key)){
+		echo "No start or end point! Please define at least the start and end parameter plus insert your API key. If you don't know how to use parameters visit our <a href=http://openrouteservice.readthedocs.io>Documentation</a>.";
+	}
+	
+	//if the three main parameter are set we can continue
+	elseif(isset($_GET["start"]) && isset($_GET["end"]) && isset($_GET["api_key"])){
+
+
+
+		//check for the routpreference -> further parameters depend on it
+		
+		// setup for Car profile; is here because it is default profile
+		if ($object->routepref == "Car"){
+			
+			if (isset($_GET["maxspeed"])){
+				$object->maxspeed = "+".abs($_GET["maxspeed"]);
+			}
+			else {
+				$object->maxspeed = "+130";
+			}
+			// Get Avoid Features for Profile, only take features that suit the profile
+ 
+			if (isset($_GET["noMotorways"]) and $_GET["noMotorways"] == "true"){
+				array_push($object->AvoidFeatures,"Highway");
+			}
+
+			if (isset($_GET["noTollways"]) and $_GET["noTollways"] == "true"){
+				array_push($object->AvoidFeatures,"Tollway");
+			}
+
+			if (isset($_GET["noTunnels"]) and $_GET["noTunnels"] == "true"){
+				array_push($object->AvoidFeatures,"Tunnels");
+			}
+
+			if (isset($_GET["noUnpavedroads"]) and $_GET["noUnpavedroads"] == "true"){
+				array_push($object->AvoidFeatures,"Unpavedroads");
+			}
+
+			if (isset($_GET["noFerries"]) and $_GET["noFerries"] == "true"){
+				array_push($object->AvoidFeatures,"Ferry");
+			}
+
+			if (isset($_GET["noFords"]) and $_GET["noFords"] == "true"){
+				array_push($object->AvoidFeatures,"Ford");
+			}
+
+			if (isset($_GET["noTracks"]) and $_GET["noTracks"] == "true"){
+				array_push($object->AvoidFeatures,"Tracks");
+			}
+
+		}
+		
+
+		// setup for Bicycle profile
+		elseif ($object->routepref == "Bicycle" or $object->routepref == "BicycleMTB" or $object->routepref == "BicycleRacer" or $object->routepref == "BicycleTouring" or $object->routepref == "BicycleSafety"){
+	
+			if (isset($_GET["maxspeed"])){
+				$object->maxspeed = "+".abs($_GET["maxspeed"]);
+			}
+			else {
+				$object->maxspeed = "+18";
+			}
+			if (isset($_GET["level"]) and ($_GET["level"] >= -1 and $_GET["level"] <= 3)){
+				$object->level = $_GET["level"];
+			}
+			if (isset($_GET["steep"]) and ($_GET["steep"] >= 1 and $_GET["steep"] <= 15)){
+				$object->steep = $_GET["steep"];
+			}
+			if (isset($_GET["surface"]) and $_GET["surface"] == "true"){
+				$object->surface = '<xls:SurfaceInformation>true</xls:SurfaceInformation>';
+			}
+			
+			if (isset($_GET["elevation"]) and $_GET["elevation"] == "true"){
+				$object->elevation = '<xls:ElevationInformation>true</xls:ElevationInformation>';
+			}
+			
+			if (isset($_GET["noSteps"]) and $_GET["noSteps"] == "true"){
+				array_push($object->AvoidFeatures,"Steps");
+			}
+
+			if (isset($_GET["noPavedroads"]) and $_GET["noPavedroads"] == "true"){
+				array_push($object->AvoidFeatures,"Paved");
+			}
+
+			if (isset($_GET["noUnpavedroads"]) and $_GET["noUnpavedroads"] == "true"){
+				array_push($object->AvoidFeatures,"Unpavedroads");
+			}
+
+			if (isset($_GET["noFerries"]) and $_GET["noFerries"] == "true"){
+				array_push($object->AvoidFeatures,"Ferry");
+			}
+
+			if (isset($_GET["noFords"]) and $_GET["noFords"] == "true"){
+				array_push($object->AvoidFeatures,"Ford");
+			}
+
+			if (isset($_GET["noHills"]) and $_GET["noHills"] == "true"){
+				array_push($object->AvoidFeatures,"Hills");
+			}
+
+		}
+
+		// setup for Pedestrian profile
+		elseif ($object->routepref == "Pedestrian"){
+			
+			if (isset($_GET["maxspeed"])){
+				$object->maxspeed = "+".abs($_GET["maxspeed"]);
+			}
+			else {
+				$object->maxspeed = "+5";
+			}
+
+			if (isset($_GET["noSteps"]) and $_GET["noSteps"] == "true"){
+				array_push($object->AvoidFeatures,"Steps");
+			}
+
+			if (isset($_GET["noFerries"]) and $_GET["noFerries"] == "true"){
+				array_push($object->AvoidFeatures,"Ferry");
+			}
+
+			if (isset($_GET["noFords"]) and $_GET["noFords"] == "true"){
+				array_push($object->AvoidFeatures,"Ford");
+			}
+		}
+
+		// setup for Wheelchair profile
+		elseif ($object->routepref == "Wheelchair"){
+			
+			if (isset($_GET["maxspeed"])){
+				$object->maxspeed = "+".abs($_GET["maxspeed"]);
+			}
+			else {
+				$object->maxspeed = "+5";
+			}
+
+			//Surface
+			//Incline
+			//max height of sloped curb
+		}
+
+		// setup for HeavyVehicle profile
+		elseif ($object->routepref == "HeavyVehicle"){
+
+			$object->subtype = (isset($_GET["subType"])) ? $_GET["subType"] : "hgv";
+			
+			if (isset($_GET["maxspeed"])){
+				$object->maxspeed = "+".abs($_GET["maxspeed"]);
+			}
+			else {
+				$object->maxspeed = "+110";
+			}
+
+			$object->haz = (isset($_GET["haz"]) and $_GET["haz"] == ("true")) ? "true" : Null;
+			if ($object->haz == Null){
+				unset($object->haz);
+			}
+
+			if (isset($_GET["noMotorways"]) and $_GET["noMotorways"] == "true"){
+				array_push($object->AvoidFeatures,"Highway");
+			}
+
+			if (isset($_GET["noTollways"]) and $_GET["noTollways"] == "true"){
+				array_push($object->AvoidFeatures,"Tollway");
+			}
+
+			if (isset($_GET["noTunnels"]) and $_GET["noTunnels"] == "true"){
+				array_push($object->AvoidFeatures,"Tunnels");
+			}
+
+			if (isset($_GET["noUnpavedroads"]) and $_GET["noUnpavedroads"] == "true"){
+				array_push($object->AvoidFeatures,"Unpavedroads");
+			}
+
+			if (isset($_GET["noFerries"]) and $_GET["noFerries"] == "true"){
+				array_push($object->AvoidFeatures,"Ferry");
+			}
+
+			if (isset($_GET["noFords"]) and $_GET["noFords"] == "true"){
+				array_push($object->AvoidFeatures,"Ford");
+			}
+
+			if (isset($_GET["noTracks"]) and $_GET["noTracks"] == "true"){
+				array_push($object->AvoidFeatures,"Tracks");
+			}
+
+			if (isset($_GET["value_length"])&& isset($_GET["value_width"])&& isset($_GET["value_height"])&& isset($_GET["value_weight"])&& isset($_GET["value_axleload"])){
+				$object->hgv = array(
+					"Length" => $_GET["value_length"],
+					"Width" => $_GET["value_width"],
+					"Height" => $_GET["value_height"],
+					"Weight" => $_GET["value_weight"],
+					"AxleLoad" => $_GET["value_axleload"]
+				);
+			}
+		}
+
+		if ($object->AvoidFeatures == Null){
+			unset($object->AvoidFeatures);
+		} 
+		
 		///////////////////////////////////////////////////
-		//*** Sende Request an Web Service ***
-		$request = createRequest($startcoordinate, $endcoordinate, $viaPoints_xml, $language, $distanceunit, $routepref, $weighting,
-				$avoidAreas, $avoidFeatures, $hgv, $haz, $sur, $ele, $maxspeed, $instructions);
+		//*** Send Request to Web Service ***
+		$request = createRequest($object);
 
+		fb($request);
+		
 		//Server
-		$http_response = post('openls.geog.uni-heidelberg.de', '/osm/routing'.'?api_key='.$api_key, $request, 20, 80);
+		$http_response = post('openls.geog.uni-heidelberg.de', '/osm/routing'.'?api_key='.($object->api_key), $request, 20, 80);
 		
+		fb($http_response);
+
 		///////////////////////////////////////////////////
-		//*** Request auswerten ***
-		//Header entfernen
+		//*** analyse Request ***
+		//delete Header
 		$sExplodeParam = '<?xml';
 		if (strchr($http_response, $sExplodeParam)){
 		   $aResponse = explode($sExplodeParam,$http_response);
@@ -158,9 +279,14 @@
 			header('Content-Type: text/xml');
 
 			echo $sExplodeParam . $aResponse[1];
+
 		}
+
+		fb($aResponse);
 	}
 
-	else
+	else {
 		echo "Nothing via php GET! please check if your query is correct -> otherwise please contact openrouteservice at geog.uni-heidelberg.de";
+	}
+
 ?>
