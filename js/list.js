@@ -84,102 +84,10 @@ list = {
     menuElements: ['ORS-routeContent', 'ORS-aaContent', 'ORS-cloudContent'],
     // waytype and surface type information
     tmc: {},
-    SteepnessType: [{
-        '-5': {
-            text: '16%+',
-            color: '#028306'
-        }
-    }, {
-        '-4': {
-            text: '10-15%',
-            color: '#2AA12E'
-        }
-    }, {
-        '-3': {
-            text: '7-9%',
-            color: '#53BF56'
-        }
-    }, {
-        '-2': {
-            text: '4-6%',
-            color: '#7BDD7E'
-        }
-    }, {
-        '-1': {
-            text: '1-3%',
-            color: '#A4FBA6'
-        }
-    }, {
-        '0': {
-            text: '0%',
-            color: '#ffcc99'
-        }
-    }, {
-        '1': {
-            text: '1-3%',
-            color: '#F29898 '
-        }
-    }, {
-        '2': {
-            text: '4-6%',
-            color: '#E07575'
-        }
-    }, {
-        '3': {
-            text: '7-9%',
-            color: '#CF5352'
-        }
-    }, {
-        '4': {
-            text: '10-15%',
-            color: '#BE312F'
-        }
-    }, {
-        '5': {
-            text: '16%+',
-            color: '#AD0F0C'
-        }
-    }],
     divSteepnessTypes: '#steepnessType',
     listSteepnessTypesContainer: '#steepnessTypeList',
-    WayType: {
-        0: 'Other',
-        1: 'StateRoad',
-        2: 'Road',
-        3: 'Street',
-        4: 'Path',
-        5: 'Track',
-        6: 'Cycleway',
-        7: 'Footway',
-        8: 'Steps',
-        9: 'Ferry',
-        10: 'Construction'
-    },
-    WayTypeColors: ['#7d7de5', '#7070ce', '#6464b7', '#5757a0', '#4b4b89', '#3e3e72', '#32325b', '#252544', '#19192d', '#0c0c16'],
     divWayTypes: '#wayType',
     listWayTypesContainer: '#wayTypeList',
-    SurfaceType: {
-        0: 'Other',
-        1: 'Paved',
-        2: 'Unpaved',
-        3: 'Asphalt',
-        4: 'Concrete',
-        5: 'Cobblestone',
-        6: 'Metal',
-        7: 'Wood',
-        8: 'CompactedGravel',
-        9: 'FineGravel',
-        10: 'Gravel',
-        11: 'Dirt',
-        12: 'Ground',
-        13: 'Ice',
-        14: 'Salt',
-        15: 'Sand',
-        16: 'Woodchips',
-        17: 'Grass',
-        18: 'GrassPaver'
-    },
-    SurfaceTypeColors: ['#45c4f9','#48bcf8','#49b3f7','#4babf6','#4ba3f5','#4b9bf4','#4b93f3','#4a89f2','#4881f1','#467af0','#4471ef','#4168ee','#3d60ec','#3858eb','#334eea','#2c46e9','#233ce8','#1833e6','#0027e5'],
     divSurfaceTypes: '#surfaceType',
     listSurfaceTypesContainer: '#surfaceTypeList'
 };
@@ -205,9 +113,8 @@ for (var key in tmcCodes) {
         if (key == 'COMPLETELY_CLOSED') list.tmc[tmcCodes[key][i]] = ['./img/warning_road_closed.png', '#A5A5A5'];
     }
 }
-
 var mappings = {};
-mappings.WaySteepness = {
+mappings.Gradients = {
     '0': {
         text: '16%+',
         color: '#028306'
@@ -253,128 +160,127 @@ mappings.WaySteepness = {
         color: '#AD0F0C'
     }
 };
-mappings.WayType = {
+mappings.Waytypes = {
     '0': {
         text: 'Other',
-        color: '#800080'
+        color: '#30959e'
     },
     '1': {
         text: 'StateRoad',
-        color: '#90267b'
+        color: '#3f9da6'
     },
     '2': {
         text: 'Road',
-        color: '#9f3c76'
+        color: '#4ea5ae'
     },
     '3': {
         text: 'Street',
-        color: '#ad5270'
+        color: '#5baeb5'
     },
     '4': {
         text: 'Path',
-        color: '#ba6569'
+        color: '#67b5bd'
     },
     '5': {
         text: 'Track',
-        color: '#c77862'
+        color: '#73bdc4'
     },
     '6': {
         text: 'Cycleway',
-        color: '#d38a59'
+        color: '#7fc7cd'
     },
     '7': {
         text: 'Footway',
-        color: '#de9e4e'
+        color: '#8acfd5'
     },
     '8': {
         text: 'Steps',
-        color: '#eab041'
+        color: '#96d7dc'
     },
     '9': {
         text: 'Ferry',
-        color: '#f4c42e'
+        color: '#a2dfe5'
     },
     '10': {
         text: 'Construction',
-        color: '#ffd700'
+        color: '#ade8ed'
     }
 };
-mappings.WaySurface = {
+mappings.Surfaces = {
     '0': {
         text: 'Other',
-        color: '#31276f'
+        color: '#ddcdeb'
     },
     '1': {
         text: 'Paved',
-        color: '#372c7d'
+        color: '#cdb8df'
     },
     '2': {
         text: 'Unpaved',
-        color: '#3d318c'
+        color: '#d2c0e3'
     },
     '3': {
         text: 'Asphalt',
-        color: '#44369a'
+        color: '#bca4d3'
     },
     '4': {
         text: 'Concrete',
-        color: '#4a3ba9'
+        color: '#c1abd7'
     },
     '5': {
         text: 'Cobblestone',
-        color: '#5040b7'
+        color: '#c7b2db'
     },
     '6': {
         text: 'Metal',
-        color: '#5b4bc0'
+        color: '#e8dcf3'
     },
     '7': {
         text: 'Wood',
-        color: '#685ac5'
+        color: '#eee3f7'
     },
     '8': {
         text: 'Compacted Gravel',
-        color: '#7568ca'
+        color: '#d8c6e7'
     },
     '9': {
         text: 'Fine Gravel',
-        color: '#8377cf'
+        color: '#8f9de4'
     },
     '10': {
         text: 'Gravel',
-        color: '#9085d4'
+        color: '#e3d4ef'
     },
     '11': {
         text: 'Dirt',
-        color: '#9d94d9'
+        color: '#99a6e7'
     },
     '12': {
         text: 'Ground',
-        color: '#aaa2df'
+        color: '#a3aeeb'
     },
     '13': {
         text: 'Ice',
-        color: '#b8b1e4'
+        color: '#acb6ee'
     },
     '14': {
         text: 'Salt',
-        color: '#c5bfe9'
+        color: '#b6c0f2'
     },
     '15': {
         text: 'Sand',
-        color: '#d2ceee'
+        color: '#c9d1f8'
     },
     '16': {
         text: 'Woodchips',
-        color: '#dfdcf3'
+        color: '#c0c8f5'
     },
     '17': {
         text: 'Grass',
-        color: '#edebf8'
+        color: '#d2dafc'
     },
     '18': {
         text: 'Grass Paver',
-        color: '#faf9fd'
+        color: '#dbe3ff'
     }
 };
-
