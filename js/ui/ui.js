@@ -1690,6 +1690,10 @@ var Ui = (function(w) {
     function processHeightProfile(routeLineString, routeLineStringSegments, results, viaPoints) {
         var heightgraphData = [];
         var heightgraphList = [{
+            list: 'WaySteepnessList',
+            query: 'WaySteepness',
+            info: 'Gradients'
+        }, {
             list: 'WayTypeList',
             query: 'WayType',
             info: 'Waytypes'
@@ -1697,10 +1701,6 @@ var Ui = (function(w) {
             list: 'WaySurfaceList',
             query: 'WaySurface',
             info: 'Surfaces'
-        }, {
-            list: 'WaySteepnessList',
-            query: 'WaySteepness',
-            info: 'Gradients'
         }];
         $A(heightgraphList).each(function(item) {
             var information = util.getElementsByTagNameNS(results, namespaces.xls, item.list)[0];
@@ -1719,7 +1719,7 @@ var Ui = (function(w) {
                 typenumber = typenumber.textContent;
                 // either we are looking at routelinestring or route segments!
                 if (item.list == 'WaySteepnessList') {
-                        // add 5 as types start at -5
+                    // add 5 as types start at -5
                     typenumber = parseInt(typenumber) + 5;
                     // last of block should be first of next block
                     if (i > 0) fr = fr - 1;
@@ -1958,7 +1958,7 @@ var Ui = (function(w) {
                 typelist[type].y1 = y0 += +typelist[type].percentage;
             }
         }
-            // remove elements without distance
+        // remove elements without distance
         var typelistCleaned = typelist.filter(function(el) {
             return el.distance !== 0;
         });

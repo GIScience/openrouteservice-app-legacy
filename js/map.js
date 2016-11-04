@@ -216,7 +216,7 @@ var Map = (function() {
             width: 850,
             height: 180,
             margins: {
-                top: 20,
+                top: 40,
                 right: 150,
                 bottom: 40,
                 left: 50
