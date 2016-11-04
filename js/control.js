@@ -129,7 +129,7 @@ var Controller = (function(w) {
             var newIndex = waypoint.getNumWaypoints() - 1;
             //Replace the waypoint adress with the one selected in the first waypoint
             var rootElement = $('#' + newIndex);
-			rootElement.hide();
+            rootElement.hide();
             rootElement.removeClass('unset');
             var guiComponent = rootElement.find('.guiComponent');
             guiComponent.hide();
@@ -234,12 +234,12 @@ var Controller = (function(w) {
                 type: 'roundtrip',
             }, false, false, true);
         }
-		//If there is only the start and end point for roundtrip, do not calculate a route
-		if (waypoint.getNumWaypoints() <= 2 && roundtrip) noRouteRequest = true;
+        //If there is only the start and end point for roundtrip, do not calculate a route
+        if (waypoint.getNumWaypoints() <= 2 && roundtrip) noRouteRequest = true;
         if (!noRouteRequest) {
             handleWaypointChanged();
         }
-		if (wpType == Waypoint.type.ROUNDTRIP && wpIndex != 0) $('#' + wpIndex).hide();
+        if (wpType == Waypoint.type.ROUNDTRIP && wpIndex != 0) $('#' + wpIndex).hide();
         //start geocoding process and replace lat lon in input if response
         geolocator.reverseGeolocate(pos, reverseGeocodeSuccess, reverseGeocodeFailure, preferences.language, wpType, wpIndex, newFeatureId);
         // show loading
@@ -355,11 +355,11 @@ var Controller = (function(w) {
             waypoint.setWaypoint(idx, false);
         }
         //re-calculate the waypoint types
-		if(!$('#roundtrip')[0].checked) {
-			$(".waypoint.roundtrip").each(function() {
-				this.show();
-			});
-		}
+        if (!$('#roundtrip')[0].checked) {
+            $(".waypoint.roundtrip").each(function() {
+                this.show();
+            });
+        }
         for (var i = 0; i < waypoint.getNumWaypoints() + $('unset').length; i++) {
             var type = waypoint.determineWaypointType(i);
             ui.setWaypointType(i, type);
@@ -883,7 +883,7 @@ var Controller = (function(w) {
      */
     function handleRoutePresent() {
         var isRoutePresent = waypoint.getNumWaypointsSet() >= 2;
-		if ($('#roundtrip')[0].checked && waypoint.getNumWaypointsSet() <= 2) isRoutePresent = false;
+        if ($('#roundtrip')[0].checked && waypoint.getNumWaypointsSet() <= 2) isRoutePresent = false;
         if (isRoutePresent) {
             calcRouteID++;
             ui.startRouteCalculation();
@@ -951,11 +951,9 @@ var Controller = (function(w) {
             wheelChairParams[2] = wheelchairSloped;
             wheelChairParams[3] = wheelchairTrackType;
             wheelChairParams[4] = wheelchairSmoothness;
-
             var maxSteepness = permaInfo[preferences.maxsteepnessIdx];
             var avoidHills = permaInfo[preferences.avoidHillsIdx];
             var fitness = permaInfo[preferences.fitnessIdx];
-
             route.calculate(routePoints, routeCalculationSuccess, routeCalculationError, preferences.routingLanguage, routePref, extendedRoutePreferencesType, wheelChairParams, truckParams, avoidableParams, avoidAreas, extendedRoutePreferencesWeight, extendedRoutePreferencesMaxspeed, calcRouteID, directWaypoints, maxSteepness, avoidHills, fitness);
             //try to read a variable that is set after the service response was received. If this variable is not set after a while -> timeout.
             clearTimeout(timerRoute);
@@ -996,10 +994,8 @@ var Controller = (function(w) {
                 var routeLinestringSegments = route.parseResultsToLineStrings(results);
                 var cornerPoints = route.parseResultsToCornerPoints(results);
                 var routeSegmentation = route.parseResultsToViaWaypoints(results);
-
                 //Get the restrictions along the route
                 //map.updateRestrictionsLayer(restrictions.getRestrictionsQuery(routeLineString), permaInfo[preferences.routeOptionsIdx]);
-                map.removeElevationControl(routePref);
                 var featureIds = map.updateRoute(routeLinestring, cornerPoints, routePref, routeSegmentation);
                 var errors = route.hasRoutingErrors(results);
                 if (!errors) {
@@ -1009,7 +1005,6 @@ var Controller = (function(w) {
                     if ($.inArray(routePref, list.elevationProfiles) >= 0) {
                         // Surface and waytype information
                         ui.updateSurfaceSteepness(results, featureIds, 'layerRouteLines', totalDistance);
-                        
                         // Elevation information
                         if (elevation) {
                             var viaPoints = [];
@@ -1018,13 +1013,13 @@ var Controller = (function(w) {
                                 routePoints.pop();
                                 viaPoints = routePoints;
                             }
-
                             // Generated for height profile
                             var elevationData = ui.processHeightProfile(routeLineString, routeLinestring, results, viaPoints);
                             map.updateHeightprofiles(elevationData);
                         }
                         $('#routeTypesContainer').show();
                     } else {
+                        map.removeElevationControl(routePref);
                         $('#routeTypesContainer').hide();
                     }
                     ui.endRouteCalculation();
@@ -1583,8 +1578,8 @@ var Controller = (function(w) {
                 // direct waypoint starts at index 1
                 var directwaypoint = undefined;
                 if (directwaypoints) {
-                    directwaypoint = directwaypoints[i];  
-                } 
+                    directwaypoint = directwaypoints[i];
+                }
                 handleAddWaypointByRightclick({
                     pos: waypoints[i],
                     type: type,
@@ -1619,7 +1614,7 @@ var Controller = (function(w) {
     function readApiKey() {
         function readTextFile(file) {
             var rawFile = new XMLHttpRequest();
-            rawFile.open("GET", file, false);
+            rawFile.open("GET", file, true);
             rawFile.onreadystatechange = function() {
                 if (rawFile.readyState === 4) {
                     if (rawFile.status === 200 || rawFile.status == 0) {

@@ -205,8 +205,9 @@ for (var key in tmcCodes) {
         if (key == 'COMPLETELY_CLOSED') list.tmc[tmcCodes[key][i]] = ['./img/warning_road_closed.png', '#A5A5A5'];
     }
 }
+
 var mappings = {};
-mappings.steepnessTypes = {
+mappings.WaySteepness = {
     '0': {
         text: '16%+',
         color: '#028306'
@@ -252,127 +253,128 @@ mappings.steepnessTypes = {
         color: '#AD0F0C'
     }
 };
-mappings.wayTypes = {
+mappings.WayType = {
     '0': {
         text: 'Other',
-        color: '#e6e6fa'
+        color: '#800080'
     },
     '1': {
         text: 'StateRoad',
-        color: '#dad3f5'
+        color: '#90267b'
     },
     '2': {
         text: 'Road',
-        color: '#cebfef'
+        color: '#9f3c76'
     },
     '3': {
         text: 'Street',
-        color: '#c3ace7'
+        color: '#ad5270'
     },
     '4': {
         text: 'Path',
-        color: '#b999df'
+        color: '#ba6569'
     },
     '5': {
         text: 'Track',
-        color: '#af84d5'
+        color: '#c77862'
     },
     '6': {
         text: 'Cycleway',
-        color: '#a671ca'
+        color: '#d38a59'
     },
     '7': {
         text: 'Footway',
-        color: '#9e5cbd'
+        color: '#de9e4e'
     },
     '8': {
         text: 'Steps',
-        color: '#9747ae'
+        color: '#eab041'
     },
     '9': {
         text: 'Ferry',
-        color: '#912e9e'
+        color: '#f4c42e'
     },
     '10': {
         text: 'Construction',
-        color: '#8b008b'
+        color: '#ffd700'
     }
 };
-mappings.surfaceTypes = {
+mappings.WaySurface = {
     '0': {
         text: 'Other',
-        color: '#add8e6'
+        color: '#31276f'
     },
     '1': {
         text: 'Paved',
-        color: '#96ceea'
+        color: '#372c7d'
     },
     '2': {
         text: 'Unpaved',
-        color: '#85c4ea'
+        color: '#3d318c'
     },
     '3': {
         text: 'Asphalt',
-        color: '#78b8e8'
+        color: '#44369a'
     },
     '4': {
         text: 'Concrete',
-        color: '#6cace5'
+        color: '#4a3ba9'
     },
     '5': {
         text: 'Cobblestone',
-        color: '#62a1e0'
+        color: '#5040b7'
     },
     '6': {
         text: 'Metal',
-        color: '#5995db'
+        color: '#5b4bc0'
     },
     '7': {
         text: 'Wood',
-        color: '#528ad6'
+        color: '#685ac5'
     },
     '8': {
-        text: 'CompactedGravel',
-        color: '#4b7ed0'
+        text: 'Compacted Gravel',
+        color: '#7568ca'
     },
     '9': {
-        text: 'FineGravel',
-        color: '#4474ca'
+        text: 'Fine Gravel',
+        color: '#8377cf'
     },
     '10': {
         text: 'Gravel',
-        color: '#3e67c4'
+        color: '#9085d4'
     },
     '11': {
         text: 'Dirt',
-        color: '#385dbd'
+        color: '#9d94d9'
     },
     '12': {
         text: 'Ground',
-        color: '#3351b6'
+        color: '#aaa2df'
     },
     '13': {
         text: 'Ice',
-        color: '#2d46af'
+        color: '#b8b1e4'
     },
     '14': {
         text: 'Salt',
-        color: '#263aa8'
+        color: '#c5bfe9'
     },
     '15': {
         text: 'Sand',
-        color: '#202ea1'
+        color: '#d2ceee'
     },
     '16': {
         text: 'Woodchips',
-        color: '#18219a'
+        color: '#dfdcf3'
     },
     '17': {
         text: 'Grass',
-        color: '#0e1392'
+        color: '#edebf8'
     },
     '18': {
-        text: 'GrassPaver',
-        color: '#00008b'
+        text: 'Grass Paver',
+        color: '#faf9fd'
     }
 };
+
