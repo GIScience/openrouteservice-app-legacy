@@ -126,7 +126,7 @@ function createRequest($object)
 
     $request = $request . "</xls:AvoidList>
 						</xls:RoutePlan>";
-    if ($object->instructions == "true") {
+    if (isset($object->instructions)) {
         $request = $request . "<xls:RouteInstructionsRequest format=\"text/plain\" provideGeometry=\"true\"/>";
     }
 
