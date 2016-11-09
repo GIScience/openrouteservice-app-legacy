@@ -9,8 +9,8 @@
  *|             |     D-69221 Heidelberg, Germany                          *
  *+-------------+----------------------------------------------------------*/
 /**
- * <p><b>Title: RS </b></p>
- * <p><b>Description:</b> Functions for RS </p>
+ * <p><b>Title: DS </b></p>
+ * <p><b>Description:</b> Functions for DS </p>
  *
  * <p><b>Copyright:</b> Copyright (c) 2015</p>
  * <p><b>Institution:</b> University of Heidelberg, Department of Geography</p>

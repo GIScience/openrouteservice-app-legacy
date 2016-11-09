@@ -15,20 +15,24 @@
  * <p><b>Copyright:</b> Copyright (c) 2015</p>
  * <p><b>Institution:</b> University of Heidelberg, Department of Geography</p>
  * @author Pascal Neis, Enrico Steiger , Amandus Butzer, openrouteservice at geog.uni-heidelberg.de
- * @version 1.0 2015-02-01
+ * @version 2.0 2016-11-03
  */
 
 ///////////////////////////////////////////////////
 //Function die XML Request an OpenLS RS erstellt
+//Function that creates the XML request for OpenLS RS
 
 ob_start();
 
 function createRequest($object)
 {
-    fb($object);
     $request = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 					<xls:XLS xmlns:xls=\"http://www.opengis.net/xls\" xmlns:sch=\"http://www.ascc.net/xml/schematron\" xmlns:gml=\"http://www.opengis.net/gml\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/xls
-					D:\Schemata\OpenLS1.1\RouteService.xsd\" version=\"1.1\" xls:lang=\"$object->language\">
+					D:\Schemata\OpenLS1.1\RouteService.xsd\" version=\"1.1\"";
+    if (isset($object->language)) {
+        $request = $request . " xls:lang=\"$object->language\"";
+    }
+    $request = $request . ">
 					<xls:RequestHeader/>
 					<xls:Request methodName=\"RouteRequest\" requestID=\"123456789\" version=\"1.1\">
 					<xls:DetermineRouteRequest distanceUnit=\"$object->distunit\">
@@ -42,11 +46,11 @@ function createRequest($object)
     if (isset($object->elevation)) {
         $request = $request . "<xls:ElevationInformation>true</xls:ElevationInformation>";
     }
-    if (isset($object->level)){
-    	$request = $request . "<xls:DifficultyLevel>$object->level</xls:DifficultyLevel>";
+    if (isset($object->level)) {
+        $request = $request . "<xls:DifficultyLevel>$object->level</xls:DifficultyLevel>";
     }
-    if (isset($object->steep)){
-    	$request = $request . "<xls:MaxSteepness>$object->steep</xls:MaxSteepness>";
+    if (isset($object->steep)) {
+        $request = $request . "<xls:MaxSteepness>$object->steep</xls:MaxSteepness>";
     }
     if (isset($object->hgv)) {
         $request = $request . "<xls:VehicleType>$object->subtype</xls:VehicleType>";
@@ -72,6 +76,8 @@ function createRequest($object)
 								</xls:StartPoint>";
 
     //Via points if set
+    // Direct way points code="1" to be implemented
+
     if (isset($object->via)) {
         foreach ($object->via as $key => $vpoint) {
             $request = $request . "<xls:ViaPoint>

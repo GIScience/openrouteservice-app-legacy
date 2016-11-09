@@ -17,36 +17,25 @@
  * @author Pascal Neis, Enrico Steiger, Amandus Butzer, openrouteservice@geog.uni-heidelberg.de
  * @version 2.0 2016-11-04
  */
- 	require '../FirePHPCore/fb.php';
-	ob_start();
-
+ 
 	include ('CreateAASRequest.php');
 	include ('ConnectToWebService.php');
 
 	///////////////////////////////////////////////////
 	//*** Request erstellen POST ***
+	if(isset($_GET["position"])&& isset($_GET["minutes"]) && isset($_GET["routePreference"])&& isset($_GET["method"])&& isset($_GET["interval"]) && isset($_GET["api_key"])){
+		$position = $_GET["position"];
+		$minutes = $_GET["minutes"];
+		$method = $_GET["method"];
+		$interval = $_GET["interval"];
+		$routepreference = $_GET["routePreference"];
+		$api_key = $_GET["api_key"];
 
-	//create default object for parameter storage
-	$object = new stdClass;
+		$position = str_replace(",", " ", $position);
 
-	$object->position = (isset($_GET["position"])) ? str_replace(",", " ", $_GET["position"]) : Null;
-	$api_key = (isset($_GET["api_key"])) ? $_GET["api_key"] : Null;
-	
-	if (is_null($object->position) or is_null($api_key)) {
-    echo "No point to analyse or missing API key! Please define at least the position parameter and append your API key. If you don't know how to use parameters visit our <a href=http://openrouteservice.readthedocs.io>Documentation</a>.";
-	}
+		$request = createAnalysisRequest($position, $minutes, $routepreference, $method, $interval);
 
-	else{
 
-		if(isset($object->position) and isset($api_key)){
-			$object->minutes = (isset($_GET["minutes"])) ? $_GET["minutes"] : "10";
-			$object->method = (isset($_GET["method"]) and $_GET["method"] = ("RecursiveGrid" or "TIN")) ? $_GET["method"] : "RecursiveGrid";
-			$object->interval = (isset($_GET["interval"])) ? $_GET["interval"] : "5";
-			$object->routepreference = (isset($_GET["routepreference"])) ? $_GET["routePreference"] : "Car";
-		}
-
-		$request = createAnalysisRequest($object);
-		
 		///////////////////////////////////////////////////
 		//*** Sende Request an Web Service ***
 		//Server
@@ -66,6 +55,8 @@
 			header('Content-Type: text/xml');
 			echo $sExplodeParam . $aResponse[1];
 		}
-	}	
+	}
+	else
+		echo "Nothing via php GET! please check if your query is correct -> otherwise please contact openrouteservice at geog.uni-heidelberg.de";
 ?>
 

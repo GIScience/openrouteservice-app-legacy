@@ -9,19 +9,19 @@
  *|             |     D-69221 Heidelberg, Germany                          *
  *+-------------+----------------------------------------------------------*/
 /**
- * <p><b>Title: AAS </b></p>
- * <p><b>Description:</b> Functions for AAS </p>
+ * <p><b>Title: RS </b></p>
+ * <p><b>Description:</b> Functions for RS </p>
  *
  * <p><b>Copyright:</b> Copyright (c) 2015</p>
  * <p><b>Institution:</b> University of Heidelberg, Department of Geography</p>
- * @author Pascal Neis, Enrico Steiger, Amandus Butzer, openrouteservice@geog.uni-heidelberg.de
- * @version 2.0 2016-11-04
+ * @author Pascal Neis, Enrico Steiger , openrouteservice at geog.uni-heidelberg.de
+ * @version 1.0 2015-02-01
  */
  
 ///////////////////////////////////////////////////
 //Function die XML Request an Accessibility Analyse erstellt
 
-function createAnalysisRequest($object) {
+function createAnalysisRequest($position, $minutes, $routepreference, $method, $interval) {
 	$request = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 			<aas:AAS version=\"1.0\" xmlns:aas=\"http://www.geoinform.fh-mainz.de/aas\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.geoinform.fh-mainz.de/aas\">
 			<aas:RequestHeader>
@@ -30,17 +30,17 @@ function createAnalysisRequest($object) {
 				<aas:DetermineAccessibilityRequest>
 					<aas:Accessibility>
 						<aas:AccessibilityPreference>
-							<aas:Time Duration=\"PT0H{$object->minutes}M00S\" />
+							<aas:Time Duration=\"PT0H".$minutes."M00S\" />
 						</aas:AccessibilityPreference>
 						<aas:AccessibilitySettings>
-							<aas:RoutePreference>$object->routepreference</aas:RoutePreference>
-							<aas:Method>$object->method</aas:Method>
-							<aas:Interval>$object->interval</aas:Interval>
+							<aas:RoutePreference>$routepreference</aas:RoutePreference>
+							<aas:Method>$method</aas:Method>
+							<aas:Interval>$interval</aas:Interval>
 						</aas:AccessibilitySettings>
 						<aas:LocationPoint>
 							<aas:Position>
 								<gml:Point xmlns:gml=\"http://www.opengis.net/gml\" srsName=\"EPSG:4326\">
-									<gml:pos>$object->position</gml:pos>
+									<gml:pos>$position</gml:pos>
 								</gml:Point>
 							</aas:Position>
 						</aas:LocationPoint>

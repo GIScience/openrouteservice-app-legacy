@@ -35,7 +35,7 @@ function post($host, $path, $data, $timeout, $port) {
 	fputs($fp, "HTTP_CLIENT_IP: ".$_SERVER['REMOTE_ADDR']."\r\n");
 	$deny = array('');
 	foreach ($deny as $denyip) {
-	if (strpos($_SERVER['REMOTE_ADDR'], $denyip)===0) {
+	if (! empty($denyip) && strpos($_SERVER['REMOTE_ADDR'], $denyip)===0) {
 	header("location: http://www.openrouteservice.org/contact.html");
 	exit();
 	}}
