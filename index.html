@@ -18,7 +18,7 @@
         <!-- LEAFLET PLUGINS -->
         <link href="css/L.Control.Heightgraph.css" rel="stylesheet" type="text/css">
         <!-- ELEVATION PLUGIN -->
-        <link href="css/MarkerCluster.css" rel="stylesheet" type="text/css">
+        <link href="css/MarkerCluster.Default.css" rel="stylesheet" type="text/css">
         <!-- MARKER CLUSTER PLUGIN -->
         <link href="css/L.Control.MousePosition.css" rel="stylesheet" type="text/css">
         <!-- MOUSE POSITION PLUGIN -->
@@ -595,13 +595,14 @@
                                         set your fitness level
                                     </h6>
                                     <select class="form-control" id="routeDifficulty">
-                                        <option value="-1">not set</option>
-                                        <option value="0">easy</option>
-                                        <option value="1">average</option>
-                                        <option value="2">athletic</option>
+                                        <option value="-1">Not set</option>
+                                        <option value="0">Novice</option>
+                                        <option value="1">Moderate</option>
+                                        <option value="2">Amateur</option>
+                                        <option value="3">Pro</option>
                                     </select>
                                     <h6 id="maxSteepness">
-                                        Maximum Steepness
+                                        Maximum Steepness (%)
                                     </h6>
                                     <div class="input-group">
                                         <input class="form-control input-sm" id="maxSteepnessInput" placeholder="between 1-15" type="number" min="1" max="15">
@@ -803,6 +804,14 @@
                     </div>
                     <div class="routeExtrasContainer ORS-panel" data-id="ORS-aaContent" style="display: none;">
                         <div class="guiComponent ORS-panel-sub ORS-hr">
+                            
+                            <div class="ORS-alert alert alert-info">
+                                <span >
+                                    We are currently experiencing difficulities on our servers in regards to the accessibility analysis. Minutes settings greater
+                                    <b>15</b> won't be processed. Please note that the interval has to be atleast 1 minute smaller than the minutes settings.
+                                </span>
+                            </div>
+
                             <table class="table table-borderless">
                                 <tr>
                                     <td>
@@ -919,7 +928,7 @@
                 </div>
             </div>
             <div class="ORS-map" id="map">
-                <a href="http://www.geog.uni-heidelberg.de/giscience.html" class="ORS-logo" target="_blank" class="link">GIScience</a>
+                <!--<a href="http://www.geog.uni-heidelberg.de/giscience.html" class="ORS-logo" target="_blank" class="link">GIScience</a>-->
                 <div id="infoPermalink">
                     Permalink
                 </div>

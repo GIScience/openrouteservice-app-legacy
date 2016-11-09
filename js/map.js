@@ -216,7 +216,7 @@ var Map = (function() {
             width: 850,
             height: 180,
             margins: {
-                top: 65,
+                top: 40,
                 right: 150,
                 bottom: 40,
                 left: 50
@@ -609,10 +609,7 @@ var Map = (function() {
      * *********************************************************************/
     // load graph info when map loaded
     function graphInfo() {
-        var url = namespaces.services.routing + "?info" + "?" + ak;
-        if (location.hostname.match('openrouteservice') || location.hostname.match('localhost')) {
-            url = "cgi-bin/proxy.cgi?url=" + url;
-        }
+        var url = namespaces.services.routing + "?info" + "&" + ak;
         jQuery.ajax({
             url: url,
             type: 'GET',
@@ -1197,12 +1194,13 @@ var Map = (function() {
      */
     function updateHeightprofiles(data, viaPoints) {
         var hg = this.heightGraphControl;
-        // #1
-        this.theMap.addControl(hg);
-                
-        // update heightgraphControl..
-        hg.addData(data);
-
+        // check if heightgraph already exists
+        if (hg._container === undefined || hg._container === null) {
+            this.theMap.addControl(hg);
+            hg.addData(data);
+        } else {
+            hg.addData(data);
+        }
     }
     /**
      * Ads segments
@@ -1217,8 +1215,7 @@ var Map = (function() {
     /**
      * removes elevation profile if not needed
      */
-    function removeElevationControl(profile) {
-        console.log('removing..')
+    function removeElevationControl() {
         // clear elevation info if not bike
         var hg = this.heightGraphControl;
         hg.remove();

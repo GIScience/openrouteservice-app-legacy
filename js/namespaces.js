@@ -38,9 +38,9 @@ namespaces.services = {
     // wps: '' //for calculation of polygon around route for POI search
     //     /** ORS test instance
     // geocoding : 'http://openls.geog.uni-heidelberg.de/osm/geocoding-test', //for address search requests
-    //routing: 'http://openls.geog.uni-heidelberg.de/osm/routing-test', //for routing requests
+    // routing: 'http://openls.geog.uni-heidelberg.de/osm/routing-test', //for routing requests
     //     directory : 'http://openls.geog.uni-heidelberg.de/osm/directory-test', //for POI search requests
-    //     analyse : 'http://openls.geog.uni-heidelberg.de/osm/analysis-test', //for accessibility analysis requests
+    // analyse : 'http://openls.geog.uni-heidelberg.de/osm/analysis-test', //for accessibility analysis requests
     //     shorten: 'http://openls.geog.uni-heidelberg.de/osm/shortenlink-test', //for bitly shortlink conversion
     //     */
     // see latest ORS API documentation http://wiki.openstreetmap.org/wiki/OpenRouteService

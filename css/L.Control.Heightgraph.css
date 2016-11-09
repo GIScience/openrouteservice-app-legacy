@@ -38,35 +38,22 @@
 .bars {
     fill-opacity: 0.9;
     shape-rendering: crispEdges;
+    pointer-events: none;
+}
+
+.bars-overlay {
+    fill: none;
+    pointer-events: all;
 }
 
 .borderTop {
     stroke-width: 1;
-    stroke: #444;
+    stroke: #999;
     fill: none;
 }
 
 
 /* d3 styles */
-
-.focusLine line {
-    stroke-width: 1;
-    stroke: #444;
-    display: none;
-    cursor: default;
-}
-
-.wpLine {
-    pointer-events: none;
-    stroke-width: 2;
-    stroke: black;
-}
-
-.wp-text {
-    pointer-events: none;
-    fill: white;
-    font-size: 12px;
-}
 
 .legend-rect {
     pointer-events: none;
@@ -80,24 +67,32 @@
 }
 
 .tick, .tick text {
-    fill: #000;
+    fill: #999;
 }
 
-.axisText {
+.axis .tick line {
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.AxisText {
     text-anchor: middle;
-    color: #fff;
-    fill: #fff;
+    color: #999;
+    fill: #999;
 }
 
 .axis path {
-    stroke: #000;
+    stroke: black;
     fill: none;
-    stroke-width: 1;
+    stroke-width: 2px;
+    shape-rendering: crispEdges;
+    stroke: lightgrey;
+    pointer-events: none;
 }
 
 .axis line {
-    stroke: #000;
-    shape-rendering: crispEdges;
+    stroke: #999;
+    pointer-events: none;
 }
 
 .focus {
@@ -109,18 +104,40 @@
 
 .focus rect {
     fill: rgba(255, 255, 255, 0.8);
-    stroke-width: 1;
-    stroke: #000;
+    stroke-width: 1px;
+    shape-rendering: crispEdges;
+    stroke: #888;
     pointer-events: none;
 }
 
-.height-focus.label {
-    fill: #444;
+.focus text {
+    font-size: 12px;
+}
+
+.height-focus.label text {
+    font-size: 12px;
+}
+
+.focusLine line {
+    stroke-width: 1px;
+    stroke: rgb(20, 20, 20);
+    display: none;
+    cursor: default;
+    shape-rendering: crispEdges;
+}
+
+.height-focus.label rect {
+    fill: rgba(255, 255, 255, 0.5);
+    stroke-width: 1px;
+    stroke: #888;
+    pointer-events: none;
+    shape-rendering: crispEdges;
 }
 
 .height-focus.line {
-    stroke: #444;
-    stroke-width: 1;
+    stroke: rgb(20,20,20);
+    stroke-width: 1px;
+    shape-rendering: crispEdges;
 }
 
 .height-focus.circle {
@@ -134,10 +151,22 @@
 
 .selection {
     position: absolute;
-    top: 7px;
-    left: 7px;
+    top: 8px;
+    right: 25px;
     z-index: 1;
     background: #FFF;
     color: #000;
     display: none;
+}
+
+.grid .tick {
+    stroke: #EEE;
+    pointer-events: none;
+    stroke-width: 1px;
+    shape-rendering: crispEdges;
+}
+
+.grid path {
+    stroke-width: 0;
+    pointer-events: none;
 }
