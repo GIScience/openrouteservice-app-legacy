@@ -14,8 +14,8 @@
  *
  * <p><b>Copyright:</b> Copyright (c) 2015</p>
  * <p><b>Institution:</b> University of Heidelberg, Department of Geography</p>
- * @author Pascal Neis, Enrico Steiger, Amandus Butzer, openrouteservice@geog.uni-heidelberg.de
- * @version 2.0 2016-11-04
+ * @author Amandus Butzer, Timothy Ellersiek, openrouteservice at geog.uni-heidelberg.de
+ * @version 2.0 2016-11-03
  */
  	require '../FirePHPCore/fb.php';
 	ob_start();

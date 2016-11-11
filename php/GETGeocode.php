@@ -14,12 +14,11 @@
  *
  * <p><b>Copyright:</b> Copyright (c) 2015</p>
  * <p><b>Institution:</b> University of Heidelberg, Department of Geography</p>
- * @author Pascal Neis, Enrico Steiger, Amandus Butzer, openrouteservice at geog.uni-heidelberg.de
- * @version 1.0 2015-02-01
+ * @author Amandus Butzer, Timothy Ellersiek, openrouteservice at geog.uni-heidelberg.de
+ * @version 2.0 2016-11-03
  */
  
-	///////////////////////////////////////////////////
-	//*** Request erstellen für OpenLS Location Utility Service ***
+	
 	require '../FirePHPCore/fb.php';
 	ob_start();
 

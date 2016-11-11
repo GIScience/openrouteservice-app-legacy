@@ -14,8 +14,8 @@
  *
  * <p><b>Copyright:</b> Copyright (c) 2015</p>
  * <p><b>Institution:</b> University of Heidelberg, Department of Geography</p>
- * @author Timothy Ellersiek, Amandus Butzer, openrouteservice at geog.uni-heidelberg.de
- * @version 1.1 2016-10
+ * @author Amandus Butzer, Timothy Ellersiek, openrouteservice at geog.uni-heidelberg.de
+ * @version 2.0 2016-11-03
  */
 
 require '../FirePHPCore/fb.php';
@@ -243,7 +243,6 @@ elseif (isset($_GET["start"]) && isset($_GET["end"]) && isset($_GET["api_key"]))
     if ($object->AvoidFeatures == null) {
         unset($object->AvoidFeatures);
     }
-    fb($object);
     ///////////////////////////////////////////////////
     //*** Send Request to Web Service ***
     $request = createRequest($object);

@@ -14,16 +14,9 @@
  *
  * <p><b>Copyright:</b> Copyright (c) 2015</p>
  * <p><b>Institution:</b> University of Heidelberg, Department of Geography</p>
- * @author Pascal Neis, Enrico Steiger , Amandus Butzer, openrouteservice at geog.uni-heidelberg.de
+ * @author Amandus Butzer, Timothy Ellersiek, openrouteservice at geog.uni-heidelberg.de
  * @version 2.0 2016-11-03
  */
-
-///////////////////////////////////////////////////
-//Function die XML Request an OpenLS RS erstellt
-//Function that creates the XML request for OpenLS RS
-
-ob_start();
-
 function createRequest($object)
 {
     $request = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
@@ -75,7 +68,7 @@ function createRequest($object)
 									</xls:Position>
 								</xls:StartPoint>";
 
-    //Via points if set
+    // Via points if set
     // Direct way points code="1" to be implemented
 
     if (isset($object->via)) {

@@ -5,22 +5,18 @@
  *|      _|  |_ |     GIScience Research Group                             *
  *|    _/      \|                                                          *
  *|___|         |                                                          *
- *|             |     Berliner Straße 48	                               *
+ *|             |     Berliner Straße 48                                   *
  *|             |     D-69221 Heidelberg, Germany                          *
  *+-------------+----------------------------------------------------------*/
 /**
- * <p><b>Title: AAS </b></p>
- * <p><b>Description:</b> Functions for AAS </p>
+ * <p><b>Title: RS </b></p>
+ * <p><b>Description:</b> Functions for RS </p>
  *
  * <p><b>Copyright:</b> Copyright (c) 2015</p>
  * <p><b>Institution:</b> University of Heidelberg, Department of Geography</p>
- * @author Pascal Neis, Enrico Steiger, Amandus Butzer, openrouteservice@geog.uni-heidelberg.de
- * @version 2.0 2016-11-04
+ * @author Amandus Butzer, Timothy Ellersiek, openrouteservice at geog.uni-heidelberg.de
+ * @version 2.0 2016-11-03
  */
- 
-///////////////////////////////////////////////////
-//Function die XML Request an Accessibility Analyse erstellt
-
 function createAnalysisRequest($object) {
 	$request = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 			<aas:AAS version=\"1.0\" xmlns:aas=\"http://www.geoinform.fh-mainz.de/aas\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.geoinform.fh-mainz.de/aas\">
