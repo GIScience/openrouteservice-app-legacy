@@ -31,19 +31,24 @@ function createGeocodeRequest($object)
 					version=\"1.1\">
 						<xls:RequestHeader/>
 						<xls:Request methodName=\"GeocodeRequest\" requestID=\"123456789\" version=\"1.1\" maximumResponses=\"";
-// default value for max response = 20
+	
+	/** Set the default of MaxResponse to 20 if not set */
     $request = (isset($object->MaxResponse)) ? $request . "$object->MaxResponse" : $request . "20";
+    
     $request = $request . "\">
 							<xls:GeocodeRequest>
 								<xls:Address countryCode=\"";
+    
+	/** Set the default language to English if not set */
     $request = (isset($object->lang)) ? $request . "$object->lang" : $request . "en";
+    
+    /** insert the Adress search parameter */
     $request = $request . "\">
 								    <xls:freeFormAddress>$object->FreeFormAddress</xls:freeFormAddress>
 								</xls:Address>
 							</xls:GeocodeRequest>
 						</xls:Request>
 					</xls:XLS>";
-    //return utf8_decode($request);
     return $request;
 }
 
