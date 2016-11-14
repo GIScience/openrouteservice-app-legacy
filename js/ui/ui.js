@@ -2804,6 +2804,7 @@ var Ui = (function(w) {
      * @param e: the event
      */
     function handleOptionsChanged(e) {
+        console.log(e)
         var boolVar;
         e = e || window.event;
         var target = e.target || e.srcElement;
@@ -3079,6 +3080,7 @@ var Ui = (function(w) {
                 value: $('#maxSteepnessInput').val()
             });
         } else if (itemId != 'maxSpeedInput' && itemId != 'maxSteepnessInput') {
+            console.log(itemId)
             // update route type if not maxspeedinput updated
             theInterface.emit('ui:prefsChanged', {
                 key: preferences.routeOptionsIdx,

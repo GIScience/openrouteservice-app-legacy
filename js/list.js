@@ -24,8 +24,8 @@ list = {
     //please make sure that each category contains at least one element. all names in the hash have to be unique.
     routePreferences: new Hash({
         'car': ['car', 'Car'],
-        'bicycle': ['bicycle', 'Bicycle', 'BicycleSafety', 'BicycleRoute', 'BicycleMTB', 'BicycleRacer', 'BicycleTour'],
-        'pedestrian': ['pedestrian', 'Pedestrian'],
+        'bicycle': ['bicycle', 'Bicycle', 'BicycleSafety', 'BicycleRoute', 'BicycleMTB', 'BicycleRacer', 'BicycleTour', 'BicycleElectro'],
+        'pedestrian': ['pedestrian', 'Pedestrian', 'PedestrianHike'],
         'heavyvehicle': ['heavyvehicle', 'HeavyVehicle'],
         'wheelchair': ['wheelchair', 'Wheelchair'],
         'bicycleracer': ['Bicycle'],
@@ -33,7 +33,7 @@ list = {
         'bicyclemtb': ['Bicycle'],
         'bicyclesafety': ['Bicycle']
     }),
-    elevationProfiles: ['Bicycle', 'BicycleRacer', 'BicycleMTB', 'BicycleTour', 'Pedestrian', 'BicycleSafety', 'Wheelchair'],
+    elevationProfiles: ['Bicycle', 'BicycleRacer', 'BicycleMTB', 'BicycleTour', 'BicycleElectro', 'Pedestrian', 'BicycleSafety', 'Wheelchair', 'PedestrianHike'],
     //please make sure that each category contains at least one element. all names in the hash have to be unique.
     routePreferencesTypes: new Hash({
         'heavyvehicle': ['goods', 'hgv', 'bus', 'agricultural', 'forestry', 'delivery'],
