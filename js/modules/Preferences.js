@@ -82,7 +82,9 @@ var Preferences = (function(w) {
     function translate(term) {
         var lang = readCookie(prefNames[this.languageIdx]);
         if (!lang) {
+
             var userLang = (navigator.language) ? navigator.language : navigator.userLanguage;
+            console.log(userLang)
             if (userLang.indexOf("de") != -1) {
                 //use German for browser language codes that contain "de"
                 lang = 'de';

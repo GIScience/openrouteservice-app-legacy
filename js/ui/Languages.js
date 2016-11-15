@@ -259,7 +259,7 @@ var Languages = (function(w) {'use strict';
 			if (i == 0) {
 				optionElement.selected = true;
 			}
-			$(optionElement).html(p.translate(f));
+			$(optionElement).html(p.translate(list.languages[i]));
 			container.append(optionElement);
 		}
 
