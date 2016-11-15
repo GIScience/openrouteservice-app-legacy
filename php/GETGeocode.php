@@ -31,7 +31,7 @@
 	$api_key                = $_GET["api_key"];
 
 	/** Get position as pos or as lat & lon */
-	$object->pos            = (isset($_GET["pos"])) ? $_GET["pos"] : ((isset($_GET["lon"]) and isset($_GET["lat"])) ? ($_GET["lon"]." ".$_GET["lat"]) :Null);
+	$object->pos            = (isset($_GET["pos"])) ? str_replace(",", " ",$_GET["pos"]) : ((isset($_GET["lon"]) and isset($_GET["lat"])) ? ($_GET["lon"]." ".$_GET["lat"]) :Null);
 
 	/** Remove object entry if null */
 	if ($object->FreeFormAdress == Null) {unset($object->FreeFormAdress);}
