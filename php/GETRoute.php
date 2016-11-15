@@ -65,9 +65,9 @@ $object->AvoidFeatures = (isset($_GET["noTollways"]) or isset($_GET["noMotorways
  * In case of an empty or not needed parameter -> remove the parameter
  * The AvoidFeatures parameter is removed after the profiles 
  */
-if ($object->via          == null)             {unset($object->via);}
-if ($object->instructions == (null or "false") {unset($object->instructions);}
-if ($object->AvoidAreas   == null)             {unset($object->AvoidAreas);}
+if ($object->via          == null)              {unset($object->via);}
+if ($object->instructions == (null or "false")) {unset($object->instructions);}
+if ($object->AvoidAreas   == null)              {unset($object->AvoidAreas);}
 
 /** If there is no api key or start or end parameter -> Help Message */
 if (is_null($object->start) or is_null($object->end) or is_null($object->api_key)) {
