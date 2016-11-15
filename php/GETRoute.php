@@ -70,7 +70,7 @@ if ($object->instructions == (null or "false")) {unset($object->instructions);}
 if ($object->AvoidAreas   == null)              {unset($object->AvoidAreas);}
 
 /** If there is no api key or start or end parameter -> Help Message */
-if (is_null($object->start) or is_null($object->end) or is_null($object->api_key)) {
+if (is_null($object->start) or is_null($object->end) or is_null($api_key)) {
     echo "No start or end point or missing API key! Please define at least the start and end parameter and append your API key. If you don't know how to use parameters visit our <a href=http://openrouteservice.readthedocs.io>Documentation</a>.";
 }
 
