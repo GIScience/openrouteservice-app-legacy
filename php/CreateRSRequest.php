@@ -67,8 +67,10 @@ function createRequest($object)
 									<xls:LoadCharacteristic>hazmat</xls:LoadCharacteristic>
 					 			</xls:LoadCharacteristics>";
     }
-    $request = $request . "<xls:MaxSpeed>$object->maxspeed</xls:MaxSpeed>
-							</xls:ExtendedRoutePreference>
+    if (isset($object->maxspeed)){
+        $request = $request . "<xls:MaxSpeed>$object->maxspeed</xls:MaxSpeed>";
+    }
+    $request = $request . "</xls:ExtendedRoutePreference>
 								<xls:WayPointList>
 								<xls:StartPoint>
 									<xls:Position>

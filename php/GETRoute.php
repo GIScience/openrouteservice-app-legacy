@@ -17,7 +17,8 @@
  * @author Amandus Butzer, Timothy Ellersiek, openrouteservice at geog.uni-heidelberg.de
  * @version 2.0 2016-11-03
  */
-
+require_once('../FirePHPCore/fb.php');
+ob_start();
 
 include 'CreateRSRequest.php';
 include 'ConnectToWebService.php';
@@ -35,7 +36,7 @@ $object = new stdClass;
  * Check if the start, end and api_key parameter are set and fetch them plus replace Coordinate seperator.
  * Else parameter is Null.
  */
-$object->start   = isset($_GET["start"])   ? str_replace(",", " ", $_GET["start"]) : Null;
+$object->start   = isset($_GET["start"])   ? str_replace(",", " ", $_GET["start"]) : Null; 
 $object->end     = isset($_GET["end"])     ? str_replace(",", " ", $_GET["end"])   : Null;
 $api_key         = isset($_GET["api_key"]) ? $_GET["api_key"]                      : Null;
 
@@ -52,22 +53,15 @@ $object->weighting     = (isset($_GET["weighting"])) ? $_GET["weighting"] : "Fas
  * Via and AvoidAreas will be written in an array : One entry for each Point/Area
  * If there is any avoid parameter set, an array will be created for values to be pushed into.
  */
-$object->via           = (isset($_GET["via"]))          ? explode(" ", $_GET["via"])     : null;
-$object->instructions  = (isset($_GET["instructions"])) ? $_GET["instructions"]          : null;
-
+if (isset($_GET["maxspeed"]))           {$object->maxspeed     = "+" . abs($_GET["maxspeed"]);}
+if (isset($_GET["via"]))                {$object->via          = explode(" ", $_GET["via"]);}
+if ((isset($_GET["instructions"])) and 
+    ($_GET["instructions"] == "true" )) {$object->instructions = $_GET["instructions"];}
 /** Language is only needed if instructions are used. Default is English */
 if ($object->instructions == "true") {
-    $object->language  = (isset($_GET["lang"]))         ? $_GET["lang"]                  : "en";}
-$object->AvoidAreas    = (isset($_GET["avAreas"]))      ? explode(";", $_GET["avAreas"]) : null;
-$object->AvoidFeatures = (isset($_GET["noTollways"]) or isset($_GET["noMotorways"]) or isset($_GET["noTunnels"]) or isset($_GET["noUnpavedroads"]) or isset($_GET["noPavedroads"]) or isset($_GET["noFerries"]) or isset($_GET["noFords"]) or isset($_GET["noTracks"]) or isset($_GET["noSteps"]) or isset($_GET["noHills"])) ? []                         : null;
-
-/**
- * In case of an empty or not needed parameter -> remove the parameter
- * The AvoidFeatures parameter is removed after the profiles 
- */
-if ($object->via          == null)              {unset($object->via);}
-if ($object->instructions == (null or "false")) {unset($object->instructions);}
-if ($object->AvoidAreas   == null)              {unset($object->AvoidAreas);}
+    $object->language  = (isset($_GET["lang"]))         ? $_GET["lang"]   : "en";}
+if (isset($_GET["avAreas"]))            {$object->AvoidAreas   = explode(";", $_GET["avAreas"]);}
+$object->AvoidFeatures = (isset($_GET["noTollways"]) or isset($_GET["noMotorways"]) or isset($_GET["noTunnels"]) or isset($_GET["noUnpavedroads"]) or isset($_GET["noPavedroads"]) or isset($_GET["noFerries"]) or isset($_GET["noFords"]) or isset($_GET["noTracks"]) or isset($_GET["noSteps"]) or isset($_GET["noHills"])) ? [] : null;
 
 /** If there is no api key or start or end parameter -> Help Message */
 if (is_null($object->start) or is_null($object->end) or is_null($api_key)) {
@@ -80,9 +74,6 @@ elseif (isset($_GET["start"]) && isset($_GET["end"]) && isset($_GET["api_key"]))
     /** Car profile */
     if ($object->routepref == "Car") {
 
-        if (isset($_GET["maxspeed"])) {
-            $object->maxspeed = "+" . abs($_GET["maxspeed"]);
-        }
         /** Get Avoid Features for Profile, only take features that suit the profile */
         if (isset($_GET["noMotorways"])    and $_GET["noMotorways"]    == "true") {
             array_push($object->AvoidFeatures, "Highway");
@@ -116,10 +107,6 @@ elseif (isset($_GET["start"]) && isset($_GET["end"]) && isset($_GET["api_key"]))
 
     /** Bicycle profile */
     elseif ($object->routepref == "Bicycle" or $object->routepref == "BicycleMTB" or $object->routepref == "BicycleRacer" or $object->routepref == "BicycleTouring" or $object->routepref == "BicycleSafety") {
-
-        if (isset($_GET["maxspeed"])) {
-            $object->maxspeed = "+" . abs($_GET["maxspeed"]);
-        }
 
         /** Get the Difficulty level if it is set and between -1 and 3 */
         if (isset($_GET["level"]) and ($_GET["level"] >= -1 and $_GET["level"] <= 3)) {
@@ -170,10 +157,6 @@ elseif (isset($_GET["start"]) && isset($_GET["end"]) && isset($_GET["api_key"]))
     /** Pedestrian profile */
     elseif ($object->routepref == "Pedestrian") {
 
-        if (isset($_GET["maxspeed"])) {
-            $object->maxspeed = "+" . abs($_GET["maxspeed"]);
-        }
-
         /** Get Avoid Features for Profile, only take features that suit the profile */
         if (isset($_GET["noSteps"])   and $_GET["noSteps"]   == "true") {
             array_push($object->AvoidFeatures, "Steps");
@@ -191,10 +174,6 @@ elseif (isset($_GET["start"]) && isset($_GET["end"]) && isset($_GET["api_key"]))
     /** Wheelchair profile */
     elseif ($object->routepref == "Wheelchair") {
 
-        if (isset($_GET["maxspeed"])) {
-            $object->maxspeed = "+" . abs($_GET["maxspeed"]);
-        }
-
         //Surface
         //Incline
         //max height of sloped curb
@@ -205,10 +184,6 @@ elseif (isset($_GET["start"]) && isset($_GET["end"]) && isset($_GET["api_key"]))
 
         /** Check for a Heavy vehicle Subtype, default is "hgv" */
         $object->subtype = (isset($_GET["subType"])) ? $_GET["subType"] : "hgv";
-
-        if (isset($_GET["maxspeed"])) {
-            $object->maxspeed = "+" . abs($_GET["maxspeed"]);
-        }
 
         /** Check for the hazardous parameter */
         $object->haz = (isset($_GET["haz"]) and $_GET["haz"] == ("true")) ? "true" : null;
@@ -264,10 +239,10 @@ elseif (isset($_GET["start"]) && isset($_GET["end"]) && isset($_GET["api_key"]))
     if ($object->AvoidFeatures == null) {
         unset($object->AvoidFeatures);
     }
-
+    fb($object);
     /** Create the request file */
     $request = createRequest($object);
-    
+    fb($request);
     ///////////////////////////////////////////////////
     //*** Send Request to Web Service ***
     //Server

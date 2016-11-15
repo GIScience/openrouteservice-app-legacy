@@ -18,6 +18,7 @@
  * @version 2.0 2016-11-03
  */
 
+
 ///////////////////////////////////////////////////
 //Function die XML Request an OpenLS LUS erstellt
 
@@ -40,7 +41,7 @@ function createGeocodeRequest($object)
 								<xls:Address countryCode=\"";
     
 	/** Set the default language to English if not set */
-    $request = (isset($object->lang)) ? $request . "$object->lang" : $request . "en";
+    $request = (isset($object->lang)) ? $request . "$object->lang" : $request . "de";
     
     /** insert the Adress search parameter */
     $request = $request . "\">
