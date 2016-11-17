@@ -17,8 +17,8 @@
  * @author Amandus Butzer, Timothy Ellersiek, openrouteservice at geog.uni-heidelberg.de
  * @version 2.0 2016-11-03
  */
-require_once('../FirePHPCore/fb.php');
-ob_start();
+// require_once('../FirePHPCore/fb.php');
+// ob_start();
 
 include 'CreateRSRequest.php';
 include 'ConnectToWebService.php';
