@@ -17,8 +17,8 @@
  * @author Amandus Butzer, Timothy Ellersiek, openrouteservice at geog.uni-heidelberg.de
  * @version 2.0 2016-11-03
  */
-// require_once('../FirePHPCore/fb.php');
-// ob_start();
+require_once('../FirePHPCore/fb.php');
+ob_start();
 
 include 'CreateRSRequest.php';
 include 'ConnectToWebService.php';
@@ -174,9 +174,85 @@ elseif (isset($_GET["start"]) && isset($_GET["end"]) && isset($_GET["api_key"]))
     /** Wheelchair profile */
     elseif ($object->routepref == "Wheelchair") {
 
-        //Surface
-        //Incline
-        //max height of sloped curb
+        /** Get surtype, incline and curb */
+        /** 
+         * Surface type
+         * splitted into 3 values that differ with each type
+         */
+        if (isset($_GET["surtype"]) and ($_GET["surtype"] >= 1) and ($_GET["surtype"] <= 5)){
+
+            $object->surtype = $_GET["surtype"];
+
+            /**
+             * "tt"  = "tracktype"      
+             * "st"  = "surfacetype"    actual surface type
+             * "smt" = "smoothnesstype" 
+             */
+            if ($object->surtype == 1){
+                $object->tt  = "grade1";
+                $object->st  = "concrete";
+                $object->smt = "good";
+
+            }
+            if ($object->surtype == 2){
+                $object->tt  = "grade1";
+                $object->st  = "cobblestone:flattened";
+                $object->smt = "good";
+            }
+            if ($object->surtype == 3){
+                $object->tt  = "grade1";
+                $object->st  = "cobblestone";
+                $object->smt = "intermediate";
+            }
+            if ($object->surtype == 4){
+                $object->tt  = "grade2";
+                $object->st  = "compacted";
+                $object->smt = "bad";
+            }
+            if ($object->surtype == 5){
+                $object->tt  = "grade4";
+                $object->st  = "any";
+                $object->smt = "bad";
+            }
+
+            /** Delete entry, not needed for request */
+            unset($object->surtype);
+        }
+
+        /** Default Values */
+        else{
+            $object->tt  = "grade1";
+            $object->st  = "cobblestone:flattened";
+            $object->smt = "good";
+        }
+
+        /** Maximum Incline */
+        if (isset($_GET["incline"]) and in_array($_GET["incline"], ["3","6","10","15","31","any"]) == "true"){
+            $object->incline = $_GET["incline"];
+            if($object->incline == "any"){$object->incline = "31";}
+        }
+        
+        /** Default Value */
+        else{
+            $object->incline = "6";
+        }
+
+        /** Max height of sloped curb */
+        if (isset($_GET["curb"]) and in_array($_GET["curb"], ["3","6","10","31","any"]) == "true"){
+            $object->curb = $_GET["curb"];
+            if($object->curb == "any"){$object->curb = "31";}
+
+
+            /** If 3 or 6 add a Zero because value is needed in meter for schema (0.03) */
+            if (strlen($object->curb) == "1"){
+                $object->curb = "0" . $object->curb; 
+            }
+        }
+
+        /** Default Value */
+        else{
+            $object->curb = "06";
+        }
     }
 
     /** HeavyVehicle profile */
