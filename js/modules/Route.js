@@ -49,7 +49,8 @@ var Route = (function(w) {
         //<xls:RoutePlan>
         writer.writeStartElement('xls:RoutePlan');
         //<xls:RoutePreference />
-        writer.writeElementString('xls:RoutePreference', routePref || 'Car');
+		if (routePref == null) writer.writeElementString('xls:RoutePreference', 'Car');
+        else writer.writeElementString('xls:RoutePreference', routePref || 'Car');
         writer.writeStartElement('xls:ExtendedRoutePreference');
         writer.writeElementString('xls:WeightingMethod', extendedRoutePreferencesWeight || 'Fastest');
         if (jQuery.inArray(routePref, list.elevationProfiles) >= 0) {

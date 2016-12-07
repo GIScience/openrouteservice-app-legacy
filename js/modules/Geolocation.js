@@ -14,7 +14,7 @@ var Geolocator = (function(w) {
         if (w.navigator.geolocation) {
             w.navigator.geolocation.getCurrentPosition(locationSuccess, locationError);
         } else {
-            locationNotSupported();
+            // locationNotSupported();
         }
     }
     /**
