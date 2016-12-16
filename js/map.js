@@ -1589,6 +1589,256 @@ var Map = (function() {
             self.theMap.panBy(panMagnitude.scaleBy(L.point(Math.cos(panAngle), Math.sin(panAngle))));
         }
     }
+    /** For Wheelchair "Why is it routing this way?"" */
+
+    var bbox;
+    //Layer variables
+    var kerbLayer;
+    var surfaceLayer;
+    var inclineLayer;
+    var sidewalkLayer;
+    //Query vairables
+    var kerbQuery;
+    var surfaceQuery;
+    var routeInclineQuery;
+    var routeSidewalkQuery;
+
+    function buildQueries() {
+        var timeout = 100;
+        var bounds = this.theMap.getBounds().getSouth() + ',' + this.theMap.getBounds().getWest() + ',' + this.theMap.getBounds().getNorth() + ',' + this.theMap.getBounds().getEast();
+        var baseUrl = 'http://overpass-api.de/api/interpreter';
+        var nodeQuery = 'node[kerb](' + bounds + ');';
+        var wayQuery = 'way[kerb](' + bounds + ');';
+        var query = '?data=[out:json][timeout:' + timeout + '];(' + nodeQuery + wayQuery + ');out body;>;out skel qt;';
+        kerbQuery = baseUrl + query;
+        query = '?data=[out:json][timeout:' + timeout + '];(' + 'way[smoothness](' + bounds + ');' + 'way[surface](' + bounds + ');' + ');out body;>;out skel qt;';
+        surfaceQuery = baseUrl + query;
+        query = '?data=[out:json][timeout:' + timeout + '];(' + 'way[incline](' + bounds + '););out body;>;out skel qt;';
+        routeInclineQuery = baseUrl + query;
+        query = '?data=[out:json][timeout:' + timeout + '];(' + 'way[sidewalk](' + bounds + '););out body;>;out skel qt;';
+        routeSidewalkQuery = baseUrl + query;
+    }
+
+    function runSidewalkQuery() {
+        $.get(routeSidewalkQuery, function(osmDataAsJSON) {
+            var resultAsGeojson = osmtogeojson(osmDataAsJSON);
+            if ((sidewalkLayer != null) && (typeof sidewalkLayer != "undefined")) {
+                console.log("removing layer");
+                map.removeLayer(sidewalkLayer);
+            }
+            sidewalkLayer = L.geoJson(resultAsGeojson, {
+                style: function(feature) {
+                    return {
+                        color: "#800080"
+                    };
+                },
+                pointToLayer: function(feature, latlng) {
+                    return L.circleMarker(latlng, styles.sidewalkMarkerOptions);
+                },
+                filter: function(feature, layer) {
+                    var isPolygon = (feature.geometry) && (feature.geometry.type !== undefined) && (feature.geometry.type === "Polygon");
+                    if (isPolygon) {
+                        feature.geometry.type = "Point";
+                        var polygonCenter = L.latLngBounds(feature.geometry.coordinates[0]).getCenter();
+                        feature.geometry.coordinates = [polygonCenter.lat, polygonCenter.lng];
+                    }
+                    return true;
+                },
+                onEachFeature: function(feature, layer) {
+                    var popupContent = ""; // "Route Sidewalk";
+                    popupContent += "<h3>" + feature.properties.type + " " + feature.properties.id + "</h3>";
+                    popupContent += "<h4>Tags</h4>";
+                    var keys = Object.keys(feature.properties.tags);
+                    keys.forEach(function(key) {
+                        popupContent += key + "=" + feature.properties.tags[key] + "<br/>";
+                    });
+                    if ((feature.geometry) && (feature.geometry.type !== undefined) && (feature.geometry.type === "Point")) {
+                        popupContent += "<h4>Coordinates</h4>";
+                        popupContent += feature.geometry.coordinates[1] + " / " + feature.geometry.coordinates[0] + " <small>(lat/long)</small>";
+                    }
+                    layer.bindPopup(popupContent);
+                }
+            }).addTo(self.theMap);
+        });
+    }
+
+    function runInclineQuery() {
+        $.get(routeInclineQuery, function(osmDataAsJSON) {
+            var resultAsGeojson = osmtogeojson(osmDataAsJSON);
+            if ((inclineLayer != null) && (typeof inclineLayer != "undefined")) {
+                console.log("removing layer");
+                map.removeLayer(inclineLayer);
+            }
+            inclineLayer = L.geoJson(resultAsGeojson, {
+                style: function(feature) {
+                    return {
+                        color: "#0000ff"
+                    };
+                },
+                pointToLayer: function(feature, latlng) {
+                    return L.circleMarker(latlng, styles.inclineMarkerOptions);
+                },
+                filter: function(feature, layer) {
+                    var isPolygon = (feature.geometry) && (feature.geometry.type !== undefined) && (feature.geometry.type === "Polygon");
+                    if (isPolygon) {
+                        feature.geometry.type = "Point";
+                        var polygonCenter = L.latLngBounds(feature.geometry.coordinates[0]).getCenter();
+                        feature.geometry.coordinates = [polygonCenter.lat, polygonCenter.lng];
+                    }
+                    return true;
+                },
+                onEachFeature: function(feature, layer) {
+                    var popupContent = ""; // "Route Incline";
+                    popupContent += "<h3>" + feature.properties.type + " " + feature.properties.id + "</h3>";
+                    popupContent += "<h4>Tags</h4>";
+                    var keys = Object.keys(feature.properties.tags);
+                    keys.forEach(function(key) {
+                        popupContent += key + "=" + feature.properties.tags[key] + "<br/>";
+                    });
+                    if ((feature.geometry) && (feature.geometry.type !== undefined) && (feature.geometry.type === "Point")) {
+                        popupContent += "<h4>Coordinates</h4>";
+                        popupContent += feature.geometry.coordinates[1] + " / " + feature.geometry.coordinates[0] + " <small>(lat/long)</small>";
+                    }
+                    layer.bindPopup(popupContent);
+                }
+            }).addTo(self.theMap);
+        });
+    }
+
+    function runSurfaceQuery() {
+        $.get(surfaceQuery, function(osmDataAsJSON) {
+            var resultAsGeojson = osmtogeojson(osmDataAsJSON);
+            if ((surfaceLayer != null) && (typeof surfaceLayer != "undefined")) {
+                console.log("removing layer");
+                map.removeLayer(surfaceLayer);
+            }
+            surfaceLayer = L.geoJson(resultAsGeojson, {
+                style: function(feature) {
+                    return {
+                        color: "#808080"
+                    };
+                },
+                pointToLayer: function(feature, latlng) {
+                    return L.circleMarker(latlng, styles.surfaceMarkerOptions);
+                },
+                filter: function(feature, layer) {
+                    var isPolygon = (feature.geometry) && (feature.geometry.type !== undefined) && (feature.geometry.type === "Polygon");
+                    if (isPolygon) {
+                        feature.geometry.type = "Point";
+                        var polygonCenter = L.latLngBounds(feature.geometry.coordinates[0]).getCenter();
+                        feature.geometry.coordinates = [polygonCenter.lat, polygonCenter.lng];
+                    }
+                    return true;
+                },
+                onEachFeature: function(feature, layer) {
+                    var popupContent = ""; // "Surface Smoothness";
+                    popupContent += "<h3>" + feature.properties.type + " " + feature.properties.id + "</h3>";
+                    popupContent += "<h4>Tags</h4>";
+                    var keys = Object.keys(feature.properties.tags);
+                    keys.forEach(function(key) {
+                        popupContent += key + "=" + feature.properties.tags[key] + "<br/>";
+                    });
+                    if ((feature.geometry) && (feature.geometry.type !== undefined) && (feature.geometry.type === "Point")) {
+                        popupContent += "<h4>Coordinates</h4>";
+                        popupContent += feature.geometry.coordinates[1] + " / " + feature.geometry.coordinates[0] + " <small>(lat/long)</small>";
+                    }
+                    layer.bindPopup(popupContent);
+                }
+            }).addTo(self.theMap);
+        });
+    }
+
+    function runKerbQuery() {
+        $.get(kerbQuery, function(osmDataAsJSON) {
+            var resultAsGeojson = osmtogeojson(osmDataAsJSON);
+            if ((kerbLayer != null) && (typeof kerbLayer != "undefined")) {
+                console.log("removing layer");
+                self.theMap.removeLayer(kerbLayer);
+            }
+            console.log('dude')
+            kerbLayer = L.geoJson(resultAsGeojson, {
+                //style: function (feature) {
+                //    return { color: "#ff0000" };
+                //},
+                pointToLayer: function(feature, latlng) {
+                    var pMarker;
+                    switch (feature.properties.tags["kerb"]) {
+                        case "lowered":
+                            pMarker = L.circleMarker(latlng, styles.kerbLoweredMarkerOptions);
+                            break;
+                        case "flush":
+                            pMarker = L.circleMarker(latlng, styles.kerbFlushMarkerOptions);
+                            break;
+                        case "raised":
+                            pMarker = L.circleMarker(latlng, styles.kerbRaisedMarkerOptions);
+                            break;
+                        default:
+                            pMarker = L.circleMarker(latlng, styles.kerbMarkerOptions);
+                            break;
+                    }
+                    return pMarker;
+                    //return L.circleMarker(latlng, kerbMarkerOptions);
+                },
+                filter: function(feature, layer) {
+                    var isPolygon = (feature.geometry) && (feature.geometry.type !== undefined) && (feature.geometry.type === "Polygon");
+                    if (isPolygon) {
+                        feature.geometry.type = "Point";
+                        var polygonCenter = L.latLngBounds(feature.geometry.coordinates[0]).getCenter();
+                        feature.geometry.coordinates = [polygonCenter.lat, polygonCenter.lng];
+                    }
+                    return true;
+                },
+                onEachFeature: function(feature, layer) {
+                    var popupContent = ""; // "Kerb Height";
+                    popupContent += "<h3>" + feature.properties.type + " " + feature.properties.id + "</h3>";
+                    popupContent += "<h4>Tags</h4>";
+                    var keys = Object.keys(feature.properties.tags);
+                    keys.forEach(function(key) {
+                        popupContent += key + "=" + feature.properties.tags[key] + "<br/>";
+                    });
+                    if ((feature.geometry) && (feature.geometry.type !== undefined) && (feature.geometry.type === "Point")) {
+                        popupContent += "<h4>Coordinates</h4>";
+                        popupContent += feature.geometry.coordinates[1] + " / " + feature.geometry.coordinates[0] + " <small>(lat/long)</small>";
+                    }
+                    layer.bindPopup(popupContent);
+                }
+            }).addTo(self.theMap);
+        });
+    }
+    function toggleOverpassLayer(layer) {
+        switch (layer) {
+            case "cbxKerb":
+                if (self.theMap.hasLayer(kerbLayer)) {
+                    self.theMap.removeLayer(kerbLayer);
+                } else {
+                    self.theMap.addLayer(kerbLayer);
+                }
+                break;
+            case "cbxIncline":
+                if (self.theMap.hasLayer(inclineLayer)) {
+                    self.theMap.removeLayer(inclineLayer);
+                } else {
+                    self.theMap.addLayer(inclineLayer);
+                }
+                break;
+            case "cbxSurface":
+                if (self.theMap.hasLayer(surfaceLayer)) {
+                    self.theMap.removeLayer(surfaceLayer);
+                } else {
+                    self.theMap.addLayer(surfaceLayer);
+                }
+                break;
+            case "cbxSidewalk":
+                if (self.theMap.hasLayer(sidewalkLayer)) {
+                    self.theMap.removeLayer(sidewalkLayer);
+                } else {
+                    self.theMap.addLayer(sidewalkLayer);
+                }
+                break;
+            default:
+                return;
+        }
+    }
     map.prototype = new EventEmitter();
     map.prototype.constructor = map;
     map.prototype.serializeLayers = serializeLayers;
@@ -1638,5 +1888,11 @@ var Map = (function() {
     map.prototype.graphInfo = graphInfo;
     map.prototype.updateInfoPanel = updateInfoPanel;
     map.prototype.addSegment = addSegment;
+    map.prototype.buildQueries = buildQueries;
+    map.prototype.runSidewalkQuery = runSidewalkQuery;
+    map.prototype.runKerbQuery = runKerbQuery;
+    map.prototype.runInclineQuery = runInclineQuery;
+    map.prototype.runSurfaceQuery = runSurfaceQuery;
+    map.prototype.toggleOverpassLayer = toggleOverpassLayer;
     return map;
 }());

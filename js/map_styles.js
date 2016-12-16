@@ -104,7 +104,7 @@ styles = {
         return {
             opacity: '0',
             color: '#fff',
-            weight: routeSettings.lineWeight*1.7
+            weight: routeSettings.lineWeight * 1.7
         };
     },
     routeOutline: function(zoomlvl, hide) {
@@ -131,13 +131,13 @@ styles = {
             zoomChange: 'route'
         };
     },
-	routeRetour: function(zoomlvl) {
+    routeRetour: function(zoomlvl) {
         return {
             color: '#E8880C',
             opacity: opacity(zoomlvl),
             weight: routeWeight(zoomlvl, routeSettings.lineWeight),
             zoomChange: 'route',
-			retour: true
+            retour: true
         };
     },
     routeCornersBase: function() {
@@ -158,18 +158,18 @@ styles = {
             zoomChange: 'routeCorners'
         };
     },
-	routeArrows: function(zoomlvl) {
+    routeArrows: function(zoomlvl) {
         return {
             color: '#FF0000',
-			fillColor: '#FFFF00',
+            fillColor: '#FFFF00',
             opacity: fillOpacity(zoomlvl),
             zoomChange: 'route'
         };
     },
-	routeArrowsRetour: function(zoomlvl) {
+    routeArrowsRetour: function(zoomlvl) {
         return {
             color: '#FFFF00',
-			fillColor: '#FFFF00',
+            fillColor: '#FFFF00',
             opacity: fillOpacity(zoomlvl),
             zoomChange: 'route'
         };
@@ -189,4 +189,64 @@ styles = {
             weight: 3
         };
     }
+};
+// Style for kerbs
+styles.kerbMarkerOptions = {
+    radius: 5,
+    fillColor: "#808080",
+    color: "#808080",
+    weight: 1,
+    opacity: 0.8,
+    fillOpacity: 0.3
+};
+styles.kerbLoweredMarkerOptions = {
+    radius: 5,
+    fillColor: "#ffff00",
+    color: "#ffff00",
+    weight: 2,
+    opacity: 0.8,
+    fillOpacity: 0.3
+};
+styles.kerbFlushMarkerOptions = {
+    radius: 5,
+    fillColor: "#00ff00",
+    color: "#00ff00",
+    weight: 2,
+    opacity: 0.8,
+    fillOpacity: 0.3
+};
+styles.kerbRaisedMarkerOptions = {
+    radius: 5,
+    fillColor: "#ff0000",
+    color: "#ff0000",
+    weight: 2,
+    opacity: 0.8,
+    fillOpacity: 0.3
+};
+//Style for surface smoothness
+styles.surfaceMarkerOptions = {
+    radius: 5,
+    fillColor: "#808080",
+    color: "#808080",
+    weight: 1,
+    opacity: 0.8,
+    fillOpacity: 0.3
+};
+//Style for route with inclines
+styles.inclineMarkerOptions = {
+    radius: 5,
+    fillColor: "#0000ff",
+    color: "#0000ff",
+    weight: 1,
+    opacity: 0.8,
+    fillOpacity: 0.5
+};
+//Style for route with sidewalk
+styles.sidewalkMarkerOptions = {
+    radius: 5,
+    fillColor: "#800080",
+    color: "#0000ff",
+    weight: 1,
+    opacity: 0.8,
+    fillOpacity: 0.5
 };

@@ -1003,6 +1003,13 @@ var Controller = (function(w) {
                     var totalDistance = ui.updateRouteInstructions(results, featureIds, mapLayers);
                     var elevation = ui.updateRouteSummary(results);
                     if ($.inArray(routePref, list.elevationProfiles) >= 0) {
+                        // For overpass
+                        if (routePref == 'Wheelchair') {
+                            $('#overpass').show();
+                        } else {
+                         $('#overpass').hide();
+                        }
+
                         // Surface and waytype information
                         ui.updateSurfaceSteepness(results, featureIds, 'layerRouteLines', totalDistance);
                         // Elevation information

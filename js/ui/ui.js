@@ -2804,7 +2804,6 @@ var Ui = (function(w) {
      * @param e: the event
      */
     function handleOptionsChanged(e) {
-        console.log(e)
         var boolVar;
         e = e || window.event;
         var target = e.target || e.srcElement;
@@ -3081,7 +3080,7 @@ var Ui = (function(w) {
             });
         } else if (itemId != 'maxSpeedInput' && itemId != 'maxSteepnessInput') {
             console.log(itemId)
-            // update route type if not maxspeedinput updated
+                // update route type if not maxspeedinput updated
             theInterface.emit('ui:prefsChanged', {
                 key: preferences.routeOptionsIdx,
                 value: itemId
@@ -3579,6 +3578,37 @@ var Ui = (function(w) {
             $('#HeaderOptionsMenuButtonMobile').css("background-color", "transparent");
         }
     }
+    /** For Wheelchair Profile why is it routing this way? */
+    function toggleOverpassList() {
+        if ($('#overpass-list').css('display') == 'none') {
+            $('#overpass-list').show();
+        } else {
+            console.log(false)
+            $('#overpass-list').hide();
+        }
+    }
+    //Toggle map layers
+    function toggleLayer(e) {
+        var layer = e.target.id
+        map.toggleOverpassLayer(layer);
+    };
+    //Execute selected layer queries with current map bounds
+    function executeQuery() {
+        map.buildQueries();
+        if (document.getElementById("cbxKerb").checked) {
+            map.runKerbQuery();
+        }
+        if (document.getElementById("cbxIncline").checked) {
+            map.runInclineQuery();
+        }
+        if (document.getElementById("cbxSidewalk").checked) {
+            map.runSidewalkQuery();
+        }
+        if (document.getElementById("cbxSurface").checked) {
+            map.runSurfaceQuery();
+        }
+        return;
+    }
     /* *********************************************************************
      * CLASS-SPECIFIC
      * *********************************************************************/
@@ -3673,6 +3703,10 @@ var Ui = (function(w) {
         });
         // menuButtons
         $('.ORS-menuButton').click(handleSwitchMenu);
+        // Overpass Wheelchair Queries
+        $('.overpassWheelchairBtn').click(toggleOverpassList);
+        $('.toggleLayer').click(toggleLayer);
+        $('.executeQuery').click(executeQuery);
     }
     Ui.prototype = new EventEmitter();
     Ui.prototype.constructor = Ui;

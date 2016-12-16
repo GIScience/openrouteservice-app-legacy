@@ -30,7 +30,7 @@
         <link href="css/ruifont.css" rel="stylesheet" type="text/css">
         <!-- MAIN STYLES -->
         <link href="css/default.css" rel="stylesheet" type="text/css">
-        <!-- Must come at the end to overwrite other API styles -->                          
+        <!-- Must come at the end to overwrite other API styles -->     
     </head>
     <body class="ORS">
         <!-- START OF HEADER SECTION -->
@@ -758,6 +758,32 @@
                                         add waypoint
                                     </span>
                                 </div>
+                                <div id="overpass" style="display: none;">
+                                    <button type="button" class="btn btn-default btn-sm overpassWheelchairBtn">Why is it routing this way?</button>
+                                        <ul id="overpass-list" style="padding: 10px; list-style:none; display: none;">
+                                        <li>
+                                            <input id="cbxKerb" type="checkbox" class="toggleLayer"/> Kerb height
+                                            <div style="display:block; margin-left: 24px;"><span style="width:12px; height: 12px;  background-color: #ffff00; display:inline-block;"></span>&nbsp;Lowered</div>
+                                            <div style="display:block; margin-left: 24px;"><span style="width:12px; height: 12px;  background-color: #00ff00; display:inline-block;"></span>&nbsp;Flush</div>
+                                            <div style="display:block; margin-left: 24px;"><span style="width:12px; height: 12px;  background-color: #ff0000; display:inline-block;"></span>&nbsp;Raised</div>
+                                        </li>
+                                        <li>
+                                            <input id="cbxSurface" type="checkbox" class="toggleLayer"/> Surface smoothness
+                                            <div style="width:12px; height: 12px; margin-left: 24px; background-color: #808080; display:block;"></div>
+                                        </li>
+                                        <li>
+                                            <input id="cbxIncline" type="checkbox" class="toggleLayer" /> Route with incline
+                                            <div style="width:12px; height: 12px; margin-left: 24px; background-color: #0000FF; display:block;"></div>
+                                        </li>
+                                        <li>
+                                            <input id="cbxSidewalk" type="checkbox" class="toggleLayer" /> Route with sidewalk
+                                            <div style="width:12px; height: 12px; margin-left: 24px; background-color: #800080; display:block;"></div>
+                                        </li>
+                                        <li>
+                                            <button type="button"  style="margin-top: 10px" class="btn btn-default btn-sm executeQuery">run</button>
+                                        </li>
+                                    </ul>
+                                </div>
                                 <div class="ORS-alert alert alert-danger" id="routeError" style="display:none">
                                 </div>
                             </div>
@@ -1113,6 +1139,7 @@
         <script src="lib/jsts.min.js" type="text/javascript"></script>
         <script src="lib/OverPassLayer.js" type="text/javascript"></script>
         <script src="lib/jquery.mCustomScrollbar.concat.min.js" type="text/javascript"></script>
+        <script src="lib/osmtogeojson.js" type="text/javascript"></script>             
         <script src="js/namespaces.js" type="text/javascript"></script>
         <script src="js/util.js" type="text/javascript"></script>
         <script src="js/list.js" type="text/javascript"></script>
@@ -1146,6 +1173,7 @@
         <script src="js/lang/lang-ua.js" type="text/javascript"></script>
         <script src="js/lang/lang-cn.js" type="text/javascript"></script>
         <script src="js/lang/lang-cnsimple.js" type="text/javascript"></script>
+
         <script type="text/javascript">
             // bootstrap and prototypejs have a conflict on hiding elements
             (function() {
