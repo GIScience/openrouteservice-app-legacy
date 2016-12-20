@@ -17,9 +17,6 @@
  * @author Amandus Butzer, Timothy Ellersiek, openrouteservice at geog.uni-heidelberg.de
  * @version 2.0 2016-11-03
  */
-require_once('../FirePHPCore/fb.php');
-ob_start();
-
 include 'CreateRSRequest.php';
 include 'ConnectToWebService.php';
 
@@ -315,10 +312,8 @@ elseif (isset($_GET["start"]) && isset($_GET["end"]) && isset($_GET["api_key"]))
     if ($object->AvoidFeatures == null) {
         unset($object->AvoidFeatures);
     }
-    fb($object);
     /** Create the request file */
     $request = createRequest($object);
-    fb($request);
     ///////////////////////////////////////////////////
     //*** Send Request to Web Service ***
     //Server
