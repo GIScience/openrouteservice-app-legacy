@@ -176,8 +176,12 @@ function createRequest($object)
         $request .= "<xls:RouteInstructionsRequest format=\"text/plain\" provideGeometry=\"true\"/>";
     }
 
-    $request .= "<xls:RouteGeometryRequest/>
-                </xls:DetermineRouteRequest>
+
+    if (isset($object->geometry)){
+        $request .= "<xls:RouteGeometryRequest/>";
+    }
+
+    $request .= "</xls:DetermineRouteRequest>
                 </xls:Request>
                 </xls:XLS>";
     return $request;
