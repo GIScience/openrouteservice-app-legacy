@@ -57,7 +57,7 @@ $object->geometry      = "true";
  * If there is any avoid parameter set, an array will be created for values to be pushed into.
  */
 if (isset($_GET["maxspeed"]))           {$object->maxspeed     = "+" . abs($_GET["maxspeed"]);}
-if (isset($_GET["via"]))                {$object->via          = explode(" ", $_GET["via"]);}
+if (isset($_GET["via"]))                {$object->via          = explode(";", $_GET["via"]);}
 if ((isset($_GET["instructions"])) and 
     ($_GET["instructions"] == "true" )) {$object->instructions = $_GET["instructions"];}
 
