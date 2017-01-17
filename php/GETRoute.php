@@ -17,6 +17,7 @@
  * @author Amandus Butzer, Timothy Ellersiek, openrouteservice at geog.uni-heidelberg.de
  * @version 2.0 2016-11-03
  */
+
 include 'CreateRSRequest.php';
 include 'ConnectToWebService.php';
 
@@ -41,9 +42,9 @@ $api_key         = isset($_GET["api_key"]) ? $_GET["api_key"]                   
  * Check for distanceunit, routepreference and weighting and get them.
  * If not set, define a default value.
  */
-$object->distunit      = (isset($_GET["distunit"]))  ? $_GET["distunit"]  : "KM";
-$object->routepref     = (isset($_GET["routepref"])) ? $_GET["routepref"] : "Car";
-$object->weighting     = (isset($_GET["weighting"])) ? $_GET["weighting"] : "Fastest";
+$object->distunit      = (isset($_GET["distunit"])) and !empty($_GET["distunit"])  ? $_GET["distunit"]  : "KM";
+$object->routepref     = (isset($_GET["routepref"]) and !empty($_GET["routepref"])) ? $_GET["routepref"] : "Car";
+$object->weighting     = (isset($_GET["weighting"]) and !empty($_GET["weighting"])) ? $_GET["weighting"] : "Fastest";
 
 /** By default geometry is used , can be turned off*/
 $object->geometry      = "true";
@@ -53,10 +54,10 @@ $object->geometry      = "true";
  * Via and AvoidAreas will be written in an array : One entry for each Point/Area
  * If there is any avoid parameter set, an array will be created for values to be pushed into.
  */
-if (isset($_GET["maxspeed"]))           {$object->maxspeed     = "+" . abs($_GET["maxspeed"]);}
-if (isset($_GET["via"]))                {$object->via          = explode(" ", $_GET["via"]);}
+if (isset($_GET["maxspeed"]) and !empty($_GET["maxspeed"])) {$object->maxspeed     = "+" . abs($_GET["maxspeed"]);}
+if (isset($_GET["via"]) and !empty($_GET["via"]))           {$object->via          = explode(";", $_GET["via"]);}
 if ((isset($_GET["instructions"])) and 
-    ($_GET["instructions"] == "true" )) {$object->instructions = $_GET["instructions"];}
+    ($_GET["instructions"] == "true" ))                     {$object->instructions = $_GET["instructions"];}
 
 /** If only the route summary is needed don't use geometry*/
 if ((isset($_GET["geometry"])) and 
@@ -64,7 +65,7 @@ if ((isset($_GET["geometry"])) and
 
 /** Language is only needed if instructions or geomtery are used. Default is English */
 if (($object->instructions == "true") or ($object->geometry == "true")) {
-    $object->language  = (isset($_GET["lang"]))         ? $_GET["lang"]   : "en";}
+    $object->language  = (isset($_GET["lang"])and !empty($_GET["lang"])) ? $_GET["lang"]   : "en";}
 if (isset($_GET["avAreas"]))            {$object->AvoidAreas   = explode(";", $_GET["avAreas"]);}
 $object->AvoidFeatures = (isset($_GET["noTollways"]) or isset($_GET["noMotorways"]) or isset($_GET["noTunnels"]) or isset($_GET["noUnpavedroads"]) or isset($_GET["noPavedroads"]) or isset($_GET["noFerries"]) or isset($_GET["noFords"]) or isset($_GET["noTracks"]) or isset($_GET["noSteps"]) or isset($_GET["noHills"])) ? [] : null;
 
@@ -322,7 +323,7 @@ elseif (isset($_GET["start"]) && isset($_GET["end"]) && isset($_GET["api_key"]))
     }
     /** Create the request file */
     $request = createRequest($object);
-    ///////////////////////////////////////////////////
+
     //*** Send Request to Web Service ***
     //Server
     $http_response = post('openls.geog.uni-heidelberg.de', '/osm/routing' . '?api_key=' . ($api_key), $request, 20, 80);
