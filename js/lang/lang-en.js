@@ -84,6 +84,7 @@ var lang_en = {
     'BicycleTour': 'Cycle tour',
     'BicycleMTB': 'Mountain bike',
     'BicycleRacer': 'Racing bike',
+    'BicycleElectro': 'E-bike',
     'TruckLength': 'length',
     'TruckHeight': 'height',
     'TruckWeight': 'weight',

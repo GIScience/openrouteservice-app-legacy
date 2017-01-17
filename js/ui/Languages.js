@@ -30,6 +30,7 @@ var Languages = (function(w) {'use strict';
 		$('#BicycleMtbLabel').html(p.translate('BicycleMTB'));
 		$('#BicycleRacerLabel').html(p.translate('BicycleRacer'));
 		$('#BicycleTourLabel').html(p.translate('BicycleTour'));
+		$('#BicycleElectroLabel').html(p.translate('BicycleElectro'));
 		$('#PedestrianLabel').html(p.translate('Pedestrian'));
 		
 		//truck profile
