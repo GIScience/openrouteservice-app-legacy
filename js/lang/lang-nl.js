@@ -200,7 +200,7 @@ var lang_nl = {
     'se':'Zweeds - Svenska',
     'dk':'Deens - Dansk',
     'tr':'Turks - T&uuml;rk',
-    'ca':'Catalaanse - Catal&aacute;n',
+    'ca':'Catalaanse - Catal&agrave;',
     'ja':'Japans - 日本人',
     'no':'Noorse - Norsk',
 	'ua' : 'Oekra&iuml;ens - Український',

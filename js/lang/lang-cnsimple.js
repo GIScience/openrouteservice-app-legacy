@@ -201,7 +201,7 @@ var lang_cnsimple = {
 	'dk' : '丹麦语 - Dansk',
 	'tr' : '土耳其语 - T&uuml;rk',
 	'ua' : '乌克兰 - Український',
-	'ca' : '加泰兰语 - Catal&aacute;n',
+	'ca' : '加泰兰语 - Catal&agrave;',
 	'ja' : '日语 - 日本人',
 	'no' : '挪威语 - Norsk',
 	'vi' : '越南语 - Ti&#7871;ng Vi&#7879;t',

@@ -224,7 +224,7 @@ var lang_de = {
 
 	// List languages alphabetically sorted
 	'bg' : 'Bulgarisch - български',
-	'ca' : 'Katalanisch - Catal&aacute;n',
+	'ca' : 'Katalanisch - Catal&agrave;',
 	'cnsimple' : 'Chinesisch (Vereinfacht) - 中国（简体）',
 	'cn' : 'Chinesisch (Traditionell) - 中國（簡體）',
 	'cz' : 'Tschechisch - Cesk&aacute;',

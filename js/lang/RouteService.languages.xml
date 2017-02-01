@@ -797,8 +797,8 @@
    </Language>
      <Language Description="Catalan" Code="ca">
        <MobilityBasedMovementInstruction>
-           <Vehicle>Conduiu</Vehicle>
-           <Pedestrian>Aneu</Pedestrian>
+           <Vehicle>Condueix</Vehicle>
+           <Pedestrian>Vés</Pedestrian>
        </MobilityBasedMovementInstruction>
        <Time>
            <Appoximation>aprox.</Appoximation>
@@ -808,7 +808,7 @@
            <Second>segon/s</Second>
        </Time>
        <Direction>
-           <Curve>Gireu</Curve>
+           <Curve>Gira</Curve>
            <SharpLeft>molt a l'esquerra</SharpLeft>
            <Left>a l'esquerra</Left>
            <HalfLeft>una mica a l'esquerra</HalfLeft>
@@ -816,12 +816,13 @@
            <HalfRight>una mica a la dreta</HalfRight>
            <Right>a la dreta</Right>
            <SharpRight>molt a la dreta</SharpRight>
-           <UTurn>gireu i feu mitja volta</UTurn>
+           <UTurn>fes mitja volta</UTurn>
+		   <InitialHeading>nord, nord-est, est, sud-est, sud, sud-est, oest, nord-oest</InitialHeading>
        </Direction>
        <ActionNumber>Acció núm.</ActionNumber>
        <FillWord>
            <StartTag>Inici</StartTag>
-           <EndTag>Arribeu a destinació!</EndTag>
+           <EndTag>Has arribat a destí</EndTag>
            <On>a</On>
            <For>durant</For>
            <Before>abans de</Before>

@@ -200,7 +200,7 @@ var lang_cz = {
     'se':'�v&eacute;dsk&yacute; - Svenska',
     'dk':'D&aacute;nsk&yacute; - Dansk',
     'tr':'Turkish - T&uuml;rk',
-    'ca':'Katal&aacute;nstina - Catal&aacute;n',
+    'ca':'Katal&aacute;nstina - Catal&agrave;',
     'ja':'Japonci - 日本人',
     'no':'Norsk&eacute; - Norsk',
 	'ua':'ukrajinsk&yacute; - Український',

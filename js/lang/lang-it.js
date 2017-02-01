@@ -195,7 +195,7 @@ var lang_it = {
     'se':'Svedese - Svenska',
     'dk':'Danese - Dansk',
     'tr':'Turco - T&uuml;rk',
-    'ca':'Catalano - Catal&aacute;n',
+    'ca':'Catalano - Catal&agrave;',
     'ja':'Giapponese - 日本人',
     'no':'Norvegese - Norsk',
 	'ua' : 'Ucraino - Український',

@@ -161,7 +161,7 @@ var lang_en = {
     'accessibilityError': 'An error occured during the accessibility analysis. Did you forget to set a start point or to specify the time interval?',
     // List languages alphabetically sorted
     'bg': 'Bulgarian - български',
-    'ca': 'Catalan - Catal&aacute;n',
+    'ca': 'Catalan - Catal&agrave;',
     'cnsimple': 'Chinese (Simplified) - 中国（简体）',
     'cn': 'Chinese (Traditional) - 中国（繁体）',
     'cz': 'Czech - Cesk&aacute;',
