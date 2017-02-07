@@ -46,3 +46,7 @@ Thumbs.db
 *.sublime-workspace
 .project
 .pydevproject
+
+# Folders #
+###########
+FirePHPCore/

@@ -46,7 +46,7 @@
 			$object->minutes         = (isset($_GET["minutes"]))         ? $_GET["minutes"]         : "10";
 			$object->interval        = (isset($_GET["interval"]))        ? $_GET["interval"]        : "300";
 			$object->routepreference = (isset($_GET["routepreference"])) ? $_GET["routePreference"] : "Car";
-			$object->method = (isset($_GET["method"]) and $_GET["method"] = ("RecursiveGrid" or "TIN")) ? $_GET["method"] : "RecursiveGrid";
+			$object->method = (isset($_GET["method"]) and $_GET["method"] == ("RecursiveGrid" or "TIN")) ? $_GET["method"] : "RecursiveGrid";
 		}
 
 		/** Create the request file */
